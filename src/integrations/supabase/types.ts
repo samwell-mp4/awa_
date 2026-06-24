@@ -14,16 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_mission: {
+        Row: {
+          correct_index: number
+          created_at: string
+          id: string
+          is_active: boolean
+          options: Json
+          points: number
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          correct_index?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          options?: Json
+          points?: number
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          correct_index?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          options?: Json
+          points?: number
+          question?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_video: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          is_active: boolean
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      dictionary: {
+        Row: {
+          audio_url: string | null
+          category: string
+          created_at: string
+          example: string | null
+          id: string
+          language: string
+          pronunciation: string | null
+          term_indigenous: string
+          term_pt: string
+          updated_at: string
+        }
+        Insert: {
+          audio_url?: string | null
+          category?: string
+          created_at?: string
+          example?: string | null
+          id?: string
+          language?: string
+          pronunciation?: string | null
+          term_indigenous: string
+          term_pt: string
+          updated_at?: string
+        }
+        Update: {
+          audio_url?: string | null
+          category?: string
+          created_at?: string
+          example?: string | null
+          id?: string
+          language?: string
+          pronunciation?: string | null
+          term_indigenous?: string
+          term_pt?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          photo_url: string | null
+          points: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name?: string
+          photo_url?: string | null
+          points?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      trails: {
+        Row: {
+          created_at: string
+          default_progress: number
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          order_index: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          default_progress?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          order_index?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          default_progress?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          order_index?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +344,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
