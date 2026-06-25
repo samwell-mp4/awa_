@@ -321,30 +321,36 @@ function Index() {
                 Vídeo do dia
               </div>
               <h2 className="mt-2 font-display text-2xl font-black text-cream md:text-3xl">
-                Saudação em Pataxó
+                {dailyVideo?.title ?? "Saudação em Pataxó"}
               </h2>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-foreground/75">
-                Aprenda a cumprimentar em Pataxó com o professor Aruá Pataxó — pronúncia, contexto
-                cultural e prática guiada.
+                {dailyVideo?.description ??
+                  "Aprenda a cumprimentar em Pataxó com o professor Aruá Pataxó — pronúncia, contexto cultural e prática guiada."}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <button className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-bold text-[oklch(0.18_0.04_145)] shadow-[var(--shadow-glow)]">
+                <a
+                  href={dailyVideo?.video_url ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-bold text-[oklch(0.18_0.04_145)] shadow-[var(--shadow-glow)]"
+                >
                   <Play className="h-4 w-4 fill-current" /> Assistir agora
-                </button>
+                </a>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground/80">
-                  <Clock className="h-3.5 w-3.5 text-gold" /> 3 min
+                  <Clock className="h-3.5 w-3.5 text-gold" /> {dailyVideo?.duration_minutes ?? 3} min
                 </span>
               </div>
             </div>
             <div className="relative min-h-[220px] md:min-h-[320px]">
               <img
-                src={videoProfessor}
-                alt="Professor indígena Aruá Pataxó na floresta"
+                src={dailyVideo?.thumbnail_url || videoProfessor}
+                alt="Vídeo do dia"
                 width={1536}
                 height={1024}
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover"
               />
+
               <div className="absolute inset-0 bg-gradient-to-tr from-card/80 via-transparent to-transparent" />
               <button
                 aria-label="Reproduzir vídeo"
