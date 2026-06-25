@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ambient_videos: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          order_index: number
+          poster_url: string | null
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          order_index?: number
+          poster_url?: string | null
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          order_index?: number
+          poster_url?: string | null
+          video_url?: string
+        }
+        Relationships: []
+      }
       daily_mission: {
         Row: {
           correct_index: number
@@ -148,6 +175,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      songs: {
+        Row: {
+          ambient_video_id: string | null
+          artist: string | null
+          audio_url: string
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          duration_seconds: number | null
+          id: string
+          is_active: boolean
+          language: string
+          lyrics_indigenous: string
+          lyrics_pt: string
+          order_index: number
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          ambient_video_id?: string | null
+          artist?: string | null
+          audio_url: string
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_active?: boolean
+          language?: string
+          lyrics_indigenous?: string
+          lyrics_pt?: string
+          order_index?: number
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          ambient_video_id?: string | null
+          artist?: string | null
+          audio_url?: string
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_active?: boolean
+          language?: string
+          lyrics_indigenous?: string
+          lyrics_pt?: string
+          order_index?: number
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "songs_ambient_video_id_fkey"
+            columns: ["ambient_video_id"]
+            isOneToOne: false
+            referencedRelation: "ambient_videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       trails: {
         Row: {
