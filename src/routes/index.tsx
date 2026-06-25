@@ -158,6 +158,7 @@ function Index() {
     { label: "Início", href: "#início", icon: Home },
     { label: "Aprender", href: "#aprender", icon: BookOpen },
     { label: "Dicionário", href: "/dicionario", icon: Library },
+    { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
