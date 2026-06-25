@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Search } from "lucide-react";
+import { Save, Plus, Trash2, Search, Download } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
+import patxohaDict from "@/data/patxoha-dictionary.json";
 
 type Entry = {
   id: string;
@@ -40,6 +41,35 @@ export function DictionaryAdmin() {
     return !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
   });
 
+  const [importing, setImporting] = useState(false);
+
+  async function importPdfDictionary() {
+    if (!confirm(`Importar ${patxohaDict.length} palavras do PDF Patxôhã? Entradas duplicadas (mesmo termo) serão ignoradas.`)) return;
+    setImporting(true);
+    try {
+      const { data: existing } = await supabase.from("dictionary").select("term_indigenous,term_pt");
+      const seen = new Set((existing ?? []).map((e: any) => `${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
+      const toInsert = (patxohaDict as any[]).filter((e) => !seen.has(`${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
+      if (toInsert.length === 0) { toast.info("Tudo já importado"); setImporting(false); return; }
+      const batchSize = 500;
+      let done = 0;
+      for (let i = 0; i < toInsert.length; i += batchSize) {
+        const batch = toInsert.slice(i, i + batchSize);
+        const { error } = await supabase.from("dictionary").insert(batch);
+        if (error) throw error;
+        done += batch.length;
+        toast.message(`Importando... ${done}/${toInsert.length}`);
+      }
+      toast.success(`${done} palavras importadas`);
+      qc.invalidateQueries({ queryKey: ["dict_admin"] });
+      qc.invalidateQueries({ queryKey: ["dictionary"] });
+    } catch (e: any) {
+      toast.error("Erro: " + e.message);
+    } finally {
+      setImporting(false);
+    }
+  }
+
   async function add() {
     if (!draft.term_indigenous || !draft.term_pt) return toast.error("Termos obrigatórios");
     const { error } = await supabase.from("dictionary").insert(draft);
@@ -52,6 +82,18 @@ export function DictionaryAdmin() {
 
   return (
     <div className="space-y-4">
+      <Card>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h2 className="font-display text-lg font-black text-cream">Importar dicionário Patxôhã</h2>
+            <p className="text-xs text-foreground/60 mt-1">{patxohaDict.length} palavras extraídas do PDF oficial (2015). Duplicatas serão ignoradas.</p>
+          </div>
+          <Btn onClick={importPdfDictionary} disabled={importing}>
+            <Download className="h-4 w-4" /> {importing ? "Importando..." : "Importar do PDF"}
+          </Btn>
+        </div>
+      </Card>
+
       <Card>
         <h2 className="font-display text-lg font-black text-cream mb-3">Nova palavra</h2>
         <div className="grid gap-3 md:grid-cols-2">
