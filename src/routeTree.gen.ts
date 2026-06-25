@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfessorRouteImport } from './routes/professor'
+import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -19,6 +20,11 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 const ProfessorRoute = ProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MusicasRoute = MusicasRouteImport.update({
+  id: '/musicas',
+  path: '/musicas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DicionarioRoute = DicionarioRouteImport.update({
@@ -50,6 +56,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dicionario': typeof DicionarioRoute
+  '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
@@ -57,6 +64,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dicionario': typeof DicionarioRoute
+  '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
@@ -66,20 +74,28 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/dicionario': typeof DicionarioRoute
+  '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dicionario' | '/professor' | '/admin'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dicionario'
+    | '/musicas'
+    | '/professor'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dicionario' | '/professor' | '/admin'
+  to: '/' | '/auth' | '/dicionario' | '/musicas' | '/professor' | '/admin'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/dicionario'
+    | '/musicas'
     | '/professor'
     | '/_authenticated/admin'
   fileRoutesById: FileRoutesById
@@ -89,6 +105,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   DicionarioRoute: typeof DicionarioRoute
+  MusicasRoute: typeof MusicasRoute
   ProfessorRoute: typeof ProfessorRoute
 }
 
@@ -99,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/professor'
       fullPath: '/professor'
       preLoaderRoute: typeof ProfessorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/musicas': {
+      id: '/musicas'
+      path: '/musicas'
+      fullPath: '/musicas'
+      preLoaderRoute: typeof MusicasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dicionario': {
@@ -155,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   DicionarioRoute: DicionarioRoute,
+  MusicasRoute: MusicasRoute,
   ProfessorRoute: ProfessorRoute,
 }
 export const routeTree = rootRouteImport

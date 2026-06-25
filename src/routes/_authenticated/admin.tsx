@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut } from "lucide-react";
+import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music } from "lucide-react";
 import { TrailsAdmin } from "@/components/admin/trails-admin";
 import { VideoAdmin } from "@/components/admin/video-admin";
 import { MissionAdmin } from "@/components/admin/mission-admin";
 import { DictionaryAdmin } from "@/components/admin/dictionary-admin";
+import { SongsAdmin } from "@/components/admin/songs-admin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }] }),
