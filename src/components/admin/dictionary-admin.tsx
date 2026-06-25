@@ -41,6 +41,35 @@ export function DictionaryAdmin() {
     return !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
   });
 
+  const [importing, setImporting] = useState(false);
+
+  async function importPdfDictionary() {
+    if (!confirm(`Importar ${patxohaDict.length} palavras do PDF Patxôhã? Entradas duplicadas (mesmo termo) serão ignoradas.`)) return;
+    setImporting(true);
+    try {
+      const { data: existing } = await supabase.from("dictionary").select("term_indigenous,term_pt");
+      const seen = new Set((existing ?? []).map((e: any) => `${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
+      const toInsert = (patxohaDict as any[]).filter((e) => !seen.has(`${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
+      if (toInsert.length === 0) { toast.info("Tudo já importado"); setImporting(false); return; }
+      const batchSize = 500;
+      let done = 0;
+      for (let i = 0; i < toInsert.length; i += batchSize) {
+        const batch = toInsert.slice(i, i + batchSize);
+        const { error } = await supabase.from("dictionary").insert(batch);
+        if (error) throw error;
+        done += batch.length;
+        toast.message(`Importando... ${done}/${toInsert.length}`);
+      }
+      toast.success(`${done} palavras importadas`);
+      qc.invalidateQueries({ queryKey: ["dict_admin"] });
+      qc.invalidateQueries({ queryKey: ["dictionary"] });
+    } catch (e: any) {
+      toast.error("Erro: " + e.message);
+    } finally {
+      setImporting(false);
+    }
+  }
+
   async function add() {
     if (!draft.term_indigenous || !draft.term_pt) return toast.error("Termos obrigatórios");
     const { error } = await supabase.from("dictionary").insert(draft);
