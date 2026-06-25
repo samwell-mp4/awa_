@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Menu,
   Home,
@@ -21,6 +22,10 @@ import {
   Youtube,
   Facebook,
   Mail,
+  LogIn,
+  LogOut,
+  Settings,
+  Library,
 } from "lucide-react";
 
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -30,6 +35,8 @@ import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
 import trailAnimais from "@/assets/trail-animais.jpg";
 import trailCultura from "@/assets/trail-cultura.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,13 +58,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const trails = [
-  { name: "Saudações", img: trailSaudacoes, progress: 60 },
-  { name: "Família", img: trailFamilia, progress: 30 },
-  { name: "Natureza", img: trailNatureza, progress: 45 },
-  { name: "Animais", img: trailAnimais, progress: 20 },
-  { name: "Cultura", img: trailCultura, progress: 10 },
-];
+const fallbackImages: Record<string, string> = {
+  Saudações: trailSaudacoes,
+  Família: trailFamilia,
+  Natureza: trailNatureza,
+  Animais: trailAnimais,
+  Cultura: trailCultura,
+};
 
 const ranking = [
   { name: "Aruá Pataxó", points: 780, initials: "AP" },
@@ -95,15 +102,63 @@ function Logo() {
 
 function Index() {
   const [open, setOpen] = useState(false);
-  const [answer, setAnswer] = useState<string | null>(null);
-  const correct = "B";
+  const [answer, setAnswer] = useState<number | null>(null);
+  const { user, isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const { data: dbTrails = [] } = useQuery({
+    queryKey: ["trails"],
+    queryFn: async () => {
+      const { data } = await supabase.from("trails").select("*").order("order_index");
+      return data ?? [];
+    },
+  });
+  const trails = dbTrails.length
+    ? dbTrails.map((t: any) => ({
+        name: t.name,
+        img: t.image_url || fallbackImages[t.name] || trailCultura,
+        progress: t.default_progress ?? 0,
+      }))
+    : Object.keys(fallbackImages).map((name) => ({ name, img: fallbackImages[name], progress: 0 }));
+
+  const { data: dailyVideo } = useQuery({
+    queryKey: ["daily_video"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("daily_video")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+  });
+
+  const { data: mission } = useQuery({
+    queryKey: ["daily_mission"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("daily_mission")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data as any;
+    },
+  });
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  }
 
   const navItems = [
-    { label: "Início", icon: Home },
-    { label: "Aprender", icon: BookOpen },
-    { label: "Vídeos", icon: Play },
-    { label: "Desafios", icon: Trophy },
-    { label: "Perfil", icon: User },
+    { label: "Início", href: "#início", icon: Home },
+    { label: "Aprender", href: "#aprender", icon: BookOpen },
+    { label: "Dicionário", href: "/dicionario", icon: Library },
+    { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
   return (
@@ -113,15 +168,31 @@ function Index() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <Logo />
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((n) => (
-              <a
-                key={n.label}
-                href={`#${n.label.toLowerCase()}`}
-                className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
-              >
-                {n.label}
-              </a>
-            ))}
+            {navItems.map((n) =>
+              n.href.startsWith("/") ? (
+                <Link key={n.label} to={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+                  {n.label}
+                </Link>
+              ) : (
+                <a key={n.label} href={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+                  {n.label}
+                </a>
+              ),
+            )}
+            {isAdmin && (
+              <Link to="/admin" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
+                <Settings className="h-4 w-4" /> Painel
+              </Link>
+            )}
+            {user ? (
+              <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-4 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
+                <LogOut className="h-4 w-4" /> Sair
+              </button>
+            ) : (
+              <Link to="/auth" className="inline-flex items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]">
+                <LogIn className="h-4 w-4" /> Entrar
+              </Link>
+            )}
           </nav>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -134,20 +205,36 @@ function Index() {
         {open && (
           <div className="md:hidden border-t border-gold/20 bg-card/95 px-4 py-3">
             <div className="flex flex-col gap-1">
-              {navItems.map((n) => (
-                <a
-                  key={n.label}
-                  href={`#${n.label.toLowerCase()}`}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
-                >
-                  <n.icon className="h-4 w-4 text-gold" /> {n.label}
-                </a>
-              ))}
+              {navItems.map((n) =>
+                n.href.startsWith("/") ? (
+                  <Link key={n.label} to={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
+                  </Link>
+                ) : (
+                  <a key={n.label} href={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
+                  </a>
+                ),
+              )}
+              {isAdmin && (
+                <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gold hover:bg-gold/15">
+                  <Settings className="h-4 w-4" /> Painel
+                </Link>
+              )}
+              {user ? (
+                <button onClick={() => { setOpen(false); signOut(); }} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                  <LogOut className="h-4 w-4 text-gold" /> Sair
+                </button>
+              ) : (
+                <Link to="/auth" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                  <LogIn className="h-4 w-4 text-gold" /> Entrar
+                </Link>
+              )}
             </div>
           </div>
         )}
       </header>
+
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
         {/* HERO */}
@@ -234,30 +321,36 @@ function Index() {
                 Vídeo do dia
               </div>
               <h2 className="mt-2 font-display text-2xl font-black text-cream md:text-3xl">
-                Saudação em Pataxó
+                {dailyVideo?.title ?? "Saudação em Pataxó"}
               </h2>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-foreground/75">
-                Aprenda a cumprimentar em Pataxó com o professor Aruá Pataxó — pronúncia, contexto
-                cultural e prática guiada.
+                {dailyVideo?.description ??
+                  "Aprenda a cumprimentar em Pataxó com o professor Aruá Pataxó — pronúncia, contexto cultural e prática guiada."}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <button className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-bold text-[oklch(0.18_0.04_145)] shadow-[var(--shadow-glow)]">
+                <a
+                  href={dailyVideo?.video_url ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-bold text-[oklch(0.18_0.04_145)] shadow-[var(--shadow-glow)]"
+                >
                   <Play className="h-4 w-4 fill-current" /> Assistir agora
-                </button>
+                </a>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground/80">
-                  <Clock className="h-3.5 w-3.5 text-gold" /> 3 min
+                  <Clock className="h-3.5 w-3.5 text-gold" /> {dailyVideo?.duration_minutes ?? 3} min
                 </span>
               </div>
             </div>
             <div className="relative min-h-[220px] md:min-h-[320px]">
               <img
-                src={videoProfessor}
-                alt="Professor indígena Aruá Pataxó na floresta"
+                src={dailyVideo?.thumbnail_url || videoProfessor}
+                alt="Vídeo do dia"
                 width={1536}
                 height={1024}
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover"
               />
+
               <div className="absolute inset-0 bg-gradient-to-tr from-card/80 via-transparent to-transparent" />
               <button
                 aria-label="Reproduzir vídeo"
@@ -321,21 +414,18 @@ function Index() {
               <h3 className="font-display text-lg font-black text-cream">Missão do dia</h3>
             </div>
             <p className="mt-3 text-sm text-foreground/70">
-              Complete a frase: <span className="text-cream">“Awê” significa:</span>
+              {mission?.question ?? "Carregando missão..."}
             </p>
             <div className="mt-3 flex flex-col gap-2">
-              {[
-                { k: "A", label: "Obrigado" },
-                { k: "B", label: "Olá" },
-                { k: "C", label: "Adeus" },
-              ].map((opt) => {
-                const isPicked = answer === opt.k;
-                const isRight = answer && opt.k === correct;
-                const isWrong = isPicked && opt.k !== correct;
+              {(mission?.options ?? []).map((label: string, i: number) => {
+                const correct = mission?.correct_index;
+                const isPicked = answer === i;
+                const isRight = answer !== null && i === correct;
+                const isWrong = isPicked && i !== correct;
                 return (
                   <button
-                    key={opt.k}
-                    onClick={() => setAnswer(opt.k)}
+                    key={i}
+                    onClick={() => setAnswer(i)}
                     className={[
                       "flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition",
                       isRight
@@ -346,7 +436,7 @@ function Index() {
                     ].join(" ")}
                   >
                     <span>
-                      {opt.k}) {opt.label}
+                      {String.fromCharCode(65 + i)}) {label}
                     </span>
                     {isRight && <Check className="h-4 w-4 text-leaf" />}
                   </button>
@@ -355,16 +445,17 @@ function Index() {
             </div>
             <div className="mt-4 flex items-center justify-between text-xs">
               <span className="inline-flex items-center gap-1.5 text-gold">
-                <Star className="h-3.5 w-3.5 fill-gold" /> 10 pontos
+                <Star className="h-3.5 w-3.5 fill-gold" /> {mission?.points ?? 10} pontos
               </span>
-              {answer === correct && (
-                <span className="font-bold text-leaf">+10 pontos conquistados!</span>
+              {answer !== null && answer === mission?.correct_index && (
+                <span className="font-bold text-leaf">+{mission?.points ?? 10} pontos conquistados!</span>
               )}
-              {answer && answer !== correct && (
+              {answer !== null && answer !== mission?.correct_index && (
                 <span className="font-semibold text-foreground/70">Tente novamente</span>
               )}
             </div>
           </div>
+
 
           {/* Ranking */}
           <div className="card-elev rounded-2xl p-5">
@@ -478,22 +569,45 @@ function Index() {
       {/* MOBILE BOTTOM NAV */}
       <nav id="perfil" className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur md:hidden">
         <ul className="mx-auto grid max-w-md grid-cols-5">
-          {navItems.map((n, i) => (
-            <li key={n.label}>
-              <a
-                href={`#${n.label.toLowerCase()}`}
-                className={[
-                  "flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold",
-                  i === 0 ? "text-gold" : "text-foreground/70",
-                ].join(" ")}
-              >
-                <n.icon className="h-5 w-5" />
-                {n.label}
-              </a>
-            </li>
-          ))}
+          {navItems.map((n, i) => {
+            const cls = [
+              "flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold",
+              i === 0 ? "text-gold" : "text-foreground/70",
+            ].join(" ");
+            return (
+              <li key={n.label}>
+                {n.href.startsWith("/") ? (
+                  <Link to={n.href} className={cls}>
+                    <n.icon className="h-5 w-5" /> {n.label}
+                  </Link>
+                ) : (
+                  <a href={n.href} className={cls}>
+                    <n.icon className="h-5 w-5" /> {n.label}
+                  </a>
+                )}
+              </li>
+            );
+          })}
+          <li>
+            {user ? (
+              isAdmin ? (
+                <Link to="/admin" className="flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-gold">
+                  <Settings className="h-5 w-5" /> Painel
+                </Link>
+              ) : (
+                <button onClick={signOut} className="flex w-full flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-foreground/70">
+                  <LogOut className="h-5 w-5" /> Sair
+                </button>
+              )
+            ) : (
+              <Link to="/auth" className="flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-foreground/70">
+                <User className="h-5 w-5" /> Entrar
+              </Link>
+            )}
+          </li>
         </ul>
       </nav>
+
     </div>
   );
 }
