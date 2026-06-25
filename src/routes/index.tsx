@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Menu,
   Home,
@@ -21,6 +22,10 @@ import {
   Youtube,
   Facebook,
   Mail,
+  LogIn,
+  LogOut,
+  Settings,
+  Library,
 } from "lucide-react";
 
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -30,6 +35,8 @@ import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
 import trailAnimais from "@/assets/trail-animais.jpg";
 import trailCultura from "@/assets/trail-cultura.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,13 +58,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const trails = [
-  { name: "Saudações", img: trailSaudacoes, progress: 60 },
-  { name: "Família", img: trailFamilia, progress: 30 },
-  { name: "Natureza", img: trailNatureza, progress: 45 },
-  { name: "Animais", img: trailAnimais, progress: 20 },
-  { name: "Cultura", img: trailCultura, progress: 10 },
-];
+const fallbackImages: Record<string, string> = {
+  Saudações: trailSaudacoes,
+  Família: trailFamilia,
+  Natureza: trailNatureza,
+  Animais: trailAnimais,
+  Cultura: trailCultura,
+};
 
 const ranking = [
   { name: "Aruá Pataxó", points: 780, initials: "AP" },
