@@ -83,6 +83,18 @@ export function DictionaryAdmin() {
   return (
     <div className="space-y-4">
       <Card>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h2 className="font-display text-lg font-black text-cream">Importar dicionário Patxôhã</h2>
+            <p className="text-xs text-foreground/60 mt-1">{patxohaDict.length} palavras extraídas do PDF oficial (2015). Duplicatas serão ignoradas.</p>
+          </div>
+          <Btn onClick={importPdfDictionary} disabled={importing}>
+            <Download className="h-4 w-4" /> {importing ? "Importando..." : "Importar do PDF"}
+          </Btn>
+        </div>
+      </Card>
+
+      <Card>
         <h2 className="font-display text-lg font-black text-cream mb-3">Nova palavra</h2>
         <div className="grid gap-3 md:grid-cols-2">
           <Field label="Termo indígena"><Input value={draft.term_indigenous} onChange={(e) => setDraft({ ...draft, term_indigenous: e.target.value })} /></Field>
