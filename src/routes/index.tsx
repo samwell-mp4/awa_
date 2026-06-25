@@ -102,15 +102,63 @@ function Logo() {
 
 function Index() {
   const [open, setOpen] = useState(false);
-  const [answer, setAnswer] = useState<string | null>(null);
-  const correct = "B";
+  const [answer, setAnswer] = useState<number | null>(null);
+  const { user, isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const { data: dbTrails = [] } = useQuery({
+    queryKey: ["trails"],
+    queryFn: async () => {
+      const { data } = await supabase.from("trails").select("*").order("order_index");
+      return data ?? [];
+    },
+  });
+  const trails = dbTrails.length
+    ? dbTrails.map((t: any) => ({
+        name: t.name,
+        img: t.image_url || fallbackImages[t.name] || trailCultura,
+        progress: t.default_progress ?? 0,
+      }))
+    : Object.keys(fallbackImages).map((name) => ({ name, img: fallbackImages[name], progress: 0 }));
+
+  const { data: dailyVideo } = useQuery({
+    queryKey: ["daily_video"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("daily_video")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+  });
+
+  const { data: mission } = useQuery({
+    queryKey: ["daily_mission"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("daily_mission")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data as any;
+    },
+  });
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  }
 
   const navItems = [
-    { label: "Início", icon: Home },
-    { label: "Aprender", icon: BookOpen },
-    { label: "Vídeos", icon: Play },
-    { label: "Desafios", icon: Trophy },
-    { label: "Perfil", icon: User },
+    { label: "Início", href: "#início", icon: Home },
+    { label: "Aprender", href: "#aprender", icon: BookOpen },
+    { label: "Dicionário", href: "/dicionario", icon: Library },
+    { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
   return (
@@ -120,15 +168,31 @@ function Index() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <Logo />
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((n) => (
-              <a
-                key={n.label}
-                href={`#${n.label.toLowerCase()}`}
-                className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
-              >
-                {n.label}
-              </a>
-            ))}
+            {navItems.map((n) =>
+              n.href.startsWith("/") ? (
+                <Link key={n.label} to={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+                  {n.label}
+                </Link>
+              ) : (
+                <a key={n.label} href={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+                  {n.label}
+                </a>
+              ),
+            )}
+            {isAdmin && (
+              <Link to="/admin" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
+                <Settings className="h-4 w-4" /> Painel
+              </Link>
+            )}
+            {user ? (
+              <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-4 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
+                <LogOut className="h-4 w-4" /> Sair
+              </button>
+            ) : (
+              <Link to="/auth" className="inline-flex items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]">
+                <LogIn className="h-4 w-4" /> Entrar
+              </Link>
+            )}
           </nav>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -141,20 +205,36 @@ function Index() {
         {open && (
           <div className="md:hidden border-t border-gold/20 bg-card/95 px-4 py-3">
             <div className="flex flex-col gap-1">
-              {navItems.map((n) => (
-                <a
-                  key={n.label}
-                  href={`#${n.label.toLowerCase()}`}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
-                >
-                  <n.icon className="h-4 w-4 text-gold" /> {n.label}
-                </a>
-              ))}
+              {navItems.map((n) =>
+                n.href.startsWith("/") ? (
+                  <Link key={n.label} to={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
+                  </Link>
+                ) : (
+                  <a key={n.label} href={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
+                  </a>
+                ),
+              )}
+              {isAdmin && (
+                <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gold hover:bg-gold/15">
+                  <Settings className="h-4 w-4" /> Painel
+                </Link>
+              )}
+              {user ? (
+                <button onClick={() => { setOpen(false); signOut(); }} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                  <LogOut className="h-4 w-4 text-gold" /> Sair
+                </button>
+              ) : (
+                <Link to="/auth" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                  <LogIn className="h-4 w-4 text-gold" /> Entrar
+                </Link>
+              )}
             </div>
           </div>
         )}
       </header>
+
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
         {/* HERO */}
