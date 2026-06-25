@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "trails" | "video" | "mission" | "dictionary";
+type Tab = "trails" | "video" | "mission" | "dictionary" | "songs";
 
 function AdminPage() {
   const { user, isAdmin, loading } = useAuth();
@@ -82,6 +82,7 @@ function AdminPage() {
     { k: "trails", label: "Trilhas", icon: BookOpen },
     { k: "video", label: "Vídeo do dia", icon: Video },
     { k: "mission", label: "Missão", icon: Trophy },
+    { k: "songs", label: "Músicas", icon: Music },
     { k: "dictionary", label: "Dicionário", icon: Library },
   ];
 
@@ -118,6 +119,7 @@ function AdminPage() {
         {tab === "trails" && <TrailsAdmin />}
         {tab === "video" && <VideoAdmin />}
         {tab === "mission" && <MissionAdmin />}
+        {tab === "songs" && <SongsAdmin />}
         {tab === "dictionary" && <DictionaryAdmin />}
       </main>
     </div>
