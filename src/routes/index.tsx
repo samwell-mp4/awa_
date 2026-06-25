@@ -408,21 +408,18 @@ function Index() {
               <h3 className="font-display text-lg font-black text-cream">Missão do dia</h3>
             </div>
             <p className="mt-3 text-sm text-foreground/70">
-              Complete a frase: <span className="text-cream">“Awê” significa:</span>
+              {mission?.question ?? "Carregando missão..."}
             </p>
             <div className="mt-3 flex flex-col gap-2">
-              {[
-                { k: "A", label: "Obrigado" },
-                { k: "B", label: "Olá" },
-                { k: "C", label: "Adeus" },
-              ].map((opt) => {
-                const isPicked = answer === opt.k;
-                const isRight = answer && opt.k === correct;
-                const isWrong = isPicked && opt.k !== correct;
+              {(mission?.options ?? []).map((label: string, i: number) => {
+                const correct = mission?.correct_index;
+                const isPicked = answer === i;
+                const isRight = answer !== null && i === correct;
+                const isWrong = isPicked && i !== correct;
                 return (
                   <button
-                    key={opt.k}
-                    onClick={() => setAnswer(opt.k)}
+                    key={i}
+                    onClick={() => setAnswer(i)}
                     className={[
                       "flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition",
                       isRight
@@ -433,7 +430,7 @@ function Index() {
                     ].join(" ")}
                   >
                     <span>
-                      {opt.k}) {opt.label}
+                      {String.fromCharCode(65 + i)}) {label}
                     </span>
                     {isRight && <Check className="h-4 w-4 text-leaf" />}
                   </button>
@@ -442,16 +439,17 @@ function Index() {
             </div>
             <div className="mt-4 flex items-center justify-between text-xs">
               <span className="inline-flex items-center gap-1.5 text-gold">
-                <Star className="h-3.5 w-3.5 fill-gold" /> 10 pontos
+                <Star className="h-3.5 w-3.5 fill-gold" /> {mission?.points ?? 10} pontos
               </span>
-              {answer === correct && (
-                <span className="font-bold text-leaf">+10 pontos conquistados!</span>
+              {answer !== null && answer === mission?.correct_index && (
+                <span className="font-bold text-leaf">+{mission?.points ?? 10} pontos conquistados!</span>
               )}
-              {answer && answer !== correct && (
+              {answer !== null && answer !== mission?.correct_index && (
                 <span className="font-semibold text-foreground/70">Tente novamente</span>
               )}
             </div>
           </div>
+
 
           {/* Ranking */}
           <div className="card-elev rounded-2xl p-5">
