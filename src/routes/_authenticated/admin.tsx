@@ -3,19 +3,20 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music } from "lucide-react";
+import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music, Wand2 } from "lucide-react";
 import { TrailsAdmin } from "@/components/admin/trails-admin";
 import { VideoAdmin } from "@/components/admin/video-admin";
 import { MissionAdmin } from "@/components/admin/mission-admin";
 import { DictionaryAdmin } from "@/components/admin/dictionary-admin";
 import { SongsAdmin } from "@/components/admin/songs-admin";
+import { ToolsAdmin } from "@/components/admin/tools-admin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }] }),
   component: AdminPage,
 });
 
-type Tab = "trails" | "video" | "mission" | "dictionary" | "songs";
+type Tab = "trails" | "video" | "mission" | "dictionary" | "songs" | "tools";
 
 function AdminPage() {
   const { user, isAdmin, loading } = useAuth();
@@ -84,6 +85,7 @@ function AdminPage() {
     { k: "mission", label: "Missão", icon: Trophy },
     { k: "songs", label: "Músicas", icon: Music },
     { k: "dictionary", label: "Dicionário", icon: Library },
+    { k: "tools", label: "Ferramentas IA", icon: Wand2 },
   ];
 
   return (
@@ -121,6 +123,7 @@ function AdminPage() {
         {tab === "mission" && <MissionAdmin />}
         {tab === "songs" && <SongsAdmin />}
         {tab === "dictionary" && <DictionaryAdmin />}
+        {tab === "tools" && <ToolsAdmin />}
       </main>
     </div>
   );
