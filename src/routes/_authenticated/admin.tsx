@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "trails" | "video" | "mission" | "dictionary" | "songs";
+type Tab = "trails" | "video" | "mission" | "dictionary" | "songs" | "tools";
 
 function AdminPage() {
   const { user, isAdmin, loading } = useAuth();
