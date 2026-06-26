@@ -85,6 +85,7 @@ function AdminPage() {
     { k: "mission", label: "Missão", icon: Trophy },
     { k: "songs", label: "Músicas", icon: Music },
     { k: "dictionary", label: "Dicionário", icon: Library },
+    { k: "tools", label: "Ferramentas IA", icon: Wand2 },
   ];
 
   return (
