@@ -123,6 +123,7 @@ function AdminPage() {
         {tab === "mission" && <MissionAdmin />}
         {tab === "songs" && <SongsAdmin />}
         {tab === "dictionary" && <DictionaryAdmin />}
+        {tab === "tools" && <ToolsAdmin />}
       </main>
     </div>
   );
