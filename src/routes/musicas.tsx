@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Volume2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/musicas")({
@@ -234,6 +233,19 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const offsetKey = `awa.song.offset.${song.id}`;
+  const [offsetMs, setOffsetMs] = useState(0);
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem(offsetKey);
+      setOffsetMs(v ? parseInt(v, 10) || 0 : 0);
+    } catch {}
+  }, [offsetKey]);
+  useEffect(() => {
+    try {
+      localStorage.setItem(offsetKey, String(offsetMs));
+    } catch {}
+  }, [offsetKey, offsetMs]);
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
@@ -288,17 +300,17 @@ function Player({
   const intro = duration ? Math.min(3, duration * 0.02) : 0;
   const usable = Math.max(1, duration - intro);
 
-  // Sincronia automática ponderada por sílabas.
+  // Sincronia automática ponderada por sílabas + ajuste manual (offsetMs).
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const t = progress - intro;
+    const t = progress - intro - offsetMs / 1000;
     if (t <= 0) return 0;
     const targetW = (t / usable) * totalWeight;
     for (let i = 0; i < cumWeights.length; i++) {
       if (targetW < cumWeights[i]) return i;
     }
     return maxLen - 1;
-  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
+  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights, offsetMs]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -350,7 +362,7 @@ function Player({
   const lineStartT = intro + (lineStartW / totalWeight) * usable;
   const lineEndT = intro + (lineEndW / totalWeight) * usable;
   const lineDur = Math.max(0.001, lineEndT - lineStartT);
-  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
+  const lineProgress = ((progress - offsetMs / 1000 - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
@@ -534,9 +546,30 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
-            <Volume2 className="h-3 w-3" />
-            <span>Legenda Bilíngue</span>
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold/80 tabular-nums">
+              Deslocamento: {offsetMs > 0 ? "+" : ""}{offsetMs} ms
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setOffsetMs((v) => v - 50)}
+                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
+              >
+                ⏪ Avançar (-50ms)
+              </button>
+              <button
+                onClick={() => setOffsetMs(0)}
+                className="rounded-full border border-gold/20 bg-black/40 px-3 py-1.5 text-xs font-bold text-foreground/70 hover:text-cream"
+              >
+                Reset
+              </button>
+              <button
+                onClick={() => setOffsetMs((v) => v + 50)}
+                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
+              >
+                ⏩ Atrasar (+50ms)
+              </button>
+            </div>
           </div>
 
 
