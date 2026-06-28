@@ -24,9 +24,9 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 const SUGESTOES = [
   "Como se diz 'bom dia' em Patxôhã?",
-  "Me ensine uma saudação tradicional",
-  "Traduza: 'A floresta é nossa casa'",
-  "Quais palavras você conhece para 'água'?",
+  "Como pronunciar as palavras nasais (ã, õ)?",
+  "Me ensine as saudações do dia (manhã, tarde, noite)",
+  "Posso usar Patxôhã fora da aldeia?",
 ];
 
 function ProfessorPage() {
