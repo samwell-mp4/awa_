@@ -69,13 +69,24 @@ function DictionaryPage() {
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("dictionary")
-        .select("*")
-        .in("language", ENABLED_LANGUAGES as unknown as string[])
-        .order("term_indigenous");
-      if (error) throw error;
-      return data as Entry[];
+      const pageSize = 1000;
+      let from = 0;
+      const all: Entry[] = [];
+      // paginar para superar o limite padrão do PostgREST (1000)
+      while (true) {
+        const { data, error } = await supabase
+          .from("dictionary")
+          .select("*")
+          .in("language", ENABLED_LANGUAGES as unknown as string[])
+          .order("term_indigenous")
+          .range(from, from + pageSize - 1);
+        if (error) throw error;
+        const chunk = (data ?? []) as Entry[];
+        all.push(...chunk);
+        if (chunk.length < pageSize) break;
+        from += pageSize;
+      }
+      return all;
     },
   });
 
