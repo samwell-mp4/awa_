@@ -547,9 +547,30 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
-            <Volume2 className="h-3 w-3" />
-            <span>Legenda Bilíngue</span>
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold/80 tabular-nums">
+              Deslocamento: {offsetMs > 0 ? "+" : ""}{offsetMs} ms
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setOffsetMs((v) => v - 50)}
+                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
+              >
+                ⏪ Avançar (-50ms)
+              </button>
+              <button
+                onClick={() => setOffsetMs(0)}
+                className="rounded-full border border-gold/20 bg-black/40 px-3 py-1.5 text-xs font-bold text-foreground/70 hover:text-cream"
+              >
+                Reset
+              </button>
+              <button
+                onClick={() => setOffsetMs((v) => v + 50)}
+                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
+              >
+                ⏩ Atrasar (+50ms)
+              </button>
+            </div>
           </div>
 
 
