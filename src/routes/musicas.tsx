@@ -519,6 +519,37 @@ function Player({
             </button>
           </div>
 
+          {/* calibration telemetry */}
+          <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-gold/15 bg-black/40 p-3 text-center backdrop-blur-md">
+            <div>
+              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Áudio</div>
+              <div className="mt-1 font-mono text-sm font-bold text-cream tabular-nums">{fmt(progress)}</div>
+            </div>
+            <div>
+              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Legenda</div>
+              <div className="mt-1 font-mono text-sm font-bold text-cream tabular-nums">{fmt(intro + activeIdx * perLine)}</div>
+            </div>
+            <div>
+              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Diferença Δ</div>
+              <div
+                className={`mt-1 font-mono text-sm font-bold tabular-nums ${
+                  Math.abs(progress - (intro + activeIdx * perLine)) <= 0.5
+                    ? "text-leaf"
+                    : progress - (intro + activeIdx * perLine) > 0
+                      ? "text-amber-400"
+                      : "text-rose-400"
+                }`}
+              >
+                {progress - (intro + activeIdx * perLine) > 0
+                  ? `+${(progress - (intro + activeIdx * perLine)).toFixed(1)}s`
+                  : `${(progress - (intro + activeIdx * perLine)).toFixed(1)}s`}
+              </div>
+            </div>
+          </div>
+          <p className="mt-2 text-center text-[9px] text-foreground/50">
+            Δ ≈ 0 = sincronizado. Δ positivo = legenda atrasada. Δ negativo = legenda adiantada.
+          </p>
+
         </div>
       </div>
 
