@@ -95,10 +95,16 @@ function VideoRow({ video }: { video: Video }) {
         <Field label="Duração (min)"><Input type="number" value={v.duration_minutes ?? 0} onChange={(e) => setV({ ...v, duration_minutes: +e.target.value })} /></Field>
         <Field label="Descrição"><Textarea rows={3} value={v.description ?? ""} onChange={(e) => setV({ ...v, description: e.target.value })} /></Field>
         <div className="grid gap-3">
-          <Field label="URL do vídeo"><Input value={v.video_url ?? ""} onChange={(e) => setV({ ...v, video_url: e.target.value })} /></Field>
+          <Field label="Enviar vídeo do celular ou computador">
+            <VideoUploader currentUrl={v.video_url} onUploaded={(url) => setV({ ...v, video_url: url })} />
+          </Field>
+          <Field label="URL do vídeo (ou cole um link)"><Input value={v.video_url ?? ""} onChange={(e) => setV({ ...v, video_url: e.target.value })} placeholder="https://..." /></Field>
           <Field label="URL da thumbnail"><Input value={v.thumbnail_url ?? ""} onChange={(e) => setV({ ...v, thumbnail_url: e.target.value })} /></Field>
         </div>
       </div>
+      {v.video_url && (
+        <video src={v.video_url} controls playsInline className="mt-3 w-full max-h-64 rounded-xl border border-gold/20 bg-black/40" />
+      )}
       <div className="mt-3 flex items-center justify-between flex-wrap gap-3">
         <label className="inline-flex items-center gap-2 text-sm text-cream">
           <input type="checkbox" checked={v.is_active} onChange={(e) => setV({ ...v, is_active: e.target.checked })} />
@@ -110,5 +116,56 @@ function VideoRow({ video }: { video: Video }) {
         </div>
       </div>
     </Card>
+  );
+}
+
+function VideoUploader({
+  currentUrl,
+  onUploaded,
+}: {
+  currentUrl: string | null;
+  onUploaded: (url: string) => void;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const camRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState("");
+
+  async function handle(file: File | undefined) {
+    if (!file) return;
+    if (file.size > 500 * 1024 * 1024) {
+      toast.error("Arquivo muito grande (máx. 500 MB)");
+      return;
+    }
+    setUploading(true);
+    setProgress(`Enviando ${(file.size / 1024 / 1024).toFixed(1)} MB...`);
+    try {
+      const url = await uploadVideoFile(file);
+      onUploaded(url);
+      toast.success("Vídeo enviado! Clique em Salvar para publicar.");
+    } catch (e: any) {
+      toast.error("Erro no upload: " + (e.message ?? e));
+    } finally {
+      setUploading(false);
+      setProgress("");
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <input ref={fileRef} type="file" accept="video/*" className="hidden" onChange={(e) => handle(e.target.files?.[0])} />
+      <input ref={camRef} type="file" accept="video/*" capture="environment" className="hidden" onChange={(e) => handle(e.target.files?.[0])} />
+      <div className="flex flex-wrap gap-2">
+        <Btn type="button" onClick={() => fileRef.current?.click()} disabled={uploading}>
+          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+          {uploading ? "Enviando..." : "Escolher arquivo"}
+        </Btn>
+        <Btn type="button" variant="ghost" onClick={() => camRef.current?.click()} disabled={uploading}>
+          <VideoIcon className="h-4 w-4" /> Gravar com câmera
+        </Btn>
+      </div>
+      {progress && <div className="text-xs text-foreground/60">{progress}</div>}
+      {currentUrl && !uploading && <div className="text-[10px] text-leaf truncate">✓ Vídeo carregado</div>}
+    </div>
   );
 }
