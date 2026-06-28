@@ -234,6 +234,8 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  // user-tunable sync: negative = legenda mais cedo, positive = mais tarde
+  const [offset, setOffset] = useState(0);
 
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
@@ -249,12 +251,17 @@ function Player({
   );
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // distribute lines evenly across duration → karaoke index
+  // distribute lines across (duration - intro) → karaoke index
+  // intro ~ 8% of duration (instrumental abertura) + user offset
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const perLine = duration / maxLen;
-    return Math.min(maxLen - 1, Math.floor(progress / perLine));
-  }, [progress, duration, maxLen]);
+    const intro = Math.min(12, duration * 0.08);
+    const usable = Math.max(1, duration - intro);
+    const perLine = usable / maxLen;
+    const t = progress - intro + offset;
+    if (t <= 0) return 0;
+    return Math.min(maxLen - 1, Math.floor(t / perLine));
+  }, [progress, duration, maxLen, offset]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -301,8 +308,10 @@ function Player({
     }
   }
 
-  const perLine = duration && maxLen ? duration / maxLen : 0;
-  const lineProgress = perLine ? ((progress - activeIdx * perLine) / perLine) * 100 : 0;
+  const intro = duration ? Math.min(12, duration * 0.08) : 0;
+  const perLine = duration && maxLen ? Math.max(1, duration - intro) / maxLen : 0;
+  const tInLine = progress - intro + offset - activeIdx * perLine;
+  const lineProgress = perLine ? (tInLine / perLine) * 100 : 0;
 
   return (
     <div className="fixed inset-0 z-50">
@@ -486,10 +495,30 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase text-gold/70">
+          <div className="mt-3 flex items-center justify-center gap-3 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
             <Volume2 className="h-3 w-3" />
-            Bilíngue · Indígena / Português
+            <span>Bilíngue</span>
+            <span className="text-gold/30">·</span>
+            <span>Sincronia</span>
+            <button
+              onClick={() => setOffset((o) => o - 1)}
+              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
+              aria-label="Adiantar legenda"
+            >
+              −1s
+            </button>
+            <span className="tabular-nums text-cream/80 min-w-[3ch] text-center">
+              {offset > 0 ? `+${offset}` : offset}s
+            </span>
+            <button
+              onClick={() => setOffset((o) => o + 1)}
+              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
+              aria-label="Atrasar legenda"
+            >
+              +1s
+            </button>
           </div>
+
         </div>
       </div>
 
