@@ -345,10 +345,12 @@ function Player({
     }
   }
 
-  const intro = duration ? Math.min(4, duration * 0.03) : 0;
-  const perLine = duration && maxLen ? Math.max(1, duration - intro) / maxLen : 0;
-  const tInLine = progress - intro - activeIdx * perLine;
-  const lineProgress = perLine ? (tInLine / perLine) * 100 : 0;
+  const lineStartW = activeIdx > 0 ? cumWeights[activeIdx - 1] : 0;
+  const lineEndW = cumWeights[activeIdx] ?? totalWeight;
+  const lineStartT = intro + (lineStartW / totalWeight) * usable;
+  const lineEndT = intro + (lineEndW / totalWeight) * usable;
+  const lineDur = Math.max(0.001, lineEndT - lineStartT);
+  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
