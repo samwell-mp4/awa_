@@ -235,27 +235,45 @@ function Player({
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   // user-tunable sync: negative = legenda mais cedo, positive = mais tarde
+  // persistido por música em localStorage
+  const offsetKey = `awa.lyrics.offset.${song.id}`;
   const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    const saved = Number(localStorage.getItem(offsetKey) ?? 0);
+    setOffset(Number.isFinite(saved) ? saved : 0);
+  }, [offsetKey]);
+  useEffect(() => {
+    localStorage.setItem(offsetKey, String(offset));
+  }, [offset, offsetKey]);
 
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
 
-  const indLines = useMemo(
-    () => song.lyrics_indigenous.split("\n").map((l) => l.trim()),
-    [song.lyrics_indigenous],
-  );
-  const ptLines = useMemo(
-    () => song.lyrics_pt.split("\n").map((l) => l.trim()),
-    [song.lyrics_pt],
-  );
+  // Expande marcadores de repetição "(3x)" / "3x" / "x3" em N versos
+  // para que o tempo seja distribuído proporcionalmente entre repetições.
+  const expand = (raw: string) =>
+    raw
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .flatMap((line) => {
+        const m = line.match(/[\(\[]?\s*(?:x\s*(\d+)|(\d+)\s*x)\s*[\)\]]?\s*$/i);
+        const n = m ? parseInt(m[1] || m[2], 10) : 1;
+        const clean = line
+          .replace(/[\(\[]?\s*(?:x\s*\d+|\d+\s*x)\s*[\)\]]?\s*$/i, "")
+          .trim();
+        return Array.from({ length: Math.max(1, n) }, () => clean || line);
+      });
+
+  const indLines = useMemo(() => expand(song.lyrics_indigenous), [song.lyrics_indigenous]);
+  const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // distribute lines across (duration - intro) → karaoke index
-  // intro ~ 8% of duration (instrumental abertura) + user offset
+  // intro mais curta (3% / máx 4s) — antes era 8%/12s e atrasava muito a legenda
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const intro = Math.min(12, duration * 0.08);
+    const intro = Math.min(4, duration * 0.03);
     const usable = Math.max(1, duration - intro);
     const perLine = usable / maxLen;
     const t = progress - intro + offset;
