@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { speakText } from "@/lib/tts.functions";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
@@ -65,6 +67,10 @@ function DictionaryPage() {
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const tts = useServerFn(speakText);
+  const audioCache = useRef<Map<string, string>>(new Map());
+  const currentAudio = useRef<HTMLAudioElement | null>(null);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
@@ -135,18 +141,52 @@ function DictionaryPage() {
   }, [filtered, sort]);
 
 
-  function playAudio(entry: Entry) {
-    if (entry.audio_url) {
-      new Audio(entry.audio_url).play().catch(() => toast.error("Áudio indisponível"));
-      return;
-    }
-    if ("speechSynthesis" in window) {
-      const u = new SpeechSynthesisUtterance(entry.term_indigenous);
-      u.lang = "pt-BR";
-      u.rate = 0.85;
-      window.speechSynthesis.speak(u);
-    } else {
-      toast.info("Sem áudio cadastrado");
+  async function playAudio(entry: Entry) {
+    try {
+      // pausa áudio anterior
+      if (currentAudio.current) {
+        currentAudio.current.pause();
+        currentAudio.current = null;
+      }
+
+      // 1) áudio cadastrado
+      if (entry.audio_url) {
+        const a = new Audio(entry.audio_url);
+        currentAudio.current = a;
+        await a.play();
+        return;
+      }
+
+      // 2) cache em memória da sessão
+      const cached = audioCache.current.get(entry.id);
+      if (cached) {
+        const a = new Audio(cached);
+        currentAudio.current = a;
+        await a.play();
+        return;
+      }
+
+      // 3) gera voz via TTS (Lovable AI)
+      setSpeakingId(entry.id);
+      const res = await tts({ data: { text: entry.term_indigenous, voice: "nova" } });
+      const url = `data:${res.mime};base64,${res.audio_base64}`;
+      audioCache.current.set(entry.id, url);
+      const a = new Audio(url);
+      currentAudio.current = a;
+      await a.play();
+    } catch (err: any) {
+      console.error(err);
+      // fallback navegador
+      if ("speechSynthesis" in window) {
+        const u = new SpeechSynthesisUtterance(entry.term_indigenous);
+        u.lang = "pt-BR";
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      } else {
+        toast.error("Não foi possível gerar a voz");
+      }
+    } finally {
+      setSpeakingId(null);
     }
   }
 
@@ -282,10 +322,11 @@ function DictionaryPage() {
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
                               <button
                                 onClick={() => playAudio(e)}
-                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30"
+                                disabled={speakingId === e.id}
+                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-60"
                                 aria-label="Ouvir pronúncia"
                               >
-                                <Volume2 className="h-4 w-4" />
+                                {speakingId === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
                               </button>
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
