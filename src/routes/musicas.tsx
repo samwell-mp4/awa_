@@ -495,10 +495,30 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase text-gold/70">
+          <div className="mt-3 flex items-center justify-center gap-3 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
             <Volume2 className="h-3 w-3" />
-            Bilíngue · Indígena / Português
+            <span>Bilíngue</span>
+            <span className="text-gold/30">·</span>
+            <span>Sincronia</span>
+            <button
+              onClick={() => setOffset((o) => o - 1)}
+              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
+              aria-label="Adiantar legenda"
+            >
+              −1s
+            </button>
+            <span className="tabular-nums text-cream/80 min-w-[3ch] text-center">
+              {offset > 0 ? `+${offset}` : offset}s
+            </span>
+            <button
+              onClick={() => setOffset((o) => o + 1)}
+              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
+              aria-label="Atrasar legenda"
+            >
+              +1s
+            </button>
           </div>
+
         </div>
       </div>
 
