@@ -233,19 +233,6 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const offsetKey = `awa.song.offset.${song.id}`;
-  const [offsetMs, setOffsetMs] = useState(0);
-  useEffect(() => {
-    try {
-      const v = localStorage.getItem(offsetKey);
-      setOffsetMs(v ? parseInt(v, 10) || 0 : 0);
-    } catch {}
-  }, [offsetKey]);
-  useEffect(() => {
-    try {
-      localStorage.setItem(offsetKey, String(offsetMs));
-    } catch {}
-  }, [offsetKey, offsetMs]);
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
