@@ -227,21 +227,17 @@ function DictionaryPage() {
             </button>
             {ALPHABET.map((l) => {
               const count = letterCounts.get(l) ?? 0;
-              const has = count > 0;
               const active = letter === l;
               return (
                 <button
                   key={l}
-                  disabled={!has}
                   onClick={() => setLetter(l)}
                   className={`h-8 w-8 rounded-lg text-xs font-black transition ${
                     active
                       ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
-                      : has
-                        ? "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
-                        : "bg-card/20 text-foreground/25 border border-transparent cursor-not-allowed"
+                      : "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
                   }`}
-                  title={has ? `${count} palavra(s)` : "sem palavras"}
+                  title={`${count} palavra(s)`}
                 >
                   {l}
                 </button>
