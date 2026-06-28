@@ -301,17 +301,17 @@ function Player({
   const intro = duration ? Math.min(3, duration * 0.02) : 0;
   const usable = Math.max(1, duration - intro);
 
-  // Sincronia automática ponderada por sílabas.
+  // Sincronia automática ponderada por sílabas + ajuste manual (offsetMs).
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const t = progress - intro;
+    const t = progress - intro - offsetMs / 1000;
     if (t <= 0) return 0;
     const targetW = (t / usable) * totalWeight;
     for (let i = 0; i < cumWeights.length; i++) {
       if (targetW < cumWeights[i]) return i;
     }
     return maxLen - 1;
-  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
+  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights, offsetMs]);
 
   useEffect(() => {
     const a = audioRef.current;
