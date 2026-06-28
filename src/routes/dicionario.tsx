@@ -30,17 +30,25 @@ type Entry = {
   audio_url: string | null;
 };
 
+// Línguas habilitadas no momento. Para liberar outras línguas no futuro,
+// basta adicionar aqui (ex.: "Tupi-Guarani", "Yanomami").
+const ENABLED_LANGUAGES = ["Patxôhã"] as const;
+const SINGLE_LANGUAGE = ENABLED_LANGUAGES.length === 1;
+
 function DictionaryPage() {
   const [query, setQuery] = useState("");
-  const [lang, setLang] = useState<string>("Todas");
+  const [lang, setLang] = useState<string>(
+    SINGLE_LANGUAGE ? ENABLED_LANGUAGES[0] : "Todas",
+  );
   const [cat, setCat] = useState<string>("Todas");
 
   const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary"],
+    queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("dictionary")
         .select("*")
+        .in("language", ENABLED_LANGUAGES as unknown as string[])
         .order("term_indigenous");
       if (error) throw error;
       return data as Entry[];
@@ -48,8 +56,8 @@ function DictionaryPage() {
   });
 
   const languages = useMemo(
-    () => ["Todas", ...Array.from(new Set(entries.map((e) => e.language))).sort()],
-    [entries],
+    () => (SINGLE_LANGUAGE ? [...ENABLED_LANGUAGES] : ["Todas", ...ENABLED_LANGUAGES]),
+    [],
   );
   const categories = useMemo(
     () => ["Todas", ...Array.from(new Set(entries.map((e) => e.category))).sort()],
@@ -118,7 +126,9 @@ function DictionaryPage() {
             />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <FilterGroup label="Língua" options={languages} value={lang} onChange={setLang} />
+            {!SINGLE_LANGUAGE && (
+              <FilterGroup label="Língua" options={languages} value={lang} onChange={setLang} />
+            )}
             <FilterGroup label="Categoria" options={categories} value={cat} onChange={setCat} />
           </div>
         </section>
