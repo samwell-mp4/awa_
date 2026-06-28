@@ -363,7 +363,7 @@ function Player({
   const lineStartT = intro + (lineStartW / totalWeight) * usable;
   const lineEndT = intro + (lineEndW / totalWeight) * usable;
   const lineDur = Math.max(0.001, lineEndT - lineStartT);
-  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
+  const lineProgress = ((progress - offsetMs / 1000 - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
