@@ -287,17 +287,17 @@ function Player({
   const intro = duration ? Math.min(3, duration * 0.02) : 0;
   const usable = Math.max(1, duration - intro);
 
-  // Sincronia automática ponderada por sílabas + ajuste manual (offsetMs).
+  // Sincronia automática ponderada por sílabas.
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const t = progress - intro - offsetMs / 1000;
+    const t = progress - intro;
     if (t <= 0) return 0;
     const targetW = (t / usable) * totalWeight;
     for (let i = 0; i < cumWeights.length; i++) {
       if (targetW < cumWeights[i]) return i;
     }
     return maxLen - 1;
-  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights, offsetMs]);
+  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -349,7 +349,7 @@ function Player({
   const lineStartT = intro + (lineStartW / totalWeight) * usable;
   const lineEndT = intro + (lineEndW / totalWeight) * usable;
   const lineDur = Math.max(0.001, lineEndT - lineStartT);
-  const lineProgress = ((progress - offsetMs / 1000 - lineStartT) / lineDur) * 100;
+  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
@@ -533,38 +533,6 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold/80 tabular-nums">
-              Deslocamento: {offsetMs > 0 ? "+" : ""}{offsetMs} ms
-              <span className="ml-2 text-foreground/50 normal-case tracking-normal">· salvo automaticamente</span>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              <button
-                onClick={() => setOffsetMs((v) => v - 50)}
-                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
-              >
-                ⏪ −50ms
-              </button>
-              <button
-                onClick={() => setOffsetMs((v) => v - 10)}
-                className="rounded-full border border-gold/20 bg-black/40 px-2.5 py-1.5 text-[11px] font-bold text-cream/90 hover:bg-gold/10 hover:border-gold/50"
-              >
-                −10ms
-              </button>
-              <button
-                onClick={() => setOffsetMs((v) => v + 10)}
-                className="rounded-full border border-gold/20 bg-black/40 px-2.5 py-1.5 text-[11px] font-bold text-cream/90 hover:bg-gold/10 hover:border-gold/50"
-              >
-                +10ms
-              </button>
-              <button
-                onClick={() => setOffsetMs((v) => v + 50)}
-                className="rounded-full border border-gold/30 bg-black/40 px-3 py-1.5 text-xs font-bold text-cream hover:bg-gold/10 hover:border-gold/60"
-              >
-                +50ms ⏩
-              </button>
-            </div>
-          </div>
 
 
         </div>
