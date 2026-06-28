@@ -67,6 +67,10 @@ function DictionaryPage() {
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const tts = useServerFn(speakText);
+  const audioCache = useRef<Map<string, string>>(new Map());
+  const currentAudio = useRef<HTMLAudioElement | null>(null);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
