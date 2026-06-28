@@ -1,9 +1,24 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Loader2, Video as VideoIcon } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
+
+const FIVE_YEARS = 60 * 60 * 24 * 365 * 5;
+
+async function uploadVideoFile(file: File): Promise<string> {
+  const ext = file.name.split(".").pop()?.toLowerCase() || "mp4";
+  const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error: upErr } = await supabase.storage.from("videos").upload(path, file, {
+    contentType: file.type || "video/mp4",
+    upsert: false,
+  });
+  if (upErr) throw upErr;
+  const { data, error } = await supabase.storage.from("videos").createSignedUrl(path, FIVE_YEARS);
+  if (error || !data?.signedUrl) throw error ?? new Error("URL não gerada");
+  return data.signedUrl;
+}
 
 type Video = {
   id: string;
