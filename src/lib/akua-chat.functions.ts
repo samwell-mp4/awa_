@@ -45,7 +45,7 @@ FORMATO OBRIGATÓRIO DE EXEMPLOS EM PATXÔHÃ:
 - Pode haver texto explicativo antes e depois — apenas os exemplos vão dentro de [ex]...[/ex].
 - Exemplo de resposta:
   Para cumprimentar, dizemos:
-  [ex]Awere || Olá, saudações]
+  [ex]Awere || Olá, saudações[/ex]
   E para responder:
   [ex]Awere doy || Olá para você também[/ex]
 - Nunca use [ex] para textos que não sejam Patxôhã.
