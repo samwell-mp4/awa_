@@ -126,7 +126,9 @@ function DictionaryPage() {
             />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <FilterGroup label="Língua" options={languages} value={lang} onChange={setLang} />
+            {!SINGLE_LANGUAGE && (
+              <FilterGroup label="Língua" options={languages} value={lang} onChange={setLang} />
+            )}
             <FilterGroup label="Categoria" options={categories} value={cat} onChange={setCat} />
           </div>
         </section>
