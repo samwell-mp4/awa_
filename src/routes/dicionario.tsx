@@ -141,18 +141,52 @@ function DictionaryPage() {
   }, [filtered, sort]);
 
 
-  function playAudio(entry: Entry) {
-    if (entry.audio_url) {
-      new Audio(entry.audio_url).play().catch(() => toast.error("Áudio indisponível"));
-      return;
-    }
-    if ("speechSynthesis" in window) {
-      const u = new SpeechSynthesisUtterance(entry.term_indigenous);
-      u.lang = "pt-BR";
-      u.rate = 0.85;
-      window.speechSynthesis.speak(u);
-    } else {
-      toast.info("Sem áudio cadastrado");
+  async function playAudio(entry: Entry) {
+    try {
+      // pausa áudio anterior
+      if (currentAudio.current) {
+        currentAudio.current.pause();
+        currentAudio.current = null;
+      }
+
+      // 1) áudio cadastrado
+      if (entry.audio_url) {
+        const a = new Audio(entry.audio_url);
+        currentAudio.current = a;
+        await a.play();
+        return;
+      }
+
+      // 2) cache em memória da sessão
+      const cached = audioCache.current.get(entry.id);
+      if (cached) {
+        const a = new Audio(cached);
+        currentAudio.current = a;
+        await a.play();
+        return;
+      }
+
+      // 3) gera voz via TTS (Lovable AI)
+      setSpeakingId(entry.id);
+      const res = await tts({ data: { text: entry.term_indigenous, voice: "nova" } });
+      const url = `data:${res.mime};base64,${res.audio_base64}`;
+      audioCache.current.set(entry.id, url);
+      const a = new Audio(url);
+      currentAudio.current = a;
+      await a.play();
+    } catch (err: any) {
+      console.error(err);
+      // fallback navegador
+      if ("speechSynthesis" in window) {
+        const u = new SpeechSynthesisUtterance(entry.term_indigenous);
+        u.lang = "pt-BR";
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      } else {
+        toast.error("Não foi possível gerar a voz");
+      }
+    } finally {
+      setSpeakingId(null);
     }
   }
 
