@@ -229,7 +229,6 @@ function Player({
   onChange: (s: Song) => void;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const lyricsRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -237,67 +236,23 @@ function Player({
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
 
-  // Expande marcadores de repetição "(3x)" / "3x" / "x3" em N versos
-  // para que o tempo seja distribuído proporcionalmente entre repetições.
-  const expand = (raw: string) =>
-    raw
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .flatMap((line) => {
-        const m = line.match(/[\(\[]?\s*(?:x\s*(\d+)|(\d+)\s*x)\s*[\)\]]?\s*$/i);
-        const n = m ? parseInt(m[1] || m[2], 10) : 1;
-        const clean = line
-          .replace(/[\(\[]?\s*(?:x\s*\d+|\d+\s*x)\s*[\)\]]?\s*$/i, "")
-          .trim();
-        return Array.from({ length: Math.max(1, n) }, () => clean || line);
-      });
-
-  const indLines = useMemo(() => expand(song.lyrics_indigenous), [song.lyrics_indigenous]);
-  const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
-  const maxLen = Math.max(indLines.length, ptLines.length);
-
-  // Peso por verso = nº de sílabas aproximado (vogais) com piso mínimo.
-  // Garante que versos longos durem mais que refrões curtos.
-  const weights = useMemo(() => {
-    const syl = (s: string) => {
-      const m = (s || "").toLowerCase().match(/[aeiouãõáéíóúâêôà]/g);
-      return Math.max(2, m ? m.length : 2);
-    };
-    return Array.from({ length: maxLen }, (_, i) =>
-      Math.max(syl(indLines[i] || ""), syl(ptLines[i] || "")),
-    );
-  }, [indLines, ptLines, maxLen]);
-
-  const totalWeight = useMemo(
-    () => weights.reduce((a, b) => a + b, 0) || 1,
-    [weights],
+  const indLines = useMemo(
+    () =>
+      song.lyrics_indigenous
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    [song.lyrics_indigenous],
   );
-  const cumWeights = useMemo(() => {
-    const out: number[] = [];
-    let acc = 0;
-    for (const w of weights) {
-      acc += w;
-      out.push(acc);
-    }
-    return out;
-  }, [weights]);
-
-  // Intro instrumental curta (2% da faixa, máx 3s).
-  const intro = duration ? Math.min(3, duration * 0.02) : 0;
-  const usable = Math.max(1, duration - intro);
-
-  // Sincronia automática ponderada por sílabas.
-  const activeIdx = useMemo(() => {
-    if (!duration || !maxLen) return 0;
-    const t = progress - intro;
-    if (t <= 0) return 0;
-    const targetW = (t / usable) * totalWeight;
-    for (let i = 0; i < cumWeights.length; i++) {
-      if (targetW < cumWeights[i]) return i;
-    }
-    return maxLen - 1;
-  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
+  const ptLines = useMemo(
+    () =>
+      song.lyrics_pt
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    [song.lyrics_pt],
+  );
+  const maxLen = Math.max(indLines.length, ptLines.length);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -324,14 +279,6 @@ function Player({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
-  // auto-scroll active verse into view
-  useEffect(() => {
-    const node = lyricsRef.current?.querySelector<HTMLDivElement>(
-      `[data-line="${activeIdx}"]`,
-    );
-    node?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [activeIdx]);
-
   function toggle() {
     const a = audioRef.current;
     if (!a) return;
@@ -344,12 +291,6 @@ function Player({
     }
   }
 
-  const lineStartW = activeIdx > 0 ? cumWeights[activeIdx - 1] : 0;
-  const lineEndW = cumWeights[activeIdx] ?? totalWeight;
-  const lineStartT = intro + (lineStartW / totalWeight) * usable;
-  const lineEndT = intro + (lineEndW / totalWeight) * usable;
-  const lineDur = Math.max(0.001, lineEndT - lineStartT);
-  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
@@ -409,62 +350,24 @@ function Player({
         </button>
       </div>
 
-      {/* lyrics theater */}
-      <div
-        ref={lyricsRef}
-        className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth"
-      >
-        <div className="mx-auto max-w-3xl space-y-10 md:space-y-14">
-          {Array.from({ length: maxLen }).map((_, i) => {
-            const isActive = i === activeIdx;
-            const distance = Math.abs(i - activeIdx);
-            const opacity = isActive ? 1 : distance === 1 ? 0.4 : distance === 2 ? 0.18 : 0.08;
-            const blur = isActive ? 0 : Math.min(distance, 3);
-
-            return (
-              <div
-                key={i}
-                data-line={i}
-                className="text-center transition-all duration-700 ease-out"
-                style={{
-                  opacity,
-                  filter: blur ? `blur(${blur}px)` : "none",
-                  transform: isActive ? "scale(1)" : "scale(0.94)",
-                }}
-              >
-                <p
-                  className={
-                    "font-display font-black leading-tight transition-all duration-700 " +
-                    (isActive
-                      ? "text-3xl md:text-6xl bg-gradient-to-b from-gold via-[oklch(0.85_0.13_85)] to-[oklch(0.65_0.16_50)] bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(249,168,37,0.35)]"
-                      : "text-xl md:text-3xl text-cream")
-                  }
-                >
-                  {indLines[i] || "\u00A0"}
+      {/* lyrics theater - static bilingual text */}
+      <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
+        <div className="mx-auto max-w-3xl space-y-8 md:space-y-10">
+          {Array.from({ length: maxLen }).map((_, i) => (
+            <div
+              key={i}
+              className="text-center transition-colors duration-500"
+            >
+              <p className="font-display text-xl md:text-3xl font-black leading-tight text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                {indLines[i] || "\u00A0"}
+              </p>
+              {ptLines[i] && (
+                <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
+                  {ptLines[i]}
                 </p>
-                {ptLines[i] && (
-                  <p
-                    className={
-                      "mt-2 md:mt-3 italic transition-colors duration-700 " +
-                      (isActive
-                        ? "text-base md:text-xl text-cream/90"
-                        : "text-sm md:text-base text-foreground/60")
-                    }
-                  >
-                    {ptLines[i]}
-                  </p>
-                )}
-                {isActive && (
-                  <div className="mx-auto mt-4 h-[2px] w-32 rounded-full bg-gold/20 overflow-hidden">
-                    <div
-                      className="h-full bg-gold shadow-[0_0_12px_rgba(249,168,37,0.8)]"
-                      style={{ width: `${Math.min(100, Math.max(0, lineProgress))}%` }}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
           {maxLen === 0 && (
             <p className="text-center text-foreground/60">Esta música ainda não tem letra cadastrada.</p>
           )}
