@@ -350,62 +350,24 @@ function Player({
         </button>
       </div>
 
-      {/* lyrics theater */}
-      <div
-        ref={lyricsRef}
-        className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth"
-      >
-        <div className="mx-auto max-w-3xl space-y-10 md:space-y-14">
-          {Array.from({ length: maxLen }).map((_, i) => {
-            const isActive = i === activeIdx;
-            const distance = Math.abs(i - activeIdx);
-            const opacity = isActive ? 1 : distance === 1 ? 0.4 : distance === 2 ? 0.18 : 0.08;
-            const blur = isActive ? 0 : Math.min(distance, 3);
-
-            return (
-              <div
-                key={i}
-                data-line={i}
-                className="text-center transition-all duration-700 ease-out"
-                style={{
-                  opacity,
-                  filter: blur ? `blur(${blur}px)` : "none",
-                  transform: isActive ? "scale(1)" : "scale(0.94)",
-                }}
-              >
-                <p
-                  className={
-                    "font-display font-black leading-tight transition-all duration-700 " +
-                    (isActive
-                      ? "text-3xl md:text-6xl bg-gradient-to-b from-gold via-[oklch(0.85_0.13_85)] to-[oklch(0.65_0.16_50)] bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(249,168,37,0.35)]"
-                      : "text-xl md:text-3xl text-cream")
-                  }
-                >
-                  {indLines[i] || "\u00A0"}
+      {/* lyrics theater - static bilingual text */}
+      <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
+        <div className="mx-auto max-w-3xl space-y-8 md:space-y-10">
+          {Array.from({ length: maxLen }).map((_, i) => (
+            <div
+              key={i}
+              className="text-center transition-colors duration-500"
+            >
+              <p className="font-display text-xl md:text-3xl font-black leading-tight text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                {indLines[i] || "\u00A0"}
+              </p>
+              {ptLines[i] && (
+                <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
+                  {ptLines[i]}
                 </p>
-                {ptLines[i] && (
-                  <p
-                    className={
-                      "mt-2 md:mt-3 italic transition-colors duration-700 " +
-                      (isActive
-                        ? "text-base md:text-xl text-cream/90"
-                        : "text-sm md:text-base text-foreground/60")
-                    }
-                  >
-                    {ptLines[i]}
-                  </p>
-                )}
-                {isActive && (
-                  <div className="mx-auto mt-4 h-[2px] w-32 rounded-full bg-gold/20 overflow-hidden">
-                    <div
-                      className="h-full bg-gold shadow-[0_0_12px_rgba(249,168,37,0.8)]"
-                      style={{ width: `${Math.min(100, Math.max(0, lineProgress))}%` }}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
           {maxLen === 0 && (
             <p className="text-center text-foreground/60">Esta música ainda não tem letra cadastrada.</p>
           )}
