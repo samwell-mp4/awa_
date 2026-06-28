@@ -35,7 +35,7 @@ function ProfessorPage() {
     {
       role: "assistant",
       content:
-        "🌿 Awere! Eu sou o Professor Akuã. Tenho o dicionário Patxôhã inteiro na ponta da língua. Pergunte traduções, peça frases ou explore palavras da nossa cultura.",
+        "🌞 Seja muito bem-chegado! Que a luz do sol e a força da terra estejam com você.\n\nMeu nome é **Akuã**. Vou caminhar ao seu lado para desvendar cada som, cada palavra e cada história do nosso povo.\n\nLembre-se: aprender Patxôhã não é só decorar — é fazer com que a língua continue andando, forte e nova, assim como o rio que nunca para. 🌿🪶",
     },
   ]);
   const [input, setInput] = useState("");
