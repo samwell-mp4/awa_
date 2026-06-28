@@ -234,18 +234,6 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  // user-tunable sync: negative = legenda mais cedo, positive = mais tarde
-  // persistido por música em localStorage
-  const offsetKey = `awa.lyrics.offset.${song.id}`;
-  const [offset, setOffset] = useState(0);
-  useEffect(() => {
-    const saved = Number(localStorage.getItem(offsetKey) ?? 0);
-    setOffset(Number.isFinite(saved) ? saved : 0);
-  }, [offsetKey]);
-  useEffect(() => {
-    localStorage.setItem(offsetKey, String(offset));
-  }, [offset, offsetKey]);
-
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
@@ -270,16 +258,17 @@ function Player({
   const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // intro mais curta (3% / máx 4s) — antes era 8%/12s e atrasava muito a legenda
+  // Sincronia automática: distribui versos pelo tempo útil da faixa.
+  // Intro curta (3% / máx 4s) para abertura instrumental.
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
     const intro = Math.min(4, duration * 0.03);
     const usable = Math.max(1, duration - intro);
     const perLine = usable / maxLen;
-    const t = progress - intro + offset;
+    const t = progress - intro;
     if (t <= 0) return 0;
     return Math.min(maxLen - 1, Math.floor(t / perLine));
-  }, [progress, duration, maxLen, offset]);
+  }, [progress, duration, maxLen]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -328,7 +317,7 @@ function Player({
 
   const intro = duration ? Math.min(4, duration * 0.03) : 0;
   const perLine = duration && maxLen ? Math.max(1, duration - intro) / maxLen : 0;
-  const tInLine = progress - intro + offset - activeIdx * perLine;
+  const tInLine = progress - intro - activeIdx * perLine;
   const lineProgress = perLine ? (tInLine / perLine) * 100 : 0;
 
   return (
@@ -513,67 +502,11 @@ function Player({
             </button>
           </div>
 
-          <div className="mt-3 flex items-center justify-center gap-3 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
+          <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-gold/80">
             <Volume2 className="h-3 w-3" />
-            <span>Bilíngue</span>
-            <span className="text-gold/30">·</span>
-            <span>Sincronia</span>
-            <button
-              onClick={() => setOffset((o) => +(o - 0.5).toFixed(1))}
-              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
-              aria-label="Adiantar legenda 0.5s"
-            >
-              −0.5s
-            </button>
-            <span className="tabular-nums text-cream/80 min-w-[4ch] text-center">
-              {offset > 0 ? `+${offset}` : offset}s
-            </span>
-            <button
-              onClick={() => setOffset((o) => +(o + 0.5).toFixed(1))}
-              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
-              aria-label="Atrasar legenda 0.5s"
-            >
-              +0.5s
-            </button>
-            <button
-              onClick={() => setOffset(0)}
-              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
-              aria-label="Resetar sincronia"
-            >
-              Reset
-            </button>
+            <span>Legenda Bilíngue</span>
           </div>
 
-          {/* calibration telemetry */}
-          <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-gold/15 bg-black/40 p-3 text-center backdrop-blur-md">
-            <div>
-              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Áudio</div>
-              <div className="mt-1 font-mono text-sm font-bold text-cream tabular-nums">{fmt(progress)}</div>
-            </div>
-            <div>
-              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Legenda</div>
-              <div className="mt-1 font-mono text-sm font-bold text-cream tabular-nums">{fmt(intro + activeIdx * perLine)}</div>
-            </div>
-            <div>
-              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-gold/70">Diferença Δ</div>
-              <div
-                className={`mt-1 font-mono text-sm font-bold tabular-nums ${
-                  Math.abs(progress - (intro + activeIdx * perLine)) <= 0.5
-                    ? "text-leaf"
-                    : progress - (intro + activeIdx * perLine) > 0
-                      ? "text-amber-400"
-                      : "text-rose-400"
-                }`}
-              >
-                {progress - (intro + activeIdx * perLine) > 0
-                  ? `+${(progress - (intro + activeIdx * perLine)).toFixed(1)}s`
-                  : `${(progress - (intro + activeIdx * perLine)).toFixed(1)}s`}
-              </div>
-            </div>
-          </div>
-          <p className="mt-2 text-center text-[9px] text-foreground/50">
-            Δ ≈ 0 = sincronizado. Δ positivo = legenda atrasada. Δ negativo = legenda adiantada.
-          </p>
 
         </div>
       </div>
