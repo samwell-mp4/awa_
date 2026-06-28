@@ -51,9 +51,19 @@ function categorize(entry: Entry): string {
   return "Outros";
 }
 
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+function firstLetter(s: string): string {
+  const c = (s || "").trim().charAt(0).toUpperCase();
+  // normaliza acentos
+  const norm = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /[A-Z]/.test(norm) ? norm : "#";
+}
+
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
+  const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
 
   const { data: entries = [], isLoading } = useQuery({
@@ -70,7 +80,7 @@ function DictionaryPage() {
   });
 
   const enriched = useMemo(
-    () => entries.map((e) => ({ ...e, _cat: categorize(e) })),
+    () => entries.map((e) => ({ ...e, _cat: categorize(e), _letter: firstLetter(e.term_indigenous) })),
     [entries],
   );
 
@@ -80,19 +90,39 @@ function DictionaryPage() {
     return m;
   }, [enriched]);
 
+  const letterCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const e of enriched) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
+    return m;
+  }, [enriched]);
+
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     const list = enriched.filter((e) => {
       const matchQ = !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
-      return matchQ && matchC;
+      const matchL = letter === "Todas" || e._letter === letter;
+      return matchQ && matchC && matchL;
     });
     list.sort((a, b) => {
       const cmp = a.term_indigenous.localeCompare(b.term_indigenous, "pt", { sensitivity: "base" });
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, query, cat, sort]);
+  }, [enriched, query, cat, letter, sort]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, typeof filtered>();
+    for (const e of filtered) {
+      const k = (e as any)._letter as string;
+      if (!map.has(k)) map.set(k, [] as any);
+      (map.get(k) as any).push(e);
+    }
+    return Array.from(map.entries()).sort(([a], [b]) =>
+      sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
+    );
+  }, [filtered, sort]);
+
 
   function playAudio(entry: Entry) {
     if (entry.audio_url) {
