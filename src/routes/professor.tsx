@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
-import { ArrowLeft, Send, Sparkles, Loader2 } from "lucide-react";
+import { speakText } from "@/lib/tts.functions";
+import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/professor")({
