@@ -160,6 +160,7 @@ function Index() {
     { label: "Músicas", href: "/musicas", icon: Play },
     { label: "Dicionário", href: "/dicionario", icon: Library },
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
+    { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
