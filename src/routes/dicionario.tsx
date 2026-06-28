@@ -213,34 +213,6 @@ function DictionaryPage() {
           </div>
         </section>
 
-        <section className="mt-5">
-          {isLoading ? (
-            <div className="text-center text-foreground/60 py-12">Carregando dicionário...</div>
-          ) : filtered.length === 0 ? (
-            <div className="text-center text-foreground/60 py-12">Nenhuma palavra encontrada.</div>
-          ) : (
-            <div className="grid gap-3 md:grid-cols-2">
-              {filtered.map((e) => (
-                <article key={e.id} className="card-elev rounded-2xl p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
-                        <button
-                          onClick={() => playAudio(e)}
-                          className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30"
-                          aria-label="Ouvir pronúncia"
-                        >
-                          <Volume2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <div className="mt-1 text-sm text-foreground/80">
-                        <span className="text-gold">→</span> {e.term_pt}
-                      </div>
-                    </div>
-          </div>
-        </section>
-
         <section className="mt-4 card-elev rounded-2xl p-3">
           <div className="flex flex-wrap gap-1.5">
             <button
@@ -340,28 +312,3 @@ function DictionaryPage() {
   );
 }
 
-// LEGACY RENDER REMOVED BELOW
-function _unused() {
-  return (
-    <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
-      x
-    </span>
-
-                    <div className="mt-2 text-xs text-foreground/60">
-                      Pronúncia: <span className="text-cream">[{e.pronunciation}]</span>
-                    </div>
-                  )}
-                  {e.example && (
-                    <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                      "{e.example}"
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-    </div>
-  );
-}
