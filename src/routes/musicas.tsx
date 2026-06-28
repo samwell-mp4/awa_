@@ -234,6 +234,8 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  // user-tunable sync: negative = legenda mais cedo, positive = mais tarde
+  const [offset, setOffset] = useState(0);
 
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
