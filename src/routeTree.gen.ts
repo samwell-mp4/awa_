@@ -13,6 +13,7 @@ import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
+import { Route as CulturaRouteImport } from './routes/cultura'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -38,6 +39,11 @@ const DicionarioRoute = DicionarioRouteImport.update({
   path: '/dicionario',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CulturaRoute = CulturaRouteImport.update({
+  id: '/cultura',
+  path: '/cultura',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -61,6 +67,7 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cultura': typeof CulturaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cultura': typeof CulturaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -81,6 +89,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/cultura': typeof CulturaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -92,6 +101,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/cultura'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/cultura'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/cultura'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -122,6 +134,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CulturaRoute: typeof CulturaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
   MusicasRoute: typeof MusicasRoute
@@ -156,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: '/dicionario'
       fullPath: '/dicionario'
       preLoaderRoute: typeof DicionarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cultura': {
+      id: '/cultura'
+      path: '/cultura'
+      fullPath: '/cultura'
+      preLoaderRoute: typeof CulturaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CulturaRoute: CulturaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
   MusicasRoute: MusicasRoute,
@@ -212,13 +233,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -161,6 +161,7 @@ function Index() {
     { label: "Dicionário", href: "/dicionario", icon: Library },
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
+    { label: "Cultura", href: "/cultura", icon: Flame },
     { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
