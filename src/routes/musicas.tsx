@@ -519,21 +519,28 @@ function Player({
             <span className="text-gold/30">·</span>
             <span>Sincronia</span>
             <button
-              onClick={() => setOffset((o) => o - 1)}
+              onClick={() => setOffset((o) => +(o - 0.5).toFixed(1))}
               className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
-              aria-label="Adiantar legenda"
+              aria-label="Adiantar legenda 0.5s"
             >
-              −1s
+              −0.5s
             </button>
-            <span className="tabular-nums text-cream/80 min-w-[3ch] text-center">
+            <span className="tabular-nums text-cream/80 min-w-[4ch] text-center">
               {offset > 0 ? `+${offset}` : offset}s
             </span>
             <button
-              onClick={() => setOffset((o) => o + 1)}
+              onClick={() => setOffset((o) => +(o + 0.5).toFixed(1))}
               className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
-              aria-label="Atrasar legenda"
+              aria-label="Atrasar legenda 0.5s"
             >
-              +1s
+              +0.5s
+            </button>
+            <button
+              onClick={() => setOffset(0)}
+              className="rounded-full border border-gold/30 px-2 py-0.5 hover:bg-gold/10"
+              aria-label="Resetar sincronia"
+            >
+              Reset
             </button>
           </div>
 
