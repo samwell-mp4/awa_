@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
-import { ArrowLeft, Send, Sparkles, Loader2 } from "lucide-react";
+import { speakText } from "@/lib/tts.functions";
+import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/professor")({
@@ -141,6 +142,26 @@ function ProfessorPage() {
 
 function Bubble({ role, content }: Msg) {
   const isUser = role === "user";
+  const speak = useServerFn(speakText);
+  const [busy, setBusy] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  async function play() {
+    if (busy) return;
+    try {
+      setBusy(true);
+      const r = await speak({ data: { text: content } });
+      const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
+      audioRef.current?.pause();
+      audioRef.current = audio;
+      await audio.play();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao gerar áudio");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
@@ -151,6 +172,17 @@ function Bubble({ role, content }: Msg) {
         }`}
       >
         {content}
+        {!isUser && (
+          <button
+            onClick={play}
+            disabled={busy}
+            className="mt-2 inline-flex items-center gap-1 rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-1 text-xs text-leaf hover:bg-leaf/20 disabled:opacity-50"
+            aria-label="Ouvir explicação"
+          >
+            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Volume2 className="h-3 w-3" />}
+            Ouvir
+          </button>
+        )}
       </div>
     </div>
   );
