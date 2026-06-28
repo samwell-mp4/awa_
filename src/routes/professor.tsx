@@ -146,11 +146,11 @@ function Bubble({ role, content }: Msg) {
   const [busy, setBusy] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  async function play() {
+  async function playText(text: string) {
     if (busy) return;
     try {
       setBusy(true);
-      const r = await speak({ data: { text: content } });
+      const r = await speak({ data: { text } });
       const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
       audioRef.current?.pause();
       audioRef.current = audio;
@@ -162,25 +162,62 @@ function Bubble({ role, content }: Msg) {
     }
   }
 
+  // Parse [ex]indígena || português[/ex] into inline example cards.
+  const parts: Array<{ type: "text"; value: string } | { type: "ex"; pt: string; pat: string }> = [];
+  const re = /\[ex\]([\s\S]*?)\|\|([\s\S]*?)\[\/ex\]/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content)) !== null) {
+    if (m.index > last) parts.push({ type: "text", value: content.slice(last, m.index) });
+    parts.push({ type: "ex", pat: m[1].trim(), pt: m[2].trim() });
+    last = m.index + m[0].length;
+  }
+  if (last < content.length) parts.push({ type: "text", value: content.slice(last) });
+
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
           isUser
             ? "bg-gold/20 text-cream border border-gold/30"
             : "bg-card/60 text-foreground/90 border border-leaf/20"
         }`}
       >
-        {content}
+        <div className="space-y-2">
+          {parts.map((p, i) =>
+            p.type === "text" ? (
+              <span key={i} className="whitespace-pre-wrap">{p.value}</span>
+            ) : (
+              <div
+                key={i}
+                className="my-1 rounded-xl border border-gold/30 bg-forest-deep/40 px-3 py-2"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-display text-base text-gold">{p.pat}</div>
+                  <button
+                    onClick={() => playText(p.pat)}
+                    disabled={busy}
+                    className="shrink-0 grid h-7 w-7 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+                    aria-label={`Ouvir ${p.pat}`}
+                    title="Ouvir pronúncia"
+                  >
+                    {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+                <div className="text-xs text-foreground/70 mt-0.5">{p.pt}</div>
+              </div>
+            ),
+          )}
+        </div>
         {!isUser && (
           <button
-            onClick={play}
+            onClick={() => playText(content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ","))}
             disabled={busy}
             className="mt-2 inline-flex items-center gap-1 rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-1 text-xs text-leaf hover:bg-leaf/20 disabled:opacity-50"
-            aria-label="Ouvir explicação"
+            aria-label="Ouvir resposta inteira"
           >
             {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Volume2 className="h-3 w-3" />}
-            Ouvir
+            Ouvir tudo
           </button>
         )}
       </div>
