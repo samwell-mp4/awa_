@@ -160,7 +160,7 @@ function VideoUploader({
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
           {uploading ? "Enviando..." : "Escolher arquivo"}
         </Btn>
-        <Btn type="button" variant="ghost" onClick={() => camRef.current?.click()} disabled={uploading}>
+        <Btn type="button" variant="outline" onClick={() => camRef.current?.click()} disabled={uploading}>
           <VideoIcon className="h-4 w-4" /> Gravar com câmera
         </Btn>
       </div>
