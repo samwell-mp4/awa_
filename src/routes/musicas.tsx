@@ -258,17 +258,47 @@ function Player({
   const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // Sincronia automática: distribui versos pelo tempo útil da faixa.
-  // Intro curta (3% / máx 4s) para abertura instrumental.
+  // Peso por verso = nº de sílabas aproximado (vogais) com piso mínimo.
+  // Garante que versos longos durem mais que refrões curtos.
+  const weights = useMemo(() => {
+    const syl = (s: string) => {
+      const m = (s || "").toLowerCase().match(/[aeiouãõáéíóúâêôà]/g);
+      return Math.max(2, m ? m.length : 2);
+    };
+    return Array.from({ length: maxLen }, (_, i) =>
+      Math.max(syl(indLines[i] || ""), syl(ptLines[i] || "")),
+    );
+  }, [indLines, ptLines, maxLen]);
+
+  const totalWeight = useMemo(
+    () => weights.reduce((a, b) => a + b, 0) || 1,
+    [weights],
+  );
+  const cumWeights = useMemo(() => {
+    const out: number[] = [];
+    let acc = 0;
+    for (const w of weights) {
+      acc += w;
+      out.push(acc);
+    }
+    return out;
+  }, [weights]);
+
+  // Intro instrumental curta (2% da faixa, máx 3s).
+  const intro = duration ? Math.min(3, duration * 0.02) : 0;
+  const usable = Math.max(1, duration - intro);
+
+  // Sincronia automática ponderada por sílabas.
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const intro = Math.min(4, duration * 0.03);
-    const usable = Math.max(1, duration - intro);
-    const perLine = usable / maxLen;
     const t = progress - intro;
     if (t <= 0) return 0;
-    return Math.min(maxLen - 1, Math.floor(t / perLine));
-  }, [progress, duration, maxLen]);
+    const targetW = (t / usable) * totalWeight;
+    for (let i = 0; i < cumWeights.length; i++) {
+      if (targetW < cumWeights[i]) return i;
+    }
+    return maxLen - 1;
+  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
 
   useEffect(() => {
     const a = audioRef.current;
