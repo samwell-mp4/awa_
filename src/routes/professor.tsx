@@ -35,7 +35,7 @@ function ProfessorPage() {
     {
       role: "assistant",
       content:
-        "🌞 Seja muito bem-chegado! Que a luz do sol e a força da terra estejam com você.\n\nMeu nome é **Akuã**. Vou caminhar ao seu lado para desvendar cada som, cada palavra e cada história do nosso povo.\n\nLembre-se: aprender Patxôhã não é só decorar — é fazer com que a língua continue andando, forte e nova, assim como o rio que nunca para. 🌿🪶",
+        "🌿 Olá! Eu sou o **Professor Akuã**. Venho da terra, da floresta e da memória dos antepassados.\n\nEstou aqui para ensinar, responder dúvidas e acompanhar você em cada passo para conhecer e falar a língua **Patxôhã**.\n\nAqui não é só palavra: é respeito, é origem, é manter viva a nossa voz! 🪶✨",
     },
   ]);
   const [input, setInput] = useState("");
