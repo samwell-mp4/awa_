@@ -322,10 +322,11 @@ function DictionaryPage() {
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
                               <button
                                 onClick={() => playAudio(e)}
-                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30"
+                                disabled={speakingId === e.id}
+                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-60"
                                 aria-label="Ouvir pronúncia"
                               >
-                                <Volume2 className="h-4 w-4" />
+                                {speakingId === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
                               </button>
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
