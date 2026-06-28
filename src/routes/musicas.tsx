@@ -326,7 +326,7 @@ function Player({
     }
   }
 
-  const intro = duration ? Math.min(12, duration * 0.08) : 0;
+  const intro = duration ? Math.min(4, duration * 0.03) : 0;
   const perLine = duration && maxLen ? Math.max(1, duration - intro) / maxLen : 0;
   const tInLine = progress - intro + offset - activeIdx * perLine;
   const lineProgress = perLine ? (tInLine / perLine) * 100 : 0;
