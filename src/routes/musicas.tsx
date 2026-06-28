@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Volume2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/musicas")({
