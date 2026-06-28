@@ -229,7 +229,6 @@ function Player({
   onChange: (s: Song) => void;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const lyricsRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -237,67 +236,23 @@ function Player({
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
 
-  // Expande marcadores de repetição "(3x)" / "3x" / "x3" em N versos
-  // para que o tempo seja distribuído proporcionalmente entre repetições.
-  const expand = (raw: string) =>
-    raw
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .flatMap((line) => {
-        const m = line.match(/[\(\[]?\s*(?:x\s*(\d+)|(\d+)\s*x)\s*[\)\]]?\s*$/i);
-        const n = m ? parseInt(m[1] || m[2], 10) : 1;
-        const clean = line
-          .replace(/[\(\[]?\s*(?:x\s*\d+|\d+\s*x)\s*[\)\]]?\s*$/i, "")
-          .trim();
-        return Array.from({ length: Math.max(1, n) }, () => clean || line);
-      });
-
-  const indLines = useMemo(() => expand(song.lyrics_indigenous), [song.lyrics_indigenous]);
-  const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
-  const maxLen = Math.max(indLines.length, ptLines.length);
-
-  // Peso por verso = nº de sílabas aproximado (vogais) com piso mínimo.
-  // Garante que versos longos durem mais que refrões curtos.
-  const weights = useMemo(() => {
-    const syl = (s: string) => {
-      const m = (s || "").toLowerCase().match(/[aeiouãõáéíóúâêôà]/g);
-      return Math.max(2, m ? m.length : 2);
-    };
-    return Array.from({ length: maxLen }, (_, i) =>
-      Math.max(syl(indLines[i] || ""), syl(ptLines[i] || "")),
-    );
-  }, [indLines, ptLines, maxLen]);
-
-  const totalWeight = useMemo(
-    () => weights.reduce((a, b) => a + b, 0) || 1,
-    [weights],
+  const indLines = useMemo(
+    () =>
+      song.lyrics_indigenous
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    [song.lyrics_indigenous],
   );
-  const cumWeights = useMemo(() => {
-    const out: number[] = [];
-    let acc = 0;
-    for (const w of weights) {
-      acc += w;
-      out.push(acc);
-    }
-    return out;
-  }, [weights]);
-
-  // Intro instrumental curta (2% da faixa, máx 3s).
-  const intro = duration ? Math.min(3, duration * 0.02) : 0;
-  const usable = Math.max(1, duration - intro);
-
-  // Sincronia automática ponderada por sílabas.
-  const activeIdx = useMemo(() => {
-    if (!duration || !maxLen) return 0;
-    const t = progress - intro;
-    if (t <= 0) return 0;
-    const targetW = (t / usable) * totalWeight;
-    for (let i = 0; i < cumWeights.length; i++) {
-      if (targetW < cumWeights[i]) return i;
-    }
-    return maxLen - 1;
-  }, [progress, duration, maxLen, intro, usable, totalWeight, cumWeights]);
+  const ptLines = useMemo(
+    () =>
+      song.lyrics_pt
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    [song.lyrics_pt],
+  );
+  const maxLen = Math.max(indLines.length, ptLines.length);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -324,14 +279,6 @@ function Player({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
-  // auto-scroll active verse into view
-  useEffect(() => {
-    const node = lyricsRef.current?.querySelector<HTMLDivElement>(
-      `[data-line="${activeIdx}"]`,
-    );
-    node?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [activeIdx]);
-
   function toggle() {
     const a = audioRef.current;
     if (!a) return;
@@ -344,12 +291,6 @@ function Player({
     }
   }
 
-  const lineStartW = activeIdx > 0 ? cumWeights[activeIdx - 1] : 0;
-  const lineEndW = cumWeights[activeIdx] ?? totalWeight;
-  const lineStartT = intro + (lineStartW / totalWeight) * usable;
-  const lineEndT = intro + (lineEndW / totalWeight) * usable;
-  const lineDur = Math.max(0.001, lineEndT - lineStartT);
-  const lineProgress = ((progress - lineStartT) / lineDur) * 100;
 
   return (
     <div className="fixed inset-0 z-50">
