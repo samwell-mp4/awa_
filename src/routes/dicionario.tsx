@@ -51,9 +51,19 @@ function categorize(entry: Entry): string {
   return "Outros";
 }
 
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+function firstLetter(s: string): string {
+  const c = (s || "").trim().charAt(0).toUpperCase();
+  // normaliza acentos
+  const norm = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /[A-Z]/.test(norm) ? norm : "#";
+}
+
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
+  const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
 
   const { data: entries = [], isLoading } = useQuery({
@@ -70,7 +80,7 @@ function DictionaryPage() {
   });
 
   const enriched = useMemo(
-    () => entries.map((e) => ({ ...e, _cat: categorize(e) })),
+    () => entries.map((e) => ({ ...e, _cat: categorize(e), _letter: firstLetter(e.term_indigenous) })),
     [entries],
   );
 
@@ -80,19 +90,39 @@ function DictionaryPage() {
     return m;
   }, [enriched]);
 
+  const letterCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const e of enriched) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
+    return m;
+  }, [enriched]);
+
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     const list = enriched.filter((e) => {
       const matchQ = !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
-      return matchQ && matchC;
+      const matchL = letter === "Todas" || e._letter === letter;
+      return matchQ && matchC && matchL;
     });
     list.sort((a, b) => {
       const cmp = a.term_indigenous.localeCompare(b.term_indigenous, "pt", { sensitivity: "base" });
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, query, cat, sort]);
+  }, [enriched, query, cat, letter, sort]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, typeof filtered>();
+    for (const e of filtered) {
+      const k = (e as any)._letter as string;
+      if (!map.has(k)) map.set(k, [] as any);
+      (map.get(k) as any).push(e);
+    }
+    return Array.from(map.entries()).sort(([a], [b]) =>
+      sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
+    );
+  }, [filtered, sort]);
+
 
   function playAudio(entry: Entry) {
     if (entry.audio_url) {
@@ -183,46 +213,96 @@ function DictionaryPage() {
           </div>
         </section>
 
+        <section className="mt-4 card-elev rounded-2xl p-3">
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setLetter("Todas")}
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-black transition ${
+                letter === "Todas"
+                  ? "bg-gold text-forest-deep"
+                  : "bg-card/60 text-foreground/70 hover:text-cream border border-gold/15"
+              }`}
+            >
+              TODAS
+            </button>
+            {ALPHABET.map((l) => {
+              const count = letterCounts.get(l) ?? 0;
+              const has = count > 0;
+              const active = letter === l;
+              return (
+                <button
+                  key={l}
+                  disabled={!has}
+                  onClick={() => setLetter(l)}
+                  className={`h-8 w-8 rounded-lg text-xs font-black transition ${
+                    active
+                      ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
+                      : has
+                        ? "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
+                        : "bg-card/20 text-foreground/25 border border-transparent cursor-not-allowed"
+                  }`}
+                  title={has ? `${count} palavra(s)` : "sem palavras"}
+                >
+                  {l}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="mt-5">
           {isLoading ? (
             <div className="text-center text-foreground/60 py-12">Carregando dicionário...</div>
           ) : filtered.length === 0 ? (
             <div className="text-center text-foreground/60 py-12">Nenhuma palavra encontrada.</div>
           ) : (
-            <div className="grid gap-3 md:grid-cols-2">
-              {filtered.map((e) => (
-                <article key={e.id} className="card-elev rounded-2xl p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
-                        <button
-                          onClick={() => playAudio(e)}
-                          className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30"
-                          aria-label="Ouvir pronúncia"
-                        >
-                          <Volume2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <div className="mt-1 text-sm text-foreground/80">
-                        <span className="text-gold">→</span> {e.term_pt}
-                      </div>
+            <div className="space-y-6">
+              {grouped.map(([ltr, items]) => (
+                <div key={ltr}>
+                  <div className="sticky top-[60px] z-10 mb-2 flex items-center gap-3 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl py-2">
+                    <div className="grid h-9 w-9 place-items-center rounded-lg bg-gold text-forest-deep font-display text-lg font-black">
+                      {ltr}
                     </div>
-                    <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
-                      {(e as any)._cat}
-                    </span>
+                    <div className="h-px flex-1 bg-gold/20" />
+                    <div className="text-[11px] font-bold text-foreground/60">{items.length}</div>
                   </div>
-                  {e.pronunciation && (
-                    <div className="mt-2 text-xs text-foreground/60">
-                      Pronúncia: <span className="text-cream">[{e.pronunciation}]</span>
-                    </div>
-                  )}
-                  {e.example && (
-                    <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                      "{e.example}"
-                    </div>
-                  )}
-                </article>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {items.map((e) => (
+                      <article key={e.id} className="card-elev rounded-2xl p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
+                              <button
+                                onClick={() => playAudio(e)}
+                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30"
+                                aria-label="Ouvir pronúncia"
+                              >
+                                <Volume2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <div className="mt-1 text-sm text-foreground/80">
+                              <span className="text-gold">→</span> {e.term_pt}
+                            </div>
+                          </div>
+                          <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
+                            {(e as any)._cat}
+                          </span>
+                        </div>
+                        {e.pronunciation && (
+                          <div className="mt-2 text-xs text-foreground/60">
+                            Pronúncia: <span className="text-cream">[{e.pronunciation}]</span>
+                          </div>
+                        )}
+                        {e.example && (
+                          <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
+                            "{e.example}"
+                          </div>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
@@ -231,3 +311,4 @@ function DictionaryPage() {
     </div>
   );
 }
+
