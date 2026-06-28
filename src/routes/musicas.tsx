@@ -251,12 +251,17 @@ function Player({
   );
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // distribute lines evenly across duration → karaoke index
+  // distribute lines across (duration - intro) → karaoke index
+  // intro ~ 8% of duration (instrumental abertura) + user offset
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
-    const perLine = duration / maxLen;
-    return Math.min(maxLen - 1, Math.floor(progress / perLine));
-  }, [progress, duration, maxLen]);
+    const intro = Math.min(12, duration * 0.08);
+    const usable = Math.max(1, duration - intro);
+    const perLine = usable / maxLen;
+    const t = progress - intro + offset;
+    if (t <= 0) return 0;
+    return Math.min(maxLen - 1, Math.floor(t / perLine));
+  }, [progress, duration, maxLen, offset]);
 
   useEffect(() => {
     const a = audioRef.current;
