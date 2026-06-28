@@ -308,8 +308,10 @@ function Player({
     }
   }
 
-  const perLine = duration && maxLen ? duration / maxLen : 0;
-  const lineProgress = perLine ? ((progress - activeIdx * perLine) / perLine) * 100 : 0;
+  const intro = duration ? Math.min(12, duration * 0.08) : 0;
+  const perLine = duration && maxLen ? Math.max(1, duration - intro) / maxLen : 0;
+  const tInLine = progress - intro + offset - activeIdx * perLine;
+  const lineProgress = perLine ? (tInLine / perLine) * 100 : 0;
 
   return (
     <div className="fixed inset-0 z-50">
