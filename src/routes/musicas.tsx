@@ -234,18 +234,6 @@ function Player({
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  // user-tunable sync: negative = legenda mais cedo, positive = mais tarde
-  // persistido por música em localStorage
-  const offsetKey = `awa.lyrics.offset.${song.id}`;
-  const [offset, setOffset] = useState(0);
-  useEffect(() => {
-    const saved = Number(localStorage.getItem(offsetKey) ?? 0);
-    setOffset(Number.isFinite(saved) ? saved : 0);
-  }, [offsetKey]);
-  useEffect(() => {
-    localStorage.setItem(offsetKey, String(offset));
-  }, [offset, offsetKey]);
-
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
@@ -270,16 +258,17 @@ function Player({
   const ptLines = useMemo(() => expand(song.lyrics_pt), [song.lyrics_pt]);
   const maxLen = Math.max(indLines.length, ptLines.length);
 
-  // intro mais curta (3% / máx 4s) — antes era 8%/12s e atrasava muito a legenda
+  // Sincronia automática: distribui versos pelo tempo útil da faixa.
+  // Intro curta (3% / máx 4s) para abertura instrumental.
   const activeIdx = useMemo(() => {
     if (!duration || !maxLen) return 0;
     const intro = Math.min(4, duration * 0.03);
     const usable = Math.max(1, duration - intro);
     const perLine = usable / maxLen;
-    const t = progress - intro + offset;
+    const t = progress - intro;
     if (t <= 0) return 0;
     return Math.min(maxLen - 1, Math.floor(t / perLine));
-  }, [progress, duration, maxLen, offset]);
+  }, [progress, duration, maxLen]);
 
   useEffect(() => {
     const a = audioRef.current;
