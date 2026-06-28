@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { speakText } from "@/lib/tts.functions";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
