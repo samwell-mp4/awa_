@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Volume2, Square } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
+import { speakText } from "@/lib/tts.functions";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
