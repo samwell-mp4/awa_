@@ -78,7 +78,7 @@ export const translateText = createServerFn({ method: "POST" })
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
     const text = data.text.trim();
-    if (!text) return { traducao: "" };
+    if (!text) return { traducao: "", literal: "", nota: "", dict_size: 0, relevant_count: 0 };
 
     const dict = await fetchAllDict();
     const relevant = pickRelevant(dict, text, data.direction);
