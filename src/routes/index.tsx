@@ -38,6 +38,7 @@ import trailCultura from "@/assets/trail-cultura.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
+import { fraseDoDia } from "@/lib/trilhas";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -157,14 +158,13 @@ function Index() {
 
   const navItems = [
     { label: "Início", href: "#início", icon: Home },
-    { label: "Aprender", href: "#aprender", icon: BookOpen },
+    { label: "Trilhas", href: "/trilhas", icon: Award },
     { label: "Músicas", href: "/musicas", icon: Play },
     { label: "Dicionário", href: "/dicionario", icon: Library },
     { label: "Tradutor", href: "/traduzir", icon: BookOpen },
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Cultura", href: "/cultura", icon: Flame },
-    { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
   return (
@@ -301,6 +301,19 @@ function Index() {
         {/* SAUDAÇÃO DO MOMENTO */}
         <GreetingOfMoment />
 
+        {/* FRASE DO DIA */}
+        <section className="mt-6">
+          <Link
+            to="/trilhas"
+            className="card-elev block rounded-2xl border border-gold/25 bg-gradient-to-br from-forest-deep/60 to-bark/30 p-5 transition hover:-translate-y-0.5"
+          >
+            <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">Sabedoria do dia · Trilhas</div>
+            <p className="mt-2 font-display text-lg md:text-xl font-bold text-cream">{fraseDoDia()}</p>
+            <p className="mt-2 text-xs text-foreground/70">Toque para entrar nas trilhas guiadas pelo Professor Akuã →</p>
+          </Link>
+        </section>
+
+
         {/* CONTINUAR APRENDENDO */}
         <section id="aprender" className="mt-6">
           <div className="card-elev rounded-2xl p-4 md:p-5">
@@ -385,30 +398,31 @@ function Index() {
             </a>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-            {trails.map((t, i) => (
-              <a
-                key={t.name}
-                href="#aprender"
-                className="group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={t.img}
-                    alt={t.name}
-                    width={640}
-                    height={640}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <div className="text-sm font-bold text-cream">
-                    {i + 1}. {t.name}
+            {trails.map((t, i) => {
+              const map: Record<string, "saudacoes" | "familia" | "natureza" | "animais" | "cultura"> = {
+                "Saudações": "saudacoes", "Família": "familia", "Natureza": "natureza",
+                "Animais": "animais", "Cultura": "cultura",
+              };
+              const slug = map[t.name];
+              const cls = "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
+              const inner = (
+                <>
+                  <div className="relative aspect-square overflow-hidden">
+                    <img src={t.img} alt={t.name} width={640} height={640} loading="lazy"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   </div>
-                  <Progress value={t.progress} className="mt-2" />
-                </div>
-              </a>
-            ))}
+                  <div className="p-3">
+                    <div className="text-sm font-bold text-cream">{i + 1}. {t.name}</div>
+                    <Progress value={t.progress} className="mt-2" />
+                  </div>
+                </>
+              );
+              return slug ? (
+                <Link key={t.name} to="/trilhas/$slug" params={{ slug }} className={cls}>{inner}</Link>
+              ) : (
+                <a key={t.name} href="#aprender" className={cls}>{inner}</a>
+              );
+            })}
           </div>
         </section>
 

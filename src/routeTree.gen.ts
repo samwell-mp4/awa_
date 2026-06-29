@@ -19,6 +19,8 @@ import { Route as CulturaRouteImport } from './routes/cultura'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
+import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const TraduzirRoute = TraduzirRouteImport.update({
@@ -70,6 +72,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrilhasIndexRoute = TrilhasIndexRouteImport.update({
+  id: '/trilhas/',
+  path: '/trilhas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrilhasSlugRoute = TrilhasSlugRouteImport.update({
+  id: '/trilhas/$slug',
+  path: '/trilhas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -87,6 +99,8 @@ export interface FileRoutesByFullPath {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/trilhas/$slug': typeof TrilhasSlugRoute
+  '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +113,8 @@ export interface FileRoutesByTo {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/trilhas/$slug': typeof TrilhasSlugRoute
+  '/trilhas': typeof TrilhasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +129,8 @@ export interface FileRoutesById {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/trilhas/$slug': typeof TrilhasSlugRoute
+  '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +145,8 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/admin'
+    | '/trilhas/$slug'
+    | '/trilhas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +159,8 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/admin'
+    | '/trilhas/$slug'
+    | '/trilhas'
   id:
     | '__root__'
     | '/'
@@ -152,6 +174,8 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/_authenticated/admin'
+    | '/trilhas/$slug'
+    | '/trilhas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,6 +189,8 @@ export interface RootRouteChildren {
   ProfessorRoute: typeof ProfessorRoute
   SaudacoesRoute: typeof SaudacoesRoute
   TraduzirRoute: typeof TraduzirRoute
+  TrilhasSlugRoute: typeof TrilhasSlugRoute
+  TrilhasIndexRoute: typeof TrilhasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -239,6 +265,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trilhas/': {
+      id: '/trilhas/'
+      path: '/trilhas'
+      fullPath: '/trilhas/'
+      preLoaderRoute: typeof TrilhasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trilhas/$slug': {
+      id: '/trilhas/$slug'
+      path: '/trilhas/$slug'
+      fullPath: '/trilhas/$slug'
+      preLoaderRoute: typeof TrilhasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -271,6 +311,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProfessorRoute: ProfessorRoute,
   SaudacoesRoute: SaudacoesRoute,
   TraduzirRoute: TraduzirRoute,
+  TrilhasSlugRoute: TrilhasSlugRoute,
+  TrilhasIndexRoute: TrilhasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
