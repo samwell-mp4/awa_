@@ -157,14 +157,13 @@ function Index() {
 
   const navItems = [
     { label: "Início", href: "#início", icon: Home },
-    { label: "Aprender", href: "#aprender", icon: BookOpen },
+    { label: "Trilhas", href: "/trilhas", icon: Award },
     { label: "Músicas", href: "/musicas", icon: Play },
     { label: "Dicionário", href: "/dicionario", icon: Library },
     { label: "Tradutor", href: "/traduzir", icon: BookOpen },
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Cultura", href: "/cultura", icon: Flame },
-    { label: "Desafios", href: "#desafios", icon: Trophy },
   ];
 
   return (
