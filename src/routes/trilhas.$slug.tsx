@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw,
+  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
