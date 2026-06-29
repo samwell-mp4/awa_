@@ -179,15 +179,11 @@ function TrilhaPage() {
       </main>
 
       {showQuiz && words.length >= 4 && (
-        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => toggleLearned.length && setLearnedState((p) => {
-          if (p.has(id)) return p;
-          const n = new Set(p); n.add(id); setLearned(slug, n);
-          if (words.length && n.size >= words.length && !hasCertificate(slug)) {
-            markCertificate(slug);
-            setTimeout(() => setShowCert(true), 300);
-          }
-          return n;
-        })} />
+        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} />
+      )}
+
+      {showMatch && words.length >= 4 && (
+        <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} />
       )}
 
       {showCert && <CertificateModal trail={trail} onClose={() => setShowCert(false)} />}
