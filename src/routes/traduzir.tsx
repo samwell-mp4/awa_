@@ -149,9 +149,26 @@ function TraduzirPage() {
             )}
             {m.data && (
               <div className="mt-2 space-y-3">
-                <p className="text-lg text-foreground whitespace-pre-wrap">
-                  {m.data.traducao}
-                </p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-lg text-foreground whitespace-pre-wrap flex-1">
+                    {m.data.traducao}
+                  </p>
+                  <button
+                    onClick={() => playAudio(m.data!.traducao)}
+                    disabled={loadingAudio || !m.data.traducao}
+                    aria-label={speaking ? "Parar áudio" : "Ouvir pronúncia"}
+                    title={speaking ? "Parar" : "Ouvir pronúncia"}
+                    className="shrink-0 p-2 rounded-full bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 disabled:opacity-50"
+                  >
+                    {loadingAudio ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : speaking ? (
+                      <Square className="h-4 w-4" />
+                    ) : (
+                      <Volume2 className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 {m.data.literal && (
                   <div className="text-xs text-leaf border-t border-gold/10 pt-2">
                     <span className="font-semibold">Palavra por palavra:</span> {m.data.literal}
