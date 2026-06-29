@@ -1,11 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home, Volume2, Square } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
-import { speakText } from "@/lib/tts.functions";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
@@ -26,40 +24,12 @@ function TraduzirPage() {
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
   const translate = useServerFn(translateText);
-  const tts = useServerFn(speakText);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [speaking, setSpeaking] = useState(false);
-  const [loadingAudio, setLoadingAudio] = useState(false);
 
   const m = useMutation({
     mutationFn: async (vars: { text: string; direction: "pt-pat" | "pat-pt" }) =>
       translate({ data: vars }),
   });
 
-  async function playAudio(txt: string) {
-    if (!txt.trim()) return;
-    if (speaking && audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-      setSpeaking(false);
-      return;
-    }
-    try {
-      setLoadingAudio(true);
-      const { audio_base64, mime } = await tts({ data: { text: txt, voice: "nova" } });
-      const audio = new Audio(`data:${mime};base64,${audio_base64}`);
-      audioRef.current = audio;
-      audio.onended = () => { setSpeaking(false); audioRef.current = null; };
-      audio.onerror = () => { setSpeaking(false); toast.error("Erro ao tocar áudio"); };
-      setSpeaking(true);
-      await audio.play();
-    } catch (e: any) {
-      toast.error(e?.message ?? "Falha no áudio");
-      setSpeaking(false);
-    } finally {
-      setLoadingAudio(false);
-    }
-  }
 
   const swap = () => {
     setDirection((d) => (d === "pt-pat" ? "pat-pt" : "pt-pat"));
@@ -149,26 +119,10 @@ function TraduzirPage() {
             )}
             {m.data && (
               <div className="mt-2 space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <p className="text-lg text-foreground whitespace-pre-wrap flex-1">
-                    {m.data.traducao}
-                  </p>
-                  <button
-                    onClick={() => playAudio(m.data!.traducao)}
-                    disabled={loadingAudio || !m.data.traducao}
-                    aria-label={speaking ? "Parar áudio" : "Ouvir pronúncia"}
-                    title={speaking ? "Parar" : "Ouvir pronúncia"}
-                    className="shrink-0 p-2 rounded-full bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 disabled:opacity-50"
-                  >
-                    {loadingAudio ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : speaking ? (
-                      <Square className="h-4 w-4" />
-                    ) : (
-                      <Volume2 className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+                <p className="text-lg text-foreground whitespace-pre-wrap">
+                  {m.data.traducao}
+                </p>
+
                 {m.data.literal && (
                   <div className="text-xs text-leaf border-t border-gold/10 pt-2">
                     <span className="font-semibold">Palavra por palavra:</span> {m.data.literal}
