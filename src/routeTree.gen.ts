@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
+import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as HistoriasRouteImport } from './routes/historias'
@@ -23,6 +24,11 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 const TraduzirRoute = TraduzirRouteImport.update({
   id: '/traduzir',
   path: '/traduzir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SaudacoesRoute = SaudacoesRouteImport.update({
+  id: '/saudacoes',
+  path: '/saudacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessorRoute = ProfessorRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
+  '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
+  '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
+  '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
 }
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/musicas'
     | '/professor'
+    | '/saudacoes'
     | '/traduzir'
     | '/admin'
   fileRoutesByTo: FileRoutesByTo
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/musicas'
     | '/professor'
+    | '/saudacoes'
     | '/traduzir'
     | '/admin'
   id:
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/musicas'
     | '/professor'
+    | '/saudacoes'
     | '/traduzir'
     | '/_authenticated/admin'
   fileRoutesById: FileRoutesById
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   HistoriasRoute: typeof HistoriasRoute
   MusicasRoute: typeof MusicasRoute
   ProfessorRoute: typeof ProfessorRoute
+  SaudacoesRoute: typeof SaudacoesRoute
   TraduzirRoute: typeof TraduzirRoute
 }
 
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/traduzir'
       fullPath: '/traduzir'
       preLoaderRoute: typeof TraduzirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saudacoes': {
+      id: '/saudacoes'
+      path: '/saudacoes'
+      fullPath: '/saudacoes'
+      preLoaderRoute: typeof SaudacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/professor': {
@@ -249,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistoriasRoute: HistoriasRoute,
   MusicasRoute: MusicasRoute,
   ProfessorRoute: ProfessorRoute,
+  SaudacoesRoute: SaudacoesRoute,
   TraduzirRoute: TraduzirRoute,
 }
 export const routeTree = rootRouteImport
