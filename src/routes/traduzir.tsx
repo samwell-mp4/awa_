@@ -26,11 +26,40 @@ function TraduzirPage() {
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
   const translate = useServerFn(translateText);
+  const tts = useServerFn(speakText);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [speaking, setSpeaking] = useState(false);
+  const [loadingAudio, setLoadingAudio] = useState(false);
 
   const m = useMutation({
     mutationFn: async (vars: { text: string; direction: "pt-pat" | "pat-pt" }) =>
       translate({ data: vars }),
   });
+
+  async function playAudio(txt: string) {
+    if (!txt.trim()) return;
+    if (speaking && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setSpeaking(false);
+      return;
+    }
+    try {
+      setLoadingAudio(true);
+      const { audio_base64, mime } = await tts({ data: { text: txt, voice: "nova" } });
+      const audio = new Audio(`data:${mime};base64,${audio_base64}`);
+      audioRef.current = audio;
+      audio.onended = () => { setSpeaking(false); audioRef.current = null; };
+      audio.onerror = () => { setSpeaking(false); toast.error("Erro ao tocar áudio"); };
+      setSpeaking(true);
+      await audio.play();
+    } catch (e: any) {
+      toast.error(e?.message ?? "Falha no áudio");
+      setSpeaking(false);
+    } finally {
+      setLoadingAudio(false);
+    }
+  }
 
   const swap = () => {
     setDirection((d) => (d === "pt-pat" ? "pat-pt" : "pt-pat"));
