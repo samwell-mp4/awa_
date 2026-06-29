@@ -58,8 +58,22 @@ function TrilhaPage() {
   const [learned, setLearnedState] = useState<Set<string>>(new Set());
   const [showCert, setShowCert] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showMatch, setShowMatch] = useState(false);
 
   useEffect(() => { setLearnedState(getLearned(slug)); }, [slug]);
+
+  function markLearned(id: string) {
+    setLearnedState((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev); next.add(id);
+      setLearned(slug, next);
+      if (words.length && next.size >= words.length && !hasCertificate(slug)) {
+        markCertificate(slug);
+        setTimeout(() => setShowCert(true), 300);
+      }
+      return next;
+    });
+  }
 
   const progress = words.length ? Math.round((learned.size / words.length) * 100) : 0;
 
