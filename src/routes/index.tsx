@@ -37,6 +37,7 @@ import trailAnimais from "@/assets/trail-animais.jpg";
 import trailCultura from "@/assets/trail-cultura.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
 
 export const Route = createFileRoute("/")({
   head: () => ({
