@@ -144,6 +144,22 @@ function TrilhaPage() {
             >
               <Sparkles className="h-4 w-4" /> Praticar quiz
             </button>
+            <button
+              onClick={() => setShowMatch(true)}
+              disabled={words.length < 4}
+              className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
+            >
+              <Shuffle className="h-4 w-4" /> Associar imagem ↔ palavra
+            </button>
+            {hasCertificate(slug) && (
+              <button
+                onClick={() => setShowCert(true)}
+                className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
+              >
+                <Award className="h-4 w-4" /> Ver certificado
+              </button>
+            )}
+          </div>
             {hasCertificate(slug) && (
               <button
                 onClick={() => setShowCert(true)}
