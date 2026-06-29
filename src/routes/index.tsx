@@ -297,6 +297,9 @@ function Index() {
           </div>
         </section>
 
+        {/* SAUDAÇÃO DO MOMENTO */}
+        <GreetingOfMoment />
+
         {/* CONTINUAR APRENDENDO */}
         <section id="aprender" className="mt-6">
           <div className="card-elev rounded-2xl p-4 md:p-5">
