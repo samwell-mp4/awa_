@@ -19,6 +19,7 @@ import { Route as CulturaRouteImport } from './routes/cultura'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const TraduzirRoute = TraduzirRouteImport.update({
@@ -70,6 +71,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrilhasIndexRoute = TrilhasIndexRouteImport.update({
+  id: '/trilhas/',
+  path: '/trilhas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/trilhas': typeof TrilhasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/admin'
+    | '/trilhas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/admin'
+    | '/trilhas'
   id:
     | '__root__'
     | '/'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/traduzir'
     | '/_authenticated/admin'
+    | '/trilhas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   ProfessorRoute: typeof ProfessorRoute
   SaudacoesRoute: typeof SaudacoesRoute
   TraduzirRoute: typeof TraduzirRoute
+  TrilhasIndexRoute: typeof TrilhasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -239,6 +252,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trilhas/': {
+      id: '/trilhas/'
+      path: '/trilhas'
+      fullPath: '/trilhas/'
+      preLoaderRoute: typeof TrilhasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -271,6 +291,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfessorRoute: ProfessorRoute,
   SaudacoesRoute: SaudacoesRoute,
   TraduzirRoute: TraduzirRoute,
+  TrilhasIndexRoute: TrilhasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
