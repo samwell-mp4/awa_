@@ -160,15 +160,6 @@ function TrilhaPage() {
               </button>
             )}
           </div>
-            {hasCertificate(slug) && (
-              <button
-                onClick={() => setShowCert(true)}
-                className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
-              >
-                <Award className="h-4 w-4" /> Ver certificado
-              </button>
-            )}
-          </div>
         </section>
 
         {isLoading ? (
