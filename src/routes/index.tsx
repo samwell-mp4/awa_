@@ -259,14 +259,6 @@ function Index() {
                 vídeos, histórias, músicas e desafios — guiados por mestres das aldeias.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                <button className="group inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-6 py-3 text-sm font-bold text-cream shadow-[var(--shadow-glow)] transition hover:translate-y-[-1px]">
-                  <Play className="h-4 w-4 fill-cream" /> Começar agora
-                </button>
-                <button className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-card/40 px-6 py-3 text-sm font-bold text-gold transition hover:bg-gold/10">
-                  Explorar cursos <ChevronRight className="h-4 w-4" />
-                </button>
-              </div>
 
               {/* stats */}
               <div className="mt-7 grid grid-cols-3 gap-2 rounded-2xl border border-gold/25 bg-[oklch(0.16_0.04_145/0.6)] p-3 text-center">
