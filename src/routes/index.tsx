@@ -38,6 +38,7 @@ import trailCultura from "@/assets/trail-cultura.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
+import { fraseDoDia } from "@/lib/trilhas";
 
 export const Route = createFileRoute("/")({
   head: () => ({
