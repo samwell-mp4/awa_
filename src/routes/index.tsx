@@ -111,6 +111,7 @@ function Index() {
 
   const { data: dbTrails = [] } = useQuery({
     queryKey: ["trails"],
+    staleTime: 1000 * 60 * 10,
     queryFn: async () => {
       const { data } = await supabase.from("trails").select("*").order("order_index");
       return data ?? [];
@@ -126,6 +127,7 @@ function Index() {
 
   const { data: dailyVideo } = useQuery({
     queryKey: ["daily_video"],
+    staleTime: 1000 * 60 * 10,
     queryFn: async () => {
       const { data } = await supabase
         .from("daily_video")
@@ -140,6 +142,7 @@ function Index() {
 
   const { data: mission } = useQuery({
     queryKey: ["daily_mission"],
+    staleTime: 1000 * 60 * 10,
     queryFn: async () => {
       const { data } = await supabase
         .from("daily_mission")
