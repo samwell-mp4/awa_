@@ -297,14 +297,22 @@ function Player({
       {/* cinematic background */}
       <div className="absolute inset-0 overflow-hidden">
         {song.video_url ? (
-          <video
-            src={song.video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover scale-110"
-          />
+          ytEmbed(song.video_url) ? (
+            <iframe
+              src={ytEmbed(song.video_url)!}
+              allow="autoplay; encrypted-media"
+              className="absolute left-1/2 top-1/2 h-[120vh] w-[220vw] -translate-x-1/2 -translate-y-1/2 md:w-[160vw] pointer-events-none border-0"
+            />
+          ) : (
+            <video
+              src={song.video_url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="h-full w-full object-cover scale-110"
+            />
+          )
         ) : ambient ? (
           <video
             src={ambient.video_url}
