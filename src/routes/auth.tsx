@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
+import authBg from "@/assets/awa-auth-bg.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Entrar — AWÃ TECH" }] }),
@@ -68,8 +69,15 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen grid place-items-center px-4 py-10 bg-[radial-gradient(ellipse_at_top,oklch(0.22_0.08_145/0.7),transparent_60%)]">
-      <div className="w-full max-w-md card-elev rounded-3xl p-7">
+    <div className="relative min-h-screen grid place-items-center px-4 py-10 overflow-hidden">
+      <img
+        src={authBg.url}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background/95 backdrop-blur-[2px]" />
+      <div className="relative w-full max-w-md card-elev rounded-3xl p-7 backdrop-blur-md bg-card/80 border border-gold/30 shadow-2xl">
         <Link to="/" className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-gold/80">
           <Sparkles className="h-3.5 w-3.5" /> AWÃ TECH
         </Link>
