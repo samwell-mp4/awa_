@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 
 import heroWoman from "@/assets/hero-woman.jpg";
+import logoSrc from "@/assets/awa-tech-logo.png";
 import videoProfessor from "@/assets/video-professor.jpg";
 import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
@@ -83,13 +84,12 @@ const resources = [
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--gradient-leaf)] shadow-[var(--shadow-glow)]">
-        <svg viewBox="0 0 24 24" className="h-6 w-6 text-cream" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 3v18M8 6v15M16 6v15" strokeLinecap="round" />
-          <path d="M9 8c1 1 2 1 3 0M7 12c2 1 3 1 5 0M9 16c1 1 2 1 3 0" strokeLinecap="round" />
-        </svg>
-      </div>
+    <div className="flex items-center gap-2.5">
+      <img
+        src={logoSrc}
+        alt="AWÃ TECH"
+        className="h-12 w-12 shrink-0 rounded-full bg-cream/95 p-0.5 shadow-[var(--shadow-glow)] ring-1 ring-gold/40 object-contain"
+      />
       <div className="leading-none">
         <div className="font-display text-xl font-black tracking-tight text-cream">
           AWÃ <span className="text-leaf">TECH</span>
@@ -101,6 +101,7 @@ function Logo() {
     </div>
   );
 }
+
 
 function Index() {
   const [open, setOpen] = useState(false);
