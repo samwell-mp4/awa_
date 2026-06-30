@@ -74,15 +74,16 @@ function DictionaryPage() {
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
+    staleTime: 1000 * 60 * 60, // 1h — dicionário muda raramente
+    gcTime: 1000 * 60 * 60 * 24,
     queryFn: async () => {
-      const pageSize = 1000;
+      const pageSize = 2000;
       let from = 0;
       const all: Entry[] = [];
-      // paginar para superar o limite padrão do PostgREST (1000)
       while (true) {
         const { data, error } = await supabase
           .from("dictionary")
-          .select("*")
+          .select("id,term_indigenous,term_pt,language,category,pronunciation,example,audio_url")
           .in("language", ENABLED_LANGUAGES as unknown as string[])
           .order("term_indigenous")
           .range(from, from + pageSize - 1);

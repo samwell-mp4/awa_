@@ -18,17 +18,19 @@ function tokens(s: string) {
   return norm(s).split(" ").filter(Boolean);
 }
 
+let _dictCache: { data: Entry[]; at: number } | null = null;
+const DICT_TTL_MS = 1000 * 60 * 30; // 30 min
+
 async function fetchAllDict(): Promise<Entry[]> {
+  if (_dictCache && Date.now() - _dictCache.at < DICT_TTL_MS) return _dictCache.data;
   const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_PUBLISHABLE_KEY!,
     { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
   );
-  const PAGE = 1000;
+  const PAGE = 2000;
   let from = 0;
   const all: Entry[] = [];
-  // Loop until we get a partial page
-  // Cap at 20 pages (20k entries) for safety
   for (let i = 0; i < 20; i++) {
     const { data, error } = await supabase
       .from("dictionary")
@@ -41,6 +43,7 @@ async function fetchAllDict(): Promise<Entry[]> {
     if (data.length < PAGE) break;
     from += PAGE;
   }
+  _dictCache = { data: all, at: Date.now() };
   return all;
 }
 
