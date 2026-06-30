@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 
 import heroWoman from "@/assets/hero-woman.jpg";
+import logoSrc from "@/assets/awa-tech-logo.png";
 import videoProfessor from "@/assets/video-professor.jpg";
 import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
