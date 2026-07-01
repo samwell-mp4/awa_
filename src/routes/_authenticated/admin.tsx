@@ -1,14 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music, Wand2 } from "lucide-react";
-import { TrailsAdmin } from "@/components/admin/trails-admin";
-import { VideoAdmin } from "@/components/admin/video-admin";
-import { MissionAdmin } from "@/components/admin/mission-admin";
-import { DictionaryAdmin } from "@/components/admin/dictionary-admin";
-import { SongsAdmin } from "@/components/admin/songs-admin";
-import { ToolsAdmin } from "@/components/admin/tools-admin";
+
+const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
+const VideoAdmin = lazy(() => import("@/components/admin/video-admin").then((m) => ({ default: m.VideoAdmin })));
+const MissionAdmin = lazy(() => import("@/components/admin/mission-admin").then((m) => ({ default: m.MissionAdmin })));
+const DictionaryAdmin = lazy(() => import("@/components/admin/dictionary-admin").then((m) => ({ default: m.DictionaryAdmin })));
+const SongsAdmin = lazy(() => import("@/components/admin/songs-admin").then((m) => ({ default: m.SongsAdmin })));
+const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) => ({ default: m.ToolsAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }] }),
@@ -94,12 +95,14 @@ function AdminPage() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-        {tab === "trails" && <TrailsAdmin />}
-        {tab === "video" && <VideoAdmin />}
-        {tab === "mission" && <MissionAdmin />}
-        {tab === "songs" && <SongsAdmin />}
-        {tab === "dictionary" && <DictionaryAdmin />}
-        {tab === "tools" && <ToolsAdmin />}
+        <Suspense fallback={<div className="py-10 text-center text-foreground/60">Carregando...</div>}>
+          {tab === "trails" && <TrailsAdmin />}
+          {tab === "video" && <VideoAdmin />}
+          {tab === "mission" && <MissionAdmin />}
+          {tab === "songs" && <SongsAdmin />}
+          {tab === "dictionary" && <DictionaryAdmin />}
+          {tab === "tools" && <ToolsAdmin />}
+        </Suspense>
       </main>
     </div>
   );
