@@ -1,11 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { useServerFn } from "@tanstack/react-start";
-import { speakText } from "@/lib/tts.functions";
+import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
@@ -67,10 +64,7 @@ function DictionaryPage() {
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
-  const [speakingId, setSpeakingId] = useState<string | null>(null);
-  const tts = useServerFn(speakText);
-  const audioCache = useRef<Map<string, string>>(new Map());
-  const currentAudio = useRef<HTMLAudioElement | null>(null);
+  const [visibleCount, setVisibleCount] = useState(120);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
@@ -83,7 +77,7 @@ function DictionaryPage() {
       while (true) {
         const { data, error } = await supabase
           .from("dictionary")
-          .select("id,term_indigenous,term_pt,language,category,pronunciation,example,audio_url")
+          .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
           .in("language", ENABLED_LANGUAGES as unknown as string[])
           .order("term_indigenous")
           .range(from, from + pageSize - 1);
@@ -129,9 +123,15 @@ function DictionaryPage() {
     return list;
   }, [enriched, query, cat, letter, sort]);
 
+  useEffect(() => {
+    setVisibleCount(120);
+  }, [query, cat, letter, sort]);
+
+  const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+
   const grouped = useMemo(() => {
-    const map = new Map<string, typeof filtered>();
-    for (const e of filtered) {
+    const map = new Map<string, typeof visibleFiltered>();
+    for (const e of visibleFiltered) {
       const k = (e as any)._letter as string;
       if (!map.has(k)) map.set(k, [] as any);
       (map.get(k) as any).push(e);
@@ -139,57 +139,7 @@ function DictionaryPage() {
     return Array.from(map.entries()).sort(([a], [b]) =>
       sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
     );
-  }, [filtered, sort]);
-
-
-  async function playAudio(entry: Entry) {
-    try {
-      // pausa áudio anterior
-      if (currentAudio.current) {
-        currentAudio.current.pause();
-        currentAudio.current = null;
-      }
-
-      // 1) áudio cadastrado
-      if (entry.audio_url) {
-        const a = new Audio(entry.audio_url);
-        currentAudio.current = a;
-        await a.play();
-        return;
-      }
-
-      // 2) cache em memória da sessão
-      const cached = audioCache.current.get(entry.id);
-      if (cached) {
-        const a = new Audio(cached);
-        currentAudio.current = a;
-        await a.play();
-        return;
-      }
-
-      // 3) gera voz via TTS (Lovable AI)
-      setSpeakingId(entry.id);
-      const res = await tts({ data: { text: entry.term_indigenous, voice: "nova" } });
-      const url = `data:${res.mime};base64,${res.audio_base64}`;
-      audioCache.current.set(entry.id, url);
-      const a = new Audio(url);
-      currentAudio.current = a;
-      await a.play();
-    } catch (err: any) {
-      console.error(err);
-      // fallback navegador
-      if ("speechSynthesis" in window) {
-        const u = new SpeechSynthesisUtterance(entry.term_indigenous);
-        u.lang = "pt-BR";
-        u.rate = 0.85;
-        window.speechSynthesis.speak(u);
-      } else {
-        toast.error("Não foi possível gerar a voz");
-      }
-    } finally {
-      setSpeakingId(null);
-    }
-  }
+  }, [visibleFiltered, sort]);
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
@@ -321,14 +271,6 @@ function DictionaryPage() {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
-                              <button
-                                onClick={() => playAudio(e)}
-                                disabled={speakingId === e.id}
-                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-60"
-                                aria-label="Ouvir pronúncia"
-                              >
-                                {speakingId === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
-                              </button>
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
                               <span className="text-gold">→</span> {e.term_pt}
@@ -353,6 +295,16 @@ function DictionaryPage() {
                   </div>
                 </div>
               ))}
+              {visibleCount < filtered.length && (
+                <div className="pt-2 text-center">
+                  <button
+                    onClick={() => setVisibleCount((n) => n + 120)}
+                    className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
+                  >
+                    Mostrar mais palavras
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </section>
