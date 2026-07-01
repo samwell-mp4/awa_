@@ -3,6 +3,58 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
 type Msg = { role: "user" | "assistant"; content: string };
+type Entry = { term_indigenous: string; term_pt: string };
+
+let _dictCache: { data: Entry[]; at: number } | null = null;
+const DICT_TTL_MS = 1000 * 60 * 30;
+
+async function loadDict(): Promise<Entry[]> {
+  if (_dictCache && Date.now() - _dictCache.at < DICT_TTL_MS) return _dictCache.data;
+  const supabase = createClient<Database>(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_PUBLISHABLE_KEY!,
+    { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+  );
+  const PAGE = 2000;
+  let from = 0;
+  const all: Entry[] = [];
+  for (let i = 0; i < 10; i++) {
+    const { data, error } = await supabase
+      .from("dictionary")
+      .select("term_indigenous,term_pt")
+      .order("term_indigenous")
+      .range(from, from + PAGE - 1);
+    if (error) throw new Error(error.message);
+    if (!data || data.length === 0) break;
+    all.push(...(data as Entry[]));
+    if (data.length < PAGE) break;
+    from += PAGE;
+  }
+  _dictCache = { data: all, at: Date.now() };
+  return all;
+}
+
+function norm(s: string) {
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function pickRelevant(dict: Entry[], text: string): Entry[] {
+  const toks = new Set(norm(text).split(/[^a-z0-9]+/).filter((t) => t.length >= 3));
+  if (toks.size === 0) return [];
+  const out: Entry[] = [];
+  for (const e of dict) {
+    const pt = norm(e.term_pt);
+    const ind = norm(e.term_indigenous);
+    for (const t of toks) {
+      if (pt.includes(t) || ind.includes(t)) {
+        out.push(e);
+        break;
+      }
+    }
+    if (out.length >= 400) break;
+  }
+  return out;
+}
 
 export const askAkua = createServerFn({ method: "POST" })
   .inputValidator((d: { messages: Msg[] }) => d)
@@ -10,22 +62,21 @@ export const askAkua = createServerFn({ method: "POST" })
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
-    const supabase = createClient<Database>(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
+    const dict = await loadDict();
+    const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const relevant = pickRelevant(dict, lastUser);
+    // core sample for orientation + all relevant (dedup)
+    const seen = new Set<string>();
+    const used: Entry[] = [];
+    for (const e of [...relevant, ...dict.slice(0, 300)]) {
+      const k = `${e.term_indigenous}|${e.term_pt}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      used.push(e);
+      if (used.length >= 600) break;
+    }
+    const compact = used.map((e) => `${e.term_indigenous} = ${e.term_pt}`).join("\n");
 
-    const { data: dict, error } = await supabase
-      .from("dictionary")
-      .select("term_indigenous,term_pt,language,category")
-      .order("term_indigenous")
-      .limit(5000);
-    if (error) throw new Error(error.message);
-
-    const compact = (dict ?? [])
-      .map((e) => `${e.term_indigenous} = ${e.term_pt}`)
-      .join("\n");
 
     const system = `Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
 
@@ -164,7 +215,7 @@ MENSAGENS DE INCENTIVO (use de vez em quando ao encerrar)
 - "A língua é o nosso vestido mais bonito — vista-o todos os dias."
 
 ═══════════════════════════════════
-DICIONÁRIO COMPLETO (${dict?.length ?? 0} palavras) — formato: termo_indígena = tradução_pt
+DICIONÁRIO RELEVANTE (${used.length} de ${dict.length} palavras) — formato: termo_indígena = tradução_pt
 ═══════════════════════════════════
 ${compact}
 

@@ -278,6 +278,8 @@ function Index() {
                 alt="Mulher indígena brasileira com cocar tradicional na floresta amazônica"
                 width={1024}
                 height={1536}
+                fetchPriority="high"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent md:bg-gradient-to-r" />
