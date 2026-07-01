@@ -72,7 +72,7 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  const { data: entries = [], isLoading, isFetching } = useQuery({
+  const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary", ENABLED_LANGUAGES.join(","), debouncedQuery, cat, letter, sort, visibleCount],
     staleTime: 1000 * 60 * 60, // 1h — dicionário muda raramente
     gcTime: 1000 * 60 * 60 * 24,
