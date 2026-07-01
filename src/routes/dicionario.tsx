@@ -92,7 +92,7 @@ function DictionaryPage() {
         request = request.gte("term_indigenous", letter).lt("term_indigenous", next ?? "ZZZZZZ");
       }
 
-      const { data, error } = await request.range(0, visibleCount - 1);
+      const { data, error } = await request.range(0, visibleCount);
       if (error) throw error;
       return (data ?? []) as Entry[];
     },
@@ -134,7 +134,7 @@ function DictionaryPage() {
     setVisibleCount(120);
   }, [query, cat, letter, sort]);
 
-  const visibleFiltered = filtered;
+  const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
