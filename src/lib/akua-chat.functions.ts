@@ -215,7 +215,7 @@ MENSAGENS DE INCENTIVO (use de vez em quando ao encerrar)
 - "A língua é o nosso vestido mais bonito — vista-o todos os dias."
 
 ═══════════════════════════════════
-DICIONÁRIO COMPLETO (${dict?.length ?? 0} palavras) — formato: termo_indígena = tradução_pt
+DICIONÁRIO RELEVANTE (${used.length} de ${dict.length} palavras) — formato: termo_indígena = tradução_pt
 ═══════════════════════════════════
 ${compact}
 
