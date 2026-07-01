@@ -18,10 +18,6 @@ function tokens(s: string) {
   return norm(s).split(" ").filter(Boolean);
 }
 
-function uniqueKey(e: Entry) {
-  return `${e.term_indigenous}|${e.term_pt}`;
-}
-
 let _dictCache: { data: Entry[]; at: number } | null = null;
 const DICT_TTL_MS = 1000 * 60 * 30; // 30 min
 
