@@ -137,6 +137,8 @@ function DictionaryPage() {
 
   const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
 
+  const hasMore = entries.length > visibleCount;
+
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
     for (const e of visibleFiltered) {
@@ -200,7 +202,7 @@ function DictionaryPage() {
 
           <div className="flex items-center justify-between gap-2 pt-1">
             <div className="text-xs font-semibold text-foreground/70">
-              {filtered.length} palavra{filtered.length === 1 ? "" : "s"} encontrada{filtered.length === 1 ? "" : "s"}
+              Mostrando {visibleFiltered.length}{hasMore ? "+" : ""} palavra{visibleFiltered.length === 1 ? "" : "s"}
             </div>
             <div className="flex gap-1">
               <button
@@ -303,7 +305,7 @@ function DictionaryPage() {
                   </div>
                 </div>
               ))}
-              {visibleCount < filtered.length && (
+              {hasMore && (
                 <div className="pt-2 text-center">
                   <button
                     onClick={() => setVisibleCount((n) => n + 120)}
