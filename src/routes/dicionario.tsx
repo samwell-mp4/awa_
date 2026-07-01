@@ -80,8 +80,7 @@ function DictionaryPage() {
       let request = supabase
         .from("dictionary")
         .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
-        .in("language", ENABLED_LANGUAGES as unknown as string[])
-        .order("term_indigenous", { ascending: sort === "az" });
+        .in("language", ENABLED_LANGUAGES as unknown as string[]);
 
       const q = debouncedQuery.toLowerCase().replace(/[%(),]/g, "").slice(0, 80);
       if (q) request = request.or(`term_indigenous.ilike.%${q}%,term_pt.ilike.%${q}%`);
@@ -92,7 +91,9 @@ function DictionaryPage() {
         request = request.gte("term_indigenous", letter).lt("term_indigenous", next ?? "ZZZZZZ");
       }
 
-      const { data, error } = await request.range(0, visibleCount);
+      const { data, error } = await request
+        .order("term_indigenous", { ascending: sort === "az" })
+        .range(0, visibleCount);
       if (error) throw error;
       return (data ?? []) as Entry[];
     },
