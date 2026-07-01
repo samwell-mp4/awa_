@@ -35,6 +35,7 @@ async function fetchAllDict(): Promise<Entry[]> {
     const { data, error } = await supabase
       .from("dictionary")
       .select("term_indigenous,term_pt")
+      .eq("language", "Patxôhã")
       .order("term_indigenous")
       .range(from, from + PAGE - 1);
     if (error) throw new Error(error.message);
@@ -66,6 +67,51 @@ function pickRelevant(dict: Entry[], text: string, direction: "pt-pat" | "pat-pt
   return matches;
 }
 
+function tryDirectTranslate(dict: Entry[], text: string, direction: "pt-pat" | "pat-pt") {
+  const input = norm(text);
+  const exact = dict.find((e) => norm(direction === "pt-pat" ? e.term_pt : e.term_indigenous) === input);
+  if (exact) {
+    return {
+      traducao: direction === "pt-pat" ? exact.term_indigenous : exact.term_pt,
+      literal: `${exact.term_indigenous}=${exact.term_pt}`,
+      nota: "Encontrado diretamente no dicionário Patxôhã.",
+    };
+  }
+
+  const inputTokens = tokens(text);
+  if (inputTokens.length === 0 || inputTokens.length > 12) return null;
+
+  const bySource = new Map<string, Entry>();
+  for (const e of dict) {
+    const source = direction === "pt-pat" ? e.term_pt : e.term_indigenous;
+    const sourceTokens = tokens(source);
+    if (sourceTokens.length === 1) bySource.set(sourceTokens[0], e);
+  }
+
+  const translated: string[] = [];
+  const literal: string[] = [];
+  let found = 0;
+  for (const t of inputTokens) {
+    const e = bySource.get(t);
+    if (!e) {
+      translated.push(`${t}[?]`);
+      continue;
+    }
+    found += 1;
+    translated.push(direction === "pt-pat" ? e.term_indigenous : e.term_pt);
+    literal.push(`${e.term_indigenous}=${e.term_pt}`);
+  }
+
+  if (found === 0 || found / inputTokens.length < 0.7) return null;
+  return {
+    traducao: autoFormat(translated.join(" ")),
+    literal: literal.join("; "),
+    nota: translated.some((w) => w.endsWith("[?]"))
+      ? "Algumas palavras não foram encontradas diretamente no dicionário."
+      : "Tradução rápida feita diretamente pelo dicionário.",
+  };
+}
+
 function autoFormat(s: string): string {
   if (!s) return s;
   let out = s.trim().replace(/\s+([,.!?;:])/g, "$1").replace(/\s+/g, " ");
@@ -84,6 +130,9 @@ export const translateText = createServerFn({ method: "POST" })
     if (!text) return { traducao: "", literal: "", nota: "", dict_size: 0, relevant_count: 0 };
 
     const dict = await fetchAllDict();
+    const direct = tryDirectTranslate(dict, text, data.direction);
+    if (direct) return { ...direct, dict_size: dict.length, relevant_count: direct.literal ? direct.literal.split("; ").length : 1 };
+
     const relevant = pickRelevant(dict, text, data.direction);
 
     // Always include a small core sample to give model orientation, plus all relevant matches
@@ -99,7 +148,7 @@ export const translateText = createServerFn({ method: "POST" })
     }
 
     const compact = used
-      .slice(0, 1500)
+      .slice(0, 500)
       .map((e) => `${e.term_indigenous} = ${e.term_pt}`)
       .join("\n");
 

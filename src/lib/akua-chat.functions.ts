@@ -51,7 +51,7 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
         break;
       }
     }
-    if (out.length >= 400) break;
+    if (out.length >= 120) break;
   }
   return out;
 }
@@ -68,12 +68,12 @@ export const askAkua = createServerFn({ method: "POST" })
     // core sample for orientation + all relevant (dedup)
     const seen = new Set<string>();
     const used: Entry[] = [];
-    for (const e of [...relevant, ...dict.slice(0, 300)]) {
+    for (const e of [...relevant, ...dict.slice(0, 80)]) {
       const k = `${e.term_indigenous}|${e.term_pt}`;
       if (seen.has(k)) continue;
       seen.add(k);
       used.push(e);
-      if (used.length >= 600) break;
+      if (used.length >= 220) break;
     }
     const compact = used.map((e) => `${e.term_indigenous} = ${e.term_pt}`).join("\n");
 
@@ -226,7 +226,7 @@ Ao traduzir do português para Patxôhã:
 
     const messages = [
       { role: "system", content: system },
-      ...data.messages.map((m) => ({ role: m.role, content: m.content })),
+      ...data.messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
     ];
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -236,7 +236,7 @@ Ao traduzir do português para Patxôhã:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "google/gemini-2.5-flash",
         messages,
       }),
     });

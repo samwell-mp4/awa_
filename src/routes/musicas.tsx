@@ -45,10 +45,12 @@ type Ambient = { id: string; name: string; video_url: string };
 function MusicasPage() {
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_public"],
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("*")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -58,6 +60,8 @@ function MusicasPage() {
   });
   const { data: ambients = [] } = useQuery({
     queryKey: ["ambient_videos"],
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("ambient_videos")
@@ -67,23 +71,12 @@ function MusicasPage() {
     },
   });
 
-  const ambientMap = Object.fromEntries(ambients.map((a) => [a.id, a]));
+  const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* ambient backdrop */}
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-30">
-        {ambients[0] && (
-          <video
-            src={ambients[0].video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        )}
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(76,175,80,0.18),transparent_34%),linear-gradient(180deg,oklch(0.18_0.04_145),oklch(0.10_0.03_145))]">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.9)] via-[oklch(0.15_0.04_145/0.7)] to-[oklch(0.10_0.03_145/0.95)]" />
       </div>
 
@@ -123,7 +116,6 @@ function MusicasPage() {
             <SongCard
               key={s.id}
               song={s}
-              ambient={s.ambient_video_id ? ambientMap[s.ambient_video_id] : undefined}
               onClick={() => setPlaying(s)}
             />
           ))}
@@ -150,11 +142,9 @@ function MusicasPage() {
 
 function SongCard({
   song,
-  ambient,
   onClick,
 }: {
   song: Song;
-  ambient?: Ambient;
   onClick: () => void;
 }) {
   return (
@@ -168,16 +158,9 @@ function SongCard({
           <img
             src={song.cover_url}
             alt={song.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
-          />
-        ) : ambient ? (
-          <video
-            src={ambient.video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover opacity-75 transition-all duration-700 group-hover:scale-110 group-hover:opacity-100"
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-forest-deep via-bark to-leaf/40" />

@@ -111,9 +111,13 @@ function Index() {
 
   const { data: dbTrails = [] } = useQuery({
     queryKey: ["trails"],
-    staleTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
-      const { data } = await supabase.from("trails").select("*").order("order_index");
+      const { data } = await supabase
+        .from("trails")
+        .select("name,image_url,default_progress")
+        .order("order_index");
       return data ?? [];
     },
   });
@@ -127,11 +131,12 @@ function Index() {
 
   const { data: dailyVideo } = useQuery({
     queryKey: ["daily_video"],
-    staleTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data } = await supabase
         .from("daily_video")
-        .select("*")
+        .select("title,description,video_url,thumbnail_url,duration_minutes")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -142,11 +147,12 @@ function Index() {
 
   const { data: mission } = useQuery({
     queryKey: ["daily_mission"],
-    staleTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data } = await supabase
         .from("daily_mission")
-        .select("*")
+        .select("question,options,correct_index,points")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
         .limit(1)
