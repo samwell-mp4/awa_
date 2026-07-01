@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { toast } from "sonner";
 import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music, Wand2 } from "lucide-react";
 import { TrailsAdmin } from "@/components/admin/trails-admin";
 import { VideoAdmin } from "@/components/admin/video-admin";
@@ -25,33 +24,10 @@ function AdminPage() {
   const [allowed, setAllowed] = useState(false);
   const navigate = useNavigate();
 
-  // First admin bootstrap: if no admin exists yet, promote the current user.
   useEffect(() => {
     if (loading || !user) return;
-    (async () => {
-      if (isAdmin) {
-        setAllowed(true);
-        setChecking(false);
-        return;
-      }
-      // Check if any admin exists
-      const { count } = await supabase
-        .from("user_roles")
-        .select("*", { count: "exact", head: true })
-        .eq("role", "admin");
-      if ((count ?? 0) === 0) {
-        const { error } = await supabase
-          .from("user_roles")
-          .insert({ user_id: user.id, role: "admin" });
-        if (!error) {
-          toast.success("Você é o primeiro administrador!");
-          setAllowed(true);
-        } else {
-          toast.error("Não foi possível criar o admin: " + error.message);
-        }
-      }
-      setChecking(false);
-    })();
+    setAllowed(isAdmin);
+    setChecking(false);
   }, [user, isAdmin, loading]);
 
   async function signOut() {
