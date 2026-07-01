@@ -65,29 +65,36 @@ function DictionaryPage() {
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
   const [visibleCount, setVisibleCount] = useState(120);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
-  const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
+  useEffect(() => {
+    const t = window.setTimeout(() => setDebouncedQuery(query.trim()), 250);
+    return () => window.clearTimeout(t);
+  }, [query]);
+
+  const { data: entries = [], isLoading, isFetching } = useQuery({
+    queryKey: ["dictionary", ENABLED_LANGUAGES.join(","), debouncedQuery, cat, letter, sort, visibleCount],
     staleTime: 1000 * 60 * 60, // 1h — dicionário muda raramente
     gcTime: 1000 * 60 * 60 * 24,
     queryFn: async () => {
-      const pageSize = 2000;
-      let from = 0;
-      const all: Entry[] = [];
-      while (true) {
-        const { data, error } = await supabase
-          .from("dictionary")
-          .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
-          .in("language", ENABLED_LANGUAGES as unknown as string[])
-          .order("term_indigenous")
-          .range(from, from + pageSize - 1);
-        if (error) throw error;
-        const chunk = (data ?? []) as Entry[];
-        all.push(...chunk);
-        if (chunk.length < pageSize) break;
-        from += pageSize;
+      let request = supabase
+        .from("dictionary")
+        .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
+        .in("language", ENABLED_LANGUAGES as unknown as string[])
+        .order("term_indigenous", { ascending: sort === "az" });
+
+      const q = debouncedQuery.toLowerCase().replace(/[%(),]/g, "").slice(0, 80);
+      if (q) request = request.or(`term_indigenous.ilike.%${q}%,term_pt.ilike.%${q}%`);
+      if (cat !== "Todas" && cat !== "Outros") request = request.eq("category", cat);
+      if (letter !== "Todas") {
+        const idx = ALPHABET.indexOf(letter);
+        const next = ALPHABET[idx + 1];
+        request = request.gte("term_indigenous", letter).lt("term_indigenous", next ?? "ZZZZZZ");
       }
-      return all;
+
+      const { data, error } = await request.range(0, visibleCount - 1);
+      if (error) throw error;
+      return (data ?? []) as Entry[];
     },
   });
 
@@ -109,7 +116,7 @@ function DictionaryPage() {
   }, [enriched]);
 
   const filtered = useMemo(() => {
-    const q = query.toLowerCase().trim();
+    const q = debouncedQuery.toLowerCase().trim();
     const list = enriched.filter((e) => {
       const matchQ = !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
@@ -121,13 +128,13 @@ function DictionaryPage() {
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, query, cat, letter, sort]);
+  }, [enriched, debouncedQuery, cat, letter, sort]);
 
   useEffect(() => {
     setVisibleCount(120);
   }, [query, cat, letter, sort]);
 
-  const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const visibleFiltered = filtered;
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
