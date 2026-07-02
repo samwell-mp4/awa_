@@ -94,7 +94,7 @@ function SaudacoesPage() {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-leaf">
               <periodo.Icon className="h-4 w-4" /> Saudação do momento — {periodo.label}
             </div>
-            <h1 className="mt-3 font-display text-4xl md:text-5xl font-black text-gold">
+            <h1 className="mt-3 font-display text-4xl md:text-5xl font-black text-gold break-words">
               {atual.term_indigenous}
             </h1>
             <p className="mt-1 text-cream/90 text-lg">{atual.term_pt}</p>
@@ -129,15 +129,15 @@ function SaudacoesPage() {
 
 function SaudacaoCard({ s }: { s: Saudacao }) {
   return (
-    <div className="card-elev rounded-2xl p-4 border border-gold/15">
+    <div className="card-elev rounded-2xl p-4 border border-gold/15 min-w-0">
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <div className="font-display text-lg font-bold text-gold truncate">
+        <div className="min-w-0 flex-1">
+          <div className="font-display text-lg font-bold text-gold break-words">
             {s.term_indigenous}
           </div>
-          <div className="text-sm text-cream/90 truncate">{s.term_pt}</div>
+          <div className="text-sm text-cream/90 break-words">{s.term_pt}</div>
           {s.pronunciation && (
-            <div className="text-xs text-foreground/60 mt-0.5">🗣️ {s.pronunciation}</div>
+            <div className="text-xs text-foreground/60 mt-0.5 break-words">🗣️ {s.pronunciation}</div>
           )}
         </div>
         <PlayBtn text={s.term_indigenous} audioUrl={s.audio_url} />
