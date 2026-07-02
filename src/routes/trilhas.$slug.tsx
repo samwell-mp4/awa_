@@ -392,7 +392,7 @@ const EMOJI_RULES: Array<[RegExp, string]> = [
 ];
 const CAT_EMOJI: Record<string, string> = {
   Saudações: "🤝", Família: "👨‍👩‍👧", Natureza: "🌿", Animais: "🐾",
-  Corpo: "🧍", Verbos: "⚡", Cores: "🎨", Números: "🔢", Alimentos: "🍲", Cultura: "✨",
+  Corpo: "🧍", Verbos: "⚡", Cores: "🎨", Números: "🔢", Alimentos: "🍲",
 };
 function emojiFor(w: Word): string {
   for (const [re, emj] of EMOJI_RULES) if (re.test(w.term_pt)) return emj;
