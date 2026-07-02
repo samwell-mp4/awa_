@@ -12,7 +12,6 @@ import {
   BookOpen,
   Sparkles,
   Globe,
-  Play,
   Apple,
 } from "lucide-react";
 
