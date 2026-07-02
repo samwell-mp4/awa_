@@ -177,7 +177,7 @@ function Index() {
     { label: "Músicas", href: "/musicas", icon: Play },
     { label: "Dicionário", href: "/dicionario", icon: Library },
     { label: "Tradutor", href: "/traduzir", icon: BookOpen },
-    { label: "Professor Akuã", href: "/professor", icon: Sparkles },
+    { label: "Professor", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Vídeos", href: "/videos", icon: Video },
     { label: "Biografia", href: "/biografia", icon: BookOpen },
