@@ -169,40 +169,33 @@ function InstalarPage() {
                   </button>
                 )}
 
-                {(platform === "android" && !deferredPrompt) || platform === "other" ? (
+                {platform === "android" && !deferredPrompt && (
                   <button
-                    onClick={() =>
-                      window.open(
-                        "https://play.google.com/store/apps/details?id=app.awatech.pwa",
-                        "_blank"
-                      )
-                    }
-                    disabled
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-leaf/70 px-6 py-3.5 text-sm font-bold text-cream opacity-60 cursor-not-allowed sm:w-auto"
-                    title="Em breve na Play Store"
+                    onClick={() => setShowAndroidSteps((s) => !s)}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-leaf px-6 py-3.5 text-sm font-bold text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110 sm:w-auto"
                   >
-                    <Play className="h-5 w-5" />
-                    Google Play — em breve
+                    <Smartphone className="h-5 w-5" />
+                    Como instalar no Android
                   </button>
-                ) : null}
+                )}
 
-                {platform === "ios" && (
+                {platform !== "android" && (
                   <button
                     onClick={() => setShowIOSSteps((s) => !s)}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#5D4037] px-6 py-3.5 text-sm font-bold text-cream transition hover:brightness-110 sm:w-auto"
                   >
                     <Apple className="h-5 w-5" />
-                    Como instalar no iPhone
+                    iPhone
                   </button>
                 )}
 
                 {platform === "other" && (
                   <button
-                    onClick={() => setShowIOSSteps((s) => !s)}
+                    onClick={() => setShowAndroidSteps((s) => !s)}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/40 bg-card/60 px-6 py-3.5 text-sm font-bold text-cream transition hover:bg-gold/10 sm:w-auto"
                   >
-                    <Apple className="h-5 w-5" />
-                    iPhone
+                    <Smartphone className="h-5 w-5" />
+                    Android
                   </button>
                 )}
               </div>
