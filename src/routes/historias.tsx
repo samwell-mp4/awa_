@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Shield, Camera } from "lucide-react";
+import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Shield, Camera, Music, Heart, Droplets, Flame, PartyPopper, Compass } from "lucide-react";
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
