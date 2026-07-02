@@ -94,7 +94,7 @@ function SaudacoesPage() {
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-leaf">
               <periodo.Icon className="h-4 w-4" /> Saudação do momento — {periodo.label}
             </div>
-            <h1 className="mt-3 font-display text-4xl md:text-5xl font-black text-gold">
+            <h1 className="mt-3 font-display text-4xl md:text-5xl font-black text-gold break-words">
               {atual.term_indigenous}
             </h1>
             <p className="mt-1 text-cream/90 text-lg">{atual.term_pt}</p>
