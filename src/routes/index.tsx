@@ -557,22 +557,14 @@ function Index() {
 
       {/* FOOTER */}
       <footer className="mt-14 border-t border-gold/20 bg-[oklch(0.14_0.03_145/0.8)]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-4 md:px-8">
-          <div>
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
+          <div className="md:col-span-2">
             <Logo />
             <p className="mt-3 text-xs leading-relaxed text-foreground/65">
               AWÃ TECH é uma iniciativa educacional dedicada à preservação e ao ensino das línguas
               e culturas dos povos indígenas do Brasil.
             </p>
           </div>
-          <FooterCol
-            title="Sobre"
-            links={["O projeto", "Mestres parceiros", "Aldeias", "Imprensa"]}
-          />
-          <FooterCol
-            title="Contato"
-            links={["contato@awatech.br", "Parcerias", "Suporte", "Trabalhe conosco"]}
-          />
           <div>
             <div className="text-sm font-bold text-cream">Redes sociais</div>
             <div className="mt-3 flex gap-2">
@@ -672,23 +664,6 @@ function Progress({ value, className = "" }: { value: number; className?: string
         className="h-full rounded-full bg-[var(--gradient-leaf)] transition-all"
         style={{ width: `${value}%` }}
       />
-    </div>
-  );
-}
-
-function FooterCol({ title, links }: { title: string; links: string[] }) {
-  return (
-    <div>
-      <div className="text-sm font-bold text-cream">{title}</div>
-      <ul className="mt-3 space-y-2 text-xs text-foreground/70">
-        {links.map((l) => (
-          <li key={l}>
-            <a href="#" className="hover:text-gold">
-              {l}
-            </a>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
