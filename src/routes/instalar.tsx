@@ -232,8 +232,8 @@ function InstalarPage() {
           </section>
         )}
 
-        {/* Android fallback steps */}
-        {!isInstalled && platform === "android" && !deferredPrompt && (
+        {/* Android steps */}
+        {showAndroidSteps && !isInstalled && (
           <section className="mt-6 rounded-3xl border border-gold/15 bg-card/40 p-6 md:p-8">
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-full bg-leaf/15 text-leaf">
