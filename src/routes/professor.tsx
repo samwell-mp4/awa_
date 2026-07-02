@@ -5,19 +5,20 @@ import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
     meta: [
       { title: "Professor Akuã — AWÃ TECH" },
-      {
-        name: "description",
-        content:
-          "Converse com o Professor Akuã, mestre virtual de línguas indígenas brasileiras. Traduções e ensino baseados no dicionário Patxôhã.",
-      },
+      { name: "description", content: "Professor Akuã — chat com IA em Patxôhã (Premium)." },
     ],
   }),
-  component: ProfessorPage,
+  component: () => (
+    <PremiumGate title="Professor Akuã (Premium)" description="Converse com o mestre virtual de Patxôhã sem limites. Recurso exclusivo para assinantes.">
+      <ProfessorPage />
+    </PremiumGate>
+  ),
 });
 
 type Msg = { role: "user" | "assistant"; content: string };

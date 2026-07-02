@@ -3,15 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã organizado por categorias: saudações, família, natureza, animais, corpo, alimentos, verbos e números." },
+      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
     ],
   }),
-  component: DictionaryPage,
+  component: () => (
+    <PremiumGate title="Dicionário completo (Premium)" description="A versão grátis traz 25 palavras essenciais em Saudações. Assine para desbloquear o dicionário Patxôhã completo com todas as categorias e exemplos.">
+      <DictionaryPage />
+    </PremiumGate>
+  ),
 });
 
 type Entry = {

@@ -11,19 +11,20 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
     meta: [
       { title: "Cânticos Sagrados — AWÃ TECH" },
-      {
-        name: "description",
-        content:
-          "Cânticos em línguas indígenas brasileiras com legendas bilíngues sincronizadas e vídeos imersivos da floresta.",
-      },
+      { name: "description", content: "Cânticos em Patxôhã com legendas bilíngues (Premium)." },
     ],
   }),
-  component: MusicasPage,
+  component: () => (
+    <PremiumGate title="Cânticos completos (Premium)" description="Assine para ouvir todos os cânticos com legendas bilíngues e vídeos imersivos.">
+      <MusicasPage />
+    </PremiumGate>
+  ),
 });
 
 type Song = {

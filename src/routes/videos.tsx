@@ -14,15 +14,20 @@ import v7 from "@/assets/videos/VID-20260630-WA0070.mp4.asset.json";
 import v8 from "@/assets/videos/VID-20260701-WA0089.mp4.asset.json";
 import v9 from "@/assets/videos/VID-20260701-WA0090.mp4.asset.json";
 import v10 from "@/assets/videos/VID-20260701-WA0092.mp4.asset.json";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
     meta: [
       { title: "Vídeos Pataxó — AWÃ TECH" },
-      { name: "description", content: "Vídeos do povo Pataxó com histórias e música indígena de fundo." },
+      { name: "description", content: "Vídeos do povo Pataxó (Premium)." },
     ],
   }),
-  component: VideosPage,
+  component: () => (
+    <PremiumGate title="Vídeos da aldeia (Premium)" description="Assine para assistir a todos os vídeos com trilha indígena e histórias completas.">
+      <VideosPage />
+    </PremiumGate>
+  ),
 });
 
 type VideoStory = { url: string; title: string; short: string; story: string };
