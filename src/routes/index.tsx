@@ -78,7 +78,7 @@ const ranking = [
 const resources = [
   { icon: Mic, label: "Pronúncia", desc: "Áudios nativos para treinar o ouvido." },
   { icon: ScrollText, label: "Histórias", desc: "Narrativas ancestrais em texto e áudio." },
-  { icon: Video, label: "Vídeos", desc: "Aulas com professores indígenas." },
+  { icon: Video, label: "Vídeos", desc: "Cenas e narrativas da aldeia Pataxó." },
 ];
 
 
@@ -354,7 +354,7 @@ function Index() {
               </h2>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-foreground/75">
                 {dailyVideo?.description ??
-                  "Aprenda a cumprimentar em Pataxó com o professor Aruá Pataxó — pronúncia, contexto cultural e prática guiada."}
+                  "Aprenda a cumprimentar em Pataxó com a voz da comunidade — pronúncia, contexto cultural e prática guiada."}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <a
