@@ -7,79 +7,8 @@ import artesanato from "@/assets/pataxo-artesanato.jpg";
 import monte from "@/assets/pataxo-monte-pascoal.jpg";
 import anciao from "@/assets/pataxo-anciao.jpg";
 
-import meninoCocar1 from "@/assets/album/menino-cocar-1.jpg.asset.json";
-import meninoCocar2 from "@/assets/album/menino-cocar-2.jpg.asset.json";
-import feiraArtesanato from "@/assets/album/feira-artesanato.jpg.asset.json";
-import colaresMicangas from "@/assets/album/colares-micangas.jpg.asset.json";
-import pinturaCorporal from "@/assets/album/pintura-corporal.jpg.asset.json";
-import guerreirosOncas from "@/assets/album/guerreiros-oncas.jpg.asset.json";
-import mulherFestival from "@/assets/album/mulher-festival.jpg.asset.json";
-import mulherFlores1 from "@/assets/album/mulher-flores-1.jpg.asset.json";
-import mulherFlores2 from "@/assets/album/mulher-flores-2.jpg.asset.json";
 
-type AlbumStory = {
-  id: string;
-  image: string;
-  title: string;
-  caption: string;
-  story: string;
-};
 
-const albumStories: AlbumStory[] = [
-  {
-    id: "cocar-guerreiro",
-    image: meninoCocar1.url,
-    title: "O pequeno guerreiro do cocar",
-    caption: "Kijeme — o cocar de penas de gavião",
-    story:
-      "O cocar não é enfeite: é coroa espiritual. Cada pena conta uma história — do gavião que voa alto, do caçador que respeita a mata, do ancião que rezou antes do corte. Quando uma criança Pataxó recebe seu primeiro kijeme, a aldeia inteira reconhece: ali caminha um novo guardião do território.",
-  },
-  {
-    id: "olhar-mata",
-    image: meninoCocar2.url,
-    title: "O olhar que atravessa a mata",
-    caption: "Retrato de um futuro pajé",
-    story:
-      "Nos olhos das crianças Pataxó mora a memória dos antepassados. É pelo brincar, pelo escutar dos mais velhos e pelo cantar do Awê que o Patxôhã volta a ser primeiro idioma. Cada criança que aprende uma palavra da língua é um ancestral que respira de novo.",
-  },
-  {
-    id: "feira-artesanato",
-    image: feiraArtesanato.url,
-    title: "A feira é território",
-    caption: "Miçangas, cuias e conversa",
-    story:
-      "Nas feiras de economia solidária, o povo Pataxó espalha sobre a mesa de madeira aquilo que a floresta e as mãos criaram: cuias de coco, pulseiras de miçanga, colares de sementes. Vender uma peça é partilhar um pedaço vivo da cultura — e transformar cada visitante em aliado da luta pela terra.",
-  },
-  {
-    id: "colares",
-    image: colaresMicangas.url,
-    title: "Grafismos em miçanga",
-    caption: "Cada linha é uma reza",
-    story:
-      "Os grafismos das pulseiras e colares Pataxó são escrita ancestral. Losangos falam do peixe, zigue-zagues do rio, triângulos das montanhas. Tecer miçanga é rezar com as mãos — cada conta enfiada carrega a paciência das avós e o desenho do território.",
-  },
-  {
-    id: "pintura",
-    image: pinturaCorporal.url,
-    title: "Pintura de guerreiro",
-    caption: "Jenipapo e urucum sobre a pele",
-    story:
-      "Antes do ritual, o corpo é o primeiro altar. O jenipapo preto e o urucum vermelho traçam linhas retas do rosto ao peito — proteção, coragem e pertencimento. Quem pinta e quem é pintado entram em silêncio: ali começa a conversa com os encantados.",
-  },
-  {
-    id: "oncas",
-    image: guerreirosOncas.url,
-    title: "Filhos da onça",
-    caption: "Sob o céu de fim de tarde",
-    story:
-      "Cobertos de pintura de onça, dois jovens Pataxó se preparam para o Awê. A onça é força, é vigilância, é ancestralidade. Ao vestir o desenho no corpo, eles assumem o compromisso de defender a mata, a aldeia e o nome do povo — como fazem os felinos que ainda caminham no Monte Pascoal.",
-  },
-  {
-    id: "festival",
-    image: mulherFestival.url,
-    title: "Mulher Pataxó no Festival",
-    caption: "Presença que ocupa a cidade",
-    story:
       "Levar as pinturas, os colares e o topete de penas para dentro do Festival Nacional de Economia Solidária é dizer: nós existimos, nós criamos, nós resistimos. As mulheres Pataxó ocupam praças, universidades e ruas — e onde chegam, a cidade aprende que o Brasil é indígena antes de tudo.",
   },
   {
