@@ -26,6 +26,8 @@ import {
   LogOut,
   Settings,
   Library,
+  Download,
+  Smartphone,
 } from "lucide-react";
 
 import heroWoman from "@/assets/hero-woman.jpg";
