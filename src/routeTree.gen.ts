@@ -14,6 +14,7 @@ import { Route as TraduzirRouteImport } from './routes/traduzir'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as MusicasRouteImport } from './routes/musicas'
+import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
@@ -47,6 +48,11 @@ const ProfessorRoute = ProfessorRouteImport.update({
 const MusicasRoute = MusicasRouteImport.update({
   id: '/musicas',
   path: '/musicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstalarRoute = InstalarRouteImport.update({
+  id: '/instalar',
+  path: '/instalar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoriasRoute = HistoriasRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/instalar'
     | '/musicas'
     | '/professor'
     | '/saudacoes'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/instalar'
     | '/musicas'
     | '/professor'
     | '/saudacoes'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/instalar'
     | '/musicas'
     | '/professor'
     | '/saudacoes'
@@ -197,6 +209,7 @@ export interface RootRouteChildren {
   BiografiaRoute: typeof BiografiaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
+  InstalarRoute: typeof InstalarRoute
   MusicasRoute: typeof MusicasRoute
   ProfessorRoute: typeof ProfessorRoute
   SaudacoesRoute: typeof SaudacoesRoute
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/musicas'
       fullPath: '/musicas'
       preLoaderRoute: typeof MusicasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instalar': {
+      id: '/instalar'
+      path: '/instalar'
+      fullPath: '/instalar'
+      preLoaderRoute: typeof InstalarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historias': {
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   BiografiaRoute: BiografiaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
+  InstalarRoute: InstalarRoute,
   MusicasRoute: MusicasRoute,
   ProfessorRoute: ProfessorRoute,
   SaudacoesRoute: SaudacoesRoute,

@@ -181,6 +181,7 @@ function Index() {
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Vídeos", href: "/videos", icon: Video },
     { label: "Biografia", href: "/biografia", icon: BookOpen },
+    { label: "Instalar", href: "/instalar", icon: Download },
   ];
 
   return (
