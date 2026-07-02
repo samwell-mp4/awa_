@@ -35,75 +35,76 @@ type VideoStory = {
 const videos: VideoStory[] = [
   {
     url: v1.url,
-    title: "Awê na aldeia",
-    short: "O canto que abre o chão sagrado.",
+    title: "Momentos da aldeia I",
+    short: "Cenas do cotidiano Pataxó.",
     story:
-      "Neste vídeo, o povo Pataxó se reúne em roda para o Awê, o ritual de canto e dança que celebra a vida. Cada passo firma o pé na terra dos ancestrais, cada voz chama a força da mata. Awê é oração cantada — é o momento em que a aldeia inteira vira um só corpo, batendo o chão para acordar a memória do território.",
+      "Este é um registro do cotidiano do povo Pataxó — momentos simples que carregam séculos de história. Cada gesto, cada olhar, cada movimento na aldeia é a continuidade viva de uma cultura que resiste e se reinventa há mais de 500 anos no sul da Bahia.",
   },
   {
     url: v2.url,
-    title: "Pintura de jenipapo",
-    short: "A pele que veste a floresta.",
+    title: "Momentos da aldeia II",
+    short: "A vida que segue no território.",
     story:
-      "O jenipapo tinge a pele de preto azulado e desenha nos corpos os grafismos Pataxó. Cada traço tem nome, tem história — fala de peixe, de cobra, de caminho, de família. Pintar-se é vestir a floresta, é dizer ao mundo quem se é e a que povo se pertence.",
+      "Mais um flagrante da vida Pataxó. A aldeia é escola, casa, templo e praça ao mesmo tempo. Aqui os saberes passam de boca em boca, de mão em mão, e cada dia é uma oportunidade de fortalecer a identidade do povo.",
   },
   {
     url: v3.url,
-    title: "Meninos guerreiros",
-    short: "A infância que já sabe seu lugar.",
+    title: "Momentos da aldeia III",
+    short: "O povo em seu território.",
     story:
-      "As crianças Pataxó crescem escutando os mais velhos e imitando os passos do Awê. Nos gestos pequenos já existe a semente do guerreiro e da guerreira que defenderão o território. Aqui, brincar também é aprender a resistir.",
+      "Cada cena da aldeia é uma afirmação de existência. O povo Pataxó habita o sul da Bahia desde tempos imemoriais e segue mantendo viva sua língua, o Patxôhã, suas festas, seus cantos e sua relação sagrada com a mata.",
   },
   {
     url: v4.url,
-    title: "Roda de Tohé",
-    short: "O canto que cura e reúne.",
+    title: "Momentos da aldeia IV",
+    short: "Tradição em movimento.",
     story:
-      "O Tohé é um dos cantos mais sagrados dos povos originários do Nordeste. Reúne pajés, lideranças e comunidade em volta do fogo. Cantar Tohé é chamar os encantados, é pedir cura, é agradecer a chuva e a colheita. Cada palavra pronunciada guarda séculos de espiritualidade Pataxó.",
+      "A tradição Pataxó não é algo parado no tempo — ela pulsa, se transforma e caminha com o povo. Neste vídeo vemos um pedaço desse movimento vivo, que junta ancestralidade e presente numa mesma respiração.",
   },
   {
     url: v5.url,
-    title: "Território vivo",
-    short: "A terra que é mãe e é escola.",
+    title: "Momentos da aldeia V",
+    short: "O território que é casa.",
     story:
       "A terra Pataxó não é propriedade — é parente. Ela ensina, alimenta e guarda os ossos dos antepassados. Cada rio, cada mata e cada trilha carrega nomes na língua Patxôhã. Defender o território é defender a possibilidade de continuar sendo Pataxó.",
   },
   {
     url: v6.url,
-    title: "Festa da colheita",
-    short: "Gratidão em forma de dança.",
+    title: "Momentos da aldeia VI",
+    short: "Encontros e celebrações.",
     story:
-      "Quando a mandioca e o milho chegam maduros, a aldeia celebra. É tempo de dividir a farinha nova, de cantar para a terra que deu fruto e de reunir os parentes de aldeias vizinhas. A festa é o jeito Pataxó de dizer 'obrigado' à floresta.",
+      "Quando o povo se reúne, é sempre um ato de força. Encontros, celebrações e trocas são o combustível da vida coletiva Pataxó. Cada roda formada é uma resposta viva a séculos de tentativa de silenciamento.",
   },
   {
     url: v7.url,
-    title: "Cocar de gavião",
-    short: "As penas que carregam o céu.",
+    title: "Momentos da aldeia VII",
+    short: "Beleza e resistência.",
     story:
-      "O cocar Pataxó é feito com penas escolhidas com respeito. Cada pena representa uma qualidade — coragem, sabedoria, visão de longe. Usar o cocar é vestir a força dos pássaros e dos antepassados que voam sobre a aldeia.",
+      "Beleza e resistência caminham juntas na cultura Pataxó. O que se vê aqui não é apenas estética — é uma forma de dizer ao mundo: 'estamos aqui, seguimos existindo, seguimos Pataxó'.",
   },
   {
     url: v8.url,
-    title: "Mulheres do canto",
-    short: "As vozes que sustentam a memória.",
+    title: "Momentos da aldeia VIII",
+    short: "Vozes que sustentam a memória.",
     story:
-      "São as mulheres Pataxó que puxam muitos dos cantos, que ensinam as crianças as primeiras palavras em Patxôhã e que guardam as receitas, os remédios do mato e as histórias antigas. Quando cantam juntas, a aldeia lembra quem é.",
+      "Cada voz que se ergue na aldeia sustenta a memória do povo. São essas vozes que ensinam as crianças as primeiras palavras em Patxôhã e que guardam as histórias antigas para as próximas gerações.",
   },
   {
     url: v9.url,
-    title: "Feira de artesanato",
-    short: "Economia que é resistência.",
+    title: "Momentos da aldeia IX",
+    short: "Cultura que se compartilha.",
     story:
-      "Colares de miçangas, arcos, maracás e bijus de mandioca — o artesanato Pataxó sustenta famílias e mantém viva a tradição. Cada peça vendida na feira é um pedaço de cultura que segue caminho, contando ao visitante quem são os donos ancestrais dessa terra.",
+      "A cultura Pataxó se compartilha — na feira, no artesanato, nos encontros, nos cantos. Cada peça, cada palavra, cada gesto trocado é um pedaço de história que segue caminho, contando ao visitante quem são os donos ancestrais dessa terra.",
   },
   {
     url: v10.url,
-    title: "Aldeia em festa",
-    short: "O povo reunido, forte e alegre.",
+    title: "Momentos da aldeia X",
+    short: "O povo Pataxó, forte e presente.",
     story:
-      "Quando o povo Pataxó se junta em festa, é a resposta viva a séculos de tentativa de silenciamento. Cantar, dançar e rir na aldeia é um ato político e espiritual. É afirmar: 'estamos aqui, seguimos existindo, seguimos Pataxó'.",
+      "Este último registro reafirma a mensagem central: o povo Pataxó está aqui, forte, presente e cheio de futuro. Cada vídeo desta galeria é um convite a escutar, respeitar e aprender com quem nunca deixou de habitar essa terra.",
   },
 ];
+
 
 function VideosPage() {
   const speak = useServerFn(speakText);
