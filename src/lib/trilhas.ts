@@ -1,4 +1,4 @@
-export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais" | "cultura";
+export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
 
 export const TRAILS: Record<TrailSlug, {
   slug: TrailSlug;
@@ -66,26 +66,6 @@ export const TRAILS: Record<TrailSlug, {
       message: `🗣️ Professor Akuã diz:\n\n— O bicho não é só coisa que existe: ele é mestre também! Você viu como a onça é forte, como a abelha trabalha junta, como a tartaruga tem paciência e como o pássaro leva mensagem ao céu.\n\nAgora, quando ouvir um canto ou ver um movimento na mata, já sabe o nome e já sabe o que ele veio ensinar. O olhar do Pataxó enxerga muito mais do que só os olhos!\n\nEscute a voz da floresta, ela responde!`,
     },
     apoio: "🐾 — Cada bicho é também um mestre.",
-  },
-  cultura: {
-    slug: "cultura",
-    name: "Cultura",
-    emoji: "🎨",
-    color: "from-gold/50 to-forest-deep/50",
-    intro: "Corpo, ações, cores, números e alimentos — o centro onde língua e tradição se encontram.",
-    categories: ["Cultura", "Corpo", "Verbos", "Cores", "Números", "Alimentos"],
-    groups: [
-      { label: "🤍 Corpo — Mapa do Conhecimento", categories: ["Corpo"] },
-      { label: "⚡ Ações — Verbos e Tempos", categories: ["Verbos"] },
-      { label: "🎨 Cores, Números e Alimentos", categories: ["Cores", "Números", "Alimentos"] },
-      { label: "✨ Cultura", categories: ["Cultura"] },
-    ],
-    certificate: {
-      title: "🎨 GUARDIÃO DA PALAVRA E DA VIDA",
-      description: "Domina o corpo como mapa, sabe agir, falar, criar, contar e usar as cores — chegou ao centro onde língua, corpo e tradição se encontram.",
-      message: `🗣️ Professor Akuã diz:\n\n— Parabéns, caminhante! Você percorreu todo o caminho que preparei. Agora conhece o corpo que é casa, os verbos que movem a vida, as cores que pintam o mundo e tudo que faz o nosso jeito de ser único.\n\n⭐ A maior lição que você leva: A língua não está guardada só no livro ou no dicionário… ela vive quando sai da sua boca! Você se tornou portador dessa voz sagrada para os que virão depois.\n\nMakínã — Somos um povo, somos uma voz, somos eternos!\nTxuhap! — Vamos continuar sempre juntos!`,
-    },
-    apoio: "🎨 — Cada som é cor, cada palavra é parte do desenho que somos.",
   },
 };
 
