@@ -122,13 +122,15 @@ function InstalarPage() {
               <img
                 src={appPreviewAsset.url}
                 alt="Prévia do aplicativo Awã Tech em três telas: início, dicionário e música"
-                className="relative w-full rounded-3xl"
+                className="relative mx-auto w-full max-w-sm rounded-3xl"
                 width={1024}
                 height={1024}
                 loading="eager"
               />
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-gold/30 bg-card/80 px-4 py-2 text-xs font-semibold text-cream backdrop-blur-md shadow-lg sm:text-sm">
+            </div>
+            <div className="mt-4 text-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2 text-xs font-semibold text-cream backdrop-blur-md shadow-lg sm:text-sm">
+                <Download className="h-4 w-4 text-gold" />
                 Instale grátis no Android e iPhone
               </div>
             </div>
