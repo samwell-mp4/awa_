@@ -78,7 +78,7 @@ const ranking = [
 const resources = [
   { icon: Mic, label: "Pronúncia", desc: "Áudios nativos para treinar o ouvido." },
   { icon: ScrollText, label: "Histórias", desc: "Narrativas ancestrais em texto e áudio." },
-  { icon: Video, label: "Vídeos", desc: "Aulas com professores indígenas." },
+  { icon: Video, label: "Vídeos", desc: "Cenas e narrativas da aldeia Pataxó." },
 ];
 
 
