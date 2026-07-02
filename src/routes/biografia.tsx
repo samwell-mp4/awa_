@@ -75,7 +75,8 @@ function BiografiaPage() {
                 AWÃ TECH
               </h1>
               <p className="mt-4 text-lg text-foreground/80 md:text-xl">
-                Tecnologia a serviço das línguas e culturas indígenas do Brasil.
+                Tecnologia que preserva a memória, fortalece as raízes e conecta o futuro à
+                sabedoria ancestral.
               </p>
             </div>
           </div>
@@ -84,16 +85,22 @@ function BiografiaPage() {
         {/* Intro */}
         <section className="mt-10 space-y-4 text-foreground/85">
           <p className="text-lg leading-relaxed">
-            A AWÃ TECH nasceu do encontro entre ancestralidade e inovação. Somos uma plataforma
-            educacional dedicada ao ensino de línguas indígenas brasileiras — começando pelo
-            <strong className="text-cream"> Patxôhã</strong>, língua do povo Pataxó — e à
-            preservação de histórias, músicas, cosmovisões e saberes tradicionais.
+            O <strong className="text-cream">Awã Tech</strong> nasceu com a missão de unir a
+            tecnologia à sabedoria ancestral dos povos indígenas. Criado para preservar, valorizar e
+            ensinar as línguas e culturas originárias do Brasil, o projeto busca garantir que esses
+            conhecimentos continuem vivos e sejam compartilhados com as futuras gerações.
           </p>
           <p className="leading-relaxed">
-            Acreditamos que a tecnologia pode ser uma aliada da memória. Em um mundo onde muitas
-            línguas originárias correm risco de silenciamento, criamos ferramentas digitais que
-            ajudam a fortalecer o aprendizado, conectar gerações e levar esses saberes para mais
-            pessoas, com respeito e autorização das comunidades.
+            Por meio de um aplicativo moderno e acessível, o Awã Tech oferece aulas de idiomas
+            indígenas, áudios com pronúncia de falantes nativos, histórias tradicionais, músicas,
+            vídeos, jogos educativos e conteúdos culturais. A plataforma conecta tradição e inovação,
+            tornando o aprendizado envolvente para crianças, jovens e adultos.
+          </p>
+          <p className="leading-relaxed">
+            Mais do que um aplicativo, o Awã Tech é um movimento de valorização da identidade, da
+            memória e do patrimônio cultural dos povos originários. Seu propósito é fortalecer as
+            comunidades indígenas, promover o respeito à diversidade cultural e aproximar pessoas de
+            diferentes origens da riqueza das culturas indígenas brasileiras.
           </p>
         </section>
 
