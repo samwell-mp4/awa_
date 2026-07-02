@@ -579,7 +579,9 @@ function Index() {
                   <span className="text-sm font-bold">Android</span>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-foreground/75">
-                  No Chrome, toque no menu ⋮ e escolha <strong className="text-cream">Adicionar à tela inicial</strong> ou <strong className="text-cream">Instalar app</strong>.
+                  No Chrome, toque no menu ⋮ e escolha{" "}
+                  <strong className="text-cream">Adicionar à tela inicial</strong> ou{" "}
+                  <strong className="text-cream">Instalar app</strong>.
                 </p>
               </div>
               <div className="rounded-2xl border border-gold/15 bg-card/50 p-5 text-left">
@@ -588,10 +590,20 @@ function Index() {
                   <span className="text-sm font-bold">iPhone</span>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-foreground/75">
-                  No Safari, toque no botão <strong className="text-cream">Compartilhar</strong> e depois em <strong className="text-cream">Adicionar à Tela de Início</strong>.
+                  No Safari, toque no botão{" "}
+                  <strong className="text-cream">Compartilhar</strong> e depois em{" "}
+                  <strong className="text-cream">Adicionar à Tela de Início</strong>.
                 </p>
               </div>
             </div>
+
+            <Link
+              to="/instalar"
+              className="mt-4 inline-flex items-center justify-center rounded-full bg-gold px-6 py-2.5 text-sm font-bold text-forest-deep transition hover:bg-gold/90"
+            >
+              Ver instruções completas
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
           </div>
         </section>
       </main>
