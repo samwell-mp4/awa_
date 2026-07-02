@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music, Wand2 } from "lucide-react";
+import { ArrowLeft, BookOpen, Video, Trophy, Library, LogOut, Music, Wand2, Crown } from "lucide-react";
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
 const VideoAdmin = lazy(() => import("@/components/admin/video-admin").then((m) => ({ default: m.VideoAdmin })));
@@ -10,13 +10,14 @@ const MissionAdmin = lazy(() => import("@/components/admin/mission-admin").then(
 const DictionaryAdmin = lazy(() => import("@/components/admin/dictionary-admin").then((m) => ({ default: m.DictionaryAdmin })));
 const SongsAdmin = lazy(() => import("@/components/admin/songs-admin").then((m) => ({ default: m.SongsAdmin })));
 const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) => ({ default: m.ToolsAdmin })));
+const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }] }),
   component: AdminPage,
 });
 
-type Tab = "trails" | "video" | "mission" | "dictionary" | "songs" | "tools";
+type Tab = "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access";
 
 function AdminPage() {
   const { user, isAdmin, loading } = useAuth();
@@ -63,6 +64,7 @@ function AdminPage() {
     { k: "songs", label: "Músicas", icon: Music },
     { k: "dictionary", label: "Dicionário", icon: Library },
     { k: "tools", label: "Ferramentas IA", icon: Wand2 },
+    { k: "access", label: "Acesso Premium", icon: Crown },
   ];
 
   return (
@@ -102,6 +104,7 @@ function AdminPage() {
           {tab === "songs" && <SongsAdmin />}
           {tab === "dictionary" && <DictionaryAdmin />}
           {tab === "tools" && <ToolsAdmin />}
+          {tab === "access" && <AccessAdmin />}
         </Suspense>
       </main>
     </div>
