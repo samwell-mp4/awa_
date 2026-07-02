@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/trilhas/$slug")({
   beforeLoad: ({ params }) => {
@@ -25,7 +26,11 @@ export const Route = createFileRoute("/trilhas/$slug")({
   },
   errorComponent: ({ error }) => <div className="p-8 text-cream">{error.message}</div>,
   notFoundComponent: () => <div className="p-8 text-cream">Trilha não encontrada.</div>,
-  component: TrilhaPage,
+  component: () => (
+    <PremiumGate title="Trilhas de aprendizado (Premium)" description="Exercícios, jogos e progresso das trilhas são exclusivos para assinantes. Comece grátis pelas 25 saudações essenciais.">
+      <TrilhaPage />
+    </PremiumGate>
+  ),
 });
 
 type Word = {
