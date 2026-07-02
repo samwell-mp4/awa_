@@ -35,7 +35,7 @@ import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
 import trailAnimais from "@/assets/trail-animais.jpg";
-import trailCultura from "@/assets/trail-cultura.jpg";
+
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
@@ -66,8 +66,8 @@ const fallbackImages: Record<string, string> = {
   Família: trailFamilia,
   Natureza: trailNatureza,
   Animais: trailAnimais,
-  Cultura: trailCultura,
 };
+
 
 const ranking = [
   { name: "Aruá Pataxó", points: 780, initials: "AP" },
@@ -78,9 +78,9 @@ const ranking = [
 const resources = [
   { icon: Mic, label: "Pronúncia", desc: "Áudios nativos para treinar o ouvido." },
   { icon: ScrollText, label: "Histórias", desc: "Narrativas ancestrais em texto e áudio." },
-  { icon: Sparkles, label: "Cultura", desc: "Rituais, grafismos e cosmovisão." },
   { icon: Video, label: "Vídeos", desc: "Aulas com professores indígenas." },
 ];
+
 
 function Logo() {
   return (
@@ -122,12 +122,15 @@ function Index() {
     },
   });
   const trails = dbTrails.length
-    ? dbTrails.map((t: any) => ({
-        name: t.name,
-        img: t.image_url || fallbackImages[t.name] || trailCultura,
-        progress: t.default_progress ?? 0,
-      }))
+    ? dbTrails
+        .filter((t: any) => t.name !== "Cultura")
+        .map((t: any) => ({
+          name: t.name,
+          img: t.image_url || fallbackImages[t.name] || trailSaudacoes,
+          progress: t.default_progress ?? 0,
+        }))
     : Object.keys(fallbackImages).map((name) => ({ name, img: fallbackImages[name], progress: 0 }));
+
 
   const { data: dailyVideo } = useQuery({
     queryKey: ["daily_video"],
@@ -403,10 +406,11 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {trails.map((t, i) => {
-              const map: Record<string, "saudacoes" | "familia" | "natureza" | "animais" | "cultura"> = {
+              const map: Record<string, "saudacoes" | "familia" | "natureza" | "animais"> = {
                 "Saudações": "saudacoes", "Família": "familia", "Natureza": "natureza",
-                "Animais": "animais", "Cultura": "cultura",
+                "Animais": "animais",
               };
+
               const slug = map[t.name];
               const cls = "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
               const inner = (
