@@ -122,12 +122,15 @@ function Index() {
     },
   });
   const trails = dbTrails.length
-    ? dbTrails.map((t: any) => ({
-        name: t.name,
-        img: t.image_url || fallbackImages[t.name] || trailCultura,
-        progress: t.default_progress ?? 0,
-      }))
+    ? dbTrails
+        .filter((t: any) => t.name !== "Cultura")
+        .map((t: any) => ({
+          name: t.name,
+          img: t.image_url || fallbackImages[t.name] || trailSaudacoes,
+          progress: t.default_progress ?? 0,
+        }))
     : Object.keys(fallbackImages).map((name) => ({ name, img: fallbackImages[name], progress: 0 }));
+
 
   const { data: dailyVideo } = useQuery({
     queryKey: ["daily_video"],
