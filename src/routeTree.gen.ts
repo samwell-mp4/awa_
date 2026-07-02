@@ -13,6 +13,7 @@ import { Route as VideosRouteImport } from './routes/videos'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ProfessorRouteImport } from './routes/professor'
+import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as HistoriasRouteImport } from './routes/historias'
@@ -24,6 +25,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -43,6 +45,11 @@ const SaudacoesRoute = SaudacoesRouteImport.update({
 const ProfessorRoute = ProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosRoute = PlanosRouteImport.update({
+  id: '/planos',
+  path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MusicasRoute = MusicasRouteImport.update({
@@ -99,6 +106,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -108,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
@@ -115,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,6 +139,7 @@ export interface FileRoutesByTo {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
@@ -131,6 +147,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +159,7 @@ export interface FileRoutesById {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
@@ -149,6 +167,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,6 +179,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/musicas'
+    | '/planos'
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
@@ -167,6 +187,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -176,6 +197,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/musicas'
+    | '/planos'
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
@@ -183,6 +205,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -193,6 +216,7 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/musicas'
+    | '/planos'
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
@@ -200,6 +224,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,12 +236,14 @@ export interface RootRouteChildren {
   HistoriasRoute: typeof HistoriasRoute
   InstalarRoute: typeof InstalarRoute
   MusicasRoute: typeof MusicasRoute
+  PlanosRoute: typeof PlanosRoute
   ProfessorRoute: typeof ProfessorRoute
   SaudacoesRoute: typeof SaudacoesRoute
   TraduzirRoute: typeof TraduzirRoute
   VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -247,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/professor'
       fullPath: '/professor'
       preLoaderRoute: typeof ProfessorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos': {
+      id: '/planos'
+      path: '/planos'
+      fullPath: '/planos'
+      preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/musicas': {
@@ -326,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -349,12 +390,14 @@ const rootRouteChildren: RootRouteChildren = {
   HistoriasRoute: HistoriasRoute,
   InstalarRoute: InstalarRoute,
   MusicasRoute: MusicasRoute,
+  PlanosRoute: PlanosRoute,
   ProfessorRoute: ProfessorRoute,
   SaudacoesRoute: SaudacoesRoute,
   TraduzirRoute: TraduzirRoute,
   VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
