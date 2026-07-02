@@ -132,7 +132,7 @@ const sections: Section[] = [
     id: "grafismo",
     title: "Grafismos Sagrados",
     icon: Palette,
-    image: colaresMicangas.url,
+    image: artesanato,
     body: [
       "Os grafismos Pataxó são escrita ancestral. Cada traço tem nome, cada forma tem significado: losangos são peixes, zigue-zagues são rios, triângulos são montanhas, círculos são a comunidade reunida em roda.",
       "Pintados no corpo com jenipapo e urucum, tecidos em miçangas, entalhados em cuias e cerâmicas — os grafismos contam de onde vem cada família, qual bicho a protege, que caminho ela caminha.",
