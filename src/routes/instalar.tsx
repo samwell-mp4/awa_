@@ -49,6 +49,7 @@ function InstalarPage() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");
   const [showIOSSteps, setShowIOSSteps] = useState(false);
+  const [showAndroidSteps, setShowAndroidSteps] = useState(false);
 
   useEffect(() => {
     const ua = navigator.userAgent;
