@@ -16,6 +16,7 @@ import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
+import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -58,6 +59,11 @@ const DicionarioRoute = DicionarioRouteImport.update({
   path: '/dicionario',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BiografiaRoute = BiografiaRouteImport.update({
+  id: '/biografia',
+  path: '/biografia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -91,6 +97,7 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/musicas': typeof MusicasRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/biografia'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/biografia'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/biografia'
     | '/dicionario'
     | '/historias'
     | '/musicas'
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BiografiaRoute: typeof BiografiaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
   MusicasRoute: typeof MusicasRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DicionarioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/biografia': {
+      id: '/biografia'
+      path: '/biografia'
+      fullPath: '/biografia'
+      preLoaderRoute: typeof BiografiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BiografiaRoute: BiografiaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
   MusicasRoute: MusicasRoute,

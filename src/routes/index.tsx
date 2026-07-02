@@ -178,6 +178,7 @@ function Index() {
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Vídeos", href: "/videos", icon: Video },
+    { label: "Biografia", href: "/biografia", icon: BookOpen },
   ];
 
   return (
