@@ -9,26 +9,6 @@ import anciao from "@/assets/pataxo-anciao.jpg";
 
 
 
-      "Levar as pinturas, os colares e o topete de penas para dentro do Festival Nacional de Economia Solidária é dizer: nós existimos, nós criamos, nós resistimos. As mulheres Pataxó ocupam praças, universidades e ruas — e onde chegam, a cidade aprende que o Brasil é indígena antes de tudo.",
-  },
-  {
-    id: "flores-1",
-    image: mulherFlores1.url,
-    title: "Flor da mata no rosto",
-    caption: "Coroa de flores e penas",
-    story:
-      "As riscas finas de jenipapo no rosto marcam a idade adulta e o pertencimento. Ao lado delas, penas verdes de papagaio e flores vermelhas do jardim da aldeia coroam a beleza feminina Pataxó — beleza que nasce da terra, do cuidado e do orgulho de ser quem se é.",
-  },
-  {
-    id: "flores-2",
-    image: mulherFlores2.url,
-    title: "Guardiã da beleza",
-    caption: "Awê no olhar",
-    story:
-      "A cultura Pataxó não é vitrine: é vida diária. É acordar, se pintar, cantar o Tohé, colher fruta, ensinar Patxôhã à filha, tecer colar para o neto. Nesse rosto sereno há gerações de mulheres que seguraram, com as próprias mãos, a memória de todo um povo.",
-  },
-];
-
 export const Route = createFileRoute("/historias")({
   head: () => ({
     meta: [
