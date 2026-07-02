@@ -643,7 +643,7 @@ function Index() {
       </footer>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav id="perfil" className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur md:hidden">
+      <nav id="perfil" className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur lg:hidden">
         <ul className="mx-auto grid max-w-md grid-cols-5">
           {navItems.map((n, i) => {
             const cls = [
