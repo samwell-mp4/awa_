@@ -296,6 +296,45 @@ function HistoriasPage() {
           })}
         </div>
 
+        {/* Álbum de Histórias */}
+        <div className="mt-24">
+          <div className="mb-8 flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/15 text-gold">
+              <Camera className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-serif text-3xl text-amber-50 md:text-4xl">Álbum de Histórias</h2>
+              <p className="text-sm text-amber-100/70">Retratos vivos do povo Pataxó — cada foto, uma memória.</p>
+            </div>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {albumStories.map((a) => (
+              <article
+                key={a.id}
+                className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/40 shadow-2xl shadow-black/40 backdrop-blur transition hover:border-gold/50"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={a.image}
+                    alt={a.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <p className="text-xs uppercase tracking-widest text-gold">{a.caption}</p>
+                    <h3 className="mt-1 font-serif text-xl text-amber-50">{a.title}</h3>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <p className="text-sm leading-relaxed text-amber-100/85">{a.story}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
