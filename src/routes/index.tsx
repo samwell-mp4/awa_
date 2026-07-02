@@ -7,7 +7,6 @@ import {
   BookOpen,
   Play,
   Trophy,
-  User,
   Flame,
   Star,
   Award,
