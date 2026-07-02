@@ -182,6 +182,7 @@ function Index() {
     { label: "Vídeos", href: "/videos", icon: Video },
     { label: "Biografia", href: "/biografia", icon: BookOpen },
     { label: "Instalar", href: "/instalar", icon: Download },
+    { label: "Premium", href: "/planos", icon: Star },
   ];
 
   return (
