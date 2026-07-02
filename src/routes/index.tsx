@@ -7,7 +7,6 @@ import {
   BookOpen,
   Play,
   Trophy,
-  User,
   Flame,
   Star,
   Award,
@@ -186,7 +185,7 @@ function Index() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 md:pb-12 text-foreground">
+    <div className="min-h-screen text-foreground">
       {/* HEADER */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
@@ -642,49 +641,6 @@ function Index() {
           </div>
         </div>
       </footer>
-
-      {/* MOBILE BOTTOM NAV */}
-      <nav id="perfil" className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur lg:hidden">
-        <ul className="mx-auto grid max-w-md grid-cols-4">
-          {navItems.map((n, i) => {
-            const cls = [
-              "flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold",
-              i === 0 ? "text-gold" : "text-foreground/70",
-            ].join(" ");
-            return (
-              <li key={n.label}>
-                {n.href.startsWith("/") ? (
-                  <Link to={n.href} className={cls}>
-                    <n.icon className="h-5 w-5" /> {n.label}
-                  </Link>
-                ) : (
-                  <a href={n.href} className={cls}>
-                    <n.icon className="h-5 w-5" /> {n.label}
-                  </a>
-                )}
-              </li>
-            );
-          })}
-          <li>
-            {user ? (
-              isAdmin ? (
-                <Link to="/admin" className="flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-gold">
-                  <Settings className="h-5 w-5" /> Painel
-                </Link>
-              ) : (
-                <button onClick={signOut} className="flex w-full flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-foreground/70">
-                  <LogOut className="h-5 w-5" /> Sair
-                </button>
-              )
-            ) : (
-              <Link to="/auth" className="flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold text-foreground/70">
-                <User className="h-5 w-5" /> Entrar
-              </Link>
-            )}
-          </li>
-        </ul>
-      </nav>
-
     </div>
   );
 }
