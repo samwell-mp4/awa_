@@ -110,7 +110,7 @@ function Index() {
   const navigate = useNavigate();
 
   const { data: dbTrails = [] } = useQuery({
-    queryKey: ["trails"],
+    queryKey: ["trails", "sem-cultura"],
     staleTime: 1000 * 60 * 30,
     gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
@@ -123,7 +123,7 @@ function Index() {
   });
   const trails = dbTrails.length
     ? dbTrails
-        .filter((t: any) => t.name !== "Cultura")
+        .filter((t: any) => t.name?.trim().toLowerCase() !== "cultura")
         .map((t: any) => ({
           name: t.name,
           img: t.image_url || fallbackImages[t.name] || trailSaudacoes,
