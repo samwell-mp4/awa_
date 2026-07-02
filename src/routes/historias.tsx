@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Shield, Camera } from "lucide-react";
+import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Shield, Camera, Music, Heart, Droplets, Flame, PartyPopper, Compass } from "lucide-react";
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
@@ -206,6 +206,94 @@ const sections: Section[] = [
       "Os Pataxó são símbolo de resistência: lutam pela demarcação oficial de suas terras, contra o desmatamento e a exploração turística desordenada.",
       "Fazem da cultura sua principal arma — com museus indígenas, escolas bilíngues, grupos de arte, comunicação própria e presença forte nas redes.",
       "Em Salvador e em todo o sul da Bahia, a presença Pataxó marca a identidade baiana viva e original. Ouvir suas histórias é honrar o Brasil que existe há muito mais tempo do que 1500.",
+    ],
+  },
+  {
+    id: "cosmovisao",
+    title: "Cosmovisão",
+    icon: Compass,
+    image: monte,
+    body: [
+      "Para os Pataxó, tudo é vivo: a mata, o rio, a pedra, o vento. Não existe separação entre humano e natureza — somos todos parentes de uma mesma origem, filhos da terra e dos encantados.",
+      "Niamisú, o Grande Espírito, sopra em cada folha, em cada bicho, em cada trovão. Os pajés são a ponte entre o mundo visível e o mundo dos encantados que habitam a floresta, as águas e o Monte Pascoal.",
+      "Viver bem é viver em equilíbrio — pescar sem esgotar, plantar sem envenenar, colher sem destruir. A cosmovisão Pataxó é uma ética prática: cuidar da terra é cuidar de si mesmo e dos que virão.",
+    ],
+  },
+  {
+    id: "grafismo",
+    title: "Grafismos Sagrados",
+    icon: Palette,
+    image: colaresMicangas.url,
+    body: [
+      "Os grafismos Pataxó são escrita ancestral. Cada traço tem nome, cada forma tem significado: losangos são peixes, zigue-zagues são rios, triângulos são montanhas, círculos são a comunidade reunida em roda.",
+      "Pintados no corpo com jenipapo e urucum, tecidos em miçangas, entalhados em cuias e cerâmicas — os grafismos contam de onde vem cada família, qual bicho a protege, que caminho ela caminha.",
+      "Aprender a ler os grafismos é aprender a ler a floresta. É reconhecer que, muito antes do alfabeto latino, os povos originários já escreviam suas leis, suas rezas e suas histórias no próprio corpo e nos objetos do cotidiano.",
+    ],
+  },
+  {
+    id: "tohe",
+    title: "Tohé — Oração em Dança",
+    icon: Music,
+    image: monte,
+    body: [
+      "Nos dias de ritual, todos se reúnem para dançar o Tohé — uma forma de oração coletiva celebrada em momentos tristes ou alegres.",
+      "Pelo canto e pela dança, o povo Pataxó adquire as energias da terra, do ar, da água, do fogo e de todas as forças positivas da natureza.",
+      "Crianças, jovens, adultos e idosos dançam juntos, fortalecendo a união entre gerações e a conexão com o território sagrado.",
+    ],
+  },
+  {
+    id: "awe",
+    title: "Awê — Amor e União",
+    icon: Heart,
+    image: danca,
+    body: [
+      "Awê significa amor, união e espiritualidade com a natureza. É o mais antigo ritual Pataxó — sempre existiu, e ninguém sabe informar quando começou.",
+      "Engloba coreografias variadas, onde cada pessoa dança com um sentido determinado. Em Coroa Vermelha, os Pataxó resgatam a cultura dos antepassados, preservando partes sagradas que não podem ser mostradas aos não indígenas.",
+      "Como afirma o líder Nelson Saracura: “O segredo do ritual é a segurança, é a resistência de nós como área indígena.”",
+    ],
+  },
+  {
+    id: "chuva",
+    title: "Ritual da Chuva",
+    icon: Droplets,
+    image: anciao,
+    body: [
+      "Antigamente, os índios mais velhos realizavam o ritual da chuva quando a terra precisava dela. Amontoavam galhos e folhas, colocavam fogo e, com a fumaça subindo, formavam a nuvem que trazia a chuva.",
+      "Se o ritual fosse feito de manhã, a chuva cairia à tarde. Ao final, o canto de agradecimento selava a relação de respeito entre o povo e as águas.",
+      "Nos dias 5 e 12 de outubro, os Pataxó realizam o ritual da água para agradecer pela chuva, protetora das colheitas. A celebração termina com um banho de lama e água — purificação do corpo e da mente.",
+    ],
+  },
+  {
+    id: "casamento",
+    title: "Namoro e Casamento",
+    icon: Users,
+    image: aldeia,
+    body: [
+      "O namoro Pataxó é discreto: quando dois jovens se interessam, começam a se jogar pedrinhas — sinal de que já estão namorando.",
+      "Para pedir a namorada em casamento, o rapaz entrega uma flor. Se ela aceitar, a resposta é “sim”. Os noivos comunicam as famílias e o cacique, e começam os preparativos: o noivo arruma sua casa e seu roçado.",
+      "Na cerimônia, o noivo carrega uma pedra por uma distância determinada pelo cacique e pelos pais dela — a pedra representa o peso da união. Ao chegar, trocam cocares, e toda a aldeia celebra com cauim.",
+    ],
+  },
+  {
+    id: "arsgwaksa",
+    title: "Arsgwaksá",
+    icon: Flame,
+    image: danca,
+    body: [
+      "Arsgwaksá é a festa comemorativa do aniversário do Projeto Jaqueira, o primeiro projeto implantado em uma aldeia indígena da região.",
+      "Os índios da reserva participam de um projeto de responsabilidade social, e a festa inclui apresentações culturais e provas físicas.",
+      "É um momento de celebração comunitária, onde cultura, esporte e trabalho coletivo se encontram para fortalecer a vida na aldeia.",
+    ],
+  },
+  {
+    id: "folia",
+    title: "Folia de Reis",
+    icon: PartyPopper,
+    image: aldeia,
+    body: [
+      "Na tribo Pataxó é comum o relato da folia e da esmola do Divino Espírito Santo. Um grupo de foliões chega carregando uma bandeira e se dirige à capela, depois de recolher as esmolas.",
+      "A reza noturna atrai a população local. No lugarejo principal da aldeia, barracas iluminadas são montadas e a sinuca se torna a principal atração.",
+      "Crianças e jovens desfilam com suas melhores roupas, mostrando como a cultura Pataxó acolhe e resignifica celebrações, mantendo o espírito de comunidade.",
     ],
   },
 ];
