@@ -365,6 +365,45 @@ function CulturaPage() {
           </div>
         </div>
 
+        {/* Álbum Vivo */}
+        <div className="mt-20">
+          <div className="mb-8 flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/15 text-gold">
+              <Camera className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-serif text-3xl text-amber-50 md:text-4xl">Álbum Vivo</h2>
+              <p className="text-sm text-amber-100/70">Retratos e histórias do povo Pataxó hoje</p>
+            </div>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {album.map((a) => (
+              <article
+                key={a.id}
+                className="group flex flex-col overflow-hidden rounded-3xl border border-gold/20 bg-black/30 shadow-xl shadow-black/40 backdrop-blur transition hover:border-gold/50"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={a.image}
+                    alt={a.title}
+                    loading="lazy"
+                    className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="text-[10px] uppercase tracking-widest text-gold">{a.caption}</p>
+                    <h3 className="mt-1 font-serif text-xl leading-tight text-amber-50">{a.title}</h3>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <p className="text-sm leading-relaxed text-amber-100/85">{a.story}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
