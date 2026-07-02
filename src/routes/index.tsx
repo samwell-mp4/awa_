@@ -406,10 +406,11 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {trails.map((t, i) => {
-              const map: Record<string, "saudacoes" | "familia" | "natureza" | "animais" | "cultura"> = {
+              const map: Record<string, "saudacoes" | "familia" | "natureza" | "animais"> = {
                 "Saudações": "saudacoes", "Família": "familia", "Natureza": "natureza",
-                "Animais": "animais", "Cultura": "cultura",
+                "Animais": "animais",
               };
+
               const slug = map[t.name];
               const cls = "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
               const inner = (
