@@ -7,7 +7,7 @@ export const Route = createFileRoute("/trilhas/")({
   head: () => ({
     meta: [
       { title: "Trilhas de Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Trilhas guiadas pelo Professor Akuã: Saudações, Família, Natureza, Animais e Cultura." },
+      { name: "description", content: "Trilhas guiadas pelo Professor Akuã: Saudações, Família, Natureza e Animais." },
     ],
   }),
   component: TrilhasIndex,
