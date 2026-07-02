@@ -129,15 +129,15 @@ function SaudacoesPage() {
 
 function SaudacaoCard({ s }: { s: Saudacao }) {
   return (
-    <div className="card-elev rounded-2xl p-4 border border-gold/15">
+    <div className="card-elev rounded-2xl p-4 border border-gold/15 min-w-0">
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <div className="font-display text-lg font-bold text-gold truncate">
+        <div className="min-w-0 flex-1">
+          <div className="font-display text-lg font-bold text-gold break-words">
             {s.term_indigenous}
           </div>
-          <div className="text-sm text-cream/90 truncate">{s.term_pt}</div>
+          <div className="text-sm text-cream/90 break-words">{s.term_pt}</div>
           {s.pronunciation && (
-            <div className="text-xs text-foreground/60 mt-0.5">🗣️ {s.pronunciation}</div>
+            <div className="text-xs text-foreground/60 mt-0.5 break-words">🗣️ {s.pronunciation}</div>
           )}
         </div>
         <PlayBtn text={s.term_indigenous} audioUrl={s.audio_url} />
