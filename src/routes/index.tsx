@@ -66,8 +66,8 @@ const fallbackImages: Record<string, string> = {
   Família: trailFamilia,
   Natureza: trailNatureza,
   Animais: trailAnimais,
-  Cultura: trailCultura,
 };
+
 
 const ranking = [
   { name: "Aruá Pataxó", points: 780, initials: "AP" },
