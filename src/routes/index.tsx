@@ -186,7 +186,7 @@ function Index() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 md:pb-12 text-foreground">
+    <div className="min-h-screen text-foreground">
       {/* HEADER */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
