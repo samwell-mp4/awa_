@@ -190,7 +190,7 @@ function Index() {
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <Logo />
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((n) =>
               n.href.startsWith("/") ? (
                 <Link key={n.label} to={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
@@ -219,14 +219,14 @@ function Index() {
           </nav>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold md:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold lg:hidden"
             aria-label="Menu"
           >
             <Menu className="h-5 w-5" />
           </button>
         </div>
         {open && (
-          <div className="md:hidden border-t border-gold/20 bg-card/95 px-4 py-3">
+          <div className="lg:hidden border-t border-gold/20 bg-card/95 px-4 py-3">
             <div className="flex flex-col gap-1">
               {navItems.map((n) =>
                 n.href.startsWith("/") ? (
