@@ -668,23 +668,6 @@ function Progress({ value, className = "" }: { value: number; className?: string
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: string[] }) {
-  return (
-    <div>
-      <div className="text-sm font-bold text-cream">{title}</div>
-      <ul className="mt-3 space-y-2 text-xs text-foreground/70">
-        {links.map((l) => (
-          <li key={l}>
-            <a href="#" className="hover:text-gold">
-              {l}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function GreetingOfMoment() {
   const { data: list = [] } = useQuery({
     queryKey: ["saudacoes"],
