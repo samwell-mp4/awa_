@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ProfessorRouteImport } from './routes/professor'
@@ -22,6 +23,11 @@ import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TraduzirRoute = TraduzirRouteImport.update({
   id: '/traduzir',
   path: '/traduzir',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/professor': typeof ProfessorRoute
   '/saudacoes': typeof SaudacoesRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
+    | '/videos'
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
+    | '/videos'
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/saudacoes'
     | '/traduzir'
+    | '/videos'
     | '/_authenticated/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -176,12 +188,20 @@ export interface RootRouteChildren {
   ProfessorRoute: typeof ProfessorRoute
   SaudacoesRoute: typeof SaudacoesRoute
   TraduzirRoute: typeof TraduzirRoute
+  VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/traduzir': {
       id: '/traduzir'
       path: '/traduzir'
@@ -290,9 +310,20 @@ const rootRouteChildren: RootRouteChildren = {
   ProfessorRoute: ProfessorRoute,
   SaudacoesRoute: SaudacoesRoute,
   TraduzirRoute: TraduzirRoute,
+  VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
