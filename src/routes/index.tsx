@@ -174,7 +174,6 @@ function Index() {
     { label: "Tradutor", href: "/traduzir", icon: BookOpen },
     { label: "Professor Akuã", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
-    { label: "Cultura", href: "/cultura", icon: Flame },
   ];
 
   return (
