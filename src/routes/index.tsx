@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DailyWordVideo } from "@/components/DailyWordVideo";
+
 import { ContinueLearningCard } from "@/components/home/continue-learning";
 import { DailyMissionCard } from "@/components/home/daily-mission-card";
 import { GreetingOfMoment } from "@/components/home/greeting-of-moment";
@@ -46,7 +46,7 @@ function Index() {
         <GreetingOfMoment />
         <WisdomOfDay />
         <ContinueLearningCard />
-        <DailyWordVideo />
+        
         <TrailsGrid trails={trails} />
 
         <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2">
