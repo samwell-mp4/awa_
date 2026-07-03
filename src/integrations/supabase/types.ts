@@ -236,6 +236,33 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_events: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          points: number
+          trail: string | null
+          user_id: string
+        }
+        Insert: {
+          action?: string
+          created_at?: string
+          id?: string
+          points?: number
+          trail?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          points?: number
+          trail?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -498,6 +525,15 @@ export type Database = {
           message: Json
           msg_id: number
           read_ct: number
+        }[]
+      }
+      weekly_top_learners: {
+        Args: { _limit?: number }
+        Returns: {
+          name: string
+          photo_url: string
+          points: number
+          user_id: string
         }[]
       }
     }
