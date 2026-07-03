@@ -145,19 +145,50 @@ const sections: Section[] = [
   },
 ];
 
-function NarrateButton({ text }: { text: string }) {
+const MALE_VOICE_HINTS = [
+  "male",
+  "masculin",
+  "homem",
+  "ricardo",
+  "daniel",
+  "diego",
+  "felipe",
+  "thiago",
+  "antonio",
+  "luciano",
+  "paulo",
+  "google português do brasil",
+];
+
+function pickMalePtVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined") return null;
+  const voices = window.speechSynthesis.getVoices();
+  const pt = voices.filter((v) => v.lang?.toLowerCase().startsWith("pt"));
+  if (pt.length === 0) return null;
+  const byHint = pt.find((v) =>
+    MALE_VOICE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
+  );
+  return byHint ?? pt[0];
+}
+
+function useNarration(text: string) {
   const [speaking, setSpeaking] = useState(false);
   const supported = typeof window !== "undefined" && "speechSynthesis" in window;
 
   useEffect(() => {
+    if (!supported) return;
+    // Warm up voices on some browsers.
+    window.speechSynthesis.getVoices();
+    const onVoices = () => window.speechSynthesis.getVoices();
+    window.speechSynthesis.addEventListener?.("voiceschanged", onVoices);
     return () => {
-      if (supported) window.speechSynthesis.cancel();
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.removeEventListener?.("voiceschanged", onVoices);
     };
   }, [supported]);
 
-  if (!supported) return null;
-
   const toggle = () => {
+    if (!supported) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
@@ -166,10 +197,9 @@ function NarrateButton({ text }: { text: string }) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "pt-BR";
     u.rate = 0.95;
-    u.pitch = 0.95;
-    const voices = window.speechSynthesis.getVoices();
-    const pt = voices.find((v) => v.lang?.toLowerCase().startsWith("pt"));
-    if (pt) u.voice = pt;
+    u.pitch = 0.75; // deeper = more masculine fallback
+    const male = pickMalePtVoice();
+    if (male) u.voice = male;
     u.onend = () => setSpeaking(false);
     u.onerror = () => setSpeaking(false);
     window.speechSynthesis.cancel();
@@ -177,18 +207,55 @@ function NarrateButton({ text }: { text: string }) {
     setSpeaking(true);
   };
 
+  return { supported, speaking, toggle };
+}
+
+function NarratablePhoto({
+  src,
+  alt,
+  text,
+}: {
+  src: string;
+  alt: string;
+  text: string;
+}) {
+  const { supported, speaking, toggle } = useNarration(text);
+
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-emerald-950 shadow-lg shadow-black/40 backdrop-blur hover:brightness-110"
-      aria-label={speaking ? "Parar narração" : "Ouvir história"}
-    >
-      {speaking ? <Square className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-      {speaking ? "Parar" : "Ouvir história"}
-    </button>
+    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
+      <button
+        type="button"
+        onClick={toggle}
+        disabled={!supported}
+        className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+        aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        {supported && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div
+              className={`flex h-20 w-20 items-center justify-center rounded-full bg-gold/95 text-emerald-950 shadow-2xl shadow-black/50 transition-all ${
+                speaking ? "scale-110 animate-pulse" : "opacity-90 group-hover:scale-105 group-hover:opacity-100"
+              }`}
+            >
+              {speaking ? <Square className="h-8 w-8" /> : <Volume2 className="h-9 w-9" />}
+            </div>
+          </div>
+        )}
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 text-xs uppercase tracking-[0.25em] text-amber-100/90">
+          <span>{speaking ? "Ouvindo…" : "Toque na foto para ouvir"}</span>
+        </div>
+      </button>
+    </div>
   );
 }
+
 
 
 function HistoriasPage() {
@@ -241,18 +308,11 @@ function HistoriasPage() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
-              <img
-                src={albumAnciao.url}
-                alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <NarrateButton
-                text={`Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
-              />
-            </div>
+            <NarratablePhoto
+              src={albumAnciao.url}
+              alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+              text={`Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
+            />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
