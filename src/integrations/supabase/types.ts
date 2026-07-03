@@ -348,7 +348,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_premium_access: { Args: { _user_id: string }; Returns: boolean }
+      has_active_subscription: {
+        Args: { _check_env?: string; _user_id: string }
+        Returns: boolean
+      }
+      has_premium_access: {
+        Args: { _check_env?: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
