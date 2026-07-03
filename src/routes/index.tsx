@@ -29,7 +29,8 @@ import {
   Smartphone,
 } from "lucide-react";
 
-import heroWoman from "@/assets/hero-woman.jpg";
+import heroAsset from "@/assets/awa-hero.jpg.asset.json";
+const heroWoman = heroAsset.url;
 import logoSrc from "@/assets/awa-tech-logo.png";
 import videoProfessor from "@/assets/video-professor.jpg";
 import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
