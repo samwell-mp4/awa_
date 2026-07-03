@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertPremium } from "./premium-guard";
 
 export const transcribeAudio = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -11,7 +12,8 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     if (file.size > 24 * 1024 * 1024) throw new Error("Arquivo > 24MB");
     return { file, language: (d.get("language") as string | null) || undefined };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertPremium(context);
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
