@@ -10,7 +10,7 @@ import { ResourcesSection } from "@/components/home/resources-section";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
-import { WisdomOfDay } from "@/components/home/wisdom-of-day";
+
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 export const Route = createFileRoute("/")({
@@ -44,7 +44,6 @@ function Index() {
       <main className="mx-auto max-w-6xl px-4 md:px-8">
         <HeroSection />
         <GreetingOfMoment />
-        <WisdomOfDay />
         <ContinueLearningCard />
         
         <TrailsGrid trails={trails} />
