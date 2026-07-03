@@ -6,7 +6,7 @@ import { GreetingOfMoment } from "@/components/home/greeting-of-moment";
 import { HeroSection } from "@/components/home/hero-section";
 import { InstallCTA } from "@/components/home/install-cta";
 import { RankingCard } from "@/components/home/ranking-card";
-import { ResourcesSection } from "@/components/home/resources-section";
+
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
@@ -53,7 +53,6 @@ function Index() {
           <RankingCard />
         </section>
 
-        <ResourcesSection />
         <InstallCTA />
       </main>
 
