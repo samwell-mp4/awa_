@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPaddleEnvironment } from "@/lib/paddle";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { speakText } from "@/lib/tts.functions";
+import { narratePublic } from "@/lib/narrate-public.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/saudacoes")({
