@@ -98,10 +98,12 @@ export function getLearned(slug: string): Set<string> {
 export function setLearned(slug: string, ids: Set<string>) {
   if (typeof window === "undefined") return;
   localStorage.setItem(KEY(slug), JSON.stringify([...ids]));
+  window.dispatchEvent(new CustomEvent("awa:progress", { detail: { slug } }));
 }
 export function markCertificate(slug: string) {
   if (typeof window === "undefined") return;
   localStorage.setItem(`awa_trilha_cert_${slug}`, new Date().toISOString());
+  window.dispatchEvent(new CustomEvent("awa:progress", { detail: { slug } }));
 }
 export function hasCertificate(slug: string): boolean {
   if (typeof window === "undefined") return false;

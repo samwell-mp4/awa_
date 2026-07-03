@@ -37,15 +37,19 @@ export function ContinueLearningCard() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Force re-read of localStorage on mount / tab focus
+  // Live updates: refresh when progress changes in this tab or another
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const on = () => setTick((t) => t + 1);
     window.addEventListener("focus", on);
     window.addEventListener("storage", on);
+    window.addEventListener("awa:progress", on as EventListener);
+    const iv = window.setInterval(on, 4000);
     return () => {
       window.removeEventListener("focus", on);
       window.removeEventListener("storage", on);
+      window.removeEventListener("awa:progress", on as EventListener);
+      window.clearInterval(iv);
     };
   }, []);
 
