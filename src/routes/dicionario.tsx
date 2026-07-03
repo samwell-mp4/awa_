@@ -3,19 +3,28 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
+import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã — 50 palavras grátis. Assine Premium para acesso completo." },
+      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
     ],
   }),
-  component: DictionaryPage,
+  component: () => (
+    <PremiumGate
+      title="Dicionário Patxôhã (Premium)"
+      description="Todo o dicionário completo, lições, áudios, jogos e materiais culturais estão disponíveis apenas para assinantes."
+    >
+      <DictionaryPage />
+    </PremiumGate>
+  ),
 });
 
 const FREE_LIMIT = 50;
+
 
 
 type Entry = {
