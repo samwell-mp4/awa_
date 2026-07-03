@@ -145,6 +145,52 @@ const sections: Section[] = [
   },
 ];
 
+function NarrateButton({ text }: { text: string }) {
+  const [speaking, setSpeaking] = useState(false);
+  const supported = typeof window !== "undefined" && "speechSynthesis" in window;
+
+  useEffect(() => {
+    return () => {
+      if (supported) window.speechSynthesis.cancel();
+    };
+  }, [supported]);
+
+  if (!supported) return null;
+
+  const toggle = () => {
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "pt-BR";
+    u.rate = 0.95;
+    u.pitch = 0.95;
+    const voices = window.speechSynthesis.getVoices();
+    const pt = voices.find((v) => v.lang?.toLowerCase().startsWith("pt"));
+    if (pt) u.voice = pt;
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    setSpeaking(true);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-emerald-950 shadow-lg shadow-black/40 backdrop-blur hover:brightness-110"
+      aria-label={speaking ? "Parar narração" : "Ouvir história"}
+    >
+      {speaking ? <Square className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+      {speaking ? "Parar" : "Ouvir história"}
+    </button>
+  );
+}
+
+
 function HistoriasPage() {
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
