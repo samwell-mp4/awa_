@@ -35,8 +35,9 @@ export function RankingCard() {
   const { data = [], isLoading } = useQuery({
     queryKey: ["weekly-top-learners"],
     queryFn: fetchTopLearners,
+    refetchInterval: 5_000,
     refetchOnWindowFocus: true,
-    staleTime: 15_000,
+    staleTime: 3_000,
   });
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export function RankingCard() {
       .channel("weekly-learners")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "learning_events" },
+        { event: "*", schema: "public", table: "learning_events" },
         () => qc.invalidateQueries({ queryKey: ["weekly-top-learners"] })
       )
       .subscribe();
