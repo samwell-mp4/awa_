@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogIn, LogOut, Menu, Settings, Star } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { LogIn, LogOut, Menu, Settings, Star, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { navGroups, topNavLinks } from "@/lib/home-content";
@@ -10,9 +11,11 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
   async function signOut() {
     await supabase.auth.signOut();
+    qc.clear();
     navigate({ to: "/" });
   }
 
