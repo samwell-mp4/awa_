@@ -60,9 +60,9 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
 
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { messages: Msg[] }) => d)
+  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live" }) => d)
   .handler(async ({ data, context }) => {
-    await assertPremium(context);
+    await assertPremium(context, data.environment ?? "live");
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 

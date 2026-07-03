@@ -4,9 +4,9 @@ import { assertPremium } from "./premium-guard";
 
 export const speakText = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { text: string; voice?: string }) => d)
+  .inputValidator((d: { text: string; voice?: string; environment?: "sandbox" | "live" }) => d)
   .handler(async ({ data, context }) => {
-    await assertPremium(context);
+    await assertPremium(context, data.environment ?? "live");
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
     const text = (data.text ?? "").slice(0, 2000);

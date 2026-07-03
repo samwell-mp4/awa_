@@ -10,10 +10,12 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     if (!(file instanceof File)) throw new Error("Arquivo de áudio obrigatório");
     if (file.size === 0) throw new Error("Arquivo vazio");
     if (file.size > 24 * 1024 * 1024) throw new Error("Arquivo > 24MB");
-    return { file, language: (d.get("language") as string | null) || undefined };
+    const envRaw = (d.get("environment") as string | null) || "live";
+    const environment = envRaw === "sandbox" ? "sandbox" : "live";
+    return { file, language: (d.get("language") as string | null) || undefined, environment };
   })
   .handler(async ({ data, context }) => {
-    await assertPremium(context);
+    await assertPremium(context, data.environment);
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
