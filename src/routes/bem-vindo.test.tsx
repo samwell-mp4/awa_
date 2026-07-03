@@ -37,7 +37,7 @@ describe("<Welcome /> (rota /bem-vindo)", () => {
 
   it("lista os 5 benefícios da versão gratuita", () => {
     render(<Welcome />);
-    expect(screen.getByText(/Versão Gratuita/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Versão Gratuita/i })).toBeInTheDocument();
     for (const t of [
       /Galeria com histórias/i,
       /Dicionário básico Patxohã/i,
