@@ -14,6 +14,7 @@ import albumGuerreiros from "@/assets/album/guerreiros-pintura.jpg.asset.json";
 import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
 import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
 import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
+import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
 
 const album = [
   {
