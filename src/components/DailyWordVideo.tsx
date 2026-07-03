@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Play, Pause, SkipForward, Radio, Loader2, Leaf, Sparkles } from "lucide-react";
+import { Play, Pause, SkipForward, Radio, Loader2, Leaf } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 type Word = {
@@ -84,11 +84,6 @@ export function DailyWordVideo() {
           <div className="inline-flex items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-red-300 backdrop-blur-sm">
             <Radio className="h-3.5 w-3.5 animate-pulse" /> Ao vivo — Patxôhã
           </div>
-          <div className="inline-flex items-center gap-2 text-xs text-gold/80">
-            <Sparkles className="h-3.5 w-3.5" />
-            Palavra {idx + 1}
-            {pool.length > 0 && <span className="opacity-60">/ {pool.length}</span>}
-          </div>
         </div>
 
         {isLoading || !current ? (
@@ -135,9 +130,9 @@ export function DailyWordVideo() {
                     }}
                   >
                     {p.isSpark ? (
-                      <Sparkles
-                        className="text-gold drop-shadow-[0_0_6px_rgba(249,168,37,0.8)]"
-                        style={{ width: p.size, height: p.size }}
+                      <span
+                        className="block rounded-full bg-gold shadow-[0_0_10px_rgba(249,168,37,0.8)]"
+                        style={{ width: p.size * 0.45, height: p.size * 0.45 }}
                       />
                     ) : (
                       <Leaf
