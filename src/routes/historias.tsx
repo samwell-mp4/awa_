@@ -308,18 +308,11 @@ function HistoriasPage() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
-              <img
-                src={albumAnciao.url}
-                alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <NarrateButton
-                text={`Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
-              />
-            </div>
+            <NarratablePhoto
+              src={albumAnciao.url}
+              alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+              text={`Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
+            />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
