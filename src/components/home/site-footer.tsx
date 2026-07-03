@@ -25,6 +25,15 @@ const columns = [
       { label: "Biografia", href: "/biografia" as const },
       { label: "Planos", href: "/planos" as const },
       { label: "Instalar app", href: "/instalar" as const },
+      { label: "Minha conta", href: "/minha-conta" as const },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Termos de uso", href: "/termos" as const },
+      { label: "Privacidade", href: "/privacidade" as const },
+      { label: "Reembolso", href: "/reembolso" as const },
       { label: "Boas-vindas", href: "/bem-vindo" as const },
     ],
   },
@@ -35,7 +44,7 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-gold/25 bg-[oklch(0.12_0.03_145/0.85)]">
       <div className="tribal-border mx-auto max-w-6xl" />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 md:grid-cols-4 md:px-8">
-        <div className="sm:col-span-2">
+        <div>
           <Logo />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-foreground/70">
             AWÃ TECH é uma iniciativa educacional dedicada à preservação e ao ensino das línguas

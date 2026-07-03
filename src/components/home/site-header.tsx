@@ -57,12 +57,20 @@ export function SiteHeader() {
             </Link>
           )}
           {user ? (
-            <button
-              onClick={signOut}
-              className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10"
-            >
-              <LogOut className="h-4 w-4" /> Sair
-            </button>
+            <>
+              <Link
+                to="/minha-conta"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/85 hover:bg-gold/10"
+              >
+                <UserCircle2 className="h-4 w-4" /> Minha conta
+              </Link>
+              <button
+                onClick={signOut}
+                className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10"
+              >
+                <LogOut className="h-4 w-4" /> Sair
+              </button>
+            </>
           ) : (
             <Link
               to="/auth"
@@ -137,15 +145,24 @@ function MobileDrawer({
             </Link>
           )}
           {user ? (
-            <button
-              onClick={() => {
-                onClose();
-                onSignOut();
-              }}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
-            >
-              <LogOut className="h-4 w-4 text-gold" /> Sair
-            </button>
+            <>
+              <Link
+                to="/minha-conta"
+                onClick={onClose}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/90 hover:bg-leaf/15"
+              >
+                <UserCircle2 className="h-4 w-4 text-gold" /> Minha conta
+              </Link>
+              <button
+                onClick={() => {
+                  onClose();
+                  onSignOut();
+                }}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
+              >
+                <LogOut className="h-4 w-4 text-gold" /> Sair
+              </button>
+            </>
           ) : (
             <Link
               to="/auth"
