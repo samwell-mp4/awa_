@@ -11,7 +11,7 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     if (file.size === 0) throw new Error("Arquivo vazio");
     if (file.size > 24 * 1024 * 1024) throw new Error("Arquivo > 24MB");
     const envRaw = (d.get("environment") as string | null) || "live";
-    const environment = envRaw === "sandbox" ? "sandbox" : "live";
+    const environment: "sandbox" | "live" = envRaw === "sandbox" ? "sandbox" : "live";
     return { file, language: (d.get("language") as string | null) || undefined, environment };
   })
   .handler(async ({ data, context }) => {
