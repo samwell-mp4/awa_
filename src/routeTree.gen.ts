@@ -15,6 +15,7 @@ import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasRouteImport } from './routes/musicas'
+import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
@@ -55,6 +56,11 @@ const PlanosRoute = PlanosRouteImport.update({
 const MusicasRoute = MusicasRouteImport.update({
   id: '/musicas',
   path: '/musicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogosRoute = JogosRouteImport.update({
+  id: '/jogos',
+  path: '/jogos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InstalarRoute = InstalarRouteImport.update({
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
   '/professor': typeof ProfessorRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/dicionario'
     | '/historias'
     | '/instalar'
+    | '/jogos'
     | '/musicas'
     | '/planos'
     | '/professor'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/dicionario'
     | '/historias'
     | '/instalar'
+    | '/jogos'
     | '/musicas'
     | '/planos'
     | '/professor'
@@ -215,6 +226,7 @@ export interface FileRouteTypes {
     | '/dicionario'
     | '/historias'
     | '/instalar'
+    | '/jogos'
     | '/musicas'
     | '/planos'
     | '/professor'
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
   InstalarRoute: typeof InstalarRoute
+  JogosRoute: typeof JogosRoute
   MusicasRoute: typeof MusicasRoute
   PlanosRoute: typeof PlanosRoute
   ProfessorRoute: typeof ProfessorRoute
@@ -288,6 +301,13 @@ declare module '@tanstack/react-router' {
       path: '/musicas'
       fullPath: '/musicas'
       preLoaderRoute: typeof MusicasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogos': {
+      id: '/jogos'
+      path: '/jogos'
+      fullPath: '/jogos'
+      preLoaderRoute: typeof JogosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/instalar': {
@@ -389,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
   InstalarRoute: InstalarRoute,
+  JogosRoute: JogosRoute,
   MusicasRoute: MusicasRoute,
   PlanosRoute: PlanosRoute,
   ProfessorRoute: ProfessorRoute,
