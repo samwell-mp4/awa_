@@ -211,7 +211,7 @@ function useNarration(text: string) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "pt-BR";
     u.rate = 0.95;
-    u.pitch = 0.75; // deeper = more masculine fallback
+    u.pitch = 0.6; // deeper = more masculine fallback
     const male = pickMalePtVoice();
     if (male) u.voice = male;
     u.onend = () => setSpeaking(false);
