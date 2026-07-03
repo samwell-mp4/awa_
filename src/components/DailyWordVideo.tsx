@@ -64,11 +64,6 @@ export function DailyWordVideo() {
           <div className="inline-flex items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-red-300">
             <Radio className="h-3.5 w-3.5 animate-pulse" /> Vídeo do dia — Patxôhã ao vivo
           </div>
-          {pool.length > 0 && (
-            <span className="text-xs text-cream/70">
-              {idx + 1} / {pool.length}
-            </span>
-          )}
         </div>
 
         {isLoading || !current ? (
