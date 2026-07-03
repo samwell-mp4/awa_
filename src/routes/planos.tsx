@@ -1,5 +1,6 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Sparkles, Crown } from "lucide-react";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Check, CheckCircle2, Loader2, Sparkles, Crown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
@@ -22,6 +23,9 @@ export const Route = createFileRoute("/planos")({
       },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    checkout: (s.checkout as string | undefined) ?? undefined,
+  }),
   component: PlanosPage,
 });
 
@@ -37,9 +41,27 @@ const benefits = [
 
 function PlanosPage() {
   const { user, loading: authLoading } = useAuth();
-  const { isPremium, loading: subLoading } = useSubscription();
+  const { isPremium, loading: subLoading, refetch } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
+  const search = useSearch({ from: "/planos" });
+  const [processing, setProcessing] = useState(search.checkout === "success");
+
+  useEffect(() => {
+    if (search.checkout !== "success") return;
+    setProcessing(true);
+    // Poll for webhook to update subscription (usually 3–10s)
+    let tries = 0;
+    const id = window.setInterval(async () => {
+      tries++;
+      await refetch();
+      if (isPremium || tries >= 20) {
+        window.clearInterval(id);
+        setProcessing(false);
+      }
+    }, 1500);
+    return () => window.clearInterval(id);
+  }, [search.checkout, isPremium, refetch]);
 
   function handleAssinar(priceId: "awa_premium_monthly" | "awa_premium_semestral") {
     if (!user) {
@@ -63,6 +85,22 @@ function PlanosPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8 md:py-16">
+        {processing && !isPremium && (
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/10 p-4">
+            <Loader2 className="h-5 w-5 animate-spin text-gold" />
+            <div className="text-sm text-cream">
+              <b>Processando seu pagamento...</b> Isso costuma levar poucos segundos.
+            </div>
+          </div>
+        )}
+        {isPremium && search.checkout === "success" && (
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-leaf/50 bg-leaf/10 p-4">
+            <CheckCircle2 className="h-5 w-5 text-leaf" />
+            <div className="text-sm text-cream">
+              <b>Pagamento confirmado!</b> Bem-vindo ao AWÃ TECH Premium 🌿
+            </div>
+          </div>
+        )}
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-gold">
             <Crown className="h-3.5 w-3.5" /> AWÃ TECH Premium

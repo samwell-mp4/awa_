@@ -11,10 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
+import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ReembolsoRouteImport } from './routes/reembolso'
 import { Route as ProfessorRouteImport } from './routes/professor'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasRouteImport } from './routes/musicas'
+import { Route as MinhaContaRouteImport } from './routes/minha-conta'
 import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as HistoriasRouteImport } from './routes/historias'
@@ -39,14 +44,34 @@ const TraduzirRoute = TraduzirRouteImport.update({
   path: '/traduzir',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SaudacoesRoute = SaudacoesRouteImport.update({
   id: '/saudacoes',
   path: '/saudacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReembolsoRoute = ReembolsoRouteImport.update({
+  id: '/reembolso',
+  path: '/reembolso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfessorRoute = ProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosRoute = PlanosRouteImport.update({
@@ -57,6 +82,11 @@ const PlanosRoute = PlanosRouteImport.update({
 const MusicasRoute = MusicasRouteImport.update({
   id: '/musicas',
   path: '/musicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinhaContaRoute = MinhaContaRouteImport.update({
+  id: '/minha-conta',
+  path: '/minha-conta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JogosRoute = JogosRouteImport.update({
@@ -134,10 +164,15 @@ export interface FileRoutesByFullPath {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -154,10 +189,15 @@ export interface FileRoutesByTo {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -176,10 +216,15 @@ export interface FileRoutesById {
   '/historias': typeof HistoriasRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -198,10 +243,15 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/jogos'
+    | '/minha-conta'
     | '/musicas'
     | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
     | '/videos'
     | '/admin'
@@ -218,10 +268,15 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/jogos'
+    | '/minha-conta'
     | '/musicas'
     | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
     | '/videos'
     | '/admin'
@@ -239,10 +294,15 @@ export interface FileRouteTypes {
     | '/historias'
     | '/instalar'
     | '/jogos'
+    | '/minha-conta'
     | '/musicas'
     | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
     | '/videos'
     | '/_authenticated/admin'
@@ -261,10 +321,15 @@ export interface RootRouteChildren {
   HistoriasRoute: typeof HistoriasRoute
   InstalarRoute: typeof InstalarRoute
   JogosRoute: typeof JogosRoute
+  MinhaContaRoute: typeof MinhaContaRoute
   MusicasRoute: typeof MusicasRoute
   PlanosRoute: typeof PlanosRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
+  ReembolsoRoute: typeof ReembolsoRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SaudacoesRoute: typeof SaudacoesRoute
+  TermosRoute: typeof TermosRoute
   TraduzirRoute: typeof TraduzirRoute
   VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
@@ -288,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TraduzirRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/saudacoes': {
       id: '/saudacoes'
       path: '/saudacoes'
@@ -295,11 +367,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SaudacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reembolso': {
+      id: '/reembolso'
+      path: '/reembolso'
+      fullPath: '/reembolso'
+      preLoaderRoute: typeof ReembolsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/professor': {
       id: '/professor'
       path: '/professor'
       fullPath: '/professor'
       preLoaderRoute: typeof ProfessorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planos': {
@@ -314,6 +407,13 @@ declare module '@tanstack/react-router' {
       path: '/musicas'
       fullPath: '/musicas'
       preLoaderRoute: typeof MusicasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minha-conta': {
+      id: '/minha-conta'
+      path: '/minha-conta'
+      fullPath: '/minha-conta'
+      preLoaderRoute: typeof MinhaContaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jogos': {
@@ -431,10 +531,15 @@ const rootRouteChildren: RootRouteChildren = {
   HistoriasRoute: HistoriasRoute,
   InstalarRoute: InstalarRoute,
   JogosRoute: JogosRoute,
+  MinhaContaRoute: MinhaContaRoute,
   MusicasRoute: MusicasRoute,
   PlanosRoute: PlanosRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
+  ReembolsoRoute: ReembolsoRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SaudacoesRoute: SaudacoesRoute,
+  TermosRoute: TermosRoute,
   TraduzirRoute: TraduzirRoute,
   VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
@@ -444,13 +549,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
