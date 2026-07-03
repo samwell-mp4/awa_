@@ -1,103 +1,125 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
-import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles } from "lucide-react";
+import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
 
 export const Route = createFileRoute("/jogos")({
   head: () => ({
     meta: [
-      { title: "Jogos — AWÃ TECH" },
-      { name: "description", content: "Jogos educativos para aprender Patxôhã brincando: relacione palavras, memória cultural e preencha lacunas." },
-      { property: "og:title", content: "Jogos AWÃ TECH — Aprenda Patxôhã brincando" },
-      { property: "og:description", content: "Jogos divertidos com temas indígenas e vocabulário Patxôhã." },
+      { title: "Jogos Awã Tech — Aprenda Patxôhã brincando" },
+      { name: "description", content: "Jogos culturais Pataxó: memória, ligação de palavras e complete a frase em Patxôhã." },
+      { property: "og:title", content: "Jogos Awã Tech" },
+      { property: "og:description", content: "Aprenda Patxôhã brincando com jogos culturais Pataxó." },
     ],
   }),
   component: JogosPage,
 });
 
-// Vocabulário base (grátis para todos)
-const VOCAB: { pt: string; px: string }[] = [
-  { pt: "Nós", px: "Awã" },
-  { pt: "Nosso povo", px: "Pataxó" },
-  { pt: "Deus / espírito do céu", px: "Tupã" },
-  { pt: "Terra", px: "Yby" },
-  { pt: "Água", px: "Y" },
-  { pt: "Sol", px: "Kwaracy" },
-  { pt: "Lua", px: "Jaci" },
-  { pt: "Fogo", px: "Tatá" },
-  { pt: "Mãe", px: "Sy" },
-  { pt: "Pai", px: "Txopai" },
-  { pt: "Criança", px: "Kunumi" },
-  { pt: "Bom dia", px: "Djahatã" },
+// Vocabulário Patxôhã com explicações culturais
+const VOCAB: { px: string; pt: string; nota: string }[] = [
+  { px: "Awã", pt: "Nós", nota: "Marca a coletividade — o nosso povo." },
+  { px: "Pataxó", pt: "Nosso povo", nota: "Nome do povo originário do sul da Bahia." },
+  { px: "Tupã", pt: "Espírito do céu", nota: "Força criadora que habita o alto." },
+  { px: "Yby", pt: "Terra", nota: "A mãe que sustenta e alimenta." },
+  { px: "Y", pt: "Água", nota: "Vida que corre nos rios sagrados." },
+  { px: "Kwaracy", pt: "Sol", nota: "Ilumina o dia e guia o plantio." },
+  { px: "Jaci", pt: "Lua", nota: "Marca o tempo e os rituais da noite." },
+  { px: "Tatá", pt: "Fogo", nota: "O fogo sagrado que reúne a aldeia." },
+  { px: "Sy", pt: "Mãe", nota: "Origem, cuidado e proteção." },
+  { px: "Txopai", pt: "Pai", nota: "Guardião e provedor da família." },
+  { px: "Kunumi", pt: "Criança", nota: "Futuro do povo, aprende ouvindo os anciãos." },
+  { px: "Katu", pt: "Bom / Bem", nota: "Usado em saudações e bênçãos." },
+  { px: "Djahatã", pt: "Bom dia", nota: "Saudação ao amanhecer." },
+  { px: "Ramã", pt: "Como / assim", nota: "Aparece em perguntas do dia a dia." },
 ];
 
 const SYMBOLS = [
-  { emoji: "🏹", label: "Arco e Flecha" },
-  { emoji: "🔥", label: "Fogo Sagrado" },
-  { emoji: "🌿", label: "Urucum" },
-  { emoji: "🪶", label: "Cocar" },
-  { emoji: "🥁", label: "Maracá" },
-  { emoji: "🌳", label: "Floresta" },
+  { emoji: "🏹", label: "Arco e Flecha", nota: "Caça e proteção do território." },
+  { emoji: "🔥", label: "Fogo Sagrado", nota: "Reúne a aldeia nas noites de reza." },
+  { emoji: "🌿", label: "Urucum", nota: "Tinta vermelha da pintura corporal." },
+  { emoji: "🪶", label: "Cocar", nota: "Símbolo de sabedoria e liderança." },
+  { emoji: "🥁", label: "Maracá", nota: "Chama os espíritos no ritual." },
+  { emoji: "🌳", label: "Mata Atlântica", nota: "Casa e farmácia do povo Pataxó." },
 ];
 
 const FILL_QUESTIONS = [
-  { sentence: "____ pataxó (Nós somos pataxó).", answer: "Awã", options: ["Awã", "Tupã", "Yby"] },
-  { sentence: "____ é a nossa mãe terra.", answer: "Yby", options: ["Y", "Yby", "Tatá"] },
-  { sentence: "O ____ ilumina o dia.", answer: "Kwaracy", options: ["Jaci", "Kwaracy", "Tupã"] },
-  { sentence: "A ____ ilumina a noite.", answer: "Jaci", options: ["Jaci", "Sy", "Y"] },
-  { sentence: "Bebemos ____ do rio.", answer: "Y", options: ["Y", "Tatá", "Awã"] },
+  { sentence: "____ pataxó (Nós somos pataxó).", answer: "Awã", options: ["Awã", "Tupã", "Yby"], nota: "Awã = Nós, coletividade do povo." },
+  { sentence: "____ é a nossa mãe terra.", answer: "Yby", options: ["Y", "Yby", "Tatá"], nota: "Yby = Terra, sustento da vida." },
+  { sentence: "O ____ ilumina o dia.", answer: "Kwaracy", options: ["Jaci", "Kwaracy", "Tupã"], nota: "Kwaracy = Sol." },
+  { sentence: "A ____ ilumina a noite.", answer: "Jaci", options: ["Jaci", "Sy", "Y"], nota: "Jaci = Lua, marca os rituais." },
+  { sentence: "Bebemos ____ do rio.", answer: "Y", options: ["Y", "Tatá", "Awã"], nota: "Y = Água, vida sagrada." },
+  { sentence: "____ ramã? (Como vai você?)", answer: "Awã", options: ["Awã", "Katu", "Sy"], nota: "Saudação comum entre parentes." },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
+const URUCUM = "#972C20";
+
 function JogosPage() {
   const [tab, setTab] = useState<"match" | "memoria" | "lacuna">("match");
   const [score, setScore] = useState(0);
 
+  const tabs = [
+    { id: "match" as const, label: "Ligação", icon: BookOpen },
+    { id: "memoria" as const, label: "Memória", icon: Puzzle },
+    { id: "lacuna" as const, label: "Lacuna", icon: PencilLine },
+  ];
+
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
-      <div className="mx-auto max-w-5xl px-4 py-10 md:py-16">
+      <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gold/20 text-gold">
             <Gamepad2 className="h-8 w-8" />
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold">Jogos Awã Tech</h1>
-          <p className="mt-3 text-cream/80">Aprenda Patxôhã brincando 🌿</p>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-gold/15 px-4 py-2 text-gold">
-            <Trophy className="h-4 w-4" /> <span className="font-bold">{score} pontos</span>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold">Jogos Awã Tech</h1>
+          <p className="mt-3 text-cream/80 px-2">Aprenda Patxôhã brincando 🌿 — jogos culturais do povo Pataxó.</p>
+          <div
+            className="mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold text-cream shadow-lg"
+            style={{ background: URUCUM }}
+          >
+            <Trophy className="h-4 w-4 text-gold" /> <span>{score} pontos</span>
           </div>
         </div>
 
-        <div className="mb-6 flex flex-wrap justify-center gap-2">
-          {[
-            { id: "match", label: "📚 Relacione" },
-            { id: "memoria", label: "🧩 Memória" },
-            { id: "lacuna", label: "✍️ Lacuna" },
-          ].map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id as "match" | "memoria" | "lacuna")}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                tab === t.id ? "bg-gold text-forest-deep" : "bg-white/10 text-cream hover:bg-white/20"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+        {/* Navegação em botões grandes, mobile-first */}
+        <div className="mb-6 grid grid-cols-3 gap-2 md:flex md:justify-center md:gap-3">
+          {tabs.map((t) => {
+            const Icon = t.icon;
+            const active = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 rounded-2xl px-3 py-3 md:px-6 md:py-3 text-sm md:text-base font-bold transition ${
+                  active
+                    ? "bg-gold text-forest-deep shadow-lg scale-[1.02]"
+                    : "bg-white/10 text-cream hover:bg-white/20"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <span>{t.label}</span>
+              </button>
+            );
+          })}
         </div>
 
-        <div className="rounded-3xl bg-black/30 p-4 md:p-8 backdrop-blur border border-gold/20">
+        <div className="rounded-3xl bg-black/30 p-4 md:p-8 backdrop-blur border-2 border-gold/30 shadow-2xl">
           {tab === "match" && <MatchGame onScore={(n) => setScore((s) => s + n)} />}
           {tab === "memoria" && <MemoryGame onScore={(n) => setScore((s) => s + n)} />}
           {tab === "lacuna" && <FillGame onScore={(n) => setScore((s) => s + n)} />}
         </div>
+
+        <p className="mt-6 text-center text-xs text-cream/60">
+          Todos os jogos são gratuitos 🌱 — cortesia do povo Pataxó para as próximas gerações.
+        </p>
       </div>
     </div>
   );
 }
 
-/* ============ 1. RELACIONE ============ */
+/* ============ 1. LIGAÇÃO ============ */
 function MatchGame({ onScore }: { onScore: (n: number) => void }) {
   const [round, setRound] = useState(0);
   const pool = useMemo(() => shuffle(VOCAB).slice(0, 4), [round]);
@@ -105,12 +127,15 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
   const [selectedPx, setSelectedPx] = useState<string | null>(null);
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [lastNota, setLastNota] = useState<string | null>(null);
 
   const handlePt = (pt: string) => {
     if (!selectedPx) return;
-    const correct = pool.find((p) => p.px === selectedPx)?.pt === pt;
-    if (correct) {
+    const item = pool.find((p) => p.px === selectedPx);
+    const correct = item?.pt === pt;
+    if (correct && item) {
       setMatches((m) => ({ ...m, [selectedPx]: pt }));
+      setLastNota(`${item.px} = ${item.pt}. ${item.nota}`);
       onScore(10);
     } else {
       setErrors((e) => ({ ...e, [selectedPx]: true }));
@@ -123,10 +148,13 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
 
   return (
     <div>
-      <h3 className="mb-4 text-center text-xl font-bold text-gold">Ligue Patxôhã → Português</h3>
-      <div className="grid gap-6 md:grid-cols-2">
+      <h3 className="mb-2 text-center text-lg md:text-xl font-bold text-gold">
+        Ligue Patxôhã → Português
+      </h3>
+      <p className="mb-4 text-center text-xs text-cream/60">Toque numa palavra à esquerda e depois no significado.</p>
+      <div className="grid gap-3 md:gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <p className="text-sm text-cream/60">Patxôhã</p>
+          <p className="text-xs uppercase tracking-wider text-gold/80">Patxôhã</p>
           {pool.map((p) => {
             const matched = !!matches[p.px];
             const selected = selectedPx === p.px;
@@ -136,15 +164,16 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                 key={p.px}
                 disabled={matched}
                 onClick={() => setSelectedPx(p.px)}
-                className={`w-full rounded-xl px-4 py-3 text-left font-semibold transition ${
+                className={`w-full rounded-xl px-4 py-4 text-left font-semibold transition min-h-[52px] ${
                   matched
                     ? "bg-leaf/40 text-cream line-through opacity-60"
                     : err
                     ? "bg-red-500/40"
                     : selected
-                    ? "bg-gold text-forest-deep"
+                    ? "bg-gold text-forest-deep scale-[1.02]"
                     : "bg-white/10 hover:bg-white/20"
                 }`}
+                style={!matched && !selected && !err ? { borderLeft: `4px solid ${URUCUM}` } : undefined}
               >
                 {p.px}
               </button>
@@ -152,7 +181,7 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
           })}
         </div>
         <div className="space-y-2">
-          <p className="text-sm text-cream/60">Português</p>
+          <p className="text-xs uppercase tracking-wider text-gold/80">Português</p>
           {shuffledPt.map((pt) => {
             const used = Object.values(matches).includes(pt);
             return (
@@ -160,8 +189,8 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                 key={pt}
                 disabled={used || !selectedPx}
                 onClick={() => handlePt(pt)}
-                className={`w-full rounded-xl px-4 py-3 text-left font-semibold transition ${
-                  used ? "bg-leaf/40 line-through opacity-60" : "bg-white/10 hover:bg-white/20"
+                className={`w-full rounded-xl px-4 py-4 text-left font-semibold transition min-h-[52px] ${
+                  used ? "bg-leaf/40 line-through opacity-60" : "bg-white/10 hover:bg-white/20 disabled:opacity-50"
                 }`}
               >
                 {pt}
@@ -170,15 +199,25 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
           })}
         </div>
       </div>
+
+      {lastNota && !done && (
+        <div className="mt-4 rounded-xl border border-gold/30 bg-gold/10 p-3 text-sm text-cream/90">
+          <Sparkles className="mr-2 inline h-4 w-4 text-gold" />
+          {lastNota}
+        </div>
+      )}
+
       {done && (
         <div className="mt-6 text-center">
-          <p className="mb-3 text-gold font-bold">🎉 Rodada completa! +40 pts</p>
+          <p className="mb-3 text-gold font-bold text-lg">🎉 Rodada completa! +40 pts</p>
+          <p className="mb-4 text-sm text-cream/70">Você conhece bem o nosso idioma!</p>
           <button
             onClick={() => {
               setMatches({});
+              setLastNota(null);
               setRound((r) => r + 1);
             }}
-            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-2 font-bold text-forest-deep"
+            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 font-bold text-forest-deep"
           >
             <RefreshCw className="h-4 w-4" /> Nova rodada
           </button>
@@ -197,12 +236,14 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
   }, [round]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
+  const [lastNota, setLastNota] = useState<string | null>(null);
 
   useEffect(() => {
     if (flipped.length === 2) {
       const [a, b] = flipped;
       if (cards[a].label === cards[b].label) {
         setMatched((m) => [...m, cards[a].label]);
+        setLastNota(`${cards[a].emoji} ${cards[a].label} — ${cards[a].nota}`);
         onScore(15);
         setFlipped([]);
       } else {
@@ -220,41 +261,54 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
 
   return (
     <div>
-      <h3 className="mb-4 text-center text-xl font-bold text-gold">Encontre os pares culturais</h3>
-      <div className="grid grid-cols-3 gap-3 md:grid-cols-4">
+      <h3 className="mb-2 text-center text-lg md:text-xl font-bold text-gold">
+        Memória Cultural Pataxó
+      </h3>
+      <p className="mb-4 text-center text-xs text-cream/60">Encontre os pares de símbolos sagrados.</p>
+      <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-3">
         {cards.map((c, i) => {
           const show = flipped.includes(i) || matched.includes(c.label);
           return (
             <button
               key={c.id}
               onClick={() => handle(i)}
-              
               className={`aspect-square rounded-xl text-center font-bold transition ${
-                show ? "bg-gold/90 text-forest-deep" : "bg-forest-deep/70 border border-gold/30"
+                show
+                  ? "bg-gold/90 text-forest-deep"
+                  : "border-2 border-gold/30"
               }`}
+              style={!show ? { background: URUCUM } : undefined}
             >
               {show ? (
-                <div className="flex h-full flex-col items-center justify-center p-2">
-                  <div className="text-3xl md:text-4xl">{c.emoji}</div>
-                  <div className="mt-1 text-[10px] md:text-xs">{c.label}</div>
+                <div className="flex h-full flex-col items-center justify-center p-1">
+                  <div className="text-2xl md:text-4xl">{c.emoji}</div>
+                  <div className="mt-1 text-[9px] md:text-xs leading-tight">{c.label}</div>
                 </div>
               ) : (
-                <Sparkles className="mx-auto h-6 w-6 text-gold/50" />
+                <Sparkles className="mx-auto h-6 w-6 text-gold/70" />
               )}
             </button>
           );
         })}
       </div>
+
+      {lastNota && !done && (
+        <div className="mt-4 rounded-xl border border-gold/30 bg-gold/10 p-3 text-sm text-cream/90">
+          {lastNota}
+        </div>
+      )}
+
       {done && (
         <div className="mt-6 text-center">
-          <p className="mb-3 text-gold font-bold">🎉 Todos os pares! +90 pts</p>
+          <p className="mb-3 text-gold font-bold text-lg">🎉 Todos os pares! +90 pts</p>
           <button
             onClick={() => {
               setMatched([]);
               setFlipped([]);
+              setLastNota(null);
               setRound((r) => r + 1);
             }}
-            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-2 font-bold text-forest-deep"
+            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 font-bold text-forest-deep"
           >
             <RefreshCw className="h-4 w-4" /> Jogar de novo
           </button>
@@ -284,35 +338,42 @@ function FillGame({ onScore }: { onScore: (n: number) => void }) {
 
   return (
     <div className="text-center">
-      <h3 className="mb-4 text-xl font-bold text-gold">Complete a frase em Patxôhã</h3>
-      <p className="mb-6 text-2xl font-serif">{q.sentence}</p>
-      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-3">
-        {q.options.map((opt) => (
-          <button
-            key={opt}
-            onClick={() => choose(opt)}
-            className={`rounded-xl px-6 py-3 font-bold transition ${
-              answered !== null && opt === q.answer
-                ? "bg-leaf text-cream"
-                : answered === false && opt !== q.answer
-                ? "bg-white/10 opacity-50"
-                : "bg-white/10 hover:bg-gold hover:text-forest-deep"
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
+      <h3 className="mb-2 text-lg md:text-xl font-bold text-gold">Complete a frase em Patxôhã</h3>
+      <p className="mb-6 text-cream/60 text-xs">Frase {i + 1} de {FILL_QUESTIONS.length}</p>
+      <p className="mb-6 text-xl md:text-2xl font-serif px-2">{q.sentence}</p>
+      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 md:gap-3">
+        {q.options.map((opt) => {
+          const isAnswer = answered !== null && opt === q.answer;
+          const isWrongPicked = answered === false && opt !== q.answer;
+          return (
+            <button
+              key={opt}
+              onClick={() => choose(opt)}
+              className={`rounded-xl px-5 py-3 md:px-6 md:py-3 font-bold transition min-w-[90px] ${
+                isAnswer
+                  ? "bg-leaf text-cream"
+                  : isWrongPicked
+                  ? "bg-white/10 opacity-50"
+                  : "bg-white/10 hover:bg-gold hover:text-forest-deep"
+              }`}
+              style={answered === null ? { borderBottom: `3px solid ${URUCUM}` } : undefined}
+            >
+              {opt}
+            </button>
+          );
+        })}
       </div>
       {answered !== null && (
         <div className="mt-6">
-          <p className={`mb-3 font-bold ${answered ? "text-leaf" : "text-red-400"}`}>
+          <p className={`mb-2 font-bold ${answered ? "text-leaf" : "text-red-400"}`}>
             {answered ? (
               <span className="inline-flex items-center gap-2"><Check className="h-5 w-5" /> Correto! +20 pts</span>
             ) : (
               <span className="inline-flex items-center gap-2"><X className="h-5 w-5" /> Resposta: {q.answer}</span>
             )}
           </p>
-          <button onClick={next} className="rounded-full bg-gold px-6 py-2 font-bold text-forest-deep">
+          <p className="mb-4 text-sm text-cream/70 px-3">{q.nota}</p>
+          <button onClick={next} className="rounded-full bg-gold px-6 py-3 font-bold text-forest-deep">
             Próxima →
           </button>
         </div>
