@@ -258,7 +258,7 @@ function Index() {
         </div>
 
         {open && (
-          <div className="lg:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
+          <div className="xl:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
             <div className="text-center pb-3 mb-3 border-b border-gold/15">
               <div className="font-display text-sm font-black text-cream">AWÃ TECH</div>
               <div className="text-[10px] font-semibold tracking-[0.18em] text-gold/80">CAMINHO DA SABEDORIA</div>
