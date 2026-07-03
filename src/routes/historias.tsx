@@ -155,20 +155,34 @@ const MALE_VOICE_HINTS = [
   "felipe",
   "thiago",
   "antonio",
+  "antônio",
   "luciano",
   "paulo",
-  "google português do brasil",
+  "fabio",
+  "fábio",
+  "joão",
+  "joao",
+  "carlos",
+  "pedro",
+  "rafael",
+  "eddy",
+  "junior",
 ];
+const FEMALE_HINTS = ["female", "feminin", "mulher", "luciana", "camila", "vitoria", "vitória", "maria", "ana", "helena", "francisca", "joana"];
 
 function pickMalePtVoice(): SpeechSynthesisVoice | null {
   if (typeof window === "undefined") return null;
   const voices = window.speechSynthesis.getVoices();
   const pt = voices.filter((v) => v.lang?.toLowerCase().startsWith("pt"));
   if (pt.length === 0) return null;
-  const byHint = pt.find((v) =>
+  const male = pt.find((v) =>
     MALE_VOICE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
   );
-  return byHint ?? pt[0];
+  if (male) return male;
+  const notFemale = pt.find(
+    (v) => !FEMALE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
+  );
+  return notFemale ?? pt[0];
 }
 
 function useNarration(text: string) {
