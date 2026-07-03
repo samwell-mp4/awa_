@@ -68,13 +68,25 @@ function TrilhaPage() {
 
   useEffect(() => { setLearnedState(getLearned(slug)); }, [slug]);
 
+  function logLearningEvent(action: string) {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return;
+      supabase
+        .from("learning_events")
+        .insert({ user_id: data.user.id, trail: slug, action, points: 1 })
+        .then(() => {});
+    });
+  }
+
   function markLearned(id: string) {
     setLearnedState((prev) => {
       if (prev.has(id)) return prev;
       const next = new Set(prev); next.add(id);
       setLearned(slug, next);
+      logLearningEvent("learn_word");
       if (words.length && next.size >= words.length && !hasCertificate(slug)) {
         markCertificate(slug);
+        logLearningEvent("certificate");
         setTimeout(() => setShowCert(true), 300);
       }
       return next;
@@ -86,10 +98,13 @@ function TrilhaPage() {
   function toggleLearned(id: string) {
     setLearnedState((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      const wasAdding = !next.has(id);
+      wasAdding ? next.add(id) : next.delete(id);
       setLearned(slug, next);
+      if (wasAdding) logLearningEvent("learn_word");
       if (words.length && next.size >= words.length && !hasCertificate(slug)) {
         markCertificate(slug);
+        logLearningEvent("certificate");
         setTimeout(() => setShowCert(true), 300);
       }
       return next;
