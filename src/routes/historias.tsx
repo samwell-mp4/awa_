@@ -265,6 +265,11 @@ function NarratableVideo({
     const video = videoRef.current;
     if (!video) return;
 
+    if (video.error) {
+      setVideoFailed(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -314,6 +319,7 @@ function NarratableVideo({
         preload="metadata"
         className="h-full w-full object-cover"
         aria-label={alt}
+        onError={() => setVideoFailed(true)}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
       <button
