@@ -178,6 +178,7 @@ function Index() {
     { label: "Professor", href: "/professor", icon: Sparkles },
     { label: "Histórias", href: "/historias", icon: ScrollText },
     { label: "Vídeos", href: "/videos", icon: Video },
+    { label: "Jogos", href: "/jogos", icon: Trophy },
     { label: "Biografia", href: "/biografia", icon: BookOpen },
     { label: "Instalar", href: "/instalar", icon: Download },
     { label: "Premium", href: "/planos", icon: Star },
