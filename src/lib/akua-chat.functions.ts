@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertPremium } from "./premium-guard";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Entry = { term_indigenous: string; term_pt: string };
@@ -60,7 +61,8 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { messages: Msg[] }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertPremium(context);
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
