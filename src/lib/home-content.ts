@@ -54,7 +54,7 @@ export const navGroups: NavGroup[] = [
       { label: "Dicionário", href: "/dicionario", icon: Library },
       { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
-      { label: "Espaço do Professor", href: "/professor", icon: Sparkles, premium: true },
+      { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
   },
   {

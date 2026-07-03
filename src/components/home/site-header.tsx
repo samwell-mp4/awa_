@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { LogIn, LogOut, Menu, Settings, Star, UserCircle2 } from "lucide-react";
+import { ChevronRight, LogIn, LogOut, Menu, Settings, Star, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { navGroups, topNavLinks } from "@/lib/home-content";
@@ -100,40 +100,61 @@ function MobileDrawer({
   user: ReturnType<typeof useAuth>["user"];
   isAdmin: boolean;
 }) {
+  const [openGroup, setOpenGroup] = useState<string | null>(navGroups[0]?.title ?? null);
   return (
     <div className="xl:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
       <div className="text-center pb-3 mb-3 border-b border-gold/15">
         <div className="font-display text-sm font-black text-cream">AWÃ TECH</div>
         <div className="text-[10px] font-semibold tracking-[0.18em] text-gold/80">
-          CAMINHO DA SABEDORIA
+          CULTURAS VIVAS
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        {navGroups.map((group) => (
-          <div key={group.title}>
-            <div className="mb-1.5 px-1 text-[10px] font-bold uppercase tracking-[0.15em] text-gold/70">
-              {group.title}
+      <div className="flex flex-col gap-2">
+        {navGroups.map((group) => {
+          const isOpen = openGroup === group.title;
+          return (
+            <div key={group.title} className="rounded-xl border border-gold/15 bg-forest-deep/20 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setOpenGroup(isOpen ? null : group.title)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center gap-2 px-3 py-3 text-left font-display text-sm font-bold uppercase tracking-[0.12em] text-gold hover:bg-gold/10"
+              >
+                <span className="flex-1">{group.title}</span>
+                <ChevronRight
+                  className={`h-4 w-4 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`}
+                />
+              </button>
+              <div
+                className={`grid transition-all duration-300 ease-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="flex flex-col gap-1 px-2 pb-2 pt-1">
+                    {group.items.map((n) => (
+                      <Link
+                        key={n.label}
+                        to={n.href}
+                        onClick={onClose}
+                        className="flex items-center gap-3 rounded-lg pl-6 pr-3 py-2 text-sm font-medium text-foreground/85 hover:bg-leaf/20"
+                      >
+                        <n.icon className="h-4 w-4 text-gold/90" />
+                        <span className="flex-1">{n.label}</span>
+                        {n.premium && (
+                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">
+                            PREMIUM
+                          </span>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              {group.items.map((n) => (
-                <Link
-                  key={n.label}
-                  to={n.href}
-                  onClick={onClose}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
-                >
-                  <n.icon className="h-4 w-4 text-gold" />
-                  <span className="flex-1">{n.label}</span>
-                  {n.premium && (
-                    <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">
-                      PREMIUM
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
+          );
+        })}
+
         <div className="border-t border-gold/15 pt-3 flex flex-col gap-1">
           {isAdmin && (
             <Link
