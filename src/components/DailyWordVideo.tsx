@@ -10,6 +10,12 @@ type Word = {
   pronunciation: string | null;
 };
 
+function hashCode(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
+  return h;
+}
+
 export function DailyWordVideo() {
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(true);
