@@ -7,6 +7,52 @@ import artesanato from "@/assets/pataxo-artesanato.jpg";
 import monte from "@/assets/pataxo-monte-pascoal.jpg";
 import anciao from "@/assets/pataxo-anciao.jpg";
 
+import albumPaje from "@/assets/album/paje.jpg.asset.json";
+import albumGuerreiraFestival from "@/assets/album/guerreira-festival.jpg.asset.json";
+import albumGuerreiraCocar from "@/assets/album/guerreira-cocar.jpg.asset.json";
+import albumGuerreiros from "@/assets/album/guerreiros-pintura.jpg.asset.json";
+import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
+import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
+import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
+
+const album = [
+  {
+    src: albumPaje.url,
+    title: "O Pajé — guardião do sagrado",
+    text: "O pajé carrega no cocar de penas e nos colares de sementes a força espiritual do povo. É ele quem conduz as rezas, cura com plantas da mata e mantém a ponte entre a aldeia e os encantados da floresta.",
+  },
+  {
+    src: albumGuerreiraFestival.url,
+    title: "Mulher Pataxó em festival",
+    text: "As pinturas de urucum no rosto marcam identidade, proteção e pertencimento. Cada traço conta de onde ela vem, de qual aldeia, de qual linhagem — a pele vira território de memória.",
+  },
+  {
+    src: albumGuerreiraCocar.url,
+    title: "Cocar de plumas e flor",
+    text: "Os grafismos finos em preto no rosto representam os caminhos da mata e a coragem. O cocar com penas verdes, amarelas e a flor vermelha celebra a beleza da floresta viva que vestimos.",
+  },
+  {
+    src: albumGuerreiros.url,
+    title: "Jovens guerreiros pintados de onça",
+    text: "A pintura de jenipapo em pintas de onça convoca a força do maior predador da mata. Antes de rituais e jogos, os jovens vestem o corpo do animal-espírito para dançar, correr e resistir.",
+  },
+  {
+    src: albumCriancaCocar.url,
+    title: "Menino com cocar ancestral",
+    text: "Desde cedo as crianças aprendem que o cocar não é adorno: é responsabilidade. Usar as penas dos pais é aceitar o compromisso de cuidar da língua, da terra e das histórias do povo.",
+  },
+  {
+    src: albumCriancaJogos.url,
+    title: "Nova geração nos Jogos Indígenas",
+    text: "Os Jogos Indígenas Pataxó reúnem aldeias inteiras em corridas, arco e flecha, cabo de guerra e canoagem. Para as crianças, é festa; para os mais velhos, é a certeza de que a cultura segue viva.",
+  },
+  {
+    src: albumPintura.url,
+    title: "A pintura corporal como escrita",
+    text: "Cada linha aplicada com pincel de fibra e tinta de jenipapo é uma palavra antiga. Os traços nos ombros, no rosto e no peito narram alianças, dons de caça, passagens de vida — é a escrita viva do povo.",
+  },
+];
+
 
 
 export const Route = createFileRoute("/historias")({
@@ -183,6 +229,43 @@ function HistoriasPage() {
           })}
         </div>
 
+
+        {/* Álbum cultural */}
+        <section className="mt-20">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 Álbum do Povo</p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
+              Rostos, pinturas e rituais Pataxó
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
+              Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {album.map((item) => (
+              <figure
+                key={item.title}
+                className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
+              >
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <figcaption className="p-5">
+                  <h3 className="font-serif text-lg text-gold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-amber-100/85">
+                    {item.text}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
