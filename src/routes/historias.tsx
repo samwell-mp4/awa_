@@ -240,8 +240,8 @@ function NarratablePhoto({
         {supported && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div
-              className={`flex h-20 w-20 items-center justify-center rounded-full bg-gold/95 text-emerald-950 shadow-2xl shadow-black/50 transition-all ${
-                speaking ? "scale-110 animate-pulse" : "opacity-90 group-hover:scale-105 group-hover:opacity-100"
+              className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
+                speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
               }`}
             >
               {speaking ? <Square className="h-8 w-8" /> : <Volume2 className="h-9 w-9" />}
