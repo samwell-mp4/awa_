@@ -14,6 +14,7 @@ import albumGuerreiros from "@/assets/album/guerreiros-pintura.jpg.asset.json";
 import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
 import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
 import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
+import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
 
 const album = [
   {
@@ -50,6 +51,11 @@ const album = [
     src: albumPintura.url,
     title: "A pintura corporal como escrita",
     text: "Cada linha aplicada com pincel de fibra e tinta de jenipapo é uma palavra antiga. Os traços nos ombros, no rosto e no peito narram alianças, dons de caça, passagens de vida — é a escrita viva do povo.",
+  },
+  {
+    src: albumAnciao.url,
+    title: "Ancião Pataxó — em memória",
+    text: "Sorriso largo, peito pintado de grafismos ancestrais e o maracá na mão: assim caminhou este ancião até o encontro com os antepassados. Sua voz ensinou meninos a caçar, mulheres a cantar e a aldeia inteira a nunca desistir da própria terra.",
   },
 ];
 
@@ -266,6 +272,55 @@ function HistoriasPage() {
             ))}
           </div>
         </section>
+
+        {/* In memoriam — ancião */}
+        <section className="mt-20">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ In memoriam</p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
+              A história de quem <span className="text-gold">nunca desistiu</span> de sua aldeia
+            </h2>
+          </div>
+
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
+              <img
+                src={albumAnciao.url}
+                alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-xs uppercase tracking-[0.25em] text-amber-100/90">
+                Tradição · Resistência · Sabedoria
+              </div>
+            </div>
+
+            <div className="space-y-4 text-amber-100/90 leading-relaxed">
+              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+                “Enquanto houver respeito e união, nosso povo seguirá forte.
+                Essa é a nossa cultura, essa é a nossa vida.”
+              </blockquote>
+              <p>
+                Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou
+                muitas lutas, mas nunca baixou a cabeça. Lutou pela terra,
+                pela língua, pela cultura — e por cada criança que sonha com
+                um futuro melhor.
+              </p>
+              <p>
+                Ser ancião, dizia ele, é mais que ter cabelos brancos: é
+                guardar as histórias, ensinar com o exemplo, e plantar hoje
+                para que a aldeia floresça amanhã. Seu maracá silenciou, mas
+                seu canto segue vivo em cada roda de Awê.
+              </p>
+              <p className="font-serif text-gold">
+                Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
 
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
