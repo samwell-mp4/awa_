@@ -461,23 +461,11 @@ function Index() {
               </h3>
             </div>
             <ul className="mt-4 flex flex-col gap-2">
-              {ranking.map((u, i) => (
+              {ranking.map((u) => (
                 <li
                   key={u.name}
-                  className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-gold/20 bg-card/60 px-3 py-2.5"
+                  className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-gold/20 bg-card/60 px-3 py-2.5"
                 >
-                  <span
-                    className={[
-                      "grid h-7 w-7 place-items-center rounded-full text-xs font-black",
-                      i === 0
-                        ? "bg-gold text-[oklch(0.18_0.04_145)]"
-                        : i === 1
-                          ? "bg-foreground/80 text-[oklch(0.18_0.04_145)]"
-                          : "bg-earth text-cream",
-                    ].join(" ")}
-                  >
-                    {i + 1}
-                  </span>
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/25 text-xs font-bold text-cream">
                     {u.initials}
                   </span>
