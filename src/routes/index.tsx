@@ -212,40 +212,51 @@ function Index() {
     <div className="min-h-screen text-foreground">
       {/* HEADER */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-3 py-3 sm:px-4 md:px-8">
           <button
             onClick={() => setOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold lg:hidden"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
             aria-label="Menu"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <Logo />
-          <nav className="hidden lg:flex items-center gap-1">
-            {flatNav.slice(0, 7).map((n) => (
-              <Link key={n.label} to={n.href} className="rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+          <div className="min-w-0 flex-1 xl:flex-none">
+            <Logo />
+          </div>
+          <nav className="hidden xl:flex items-center gap-1">
+            {[
+              { label: "Dicionário", href: "/dicionario" },
+              { label: "Tradutor", href: "/traduzir" },
+              { label: "Trilhas", href: "/trilhas" },
+              { label: "Histórias", href: "/historias" },
+              { label: "Músicas", href: "/musicas" },
+              { label: "Vídeos", href: "/videos" },
+              { label: "Jogos", href: "/jogos" },
+            ].map((n) => (
+              <Link key={n.label} to={n.href} className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
                 {n.label}
               </Link>
             ))}
-            <Link to="/planos" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-bold text-gold hover:bg-gold/30">
+            <Link to="/planos" className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-bold text-gold hover:bg-gold/30">
               <Star className="h-4 w-4" /> Premium
             </Link>
             {isAdmin && (
-              <Link to="/admin" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
+              <Link to="/admin" className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
                 <Settings className="h-4 w-4" /> Painel
               </Link>
             )}
             {user ? (
-              <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
+              <button onClick={signOut} className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
                 <LogOut className="h-4 w-4" /> Sair
               </button>
             ) : (
-              <Link to="/auth" className="inline-flex items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]">
+              <Link to="/auth" className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]">
                 <LogIn className="h-4 w-4" /> Entrar
               </Link>
             )}
           </nav>
         </div>
+
         {open && (
           <div className="lg:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
             <div className="text-center pb-3 mb-3 border-b border-gold/15">
