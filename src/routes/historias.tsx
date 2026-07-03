@@ -202,9 +202,6 @@ function HistoriasPage() {
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-xs uppercase tracking-[0.25em] text-amber-100/90">
-                Tradição · Resistência · Sabedoria
-              </div>
             </div>
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
