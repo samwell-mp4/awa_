@@ -37,6 +37,8 @@ import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
 import trailAnimais from "@/assets/trail-animais.jpg";
+import { DailyWordVideo } from "@/components/DailyWordVideo";
+
 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
