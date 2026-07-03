@@ -230,6 +230,43 @@ function HistoriasPage() {
         </div>
 
 
+        {/* Álbum cultural */}
+        <section className="mt-20">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 Álbum do Povo</p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
+              Rostos, pinturas e rituais Pataxó
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
+              Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {album.map((item) => (
+              <figure
+                key={item.title}
+                className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
+              >
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <figcaption className="p-5">
+                  <h3 className="font-serif text-lg text-gold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-amber-100/85">
+                    {item.text}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
