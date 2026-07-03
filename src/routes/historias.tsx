@@ -52,6 +52,11 @@ const album = [
     title: "A pintura corporal como escrita",
     text: "Cada linha aplicada com pincel de fibra e tinta de jenipapo é uma palavra antiga. Os traços nos ombros, no rosto e no peito narram alianças, dons de caça, passagens de vida — é a escrita viva do povo.",
   },
+  {
+    src: albumAnciao.url,
+    title: "Ancião Pataxó — em memória",
+    text: "Sorriso largo, peito pintado de grafismos ancestrais e o maracá na mão: assim caminhou este ancião até o encontro com os antepassados. Sua voz ensinou meninos a caçar, mulheres a cantar e a aldeia inteira a nunca desistir da própria terra.",
+  },
 ];
 
 
