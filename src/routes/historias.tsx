@@ -20,6 +20,7 @@ import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
 import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
 import albumJosa from "@/assets/album/anciao-josa.png.asset.json";
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
+import videoJoao from "@/assets/videos/anciao-joao.mp4.asset.json";
 
 const album = [
   {
@@ -437,9 +438,10 @@ function HistoriasPage() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <NarratablePhoto
-              src={albumAnciao.url}
-              alt="Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+            <NarratableVideo
+              src={videoJoao.url}
+              poster={albumAnciao.url}
+              alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
               text={`A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
             />
 
