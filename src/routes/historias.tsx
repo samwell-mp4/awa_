@@ -350,7 +350,10 @@ function NarratableVideo({
         muted
         playsInline
         loop
-        preload="metadata"
+        autoPlay
+        preload="auto"
+        // @ts-expect-error fetchpriority is a valid HTML attr
+        fetchpriority="high"
         className="h-full w-full object-cover"
         aria-label={alt}
         onError={() => setVideoFailed(true)}
