@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Volume2, Square } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { narratePublic } from "@/lib/narrate-public.functions";
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
