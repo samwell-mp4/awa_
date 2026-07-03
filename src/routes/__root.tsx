@@ -131,11 +131,18 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    // Limpa qualquer "selo" (badge) fantasma no ícone do app instalado (PWA)
+    const nav = navigator as Navigator & { clearAppBadge?: () => Promise<void> };
+    nav.clearAppBadge?.().catch(() => {});
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      
+
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
 }
+
