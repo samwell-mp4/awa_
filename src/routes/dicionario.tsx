@@ -141,9 +141,12 @@ function DictionaryPage() {
     setVisibleCount(120);
   }, [query, cat, letter, sort]);
 
-  const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
+  const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
 
-  const hasMore = entries.length > visibleCount;
+  const hasMore = isPremium ? entries.length > visibleCount : filtered.length > FREE_LIMIT;
+  const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
+
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
