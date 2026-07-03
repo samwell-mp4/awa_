@@ -21,6 +21,8 @@ import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
 import albumJosa from "@/assets/album/anciao-josa.png.asset.json";
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
+import videoJosaPrimeiro from "@/assets/videos/anciao-josa-primeiro.mp4.asset.json";
+
 
 const album = [
   {
