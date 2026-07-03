@@ -80,8 +80,7 @@ function SaudacoesPage() {
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-10">
-
-
+        <LiveVideo list={list} loading={isLoading} />
 
         {/* Lista completa */}
         <section className="mt-8">
