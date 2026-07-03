@@ -251,7 +251,7 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
 }
 
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speak = useServerFn(speakText);
+  const speak = useServerFn(narratePublic);
   const [busy, setBusy] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const cacheRef = useRef<string | null>(null);
@@ -268,7 +268,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        const r = await speak({ data: { text, voice: "onyx" } });
         cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
       }
       const a = new Audio(cacheRef.current);
@@ -281,6 +281,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
       setBusy(false);
     }
   }
+
 
   return (
     <button
