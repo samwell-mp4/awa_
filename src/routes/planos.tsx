@@ -85,6 +85,22 @@ function PlanosPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8 md:py-16">
+        {processing && !isPremium && (
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/10 p-4">
+            <Loader2 className="h-5 w-5 animate-spin text-gold" />
+            <div className="text-sm text-cream">
+              <b>Processando seu pagamento...</b> Isso costuma levar poucos segundos.
+            </div>
+          </div>
+        )}
+        {isPremium && search.checkout === "success" && (
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-leaf/50 bg-leaf/10 p-4">
+            <CheckCircle2 className="h-5 w-5 text-leaf" />
+            <div className="text-sm text-cream">
+              <b>Pagamento confirmado!</b> Bem-vindo ao AWÃ TECH Premium 🌿
+            </div>
+          </div>
+        )}
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-gold">
             <Crown className="h-3.5 w-3.5" /> AWÃ TECH Premium
