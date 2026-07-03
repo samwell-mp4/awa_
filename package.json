@@ -98,11 +98,6 @@
     "vite": "^8.0.16",
     "vitest": "^2"
   },
-  "pnpm": {
-    "overrides": {
-      "entities": "4.5.0"
-    }
-  },
   "overrides": {
     "htmlparser2": "^10.0.0"
   },
