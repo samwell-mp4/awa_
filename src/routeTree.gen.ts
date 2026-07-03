@@ -20,6 +20,7 @@ import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
+import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -83,6 +84,11 @@ const BiografiaRoute = BiografiaRouteImport.update({
   path: '/biografia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BemVindoRoute = BemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -122,6 +128,7 @@ const ApiPublicPaymentsWebhookRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
@@ -243,6 +255,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BiografiaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bem-vindo': {
+      id: '/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof BemVindoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -405,6 +425,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
