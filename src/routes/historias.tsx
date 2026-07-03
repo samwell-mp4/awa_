@@ -18,6 +18,7 @@ import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
 import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
 import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
 import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
+import albumJosa from "@/assets/album/anciao-josa.png.asset.json";
 
 const album = [
   {
@@ -366,6 +367,69 @@ function HistoriasPage() {
             );
           })}
         </div>
+
+        {/* Ancião Josa */}
+        <section className="mt-20 md:mt-24">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 Guardião da Memória</p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
+              Ancião <span className="text-gold">Josa</span> — a história de quem nunca desistiu de sua aldeia
+            </h2>
+          </div>
+
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            <NarratablePhoto
+              src={albumJosa.url}
+              alt="Ancião Josa Pataxó segurando maracá tradicional em frente à oca da aldeia"
+              text={`Ancião Josa, a história de quem nunca desistiu de sua aldeia. Desde jovem, ele aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos. Por toda a sua vida, esteve na linha de frente da luta: defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo. Muitas vezes enfrentou dificuldades, mas nunca recuou, pois sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois. Hoje, como guardião da memória, ele é a referência da comunidade. Reúne os jovens para contar as histórias da origem do povo, ensina os costumes que vieram das gerações passadas, e reforça sempre: nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa. Tradição: os costumes, cantos, pinturas e a língua Patxôhã são tesouros que passam de geração em geração. Luta: defender o território, a floresta e os rios é defender a vida e o futuro do nosso povo. Sabedoria: os mais velhos são os livros vivos que guardam as histórias e os ensinamentos. Resistência: enquanto houver quem guarde e lute por esses saberes, nossa aldeia continuará existindo, forte e viva. Aldeia Velha, Povo Pataxó, nossa terra, nossa vida.`}
+            />
+
+            <div className="space-y-4 text-amber-100/90 leading-relaxed">
+              <p>
+                Desde jovem, Josa aprendeu com os antepassados que a terra
+                não é apenas chão onde se pisa: é a mãe que alimenta, que
+                guarda os mortos e que ensina os vivos.
+              </p>
+              <p>
+                Por toda a sua vida, esteve na linha de frente da luta —
+                defendeu o território contra invasões, denunciou danos às
+                matas e aos rios, e lutou para que a língua Patxôhã, as
+                pinturas, as cantigas e os saberes não desaparecessem com o
+                tempo.
+              </p>
+              <p>
+                Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia
+                que lutava não só por si, mas por todos os que vieram antes e
+                por todos os que viriam depois.
+              </p>
+              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+                “Nossa tradição não é coisa do passado. É o que mantém viva a
+                nossa identidade, a nossa ligação com a natureza e o nosso
+                direito de estar aqui, na terra que é nossa.”
+              </blockquote>
+
+              <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
+                {[
+                  { t: "Tradição", d: "Costumes, cantos e língua que passam de geração em geração." },
+                  { t: "Luta", d: "Defender a floresta e os rios é defender a vida." },
+                  { t: "Sabedoria", d: "Os mais velhos são livros vivos do povo." },
+                  { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
+                ].map((b) => (
+                  <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
+                    <p className="font-serif text-gold">{b.t}</p>
+                    <p className="mt-1 text-amber-100/80">{b.d}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
+                Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida
+              </p>
+            </div>
+          </div>
+        </section>
+
+
 
 
         {/* Álbum cultural */}
