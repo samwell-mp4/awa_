@@ -64,10 +64,12 @@ function firstLetter(s: string): string {
 }
 
 function DictionaryPage() {
+  const { isPremium } = useSubscription();
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
