@@ -347,54 +347,9 @@ function Index() {
           </div>
         </section>
 
-        {/* VÍDEO DO DIA */}
-        <section className="mt-6">
-          <div className="card-elev grid overflow-hidden rounded-3xl md:grid-cols-[1.1fr_1fr]">
-            <div className="p-6 md:p-8">
-              <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">
-                Vídeo do dia
-              </div>
-              <h2 className="mt-2 font-display text-2xl font-black text-cream md:text-3xl">
-                {dailyVideo?.title ?? "Saudação em Pataxó"}
-              </h2>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-foreground/75">
-                {dailyVideo?.description ??
-                  "Aprenda a cumprimentar em Pataxó com a voz da comunidade — pronúncia, contexto cultural e prática guiada."}
-              </p>
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <a
-                  href={dailyVideo?.video_url ?? "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-gold)] px-5 py-2.5 text-sm font-bold text-[oklch(0.18_0.04_145)] shadow-[var(--shadow-glow)]"
-                >
-                  <Play className="h-4 w-4 fill-current" /> Assistir agora
-                </a>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground/80">
-                  <Clock className="h-3.5 w-3.5 text-gold" /> {dailyVideo?.duration_minutes ?? 3} min
-                </span>
-              </div>
-            </div>
-            <div className="relative min-h-[220px] md:min-h-[320px]">
-              <img
-                src={dailyVideo?.thumbnail_url || videoProfessor}
-                alt="Vídeo do dia"
-                width={1536}
-                height={1024}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+        {/* VÍDEO DO DIA — real-time do dicionário Patxôhã */}
+        <DailyWordVideo />
 
-              <div className="absolute inset-0 bg-gradient-to-tr from-card/80 via-transparent to-transparent" />
-              <button
-                aria-label="Reproduzir vídeo"
-                className="absolute inset-0 m-auto grid h-16 w-16 place-items-center rounded-full border-2 border-cream/80 bg-card/30 backdrop-blur transition hover:scale-105"
-              >
-                <Play className="h-7 w-7 translate-x-0.5 fill-cream text-cream" />
-              </button>
-            </div>
-          </div>
-        </section>
 
         {/* TRILHAS */}
         <section className="mt-8">
