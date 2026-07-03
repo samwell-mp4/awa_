@@ -149,19 +149,54 @@ const sections: Section[] = [
   },
 ];
 
+// Module-level browser cache: same text reused across components/re-renders
+const narrationUrlCache = new Map<string, string>();
+const narrationPromiseCache = new Map<string, Promise<string>>();
+
 function useNarration(text: string) {
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const cacheRef = useRef<string | null>(null);
   const narrate = useServerFn(narratePublic);
 
+  const fetchUrl = (): Promise<string> => {
+    const hit = narrationUrlCache.get(text);
+    if (hit) return Promise.resolve(hit);
+    const inflight = narrationPromiseCache.get(text);
+    if (inflight) return inflight;
+    const p = narrate({ data: { text, voice: "onyx" } })
+      .then((res) => {
+        // Convert base64 → Blob URL (streams instantly, no giant data: URI)
+        const bin = atob(res.audio_base64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([bytes], { type: res.mime }));
+        narrationUrlCache.set(text, url);
+        narrationPromiseCache.delete(text);
+        return url;
+      })
+      .catch((err) => {
+        narrationPromiseCache.delete(text);
+        throw err;
+      });
+    narrationPromiseCache.set(text, p);
+    return p;
+  };
+
+  // Prefetch narration on mount (idle) so first click is instant
   useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    const schedule = w.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1500));
+    const id = schedule(() => {
+      fetchUrl().catch(() => {});
+    });
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
+      if (typeof id === "number") clearTimeout(id);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text]);
 
   const toggle = async () => {
     if (speaking) {
@@ -171,14 +206,11 @@ function useNarration(text: string) {
       return;
     }
     try {
-      let url = cacheRef.current;
-      if (!url) {
-        setLoading(true);
-        const res = await narrate({ data: { text, voice: "onyx" } });
-        url = `data:${res.mime};base64,${res.audio_base64}`;
-        cacheRef.current = url;
-      }
+      const cached = narrationUrlCache.get(text);
+      if (!cached) setLoading(true);
+      const url = await fetchUrl();
       const audio = new Audio(url);
+      audio.preload = "auto";
       audioRef.current = audio;
       audio.onended = () => setSpeaking(false);
       audio.onerror = () => setSpeaking(false);
