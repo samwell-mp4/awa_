@@ -170,7 +170,7 @@ function Index() {
   }
 
   const navItems = [
-    { label: "Início", href: "#início", icon: Home },
+    
     { label: "Trilhas", href: "/trilhas", icon: Award },
     { label: "Músicas", href: "/musicas", icon: Play },
     { label: "Dicionário", href: "/dicionario", icon: Library },
