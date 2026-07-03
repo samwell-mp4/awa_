@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/jogos")({
