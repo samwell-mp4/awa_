@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export const speakText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { text: string; voice?: string }) => d)
   .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
