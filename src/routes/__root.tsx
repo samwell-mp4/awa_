@@ -133,9 +133,27 @@ function RootComponent() {
 
   useEffect(() => {
     // Limpa qualquer "selo" (badge) fantasma no ícone do app instalado (PWA)
-    const nav = navigator as Navigator & { clearAppBadge?: () => Promise<void> };
-    nav.clearAppBadge?.().catch(() => {});
+    const nav = navigator as Navigator & {
+      clearAppBadge?: () => Promise<void>;
+      setAppBadge?: (n?: number) => Promise<void>;
+    };
+    const clear = () => {
+      nav.clearAppBadge?.().catch(() => {});
+      // Alguns SOs só limpam ao explicitamente setar 0
+      nav.setAppBadge?.(0).catch(() => {});
+    };
+    clear();
+    const onVisible = () => document.visibilityState === "visible" && clear();
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", clear);
+    const id = window.setInterval(clear, 30000);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", clear);
+      window.clearInterval(id);
+    };
   }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
