@@ -225,10 +225,10 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
         {cards.map((c, i) => {
           const show = flipped.includes(i) || matched.includes(c.label);
           return (
-            <motion.button
+            <button
               key={c.id}
               onClick={() => handle(i)}
-              whileTap={{ scale: 0.95 }}
+              
               className={`aspect-square rounded-xl text-center font-bold transition ${
                 show ? "bg-gold/90 text-forest-deep" : "bg-forest-deep/70 border border-gold/30"
               }`}
@@ -241,7 +241,7 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
               ) : (
                 <Sparkles className="mx-auto h-6 w-6 text-gold/50" />
               )}
-            </motion.button>
+            </button>
           );
         })}
       </div>
