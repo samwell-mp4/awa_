@@ -12,13 +12,13 @@ export function PremiumGate({
   title?: string;
   description?: string;
 }) {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const { isPremium, loading } = useSubscription();
 
   if (loading || authLoading) {
     return <div className="grid min-h-[40vh] place-items-center text-foreground/60">Carregando...</div>;
   }
-  if (isPremium) return <>{children}</>;
+  if (isAdmin || isPremium) return <>{children}</>;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 md:py-20">
