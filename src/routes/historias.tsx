@@ -155,20 +155,34 @@ const MALE_VOICE_HINTS = [
   "felipe",
   "thiago",
   "antonio",
+  "antônio",
   "luciano",
   "paulo",
-  "google português do brasil",
+  "fabio",
+  "fábio",
+  "joão",
+  "joao",
+  "carlos",
+  "pedro",
+  "rafael",
+  "eddy",
+  "junior",
 ];
+const FEMALE_HINTS = ["female", "feminin", "mulher", "luciana", "camila", "vitoria", "vitória", "maria", "ana", "helena", "francisca", "joana"];
 
 function pickMalePtVoice(): SpeechSynthesisVoice | null {
   if (typeof window === "undefined") return null;
   const voices = window.speechSynthesis.getVoices();
   const pt = voices.filter((v) => v.lang?.toLowerCase().startsWith("pt"));
   if (pt.length === 0) return null;
-  const byHint = pt.find((v) =>
+  const male = pt.find((v) =>
     MALE_VOICE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
   );
-  return byHint ?? pt[0];
+  if (male) return male;
+  const notFemale = pt.find(
+    (v) => !FEMALE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
+  );
+  return notFemale ?? pt[0];
 }
 
 function useNarration(text: string) {
@@ -197,7 +211,7 @@ function useNarration(text: string) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "pt-BR";
     u.rate = 0.95;
-    u.pitch = 0.75; // deeper = more masculine fallback
+    u.pitch = 0.6; // deeper = more masculine fallback
     const male = pickMalePtVoice();
     if (male) u.voice = male;
     u.onend = () => setSpeaking(false);
@@ -240,8 +254,8 @@ function NarratablePhoto({
         {supported && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div
-              className={`flex h-20 w-20 items-center justify-center rounded-full bg-gold/95 text-emerald-950 shadow-2xl shadow-black/50 transition-all ${
-                speaking ? "scale-110 animate-pulse" : "opacity-90 group-hover:scale-105 group-hover:opacity-100"
+              className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
+                speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
               }`}
             >
               {speaking ? <Square className="h-8 w-8" /> : <Volume2 className="h-9 w-9" />}
