@@ -424,7 +424,7 @@ function Index() {
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   </div>
                   <div className="p-3">
-                    <div className="text-sm font-bold text-cream">{i + 1}. {t.name}</div>
+                    <div className="text-sm font-bold text-cream">{t.name}</div>
                     <Progress value={t.progress} className="mt-2" />
                   </div>
                 </>
