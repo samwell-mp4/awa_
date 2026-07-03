@@ -301,7 +301,6 @@ function InstalarPage() {
 }
 
 function Step({
-  number,
   text,
   icon: Icon,
 }: {
@@ -311,13 +310,9 @@ function Step({
 }) {
   return (
     <div className="flex items-start gap-3">
-      {Icon ? (
+      {Icon && (
         <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gold/10 text-gold">
           <Icon className="h-3.5 w-3.5" />
-        </span>
-      ) : (
-        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gold/10 text-xs font-bold text-gold">
-          {number}
         </span>
       )}
       <span className="leading-relaxed">{text}</span>
