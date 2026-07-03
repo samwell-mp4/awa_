@@ -32,7 +32,7 @@ async function fetchTopLearners(): Promise<TopLearner[]> {
 
 export function RankingCard() {
   const qc = useQueryClient();
-  const { data = [], isLoading } = useQuery({
+  const { data = [], isLoading, isError } = useQuery({
     queryKey: ["weekly-top-learners"],
     queryFn: fetchTopLearners,
     refetchInterval: 5_000,
@@ -72,6 +72,10 @@ export function RankingCard() {
         <div className="mt-4 flex items-center gap-2 text-sm text-foreground/60">
           <Loader2 className="h-4 w-4 animate-spin" /> Carregando…
         </div>
+      ) : isError ? (
+        <p className="mt-4 text-sm text-foreground/70">
+          Ranking indisponível agora. Tente novamente em instantes.
+        </p>
       ) : data.length === 0 ? (
         <p className="mt-4 text-sm text-foreground/70">
           Ainda não há aprendizes esta semana. Comece pelas trilhas e apareça aqui!
@@ -93,8 +97,11 @@ export function RankingCard() {
                   {initials(u.name)}
                 </span>
               )}
-              <span className="truncate text-sm font-semibold text-cream">{u.name}</span>
-              <span className="text-xs font-bold text-gold">{u.points} pts</span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-semibold text-cream">{u.name}</span>
+                {i === 0 ? <span className="block text-[10px] font-bold uppercase tracking-wider text-gold">Mais pontos</span> : null}
+              </span>
+              <span className="whitespace-nowrap text-xs font-bold text-gold">{u.points} pts</span>
             </li>
           ))}
         </ul>
