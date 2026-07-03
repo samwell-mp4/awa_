@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -238,7 +239,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "nova" } });
+        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
         cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
       }
       const a = new Audio(cacheRef.current);

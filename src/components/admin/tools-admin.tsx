@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { translateText } from "@/lib/translate.functions";
 import { speakText } from "@/lib/tts.functions";
 import { transcribeAudio } from "@/lib/transcribe.functions";
@@ -30,7 +31,7 @@ export function ToolsAdmin() {
     setTrBusy(true);
     setTrOut(null);
     try {
-      const r = await translate({ data: { text: txt, direction: dir } });
+      const r = await translate({ data: { text: txt, direction: dir, environment: getPaddleEnvironment() } });
       setTrOut(r);
     } catch (e) {
       toast.error((e as Error).message);
@@ -42,7 +43,7 @@ export function ToolsAdmin() {
   async function onSpeak() {
     setTtsBusy(true);
     try {
-      const r = await speak({ data: { text: ttsTxt } });
+      const r = await speak({ data: { text: ttsTxt, environment: getPaddleEnvironment() } });
       setTtsUrl(`data:${r.mime};base64,${r.audio_base64}`);
     } catch (e) {
       toast.error((e as Error).message);
@@ -57,6 +58,7 @@ export function ToolsAdmin() {
     try {
       const fd = new FormData();
       fd.append("file", file);
+      fd.append("environment", getPaddleEnvironment());
       const r = await transcribe({ data: fd });
       setSttText(r.text);
     } catch (e) {

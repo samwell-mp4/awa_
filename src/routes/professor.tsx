@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
@@ -55,7 +56,7 @@ function ProfessorPage() {
     setInput("");
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { messages: next } });
+      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
       setMessages([...next, { role: "assistant", content: reply }]);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao falar com Akuã");
@@ -151,7 +152,7 @@ function Bubble({ role, content }: Msg) {
     if (busy) return;
     try {
       setBusy(true);
-      const r = await speak({ data: { text } });
+      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
       const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
       audioRef.current?.pause();
       audioRef.current = audio;
