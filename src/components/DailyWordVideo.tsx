@@ -10,6 +10,12 @@ type Word = {
   pronunciation: string | null;
 };
 
+function hashCode(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
+  return h;
+}
+
 export function DailyWordVideo() {
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -39,6 +45,9 @@ export function DailyWordVideo() {
   }, [playing, pool.length]);
 
   const current = pool[idx];
+  const imageUrl = current
+    ? `https://loremflickr.com/800/600/${encodeURIComponent(current.term_pt)},nature,forest?lock=${Math.abs(hashCode(current.id))}`
+    : "";
 
   return (
     <section className="relative mt-6 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-forest-deep via-bark/60 to-forest-deep shadow-2xl">
@@ -69,12 +78,26 @@ export function DailyWordVideo() {
         ) : (
           <div
             key={current.id}
-            className="mt-6 min-h-[200px] animate-in fade-in zoom-in-95 duration-700"
+            className="mt-6 animate-in fade-in zoom-in-95 duration-700"
           >
-            <h2 className="font-display text-5xl md:text-6xl font-black text-gold break-words leading-tight drop-shadow-lg">
-              {current.term_indigenous}
-            </h2>
-            <p className="mt-3 text-lg md:text-xl text-cream/95 break-words">
+            <div className="relative overflow-hidden rounded-2xl border border-gold/20 bg-forest-deep/40 aspect-video mb-4">
+              <img
+                src={imageUrl}
+                alt={current.term_pt}
+                loading="lazy"
+                className="h-full w-full object-cover animate-in fade-in duration-1000"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = `https://loremflickr.com/800/600/nature,amazon?lock=${idx}`;
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-transparent to-transparent" />
+              <div className="absolute bottom-3 left-4 right-4">
+                <h2 className="font-display text-3xl md:text-5xl font-black text-gold break-words leading-tight drop-shadow-2xl">
+                  {current.term_indigenous}
+                </h2>
+              </div>
+            </div>
+            <p className="text-lg md:text-xl text-cream/95 break-words">
               {current.term_pt}
             </p>
             {current.pronunciation && (
