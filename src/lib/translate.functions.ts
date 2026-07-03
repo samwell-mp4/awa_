@@ -122,6 +122,7 @@ function autoFormat(s: string): string {
 }
 
 export const translateText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { text: string; direction: "pt-pat" | "pat-pt" }) => d)
   .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
