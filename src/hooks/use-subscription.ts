@@ -14,8 +14,10 @@ export function useSubscription() {
     queryFn: async () => {
       if (!user) return { isPremium: false, sub: null };
 
-      // Isenção grátis (admin/comunidade) — via RPC
-      const { data: hasAccess } = await supabase.rpc("has_premium_access", { _user_id: user.id });
+      const { data: hasAccess } = await supabase.rpc("has_premium_access", {
+        _user_id: user.id,
+        _check_env: env,
+      });
 
       const { data: sub } = await supabase
         .from("subscriptions")
@@ -28,6 +30,7 @@ export function useSubscription() {
 
       return { isPremium: !!hasAccess, sub };
     },
+    refetchOnWindowFocus: true,
   });
 
   useEffect(() => {
@@ -49,5 +52,7 @@ export function useSubscription() {
     isPremium: query.data?.isPremium ?? false,
     subscription: query.data?.sub ?? null,
     loading: query.isLoading,
+    refetch: query.refetch,
+    environment: env,
   };
 }
