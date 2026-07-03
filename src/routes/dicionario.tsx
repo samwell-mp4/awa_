@@ -2,22 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
-import { PremiumGate } from "@/components/PremiumGate";
+import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
+import { useSubscription } from "@/hooks/use-subscription";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
+      { name: "description", content: "Dicionário Patxôhã — 50 palavras grátis. Assine Premium para acesso completo." },
     ],
   }),
-  component: () => (
-    <PremiumGate title="Dicionário completo (Premium)" description="A versão grátis traz 25 palavras essenciais em Saudações. Assine para desbloquear o dicionário Patxôhã completo com todas as categorias e exemplos.">
-      <DictionaryPage />
-    </PremiumGate>
-  ),
+  component: DictionaryPage,
 });
+
+const FREE_LIMIT = 50;
+
 
 type Entry = {
   id: string;
@@ -65,10 +64,12 @@ function firstLetter(s: string): string {
 }
 
 function DictionaryPage() {
+  const { isPremium } = useSubscription();
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -140,9 +141,12 @@ function DictionaryPage() {
     setVisibleCount(120);
   }, [query, cat, letter, sort]);
 
-  const visibleFiltered = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
+  const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
 
-  const hasMore = entries.length > visibleCount;
+  const hasMore = isPremium ? entries.length > visibleCount : filtered.length > FREE_LIMIT;
+  const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
+
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
@@ -310,7 +314,23 @@ function DictionaryPage() {
                   </div>
                 </div>
               ))}
-              {hasMore && (
+              {lockedByFree ? (
+                <div className="mt-4 card-elev rounded-3xl border border-gold/30 p-6 text-center">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--gradient-leaf)] shadow-[var(--shadow-glow)]">
+                    <Lock className="h-6 w-6 text-cream" />
+                  </div>
+                  <h3 className="mt-4 font-display text-xl font-black text-cream">Você viu as {FREE_LIMIT} palavras grátis</h3>
+                  <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
+                    Assine Premium para desbloquear o dicionário Patxôhã completo, com todas as categorias, exemplos e pronúncias.
+                  </p>
+                  <Link
+                    to="/planos"
+                    className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
+                  >
+                    <Crown className="h-4 w-4" /> Ver planos Premium
+                  </Link>
+                </div>
+              ) : hasMore ? (
                 <div className="pt-2 text-center">
                   <button
                     onClick={() => setVisibleCount((n) => n + 120)}
@@ -319,7 +339,8 @@ function DictionaryPage() {
                     Mostrar mais palavras
                   </button>
                 </div>
-              )}
+              ) : null}
+
             </div>
           )}
         </section>
