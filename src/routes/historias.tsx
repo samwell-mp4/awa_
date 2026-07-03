@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Volume2, Square } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { narratePublic } from "@/lib/narrate-public.functions";
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
@@ -145,84 +147,51 @@ const sections: Section[] = [
   },
 ];
 
-const MALE_VOICE_HINTS = [
-  "male",
-  "masculin",
-  "homem",
-  "ricardo",
-  "daniel",
-  "diego",
-  "felipe",
-  "thiago",
-  "antonio",
-  "antônio",
-  "luciano",
-  "paulo",
-  "fabio",
-  "fábio",
-  "joão",
-  "joao",
-  "carlos",
-  "pedro",
-  "rafael",
-  "eddy",
-  "junior",
-];
-const FEMALE_HINTS = ["female", "feminin", "mulher", "luciana", "camila", "vitoria", "vitória", "maria", "ana", "helena", "francisca", "joana"];
-
-function pickMalePtVoice(): SpeechSynthesisVoice | null {
-  if (typeof window === "undefined") return null;
-  const voices = window.speechSynthesis.getVoices();
-  const pt = voices.filter((v) => v.lang?.toLowerCase().startsWith("pt"));
-  if (pt.length === 0) return null;
-  const male = pt.find((v) =>
-    MALE_VOICE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
-  );
-  if (male) return male;
-  const notFemale = pt.find(
-    (v) => !FEMALE_HINTS.some((h) => v.name.toLowerCase().includes(h)),
-  );
-  return notFemale ?? pt[0];
-}
-
 function useNarration(text: string) {
   const [speaking, setSpeaking] = useState(false);
-  const supported = typeof window !== "undefined" && "speechSynthesis" in window;
+  const [loading, setLoading] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cacheRef = useRef<string | null>(null);
+  const narrate = useServerFn(narratePublic);
 
   useEffect(() => {
-    if (!supported) return;
-    // Warm up voices on some browsers.
-    window.speechSynthesis.getVoices();
-    const onVoices = () => window.speechSynthesis.getVoices();
-    window.speechSynthesis.addEventListener?.("voiceschanged", onVoices);
     return () => {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.removeEventListener?.("voiceschanged", onVoices);
+      audioRef.current?.pause();
+      audioRef.current = null;
     };
-  }, [supported]);
+  }, []);
 
-  const toggle = () => {
-    if (!supported) return;
+  const toggle = async () => {
     if (speaking) {
-      window.speechSynthesis.cancel();
+      audioRef.current?.pause();
+      audioRef.current = null;
       setSpeaking(false);
       return;
     }
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "pt-BR";
-    u.rate = 0.95;
-    u.pitch = 0.6; // deeper = more masculine fallback
-    const male = pickMalePtVoice();
-    if (male) u.voice = male;
-    u.onend = () => setSpeaking(false);
-    u.onerror = () => setSpeaking(false);
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
-    setSpeaking(true);
+    try {
+      let url = cacheRef.current;
+      if (!url) {
+        setLoading(true);
+        const res = await narrate({ data: { text, voice: "onyx" } });
+        url = `data:${res.mime};base64,${res.audio_base64}`;
+        cacheRef.current = url;
+      }
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => setSpeaking(false);
+      audio.onerror = () => setSpeaking(false);
+      await audio.play();
+      setSpeaking(true);
+    } catch (err) {
+      console.error("Narração falhou:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return { supported, speaking, toggle };
+  return { supported: true, speaking, loading, toggle };
 }
+
 
 function NarratablePhoto({
   src,
@@ -233,14 +202,14 @@ function NarratablePhoto({
   alt: string;
   text: string;
 }) {
-  const { supported, speaking, toggle } = useNarration(text);
+  const { speaking, loading, toggle } = useNarration(text);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
       <button
         type="button"
         onClick={toggle}
-        disabled={!supported}
+        disabled={loading}
         className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
       >
@@ -251,19 +220,23 @@ function NarratablePhoto({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        {supported && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div
-              className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
-                speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
-              }`}
-            >
-              {speaking ? <Square className="h-8 w-8" /> : <Volume2 className="h-9 w-9" />}
-            </div>
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
+              speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
+            }`}
+          >
+            {loading ? (
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            ) : speaking ? (
+              <Square className="h-8 w-8" />
+            ) : (
+              <Volume2 className="h-9 w-9" />
+            )}
           </div>
-        )}
+        </div>
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 text-xs uppercase tracking-[0.25em] text-amber-100/90">
-          <span>{speaking ? "Ouvindo…" : "Toque na foto para ouvir"}</span>
+          <span>{loading ? "Preparando voz…" : speaking ? "Ouvindo…" : "Toque na foto para ouvir"}</span>
         </div>
       </button>
     </div>
