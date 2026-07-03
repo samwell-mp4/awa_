@@ -172,20 +172,41 @@ function Index() {
     navigate({ to: "/" });
   }
 
-  const navItems = [
-    
-    { label: "Trilhas", href: "/trilhas", icon: Award },
-    { label: "Músicas", href: "/musicas", icon: Play },
-    { label: "Dicionário", href: "/dicionario", icon: Library },
-    { label: "Tradutor", href: "/traduzir", icon: BookOpen },
-    { label: "Professor", href: "/professor", icon: Sparkles },
-    { label: "Histórias", href: "/historias", icon: ScrollText },
-    { label: "Vídeos", href: "/videos", icon: Video },
-    { label: "Jogos", href: "/jogos", icon: Trophy },
-    { label: "Biografia", href: "/biografia", icon: BookOpen },
-    { label: "Instalar", href: "/instalar", icon: Download },
-    { label: "Premium", href: "/planos", icon: Star },
+  const navGroups: { title: string; items: { label: string; href: string; icon: any; premium?: boolean }[] }[] = [
+    {
+      title: "Língua e Conhecimento",
+      items: [
+        { label: "Dicionário", href: "/dicionario", icon: Library },
+        { label: "Tradutor", href: "/traduzir", icon: BookOpen },
+        { label: "Trilhas", href: "/trilhas", icon: Award },
+        { label: "Espaço do Professor", href: "/professor", icon: Sparkles, premium: true },
+      ],
+    },
+    {
+      title: "Cultura e Expressões",
+      items: [
+        { label: "Histórias e Narrativas", href: "/historias", icon: ScrollText },
+        { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
+        { label: "Vídeos e Registros", href: "/videos", icon: Video },
+        { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
+      ],
+    },
+    {
+      title: "Quem Somos e Ajuda",
+      items: [
+        { label: "Biografia Awã Tech", href: "/biografia", icon: BookOpen },
+        { label: "Baixar / Instalar App", href: "/instalar", icon: Download },
+        { label: "Boas-vindas", href: "/bem-vindo", icon: Home },
+      ],
+    },
+    {
+      title: "Área do Usuário",
+      items: [
+        { label: "Awã Premium", href: "/planos", icon: Star },
+      ],
+    },
   ];
+  const flatNav = navGroups.flatMap((g) => g.items);
 
   return (
     <div className="min-h-screen text-foreground">
@@ -201,24 +222,21 @@ function Index() {
           </button>
           <Logo />
           <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((n) =>
-              n.href.startsWith("/") ? (
-                <Link key={n.label} to={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
-                  {n.label}
-                </Link>
-              ) : (
-                <a key={n.label} href={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
-                  {n.label}
-                </a>
-              ),
-            )}
+            {flatNav.slice(0, 7).map((n) => (
+              <Link key={n.label} to={n.href} className="rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream">
+                {n.label}
+              </Link>
+            ))}
+            <Link to="/planos" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-bold text-gold hover:bg-gold/30">
+              <Star className="h-4 w-4" /> Premium
+            </Link>
             {isAdmin && (
-              <Link to="/admin" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
+              <Link to="/admin" className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30">
                 <Settings className="h-4 w-4" /> Painel
               </Link>
             )}
             {user ? (
-              <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-4 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
+              <button onClick={signOut} className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10">
                 <LogOut className="h-4 w-4" /> Sair
               </button>
             ) : (
@@ -229,37 +247,58 @@ function Index() {
           </nav>
         </div>
         {open && (
-          <div className="lg:hidden border-t border-gold/20 bg-card/95 px-4 py-3">
-            <div className="flex flex-col gap-1">
-              {navItems.map((n) =>
-                n.href.startsWith("/") ? (
-                  <Link key={n.label} to={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
-                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
+          <div className="lg:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
+            <div className="text-center pb-3 mb-3 border-b border-gold/15">
+              <div className="font-display text-sm font-black text-cream">AWÃ TECH</div>
+              <div className="text-[10px] font-semibold tracking-[0.18em] text-gold/80">CAMINHO DA SABEDORIA</div>
+            </div>
+            <div className="flex flex-col gap-4">
+              {navGroups.map((group) => (
+                <div key={group.title}>
+                  <div className="mb-1.5 px-1 text-[10px] font-bold uppercase tracking-[0.15em] text-gold/70">
+                    {group.title}
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {group.items.map((n) => (
+                      <Link
+                        key={n.label}
+                        to={n.href}
+                        onClick={() => setOpen(false)}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
+                      >
+                        <n.icon className="h-4 w-4 text-gold" />
+                        <span className="flex-1">{n.label}</span>
+                        {n.premium && (
+                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">
+                            PREMIUM
+                          </span>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div className="border-t border-gold/15 pt-3 flex flex-col gap-1">
+                {isAdmin && (
+                  <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gold hover:bg-gold/15">
+                    <Settings className="h-4 w-4" /> Painel Admin
                   </Link>
+                )}
+                {user ? (
+                  <button onClick={() => { setOpen(false); signOut(); }} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
+                    <LogOut className="h-4 w-4 text-gold" /> Sair
+                  </button>
                 ) : (
-                  <a key={n.label} href={n.href} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
-                    <n.icon className="h-4 w-4 text-gold" /> {n.label}
-                  </a>
-                ),
-              )}
-              {isAdmin && (
-                <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gold hover:bg-gold/15">
-                  <Settings className="h-4 w-4" /> Painel
-                </Link>
-              )}
-              {user ? (
-                <button onClick={() => { setOpen(false); signOut(); }} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
-                  <LogOut className="h-4 w-4 text-gold" /> Sair
-                </button>
-              ) : (
-                <Link to="/auth" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15">
-                  <LogIn className="h-4 w-4 text-gold" /> Entrar
-                </Link>
-              )}
+                  <Link to="/auth" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-cream bg-[var(--gradient-leaf)]">
+                    <LogIn className="h-4 w-4" /> Entrar / Criar conta
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}
       </header>
+
 
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
