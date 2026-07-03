@@ -202,14 +202,14 @@ function NarratablePhoto({
   alt: string;
   text: string;
 }) {
-  const { supported, speaking, toggle } = useNarration(text);
+  const { speaking, loading, toggle } = useNarration(text);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
       <button
         type="button"
         onClick={toggle}
-        disabled={!supported}
+        disabled={loading}
         className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
       >
@@ -220,19 +220,23 @@ function NarratablePhoto({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        {supported && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div
-              className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
-                speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
-              }`}
-            >
-              {speaking ? <Square className="h-8 w-8" /> : <Volume2 className="h-9 w-9" />}
-            </div>
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            className={`flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
+              speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
+            }`}
+          >
+            {loading ? (
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            ) : speaking ? (
+              <Square className="h-8 w-8" />
+            ) : (
+              <Volume2 className="h-9 w-9" />
+            )}
           </div>
-        )}
+        </div>
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 text-xs uppercase tracking-[0.25em] text-amber-100/90">
-          <span>{speaking ? "Ouvindo…" : "Toque na foto para ouvir"}</span>
+          <span>{loading ? "Preparando voz…" : speaking ? "Ouvindo…" : "Toque na foto para ouvir"}</span>
         </div>
       </button>
     </div>
