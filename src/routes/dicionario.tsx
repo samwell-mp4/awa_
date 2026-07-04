@@ -101,7 +101,7 @@ function DictionaryPage() {
     queryFn: async () => {
       let request = supabase
         .from("dictionary")
-        .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
+        .select("id,term_indigenous,term_pt,language,category,pronunciation,example,term_pt_en,term_pt_es,example_en,example_es")
         .in("language", ENABLED_LANGUAGES as unknown as string[]);
 
       const q = debouncedQuery.toLowerCase().replace(/[%(),]/g, "").slice(0, 80);
