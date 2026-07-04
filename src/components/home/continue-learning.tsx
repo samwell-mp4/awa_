@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { BookOpen, ArrowRight, Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ProgressBar } from "./progress-bar";
 import { TRAILS, getLearned, hasCertificate, type TrailSlug } from "@/lib/trilhas";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +32,7 @@ async function fetchTotals(): Promise<Record<string, number>> {
 }
 
 export function ContinueLearningCard() {
+  const { t } = useTranslation();
   const { data: totals = {} } = useQuery({
     queryKey: ["dict-category-totals"],
     queryFn: fetchTotals,
@@ -88,13 +90,13 @@ export function ContinueLearningCard() {
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-display text-lg font-bold text-cream">Continuar aprendendo</h3>
+              <h3 className="font-display text-lg font-bold text-cream">{t("home.continueLearning")}</h3>
               <span className="text-sm font-bold text-gold">{overall}%</span>
             </div>
             <p className="truncate text-sm text-foreground/70">
               {next
-                ? `Próxima: ${next.emoji} ${next.name} — ${next.learned}/${next.total || "?"} palavras`
-                : "Comece sua primeira trilha"}
+                ? t("home.nextTrail", { emoji: next.emoji, name: next.name, learned: next.learned, total: next.total || "?" })
+                : t("home.startFirst")}
             </p>
             <ProgressBar value={overall} className="mt-2" />
           </div>
@@ -114,7 +116,7 @@ export function ContinueLearningCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="truncate text-sm font-bold text-cream">
-                      Lição {i + 1} — {l.name}
+                      {t("home.lesson")} {i + 1} — {l.name}
                     </span>
                     <span className="text-xs font-bold text-gold">{l.pct}%</span>
                   </div>

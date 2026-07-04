@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { trailSlugMap } from "@/lib/home-content";
 import type { HomeTrail } from "@/hooks/use-home-data";
@@ -29,13 +30,14 @@ function TrailCardInner({ trail }: { trail: HomeTrail }) {
 }
 
 export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
+  const { t } = useTranslation();
   return (
     <section className="mt-8">
       <div className="mb-3 flex items-end justify-between gap-3">
         <div>
           <div className="tribal-border w-16 mb-2" />
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
-            Trilhas de aprendizado
+            {t("home.trailsTitle")}
           </h2>
         </div>
       </div>

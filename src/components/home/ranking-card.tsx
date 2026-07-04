@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Award, Loader2, Crown } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 
 type TopLearner = {
@@ -31,6 +32,7 @@ async function fetchTopLearners(): Promise<TopLearner[]> {
 }
 
 export function RankingCard() {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const { data = [], isLoading, isError } = useQuery({
     queryKey: ["weekly-top-learners"],
@@ -61,24 +63,24 @@ export function RankingCard() {
           <Award className="h-5 w-5" />
         </div>
         <h3 className="font-display text-lg font-black text-cream">
-          Top aprendizes da semana
+          {t("home.rankingTitle")}
         </h3>
         <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-300">
-          <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" /> Ao vivo
+          <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" /> {t("home.rankingLive")}
         </span>
       </div>
 
       {isLoading ? (
         <div className="mt-4 flex items-center gap-2 text-sm text-foreground/60">
-          <Loader2 className="h-4 w-4 animate-spin" /> Carregando…
+          <Loader2 className="h-4 w-4 animate-spin" /> {t("home.rankingLoading")}
         </div>
       ) : isError ? (
         <p className="mt-4 text-sm text-foreground/70">
-          Ranking indisponível agora. Tente novamente em instantes.
+          {t("home.rankingError")}
         </p>
       ) : data.length === 0 ? (
         <p className="mt-4 text-sm text-foreground/70">
-          Ainda não há aprendizes esta semana. Comece pelas trilhas e apareça aqui!
+          {t("home.rankingEmpty")}
         </p>
       ) : (
         <ul className="mt-4 flex flex-col gap-2">
@@ -99,9 +101,9 @@ export function RankingCard() {
               )}
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold text-cream">{u.name}</span>
-                {i === 0 ? <span className="block text-[10px] font-bold uppercase tracking-wider text-gold">Mais pontos</span> : null}
+                {i === 0 ? <span className="block text-[10px] font-bold uppercase tracking-wider text-gold">{t("home.rankingTop")}</span> : null}
               </span>
-              <span className="whitespace-nowrap text-xs font-bold text-gold">{u.points} pts</span>
+              <span className="whitespace-nowrap text-xs font-bold text-gold">{u.points} {t("home.rankingPts")}</span>
             </li>
           ))}
         </ul>
