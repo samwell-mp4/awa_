@@ -50,12 +50,12 @@ function ProfessorPage() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  async function autoSpeak(text: string) {
+  async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       audioRef.current?.pause();
-      const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
+      audio.src = `data:${r.mime};base64,${r.audio_base64}`;
       audioRef.current = audio;
       await audio.play().catch(() => {});
     } catch {
@@ -66,6 +66,8 @@ function ProfessorPage() {
   async function send(text: string) {
     const content = text.trim();
     if (!content || loading) return;
+    // Cria o Audio dentro do gesto do usuário para liberar autoplay
+    const audio = new Audio();
     const next = [...messages, { role: "user" as const, content }];
     setMessages(next);
     setInput("");
@@ -73,7 +75,7 @@ function ProfessorPage() {
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
       setMessages([...next, { role: "assistant", content: reply }]);
-      void autoSpeak(reply);
+      void autoSpeak(audio, reply);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao falar com Akuã");
     } finally {
@@ -227,17 +229,6 @@ function Bubble({ role, content }: Msg) {
             ),
           )}
         </div>
-        {!isUser && (
-          <button
-            onClick={() => playText(content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ","))}
-            disabled={busy}
-            className="mt-2 inline-flex items-center gap-1 rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-1 text-xs text-leaf hover:bg-leaf/20 disabled:opacity-50"
-            aria-label="Ouvir resposta inteira"
-          >
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Volume2 className="h-3 w-3" />}
-            Ouvir tudo
-          </button>
-        )}
       </div>
     </div>
   );
