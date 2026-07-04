@@ -1,4 +1,5 @@
-import { Award, Flame, Sparkles, Star } from "lucide-react";
+import { Award, Flame, Sparkles, Star, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import heroAsset from "@/assets/awa-hero.jpg.asset.json";
 import { Stat } from "./stat";
@@ -7,6 +8,30 @@ const heroWoman = heroAsset.url;
 
 export function HeroSection() {
   const { t } = useTranslation();
+  const [hidden, setHidden] = useState(false);
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const draggingRef = useRef<{ dx: number; dy: number; moved: boolean } | null>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onMove(e: PointerEvent) {
+      const d = draggingRef.current;
+      if (!d) return;
+      d.moved = true;
+      const parent = badgeRef.current?.parentElement?.getBoundingClientRect();
+      if (!parent) return;
+      setPos({ x: e.clientX - parent.left - d.dx, y: e.clientY - parent.top - d.dy });
+    }
+    function onUp() {
+      draggingRef.current = null;
+    }
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
   return (
     <section id="início" className="relative mt-6 overflow-hidden rounded-[2rem] card-elev">
       <div
@@ -47,15 +72,37 @@ export function HeroSection() {
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent md:bg-gradient-to-r md:from-card md:via-card/10 md:to-transparent" />
-          <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-gold/40 bg-card/85 px-3 py-1.5 backdrop-blur-md shadow-[var(--shadow-gold)]">
-            <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--gradient-gold)] text-[10px] font-black text-forest-deep">
-              AK
+          {!hidden && (
+            <div
+              ref={badgeRef}
+              onPointerDown={(e) => {
+                const rect = badgeRef.current!.getBoundingClientRect();
+                const parent = badgeRef.current!.parentElement!.getBoundingClientRect();
+                if (!pos) setPos({ x: rect.left - parent.left, y: rect.top - parent.top });
+                draggingRef.current = { dx: e.clientX - rect.left, dy: e.clientY - rect.top, moved: false };
+                (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+              }}
+              style={pos ? { left: pos.x, top: pos.y, right: "auto" } : undefined}
+              className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-gold/40 bg-card/85 px-3 py-1.5 backdrop-blur-md shadow-[var(--shadow-gold)] cursor-grab active:cursor-grabbing touch-none select-none"
+            >
+              <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--gradient-gold)] text-[10px] font-black text-forest-deep">
+                AK
+              </div>
+              <div className="text-xs leading-tight">
+                <div className="text-foreground/70">{t("hero.ola")}</div>
+                <div className="font-bold text-gold">Akuá!</div>
+              </div>
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => setHidden(true)}
+                aria-label="Fechar"
+                className="ml-1 grid h-5 w-5 place-items-center rounded-full bg-forest-deep/60 text-gold hover:bg-forest-deep"
+              >
+                <X className="h-3 w-3" />
+              </button>
             </div>
-            <div className="text-xs leading-tight">
-              <div className="text-foreground/70">{t("hero.ola")}</div>
-              <div className="font-bold text-gold">Akuá!</div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       <div className="tribal-border absolute bottom-0 left-0 right-0" />
