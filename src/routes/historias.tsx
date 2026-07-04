@@ -428,91 +428,8 @@ function HistoriasPage() {
 
       {/* Sections */}
       <main className="mx-auto max-w-5xl px-5 pb-32">
-        {/* In memoriam — ancião (destaque no topo) */}
+        {/* Ancião Josa — destaque no topo */}
         <section className="mb-16 md:mb-24">
-          <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ In memoriam</p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              A história de quem <span className="text-gold">nunca desistiu</span> de sua aldeia
-            </h2>
-          </div>
-
-          <div className="grid items-center gap-8 md:grid-cols-2">
-            <NarratableVideo
-              src={videoJoao.url}
-              poster={albumAnciao.url}
-              alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
-              text={`Sou ancião João. A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
-            />
-
-            <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                “Enquanto houver respeito e união, nosso povo seguirá forte.
-                Essa é a nossa cultura, essa é a nossa vida.”
-              </blockquote>
-              <p>
-                Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou
-                muitas lutas, mas nunca baixou a cabeça. Lutou pela terra,
-                pela língua, pela cultura — e por cada criança que sonha com
-                um futuro melhor.
-              </p>
-              <p>
-                Ser ancião, dizia ele, é mais que ter cabelos brancos: é
-                guardar as histórias, ensinar com o exemplo, e plantar hoje
-                para que a aldeia floresça amanhã. Seu maracá silenciou, mas
-                seu canto segue vivo em cada roda de Awê.
-              </p>
-              <p className="font-serif text-gold">
-                Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <div className="space-y-16 md:space-y-24">
-          {sections.map((s, i) => {
-            const Icon = s.icon;
-            const reverse = i % 2 === 1;
-            return (
-              <section
-                key={s.id}
-                id={s.id}
-                className={`grid items-center gap-8 md:grid-cols-2 ${
-                  reverse ? "md:[&>*:first-child]:order-2" : ""
-                }`}
-              >
-                <div className="relative">
-                  <NarratablePhoto
-                    src={s.image}
-                    alt={s.title}
-                    text={`${s.title}. ${s.body.join(" ")}`}
-                  />
-                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs text-amber-100 backdrop-blur">
-                    <Icon className="h-3.5 w-3.5 text-gold" />
-                    {s.title}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    <Icon className="h-3.5 w-3.5" /> Capítulo {i + 1}
-                  </div>
-                  <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
-                    {s.title}
-                  </h2>
-                  <div className="mt-4 space-y-3 text-amber-100/85 leading-relaxed">
-                    {s.body.map((p, idx) => (
-                      <p key={idx}>{p}</p>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            );
-          })}
-        </div>
-
-        {/* Ancião Josa */}
-        <section className="mt-20 md:mt-24">
           <div className="mb-8 text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 Guardião da Memória</p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
@@ -572,6 +489,93 @@ function HistoriasPage() {
             </div>
           </div>
         </section>
+
+        {/* In memoriam — ancião João */}
+        <section className="mb-16 md:mb-24">
+          <div className="mb-8 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ In memoriam</p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
+              A história de quem <span className="text-gold">nunca desistiu</span> de sua aldeia
+            </h2>
+          </div>
+
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            <NarratableVideo
+              src={videoJoao.url}
+              poster={albumAnciao.url}
+              alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+              text={`Sou ancião João. A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
+            />
+
+            <div className="space-y-4 text-amber-100/90 leading-relaxed">
+              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+                “Enquanto houver respeito e união, nosso povo seguirá forte.
+                Essa é a nossa cultura, essa é a nossa vida.”
+              </blockquote>
+              <p>
+                Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou
+                muitas lutas, mas nunca baixou a cabeça. Lutou pela terra,
+                pela língua, pela cultura — e por cada criança que sonha com
+                um futuro melhor.
+              </p>
+              <p>
+                Ser ancião, dizia ele, é mais que ter cabelos brancos: é
+                guardar as histórias, ensinar com o exemplo, e plantar hoje
+                para que a aldeia floresça amanhã. Seu maracá silenciou, mas
+                seu canto segue vivo em cada roda de Awê.
+              </p>
+              <p className="font-serif text-gold">
+                Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <div className="space-y-16 md:space-y-24">
+          {sections.map((s, i) => {
+            const Icon = s.icon;
+            const reverse = i % 2 === 1;
+            return (
+              <section
+                key={s.id}
+                id={s.id}
+                className={`grid items-center gap-8 md:grid-cols-2 ${
+                  reverse ? "md:[&>*:first-child]:order-2" : ""
+                }`}
+              >
+                <div className="relative">
+                  <NarratablePhoto
+                    src={s.image}
+                    alt={s.title}
+                    text={`${s.title}. ${s.body.join(" ")}`}
+                  />
+                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs text-amber-100 backdrop-blur">
+                    <Icon className="h-3.5 w-3.5 text-gold" />
+                    {s.title}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
+                    <Icon className="h-3.5 w-3.5" /> Capítulo {i + 1}
+                  </div>
+                  <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
+                    {s.title}
+                  </h2>
+                  <div className="mt-4 space-y-3 text-amber-100/85 leading-relaxed">
+                    {s.body.map((p, idx) => (
+                      <p key={idx}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            );
+          })}
+        </div>
+
+
+
 
 
 
