@@ -434,7 +434,9 @@ function emojiFor(w: Word): string {
 function MatchModal({
   words, learnedIds, onClose, onCorrect,
 }: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void }) {
+  const lang = useLang();
   const PAIR_COUNT = Math.min(4, words.length);
+
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [errors, setErrors] = useState(0);
