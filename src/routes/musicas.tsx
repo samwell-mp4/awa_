@@ -158,7 +158,10 @@ function SongCard({
   song: Song;
   onClick: () => void;
 }) {
-  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
+
   return (
     <button
       onClick={onClick}
