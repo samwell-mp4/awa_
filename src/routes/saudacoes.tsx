@@ -269,6 +269,9 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
       }
       if (!cacheRef.current) {
         const r = await speak({ data: { text, voice: "onyx" } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar o áudio");
+        }
         cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
       }
       const a = new Audio(cacheRef.current);

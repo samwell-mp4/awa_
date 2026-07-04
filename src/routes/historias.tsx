@@ -6,6 +6,7 @@ import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useTranslation } from "react-i18next";
 import { T } from "@/components/T";
+import { toast } from "sonner";
 
 
 import danca from "@/assets/pataxo-danca.jpg";
@@ -177,6 +178,9 @@ function useNarration(originalText: string) {
     if (inflight) return inflight;
     const p = narrate({ data: { text, voice: "onyx", lang } })
       .then((res) => {
+        if (res.error || !res.audio_base64) {
+          throw new Error(res.message ?? "Não foi possível gerar a narração.");
+        }
         const bin = atob(res.audio_base64);
         const bytes = new Uint8Array(bin.length);
         for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
@@ -193,19 +197,11 @@ function useNarration(originalText: string) {
     return p;
   };
 
-  // Prefetch narration on mount (idle) so first click is instant
   useEffect(() => {
-    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
-    const schedule = w.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1500));
-    const id = schedule(() => {
-      fetchUrl().catch(() => {});
-    });
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
-      if (typeof id === "number") clearTimeout(id);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cacheKey]);
 
   const toggle = async () => {
@@ -228,6 +224,7 @@ function useNarration(originalText: string) {
       setSpeaking(true);
     } catch (err) {
       console.error("Narração falhou:", err);
+      toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
     } finally {
       setLoading(false);
     }
