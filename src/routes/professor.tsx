@@ -227,17 +227,6 @@ function Bubble({ role, content }: Msg) {
             ),
           )}
         </div>
-        {!isUser && (
-          <button
-            onClick={() => playText(content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ","))}
-            disabled={busy}
-            className="mt-2 inline-flex items-center gap-1 rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-1 text-xs text-leaf hover:bg-leaf/20 disabled:opacity-50"
-            aria-label="Ouvir resposta inteira"
-          >
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Volume2 className="h-3 w-3" />}
-            Ouvir tudo
-          </button>
-        )}
       </div>
     </div>
   );
