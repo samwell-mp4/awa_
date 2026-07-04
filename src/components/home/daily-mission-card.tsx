@@ -39,10 +39,10 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
         <h3 className="font-display text-lg font-black text-cream">{t("home.missionTitle")}</h3>
       </div>
       <p className="mt-3 text-sm text-foreground/70">
-        {mission?.question ?? t("home.missionLoading")}
+        {mission?.question ? question : t("home.missionLoading")}
       </p>
       <div className="mt-3 flex flex-col gap-2">
-        {(mission?.options ?? []).map((label, i) => (
+        {options.map((label, i) => (
           <button
             key={i}
             onClick={() => setAnswer(i)}
