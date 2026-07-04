@@ -103,5 +103,6 @@ export default {
     fechar: "Cerrar",
     enviar: "Enviar",
     idioma: "Idioma",
+    tagline: "CULTURAS VIVAS",
   },
 };
