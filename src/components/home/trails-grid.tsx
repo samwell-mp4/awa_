@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+
 import { trailSlugMap } from "@/lib/home-content";
 import type { HomeTrail } from "@/hooks/use-home-data";
 import { ProgressBar } from "./progress-bar";
