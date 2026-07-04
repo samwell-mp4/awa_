@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import { Globe, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SUPPORTED_LANGS, type LangCode } from "@/i18n";
@@ -6,15 +7,26 @@ import { SUPPORTED_LANGS, type LangCode } from "@/i18n";
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const { i18n, t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<{ top: number; right: number } | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
-      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+      const t = e.target as Node;
+      if (wrapRef.current?.contains(t) || menuRef.current?.contains(t)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!open || !btnRef.current) return;
+    const r = btnRef.current.getBoundingClientRect();
+    setCoords({ top: r.bottom + 8, right: window.innerWidth - r.right });
+  }, [open]);
 
   const current = SUPPORTED_LANGS.find((l) => l.code === i18n.language) ?? SUPPORTED_LANGS[0];
 
@@ -24,8 +36,9 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={wrapRef} className="relative">
       <button
+        ref={btnRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={t("common.idioma")}
@@ -39,26 +52,32 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         <Globe className="h-4 w-4" />
         {compact && <span className="text-xs font-semibold">{current.flag} {current.label}</span>}
       </button>
-      {open && (
-        <div className="absolute right-0 top-full z-[9999] mt-2 w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep shadow-[var(--shadow-gold)]">
-          {SUPPORTED_LANGS.map((l) => {
-            const active = l.code === i18n.language;
-            return (
-              <button
-                key={l.code}
-                onClick={() => change(l.code)}
-                className={`flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition ${
-                  active ? "bg-gold/20 text-gold" : "text-cream hover:bg-leaf/15"
-                } `}
-              >
-                <span className="text-base">{l.flag}</span>
-                <span className="flex-1">{l.label}</span>
-                {active && <Check className="h-4 w-4" />}
-              </button>
-            );
-          })}
-        </div>
-      )}
+      {open && coords && typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{ position: "fixed", top: coords.top, right: coords.right, zIndex: 2147483647 }}
+            className="w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep shadow-[var(--shadow-gold)]"
+          >
+            {SUPPORTED_LANGS.map((l) => {
+              const active = l.code === i18n.language;
+              return (
+                <button
+                  key={l.code}
+                  onClick={() => change(l.code)}
+                  className={`flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition ${
+                    active ? "bg-gold/20 text-gold" : "text-cream hover:bg-leaf/15"
+                  }`}
+                >
+                  <span className="text-base">{l.flag}</span>
+                  <span className="flex-1">{l.label}</span>
+                  {active && <Check className="h-4 w-4" />}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
