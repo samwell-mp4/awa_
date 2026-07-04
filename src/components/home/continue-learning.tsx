@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BookOpen, ArrowRight, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ProgressBar } from "./progress-bar";
+import { translateTrailName } from "./trails-grid";
 import { TRAILS, getLearned, hasCertificate, type TrailSlug } from "@/lib/trilhas";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -95,7 +96,7 @@ export function ContinueLearningCard() {
             </div>
             <p className="truncate text-sm text-foreground/70">
               {next
-                ? t("home.nextTrail", { emoji: next.emoji, name: next.name, learned: next.learned, total: next.total || "?" })
+                ? t("home.nextTrail", { emoji: next.emoji, name: translateTrailName(t, next.name), learned: next.learned, total: next.total || "?" })
                 : t("home.startFirst")}
             </p>
             <ProgressBar value={overall} className="mt-2" />
@@ -116,7 +117,7 @@ export function ContinueLearningCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="truncate text-sm font-bold text-cream">
-                      {t("home.lesson")} {i + 1} — {l.name}
+                      {t("home.lesson")} {i + 1} — {translateTrailName(t, l.name)}
                     </span>
                     <span className="text-xs font-bold text-gold">{l.pct}%</span>
                   </div>

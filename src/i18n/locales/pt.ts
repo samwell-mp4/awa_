@@ -104,5 +104,9 @@ export default {
     enviar: "Enviar",
     idioma: "Idioma",
     tagline: "CULTURAS VIVAS",
+    trailSaudacoes: "Saudações",
+    trailFamilia: "Família",
+    trailNatureza: "Natureza",
+    trailAnimais: "Animais",
   },
 };
