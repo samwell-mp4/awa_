@@ -392,6 +392,33 @@ function NarratableVideo({
 
 
 function HistoriasPage() {
+  // Batch-translate structured content (sections + album)
+  const sectionStrings = useMemo(
+    () => sections.flatMap((s) => [s.title, ...s.body]),
+    [],
+  );
+  const tSections = useAutoTranslate(sectionStrings);
+  const translatedSections = useMemo(() => {
+    let i = 0;
+    return sections.map((s) => {
+      const title = tSections[i++] ?? s.title;
+      const body = s.body.map(() => tSections[i++] ?? "");
+      return { ...s, title, body: body.length ? body : s.body };
+    });
+  }, [tSections]);
+
+  const albumStrings = useMemo(() => album.flatMap((a) => [a.title, a.text]), []);
+  const tAlbum = useAutoTranslate(albumStrings);
+  const translatedAlbum = useMemo(
+    () =>
+      album.map((a, idx) => ({
+        ...a,
+        title: tAlbum[idx * 2] ?? a.title,
+        text: tAlbum[idx * 2 + 1] ?? a.text,
+      })),
+    [tAlbum],
+  );
+
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
