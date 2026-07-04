@@ -96,7 +96,7 @@ export function ContinueLearningCard() {
             </div>
             <p className="truncate text-sm text-foreground/70">
               {next
-                ? t("home.nextTrail", { emoji: next.emoji, name: next.name, learned: next.learned, total: next.total || "?" })
+                ? t("home.nextTrail", { emoji: next.emoji, name: translateTrailName(t, next.name), learned: next.learned, total: next.total || "?" })
                 : t("home.startFirst")}
             </p>
             <ProgressBar value={overall} className="mt-2" />
