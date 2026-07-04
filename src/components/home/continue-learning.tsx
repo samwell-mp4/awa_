@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BookOpen, ArrowRight, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ProgressBar } from "./progress-bar";
+import { translateTrailName } from "./trails-grid";
 import { TRAILS, getLearned, hasCertificate, type TrailSlug } from "@/lib/trilhas";
 import { supabase } from "@/integrations/supabase/client";
 
