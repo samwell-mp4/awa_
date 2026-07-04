@@ -28,6 +28,12 @@ export default {
     installCta: "Ver instruções completas",
     wisdomTitle: "Sabedoria do dia · Trilhas",
     wisdomCta: "Toque para entrar nas trilhas guiadas pelo Professor Akuã →",
+    resourcesTitle: "Recursos da plataforma",
+    resourcesSubtitle: "Tudo o que você precisa para mergulhar nas línguas e culturas dos povos originários.",
+    resourceHistoriasLabel: "Histórias",
+    resourceHistoriasDesc: "Narrativas ancestrais em texto e áudio.",
+    resourceVideosLabel: "Vídeos",
+    resourceVideosDesc: "Cenas e narrativas da aldeia Pataxó.",
   },
   nav: {
     dicionario: "Dicionário",
