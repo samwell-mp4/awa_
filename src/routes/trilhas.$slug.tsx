@@ -220,12 +220,14 @@ function TrilhaPage() {
 }
 
 function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggle: () => void }) {
+  const lang = useLang();
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-display text-lg font-bold text-gold truncate">{w.term_indigenous}</div>
-          <div className="text-sm text-cream/90 truncate">{w.term_pt}</div>
+          <div className="text-sm text-cream/90 truncate">{pickLang(w, "term_pt", lang)}</div>
+
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
         <div className="flex flex-col items-center gap-2">
