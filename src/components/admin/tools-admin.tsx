@@ -187,6 +187,39 @@ export function ToolsAdmin() {
           />
         )}
       </section>
+
+      {/* Bulk translate content (populates *_en / *_es columns) */}
+      <section className={`${card} md:col-span-2`}>
+        <h2 className="flex items-center gap-2 font-display text-lg font-black text-cream">
+          <Globe className="h-5 w-5 text-gold" /> Traduzir todo o conteúdo (EN / ES)
+        </h2>
+        <p className="text-xs text-foreground/70">
+          Traduz dicionário, músicas (título, artista, descrição, letra em PT), missão, vídeo do dia,
+          trilhas e vídeos ambientes para inglês e espanhol e salva no banco. O texto original em
+          português e o Patxôhã permanecem intactos.
+        </p>
+        <label className="inline-flex items-center gap-2 text-xs text-foreground/80">
+          <input type="checkbox" checked={bulkForce} onChange={(e) => setBulkForce(e.target.checked)} />
+          Retraduzir tudo (sobrescreve traduções existentes)
+        </label>
+        <button onClick={onTranslateAll} disabled={bulkBusy} className={btn}>
+          {bulkBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
+          {bulkBusy ? "Traduzindo…" : "Traduzir tudo agora"}
+        </button>
+        {bulkResult && (
+          <div className="grid gap-2 rounded-xl border border-gold/20 bg-bg/40 p-3 text-xs sm:grid-cols-2">
+            {Object.entries(bulkResult).map(([table, r]) => (
+              <div key={table} className="flex items-center justify-between">
+                <span className="text-cream font-semibold">{table}</span>
+                <span className="text-foreground/70">
+                  ✓ {r.updated} atualizadas · {r.skipped} inalteradas
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
+
   );
 }
