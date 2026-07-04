@@ -91,11 +91,18 @@ export const translateAllContent = createServerFn({ method: "POST" })
     const summary: Record<string, { updated: number; skipped: number }> = {};
 
     for (const [table, cfg] of Object.entries(TABLES)) {
-      const { data: rows, error } = await supabaseAdmin.from(table).select(cfg.select);
+      const admin = supabaseAdmin as unknown as {
+        from: (t: string) => {
+          select: (s: string) => Promise<{ data: unknown[] | null; error: unknown }>;
+          update: (p: Record<string, unknown>) => { eq: (col: string, val: string) => Promise<{ error: unknown }> };
+        };
+      };
+      const { data: rows, error } = await admin.from(table).select(cfg.select);
       if (error) {
         summary[table] = { updated: 0, skipped: 0 };
         continue;
       }
+
       let updated = 0;
       let skipped = 0;
       for (const row of rows ?? []) {
