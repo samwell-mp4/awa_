@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
+import { pickLang, useLang } from "@/lib/pick-lang";
+
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
