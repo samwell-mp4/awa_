@@ -216,7 +216,7 @@ function useNarration(originalText: string) {
       return;
     }
     try {
-      const cached = narrationUrlCache.get(text);
+      const cached = narrationUrlCache.get(cacheKey);
       if (!cached) setLoading(true);
       const url = await fetchUrl();
       const audio = new Audio(url);
