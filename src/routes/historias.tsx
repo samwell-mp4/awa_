@@ -525,25 +525,15 @@ function HistoriasPage() {
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                “Enquanto houver respeito e união, nosso povo seguirá forte.
-                Essa é a nossa cultura, essa é a nossa vida.”
+                <T>“Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida.”</T>
               </blockquote>
-              <p>
-                Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou
-                muitas lutas, mas nunca baixou a cabeça. Lutou pela terra,
-                pela língua, pela cultura — e por cada criança que sonha com
-                um futuro melhor.
-              </p>
-              <p>
-                Ser ancião, dizia ele, é mais que ter cabelos brancos: é
-                guardar as histórias, ensinar com o exemplo, e plantar hoje
-                para que a aldeia floresça amanhã. Seu maracá silenciou, mas
-                seu canto segue vivo em cada roda de Awê.
-              </p>
+              <p><T>Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura — e por cada criança que sonha com um futuro melhor.</T></p>
+              <p><T>Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.</T></p>
               <p className="font-serif text-gold">
-                Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.
+                <T>Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.</T>
               </p>
             </div>
+
           </div>
         </section>
 
