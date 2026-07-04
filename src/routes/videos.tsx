@@ -49,6 +49,7 @@ const videos: VideoStory[] = [
 ];
 
 function VideosPage() {
+  const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [muted, setMuted] = useState(false);
 
@@ -89,29 +90,58 @@ function VideosPage() {
     if (audioRef.current) audioRef.current.muted = muted;
   }, [muted]);
 
+  // Collect all localizable strings (page chrome + video captions) and translate in one batch
+  const staticStrings = useMemo(
+    () => [
+      "Vídeos Pataxó",
+      "Início",
+      "Ativar música de fundo",
+      "Silenciar música de fundo",
+      "Música off",
+      "Música on",
+      "Assista aos vídeos com música indígena tocando ao fundo. Cada cena vem acompanhada da sua história escrita.",
+    ],
+    [],
+  );
+  const videoStrings = useMemo(
+    () => videos.flatMap((v) => [v.title, v.short, v.story]),
+    [],
+  );
+  const [
+    tTitle,
+    tHome,
+    tMuteOn,
+    tMuteOff,
+    tMusicOff,
+    tMusicOn,
+    tIntro,
+  ] = useAutoTranslate(staticStrings);
+  const tVideos = useAutoTranslate(videoStrings);
+
+  // Silence "unused t" while keeping i18n subscription (re-renders on lang change)
+  void t;
+
   return (
     <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
           <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-sm text-cream hover:bg-gold/10">
-            <ArrowLeft className="h-4 w-4" /> Início
+            <ArrowLeft className="h-4 w-4" /> {tHome}
           </Link>
-          <h1 className="font-display text-lg font-black text-cream flex-1">Vídeos Pataxó</h1>
+          <h1 className="font-display text-lg font-black text-cream flex-1">{tTitle}</h1>
           <button
             onClick={() => setMuted((m) => !m)}
             className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-xs text-cream hover:bg-gold/10"
-            aria-label={muted ? "Ativar música de fundo" : "Silenciar música de fundo"}
+            aria-label={muted ? tMuteOn : tMuteOff}
           >
             {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            {muted ? "Música off" : "Música on"}
+            {muted ? tMusicOff : tMusicOn}
           </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
-        <p className="mb-6 max-w-2xl text-sm text-foreground/70">
-          Assista aos vídeos com música indígena tocando ao fundo. Cada cena vem acompanhada da sua história escrita.
-        </p>
+        <p className="mb-6 max-w-2xl text-sm text-foreground/70">{tIntro}</p>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {videos.map((v, i) => (
@@ -128,10 +158,10 @@ function VideosPage() {
               </div>
               <div className="p-4 space-y-3">
                 <div>
-                  <h2 className="font-display text-base font-black text-cream">{v.title}</h2>
-                  <p className="text-xs text-gold/90 italic">{v.short}</p>
+                  <h2 className="font-display text-base font-black text-cream">{tVideos[i * 3] ?? v.title}</h2>
+                  <p className="text-xs text-gold/90 italic">{tVideos[i * 3 + 1] ?? v.short}</p>
                 </div>
-                <p className="text-sm text-foreground/80 leading-relaxed">{v.story}</p>
+                <p className="text-sm text-foreground/80 leading-relaxed">{tVideos[i * 3 + 2] ?? v.story}</p>
               </div>
             </article>
           ))}
@@ -140,3 +170,4 @@ function VideosPage() {
     </div>
   );
 }
+
