@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
