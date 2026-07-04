@@ -43,14 +43,13 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep/95 shadow-[var(--shadow-gold)] backdrop-blur-xl">
           {SUPPORTED_LANGS.map((l) => {
             const active = l.code === i18n.language;
-            const highlight = l.code === "pat";
             return (
               <button
                 key={l.code}
                 onClick={() => change(l.code)}
                 className={`flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition ${
                   active ? "bg-gold/20 text-gold" : "text-cream hover:bg-leaf/15"
-                } ${highlight ? "font-bold" : ""}`}
+                } `}
               >
                 <span className="text-base">{l.flag}</span>
                 <span className="flex-1">{l.label}</span>

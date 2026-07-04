@@ -7,7 +7,6 @@ import es from "./locales/es";
 import pat from "./locales/pat";
 
 export const SUPPORTED_LANGS = [
-  { code: "pat", label: "Patxôhã", flag: "🪶" },
   { code: "pt", label: "Português", flag: "🇧🇷" },
   { code: "en", label: "English", flag: "🇺🇸" },
   { code: "es", label: "Español", flag: "🇪🇸" },
@@ -27,7 +26,7 @@ if (!i18n.isInitialized) {
         pat: { translation: pat },
       },
       fallbackLng: "pt",
-      supportedLngs: ["pat", "pt", "en", "es"],
+      supportedLngs: ["pt", "en", "es"],
       interpolation: { escapeValue: false },
       detection: {
         order: ["localStorage", "navigator"],

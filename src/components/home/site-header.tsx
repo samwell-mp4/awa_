@@ -14,9 +14,8 @@ export function SiteHeader() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { top: topNavLinks } = useNavContent();
-  const isPat = i18n.language === "pat";
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -42,9 +41,7 @@ export function SiteHeader() {
             <Link
               key={n.href}
               to={n.href}
-              className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream ${
-                isPat ? "font-bold text-gold/95" : ""
-              }`}
+              className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
             >
               {n.label}
             </Link>
