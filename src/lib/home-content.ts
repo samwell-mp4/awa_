@@ -12,6 +12,7 @@ import {
   Video,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
@@ -47,6 +48,7 @@ export const resourceCards: { icon: LucideIcon; label: string; desc: string }[] 
 export type NavItem = { label: string; href: string; icon: LucideIcon; premium?: boolean };
 export type NavGroup = { title: string; items: NavItem[] };
 
+// Static fallback (used by any non-hook consumer). Prefer useNavContent() in components.
 export const navGroups: NavGroup[] = [
   {
     title: "Língua e Conhecimento",
@@ -89,3 +91,49 @@ export const topNavLinks = [
   { label: "Vídeos", href: "/videos" },
   { label: "Jogos", href: "/jogos" },
 ];
+
+export function useNavContent() {
+  const { t } = useTranslation();
+  const groups: NavGroup[] = [
+    {
+      title: t("nav.groups.lingua"),
+      items: [
+        { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
+        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
+        { label: t("nav.trilhas"), href: "/trilhas", icon: Award },
+        { label: t("nav.professor"), href: "/professor", icon: Sparkles },
+      ],
+    },
+    {
+      title: t("nav.groups.cultura"),
+      items: [
+        { label: t("nav.historiasLong"), href: "/historias", icon: ScrollText },
+        { label: t("nav.musicasLong"), href: "/musicas", icon: Play },
+        { label: t("nav.videosLong"), href: "/videos", icon: Video },
+        { label: t("nav.jogosLong"), href: "/jogos", icon: Trophy },
+      ],
+    },
+    {
+      title: t("nav.groups.quemSomos"),
+      items: [
+        { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
+        { label: t("nav.instalar"), href: "/instalar", icon: Download },
+        { label: t("nav.bemVindo"), href: "/bem-vindo", icon: Home },
+      ],
+    },
+    {
+      title: t("nav.groups.usuario"),
+      items: [{ label: t("nav.premium"), href: "/planos", icon: Star }],
+    },
+  ];
+  const top = [
+    { label: t("nav.dicionario"), href: "/dicionario" },
+    { label: t("nav.tradutor"), href: "/traduzir" },
+    { label: t("nav.trilhas"), href: "/trilhas" },
+    { label: t("nav.historias"), href: "/historias" },
+    { label: t("nav.musicas"), href: "/musicas" },
+    { label: t("nav.videos"), href: "/videos" },
+    { label: t("nav.jogos"), href: "/jogos" },
+  ];
+  return { groups, top };
+}

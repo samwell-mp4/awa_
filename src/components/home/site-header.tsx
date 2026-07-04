@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { ChevronRight, LogIn, LogOut, Menu, Settings, Star, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { navGroups, topNavLinks } from "@/lib/home-content";
+import { useNavContent, type NavGroup } from "@/lib/home-content";
 import { Logo } from "./logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { t, i18n } = useTranslation();
+  const { top: topNavLinks } = useNavContent();
+  const isPat = i18n.language === "pat";
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -25,7 +30,7 @@ export function SiteHeader() {
         <button
           onClick={() => setOpen((v) => !v)}
           className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
-          aria-label="Menu"
+          aria-label={t("nav.menu")}
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -35,9 +40,11 @@ export function SiteHeader() {
         <nav className="hidden xl:flex items-center gap-1">
           {topNavLinks.map((n) => (
             <Link
-              key={n.label}
+              key={n.href}
               to={n.href}
-              className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
+              className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream ${
+                isPat ? "font-bold text-gold/95" : ""
+              }`}
             >
               {n.label}
             </Link>
@@ -46,14 +53,14 @@ export function SiteHeader() {
             to="/planos"
             className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-bold text-gold hover:bg-gold/30"
           >
-            <Star className="h-4 w-4" /> Premium
+            <Star className="h-4 w-4" /> {t("nav.premium")}
           </Link>
           {isAdmin && (
             <Link
               to="/admin"
               className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30"
             >
-              <Settings className="h-4 w-4" /> Painel
+              <Settings className="h-4 w-4" /> {t("nav.painel")}
             </Link>
           )}
           {user ? (
@@ -62,13 +69,13 @@ export function SiteHeader() {
                 to="/minha-conta"
                 className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/85 hover:bg-gold/10"
               >
-                <UserCircle2 className="h-4 w-4" /> Minha conta
+                <UserCircle2 className="h-4 w-4" /> {t("nav.minhaConta")}
               </Link>
               <button
                 onClick={signOut}
                 className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10"
               >
-                <LogOut className="h-4 w-4" /> Sair
+                <LogOut className="h-4 w-4" /> {t("nav.sair")}
               </button>
             </>
           ) : (
@@ -76,10 +83,14 @@ export function SiteHeader() {
               to="/auth"
               className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]"
             >
-              <LogIn className="h-4 w-4" /> Entrar
+              <LogIn className="h-4 w-4" /> {t("nav.entrar")}
             </Link>
           )}
+          <LanguageSwitcher />
         </nav>
+        <div className="xl:hidden">
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {open && (
@@ -100,7 +111,9 @@ function MobileDrawer({
   user: ReturnType<typeof useAuth>["user"];
   isAdmin: boolean;
 }) {
-  const [openGroup, setOpenGroup] = useState<string | null>(navGroups[0]?.title ?? null);
+  const { t } = useTranslation();
+  const { groups } = useNavContent();
+  const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   return (
     <div className="xl:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
       <div className="text-center pb-3 mb-3 border-b border-gold/15">
@@ -109,8 +122,14 @@ function MobileDrawer({
           CULTURAS VIVAS
         </div>
       </div>
+      <div className="mb-3 flex items-center justify-between rounded-xl border border-gold/20 bg-forest-deep/30 px-3 py-2">
+        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gold/80">
+          {t("common.idioma")}
+        </span>
+        <LanguageSwitcher compact />
+      </div>
       <div className="flex flex-col gap-2">
-        {navGroups.map((group) => {
+        {groups.map((group: NavGroup) => {
           const isOpen = openGroup === group.title;
           return (
             <div key={group.title} className="rounded-xl border border-gold/15 bg-forest-deep/20 overflow-hidden">
@@ -134,7 +153,7 @@ function MobileDrawer({
                   <div className="flex flex-col gap-1 px-2 pb-2 pt-1">
                     {group.items.map((n) => (
                       <Link
-                        key={n.label}
+                        key={n.href}
                         to={n.href}
                         onClick={onClose}
                         className="flex items-center gap-3 rounded-lg pl-6 pr-3 py-2 text-sm font-medium text-foreground/85 hover:bg-leaf/20"
@@ -162,7 +181,7 @@ function MobileDrawer({
               onClick={onClose}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gold hover:bg-gold/15"
             >
-              <Settings className="h-4 w-4" /> Painel Admin
+              <Settings className="h-4 w-4" /> {t("nav.painel")}
             </Link>
           )}
           {user ? (
@@ -172,7 +191,7 @@ function MobileDrawer({
                 onClick={onClose}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/90 hover:bg-leaf/15"
               >
-                <UserCircle2 className="h-4 w-4 text-gold" /> Minha conta
+                <UserCircle2 className="h-4 w-4 text-gold" /> {t("nav.minhaConta")}
               </Link>
               <button
                 onClick={() => {
@@ -181,7 +200,7 @@ function MobileDrawer({
                 }}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
               >
-                <LogOut className="h-4 w-4 text-gold" /> Sair
+                <LogOut className="h-4 w-4 text-gold" /> {t("nav.sair")}
               </button>
             </>
           ) : (
@@ -190,7 +209,7 @@ function MobileDrawer({
               onClick={onClose}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-cream bg-[var(--gradient-leaf)]"
             >
-              <LogIn className="h-4 w-4" /> Entrar / Criar conta
+              <LogIn className="h-4 w-4" /> {t("nav.entrarCriar")}
             </Link>
           )}
         </div>
