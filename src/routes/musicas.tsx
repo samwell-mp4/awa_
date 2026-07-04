@@ -233,7 +233,9 @@ function Player({
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
-  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
 
   const indLines = useMemo(
     () =>
@@ -243,14 +245,16 @@ function Player({
         .filter(Boolean),
     [song.lyrics_indigenous],
   );
+  const lyricsTranslated = pickLang(song, "lyrics_pt", lang);
   const ptLines = useMemo(
     () =>
-      song.lyrics_pt
+      lyricsTranslated
         .split("\n")
         .map((l) => l.trim())
         .filter(Boolean),
-    [song.lyrics_pt],
+    [lyricsTranslated],
   );
+
   const maxLen = Math.max(indLines.length, ptLines.length);
 
   useEffect(() => {
