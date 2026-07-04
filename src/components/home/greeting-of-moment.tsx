@@ -37,7 +37,7 @@ export function GreetingOfMoment() {
               {atual.term_indigenous}
             </div>
             <div className="text-sm text-cream/85 truncate">
-              {atual.term_pt}
+              {termPtTranslated || atual.term_pt}
               {atual.pronunciation ? ` · ${atual.pronunciation}` : ""}
             </div>
           </div>
