@@ -30,6 +30,26 @@ export function ToolsAdmin() {
   const [sttBusy, setSttBusy] = useState(false);
   const [sttText, setSttText] = useState("");
 
+  // Bulk translate content
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkResult, setBulkResult] = useState<Record<string, { updated: number; skipped: number }> | null>(null);
+  const [bulkForce, setBulkForce] = useState(false);
+
+  async function onTranslateAll() {
+    setBulkBusy(true);
+    setBulkResult(null);
+    try {
+      const r = await translateAll({ data: { force: bulkForce } });
+      setBulkResult(r.summary);
+      toast.success("Conteúdo traduzido e salvo no banco.");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setBulkBusy(false);
+    }
+  }
+
+
   async function onTranslate() {
     setTrBusy(true);
     setTrOut(null);
