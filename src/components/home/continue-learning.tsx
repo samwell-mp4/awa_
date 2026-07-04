@@ -117,7 +117,7 @@ export function ContinueLearningCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="truncate text-sm font-bold text-cream">
-                      {t("home.lesson")} {i + 1} — {l.name}
+                      {t("home.lesson")} {i + 1} — {translateTrailName(t, l.name)}
                     </span>
                     <span className="text-xs font-bold text-gold">{l.pct}%</span>
                   </div>
