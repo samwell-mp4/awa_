@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+
 import { trailSlugMap } from "@/lib/home-content";
 import type { HomeTrail } from "@/hooks/use-home-data";
 import { ProgressBar } from "./progress-bar";
@@ -38,12 +38,6 @@ export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
             Trilhas de aprendizado
           </h2>
         </div>
-        <a
-          href="#aprender"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-gold hover:underline"
-        >
-          Ver todas <ChevronRight className="h-4 w-4" />
-        </a>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
         {trails.map((t) => {
