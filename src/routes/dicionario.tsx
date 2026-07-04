@@ -81,6 +81,8 @@ function firstLetter(s: string): string {
 
 function DictionaryPage() {
   const { isPremium } = useSubscription();
+  const lang = useLang();
+
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
