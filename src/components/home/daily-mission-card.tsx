@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, Star, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { DailyMission } from "@/hooks/use-home-data";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 function optionClass(picked: number | null, correct: number | undefined, i: number) {
   const isPicked = picked === i;
@@ -20,6 +21,15 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
   const answered = answer !== null;
   const isRightAnswer = answered && answer === correct;
 
+  const options = mission?.options ?? [];
+  const textsToTranslate = useMemo(
+    () => [mission?.question ?? "", ...options],
+    [mission?.question, options.join("\u0001")],
+  );
+  const translated = useAutoTranslate(textsToTranslate);
+  const question = translated[0] || (mission?.question ?? t("home.missionLoading"));
+  const translatedOptions = translated.slice(1);
+
   return (
     <div className="card-elev rounded-2xl p-5">
       <div className="flex items-center gap-2">
@@ -29,10 +39,10 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
         <h3 className="font-display text-lg font-black text-cream">{t("home.missionTitle")}</h3>
       </div>
       <p className="mt-3 text-sm text-foreground/70">
-        {mission?.question ?? t("home.missionLoading")}
+        {mission?.question ? question : t("home.missionLoading")}
       </p>
       <div className="mt-3 flex flex-col gap-2">
-        {(mission?.options ?? []).map((label, i) => (
+        {options.map((label, i) => (
           <button
             key={i}
             onClick={() => setAnswer(i)}
@@ -42,7 +52,7 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
             ].join(" ")}
           >
             <span>
-              {String.fromCharCode(65 + i)}) {label}
+              {String.fromCharCode(65 + i)}) {translatedOptions[i] ?? label}
             </span>
             {answered && i === correct && <Check className="h-4 w-4 text-leaf" />}
           </button>

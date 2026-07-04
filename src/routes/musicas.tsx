@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
@@ -148,6 +149,7 @@ function SongCard({
   song: Song;
   onClick: () => void;
 }) {
+  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
   return (
     <button
       onClick={onClick}
@@ -158,7 +160,7 @@ function SongCard({
         {song.cover_url ? (
           <img
             src={song.cover_url}
-            alt={song.title}
+            alt={tTitle || song.title}
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
@@ -189,10 +191,10 @@ function SongCard({
           {song.language}
         </div>
         <h3 className="font-display text-xl font-black text-cream leading-tight">
-          {song.title}
+          {tTitle || song.title}
         </h3>
         {song.artist && (
-          <p className="mt-1 text-xs text-foreground/70 truncate">{song.artist}</p>
+          <p className="mt-1 text-xs text-foreground/70 truncate">{tArtist || song.artist}</p>
         )}
       </div>
     </button>
@@ -219,6 +221,7 @@ function Player({
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
+  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
 
   const indLines = useMemo(
     () =>
@@ -327,10 +330,10 @@ function Player({
             Ouvindo agora · {song.language}
           </div>
           <h2 className="font-display text-2xl md:text-4xl font-black text-cream drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-            {song.title}
+            {tTitle || song.title}
           </h2>
           {song.artist && (
-            <div className="text-sm text-foreground/80 italic">{song.artist}</div>
+            <div className="text-sm text-foreground/80 italic">{tArtist || song.artist}</div>
           )}
         </div>
         <button

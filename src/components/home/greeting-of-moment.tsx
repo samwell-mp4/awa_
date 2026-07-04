@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 export function GreetingOfMoment() {
   const { t } = useTranslation();
@@ -11,6 +12,7 @@ export function GreetingOfMoment() {
     queryFn: fetchSaudacoes,
   });
   const atual = pickByHour(list);
+  const [termPtTranslated] = useAutoTranslate([atual?.term_pt ?? ""]);
   if (!atual) return null;
   const hour = new Date().getHours();
   const periodo =
@@ -35,7 +37,7 @@ export function GreetingOfMoment() {
               {atual.term_indigenous}
             </div>
             <div className="text-sm text-cream/85 truncate">
-              {atual.term_pt}
+              {termPtTranslated || atual.term_pt}
               {atual.pronunciation ? ` · ${atual.pronunciation}` : ""}
             </div>
           </div>
