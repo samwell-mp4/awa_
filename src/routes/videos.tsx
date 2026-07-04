@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Volume2, VolumeX } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+
 
 import v1 from "@/assets/videos/VID-20260630-WA0052.mp4.asset.json";
 import v2 from "@/assets/videos/VID-20260630-WA0054.mp4.asset.json";
