@@ -38,7 +38,12 @@ type Entry = {
   pronunciation: string | null;
   example: string | null;
   audio_url: string | null;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
+
 
 const ENABLED_LANGUAGES = ["Patxôhã"] as const;
 
