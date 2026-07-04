@@ -539,7 +539,7 @@ function HistoriasPage() {
 
 
         <div className="space-y-16 md:space-y-24">
-          {sections.map((s, i) => {
+          {translatedSections.map((s, i) => {
             const Icon = s.icon;
             const reverse = i % 2 === 1;
             return (
@@ -564,7 +564,7 @@ function HistoriasPage() {
 
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    <Icon className="h-3.5 w-3.5" /> Capítulo {i + 1}
+                    <Icon className="h-3.5 w-3.5" /> <T>Capítulo</T> {i + 1}
                   </div>
                   <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
                     {s.title}
@@ -580,26 +580,20 @@ function HistoriasPage() {
           })}
         </div>
 
-
-
-
-
-
-
         {/* Álbum cultural */}
         <section className="mt-20">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 Álbum do Povo</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 <T>Álbum do Povo</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              Rostos, pinturas e rituais Pataxó
+              <T>Rostos, pinturas e rituais Pataxó</T>
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
-              Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.
+              <T>Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.</T>
             </p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {album.map((item) => (
+            {translatedAlbum.map((item) => (
               <figure
                 key={item.title}
                 className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
@@ -623,31 +617,28 @@ function HistoriasPage() {
           </div>
         </section>
 
-
-
-
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
           <p className="mt-2 text-amber-100/85">
-            Que estas histórias caminhem com você. Aprenda a língua, ouça os
-            cantos e ajude a manter viva a memória Pataxó.
+            <T>Que estas histórias caminhem com você. Aprenda a língua, ouça os cantos e ajude a manter viva a memória Pataxó.</T>
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               to="/professor"
               className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-emerald-950 hover:brightness-110"
             >
-              Conversar com Professor Akuã
+              <T>Conversar com Professor Akuã</T>
             </Link>
             <Link
               to="/musicas"
               className="rounded-full border border-gold/40 px-5 py-2 text-sm text-amber-100 hover:bg-white/5"
             >
-              Ouvir cantos Pataxó
+              <T>Ouvir cantos Pataxó</T>
             </Link>
           </div>
         </div>
+
       </main>
     </div>
   );
