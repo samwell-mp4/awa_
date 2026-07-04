@@ -52,7 +52,7 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
             ].join(" ")}
           >
             <span>
-              {String.fromCharCode(65 + i)}) {label}
+              {String.fromCharCode(65 + i)}) {translatedOptions[i] ?? label}
             </span>
             {answered && i === correct && <Check className="h-4 w-4 text-leaf" />}
           </button>
