@@ -60,7 +60,7 @@ function TrilhaPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("dictionary")
-        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category")
+        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category,term_pt_en,term_pt_es,example_en,example_es")
         .in("category", trail.categories)
         .order("term_pt");
       if (error) throw error;
