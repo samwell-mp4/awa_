@@ -1,76 +1,53 @@
+# Sistema multilíngue completo (PT / EN / ES + Patxohã fixo)
 
-## O que está quebrado hoje
+Decisões que assumi (você pulou as perguntas):
+- **Estratégia:** adicionar colunas `*_en` e `*_es` nas tabelas de conteúdo e preencher automaticamente via Lovable AI numa migração-única + botão no admin para re-traduzir. Fallback para PT quando vazio.
+- **Patxohã:** permanece intocado nos campos originais (`pt_word`, `letra`, `texto_patxoha`) e é sempre exibido junto da tradução escolhida em músicas, dicionário, saudações, missão e histórias.
 
-1. **Grátis vira Premium (e vice-versa) entre preview e produção.** A função `has_premium_access` no banco não filtra por `environment`, então uma assinatura de teste desbloqueia o app publicado, e uma assinatura ao vivo não é reconhecida na preview.
-2. **Assinatura vencida continua liberando.** A função ignora `current_period_end` — se o webhook não atualizar o status, o acesso nunca expira.
-3. **Cancelamento tira acesso na hora.** Você escolheu: quem cancelar deve continuar Premium até o fim do período pago. Hoje isso não acontece.
-4. **`past_due` some.** Quando o cartão falha, nada aparece na tela.
-5. **Sem portal do cliente.** Assinante não consegue cancelar, trocar cartão ou ver faturas de dentro do app.
-6. **Retorno do checkout mudo.** `/planos?checkout=success` não avisa "processando pagamento" nem força recarga enquanto o webhook chega.
-7. **Sem páginas legais.** Termos, Reembolso e Privacidade não existem — sem elas a Paddle não libera cobrança real.
-8. **Sem "esqueci a senha".** Reset de senha não tem rota.
-9. **Sair não limpa cache.** Ao trocar de usuário, dados Premium do usuário anterior ficam em memória.
+## O que muda no banco
 
-## Como vou consertar
+Adicionar colunas de tradução (todas nullable, default NULL) em:
 
-### 1. Regra de acesso Premium (migration)
-Nova função `has_active_subscription(user_id, check_env)`:
-- Filtra por `environment` (sandbox/live corretos).
-- Aceita `active`/`trialing` **enquanto `current_period_end` for futuro**.
-- Aceita `canceled` **enquanto `current_period_end` for futuro** (mantém acesso até o fim do período pago — cancelamento no fim do ciclo).
-- Trata `past_due` como ativo por 3 dias após `current_period_end` (janela de tentativa de recobrança da Paddle).
+- `dictionary`: `meaning_en`, `meaning_es`, `example_en`, `example_es`
+- `songs`: `title_en`, `title_es`, `artist_en`, `artist_es`, `description_en`, `description_es`
+- `daily_mission`: `question_en`, `question_es`, `options_en jsonb`, `options_es jsonb`
+- `daily_video`: `title_en`, `title_es`, `description_en`, `description_es`
+- `trails`: `name_en`, `name_es`, `description_en`, `description_es`
+- `ambient_videos`: `title_en`, `title_es`
 
-Reescrevo `has_premium_access(user_id, check_env)` para usar essa lógica + isenção de admin. Assinatura antiga continua chamando com o env correto.
+Patxohã não ganha coluna nova — já está no campo original.
 
-### 2. Hook e guarda de servidor
-- `useSubscription`: passar `env` para a RPC, expor `status`, `currentPeriodEnd`, `cancelAtPeriodEnd`, `plan` (mensal/semestral) para a tela de conta.
-- `assertPremium` (servidor): passar `env` derivado da assinatura mais recente do usuário e admin.
+## Backend
 
-### 3. Portal do cliente Paddle + tela "Minha assinatura"
-- Nova server function `openCustomerPortal({ subscriptionId })` — cria sessão do portal via SDK Paddle e retorna URL.
-- Nova rota `/minha-conta` (protegida por `_authenticated`):
-  - Mostra plano atual, próxima cobrança, status (com aviso de `past_due`).
-  - Botão "Gerenciar assinatura" abre portal Paddle em nova aba.
-  - Botão "Sair da conta" com limpeza correta de cache.
-  - Se não for Premium, mostra CTA para `/planos`.
-- Adiciono link "Minha conta" no menu.
+- Nova server function `translateContentRow` (admin-only, usa AI Gateway) que traduz uma linha inteira e grava as colunas `_en` / `_es`.
+- Nova server function `translateAllContent` que roda em batch por tabela (com progresso). Exposta como botão no admin.
+- Após a migração, disparo `translateAllContent` uma vez para popular tudo.
 
-### 4. UX de checkout
-- `/planos?checkout=success`: toast "Pagamento recebido, processando…", `refetch` da assinatura a cada 2s por 30s, redireciona para `/minha-conta` quando `isPremium` virar true.
+## Frontend
 
-### 5. Páginas legais (obrigatórias pela Paddle)
-Vendedor: **Akuã** (pessoa física). Crio três rotas públicas:
-- `/termos` — Termos de Uso (com cláusulas obrigatórias: identificação do vendedor, Paddle como Merchant of Record, uso aceitável, IP, IA generativa, suspensão).
-- `/reembolso` — Política de Reembolso (30 dias, via paddle.net).
-- `/privacidade` — Política de Privacidade (Akuã como controladora, categorias de dados, Paddle como recipient, LGPD).
-Linko as três no rodapé.
+- Helper `pickLang(row, lang, field)` que retorna `row[field+'_'+lang] || row[field]`.
+- Refactor dos componentes de leitura para usar `pickLang`:
+  - `musicas.tsx` (galeria + player) — mostra título/artista/descrição no idioma; letra Patxohã sempre visível.
+  - `dicionario.tsx` — significado no idioma; palavra Patxohã sempre em destaque.
+  - `daily-mission-card.tsx`, `greeting-of-moment.tsx`, `daily-video`, `trails-grid`, `trilhas.$slug` — mesmo padrão.
+- Remover o `useAutoTranslate` runtime desses componentes (agora vem do banco).
+- Troca de idioma continua instantânea (i18next já faz).
 
-### 6. Reset de senha
-- Rota pública `/reset-password` que consome o hash `type=recovery` e chama `updateUser({ password })`.
-- Link "Esqueci minha senha" na tela `/auth` que dispara `resetPasswordForEmail` com `redirectTo` correto.
+## Admin
 
-### 7. Higiene de sign-out
-- Nova função `signOut()` compartilhada: `queryClient.cancelQueries()` → `clear()` → `supabase.auth.signOut()` → `navigate('/auth', {replace:true})`.
+- Novo painel "Traduções" com botão "Traduzir tudo agora" e "Retraduzir esta linha" em cada tabela existente do admin.
 
-## Como testar na preview
+## Fora do escopo (confirmar depois)
 
-O banner laranja "Modo de teste" fica visível no topo — se ele aparecer, estamos em sandbox.
+- Áudio TTS multilíngue (narração do Professor Akuã) — pode ser adicionado num segundo passo.
+- Tradução de vídeos gravados (só metadados mudam; áudio original permanece).
 
-**Fluxo de assinar:**
-1. Criar conta em `/auth`.
-2. Ir em `/planos` → "Assinar Mensal".
-3. No checkout Paddle, usar cartão **`4242 4242 4242 4242`**, CVC `123`, validade qualquer data futura, CEP qualquer.
-4. Voltar para `/planos?checkout=success` → aparece "Pagamento recebido…" → redireciona para `/minha-conta` em poucos segundos.
-5. Conferir se Dicionário, Trilhas, Professor Akuã, Tradutor, Vídeos e Músicas abrem sem paywall.
+## Ordem de execução
 
-**Fluxo de cancelar (mantém acesso):**
-1. Em `/minha-conta`, "Gerenciar assinatura" → cancelar no portal Paddle.
-2. Voltar ao app → status mostra "Cancelada, ativa até DD/MM" → conteúdo Premium continua liberado.
+1. Migração SQL (adiciona colunas).
+2. Server functions de tradução.
+3. UI de admin (botão "traduzir tudo").
+4. Refactor dos componentes de leitura com `pickLang`.
+5. Rodar tradução em massa uma vez.
 
-**Testar cartão recusado:**
-- Usar `4000 0000 0000 0002` no checkout → deve mostrar erro sem criar assinatura.
-
-**Testar past_due:**
-- Assinar com `4000 0027 6000 3184` (sucede na hora, falha na renovação). Para forçar a renovação, avanço a data de cobrança pela API Paddle — posso rodar isso pra você depois.
-
-**Para ir ao vivo** (aceitar dinheiro real), publicar o app e clicar "Verify" em `?view=payments`. As páginas legais que vou criar cobrem o readiness check.
+Aprove para eu executar — começo pela migração.
