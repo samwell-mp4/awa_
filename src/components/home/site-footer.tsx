@@ -11,21 +11,10 @@ const socialIcons = [
 
 const columns = [
   {
-    title: "Explorar",
-    links: [
-      { label: "Dicionário", href: "/dicionario" as const },
-      { label: "Trilhas", href: "/trilhas" as const },
-      { label: "Histórias", href: "/historias" as const },
-      { label: "Músicas", href: "/musicas" as const },
-    ],
-  },
-  {
     title: "Projeto",
     links: [
       { label: "Biografia", href: "/biografia" as const },
-      { label: "Planos", href: "/planos" as const },
       { label: "Instalar app", href: "/instalar" as const },
-      { label: "Minha conta", href: "/minha-conta" as const },
     ],
   },
   {
@@ -34,7 +23,6 @@ const columns = [
       { label: "Termos de uso", href: "/termos" as const },
       { label: "Privacidade", href: "/privacidade" as const },
       { label: "Reembolso", href: "/reembolso" as const },
-      { label: "Boas-vindas", href: "/bem-vindo" as const },
     ],
   },
 ];
