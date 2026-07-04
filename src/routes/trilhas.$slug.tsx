@@ -11,6 +11,8 @@ import { speakText } from "@/lib/tts.functions";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
+import { pickLang, useLang } from "@/lib/pick-lang";
+
 
 export const Route = createFileRoute("/trilhas/$slug")({
   beforeLoad: ({ params }) => {
