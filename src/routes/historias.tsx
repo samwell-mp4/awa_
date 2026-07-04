@@ -439,20 +439,20 @@ function HistoriasPage() {
             to="/"
             className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
           >
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
           </Link>
 
           <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
-            🪶 Histórias do Povo
+            🪶 <T>Histórias do Povo</T>
           </p>
           <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
-            Pataxó —{" "}
-            <span className="text-gold">guardiões da Mata Atlântica</span>
+            <T>Pataxó</T> —{" "}
+            <span className="text-gold"><T>guardiões da Mata Atlântica</T></span>
           </h1>
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
-            Origem, território, língua, espiritualidade, arte e resistência de
-            um povo que faz da cultura sua arma mais bonita.
+            <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
+
         </div>
       </header>
 
