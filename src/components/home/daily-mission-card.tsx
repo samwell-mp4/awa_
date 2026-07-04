@@ -21,6 +21,15 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
   const answered = answer !== null;
   const isRightAnswer = answered && answer === correct;
 
+  const options = mission?.options ?? [];
+  const textsToTranslate = useMemo(
+    () => [mission?.question ?? "", ...options],
+    [mission?.question, options.join("\u0001")],
+  );
+  const translated = useAutoTranslate(textsToTranslate);
+  const question = translated[0] || (mission?.question ?? t("home.missionLoading"));
+  const translatedOptions = translated.slice(1);
+
   return (
     <div className="card-elev rounded-2xl p-5">
       <div className="flex items-center gap-2">
