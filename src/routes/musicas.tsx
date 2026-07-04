@@ -149,6 +149,7 @@ function SongCard({
   song: Song;
   onClick: () => void;
 }) {
+  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
   return (
     <button
       onClick={onClick}
@@ -159,7 +160,7 @@ function SongCard({
         {song.cover_url ? (
           <img
             src={song.cover_url}
-            alt={song.title}
+            alt={tTitle || song.title}
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
@@ -190,10 +191,10 @@ function SongCard({
           {song.language}
         </div>
         <h3 className="font-display text-xl font-black text-cream leading-tight">
-          {song.title}
+          {tTitle || song.title}
         </h3>
         {song.artist && (
-          <p className="mt-1 text-xs text-foreground/70 truncate">{song.artist}</p>
+          <p className="mt-1 text-xs text-foreground/70 truncate">{tArtist || song.artist}</p>
         )}
       </div>
     </button>
