@@ -221,6 +221,7 @@ function Player({
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
+  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
 
   const indLines = useMemo(
     () =>
