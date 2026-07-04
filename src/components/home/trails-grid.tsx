@@ -9,14 +9,17 @@ const cardClass =
   "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
 
 const trailNameKey: Record<string, string> = {
-  Saudações: "common.trailSaudacoes",
-  Família: "common.trailFamilia",
-  Natureza: "common.trailNatureza",
-  Animais: "common.trailAnimais",
+  saudacoes: "common.trailSaudacoes",
+  "saudações": "common.trailSaudacoes",
+  familia: "common.trailFamilia",
+  "família": "common.trailFamilia",
+  natureza: "common.trailNatureza",
+  animais: "common.trailAnimais",
 };
 
 export function translateTrailName(t: (k: string) => string, name: string) {
-  const key = trailNameKey[name];
+  const norm = (name ?? "").trim().toLowerCase();
+  const key = trailNameKey[norm];
   return key ? t(key) : name;
 }
 
