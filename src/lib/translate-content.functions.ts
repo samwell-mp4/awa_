@@ -134,7 +134,7 @@ export const translateAllContent = createServerFn({ method: "POST" })
           }
         }
         if (Object.keys(patch).length > 0) {
-          const { error: upErr } = await supabaseAdmin.from(table).update(patch).eq("id", r.id as string);
+          const { error: upErr } = await admin.from(table).update(patch).eq("id", r.id as string);
           if (upErr) skipped++;
           else updated++;
         } else {
