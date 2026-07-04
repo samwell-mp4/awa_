@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { useTranslation } from "react-i18next";
 import { T } from "@/components/T";
 
 
