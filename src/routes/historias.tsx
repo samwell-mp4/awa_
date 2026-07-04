@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Volume2, Square } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { narratePublic } from "@/lib/narrate-public.functions";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { T } from "@/components/T";
+
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
@@ -389,6 +392,33 @@ function NarratableVideo({
 
 
 function HistoriasPage() {
+  // Batch-translate structured content (sections + album)
+  const sectionStrings = useMemo(
+    () => sections.flatMap((s) => [s.title, ...s.body]),
+    [],
+  );
+  const tSections = useAutoTranslate(sectionStrings);
+  const translatedSections = useMemo(() => {
+    let i = 0;
+    return sections.map((s) => {
+      const title = tSections[i++] ?? s.title;
+      const body = s.body.map(() => tSections[i++] ?? "");
+      return { ...s, title, body: body.length ? body : s.body };
+    });
+  }, [tSections]);
+
+  const albumStrings = useMemo(() => album.flatMap((a) => [a.title, a.text]), []);
+  const tAlbum = useAutoTranslate(albumStrings);
+  const translatedAlbum = useMemo(
+    () =>
+      album.map((a, idx) => ({
+        ...a,
+        title: tAlbum[idx * 2] ?? a.title,
+        text: tAlbum[idx * 2 + 1] ?? a.text,
+      })),
+    [tAlbum],
+  );
+
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
@@ -409,20 +439,20 @@ function HistoriasPage() {
             to="/"
             className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
           >
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
           </Link>
 
           <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
-            🪶 Histórias do Povo
+            🪶 <T>Histórias do Povo</T>
           </p>
           <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
-            Pataxó —{" "}
-            <span className="text-gold">guardiões da Mata Atlântica</span>
+            <T>Pataxó</T> —{" "}
+            <span className="text-gold"><T>guardiões da Mata Atlântica</T></span>
           </h1>
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
-            Origem, território, língua, espiritualidade, arte e resistência de
-            um povo que faz da cultura sua arma mais bonita.
+            <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
+
         </div>
       </header>
 
@@ -431,9 +461,9 @@ function HistoriasPage() {
         {/* Ancião Josa — destaque no topo */}
         <section className="mb-16 md:mb-24">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 Guardião da Memória</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 <T>Guardião da Memória</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
-              Ancião <span className="text-gold">Josa</span> — a história de quem nunca desistiu de sua aldeia
+              <T>Ancião</T> <span className="text-gold">Josa</span> — <T>a história de quem nunca desistiu de sua aldeia</T>
             </h2>
           </div>
 
@@ -446,27 +476,11 @@ function HistoriasPage() {
             />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <p>
-                Desde jovem, Josa aprendeu com os antepassados que a terra
-                não é apenas chão onde se pisa: é a mãe que alimenta, que
-                guarda os mortos e que ensina os vivos.
-              </p>
-              <p>
-                Por toda a sua vida, esteve na linha de frente da luta —
-                defendeu o território contra invasões, denunciou danos às
-                matas e aos rios, e lutou para que a língua Patxôhã, as
-                pinturas, as cantigas e os saberes não desaparecessem com o
-                tempo.
-              </p>
-              <p>
-                Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia
-                que lutava não só por si, mas por todos os que vieram antes e
-                por todos os que viriam depois.
-              </p>
+              <p><T>Desde jovem, Josa aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos.</T></p>
+              <p><T>Por toda a sua vida, esteve na linha de frente da luta — defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo.</T></p>
+              <p><T>Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois.</T></p>
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                “Nossa tradição não é coisa do passado. É o que mantém viva a
-                nossa identidade, a nossa ligação com a natureza e o nosso
-                direito de estar aqui, na terra que é nossa.”
+                <T>“Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa.”</T>
               </blockquote>
 
               <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
@@ -477,27 +491,29 @@ function HistoriasPage() {
                   { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
                 ].map((b) => (
                   <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
-                    <p className="font-serif text-gold">{b.t}</p>
-                    <p className="mt-1 text-amber-100/80">{b.d}</p>
+                    <p className="font-serif text-gold"><T>{b.t}</T></p>
+                    <p className="mt-1 text-amber-100/80"><T>{b.d}</T></p>
                   </div>
                 ))}
               </div>
 
               <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
-                Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida
+                <T>Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida</T>
               </p>
             </div>
           </div>
         </section>
 
+
         {/* In memoriam — ancião João */}
         <section className="mb-16 md:mb-24">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ In memoriam</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ <T>In memoriam</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              A história de quem <span className="text-gold">nunca desistiu</span> de sua aldeia
+              <T>A história de quem</T> <span className="text-gold"><T>nunca desistiu</T></span> <T>de sua aldeia</T>
             </h2>
           </div>
+
 
           <div className="grid items-center gap-8 md:grid-cols-2">
             <NarratableVideo
@@ -509,31 +525,21 @@ function HistoriasPage() {
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                “Enquanto houver respeito e união, nosso povo seguirá forte.
-                Essa é a nossa cultura, essa é a nossa vida.”
+                <T>“Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida.”</T>
               </blockquote>
-              <p>
-                Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou
-                muitas lutas, mas nunca baixou a cabeça. Lutou pela terra,
-                pela língua, pela cultura — e por cada criança que sonha com
-                um futuro melhor.
-              </p>
-              <p>
-                Ser ancião, dizia ele, é mais que ter cabelos brancos: é
-                guardar as histórias, ensinar com o exemplo, e plantar hoje
-                para que a aldeia floresça amanhã. Seu maracá silenciou, mas
-                seu canto segue vivo em cada roda de Awê.
-              </p>
+              <p><T>Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura — e por cada criança que sonha com um futuro melhor.</T></p>
+              <p><T>Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.</T></p>
               <p className="font-serif text-gold">
-                Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.
+                <T>Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.</T>
               </p>
             </div>
+
           </div>
         </section>
 
 
         <div className="space-y-16 md:space-y-24">
-          {sections.map((s, i) => {
+          {translatedSections.map((s, i) => {
             const Icon = s.icon;
             const reverse = i % 2 === 1;
             return (
@@ -558,7 +564,7 @@ function HistoriasPage() {
 
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    <Icon className="h-3.5 w-3.5" /> Capítulo {i + 1}
+                    <Icon className="h-3.5 w-3.5" /> <T>Capítulo</T> {i + 1}
                   </div>
                   <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
                     {s.title}
@@ -574,26 +580,20 @@ function HistoriasPage() {
           })}
         </div>
 
-
-
-
-
-
-
         {/* Álbum cultural */}
         <section className="mt-20">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 Álbum do Povo</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 <T>Álbum do Povo</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              Rostos, pinturas e rituais Pataxó
+              <T>Rostos, pinturas e rituais Pataxó</T>
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
-              Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.
+              <T>Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.</T>
             </p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {album.map((item) => (
+            {translatedAlbum.map((item) => (
               <figure
                 key={item.title}
                 className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
@@ -617,31 +617,28 @@ function HistoriasPage() {
           </div>
         </section>
 
-
-
-
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
           <p className="mt-2 text-amber-100/85">
-            Que estas histórias caminhem com você. Aprenda a língua, ouça os
-            cantos e ajude a manter viva a memória Pataxó.
+            <T>Que estas histórias caminhem com você. Aprenda a língua, ouça os cantos e ajude a manter viva a memória Pataxó.</T>
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               to="/professor"
               className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-emerald-950 hover:brightness-110"
             >
-              Conversar com Professor Akuã
+              <T>Conversar com Professor Akuã</T>
             </Link>
             <Link
               to="/musicas"
               className="rounded-full border border-gold/40 px-5 py-2 text-sm text-amber-100 hover:bg-white/5"
             >
-              Ouvir cantos Pataxó
+              <T>Ouvir cantos Pataxó</T>
             </Link>
           </div>
         </div>
+
       </main>
     </div>
   );
