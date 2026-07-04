@@ -4,13 +4,16 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { translateText } from "@/lib/translate.functions";
 import { speakText } from "@/lib/tts.functions";
 import { transcribeAudio } from "@/lib/transcribe.functions";
-import { Languages, Volume2, Mic, Loader2 } from "lucide-react";
+import { translateAllContent } from "@/lib/translate-content.functions";
+import { Languages, Volume2, Mic, Loader2, Globe } from "lucide-react";
 import { toast } from "sonner";
 
 export function ToolsAdmin() {
   const translate = useServerFn(translateText);
   const speak = useServerFn(speakText);
   const transcribe = useServerFn(transcribeAudio);
+  const translateAll = useServerFn(translateAllContent);
+
 
   // Translate
   const [txt, setTxt] = useState("");
