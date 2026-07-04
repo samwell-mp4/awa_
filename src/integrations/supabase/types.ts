@@ -19,6 +19,8 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string | null
+          name_es: string | null
           order_index: number
           poster_url: string | null
           video_url: string
@@ -27,6 +29,8 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          name_en?: string | null
+          name_es?: string | null
           order_index?: number
           poster_url?: string | null
           video_url: string
@@ -35,6 +39,8 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string | null
+          name_es?: string | null
           order_index?: number
           poster_url?: string | null
           video_url?: string
@@ -48,8 +54,12 @@ export type Database = {
           id: string
           is_active: boolean
           options: Json
+          options_en: Json | null
+          options_es: Json | null
           points: number
           question: string
+          question_en: string | null
+          question_es: string | null
           updated_at: string
         }
         Insert: {
@@ -58,8 +68,12 @@ export type Database = {
           id?: string
           is_active?: boolean
           options?: Json
+          options_en?: Json | null
+          options_es?: Json | null
           points?: number
           question: string
+          question_en?: string | null
+          question_es?: string | null
           updated_at?: string
         }
         Update: {
@@ -68,8 +82,12 @@ export type Database = {
           id?: string
           is_active?: boolean
           options?: Json
+          options_en?: Json | null
+          options_es?: Json | null
           points?: number
           question?: string
+          question_en?: string | null
+          question_es?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -78,33 +96,45 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          description_en: string | null
+          description_es: string | null
           duration_minutes: number | null
           id: string
           is_active: boolean
           thumbnail_url: string | null
           title: string
+          title_en: string | null
+          title_es: string | null
           updated_at: string
           video_url: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           duration_minutes?: number | null
           id?: string
           is_active?: boolean
           thumbnail_url?: string | null
           title: string
+          title_en?: string | null
+          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           duration_minutes?: number | null
           id?: string
           is_active?: boolean
           thumbnail_url?: string | null
           title?: string
+          title_en?: string | null
+          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
@@ -116,11 +146,15 @@ export type Database = {
           category: string
           created_at: string
           example: string | null
+          example_en: string | null
+          example_es: string | null
           id: string
           language: string
           pronunciation: string | null
           term_indigenous: string
           term_pt: string
+          term_pt_en: string | null
+          term_pt_es: string | null
           updated_at: string
         }
         Insert: {
@@ -128,11 +162,15 @@ export type Database = {
           category?: string
           created_at?: string
           example?: string | null
+          example_en?: string | null
+          example_es?: string | null
           id?: string
           language?: string
           pronunciation?: string | null
           term_indigenous: string
           term_pt: string
+          term_pt_en?: string | null
+          term_pt_es?: string | null
           updated_at?: string
         }
         Update: {
@@ -140,11 +178,15 @@ export type Database = {
           category?: string
           created_at?: string
           example?: string | null
+          example_en?: string | null
+          example_es?: string | null
           id?: string
           language?: string
           pronunciation?: string | null
           term_indigenous?: string
           term_pt?: string
+          term_pt_en?: string | null
+          term_pt_es?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -294,54 +336,78 @@ export type Database = {
         Row: {
           ambient_video_id: string | null
           artist: string | null
+          artist_en: string | null
+          artist_es: string | null
           audio_url: string
           cover_url: string | null
           created_at: string
           description: string | null
+          description_en: string | null
+          description_es: string | null
           duration_seconds: number | null
           id: string
           is_active: boolean
           language: string
           lyrics_indigenous: string
           lyrics_pt: string
+          lyrics_pt_en: string | null
+          lyrics_pt_es: string | null
           order_index: number
           title: string
+          title_en: string | null
+          title_es: string | null
           updated_at: string
           video_url: string | null
         }
         Insert: {
           ambient_video_id?: string | null
           artist?: string | null
+          artist_en?: string | null
+          artist_es?: string | null
           audio_url: string
           cover_url?: string | null
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           duration_seconds?: number | null
           id?: string
           is_active?: boolean
           language?: string
           lyrics_indigenous?: string
           lyrics_pt?: string
+          lyrics_pt_en?: string | null
+          lyrics_pt_es?: string | null
           order_index?: number
           title: string
+          title_en?: string | null
+          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
         Update: {
           ambient_video_id?: string | null
           artist?: string | null
+          artist_en?: string | null
+          artist_es?: string | null
           audio_url?: string
           cover_url?: string | null
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           duration_seconds?: number | null
           id?: string
           is_active?: boolean
           language?: string
           lyrics_indigenous?: string
           lyrics_pt?: string
+          lyrics_pt_en?: string | null
+          lyrics_pt_es?: string | null
           order_index?: number
           title?: string
+          title_en?: string | null
+          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
@@ -432,9 +498,13 @@ export type Database = {
           created_at: string
           default_progress: number
           description: string | null
+          description_en: string | null
+          description_es: string | null
           id: string
           image_url: string | null
           name: string
+          name_en: string | null
+          name_es: string | null
           order_index: number
           updated_at: string
         }
@@ -442,9 +512,13 @@ export type Database = {
           created_at?: string
           default_progress?: number
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           id?: string
           image_url?: string | null
           name: string
+          name_en?: string | null
+          name_es?: string | null
           order_index?: number
           updated_at?: string
         }
@@ -452,9 +526,13 @@ export type Database = {
           created_at?: string
           default_progress?: number
           description?: string | null
+          description_en?: string | null
+          description_es?: string | null
           id?: string
           image_url?: string | null
           name?: string
+          name_en?: string | null
+          name_es?: string | null
           order_index?: number
           updated_at?: string
         }

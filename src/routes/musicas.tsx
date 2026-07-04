@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
-import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { pickLang, useLang } from "@/lib/pick-lang";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
@@ -40,7 +40,16 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  title_en?: string | null;
+  title_es?: string | null;
+  artist_en?: string | null;
+  artist_es?: string | null;
+  description_en?: string | null;
+  description_es?: string | null;
+  lyrics_pt_en?: string | null;
+  lyrics_pt_es?: string | null;
 };
+
 
 type Ambient = { id: string; name: string; video_url: string };
 
@@ -52,7 +61,7 @@ function MusicasPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -149,7 +158,10 @@ function SongCard({
   song: Song;
   onClick: () => void;
 }) {
-  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
+
   return (
     <button
       onClick={onClick}
@@ -221,7 +233,9 @@ function Player({
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
-  const [tTitle, tArtist] = useAutoTranslate([song.title, song.artist ?? ""]);
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
 
   const indLines = useMemo(
     () =>
@@ -231,14 +245,16 @@ function Player({
         .filter(Boolean),
     [song.lyrics_indigenous],
   );
+  const lyricsTranslated = pickLang(song, "lyrics_pt", lang);
   const ptLines = useMemo(
     () =>
-      song.lyrics_pt
+      lyricsTranslated
         .split("\n")
         .map((l) => l.trim())
         .filter(Boolean),
-    [song.lyrics_pt],
+    [lyricsTranslated],
   );
+
   const maxLen = Math.max(indLines.length, ptLines.length);
 
   useEffect(() => {

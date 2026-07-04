@@ -11,6 +11,8 @@ import { speakText } from "@/lib/tts.functions";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
+import { pickLang, useLang } from "@/lib/pick-lang";
+
 
 export const Route = createFileRoute("/trilhas/$slug")({
   beforeLoad: ({ params }) => {
@@ -42,7 +44,12 @@ type Word = {
   example: string | null;
   audio_url: string | null;
   category: string;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
+
 
 function TrilhaPage() {
   const { slug } = Route.useParams();
@@ -53,7 +60,7 @@ function TrilhaPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("dictionary")
-        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category")
+        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category,term_pt_en,term_pt_es,example_en,example_es")
         .in("category", trail.categories)
         .order("term_pt");
       if (error) throw error;
@@ -213,12 +220,14 @@ function TrilhaPage() {
 }
 
 function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggle: () => void }) {
+  const lang = useLang();
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-display text-lg font-bold text-gold truncate">{w.term_indigenous}</div>
-          <div className="text-sm text-cream/90 truncate">{w.term_pt}</div>
+          <div className="text-sm text-cream/90 truncate">{pickLang(w, "term_pt", lang)}</div>
+
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
         <div className="flex flex-col items-center gap-2">
@@ -277,6 +286,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
 }
 
 function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void }) {
+  const lang = useLang();
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -307,7 +317,8 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
         <p className="mt-4 text-foreground/75 text-sm">Como se diz:</p>
-        <h3 className="mt-1 font-display text-2xl font-black text-cream">{question.correct.term_pt}</h3>
+        <h3 className="mt-1 font-display text-2xl font-black text-cream">{pickLang(question.correct, "term_pt", lang)}</h3>
+
 
         <div className="mt-5 grid gap-2">
           {question.options.map((opt) => {
@@ -423,7 +434,9 @@ function emojiFor(w: Word): string {
 function MatchModal({
   words, learnedIds, onClose, onCorrect,
 }: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void }) {
+  const lang = useLang();
   const PAIR_COUNT = Math.min(4, words.length);
+
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [errors, setErrors] = useState(0);
@@ -509,7 +522,7 @@ function MatchModal({
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-card/80 text-3xl">
                     {emojiFor(w)}
                   </span>
-                  <span className="text-sm font-bold text-cream">{w.term_pt}</span>
+                  <span className="text-sm font-bold text-cream">{pickLang(w, "term_pt", lang)}</span>
                   {isMatched && <Check className="ml-auto h-4 w-4 text-leaf" />}
                 </button>
               );

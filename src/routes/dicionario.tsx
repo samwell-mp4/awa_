@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
+import { pickLang, useLang } from "@/lib/pick-lang";
+
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
@@ -36,7 +38,12 @@ type Entry = {
   pronunciation: string | null;
   example: string | null;
   audio_url: string | null;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
+
 
 const ENABLED_LANGUAGES = ["Patxôhã"] as const;
 
@@ -74,6 +81,8 @@ function firstLetter(s: string): string {
 
 function DictionaryPage() {
   const { isPremium } = useSubscription();
+  const lang = useLang();
+
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
@@ -94,7 +103,7 @@ function DictionaryPage() {
     queryFn: async () => {
       let request = supabase
         .from("dictionary")
-        .select("id,term_indigenous,term_pt,language,category,pronunciation,example")
+        .select("id,term_indigenous,term_pt,language,category,pronunciation,example,term_pt_en,term_pt_es,example_en,example_es")
         .in("language", ENABLED_LANGUAGES as unknown as string[]);
 
       const q = debouncedQuery.toLowerCase().replace(/[%(),]/g, "").slice(0, 80);
@@ -301,8 +310,9 @@ function DictionaryPage() {
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {e.term_pt}
+                              <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
                             </div>
+
                           </div>
                           <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
                             {(e as any)._cat}
@@ -315,9 +325,10 @@ function DictionaryPage() {
                         )}
                         {e.example && (
                           <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                            "{e.example}"
+                            "{pickLang(e, "example", lang)}"
                           </div>
                         )}
+
                       </article>
                     ))}
                   </div>
