@@ -44,7 +44,12 @@ type Word = {
   example: string | null;
   audio_url: string | null;
   category: string;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
+
 
 function TrilhaPage() {
   const { slug } = Route.useParams();
