@@ -508,11 +508,12 @@ function HistoriasPage() {
         {/* In memoriam — ancião João */}
         <section className="mb-16 md:mb-24">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ In memoriam</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ <T>In memoriam</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              A história de quem <span className="text-gold">nunca desistiu</span> de sua aldeia
+              <T>A história de quem</T> <span className="text-gold"><T>nunca desistiu</T></span> <T>de sua aldeia</T>
             </h2>
           </div>
+
 
           <div className="grid items-center gap-8 md:grid-cols-2">
             <NarratableVideo
