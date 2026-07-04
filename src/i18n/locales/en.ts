@@ -103,5 +103,6 @@ export default {
     fechar: "Close",
     enviar: "Send",
     idioma: "Language",
+    tagline: "LIVING CULTURES",
   },
 };
