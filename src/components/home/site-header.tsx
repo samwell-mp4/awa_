@@ -116,7 +116,7 @@ function MobileDrawer({
       <div className="text-center pb-3 mb-3 border-b border-gold/15">
         <div className="font-display text-sm font-black text-cream">AWÃ TECH</div>
         <div className="text-[10px] font-semibold tracking-[0.18em] text-gold/80">
-          CULTURAS VIVAS
+          {t("common.tagline")}
         </div>
       </div>
       <div className="mb-3 flex items-center justify-between rounded-xl border border-gold/20 bg-forest-deep/30 px-3 py-2">
