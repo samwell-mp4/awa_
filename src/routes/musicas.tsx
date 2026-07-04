@@ -330,10 +330,10 @@ function Player({
             Ouvindo agora · {song.language}
           </div>
           <h2 className="font-display text-2xl md:text-4xl font-black text-cream drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-            {song.title}
+            {tTitle || song.title}
           </h2>
           {song.artist && (
-            <div className="text-sm text-foreground/80 italic">{song.artist}</div>
+            <div className="text-sm text-foreground/80 italic">{tArtist || song.artist}</div>
           )}
         </div>
         <button
