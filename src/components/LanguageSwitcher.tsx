@@ -40,7 +40,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         {compact && <span className="text-xs font-semibold">{current.flag} {current.label}</span>}
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep/95 shadow-[var(--shadow-gold)] backdrop-blur-xl">
+        <div className="absolute right-0 top-full z-[9999] mt-2 w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep shadow-[var(--shadow-gold)]">
           {SUPPORTED_LANGS.map((l) => {
             const active = l.code === i18n.language;
             return (
