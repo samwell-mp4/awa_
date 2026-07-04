@@ -12,6 +12,7 @@ export function GreetingOfMoment() {
     queryFn: fetchSaudacoes,
   });
   const atual = pickByHour(list);
+  const [termPtTranslated] = useAutoTranslate([atual?.term_pt ?? ""]);
   if (!atual) return null;
   const hour = new Date().getHours();
   const periodo =
