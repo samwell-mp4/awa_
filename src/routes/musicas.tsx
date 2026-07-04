@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
-import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { pickLang, useLang } from "@/lib/pick-lang";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
