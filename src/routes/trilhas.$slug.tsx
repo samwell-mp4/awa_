@@ -286,6 +286,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
 }
 
 function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void }) {
+  const lang = useLang();
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -316,7 +317,8 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
         <p className="mt-4 text-foreground/75 text-sm">Como se diz:</p>
-        <h3 className="mt-1 font-display text-2xl font-black text-cream">{question.correct.term_pt}</h3>
+        <h3 className="mt-1 font-display text-2xl font-black text-cream">{pickLang(question.correct, "term_pt", lang)}</h3>
+
 
         <div className="mt-5 grid gap-2">
           {question.options.map((opt) => {
