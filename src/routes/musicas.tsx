@@ -40,7 +40,16 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  title_en?: string | null;
+  title_es?: string | null;
+  artist_en?: string | null;
+  artist_es?: string | null;
+  description_en?: string | null;
+  description_es?: string | null;
+  lyrics_pt_en?: string | null;
+  lyrics_pt_es?: string | null;
 };
+
 
 type Ambient = { id: string; name: string; video_url: string };
 
