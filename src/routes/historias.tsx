@@ -21,8 +21,6 @@ import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
 import albumJosa from "@/assets/album/anciao-josa.png.asset.json";
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
-import videoJosaPrimeiro from "@/assets/videos/anciao-josa-primeiro.mp4.asset.json";
-
 
 const album = [
   {
@@ -352,10 +350,7 @@ function NarratableVideo({
         muted
         playsInline
         loop
-        autoPlay
-        preload="auto"
-        // @ts-expect-error fetchpriority is a valid HTML attr
-        fetchpriority="high"
+        preload="metadata"
         className="h-full w-full object-cover"
         aria-label={alt}
         onError={() => setVideoFailed(true)}
@@ -443,21 +438,12 @@ function HistoriasPage() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div className="flex flex-col gap-8">
-              <NarratableVideo
-                src={videoJosaPrimeiro.url}
-                poster={albumJosa.url}
-                alt="Primeiro vídeo do Ancião Josa Pataxó contando histórias da aldeia"
-                text={`Sou ancião Josa. Esta é a história de quem nunca desistiu de sua aldeia. Desde criança aprendi que nossa força vem da terra, dos antepassados e da união do povo. Cada história contada é uma semente plantada para o futuro.`}
-              />
-              <NarratableVideo
-                src={videoJosa.url}
-                poster={albumJosa.url}
-                alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
-                text={`A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
-              />
-            </div>
-
+            <NarratableVideo
+              src={videoJoao.url}
+              poster={albumAnciao.url}
+              alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
+              text={`A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
+            />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
@@ -536,8 +522,8 @@ function HistoriasPage() {
 
           <div className="grid items-center gap-8 md:grid-cols-2">
             <NarratableVideo
-              src={videoJoao.url}
-              poster={albumAnciao.url}
+              src={videoJosa.url}
+              poster={albumJosa.url}
               alt="Vídeo do Ancião Josa Pataxó segurando maracá tradicional em frente à oca da aldeia"
               text={`Ancião Josa, a história de quem nunca desistiu de sua aldeia. Desde jovem, ele aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos. Por toda a sua vida, esteve na linha de frente da luta: defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo. Muitas vezes enfrentou dificuldades, mas nunca recuou, pois sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois. Hoje, como guardião da memória, ele é a referência da comunidade. Reúne os jovens para contar as histórias da origem do povo, ensina os costumes que vieram das gerações passadas, e reforça sempre: nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa. Tradição: os costumes, cantos, pinturas e a língua Patxôhã são tesouros que passam de geração em geração. Luta: defender o território, a floresta e os rios é defender a vida e o futuro do nosso povo. Sabedoria: os mais velhos são os livros vivos que guardam as histórias e os ensinamentos. Resistência: enquanto houver quem guarde e lute por esses saberes, nossa aldeia continuará existindo, forte e viva. Aldeia Velha, Povo Pataxó, nossa terra, nossa vida.`}
             />
