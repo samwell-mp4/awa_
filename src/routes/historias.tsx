@@ -157,33 +157,38 @@ const sections: Section[] = [
 const narrationUrlCache = new Map<string, string>();
 const narrationPromiseCache = new Map<string, Promise<string>>();
 
-function useNarration(text: string) {
+function useNarration(originalText: string) {
+  const { i18n } = useTranslation();
+  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
+  const [translatedText] = useAutoTranslate([originalText]);
+  const text = translatedText || originalText;
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const narrate = useServerFn(narratePublic);
 
+  const cacheKey = `${lang}::${text}`;
+
   const fetchUrl = (): Promise<string> => {
-    const hit = narrationUrlCache.get(text);
+    const hit = narrationUrlCache.get(cacheKey);
     if (hit) return Promise.resolve(hit);
-    const inflight = narrationPromiseCache.get(text);
+    const inflight = narrationPromiseCache.get(cacheKey);
     if (inflight) return inflight;
-    const p = narrate({ data: { text, voice: "onyx" } })
+    const p = narrate({ data: { text, voice: "onyx", lang } })
       .then((res) => {
-        // Convert base64 → Blob URL (streams instantly, no giant data: URI)
         const bin = atob(res.audio_base64);
         const bytes = new Uint8Array(bin.length);
         for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
         const url = URL.createObjectURL(new Blob([bytes], { type: res.mime }));
-        narrationUrlCache.set(text, url);
-        narrationPromiseCache.delete(text);
+        narrationUrlCache.set(cacheKey, url);
+        narrationPromiseCache.delete(cacheKey);
         return url;
       })
       .catch((err) => {
-        narrationPromiseCache.delete(text);
+        narrationPromiseCache.delete(cacheKey);
         throw err;
       });
-    narrationPromiseCache.set(text, p);
+    narrationPromiseCache.set(cacheKey, p);
     return p;
   };
 
@@ -200,7 +205,7 @@ function useNarration(text: string) {
       if (typeof id === "number") clearTimeout(id);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [text]);
+  }, [cacheKey]);
 
   const toggle = async () => {
     if (speaking) {
