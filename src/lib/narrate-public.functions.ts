@@ -34,7 +34,7 @@ async function readGatewayError(res: Response) {
 
 export const narratePublic = createServerFn({ method: "POST" })
   .inputValidator((d: { text: string; voice?: string; lang?: string }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<NarrationPayload> => {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
     const text = (data.text ?? "").slice(0, 4000);
@@ -82,7 +82,7 @@ export const narratePublic = createServerFn({ method: "POST" })
       };
     }
     const buf = Buffer.from(await res.arrayBuffer());
-    const payload = { audio_base64: buf.toString("base64"), mime: "audio/mpeg" };
+    const payload: NarrationPayload = { audio_base64: buf.toString("base64"), mime: "audio/mpeg" };
 
     if (cache.size >= MAX_CACHE) {
       const firstKey = cache.keys().next().value;
