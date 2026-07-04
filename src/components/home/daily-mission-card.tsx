@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Check, Star, Trophy } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { DailyMission } from "@/hooks/use-home-data";
 
 function optionClass(picked: number | null, correct: number | undefined, i: number) {
@@ -12,6 +13,7 @@ function optionClass(picked: number | null, correct: number | undefined, i: numb
 }
 
 export function DailyMissionCard({ mission }: { mission: DailyMission | null | undefined }) {
+  const { t } = useTranslation();
   const [answer, setAnswer] = useState<number | null>(null);
   const correct = mission?.correct_index;
   const points = mission?.points ?? 10;
@@ -24,10 +26,10 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
         <div className="grid h-9 w-9 place-items-center rounded-lg bg-gold/15 text-gold">
           <Trophy className="h-5 w-5" />
         </div>
-        <h3 className="font-display text-lg font-black text-cream">Missão do dia</h3>
+        <h3 className="font-display text-lg font-black text-cream">{t("home.missionTitle")}</h3>
       </div>
       <p className="mt-3 text-sm text-foreground/70">
-        {mission?.question ?? "Carregando missão..."}
+        {mission?.question ?? t("home.missionLoading")}
       </p>
       <div className="mt-3 flex flex-col gap-2">
         {(mission?.options ?? []).map((label, i) => (
@@ -48,13 +50,13 @@ export function DailyMissionCard({ mission }: { mission: DailyMission | null | u
       </div>
       <div className="mt-4 flex items-center justify-between text-xs">
         <span className="inline-flex items-center gap-1.5 text-gold">
-          <Star className="h-3.5 w-3.5 fill-gold" /> {points} pontos
+          <Star className="h-3.5 w-3.5 fill-gold" /> {t("home.missionPoints", { points })}
         </span>
         {isRightAnswer && (
-          <span className="font-bold text-leaf">+{points} pontos conquistados!</span>
+          <span className="font-bold text-leaf">{t("home.missionWon", { points })}</span>
         )}
         {answered && !isRightAnswer && (
-          <span className="font-semibold text-foreground/70">Tente novamente</span>
+          <span className="font-semibold text-foreground/70">{t("home.missionRetry")}</span>
         )}
       </div>
     </div>

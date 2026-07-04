@@ -1,22 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
 
-function greetingLabel(hour: number) {
-  if (hour >= 5 && hour <= 11) return "Bom dia";
-  if (hour >= 12 && hour <= 17) return "Boa tarde";
-  return "Boa noite";
-}
-
 export function GreetingOfMoment() {
+  const { t } = useTranslation();
   const { data: list = [] } = useQuery({
     queryKey: ["saudacoes"],
     queryFn: fetchSaudacoes,
   });
   const atual = pickByHour(list);
   if (!atual) return null;
-  const periodo = greetingLabel(new Date().getHours());
+  const hour = new Date().getHours();
+  const periodo =
+    hour >= 5 && hour <= 11
+      ? t("home.bomDia")
+      : hour >= 12 && hour <= 17
+        ? t("home.boaTarde")
+        : t("home.boaNoite");
 
   return (
     <section className="mt-6">
@@ -27,7 +29,7 @@ export function GreetingOfMoment() {
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">
-              Saudação do momento · {periodo}
+              {t("home.greetingPrefix")} · {periodo}
             </div>
             <div className="mt-1 font-display text-2xl font-black text-gold truncate">
               {atual.term_indigenous}
