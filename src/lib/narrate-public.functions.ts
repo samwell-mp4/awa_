@@ -1,7 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 
+type NarrationPayload = {
+  audio_base64: string;
+  mime: string;
+  error?: "PAYMENT_REQUIRED" | "TTS_FAILED";
+  message?: string;
+  fallback?: boolean;
+};
+
 // In-memory cache (per worker instance) — repeat narrations return instantly
-const cache = new Map<string, { audio_base64: string; mime: string }>();
+const cache = new Map<string, NarrationPayload>();
 const MAX_CACHE = 40;
 
 function keyFor(text: string, voice: string, lang: string) {
@@ -13,6 +21,16 @@ const INSTRUCTIONS: Record<string, string> = {
   en: "Speak in English with a deep, calm, wise male voice, slow paced, like an indigenous elder telling an ancestral story with respectful emotion.",
   es: "Habla en español con una voz masculina grave, calma y sabia, con ritmo pausado, como un anciano indígena contando una historia ancestral con emoción respetuosa.",
 };
+
+async function readGatewayError(res: Response) {
+  const raw = await res.text().catch(() => "");
+  try {
+    const parsed = JSON.parse(raw) as { message?: string; title?: string };
+    return parsed.message || parsed.title || raw || "Falha ao gerar narração.";
+  } catch {
+    return raw || "Falha ao gerar narração.";
+  }
+}
 
 export const narratePublic = createServerFn({ method: "POST" })
   .inputValidator((d: { text: string; voice?: string; lang?: string }) => d)
@@ -44,7 +62,24 @@ export const narratePublic = createServerFn({ method: "POST" })
       }),
     });
     if (!res.ok) {
-      throw new Error(`TTS ${res.status}: ${(await res.text()).slice(0, 200)}`);
+      const message = await readGatewayError(res);
+      if (res.status === 402) {
+        return {
+          audio_base64: "",
+          mime: "application/json",
+          error: "PAYMENT_REQUIRED" as const,
+          message: "Créditos insuficientes para gerar narração agora.",
+          fallback: false,
+        };
+      }
+
+      return {
+        audio_base64: "",
+        mime: "application/json",
+        error: "TTS_FAILED" as const,
+        message: `Não foi possível gerar a narração. ${message}`.slice(0, 220),
+        fallback: res.status >= 500,
+      };
     }
     const buf = Buffer.from(await res.arrayBuffer());
     const payload = { audio_base64: buf.toString("base64"), mime: "audio/mpeg" };
