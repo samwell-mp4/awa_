@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, Star, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { DailyMission } from "@/hooks/use-home-data";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 function optionClass(picked: number | null, correct: number | undefined, i: number) {
   const isPicked = picked === i;
