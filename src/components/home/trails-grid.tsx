@@ -54,15 +54,16 @@ export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-        {trails.map((t) => {
-          const slug = trailSlugMap[t.name];
+        {trails.map((trail) => {
+          const slug = trailSlugMap[trail.name];
+          const label = translateTrailName(t, trail.name);
           return slug ? (
-            <Link key={t.name} to="/trilhas/$slug" params={{ slug }} className={cardClass}>
-              <TrailCardInner trail={t} />
+            <Link key={trail.name} to="/trilhas/$slug" params={{ slug }} className={cardClass}>
+              <TrailCardInner trail={trail} label={label} />
             </Link>
           ) : (
-            <a key={t.name} href="#aprender" className={cardClass}>
-              <TrailCardInner trail={t} />
+            <a key={trail.name} href="#aprender" className={cardClass}>
+              <TrailCardInner trail={trail} label={label} />
             </a>
           );
         })}
