@@ -461,9 +461,9 @@ function HistoriasPage() {
         {/* Ancião Josa — destaque no topo */}
         <section className="mb-16 md:mb-24">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 Guardião da Memória</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 <T>Guardião da Memória</T></p>
             <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
-              Ancião <span className="text-gold">Josa</span> — a história de quem nunca desistiu de sua aldeia
+              <T>Ancião</T> <span className="text-gold">Josa</span> — <T>a história de quem nunca desistiu de sua aldeia</T>
             </h2>
           </div>
 
@@ -476,27 +476,11 @@ function HistoriasPage() {
             />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <p>
-                Desde jovem, Josa aprendeu com os antepassados que a terra
-                não é apenas chão onde se pisa: é a mãe que alimenta, que
-                guarda os mortos e que ensina os vivos.
-              </p>
-              <p>
-                Por toda a sua vida, esteve na linha de frente da luta —
-                defendeu o território contra invasões, denunciou danos às
-                matas e aos rios, e lutou para que a língua Patxôhã, as
-                pinturas, as cantigas e os saberes não desaparecessem com o
-                tempo.
-              </p>
-              <p>
-                Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia
-                que lutava não só por si, mas por todos os que vieram antes e
-                por todos os que viriam depois.
-              </p>
+              <p><T>Desde jovem, Josa aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos.</T></p>
+              <p><T>Por toda a sua vida, esteve na linha de frente da luta — defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo.</T></p>
+              <p><T>Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois.</T></p>
               <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                “Nossa tradição não é coisa do passado. É o que mantém viva a
-                nossa identidade, a nossa ligação com a natureza e o nosso
-                direito de estar aqui, na terra que é nossa.”
+                <T>“Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa.”</T>
               </blockquote>
 
               <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
@@ -507,18 +491,19 @@ function HistoriasPage() {
                   { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
                 ].map((b) => (
                   <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
-                    <p className="font-serif text-gold">{b.t}</p>
-                    <p className="mt-1 text-amber-100/80">{b.d}</p>
+                    <p className="font-serif text-gold"><T>{b.t}</T></p>
+                    <p className="mt-1 text-amber-100/80"><T>{b.d}</T></p>
                   </div>
                 ))}
               </div>
 
               <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
-                Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida
+                <T>Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida</T>
               </p>
             </div>
           </div>
         </section>
+
 
         {/* In memoriam — ancião João */}
         <section className="mb-16 md:mb-24">
