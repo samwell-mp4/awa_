@@ -33,6 +33,7 @@ const SUGESTOES = [
 
 function ProfessorPage() {
   const ask = useServerFn(askAkua);
+  const speak = useServerFn(speakText);
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
@@ -43,10 +44,24 @@ function ProfessorPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  async function autoSpeak(text: string) {
+    try {
+      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ");
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      audioRef.current?.pause();
+      const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
+      audioRef.current = audio;
+      await audio.play().catch(() => {});
+    } catch {
+      /* silencioso: se falhar, mantém apenas o texto */
+    }
+  }
 
   async function send(text: string) {
     const content = text.trim();
@@ -58,6 +73,7 @@ function ProfessorPage() {
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
       setMessages([...next, { role: "assistant", content: reply }]);
+      void autoSpeak(reply);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao falar com Akuã");
     } finally {
