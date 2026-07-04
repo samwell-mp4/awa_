@@ -8,13 +8,25 @@ import { ProgressBar } from "./progress-bar";
 const cardClass =
   "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
 
-function TrailCardInner({ trail }: { trail: HomeTrail }) {
+const trailNameKey: Record<string, string> = {
+  Saudações: "common.trailSaudacoes",
+  Família: "common.trailFamilia",
+  Natureza: "common.trailNatureza",
+  Animais: "common.trailAnimais",
+};
+
+export function translateTrailName(t: (k: string) => string, name: string) {
+  const key = trailNameKey[name];
+  return key ? t(key) : name;
+}
+
+function TrailCardInner({ trail, label }: { trail: HomeTrail; label: string }) {
   return (
     <>
       <div className="relative aspect-square overflow-hidden">
         <img
           src={trail.img}
-          alt={trail.name}
+          alt={label}
           width={640}
           height={640}
           loading="lazy"
@@ -22,7 +34,7 @@ function TrailCardInner({ trail }: { trail: HomeTrail }) {
         />
       </div>
       <div className="p-3">
-        <div className="text-sm font-bold text-cream">{trail.name}</div>
+        <div className="text-sm font-bold text-cream">{label}</div>
         <ProgressBar value={trail.progress} className="mt-2" />
       </div>
     </>
