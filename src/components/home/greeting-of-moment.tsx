@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { fetchSaudacoes, pickByHour } from "@/routes/saudacoes";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 export function GreetingOfMoment() {
   const { t } = useTranslation();
