@@ -310,8 +310,9 @@ function DictionaryPage() {
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {e.term_pt}
+                              <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
                             </div>
+
                           </div>
                           <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
                             {(e as any)._cat}
