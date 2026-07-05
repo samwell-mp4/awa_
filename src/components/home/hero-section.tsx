@@ -14,6 +14,7 @@ export function HeroSection() {
   const { t } = useTranslation();
   const { points, level, streak } = useUserStats();
   const { user } = useAuth();
+  const [liveName, setLiveName] = useState<string | null>(null);
   const { data: profile } = useQuery({
     queryKey: ["profile-name", user?.id],
     enabled: !!user?.id,
@@ -26,17 +27,17 @@ export function HeroSection() {
     if (!user?.id) return;
     const ch = supabase
       .channel(`profile-${user.id}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "profiles", filter: `id=eq.${user.id}` }, () => {
-        void (async () => {
-          const { data } = await supabase.from("profiles").select("name").eq("id", user.id).maybeSingle();
-          if (data) queryClientSetName(data.name);
-        })();
-      })
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles", filter: `id=eq.${user.id}` },
+        (payload) => {
+          const next = (payload.new as { name?: string } | null)?.name;
+          if (next) setLiveName(next);
+        },
+      )
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
-  const [liveName, queryClientSetName] = useState<string | null>(null);
   const displayName =
     liveName ||
     profile?.name ||
