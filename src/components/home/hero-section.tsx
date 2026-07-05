@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import heroAsset from "@/assets/awa-hero.jpg.asset.json";
 import { Stat } from "./stat";
+import { useUserStats } from "@/hooks/use-user-stats";
 
 const heroWoman = heroAsset.url;
 
 export function HeroSection() {
   const { t } = useTranslation();
+  const { points, level, streak } = useUserStats();
   const [hidden, setHidden] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const draggingRef = useRef<{ dx: number; dy: number; moved: boolean } | null>(null);
@@ -55,9 +57,9 @@ export function HeroSection() {
           </p>
 
           <div className="mt-8 grid grid-cols-3 gap-2 rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] p-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-            <Stat icon={<Flame className="h-4 w-4 text-gold" />} label={t("hero.sequencia")} value="7" sub={t("hero.dias")} />
-            <Stat icon={<Star className="h-4 w-4 text-gold" />} label={t("hero.pontos")} value="250" sub={t("hero.pontosSub")} />
-            <Stat icon={<Award className="h-4 w-4 text-gold" />} label={t("hero.nivel")} value="2" sub={t("hero.nivelSub")} />
+            <Stat icon={<Flame className="h-4 w-4 text-gold" />} label={t("hero.sequencia")} value={String(streak)} sub={t("hero.dias")} />
+            <Stat icon={<Star className="h-4 w-4 text-gold" />} label={t("hero.pontos")} value={String(points)} sub={t("hero.pontosSub")} />
+            <Stat icon={<Award className="h-4 w-4 text-gold" />} label={t("hero.nivel")} value={String(level)} sub={t("hero.nivelSub")} />
           </div>
         </div>
 
