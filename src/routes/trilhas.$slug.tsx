@@ -223,7 +223,17 @@ function TrilhaPage() {
         <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} />
       )}
 
-      {showCert && <CertificateModal trail={trail} onClose={() => setShowCert(false)} />}
+      {showCert && (
+        <CertificateModal
+          trail={trail}
+          nextTrail={nextTrail}
+          onClose={() => setShowCert(false)}
+          onNext={() => {
+            setShowCert(false);
+            navigate({ to: "/trilhas/$slug", params: { slug: nextSlug } });
+          }}
+        />
+      )}
     </div>
   );
 }
