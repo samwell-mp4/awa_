@@ -608,6 +608,8 @@ export type Database = {
           read_ct: number
         }[]
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
       weekly_top_learners: {
         Args: { _limit?: number }
         Returns: {
