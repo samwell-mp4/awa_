@@ -13,6 +13,36 @@ const heroWoman = heroAsset.url;
 export function HeroSection() {
   const { t } = useTranslation();
   const { points, level, streak } = useUserStats();
+  const { user } = useAuth();
+  const { data: profile } = useQuery({
+    queryKey: ["profile-name", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await supabase.from("profiles").select("name").eq("id", user!.id).maybeSingle();
+      return data;
+    },
+  });
+  useEffect(() => {
+    if (!user?.id) return;
+    const ch = supabase
+      .channel(`profile-${user.id}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "profiles", filter: `id=eq.${user.id}` }, () => {
+        void (async () => {
+          const { data } = await supabase.from("profiles").select("name").eq("id", user.id).maybeSingle();
+          if (data) queryClientSetName(data.name);
+        })();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+  const [liveName, queryClientSetName] = useState<string | null>(null);
+  const displayName =
+    liveName ||
+    profile?.name ||
+    (user?.user_metadata as { name?: string } | undefined)?.name ||
+    (user?.email ? user.email.split("@")[0] : null) ||
+    "Akuá!";
   const [hidden, setHidden] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const draggingRef = useRef<{ dx: number; dy: number; moved: boolean } | null>(null);
