@@ -33,7 +33,6 @@ if (!i18n.isInitialized) {
     load: "languageOnly",
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
-    initImmediate: false,
     react: { useSuspense: false },
     detection: {
       order: ["localStorage", "navigator"],
