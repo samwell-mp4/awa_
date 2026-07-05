@@ -88,7 +88,12 @@ export const listAllUsers = createServerFn({ method: "GET" })
     ]);
     return users
       .map((u) => {
-        const userRoles = (roles ?? []).filter((r: any) => r.user_id === u.id).map((r: any) => r.role);
+        const userRoles = (roles ?? []).filter((r: any) => r.user_id === u.id);
+        const roleNames = userRoles.map((r: any) => r.role);
+        const premiumRole = userRoles.find((r: any) => r.role === "premium");
+        const premiumExpires = premiumRole?.expires_at ?? null;
+        const premiumActive =
+          !!premiumRole && (!premiumExpires || new Date(premiumExpires) > new Date());
         const p = (profiles ?? []).find((x: any) => x.id === u.id);
         const sub = (subs ?? [])
           .filter((s: any) => s.user_id === u.id)
@@ -100,8 +105,10 @@ export const listAllUsers = createServerFn({ method: "GET" })
           photo_url: p?.photo_url ?? null,
           created_at: u.created_at,
           last_sign_in_at: u.last_sign_in_at,
-          is_admin: userRoles.includes("admin"),
-          is_premium_manual: userRoles.includes("premium"),
+          is_admin: roleNames.includes("admin"),
+          is_premium_manual: premiumActive,
+          premium_expires_at: premiumExpires,
+          premium_permanent: !!premiumRole && !premiumExpires,
           subscription: sub
             ? { status: sub.status, environment: sub.environment, current_period_end: sub.current_period_end }
             : null,
