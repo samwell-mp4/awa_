@@ -166,7 +166,10 @@ export function AppLanguageAutoTranslator() {
   const { i18n } = useTranslation();
   const lang = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
   const runId = useRef(0);
+  const langRef = useRef(lang);
   const timeoutRef = useRef<number | null>(null);
+
+  langRef.current = lang;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -210,7 +213,7 @@ export function AppLanguageAutoTranslator() {
       const missing = sources.filter((source) => !(source in cache) && !PENDING.has(`${lang}\u0001${source}`));
 
       const apply = (dict: Record<string, string>) => {
-        if (id !== runId.current) return;
+        if (id !== runId.current || langRef.current !== lang) return;
         textNodes.forEach((node) => {
           const original = ORIGINAL_TEXT.get(node) ?? node.nodeValue ?? "";
           const { prefix, core, suffix } = splitWhitespace(original);
@@ -257,6 +260,7 @@ export function AppLanguageAutoTranslator() {
     observer.observe(root, { childList: true, subtree: true, characterData: true });
 
     return () => {
+      runId.current += 1;
       observer.disconnect();
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
     };
