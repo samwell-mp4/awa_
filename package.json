@@ -106,14 +106,14 @@
     "htmlparser2": "^10.0.0",
     "esbuild": "^0.28.1",
     "tsx": "^4.23.0",
-    "glob>minimatch>brace-expansion": "^5.0.6",
-    "@typescript-eslint/typescript-estree>minimatch>brace-expansion": "^5.0.6"
+    "minimatch": "^10.2.5",
+    "brace-expansion": "^5.0.6"
   },
   "resolutions": {
     "htmlparser2": "^10.0.0",
     "esbuild": "^0.28.1",
     "tsx": "^4.23.0",
-    "glob>minimatch>brace-expansion": "^5.0.6",
-    "@typescript-eslint/typescript-estree>minimatch>brace-expansion": "^5.0.6"
+    "minimatch": "^10.2.5",
+    "brace-expansion": "^5.0.6"
   }
 }
