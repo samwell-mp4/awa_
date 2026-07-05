@@ -181,33 +181,16 @@ function MobileDrawer({
               <Settings className="h-4 w-4" /> {t("nav.painel")}
             </Link>
           )}
-          {user ? (
-            <>
-              <Link
-                to="/minha-conta"
-                onClick={onClose}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/90 hover:bg-leaf/15"
-              >
-                <UserCircle2 className="h-4 w-4 text-gold" /> {t("nav.minhaConta")}
-              </Link>
-              <button
-                onClick={() => {
-                  onClose();
-                  onSignOut();
-                }}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
-              >
-                <LogOut className="h-4 w-4 text-gold" /> {t("nav.sair")}
-              </button>
-            </>
-          ) : (
-            <Link
-              to="/auth"
-              onClick={onClose}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-cream bg-[var(--gradient-leaf)]"
+          {user && (
+            <button
+              onClick={() => {
+                onClose();
+                onSignOut();
+              }}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/85 hover:bg-leaf/15"
             >
-              <LogIn className="h-4 w-4" /> {t("nav.entrarCriar")}
-            </Link>
+              <LogOut className="h-4 w-4 text-gold" /> {t("nav.sair")}
+            </button>
           )}
         </div>
       </div>

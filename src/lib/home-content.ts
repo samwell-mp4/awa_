@@ -123,7 +123,7 @@ export function useNavContent() {
     },
     {
       title: t("nav.groups.usuario"),
-      items: [{ label: t("nav.premium"), href: "/planos", icon: Star }],
+      items: [{ label: t("nav.minhaConta"), href: "/minha-conta", icon: Star }],
     },
   ];
   const top = [
