@@ -73,7 +73,6 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: "Biografia Awã Tech", href: "/biografia", icon: BookOpen },
       { label: "Baixar / Instalar App", href: "/instalar", icon: Download },
-      { label: "Boas-vindas", href: "/bem-vindo", icon: Home },
     ],
   },
   {
@@ -118,7 +117,6 @@ export function useNavContent() {
       items: [
         { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
         { label: t("nav.instalar"), href: "/instalar", icon: Download },
-        { label: t("nav.bemVindo"), href: "/bem-vindo", icon: Home },
       ],
     },
     {
