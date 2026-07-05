@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useAuth } from "@/hooks/use-auth";
@@ -33,20 +33,25 @@ export function useSubscription() {
     refetchOnWindowFocus: true,
   });
 
+  const refetchRef = useRef(query.refetch);
+  refetchRef.current = query.refetch;
+
   useEffect(() => {
     if (!user) return;
     const ch = supabase
-      .channel(`sub_${user.id}`)
+      .channel(`sub_${user.id}_${Date.now()}_${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "subscriptions", filter: `user_id=eq.${user.id}` },
-        () => query.refetch(),
+        () => {
+          void refetchRef.current();
+        },
       )
       .subscribe();
     return () => {
       supabase.removeChannel(ch);
     };
-  }, [user?.id, query.refetch]);
+  }, [user?.id]);
 
   return {
     isPremium: query.data?.isPremium ?? false,
