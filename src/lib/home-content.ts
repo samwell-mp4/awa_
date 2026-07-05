@@ -73,7 +73,6 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: "Biografia Awã Tech", href: "/biografia", icon: BookOpen },
       { label: "Baixar / Instalar App", href: "/instalar", icon: Download },
-      { label: "Boas-vindas", href: "/bem-vindo", icon: Home },
     ],
   },
   {
