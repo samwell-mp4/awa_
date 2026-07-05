@@ -372,7 +372,14 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
   );
 }
 
-function CertificateModal({ trail, onClose }: { trail: typeof TRAILS[TrailSlug]; onClose: () => void }) {
+function CertificateModal({
+  trail, nextTrail, onClose, onNext,
+}: {
+  trail: typeof TRAILS[TrailSlug];
+  nextTrail: typeof TRAILS[TrailSlug];
+  onClose: () => void;
+  onNext: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 overflow-y-auto">
       <div className="card-elev relative w-full max-w-2xl rounded-3xl border-2 border-gold/50 bg-gradient-to-br from-forest-deep to-bark p-6 md:p-10 my-8">
@@ -386,6 +393,12 @@ function CertificateModal({ trail, onClose }: { trail: typeof TRAILS[TrailSlug];
             {trail.certificate.message}
           </div>
           <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">PROFESSOR AKUÃ</div>
+          <button
+            onClick={onNext}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-6 py-3 text-sm font-bold text-cream"
+          >
+            Próxima trilha: {nextTrail.emoji} {nextTrail.name} <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>
