@@ -1,15 +1,10 @@
 import { useEffect } from "react";
 import { Award, Loader2, Crown } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
-
-type TopLearner = {
-  user_id: string;
-  name: string;
-  photo_url: string | null;
-  points: number;
-};
+import { getWeeklyTopLearners, type TopLearner } from "@/lib/leaderboard.functions";
 
 function initials(name: string) {
   return name
@@ -20,23 +15,13 @@ function initials(name: string) {
     .join("") || "A";
 }
 
-async function fetchTopLearners(): Promise<TopLearner[]> {
-  const { data, error } = await supabase.rpc("weekly_top_learners", { _limit: 10 });
-  if (error) throw error;
-  return (data ?? []).map((r: { user_id: string; name: string; photo_url: string | null; points: number | string }) => ({
-    user_id: r.user_id,
-    name: r.name,
-    photo_url: r.photo_url,
-    points: Number(r.points ?? 0),
-  }));
-}
-
 export function RankingCard() {
   const { t } = useTranslation();
   const qc = useQueryClient();
-  const { data = [], isLoading, isError } = useQuery({
+  const fetchTopLearners = useServerFn(getWeeklyTopLearners);
+  const { data = [] as TopLearner[], isLoading, isError } = useQuery<TopLearner[]>({
     queryKey: ["weekly-top-learners"],
-    queryFn: fetchTopLearners,
+    queryFn: () => fetchTopLearners({ data: { limit: 10 } }),
     refetchInterval: 5_000,
     refetchOnWindowFocus: true,
     staleTime: 3_000,
