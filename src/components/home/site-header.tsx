@@ -33,7 +33,7 @@ export function SiteHeader() {
         >
           <Menu className="h-5 w-5" />
         </button>
-        <div className="min-w-0 flex-1 xl:flex-none">
+        <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
           <Logo />
         </div>
         <nav className="hidden xl:flex items-center gap-1">
