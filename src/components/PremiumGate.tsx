@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Crown, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -12,11 +13,12 @@ export function PremiumGate({
   title?: string;
   description?: string;
 }) {
+  const { t } = useTranslation();
   const { user, loading: authLoading, isAdmin } = useAuth();
   const { isPremium, loading } = useSubscription();
 
   if (loading || authLoading) {
-    return <div className="grid min-h-[40vh] place-items-center text-foreground/60">Carregando...</div>;
+    return <div className="grid min-h-[40vh] place-items-center text-foreground/60">{t("common.carregando")}</div>;
   }
   if (isAdmin || isPremium) return <>{children}</>;
 
@@ -32,14 +34,14 @@ export function PremiumGate({
           to="/planos"
           className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
         >
-          <Crown className="h-4 w-4" /> Ver planos Premium
+          <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
         </Link>
         {!user && (
           <p className="mt-4 text-xs text-foreground/60">
             <Link to="/auth" className="text-gold hover:underline">
-              Entrar ou criar conta
+              {t("premium.entrarCriar")}
             </Link>{" "}
-            primeiro
+            {t("premium.primeiro")}
           </p>
         )}
       </div>

@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
@@ -158,10 +159,35 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <LanguageHydrator />
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
+}
+
+function LanguageHydrator() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const valid = ["pt", "en", "es"];
+    const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
+    const detected = navigator.language?.slice(0, 2).toLowerCase();
+    const target = valid.includes(stored || "")
+      ? stored
+      : valid.includes(detected || "")
+        ? detected
+        : "pt";
+
+    if (!target) return;
+    document.documentElement.lang = target;
+    window.localStorage.setItem("awa_lang", target);
+    if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+      void i18n.changeLanguage(target);
+    }
+  }, [i18n]);
+
+  return null;
 }
 

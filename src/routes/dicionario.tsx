@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -15,15 +16,17 @@ export const Route = createFileRoute("/dicionario")({
       { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
     ],
   }),
-  component: () => (
-    <PremiumGate
-      title="Dicionário Patxôhã (Premium)"
-      description="Todo o dicionário completo, lições, áudios, jogos e materiais culturais estão disponíveis apenas para assinantes."
-    >
+  component: DictionaryRoute,
+});
+
+function DictionaryRoute() {
+  const { t } = useTranslation();
+  return (
+    <PremiumGate title={t("dictionary.premiumTitle")} description={t("dictionary.premiumDescription")}>
       <DictionaryPage />
     </PremiumGate>
-  ),
-});
+  );
+}
 
 const FREE_LIMIT = 50;
 
@@ -80,6 +83,7 @@ function firstLetter(s: string): string {
 }
 
 function DictionaryPage() {
+  const { t } = useTranslation();
   const { isPremium } = useSubscription();
   const lang = useLang();
 
@@ -183,10 +187,10 @@ function DictionaryPage() {
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
           </Link>
           <div className="flex items-center gap-2 text-cream font-display font-black">
-            <BookOpen className="h-5 w-5 text-leaf" /> Dicionário Patxôhã
+            <BookOpen className="h-5 w-5 text-leaf" /> {t("dictionary.title")}
           </div>
           <span className="w-14" />
         </div>
@@ -199,7 +203,7 @@ function DictionaryPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar em português ou patxôhã..."
+              placeholder={t("dictionary.searchPlaceholder")}
               className="w-full rounded-xl border border-gold/25 bg-card/60 pl-10 pr-3 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60"
             />
           </div>
@@ -218,7 +222,7 @@ function DictionaryPage() {
                       : "border-gold/20 bg-card/60 text-foreground/75 hover:border-gold/40 hover:text-cream"
                   }`}
                 >
-                  {c}
+                  {t(`dictionary.categories.${c}`)}
                   <span className={`ml-1.5 text-[10px] font-semibold ${active ? "opacity-70" : "opacity-50"}`}>
                     {count}
                   </span>
@@ -229,7 +233,11 @@ function DictionaryPage() {
 
           <div className="flex items-center justify-between gap-2 pt-1">
             <div className="text-xs font-semibold text-foreground/70">
-              Mostrando {visibleFiltered.length}{hasMore ? "+" : ""} palavra{visibleFiltered.length === 1 ? "" : "s"}
+              {t("dictionary.showing", {
+                count: visibleFiltered.length,
+                plus: hasMore ? "+" : "",
+                words: t(visibleFiltered.length === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+              })}
             </div>
             <div className="flex gap-1">
               <button
@@ -262,7 +270,7 @@ function DictionaryPage() {
                   : "bg-card/60 text-foreground/70 hover:text-cream border border-gold/15"
               }`}
             >
-              TODAS
+              {t("dictionary.allLetters")}
             </button>
             {ALPHABET.map((l) => {
               const count = letterCounts.get(l) ?? 0;
@@ -276,7 +284,10 @@ function DictionaryPage() {
                       ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
                       : "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
                   }`}
-                  title={`${count} palavra(s)`}
+                  title={t("dictionary.wordCount", {
+                    count,
+                    words: t(count === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+                  })}
                 >
                   {l}
                 </button>
@@ -287,9 +298,9 @@ function DictionaryPage() {
 
         <section className="mt-5">
           {isLoading ? (
-            <div className="text-center text-foreground/60 py-12">Carregando dicionário...</div>
+            <div className="text-center text-foreground/60 py-12">{t("dictionary.loading")}</div>
           ) : filtered.length === 0 ? (
-            <div className="text-center text-foreground/60 py-12">Nenhuma palavra encontrada.</div>
+            <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
             <div className="space-y-6">
               {grouped.map(([ltr, items]) => (
@@ -320,7 +331,7 @@ function DictionaryPage() {
                         </div>
                         {e.pronunciation && (
                           <div className="mt-2 text-xs text-foreground/60">
-                            Pronúncia: <span className="text-cream">[{e.pronunciation}]</span>
+                            {t("dictionary.pronunciation")}: <span className="text-cream">[{e.pronunciation}]</span>
                           </div>
                         )}
                         {e.example && (
@@ -339,15 +350,17 @@ function DictionaryPage() {
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--gradient-leaf)] shadow-[var(--shadow-glow)]">
                     <Lock className="h-6 w-6 text-cream" />
                   </div>
-                  <h3 className="mt-4 font-display text-xl font-black text-cream">Você viu as {FREE_LIMIT} palavras grátis</h3>
+                  <h3 className="mt-4 font-display text-xl font-black text-cream">
+                    {t("dictionary.freeLimitTitle", { count: FREE_LIMIT })}
+                  </h3>
                   <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
-                    Assine Premium para desbloquear o dicionário Patxôhã completo, com todas as categorias, exemplos e pronúncias.
+                    {t("dictionary.freeLimitDescription")}
                   </p>
                   <Link
                     to="/planos"
                     className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
                   >
-                    <Crown className="h-4 w-4" /> Ver planos Premium
+                    <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
                   </Link>
                 </div>
               ) : hasMore ? (
@@ -356,7 +369,7 @@ function DictionaryPage() {
                     onClick={() => setVisibleCount((n) => n + 120)}
                     className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
                   >
-                    Mostrar mais palavras
+                    {t("dictionary.showMore")}
                   </button>
                 </div>
               ) : null}

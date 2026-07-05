@@ -30,8 +30,8 @@ function saveCache(lang: string, cache: Record<string, string>) {
 export function useAutoTranslate(texts: (string | null | undefined)[]): string[] {
   const { i18n } = useTranslation();
   const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
-  const normalized = useMemo(() => texts.map((t) => (t ?? "").toString()), [texts]);
-  const key = useMemo(() => normalized.join("\u0001"), [normalized]);
+  const key = texts.map((t) => (t ?? "").toString()).join("\u0001");
+  const normalized = useMemo(() => texts.map((t) => (t ?? "").toString()), [key]);
   const [out, setOut] = useState<string[]>(normalized);
 
   useEffect(() => {
