@@ -47,11 +47,12 @@ export function AccessAdmin() {
     return { total, paying, manual, admins };
   }, [users]);
 
-  async function grant(target?: string) {
+  async function grant(target?: string, opts?: { permanent?: boolean }) {
     const value = (target ?? email).trim();
     if (!value) return toast.error("Informe o email");
+    const isPerm = opts?.permanent ?? permanent;
     try {
-      const res = await grantFn({ data: { email: value } });
+      const res = await grantFn({ data: { email: value, permanent: isPerm } });
       toast.success(res.message);
       if (!target) setEmail("");
       qc.invalidateQueries({ queryKey: ["all_users"] });
