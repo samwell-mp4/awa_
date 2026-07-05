@@ -1,10 +1,10 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle,
+  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle, ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
@@ -12,6 +12,12 @@ import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCer
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
+
+const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais"];
+function nextTrailSlug(current: TrailSlug): TrailSlug {
+  const i = TRAIL_ORDER.indexOf(current);
+  return TRAIL_ORDER[(i + 1) % TRAIL_ORDER.length];
+}
 
 
 export const Route = createFileRoute("/trilhas/$slug")({
