@@ -35,6 +35,8 @@ async function readGatewayError(res: Response) {
 }
 
 export const narratePublic = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+
   .inputValidator((d: { text: string; voice?: string; lang?: string }) => d)
   .handler(async ({ data }): Promise<NarrationPayload> => {
     const apiKey = process.env.LOVABLE_API_KEY;
