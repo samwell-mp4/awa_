@@ -42,9 +42,10 @@ export const Route = createFileRoute("/minha-conta")({
       },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>) => ({
-    checkout: (s.checkout as string | undefined) ?? undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { checkout?: string } => {
+    const checkout = s.checkout as string | undefined;
+    return checkout ? { checkout } : {};
+  },
   component: MinhaContaPage,
 });
 
