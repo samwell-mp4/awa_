@@ -44,7 +44,7 @@ export function HeroSection() {
           <span className="chip-gold inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
             <Sparkles className="h-3.5 w-3.5" /> {t("hero.badge")}
           </span>
-          <h1 className="mt-5 font-display text-[2rem] font-black leading-[1.05] text-cream sm:text-4xl md:text-5xl lg:text-6xl break-words">
+          <h1 className="mt-5 font-display text-[2rem] font-black leading-[1.05] text-cream sm:text-4xl md:text-4xl lg:text-6xl">
             {t("hero.title1")} <span className="text-leaf">{t("hero.title2")}</span>
             {t("hero.title3")}{" "}
             <span className="text-gradient-gold">{t("hero.title4")}</span>.
