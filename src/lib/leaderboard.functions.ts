@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const inputSchema = z.object({ limit: z.number().int().min(1).max(50).default(10) });
 
@@ -11,10 +12,10 @@ export type TopLearner = {
 };
 
 export const getWeeklyTopLearners = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => inputSchema.parse(data ?? {}))
-  .handler(async ({ data }): Promise<TopLearner[]> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: rows, error } = await supabaseAdmin.rpc("weekly_top_learners", {
+  .handler(async ({ data, context }): Promise<TopLearner[]> => {
+    const { data: rows, error } = await context.supabase.rpc("weekly_top_learners", {
       _limit: data.limit,
     });
     if (error) throw new Error(error.message);
