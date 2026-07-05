@@ -1,53 +1,5 @@
 [
  {
-  "term_indigenous": "pâmuhu’xó",
-  "term_pt": "(a)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "txopetã’xó",
-  "term_pt": "(a)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "xopá’xó",
-  "term_pt": "(a)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "zĩgá’xó",
-  "term_pt": "(a)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "ûmip’xó",
-  "term_pt": "(a)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "mãb’ó",
-  "term_pt": "(falso)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "hãpãy",
-  "term_pt": "(mentira)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "utxê’xó",
-  "term_pt": "(o)",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
   "term_indigenous": "pemohõ",
   "term_pt": "/tappet cansado, fadigado",
   "language": "Patxôhã",
@@ -55,6 +7,36 @@
  },
  {
   "term_indigenous": "iẽ",
+  "term_pt": "a",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "pâmuhu’xó",
+  "term_pt": "a",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "txopetã’xó",
+  "term_pt": "a",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "xopá’xó",
+  "term_pt": "a",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "zĩgá’xó",
+  "term_pt": "a",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "ûmip’xó",
   "term_pt": "a",
   "language": "Patxôhã",
   "category": "Geral"
@@ -157,7 +139,7 @@
  },
  {
   "term_indigenous": "itxãg’xó",
-  "term_pt": "abalo(a)",
+  "term_pt": "abalo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -258,7 +240,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "nipatxiõ’txẽ acontecimento,",
+  "term_indigenous": "nipatxiõ’txẽ acontecimento",
   "term_pt": "abraçado",
   "language": "Patxôhã",
   "category": "Geral"
@@ -289,13 +271,13 @@
  },
  {
   "term_indigenous": "nipatxiõ’xó",
-  "term_pt": "abraço (a)",
+  "term_pt": "abraço (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "nipatxiõ’xó",
-  "term_pt": "abraço(a)",
+  "term_pt": "abraço(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -385,13 +367,13 @@
  },
  {
   "term_indigenous": "mukxá’xó",
-  "term_pt": "abro (a)",
+  "term_pt": "abro (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "mukxá’xó",
-  "term_pt": "abro(a)",
+  "term_pt": "abro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -408,14 +390,14 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "tsohob",
+  "term_indigenous": "boa noite na",
   "term_pt": "absorver",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "boa noite na",
-  "term_pt": "absorver)",
+  "term_indigenous": "tsohob",
+  "term_pt": "absorver",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -523,7 +505,7 @@
  },
  {
   "term_indigenous": "nipxox’xó",
-  "term_pt": "acende(o)",
+  "term_pt": "acende(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -595,13 +577,13 @@
  },
  {
   "term_indigenous": "êhigã’xó",
-  "term_pt": "acho (a) (pauzinho)",
+  "term_pt": "acho (a) (pauzinho",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "êhigã’xó",
-  "term_pt": "acho(a)",
+  "term_pt": "acho(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -619,7 +601,7 @@
  },
  {
   "term_indigenous": "tornõhêhê",
-  "term_pt": "acontecimento,",
+  "term_pt": "acontecimento",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -721,7 +703,7 @@
  },
  {
   "term_indigenous": "kâi’xó",
-  "term_pt": "admiro(a)",
+  "term_pt": "admiro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -817,7 +799,7 @@
  },
  {
   "term_indigenous": "atxiu’pá’xó",
-  "term_pt": "adultera(o)",
+  "term_pt": "adultera(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -883,7 +865,7 @@
  },
  {
   "term_indigenous": "mãgwi’xó",
-  "term_pt": "afasta (o)",
+  "term_pt": "afasta (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -967,13 +949,13 @@
  },
  {
   "term_indigenous": "euhmã’xó",
-  "term_pt": "agito (a)",
+  "term_pt": "agito (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "euhmã’xó",
-  "term_pt": "agito(a)",
+  "term_pt": "agito(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1015,7 +997,7 @@
  },
  {
   "term_indigenous": "pâktê",
-  "term_pt": "agradecimento,",
+  "term_pt": "agradecimento",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1051,7 +1033,7 @@
  },
  {
   "term_indigenous": "akê’xó",
-  "term_pt": "aguento(a)",
+  "term_pt": "aguento(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1147,13 +1129,13 @@
  },
  {
   "term_indigenous": "amolarei",
-  "term_pt": "ajudo(a)",
+  "term_pt": "ajudo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "jiráp’xó",
-  "term_pt": "ajudo(a)",
+  "term_pt": "ajudo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1177,7 +1159,7 @@
  },
  {
   "term_indigenous": "mipab’heb",
-  "term_pt": "alcool,",
+  "term_pt": "alcool",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1321,13 +1303,13 @@
  },
  {
   "term_indigenous": "ketxi’xó",
-  "term_pt": "almejo (a)",
+  "term_pt": "almejo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ketxi’xó",
-  "term_pt": "almejo(a)",
+  "term_pt": "almejo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1363,13 +1345,13 @@
  },
  {
   "term_indigenous": "oknikenãg’xó",
-  "term_pt": "almoço(a)",
+  "term_pt": "almoço(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "oknikenãg’xó hamahí",
-  "term_pt": "almoço(a)",
+  "term_pt": "almoço(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1381,13 +1363,13 @@
  },
  {
   "term_indigenous": "biriré’xó",
-  "term_pt": "alonga (o)",
+  "term_pt": "alonga (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "biriré’xó amatxi",
-  "term_pt": "alonga (o)",
+  "term_pt": "alonga (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1495,7 +1477,7 @@
  },
  {
   "term_indigenous": "xĩ’xó",
-  "term_pt": "amarra (o)",
+  "term_pt": "amarra (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1555,7 +1537,7 @@
  },
  {
   "term_indigenous": "ãkahóyn",
-  "term_pt": "amigo,",
+  "term_pt": "amigo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1609,7 +1591,7 @@
  },
  {
   "term_indigenous": "txopetã’xó",
-  "term_pt": "amolo (a)",
+  "term_pt": "amolo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1651,13 +1633,13 @@
  },
  {
   "term_indigenous": "kuhú’xó",
-  "term_pt": "anda (o)",
+  "term_pt": "anda (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "kuhú’xó",
-  "term_pt": "anda(o)",
+  "term_pt": "anda(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1759,7 +1741,7 @@
  },
  {
   "term_indigenous": "hãgüi’xó",
-  "term_pt": "anoiteça(o)",
+  "term_pt": "anoiteça(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1794,7 +1776,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) itsã",
+  "term_indigenous": "a) itsã",
   "term_pt": "ao",
   "language": "Patxôhã",
   "category": "Geral"
@@ -1849,7 +1831,7 @@
  },
  {
   "term_indigenous": "bâk’ahab’xó",
-  "term_pt": "apago (a)",
+  "term_pt": "apago (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -1933,13 +1915,13 @@
  },
  {
   "term_indigenous": "ãtxoê",
-  "term_pt": "apontar, indicar,",
+  "term_pt": "apontar, indicar",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ariponã’xó",
-  "term_pt": "aprenda(o)",
+  "term_pt": "aprenda(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -2017,18 +1999,18 @@
  },
  {
   "term_indigenous": "ihê",
-  "term_pt": "aquele(a)",
+  "term_pt": "aquele(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "uĩdxaruá’xó",
-  "term_pt": "aqueço (a)",
+  "term_pt": "aqueço (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) txõg",
+  "term_indigenous": "a) txõg",
   "term_pt": "aqui",
   "language": "Patxôhã",
   "category": "Geral"
@@ -2227,13 +2209,13 @@
  },
  {
   "term_indigenous": "mukiã’xó",
-  "term_pt": "assa (o)",
+  "term_pt": "assa (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "mukiã’xó",
-  "term_pt": "assa(o)",
+  "term_pt": "assa(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -2280,7 +2262,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "iẽhã beba,",
+  "term_indigenous": "iẽhã beba",
   "term_pt": "assim",
   "language": "Patxôhã",
   "category": "Geral"
@@ -2311,7 +2293,7 @@
  },
  {
   "term_indigenous": "hãbkaháy",
-  "term_pt": "atleta,",
+  "term_pt": "atleta",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -2370,7 +2352,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ihã atêkuã beber (ingerir,",
+  "term_indigenous": "ihã atêkuã beber (ingerir",
   "term_pt": "até amanha",
   "language": "Patxôhã",
   "category": "Geral"
@@ -2676,7 +2658,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(mijando) txiarú",
+  "term_indigenous": "mijando) txiarú",
   "term_pt": "bater",
   "language": "Patxôhã",
   "category": "Geral"
@@ -2688,7 +2670,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(mijado) txiarú’ĩ",
+  "term_indigenous": "mijado) txiarú’ĩ",
   "term_pt": "baterei",
   "language": "Patxôhã",
   "category": "Geral"
@@ -2761,7 +2743,7 @@
  },
  {
   "term_indigenous": "rapé txohob",
-  "term_pt": "beber (ingerir,",
+  "term_pt": "beber (ingerir",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -2857,7 +2839,7 @@
  },
  {
   "term_indigenous": "xoóp’xó",
-  "term_pt": "bebo (a)",
+  "term_pt": "bebo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3073,7 +3055,7 @@
  },
  {
   "term_indigenous": "muhutí",
-  "term_pt": "bicho homem,",
+  "term_pt": "bicho homem",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3144,7 +3126,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "resp.",
+  "term_indigenous": "resp",
   "term_pt": "boa noite",
   "language": "Patxôhã",
   "category": "Geral"
@@ -3199,13 +3181,13 @@
  },
  {
   "term_indigenous": "koktxã’xó",
-  "term_pt": "boceja (o)",
+  "term_pt": "boceja (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "koktxã’xó",
-  "term_pt": "boceja(o)",
+  "term_pt": "boceja(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3331,7 +3313,7 @@
  },
  {
   "term_indigenous": "ãtxuab",
-  "term_pt": "bonito, lindo,",
+  "term_pt": "bonito, lindo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3391,13 +3373,13 @@
  },
  {
   "term_indigenous": "de burá’xó",
-  "term_pt": "borbulho (a)",
+  "term_pt": "borbulho (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "burá’xó",
-  "term_pt": "borbulho(a)",
+  "term_pt": "borbulho(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3666,7 +3648,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "hamikáĩ’ĩ caga(o), defeca(o)",
+  "term_indigenous": "hamikáĩ’ĩ caga(o), defeca(o",
   "term_pt": "brotarei",
   "language": "Patxôhã",
   "category": "Geral"
@@ -3697,7 +3679,7 @@
  },
  {
   "term_indigenous": "hamikáĩ’xó",
-  "term_pt": "broto(a)",
+  "term_pt": "broto(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -3811,7 +3793,7 @@
  },
  {
   "term_indigenous": "pôkâkey’xó atxakaui’ĩ",
-  "term_pt": "busco(a)",
+  "term_pt": "busco(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4051,37 +4033,37 @@
  },
  {
   "term_indigenous": "atxakauí’xó",
-  "term_pt": "caga(o),",
+  "term_pt": "caga(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atxakauí’txẽ",
-  "term_pt": "cagado,",
+  "term_pt": "cagado",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atxakauí’irá",
-  "term_pt": "cagando,",
+  "term_pt": "cagando",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atxakauí",
-  "term_pt": "cagar,",
+  "term_pt": "cagar",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atxakauí’ĩ",
-  "term_pt": "cagarei,",
+  "term_pt": "cagarei",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atxakauí’kãd",
-  "term_pt": "cagará,",
+  "term_pt": "cagará",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4099,7 +4081,7 @@
  },
  {
   "term_indigenous": "tibirisá’xó",
-  "term_pt": "cai(o)",
+  "term_pt": "cai(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4225,13 +4207,13 @@
  },
  {
   "term_indigenous": "trioká’xó",
-  "term_pt": "caminha (o)",
+  "term_pt": "caminha (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "trioká’xó",
-  "term_pt": "caminha(o)",
+  "term_pt": "caminha(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4266,7 +4248,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) trioká’ã",
+  "term_indigenous": "o) trioká’ã",
   "term_pt": "caminhou",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4339,7 +4321,7 @@
  },
  {
   "term_indigenous": "amagay",
-  "term_pt": "canivete(faca)",
+  "term_pt": "canivete(faca",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4369,7 +4351,7 @@
  },
  {
   "term_indigenous": "pemohõ",
-  "term_pt": "cansado,",
+  "term_pt": "cansado",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4399,7 +4381,7 @@
  },
  {
   "term_indigenous": "suniatá’xó",
-  "term_pt": "canto(a)",
+  "term_pt": "canto(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4464,7 +4446,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "gãjé,",
+  "term_indigenous": "gãjé",
   "term_pt": "caranguejo do rio",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4536,6 +4518,12 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "bahikó",
+  "term_pt": "casa",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "kijẽmi",
   "term_pt": "casa",
   "language": "Patxôhã",
@@ -4554,7 +4542,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "tapave chefe,",
+  "term_indigenous": "tapave chefe",
   "term_pt": "casa /reunião",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4572,19 +4560,13 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "bahikó",
-  "term_pt": "casa,",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
   "term_indigenous": "pajĩku",
   "term_pt": "casa, barraco",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "chego(a)",
+  "term_indigenous": "chego(a",
   "term_pt": "casa, pousada, hotel",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4596,7 +4578,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "anemãvey cheio, repleto,",
+  "term_indigenous": "anemãvey cheio, repleto",
   "term_pt": "casamento",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4651,7 +4633,7 @@
  },
  {
   "term_indigenous": "tegwëy",
-  "term_pt": "cascudo,",
+  "term_pt": "cascudo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4681,7 +4663,7 @@
  },
  {
   "term_indigenous": "atuhiabá’xó",
-  "term_pt": "castiga(o)",
+  "term_pt": "castiga(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -4836,7 +4818,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ehä(ehé)",
+  "term_indigenous": "ehä(ehé",
   "term_pt": "caçula",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4878,7 +4860,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "txôgwá cintilar,",
+  "term_indigenous": "txôgwá cintilar",
   "term_pt": "centro",
   "language": "Patxôhã",
   "category": "Geral"
@@ -4969,7 +4951,7 @@
  },
  {
   "term_indigenous": "hãhúhêhê’xó",
-  "term_pt": "chamo(a)",
+  "term_pt": "chamo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5010,13 +4992,13 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) mehexó’txẽ",
+  "term_indigenous": "mehexó’txẽ",
   "term_pt": "chegado",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "mehexó’txẽ",
+  "term_indigenous": "o) mehexó’txẽ",
   "term_pt": "chegado",
   "language": "Patxôhã",
   "category": "Geral"
@@ -5035,7 +5017,7 @@
  },
  {
   "term_indigenous": "do rio mehexó’xó",
-  "term_pt": "chego (a)",
+  "term_pt": "chego (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5154,14 +5136,14 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "tehé",
+  "term_indigenous": "potehé",
   "term_pt": "chuva",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "potehé",
-  "term_pt": "chuva,",
+  "term_indigenous": "tehé",
+  "term_pt": "chuva",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5233,7 +5215,7 @@
  },
  {
   "term_indigenous": "niõñixina",
-  "term_pt": "cintilar,",
+  "term_pt": "cintilar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5293,19 +5275,19 @@
  },
  {
   "term_indigenous": "kaporená’xó",
-  "term_pt": "clamo (a)",
+  "term_pt": "clamo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "kaporená’xó",
-  "term_pt": "clamo(a)",
+  "term_pt": "clamo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "kaporená",
-  "term_pt": "clamor,",
+  "term_pt": "clamor",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5347,7 +5329,7 @@
  },
  {
   "term_indigenous": "kamõnẽ’xó",
-  "term_pt": "cobiça(o)",
+  "term_pt": "cobiça(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5413,7 +5395,7 @@
  },
  {
   "term_indigenous": "tsakeptõ",
-  "term_pt": "cocha, anca,",
+  "term_pt": "cocha, anca",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5515,13 +5497,13 @@
  },
  {
   "term_indigenous": "ketxe’xó",
-  "term_pt": "combina (o)",
+  "term_pt": "combina (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ketxe’xó",
-  "term_pt": "combina(o)",
+  "term_pt": "combina(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5653,7 +5635,7 @@
  },
  {
   "term_indigenous": "xâkây’xó",
-  "term_pt": "como (a)",
+  "term_pt": "como (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5665,7 +5647,7 @@
  },
  {
   "term_indigenous": "goyspã",
-  "term_pt": "companheiro,",
+  "term_pt": "companheiro",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5683,7 +5665,7 @@
  },
  {
   "term_indigenous": "nãnä",
-  "term_pt": "comparecer,",
+  "term_pt": "comparecer",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5719,7 +5701,7 @@
  },
  {
   "term_indigenous": "nãnä’xó",
-  "term_pt": "compareço(a)",
+  "term_pt": "compareço(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5767,7 +5749,7 @@
  },
  {
   "term_indigenous": "nõtehê’xó",
-  "term_pt": "compro(a)",
+  "term_pt": "compro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -5820,7 +5802,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "hũhotehô á)",
+  "term_indigenous": "hũhotehô á",
   "term_pt": "conosco",
   "language": "Patxôhã",
   "category": "Geral"
@@ -5856,7 +5838,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ãksug’ĩ corço,",
+  "term_indigenous": "ãksug’ĩ corço",
   "term_pt": "conquistarei",
   "language": "Patxôhã",
   "category": "Geral"
@@ -5911,7 +5893,7 @@
  },
  {
   "term_indigenous": "hũpaniõ’xó",
-  "term_pt": "consagro(a)",
+  "term_pt": "consagro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6061,13 +6043,13 @@
  },
  {
   "term_indigenous": "kõpokixay’xó",
-  "term_pt": "converso (a)",
+  "term_pt": "converso (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "kõpokixay’xó",
-  "term_pt": "converso(a)",
+  "term_pt": "converso(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6109,18 +6091,18 @@
  },
  {
   "term_indigenous": "soêmó’xó",
-  "term_pt": "convido (a)",
+  "term_pt": "convido (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "soêmó’xó",
-  "term_pt": "convido(a)",
+  "term_pt": "convido(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) soêmó’ã",
+  "term_indigenous": "a) soêmó’ã",
   "term_pt": "convidou",
   "language": "Patxôhã",
   "category": "Geral"
@@ -6187,7 +6169,7 @@
  },
  {
   "term_indigenous": "pakjú’xó",
-  "term_pt": "conzinho(a)",
+  "term_pt": "conzinho(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6218,12 +6200,6 @@
  {
   "term_indigenous": "ok katerú",
   "term_pt": "cor",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "á)",
-  "term_pt": "coragem",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6325,13 +6301,13 @@
  },
  {
   "term_indigenous": "patxutxô’xó",
-  "term_pt": "corta (o)",
+  "term_pt": "corta (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "patxutxô’xó",
-  "term_pt": "corta(o)",
+  "term_pt": "corta(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6445,7 +6421,7 @@
  },
  {
   "term_indigenous": "bahihá",
-  "term_pt": "covarde,",
+  "term_pt": "covarde",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6463,7 +6439,7 @@
  },
  {
   "term_indigenous": "áka",
-  "term_pt": "coxo, manco,",
+  "term_pt": "coxo, manco",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6547,25 +6523,25 @@
  },
  {
   "term_indigenous": "ãkirê’txẽ",
-  "term_pt": "crescido(a)",
+  "term_pt": "crescido(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ãkirê’xó",
-  "term_pt": "cresça(o)",
+  "term_pt": "cresça(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "hãytxo’xó",
-  "term_pt": "cria (o)",
+  "term_pt": "cria (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "hãytxo’xó",
-  "term_pt": "cria(o)",
+  "term_pt": "cria(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6703,13 +6679,13 @@
  },
  {
   "term_indigenous": "korihé’xó",
-  "term_pt": "cuido (a)",
+  "term_pt": "cuido (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "korihé’xó",
-  "term_pt": "cuido(a)",
+  "term_pt": "cuido(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -6949,7 +6925,7 @@
  },
  {
   "term_indigenous": "maratonista hamiá’xó",
-  "term_pt": "danço,",
+  "term_pt": "danço",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7039,7 +7015,7 @@
  },
  {
   "term_indigenous": "okixay’xó",
-  "term_pt": "declaro(a)",
+  "term_pt": "declaro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7087,7 +7063,7 @@
  },
  {
   "term_indigenous": "hõpuê’xó",
-  "term_pt": "decreto(a)",
+  "term_pt": "decreto(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7141,7 +7117,7 @@
  },
  {
   "term_indigenous": "amohôy",
-  "term_pt": "defunto,",
+  "term_pt": "defunto",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7176,14 +7152,14 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "perakwã",
+  "term_indigenous": "perakuã",
   "term_pt": "deixar",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "perakuã",
-  "term_pt": "deixar,",
+  "term_indigenous": "perakwã",
+  "term_pt": "deixar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7201,13 +7177,13 @@
  },
  {
   "term_indigenous": "perakwã’xó",
-  "term_pt": "deixo (a)",
+  "term_pt": "deixo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "perakwã’xó",
-  "term_pt": "deixo(a)",
+  "term_pt": "deixo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7345,7 +7321,7 @@
  },
  {
   "term_indigenous": "n’hẽ",
-  "term_pt": "derramar,",
+  "term_pt": "derramar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7357,13 +7333,13 @@
  },
  {
   "term_indigenous": "n’hẽ’xó",
-  "term_pt": "derramo (a)",
+  "term_pt": "derramo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "n’hẽ’xó",
-  "term_pt": "derramo(a)",
+  "term_pt": "derramo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7555,7 +7531,7 @@
  },
  {
   "term_indigenous": "koxuk’xó",
-  "term_pt": "desenha(o)",
+  "term_pt": "desenha(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7597,13 +7573,13 @@
  },
  {
   "term_indigenous": "puhey",
-  "term_pt": "desgastado,",
+  "term_pt": "desgastado",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "atokohê’xó",
-  "term_pt": "desista(o)",
+  "term_pt": "desista(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7729,7 +7705,7 @@
  },
  {
   "term_indigenous": "ngakuá’xó",
-  "term_pt": "despejo(a)",
+  "term_pt": "despejo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7759,7 +7735,7 @@
  },
  {
   "term_indigenous": "kiarô",
-  "term_pt": "destino kokawã,",
+  "term_pt": "destino kokawã",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -7885,7 +7861,7 @@
  },
  {
   "term_indigenous": "ãmãré",
-  "term_pt": "dever,",
+  "term_pt": "dever",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8065,13 +8041,13 @@
  },
  {
   "term_indigenous": "korimã’xó",
-  "term_pt": "divulgo (a)",
+  "term_pt": "divulgo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "korimã’xó",
-  "term_pt": "divulgo(a)",
+  "term_pt": "divulgo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8136,7 +8112,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) xarikuã",
+  "term_indigenous": "o) xarikuã",
   "term_pt": "dom",
   "language": "Patxôhã",
   "category": "Geral"
@@ -8185,13 +8161,13 @@
  },
  {
   "term_indigenous": "jangada muhũ’xó",
-  "term_pt": "dormo(a)",
+  "term_pt": "dormo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "muhũ’xó",
-  "term_pt": "dormo(a)",
+  "term_pt": "dormo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8443,7 +8419,7 @@
  },
  {
   "term_indigenous": "kümã’xó",
-  "term_pt": "engola (o)",
+  "term_pt": "engola (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8521,13 +8497,13 @@
  },
  {
   "term_indigenous": "sopra êtxawê",
-  "term_pt": "ensino(a)",
+  "term_pt": "ensino(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "êtxawê",
-  "term_pt": "ensino(a)",
+  "term_pt": "ensino(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8581,7 +8557,7 @@
  },
  {
   "term_indigenous": "jetxiguí’xó",
-  "term_pt": "enterro(a)",
+  "term_pt": "enterro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8658,7 +8634,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) niorukirã",
+  "term_indigenous": "a) niorukirã",
   "term_pt": "entre casca",
   "language": "Patxôhã",
   "category": "Geral"
@@ -8749,13 +8725,13 @@
  },
  {
   "term_indigenous": "kehãtiá’xó",
-  "term_pt": "erra (o)",
+  "term_pt": "erra (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "kehãtiá’xó",
-  "term_pt": "erra(o)",
+  "term_pt": "erra(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8815,7 +8791,7 @@
  },
  {
   "term_indigenous": "ukãri",
-  "term_pt": "escolha,opção,",
+  "term_pt": "escolha,opção",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -8869,7 +8845,7 @@
  },
  {
   "term_indigenous": "kiãká’ré",
-  "term_pt": "escorrer, fluir,",
+  "term_pt": "escorrer, fluir",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9037,13 +9013,13 @@
  },
  {
   "term_indigenous": "ihui’xó",
-  "term_pt": "espalho (a)",
+  "term_pt": "espalho (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ihui’xó",
-  "term_pt": "espalho(a)",
+  "term_pt": "espalho(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9061,7 +9037,7 @@
  },
  {
   "term_indigenous": "kirãy",
-  "term_pt": "espera,",
+  "term_pt": "espera",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9091,7 +9067,7 @@
  },
  {
   "term_indigenous": "piririkã",
-  "term_pt": "espilético, gaiato,",
+  "term_pt": "espilético, gaiato",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9151,13 +9127,13 @@
  },
  {
   "term_indigenous": "ê’txũi",
-  "term_pt": "esposo (a)",
+  "term_pt": "esposo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ê’txũi",
-  "term_pt": "esposo(a)",
+  "term_pt": "esposo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9168,7 +9144,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "a’atxu (naô)",
+  "term_indigenous": "a’atxu (naô",
   "term_pt": "espírito, alma",
   "language": "Patxôhã",
   "category": "Geral"
@@ -9188,12 +9164,6 @@
  {
   "term_indigenous": "unãtú’ré",
   "term_pt": "esquecer",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "F",
-  "term_pt": "esquecerei",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9259,7 +9229,7 @@
  },
  {
   "term_indigenous": "nogakayt’xó fala, linguagem",
-  "term_pt": "esquento(a)",
+  "term_pt": "esquento(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9270,7 +9240,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "nogakayt’ã falado,",
+  "term_indigenous": "nogakayt’ã falado",
   "term_pt": "esquentou",
   "language": "Patxôhã",
   "category": "Geral"
@@ -9318,7 +9288,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "torotê’txẽ faltas, culpas,",
+  "term_indigenous": "torotê’txẽ faltas, culpas",
   "term_pt": "estado",
   "language": "Patxôhã",
   "category": "Geral"
@@ -9451,7 +9421,7 @@
  },
  {
   "term_indigenous": "maroxĩ’xó",
-  "term_pt": "estuda(o)",
+  "term_pt": "estuda(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9462,7 +9432,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(falso) maroxĩ’irá",
+  "term_indigenous": "falso) maroxĩ’irá",
   "term_pt": "estudando",
   "language": "Patxôhã",
   "category": "Geral"
@@ -9553,13 +9523,13 @@
  },
  {
   "term_indigenous": "tuêrú’xó",
-  "term_pt": "evito (a)",
+  "term_pt": "evito (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tuêrú’xó",
-  "term_pt": "evito(a)",
+  "term_pt": "evito(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9714,8 +9684,14 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "mãb’ó",
+  "term_pt": "falso",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "apirãb",
-  "term_pt": "faltas, culpas,",
+  "term_pt": "faltas, culpas",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9943,7 +9919,7 @@
  },
  {
   "term_indigenous": "kãdawê’ré",
-  "term_pt": "festejar,",
+  "term_pt": "festejar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -9991,7 +9967,7 @@
  },
  {
   "term_indigenous": "kâxkay’xó",
-  "term_pt": "fico (a)",
+  "term_pt": "fico (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10105,7 +10081,7 @@
  },
  {
   "term_indigenous": "uẽtxá",
-  "term_pt": "fina (o)",
+  "term_pt": "fina (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10333,7 +10309,7 @@
  },
  {
   "term_indigenous": "keneketó",
-  "term_pt": "fraco, pobre,",
+  "term_pt": "fraco, pobre",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10494,7 +10470,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "kohô gosto, paladar,",
+  "term_indigenous": "kohô gosto, paladar",
   "term_pt": "fui",
   "language": "Patxôhã",
   "category": "Geral"
@@ -10507,7 +10483,7 @@
  },
  {
   "term_indigenous": "akãniú’xó",
-  "term_pt": "fujo(a)",
+  "term_pt": "fujo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10536,7 +10512,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "kurúki gota,",
+  "term_indigenous": "kurúki gota",
   "term_pt": "fumo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -10566,20 +10542,20 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "kêé’wãy governo,",
+  "term_indigenous": "kêé’wãy governo",
   "term_pt": "fundura",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "patxutxá’xó",
-  "term_pt": "fura (o)",
+  "term_pt": "fura (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "patxutxá’xó gozo,",
-  "term_pt": "fura(o)",
+  "term_indigenous": "patxutxá’xó gozo",
+  "term_pt": "fura(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10596,7 +10572,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) patxutxá’irá",
+  "term_indigenous": "a) patxutxá’irá",
   "term_pt": "furando",
   "language": "Patxôhã",
   "category": "Geral"
@@ -10639,12 +10615,12 @@
  },
  {
   "term_indigenous": "ãtxuhã",
-  "term_pt": "fé, confiança,",
+  "term_pt": "fé, confiança",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "hamahay,",
+  "term_indigenous": "hamahay",
   "term_pt": "fêmea",
   "language": "Patxôhã",
   "category": "Geral"
@@ -10711,7 +10687,7 @@
  },
  {
   "term_indigenous": "ãkêtê’xó",
-  "term_pt": "ganha(o)",
+  "term_pt": "ganha(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10909,13 +10885,13 @@
  },
  {
   "term_indigenous": "mimô’ã’xó",
-  "term_pt": "gosto (a)",
+  "term_pt": "gosto (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "mimô’ã’xó",
-  "term_pt": "gosto(a)",
+  "term_pt": "gosto(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10939,7 +10915,7 @@
  },
  {
   "term_indigenous": "báĩ",
-  "term_pt": "gostoso(a)",
+  "term_pt": "gostoso(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -10963,7 +10939,7 @@
  },
  {
   "term_indigenous": "tãyhú",
-  "term_pt": "gota,",
+  "term_pt": "gota",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11059,7 +11035,7 @@
  },
  {
   "term_indigenous": "rẽbá",
-  "term_pt": "grossa(o)",
+  "term_pt": "grossa(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11088,7 +11064,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) bohúbm",
+  "term_indigenous": "a) bohúbm",
   "term_pt": "guariba",
   "language": "Patxôhã",
   "category": "Geral"
@@ -11149,13 +11125,13 @@
  },
  {
   "term_indigenous": "tamañá’ĩ’xó",
-  "term_pt": "habito (a)",
+  "term_pt": "habito (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tamañá’ĩ’xó",
-  "term_pt": "habito(a)",
+  "term_pt": "habito(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11263,7 +11239,7 @@
  },
  {
   "term_indigenous": "hoyxek",
-  "term_pt": "horta,",
+  "term_pt": "horta",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11311,7 +11287,7 @@
  },
  {
   "term_indigenous": "patxôhã",
-  "term_pt": "idioma, dialeto,",
+  "term_pt": "idioma, dialeto",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11401,13 +11377,13 @@
  },
  {
   "term_indigenous": "ug’rug’xó",
-  "term_pt": "impeça (o)",
+  "term_pt": "impeça (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tebm",
-  "term_pt": "imundo,",
+  "term_pt": "imundo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11425,7 +11401,7 @@
  },
  {
   "term_indigenous": "mukueme",
-  "term_pt": "indisposição,",
+  "term_pt": "indisposição",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11526,7 +11502,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "atxukjú’txẽ jóia, ótimo,",
+  "term_indigenous": "atxukjú’txẽ jóia, ótimo",
   "term_pt": "invadido",
   "language": "Patxôhã",
   "category": "Geral"
@@ -11586,7 +11562,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) txuk",
+  "term_indigenous": "a) txuk",
   "term_pt": "ir",
   "language": "Patxôhã",
   "category": "Geral"
@@ -11659,7 +11635,7 @@
  },
  {
   "term_indigenous": "txaygã",
-  "term_pt": "irritado,",
+  "term_pt": "irritado",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -11778,7 +11754,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "normá’txẽ lago,",
+  "term_indigenous": "normá’txẽ lago",
   "term_pt": "jantado",
   "language": "Patxôhã",
   "category": "Geral"
@@ -12067,13 +12043,13 @@
  },
  {
   "term_indigenous": "hãtxotxay",
-  "term_pt": "jóia, ótimo,",
+  "term_pt": "jóia, ótimo",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "pêãgõ’xó",
-  "term_pt": "katũbayá mata(o)",
+  "term_pt": "katũbayá mata(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12151,7 +12127,7 @@
  },
  {
   "term_indigenous": "mirapé",
-  "term_pt": "lago sagrado,",
+  "term_pt": "lago sagrado",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12205,13 +12181,13 @@
  },
  {
   "term_indigenous": "okená",
-  "term_pt": "lamento (a)",
+  "term_pt": "lamento (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "okená",
-  "term_pt": "lamento(a)",
+  "term_pt": "lamento(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12289,7 +12265,7 @@
  },
  {
   "term_indigenous": "amãgã’xó",
-  "term_pt": "lava(o)",
+  "term_pt": "lava(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12319,7 +12295,7 @@
  },
  {
   "term_indigenous": "amãgã",
-  "term_pt": "lavar,",
+  "term_pt": "lavar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12366,14 +12342,14 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ĩhép’t",
+  "term_indigenous": "irep’sepy",
   "term_pt": "leite",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "irep’sepy",
-  "term_pt": "leite,",
+  "term_indigenous": "ĩhép’t",
+  "term_pt": "leite",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12409,18 +12385,18 @@
  },
  {
   "term_indigenous": "paxaká’xó",
-  "term_pt": "leva (o)",
+  "term_pt": "leva (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "paxaká’xó",
-  "term_pt": "leva(o)",
+  "term_pt": "leva(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) paxaká’txẽ",
+  "term_indigenous": "a) paxaká’txẽ",
   "term_pt": "levado",
   "language": "Patxôhã",
   "category": "Geral"
@@ -12655,13 +12631,13 @@
  },
  {
   "term_indigenous": "amañũ’xó",
-  "term_pt": "limpo(a)",
+  "term_pt": "limpo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "amañũ’xó macaco, sagüi",
-  "term_pt": "limpo(a)",
+  "term_pt": "limpo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12715,13 +12691,13 @@
  },
  {
   "term_indigenous": "hié",
-  "term_pt": "livrar, desviar (sair)",
+  "term_pt": "livrar, desviar (sair",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "hié machuco",
-  "term_pt": "livrar, desviar (sair)",
+  "term_pt": "livrar, desviar (sair",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12810,7 +12786,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "a’úha mãe de criação,",
+  "term_indigenous": "a’úha mãe de criação",
   "term_pt": "lombo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -12834,7 +12810,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "biríuãy mãe de deus(maria)",
+  "term_indigenous": "biríuãy mãe de deus(maria",
   "term_pt": "longitude",
   "language": "Patxôhã",
   "category": "Geral"
@@ -12877,13 +12853,13 @@
  },
  {
   "term_indigenous": "uênã’xó",
-  "term_pt": "louvo (a)",
+  "term_pt": "louvo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "uênã",
-  "term_pt": "louvor, aprovação,",
+  "term_pt": "louvor, aprovação",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12912,7 +12888,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ãgohó txibá,",
+  "term_indigenous": "ãgohó txibá",
   "term_pt": "lua cheia",
   "language": "Patxôhã",
   "category": "Geral"
@@ -12926,6 +12902,12 @@
  {
   "term_indigenous": "ãgohó",
   "term_pt": "lua nova",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
+  "term_indigenous": "hũbá",
+  "term_pt": "lugar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -12944,12 +12926,6 @@
  {
   "term_indigenous": "doce",
   "term_pt": "lugar onde se faz o ritual, a mandioca",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "hũbá",
-  "term_pt": "lugar,",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13044,6 +13020,12 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "ukitxavy",
+  "term_pt": "macaco",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "apkí",
   "term_pt": "macaco aranha",
   "language": "Patxôhã",
@@ -13064,12 +13046,6 @@
  {
   "term_indigenous": "boitu",
   "term_pt": "macaco preto",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "ukitxavy",
-  "term_pt": "macaco,",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13345,19 +13321,19 @@
  },
  {
   "term_indigenous": "marakãyñã",
-  "term_pt": "maracá,",
+  "term_pt": "maracá",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "cheia ãkai’xó",
-  "term_pt": "marca(o)",
+  "term_pt": "marca(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ãkai’xó",
-  "term_pt": "marca(o)",
+  "term_pt": "marca(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13483,13 +13459,13 @@
  },
  {
   "term_indigenous": "katxohã’xó",
-  "term_pt": "mastigo (a)",
+  "term_pt": "mastigo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "katxohã’xó",
-  "term_pt": "mastigo(a)",
+  "term_pt": "mastigo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13507,7 +13483,7 @@
  },
  {
   "term_indigenous": "dá pêãgõ’xó",
-  "term_pt": "mata (o)",
+  "term_pt": "mata (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13530,7 +13506,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) pêãgõ’irá",
+  "term_indigenous": "a) pêãgõ’irá",
   "term_pt": "matando",
   "language": "Patxôhã",
   "category": "Geral"
@@ -13609,7 +13585,7 @@
  },
  {
   "term_indigenous": "mayogená",
-  "term_pt": "mau, ruim,",
+  "term_pt": "mau, ruim",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13692,8 +13668,14 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "hãpãy",
+  "term_pt": "mentira",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "apêtxury",
-  "term_pt": "mentira,fofoca,",
+  "term_pt": "mentira,fofoca",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13711,7 +13693,7 @@
  },
  {
   "term_indigenous": "guakniohã",
-  "term_pt": "metade, meio,",
+  "term_pt": "metade, meio",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13765,7 +13747,7 @@
  },
  {
   "term_indigenous": "namũ",
-  "term_pt": "mistura(o)",
+  "term_pt": "mistura(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -13987,7 +13969,7 @@
  },
  {
   "term_indigenous": "nokxoõ’xó",
-  "term_pt": "morre(o)",
+  "term_pt": "morre(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14281,7 +14263,7 @@
  },
  {
   "term_indigenous": "ekäi",
-  "term_pt": "mãe de criação,",
+  "term_pt": "mãe de criação",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14377,7 +14359,7 @@
  },
  {
   "term_indigenous": "hãhúhê’xó",
-  "term_pt": "namoro(a)",
+  "term_pt": "namoro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14443,7 +14425,7 @@
  },
  {
   "term_indigenous": "nakupa",
-  "term_pt": "nascente,",
+  "term_pt": "nascente",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14533,19 +14515,19 @@
  },
  {
   "term_indigenous": "txonãi",
-  "term_pt": "negativo, nulo,",
+  "term_pt": "negativo, nulo",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tapetapokpay’xó",
-  "term_pt": "nego (a)",
+  "term_pt": "nego (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tapetapokpay’xó",
-  "term_pt": "nego(a)",
+  "term_pt": "nego(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14653,7 +14635,7 @@
  },
  {
   "term_indigenous": "naktamañã",
-  "term_pt": "noiva,",
+  "term_pt": "noiva",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14766,6 +14748,12 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "utxê’xó",
+  "term_pt": "o",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "yamã / awêry",
   "term_pt": "obrigado",
   "language": "Patxôhã",
@@ -14839,13 +14827,13 @@
  },
  {
   "term_indigenous": "pinapõ’xó",
-  "term_pt": "olha (o)",
+  "term_pt": "olha (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "pinapõ’xó",
-  "term_pt": "olha(o)",
+  "term_pt": "olha(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -14965,7 +14953,7 @@
  },
  {
   "term_indigenous": "aresú’xó",
-  "term_pt": "ora(o)",
+  "term_pt": "ora(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15049,7 +15037,7 @@
  },
  {
   "term_indigenous": "ngaha",
-  "term_pt": "orvalho,",
+  "term_pt": "orvalho",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15187,7 +15175,7 @@
  },
  {
   "term_indigenous": "hãptxiy’xó",
-  "term_pt": "pago (a)",
+  "term_pt": "pago (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15360,7 +15348,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) hâtây’kãd",
+  "term_indigenous": "a) hâtây’kãd",
   "term_pt": "parará",
   "language": "Patxôhã",
   "category": "Geral"
@@ -15385,13 +15373,13 @@
  },
  {
   "term_indigenous": "hâtây’xó",
-  "term_pt": "paro (a)",
+  "term_pt": "paro (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "hâtây’xó",
-  "term_pt": "paro(a)",
+  "term_pt": "paro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15445,13 +15433,13 @@
  },
  {
   "term_indigenous": "ihãyré’xó",
-  "term_pt": "passa (o)",
+  "term_pt": "passa (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ihãyré’xó",
-  "term_pt": "passa(o)",
+  "term_pt": "passa(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15553,13 +15541,13 @@
  },
  {
   "term_indigenous": "õytxé’xó",
-  "term_pt": "passeio (a)",
+  "term_pt": "passeio (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "õytxé’xó",
-  "term_pt": "passeio(a)",
+  "term_pt": "passeio(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15607,7 +15595,7 @@
  },
  {
   "term_indigenous": "ntxékui",
-  "term_pt": "patroa,",
+  "term_pt": "patroa",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15691,13 +15679,13 @@
  },
  {
   "term_indigenous": "iboré’xó",
-  "term_pt": "peco (a)",
+  "term_pt": "peco (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "ĩboré’xó",
-  "term_pt": "peco(a)",
+  "term_pt": "peco(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15745,7 +15733,7 @@
  },
  {
   "term_indigenous": "mutxatxãguê",
-  "term_pt": "pedir menos,",
+  "term_pt": "pedir menos",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15811,13 +15799,13 @@
  },
  {
   "term_indigenous": "tukjú’xó",
-  "term_pt": "pego (a)",
+  "term_pt": "pego (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tukjú’xó",
-  "term_pt": "pego(a)",
+  "term_pt": "pego(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15925,13 +15913,13 @@
  },
  {
   "term_indigenous": "suyhê’xó",
-  "term_pt": "penso (a)",
+  "term_pt": "penso (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "suyhê’xó",
-  "term_pt": "penso(a)",
+  "term_pt": "penso(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -15979,7 +15967,7 @@
  },
  {
   "term_indigenous": "ãsikaáb",
-  "term_pt": "pequeno(a)",
+  "term_pt": "pequeno(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16039,7 +16027,7 @@
  },
  {
   "term_indigenous": "poytã",
-  "term_pt": "perdão,",
+  "term_pt": "perdão",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16129,7 +16117,7 @@
  },
  {
   "term_indigenous": "hukab’xó baktxê",
-  "term_pt": "permaneça(o)",
+  "term_pt": "permaneça(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16201,13 +16189,13 @@
  },
  {
   "term_indigenous": "hitxá’xó",
-  "term_pt": "pesca(o)",
+  "term_pt": "pesca(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "hitxá’xó por",
-  "term_pt": "pesca(o)",
+  "term_pt": "pesca(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16266,7 +16254,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "atxipay’kwi porco reprodutor,",
+  "term_indigenous": "atxipay’kwi porco reprodutor",
   "term_pt": "pescocinho",
   "language": "Patxôhã",
   "category": "Geral"
@@ -16357,7 +16345,7 @@
  },
  {
   "term_indigenous": "notanatxá’xó",
-  "term_pt": "pinta(o)",
+  "term_pt": "pinta(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16632,8 +16620,8 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) tsiubtsiá",
-  "term_pt": "porco reprodutor,",
+  "term_indigenous": "o) tsiubtsiá",
+  "term_pt": "porco reprodutor",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16825,7 +16813,7 @@
  },
  {
   "term_indigenous": "uãrehá’xó",
-  "term_pt": "preserva (o)",
+  "term_pt": "preserva (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16903,7 +16891,7 @@
  },
  {
   "term_indigenous": "Kohayrãh’xó",
-  "term_pt": "procura (o)",
+  "term_pt": "procura (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -16951,7 +16939,7 @@
  },
  {
   "term_indigenous": "xayêki’xó",
-  "term_pt": "prosa (o)",
+  "term_pt": "prosa (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17047,7 +17035,7 @@
  },
  {
   "term_indigenous": "txakó’xó",
-  "term_pt": "pulo(a)",
+  "term_pt": "pulo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17077,7 +17065,7 @@
  },
  {
   "term_indigenous": "txakêhây’xó",
-  "term_pt": "purifica (o)",
+  "term_pt": "purifica (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17275,13 +17263,13 @@
  },
  {
   "term_indigenous": "tso’á’xó",
-  "term_pt": "quebro (a)",
+  "term_pt": "quebro (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "tso’á’xó",
-  "term_pt": "quebro(a)",
+  "term_pt": "quebro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17293,13 +17281,13 @@
  },
  {
   "term_indigenous": "haptáy’xó",
-  "term_pt": "queima (o)",
+  "term_pt": "queima (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "haptáy’xó",
-  "term_pt": "queima(o)",
+  "term_pt": "queima(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17352,7 +17340,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "ãtyatĩ rede de pescar,",
+  "term_indigenous": "ãtyatĩ rede de pescar",
   "term_pt": "queixo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -17461,7 +17449,7 @@
  },
  {
   "term_indigenous": "bihniki’xó",
-  "term_pt": "rasga(o)",
+  "term_pt": "rasga(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17545,7 +17533,7 @@
  },
  {
   "term_indigenous": "iketá’xó",
-  "term_pt": "receba (o)",
+  "term_pt": "receba (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17593,7 +17581,7 @@
  },
  {
   "term_indigenous": "kõdõgá’xó",
-  "term_pt": "reclama(o)",
+  "term_pt": "reclama(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17707,7 +17695,7 @@
  },
  {
   "term_indigenous": "tuhup",
-  "term_pt": "rede de pescar,",
+  "term_pt": "rede de pescar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17778,7 +17766,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) zĩgá",
+  "term_indigenous": "o) zĩgá",
   "term_pt": "remar",
   "language": "Patxôhã",
   "category": "Geral"
@@ -17797,7 +17785,7 @@
  },
  {
   "term_indigenous": "zĩgá’xó",
-  "term_pt": "remo (a)",
+  "term_pt": "remo (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17881,7 +17869,7 @@
  },
  {
   "term_indigenous": "noite",
-  "term_pt": "resp.",
+  "term_pt": "resp",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -17935,7 +17923,7 @@
  },
  {
   "term_indigenous": "wêteré’xó",
-  "term_pt": "retira (o)",
+  "term_pt": "retira (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18025,7 +18013,7 @@
  },
  {
   "term_indigenous": "aresú’xó",
-  "term_pt": "reza(o)/ora(o)",
+  "term_pt": "reza(o)/ora(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18151,7 +18139,7 @@
  },
  {
   "term_indigenous": "tohẽporé",
-  "term_pt": "rodagem,",
+  "term_pt": "rodagem",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18192,13 +18180,13 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) iretuá’kwi",
+  "term_indigenous": "iretuá’kwi",
   "term_pt": "roxinho",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "iretuá’kwi",
+  "term_indigenous": "o) iretuá’kwi",
   "term_pt": "roxinho",
   "language": "Patxôhã",
   "category": "Geral"
@@ -18409,7 +18397,7 @@
  },
  {
   "term_indigenous": "itxewá’xó",
-  "term_pt": "salva(o)",
+  "term_pt": "salva(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18486,7 +18474,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "txayhô sim,",
+  "term_indigenous": "txayhô sim",
   "term_pt": "santo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -18504,7 +18492,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) hampágn",
+  "term_indigenous": "a) hampágn",
   "term_pt": "sapo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -18643,7 +18631,7 @@
  },
  {
   "term_indigenous": "mãkãb",
-  "term_pt": "semelhante,",
+  "term_pt": "semelhante",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18667,13 +18655,13 @@
  },
  {
   "term_indigenous": "makiame",
-  "term_pt": "senhor (a)",
+  "term_pt": "senhor (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "makiame",
-  "term_pt": "senhor(a)",
+  "term_pt": "senhor(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18757,13 +18745,13 @@
  },
  {
   "term_indigenous": "porco topê’xó",
-  "term_pt": "sento (a)",
+  "term_pt": "sento (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "topê’xó",
-  "term_pt": "sento(a)",
+  "term_pt": "sento(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -18889,7 +18877,7 @@
  },
  {
   "term_indigenous": "kâhu",
-  "term_pt": "sim, correto,",
+  "term_pt": "sim, correto",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19386,7 +19374,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) kãtxê’irá",
+  "term_indigenous": "a) kãtxê’irá",
   "term_pt": "surgindo",
   "language": "Patxôhã",
   "category": "Geral"
@@ -19483,7 +19471,7 @@
  },
  {
   "term_indigenous": "kotê’xó",
-  "term_pt": "t toma(o)",
+  "term_pt": "t toma(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19530,7 +19518,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "mkâ tórax,",
+  "term_indigenous": "mkâ tórax",
   "term_pt": "tanto",
   "language": "Patxôhã",
   "category": "Geral"
@@ -19548,7 +19536,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "siátxiré touro,",
+  "term_indigenous": "siátxiré touro",
   "term_pt": "tarde",
   "language": "Patxôhã",
   "category": "Geral"
@@ -19633,7 +19621,7 @@
  },
  {
   "term_indigenous": "wêrâ’txẽ",
-  "term_pt": "tentado,",
+  "term_pt": "tentado",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19645,7 +19633,7 @@
  },
  {
   "term_indigenous": "wêrâ’irá",
-  "term_pt": "tentando,",
+  "term_pt": "tentando",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19662,7 +19650,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "(a) wêrâ’ĩ",
+  "term_indigenous": "a) wêrâ’ĩ",
   "term_pt": "tentarei, aventurarei",
   "language": "Patxôhã",
   "category": "Geral"
@@ -19675,7 +19663,7 @@
  },
  {
   "term_indigenous": "wêrâ’xó",
-  "term_pt": "tento, aventuro (o)",
+  "term_pt": "tento, aventuro (o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19692,6 +19680,12 @@
   "category": "Geral"
  },
  {
+  "term_indigenous": "hãhão",
+  "term_pt": "terra",
+  "language": "Patxôhã",
+  "category": "Geral"
+ },
+ {
   "term_indigenous": "hãhãw",
   "term_pt": "terra",
   "language": "Patxôhã",
@@ -19700,12 +19694,6 @@
  {
   "term_indigenous": "hamotxê",
   "term_pt": "terra é seca",
-  "language": "Patxôhã",
-  "category": "Geral"
- },
- {
-  "term_indigenous": "hãhão",
-  "term_pt": "terra,",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19855,7 +19843,7 @@
  },
  {
   "term_indigenous": "aymag’xó",
-  "term_pt": "tiro(a)",
+  "term_pt": "tiro(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19873,7 +19861,7 @@
  },
  {
   "term_indigenous": "kotê’xó",
-  "term_pt": "toma(o)",
+  "term_pt": "toma(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -19939,7 +19927,7 @@
  },
  {
   "term_indigenous": "tsô’ôpa",
-  "term_pt": "touro,",
+  "term_pt": "touro",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20059,13 +20047,13 @@
  },
  {
   "term_indigenous": "esquentado nukaú’xó",
-  "term_pt": "transito (a)",
+  "term_pt": "transito (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "nukaú’xó",
-  "term_pt": "transito(a)",
+  "term_pt": "transito(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20077,13 +20065,13 @@
  },
  {
   "term_indigenous": "loyiá’xó",
-  "term_pt": "transo(a)",
+  "term_pt": "transo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "mãguepá’xó",
-  "term_pt": "transo(a)",
+  "term_pt": "transo(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20287,7 +20275,7 @@
  },
  {
   "term_indigenous": "kâxkay’xó",
-  "term_pt": "tutxá fico(a)",
+  "term_pt": "tutxá fico(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20359,7 +20347,7 @@
  },
  {
   "term_indigenous": "nioniêmã",
-  "term_pt": "um (artigo)",
+  "term_pt": "um (artigo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20425,7 +20413,7 @@
  },
  {
   "term_indigenous": "txakaui’xó",
-  "term_pt": "urina (mija)",
+  "term_pt": "urina (mija",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20455,7 +20443,7 @@
  },
  {
   "term_indigenous": "txakaui",
-  "term_pt": "urinar (mijar)",
+  "term_pt": "urinar (mijar",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20467,7 +20455,7 @@
  },
  {
   "term_indigenous": "txakaui’ĩ",
-  "term_pt": "urinarei (mijarei)",
+  "term_pt": "urinarei (mijarei",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20479,7 +20467,7 @@
  },
  {
   "term_indigenous": "txakaui’ã",
-  "term_pt": "urinou (mijou)",
+  "term_pt": "urinou (mijou",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20503,13 +20491,13 @@
  },
  {
   "term_indigenous": "otxemã’txẽ",
-  "term_pt": "usado (a)",
+  "term_pt": "usado (a",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
   "term_indigenous": "otxemã’txẽ",
-  "term_pt": "usado(a)",
+  "term_pt": "usado(a",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20586,7 +20574,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "txuhap, txuhab,",
+  "term_indigenous": "txuhap, txuhab",
   "term_pt": "vamos",
   "language": "Patxôhã",
   "category": "Geral"
@@ -20659,7 +20647,7 @@
  },
  {
   "term_indigenous": "hitap",
-  "term_pt": "velho,",
+  "term_pt": "velho",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -20736,7 +20724,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "nayhé’ã virtude,",
+  "term_indigenous": "nayhé’ã virtude",
   "term_pt": "venceu",
   "language": "Patxôhã",
   "category": "Geral"
@@ -20802,7 +20790,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "kuypô viveiro,",
+  "term_indigenous": "kuypô viveiro",
   "term_pt": "vento",
   "language": "Patxôhã",
   "category": "Geral"
@@ -20838,19 +20826,19 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "txaêkwĩ vivo,",
+  "term_indigenous": "txaêkwĩ vivo",
   "term_pt": "vereador",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "(o) dxê’ĩ",
+  "term_indigenous": "dxê’ĩ voado naxoxì’txẽ",
   "term_pt": "verei",
   "language": "Patxôhã",
   "category": "Geral"
  },
  {
-  "term_indigenous": "dxê’ĩ voado naxoxì’txẽ",
+  "term_indigenous": "o) dxê’ĩ",
   "term_pt": "verei",
   "language": "Patxôhã",
   "category": "Geral"
@@ -21025,7 +21013,7 @@
  },
  {
   "term_indigenous": "atxabn’xó",
-  "term_pt": "vira(o)",
+  "term_pt": "vira(o",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -21073,7 +21061,7 @@
  },
  {
   "term_indigenous": "txây",
-  "term_pt": "virtude,",
+  "term_pt": "virtude",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -21151,7 +21139,7 @@
  },
  {
   "term_indigenous": "hoixek",
-  "term_pt": "viveiro,",
+  "term_pt": "viveiro",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -21187,7 +21175,7 @@
  },
  {
   "term_indigenous": "j kahab’xó",
-  "term_pt": "vivo,",
+  "term_pt": "vivo",
   "language": "Patxôhã",
   "category": "Geral"
  },
@@ -21216,7 +21204,7 @@
   "category": "Geral"
  },
  {
-  "term_indigenous": "anehõ,",
+  "term_indigenous": "anehõ",
   "term_pt": "você",
   "language": "Patxôhã",
   "category": "Geral"
@@ -21415,7 +21403,7 @@
  },
  {
   "term_indigenous": "manũtiá",
-  "term_pt": "ídolo, gênio,",
+  "term_pt": "ídolo, gênio",
   "language": "Patxôhã",
   "category": "Geral"
  },
