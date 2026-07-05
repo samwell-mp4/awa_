@@ -29,7 +29,6 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -136,11 +135,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TrilhasIndexRoute = TrilhasIndexRouteImport.update({
-  id: '/trilhas/',
-  path: '/trilhas/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TrilhasSlugRoute = TrilhasSlugRouteImport.update({
   id: '/trilhas/$slug',
   path: '/trilhas/$slug',
@@ -196,7 +190,6 @@ export interface FileRoutesByFullPath {
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
-  '/trilhas/': typeof TrilhasIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -224,7 +217,6 @@ export interface FileRoutesByTo {
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
-  '/trilhas': typeof TrilhasIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -254,7 +246,6 @@ export interface FileRoutesById {
   '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
-  '/trilhas/': typeof TrilhasIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -284,7 +275,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/admin'
     | '/trilhas/$slug'
-    | '/trilhas/'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -312,7 +302,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/admin'
     | '/trilhas/$slug'
-    | '/trilhas'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -341,7 +330,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/_authenticated/admin'
     | '/trilhas/$slug'
-    | '/trilhas/'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -370,7 +358,6 @@ export interface RootRouteChildren {
   TraduzirRoute: typeof TraduzirRoute
   VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
-  TrilhasIndexRoute: typeof TrilhasIndexRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -519,13 +506,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/trilhas/': {
-      id: '/trilhas/'
-      path: '/trilhas'
-      fullPath: '/trilhas/'
-      preLoaderRoute: typeof TrilhasIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/trilhas/$slug': {
       id: '/trilhas/$slug'
       path: '/trilhas/$slug'
@@ -604,7 +584,6 @@ const rootRouteChildren: RootRouteChildren = {
   TraduzirRoute: TraduzirRoute,
   VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
-  TrilhasIndexRoute: TrilhasIndexRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
@@ -613,13 +592,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
