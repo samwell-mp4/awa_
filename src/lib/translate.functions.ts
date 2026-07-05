@@ -190,8 +190,24 @@ ${compact}`;
     });
     if (!res.ok) {
       const errText = (await res.text()).slice(0, 200);
-      if (res.status === 429) throw new Error("Limite de requisições atingido. Tente em instantes.");
-      if (res.status === 402) throw new Error("Créditos de IA esgotados.");
+      if (res.status === 429) {
+        return {
+          traducao: text,
+          literal: "",
+          nota: "Limite de requisições atingido. Tente novamente em instantes.",
+          dict_size: dict.length,
+          relevant_count: relevant.length,
+        };
+      }
+      if (res.status === 402) {
+        return {
+          traducao: text,
+          literal: "",
+          nota: "Créditos de IA esgotados. Mantive o texto original para o app não quebrar.",
+          dict_size: dict.length,
+          relevant_count: relevant.length,
+        };
+      }
       throw new Error(`AI: ${res.status} ${errText}`);
     }
     const json = await res.json();

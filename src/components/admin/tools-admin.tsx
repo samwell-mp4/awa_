@@ -67,6 +67,9 @@ export function ToolsAdmin() {
     setTtsBusy(true);
     try {
       const r = await speak({ data: { text: ttsTxt, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        throw new Error(r.message ?? "Não foi possível gerar áudio");
+      }
       setTtsUrl(`data:${r.mime};base64,${r.audio_base64}`);
     } catch (e) {
       toast.error((e as Error).message);
@@ -83,6 +86,9 @@ export function ToolsAdmin() {
       fd.append("file", file);
       fd.append("environment", getPaddleEnvironment());
       const r = await transcribe({ data: fd });
+      if (r.error) {
+        throw new Error(r.message ?? "Não foi possível transcrever o áudio");
+      }
       setSttText(r.text);
     } catch (e) {
       toast.error((e as Error).message);

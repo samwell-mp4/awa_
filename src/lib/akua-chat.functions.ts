@@ -247,7 +247,19 @@ Ao traduzir do português para Patxôhã:
 
     if (!res.ok) {
       const txt = await res.text();
-      throw new Error(`AI: ${res.status} ${txt.slice(0, 200)}`);
+      if (res.status === 402) {
+        return {
+          reply:
+            "🌿 Parente, a voz de Akuã está em pausa porque os créditos de IA acabaram. O site continua funcionando: dicionário, histórias, vídeos e trilhas seguem disponíveis.",
+        };
+      }
+      if (res.status === 429) {
+        return {
+          reply:
+            "🌿 Akuã recebeu muitos pedidos agora. Espere um instante e tente novamente, como quem aguarda o rio acalmar.",
+        };
+      }
+      throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
     }
     const json = await res.json();
     const reply: string = json.choices?.[0]?.message?.content ?? "...";
