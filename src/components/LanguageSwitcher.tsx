@@ -28,9 +28,12 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
     setCoords({ top: r.bottom + 8, right: window.innerWidth - r.right });
   }, [open]);
 
-  const current = SUPPORTED_LANGS.find((l) => l.code === i18n.language) ?? SUPPORTED_LANGS[0];
+  const currentCode = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+  const current = SUPPORTED_LANGS.find((l) => l.code === currentCode) ?? SUPPORTED_LANGS[0];
 
   function change(code: LangCode) {
+    if (typeof window !== "undefined") window.localStorage.setItem("awa_lang", code);
+    if (typeof document !== "undefined") document.documentElement.lang = code;
     void i18n.changeLanguage(code);
     setOpen(false);
   }
@@ -60,7 +63,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
             className="w-48 overflow-hidden rounded-2xl border border-gold/30 bg-forest-deep shadow-[var(--shadow-gold)]"
           >
             {SUPPORTED_LANGS.map((l) => {
-              const active = l.code === i18n.language;
+              const active = l.code === currentCode;
               return (
                 <button
                   key={l.code}

@@ -47,9 +47,17 @@ if (!i18n.isInitialized) {
 if (isBrowser) {
   const stored = window.localStorage.getItem("awa_lang");
   const target = stored && ["pt", "en", "es"].includes(stored) ? stored : undefined;
+  document.documentElement.lang = target || (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2);
   if (target && i18n.language !== target) {
     void i18n.changeLanguage(target);
   }
+  i18n.on("languageChanged", (lng) => {
+    const code = (lng || "pt").slice(0, 2).toLowerCase();
+    if (["pt", "en", "es"].includes(code)) {
+      window.localStorage.setItem("awa_lang", code);
+      document.documentElement.lang = code;
+    }
+  });
 }
 
 export default i18n;
