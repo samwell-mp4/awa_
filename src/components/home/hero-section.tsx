@@ -122,11 +122,11 @@ export function HeroSection() {
               className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-gold/40 bg-card/85 px-3 py-1.5 backdrop-blur-md shadow-[var(--shadow-gold)] cursor-grab active:cursor-grabbing touch-none select-none"
             >
               <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--gradient-gold)] text-[10px] font-black text-forest-deep">
-                AK
+                {displayName.trim().slice(0, 2).toUpperCase()}
               </div>
               <div className="text-xs leading-tight">
                 <div className="text-foreground/70">{t("hero.ola")}</div>
-                <div className="font-bold text-gold">Akuá!</div>
+                <div className="font-bold text-gold truncate max-w-[140px]">{displayName}</div>
               </div>
               <button
                 type="button"
