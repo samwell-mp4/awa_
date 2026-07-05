@@ -233,7 +233,11 @@ function DictionaryPage() {
 
           <div className="flex items-center justify-between gap-2 pt-1">
             <div className="text-xs font-semibold text-foreground/70">
-              {t("dictionary.showing", { count: visibleFiltered.length, plus: hasMore ? "+" : "" })}
+              {t("dictionary.showing", {
+                count: visibleFiltered.length,
+                plus: hasMore ? "+" : "",
+                words: t(visibleFiltered.length === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+              })}
             </div>
             <div className="flex gap-1">
               <button
@@ -280,7 +284,10 @@ function DictionaryPage() {
                       ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
                       : "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
                   }`}
-                  title={t("dictionary.wordCount", { count })}
+                  title={t("dictionary.wordCount", {
+                    count,
+                    words: t(count === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+                  })}
                 >
                   {l}
                 </button>
