@@ -117,7 +117,6 @@ export function useNavContent() {
       items: [
         { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
         { label: t("nav.instalar"), href: "/instalar", icon: Download },
-        { label: t("nav.bemVindo"), href: "/bem-vindo", icon: Home },
       ],
     },
     {
