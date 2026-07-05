@@ -8,23 +8,34 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 
 export const grantPremium = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { email: string }) => d)
+  .inputValidator((d: { email: string; permanent?: boolean; months?: number }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Find user by email
     const { data: userList, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
     if (listErr) throw listErr;
     const target = userList.users.find((u) => u.email?.toLowerCase() === data.email.toLowerCase());
     if (!target) throw new Error("Usuário não encontrado. Peça para essa pessoa criar conta primeiro.");
 
+    const months = data.months ?? 1;
+    const expiresAt = data.permanent
+      ? null
+      : new Date(Date.now() + months * 30 * 24 * 60 * 60 * 1000).toISOString();
+
     const { error } = await supabaseAdmin
       .from("user_roles")
-      .upsert({ user_id: target.id, role: "premium" }, { onConflict: "user_id,role" });
+      .upsert(
+        { user_id: target.id, role: "premium", expires_at: expiresAt },
+        { onConflict: "user_id,role" },
+      );
     if (error) throw error;
 
-    return { message: `Premium liberado para ${data.email}` };
+    return {
+      message: data.permanent
+        ? `Premium permanente liberado para ${data.email}`
+        : `Premium liberado para ${data.email} por ${months} mês(es)`,
+    };
   });
 
 export const revokePremium = createServerFn({ method: "POST" })
