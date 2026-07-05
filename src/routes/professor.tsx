@@ -54,6 +54,7 @@ function ProfessorPage() {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
       audio.src = `data:${r.mime};base64,${r.audio_base64}`;
       audioRef.current = audio;
@@ -171,6 +172,9 @@ function Bubble({ role, content }: Msg) {
     try {
       setBusy(true);
       const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        throw new Error(r.message ?? "Não foi possível gerar áudio");
+      }
       const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
       audioRef.current?.pause();
       audioRef.current = audio;

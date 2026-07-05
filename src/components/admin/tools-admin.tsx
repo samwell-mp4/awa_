@@ -67,6 +67,9 @@ export function ToolsAdmin() {
     setTtsBusy(true);
     try {
       const r = await speak({ data: { text: ttsTxt, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        throw new Error(r.message ?? "Não foi possível gerar áudio");
+      }
       setTtsUrl(`data:${r.mime};base64,${r.audio_base64}`);
     } catch (e) {
       toast.error((e as Error).message);
