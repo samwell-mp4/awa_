@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import "@/i18n";
 
 
@@ -160,6 +161,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
+      <AppLanguageAutoTranslator />
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />
