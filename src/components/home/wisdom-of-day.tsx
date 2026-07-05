@@ -7,7 +7,8 @@ export function WisdomOfDay() {
   return (
     <section className="mt-6">
       <Link
-        to="/trilhas"
+        to="/trilhas/$slug"
+        params={{ slug: "saudacoes" }}
         className="card-elev block rounded-2xl border border-gold/25 bg-gradient-to-br from-forest-deep/60 to-bark/30 p-5 transition hover:-translate-y-0.5"
       >
         <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">

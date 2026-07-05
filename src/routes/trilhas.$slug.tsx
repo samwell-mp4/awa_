@@ -1,10 +1,10 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle,
+  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle, ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
@@ -12,6 +12,12 @@ import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCer
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
+
+const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais"];
+function nextTrailSlug(current: TrailSlug): TrailSlug {
+  const i = TRAIL_ORDER.indexOf(current);
+  return TRAIL_ORDER[(i + 1) % TRAIL_ORDER.length];
+}
 
 
 export const Route = createFileRoute("/trilhas/$slug")({
@@ -54,6 +60,9 @@ type Word = {
 function TrilhaPage() {
   const { slug } = Route.useParams();
   const trail = TRAILS[slug as TrailSlug];
+  const navigate = useNavigate();
+  const nextSlug = nextTrailSlug(slug as TrailSlug);
+  const nextTrail = TRAILS[nextSlug];
 
   const { data: words = [], isLoading } = useQuery({
     queryKey: ["trilha-words", slug],
@@ -137,8 +146,8 @@ function TrilhaPage() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to="/trilhas" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
-            <ArrowLeft className="h-4 w-4" /> Trilhas
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+            <ArrowLeft className="h-4 w-4" /> Início
           </Link>
           <div className="flex items-center gap-2 font-display font-black text-cream">
             <span>{trail.emoji}</span> {trail.name}
@@ -214,7 +223,17 @@ function TrilhaPage() {
         <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} />
       )}
 
-      {showCert && <CertificateModal trail={trail} onClose={() => setShowCert(false)} />}
+      {showCert && (
+        <CertificateModal
+          trail={trail}
+          nextTrail={nextTrail}
+          onClose={() => setShowCert(false)}
+          onNext={() => {
+            setShowCert(false);
+            navigate({ to: "/trilhas/$slug", params: { slug: nextSlug } });
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -353,7 +372,14 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
   );
 }
 
-function CertificateModal({ trail, onClose }: { trail: typeof TRAILS[TrailSlug]; onClose: () => void }) {
+function CertificateModal({
+  trail, nextTrail, onClose, onNext,
+}: {
+  trail: typeof TRAILS[TrailSlug];
+  nextTrail: typeof TRAILS[TrailSlug];
+  onClose: () => void;
+  onNext: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 overflow-y-auto">
       <div className="card-elev relative w-full max-w-2xl rounded-3xl border-2 border-gold/50 bg-gradient-to-br from-forest-deep to-bark p-6 md:p-10 my-8">
@@ -367,6 +393,12 @@ function CertificateModal({ trail, onClose }: { trail: typeof TRAILS[TrailSlug];
             {trail.certificate.message}
           </div>
           <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">PROFESSOR AKUÃ</div>
+          <button
+            onClick={onNext}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-6 py-3 text-sm font-bold text-cream"
+          >
+            Próxima trilha: {nextTrail.emoji} {nextTrail.name} <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>
