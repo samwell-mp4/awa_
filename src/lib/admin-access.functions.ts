@@ -8,23 +8,34 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 
 export const grantPremium = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { email: string }) => d)
+  .inputValidator((d: { email: string; permanent?: boolean; months?: number }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Find user by email
     const { data: userList, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
     if (listErr) throw listErr;
     const target = userList.users.find((u) => u.email?.toLowerCase() === data.email.toLowerCase());
     if (!target) throw new Error("Usuário não encontrado. Peça para essa pessoa criar conta primeiro.");
 
+    const months = data.months ?? 1;
+    const expiresAt = data.permanent
+      ? null
+      : new Date(Date.now() + months * 30 * 24 * 60 * 60 * 1000).toISOString();
+
     const { error } = await supabaseAdmin
       .from("user_roles")
-      .upsert({ user_id: target.id, role: "premium" }, { onConflict: "user_id,role" });
+      .upsert(
+        { user_id: target.id, role: "premium", expires_at: expiresAt },
+        { onConflict: "user_id,role" },
+      );
     if (error) throw error;
 
-    return { message: `Premium liberado para ${data.email}` };
+    return {
+      message: data.permanent
+        ? `Premium permanente liberado para ${data.email}`
+        : `Premium liberado para ${data.email} por ${months} mês(es)`,
+    };
   });
 
 export const revokePremium = createServerFn({ method: "POST" })
@@ -68,7 +79,7 @@ export const listAllUsers = createServerFn({ method: "GET" })
     const users = userList?.users ?? [];
     const ids = users.map((u) => u.id);
     const [{ data: roles }, { data: profiles }, { data: subs }] = await Promise.all([
-      supabaseAdmin.from("user_roles").select("user_id,role").in("user_id", ids),
+      supabaseAdmin.from("user_roles").select("user_id,role,expires_at").in("user_id", ids),
       supabaseAdmin.from("profiles").select("id,name,photo_url").in("id", ids),
       supabaseAdmin
         .from("subscriptions")
@@ -77,7 +88,12 @@ export const listAllUsers = createServerFn({ method: "GET" })
     ]);
     return users
       .map((u) => {
-        const userRoles = (roles ?? []).filter((r: any) => r.user_id === u.id).map((r: any) => r.role);
+        const userRoles = (roles ?? []).filter((r: any) => r.user_id === u.id);
+        const roleNames = userRoles.map((r: any) => r.role);
+        const premiumRole = userRoles.find((r: any) => r.role === "premium");
+        const premiumExpires = premiumRole?.expires_at ?? null;
+        const premiumActive =
+          !!premiumRole && (!premiumExpires || new Date(premiumExpires) > new Date());
         const p = (profiles ?? []).find((x: any) => x.id === u.id);
         const sub = (subs ?? [])
           .filter((s: any) => s.user_id === u.id)
@@ -89,8 +105,10 @@ export const listAllUsers = createServerFn({ method: "GET" })
           photo_url: p?.photo_url ?? null,
           created_at: u.created_at,
           last_sign_in_at: u.last_sign_in_at,
-          is_admin: userRoles.includes("admin"),
-          is_premium_manual: userRoles.includes("premium"),
+          is_admin: roleNames.includes("admin"),
+          is_premium_manual: premiumActive,
+          premium_expires_at: premiumExpires,
+          premium_permanent: !!premiumRole && !premiumExpires,
           subscription: sub
             ? { status: sub.status, environment: sub.environment, current_period_end: sub.current_period_end }
             : null,

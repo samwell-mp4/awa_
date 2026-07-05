@@ -17,6 +17,7 @@ function fmt(d?: string | null) {
 
 export function AccessAdmin() {
   const [email, setEmail] = useState("");
+  const [permanent, setPermanent] = useState(false);
   const [q, setQ] = useState("");
   const qc = useQueryClient();
   const grantFn = useServerFn(grantPremium);
@@ -26,7 +27,7 @@ export function AccessAdmin() {
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["all_users"],
     queryFn: () => usersFn(),
-    refetchInterval: 30_000,
+    refetchInterval: 15_000,
   });
 
   const filtered = useMemo(() => {
@@ -46,11 +47,12 @@ export function AccessAdmin() {
     return { total, paying, manual, admins };
   }, [users]);
 
-  async function grant(target?: string) {
+  async function grant(target?: string, opts?: { permanent?: boolean }) {
     const value = (target ?? email).trim();
     if (!value) return toast.error("Informe o email");
+    const isPerm = opts?.permanent ?? permanent;
     try {
-      const res = await grantFn({ data: { email: value } });
+      const res = await grantFn({ data: { email: value, permanent: isPerm } });
       toast.success(res.message);
       if (!target) setEmail("");
       qc.invalidateQueries({ queryKey: ["all_users"] });
@@ -139,6 +141,18 @@ export function AccessAdmin() {
             </Btn>
           </div>
         </div>
+        <label className="mt-3 flex items-center gap-2 text-xs text-foreground/70">
+          <input
+            type="checkbox"
+            checked={permanent}
+            onChange={(e) => setPermanent(e.target.checked)}
+            className="h-4 w-4 accent-gold"
+          />
+          <span>
+            <strong className="text-gold">Permanente</strong> (sem expirar). Se desmarcado, libera
+            por <strong>1 mês</strong>.
+          </span>
+        </label>
       </Card>
 
       {/* Diretório de usuários */}
@@ -194,7 +208,7 @@ export function AccessAdmin() {
                           )}
                           {u.is_premium_manual && (
                             <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-gold">
-                              Liberado
+                              {u.premium_permanent ? "Permanente" : "Liberado"}
                             </span>
                           )}
                           {isPaying && (
@@ -206,20 +220,35 @@ export function AccessAdmin() {
                         <div className="truncate text-xs text-foreground/60">{u.email}</div>
                         <div className="mt-0.5 text-[11px] text-foreground/50">
                           Cadastro: {fmt(u.created_at)} · Último acesso: {fmt(u.last_sign_in_at)}
+                          {u.is_premium_manual && !u.premium_permanent && u.premium_expires_at && (
+                            <> · <span className="text-gold/80">Expira: {fmt(u.premium_expires_at)}</span></>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {u.is_premium_manual ? (
-                        <Btn variant="danger" onClick={() => revoke(u.user_id, u.name || u.email)}>
-                          <Trash2 className="h-4 w-4" /> Revogar
-                        </Btn>
+                        <>
+                          {!u.premium_permanent && (
+                            <Btn onClick={() => grant(u.email, { permanent: true })}>
+                              <Crown className="h-4 w-4" /> Tornar permanente
+                            </Btn>
+                          )}
+                          <Btn variant="danger" onClick={() => revoke(u.user_id, u.name || u.email)}>
+                            <Trash2 className="h-4 w-4" /> Revogar
+                          </Btn>
+                        </>
                       ) : (
                         !isPaying &&
                         !u.is_admin && (
-                          <Btn onClick={() => grant(u.email)}>
-                            <Crown className="h-4 w-4" /> Liberar
-                          </Btn>
+                          <>
+                            <Btn onClick={() => grant(u.email, { permanent: false })}>
+                              <Crown className="h-4 w-4" /> 1 mês
+                            </Btn>
+                            <Btn onClick={() => grant(u.email, { permanent: true })}>
+                              <Crown className="h-4 w-4" /> Permanente
+                            </Btn>
+                          </>
                         )
                       )}
                     </div>
