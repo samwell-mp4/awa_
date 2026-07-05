@@ -4,12 +4,46 @@ import { useTranslation } from "react-i18next";
 import heroAsset from "@/assets/awa-hero.jpg.asset.json";
 import { Stat } from "./stat";
 import { useUserStats } from "@/hooks/use-user-stats";
+import { useAuth } from "@/hooks/use-auth";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const heroWoman = heroAsset.url;
 
 export function HeroSection() {
   const { t } = useTranslation();
   const { points, level, streak } = useUserStats();
+  const { user } = useAuth();
+  const [liveName, setLiveName] = useState<string | null>(null);
+  const { data: profile } = useQuery({
+    queryKey: ["profile-name", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await supabase.from("profiles").select("name").eq("id", user!.id).maybeSingle();
+      return data;
+    },
+  });
+  useEffect(() => {
+    if (!user?.id) return;
+    const ch = supabase
+      .channel(`profile-${user.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles", filter: `id=eq.${user.id}` },
+        (payload) => {
+          const next = (payload.new as { name?: string } | null)?.name;
+          if (next) setLiveName(next);
+        },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [user?.id]);
+  const displayName =
+    liveName ||
+    profile?.name ||
+    (user?.user_metadata as { name?: string } | undefined)?.name ||
+    (user?.email ? user.email.split("@")[0] : null) ||
+    "Akuá!";
   const [hidden, setHidden] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const draggingRef = useRef<{ dx: number; dy: number; moved: boolean } | null>(null);
@@ -88,11 +122,11 @@ export function HeroSection() {
               className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-gold/40 bg-card/85 px-3 py-1.5 backdrop-blur-md shadow-[var(--shadow-gold)] cursor-grab active:cursor-grabbing touch-none select-none"
             >
               <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--gradient-gold)] text-[10px] font-black text-forest-deep">
-                AK
+                {displayName.trim().slice(0, 2).toUpperCase()}
               </div>
               <div className="text-xs leading-tight">
                 <div className="text-foreground/70">{t("hero.ola")}</div>
-                <div className="font-bold text-gold">Akuá!</div>
+                <div className="font-bold text-gold truncate max-w-[140px]">{displayName}</div>
               </div>
               <button
                 type="button"
