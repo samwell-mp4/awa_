@@ -141,6 +141,18 @@ export function AccessAdmin() {
             </Btn>
           </div>
         </div>
+        <label className="mt-3 flex items-center gap-2 text-xs text-foreground/70">
+          <input
+            type="checkbox"
+            checked={permanent}
+            onChange={(e) => setPermanent(e.target.checked)}
+            className="h-4 w-4 accent-gold"
+          />
+          <span>
+            <strong className="text-gold">Permanente</strong> (sem expirar). Se desmarcado, libera
+            por <strong>1 mês</strong>.
+          </span>
+        </label>
       </Card>
 
       {/* Diretório de usuários */}
