@@ -60,6 +60,9 @@ type Word = {
 function TrilhaPage() {
   const { slug } = Route.useParams();
   const trail = TRAILS[slug as TrailSlug];
+  const navigate = useNavigate();
+  const nextSlug = nextTrailSlug(slug as TrailSlug);
+  const nextTrail = TRAILS[nextSlug];
 
   const { data: words = [], isLoading } = useQuery({
     queryKey: ["trilha-words", slug],
