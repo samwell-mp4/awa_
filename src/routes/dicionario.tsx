@@ -101,27 +101,21 @@ function DictionaryPage() {
   }, [query]);
 
   const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary", ENABLED_LANGUAGES.join(","), debouncedQuery, cat, letter, sort, visibleCount],
+    queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
     staleTime: 1000 * 60 * 60, // 1h — dicionário muda raramente
     gcTime: 1000 * 60 * 60 * 24,
     queryFn: async () => {
-      let request = supabase
+      // Busca todo o dicionário Patxôhã de uma vez. Filtros (busca,
+      // categoria, letra, ordenação) rodam client-side — o filtro por letra
+      // no servidor comparava strings case-sensitive e escondia as palavras
+      // em minúsculas, fazendo com que "as mesmas palavras" continuassem
+      // aparecendo ao trocar de letra.
+      const { data, error } = await supabase
         .from("dictionary")
         .select("id,term_indigenous,term_pt,language,category,pronunciation,example,term_pt_en,term_pt_es,example_en,example_es")
-        .in("language", ENABLED_LANGUAGES as unknown as string[]);
-
-      const q = debouncedQuery.toLowerCase().replace(/[%(),]/g, "").slice(0, 80);
-      if (q) request = request.or(`term_indigenous.ilike.%${q}%,term_pt.ilike.%${q}%`);
-      if (cat !== "Todas" && cat !== "Outros") request = request.eq("category", cat);
-      if (letter !== "Todas") {
-        const idx = ALPHABET.indexOf(letter);
-        const next = ALPHABET[idx + 1];
-        request = request.gte("term_indigenous", letter).lt("term_indigenous", next ?? "ZZZZZZ");
-      }
-
-      const { data, error } = await request
-        .order("term_indigenous", { ascending: sort === "az" })
-        .range(0, visibleCount);
+        .in("language", ENABLED_LANGUAGES as unknown as string[])
+        .order("term_indigenous", { ascending: true })
+        .limit(5000);
       if (error) throw error;
       return (data ?? []) as Entry[];
     },
@@ -166,7 +160,7 @@ function DictionaryPage() {
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
 
-  const hasMore = isPremium ? entries.length > visibleCount : filtered.length > FREE_LIMIT;
+  const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
   const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
 
 
