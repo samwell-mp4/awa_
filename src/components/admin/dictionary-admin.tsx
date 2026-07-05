@@ -44,13 +44,19 @@ export function DictionaryAdmin() {
   const [importing, setImporting] = useState(false);
 
   async function importPdfDictionary() {
-    if (!confirm(`Importar ${patxohaDict.length} palavras do PDF Patxôhã? Entradas duplicadas (mesmo termo) serão ignoradas.`)) return;
+    if (!confirm(`Reatualizar o dicionário Patxôhã do começo com ${patxohaDict.length} palavras do PDF? As entradas Patxôhã atuais serão substituídas para remover duplicatas.`)) return;
     setImporting(true);
     try {
-      const { data: existing } = await supabase.from("dictionary").select("term_indigenous,term_pt");
-      const seen = new Set((existing ?? []).map((e: any) => `${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
-      const toInsert = (patxohaDict as any[]).filter((e) => !seen.has(`${e.term_indigenous.toLowerCase()}|${e.term_pt.toLowerCase()}`));
-      if (toInsert.length === 0) { toast.info("Tudo já importado"); setImporting(false); return; }
+      const { error: deleteError } = await supabase.from("dictionary").delete().eq("language", "Patxôhã");
+      if (deleteError) throw deleteError;
+
+      const seen = new Set<string>();
+      const toInsert = (patxohaDict as any[]).filter((e) => {
+        const key = `${String(e.term_indigenous || "").trim().toLowerCase()}|${String(e.term_pt || "").trim().toLowerCase()}|Patxôhã`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return e.term_indigenous && e.term_pt;
+      });
       const batchSize = 500;
       let done = 0;
       for (let i = 0; i < toInsert.length; i += batchSize) {
@@ -58,9 +64,9 @@ export function DictionaryAdmin() {
         const { error } = await supabase.from("dictionary").insert(batch);
         if (error) throw error;
         done += batch.length;
-        toast.message(`Importando... ${done}/${toInsert.length}`);
+        toast.message(`Reatualizando... ${done}/${toInsert.length}`);
       }
-      toast.success(`${done} palavras importadas`);
+      toast.success(`${done} palavras reatualizadas do PDF`);
       qc.invalidateQueries({ queryKey: ["dict_admin"] });
       qc.invalidateQueries({ queryKey: ["dictionary"] });
     } catch (e: any) {
@@ -86,10 +92,10 @@ export function DictionaryAdmin() {
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div>
             <h2 className="font-display text-lg font-black text-cream">Importar dicionário Patxôhã</h2>
-            <p className="text-xs text-foreground/60 mt-1">{patxohaDict.length} palavras extraídas do PDF oficial (2015). Duplicatas serão ignoradas.</p>
+            <p className="text-xs text-foreground/60 mt-1">{patxohaDict.length} palavras extraídas do PDF oficial. Reatualiza do começo e remove duplicatas antigas.</p>
           </div>
           <Btn onClick={importPdfDictionary} disabled={importing}>
-            <Download className="h-4 w-4" /> {importing ? "Importando..." : "Importar do PDF"}
+            <Download className="h-4 w-4" /> {importing ? "Reatualizando..." : "Reatualizar do PDF"}
           </Btn>
         </div>
       </Card>
