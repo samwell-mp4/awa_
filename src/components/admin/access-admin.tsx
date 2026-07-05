@@ -17,6 +17,7 @@ function fmt(d?: string | null) {
 
 export function AccessAdmin() {
   const [email, setEmail] = useState("");
+  const [permanent, setPermanent] = useState(false);
   const [q, setQ] = useState("");
   const qc = useQueryClient();
   const grantFn = useServerFn(grantPremium);
@@ -26,7 +27,7 @@ export function AccessAdmin() {
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["all_users"],
     queryFn: () => usersFn(),
-    refetchInterval: 30_000,
+    refetchInterval: 15_000,
   });
 
   const filtered = useMemo(() => {
