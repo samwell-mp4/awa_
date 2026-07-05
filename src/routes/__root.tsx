@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import "@/i18n";
 
 
@@ -118,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -160,6 +161,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
+      <AppLanguageAutoTranslator />
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />

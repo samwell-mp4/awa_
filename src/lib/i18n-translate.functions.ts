@@ -11,6 +11,12 @@ const LANG_NAME: Record<string, string> = {
   pt: "Portuguese (português)",
 };
 
+function cleanTranslatedLine(value: unknown) {
+  return String(value ?? "")
+    .replace(/^\s*\d+[.)]\s*/, "")
+    .trim();
+}
+
 export const translateI18n = createServerFn({ method: "POST" })
   .inputValidator((d: { texts: string[]; lang: string }) => d)
   .handler(async ({ data }) => {
@@ -71,7 +77,7 @@ Rules:
         const raw: string = json.choices?.[0]?.message?.content ?? "{}";
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed?.t) && parsed.t.length === misses.length) {
-          translated = parsed.t.map((s: unknown) => String(s ?? ""));
+          translated = parsed.t.map(cleanTranslatedLine);
         }
       }
     } catch {
