@@ -49,10 +49,10 @@ type Entry = {
 
 const PDF_DICTIONARY_ENTRIES = (patxohaDict as Array<Omit<Entry, "id">>).map((entry, index) => ({
   id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
-  pronunciation: null,
-  example: null,
-  audio_url: null,
   ...entry,
+  pronunciation: entry.pronunciation ?? null,
+  example: entry.example ?? null,
+  audio_url: entry.audio_url ?? null,
 })) satisfies Entry[];
 
 // Auto-categorização baseada em palavras-chave na tradução PT.
