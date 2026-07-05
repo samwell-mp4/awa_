@@ -128,9 +128,9 @@ function TrilhaPage() {
   }
 
   function resetProgress() {
-    if (!confirm("Reiniciar o progresso desta trilha?")) return;
     setLearnedState(new Set());
     setLearned(slug, new Set());
+    toast.success("Novas lições prontas! Bons estudos 🌱");
   }
 
   const grouped = useMemo(() => {
