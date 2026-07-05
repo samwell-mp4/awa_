@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
+import patxohaDict from "@/data/patxoha-dictionary.json";
 
 
 export const Route = createFileRoute("/dicionario")({
@@ -48,7 +47,13 @@ type Entry = {
 };
 
 
-const ENABLED_LANGUAGES = ["Patxôhã"] as const;
+const PDF_DICTIONARY_ENTRIES = (patxohaDict as Array<Omit<Entry, "id">>).map((entry, index) => ({
+  id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
+  pronunciation: null,
+  example: null,
+  audio_url: null,
+  ...entry,
+})) satisfies Entry[];
 
 // Auto-categorização baseada em palavras-chave na tradução PT.
 const CATEGORY_RULES: { name: string; keywords: RegExp }[] = [
@@ -100,26 +105,7 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
-    staleTime: 1000 * 60 * 60, // 1h — dicionário muda raramente
-    gcTime: 1000 * 60 * 60 * 24,
-    queryFn: async () => {
-      // Busca todo o dicionário Patxôhã de uma vez. Filtros (busca,
-      // categoria, letra, ordenação) rodam client-side — o filtro por letra
-      // no servidor comparava strings case-sensitive e escondia as palavras
-      // em minúsculas, fazendo com que "as mesmas palavras" continuassem
-      // aparecendo ao trocar de letra.
-      const { data, error } = await supabase
-        .from("dictionary")
-        .select("id,term_indigenous,term_pt,language,category,pronunciation,example,term_pt_en,term_pt_es,example_en,example_es")
-        .in("language", ENABLED_LANGUAGES as unknown as string[])
-        .order("term_indigenous", { ascending: true })
-        .limit(5000);
-      if (error) throw error;
-      return (data ?? []) as Entry[];
-    },
-  });
+  const entries = PDF_DICTIONARY_ENTRIES;
 
   const enriched = useMemo(
     () => entries.map((e) => ({ ...e, _cat: categorize(e), _letter: firstLetter(e.term_indigenous) })),
@@ -291,9 +277,7 @@ function DictionaryPage() {
         </section>
 
         <section className="mt-5">
-          {isLoading ? (
-            <div className="text-center text-foreground/60 py-12">{t("dictionary.loading")}</div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
             <div className="space-y-6">
