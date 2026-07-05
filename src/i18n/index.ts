@@ -14,26 +14,43 @@ export const SUPPORTED_LANGS = [
 
 export type LangCode = (typeof SUPPORTED_LANGS)[number]["code"];
 
+const isBrowser = typeof window !== "undefined";
+
 if (!i18n.isInitialized) {
-  void i18n
-    .use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-      resources: {
-        pt: { translation: pt },
-        en: { translation: en },
-        es: { translation: es },
-        pat: { translation: pat },
-      },
-      fallbackLng: "pt",
-      supportedLngs: ["pt", "en", "es"],
-      interpolation: { escapeValue: false },
-      detection: {
-        order: ["localStorage", "navigator"],
-        lookupLocalStorage: "awa_lang",
-        caches: ["localStorage"],
-      },
-    });
+  const chain = i18n.use(initReactI18next);
+  if (isBrowser) chain.use(LanguageDetector);
+
+  void chain.init({
+    resources: {
+      pt: { translation: pt },
+      en: { translation: en },
+      es: { translation: es },
+      pat: { translation: pat },
+    },
+    lng: isBrowser ? undefined : "pt",
+    fallbackLng: "pt",
+    supportedLngs: ["pt", "en", "es"],
+    load: "languageOnly",
+    nonExplicitSupportedLngs: true,
+    interpolation: { escapeValue: false },
+    initImmediate: false,
+    react: { useSuspense: false },
+    detection: {
+      order: ["localStorage", "navigator"],
+      lookupLocalStorage: "awa_lang",
+      caches: ["localStorage"],
+    },
+  });
+}
+
+// Ensure the client picks up the stored/detected language even if SSR
+// initialised with the fallback ("pt") first.
+if (isBrowser) {
+  const stored = window.localStorage.getItem("awa_lang");
+  const target = stored && ["pt", "en", "es"].includes(stored) ? stored : undefined;
+  if (target && i18n.language !== target) {
+    void i18n.changeLanguage(target);
+  }
 }
 
 export default i18n;
