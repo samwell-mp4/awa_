@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useAuth } from "@/hooks/use-auth";
 
 export function useSubscription() {
   const { user } = useAuth();
-  const env = getPaddleEnvironment();
+  const env = useMemo(() => getPaddleEnvironment(), []);
 
   const query = useQuery({
     queryKey: ["subscription", user?.id, env],
@@ -46,7 +46,7 @@ export function useSubscription() {
     return () => {
       supabase.removeChannel(ch);
     };
-  }, [user, query]);
+  }, [user?.id, query.refetch]);
 
   return {
     isPremium: query.data?.isPremium ?? false,
