@@ -14,7 +14,7 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     const environment: "sandbox" | "live" = envRaw === "sandbox" ? "sandbox" : "live";
     return { file, language: (d.get("language") as string | null) || undefined, environment };
   })
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data, context }): Promise<{ text: string; error?: "PAYMENT_REQUIRED" | "STT_FAILED"; message?: string }> => {
     await assertPremium(context, data.environment);
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
@@ -29,7 +29,21 @@ export const transcribeAudio = createServerFn({ method: "POST" })
       headers: { Authorization: `Bearer ${apiKey}` },
       body: fd,
     });
-    if (!res.ok) throw new Error(`STT ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    if (!res.ok) {
+      const message = (await res.text()).slice(0, 200);
+      if (res.status === 402) {
+        return {
+          text: "",
+          error: "PAYMENT_REQUIRED",
+          message: "Créditos insuficientes para transcrever áudio agora.",
+        };
+      }
+      return {
+        text: "",
+        error: "STT_FAILED",
+        message: `Não foi possível transcrever o áudio. ${message}`,
+      };
+    }
     const json = await res.json();
     return { text: (json.text ?? "") as string };
   });

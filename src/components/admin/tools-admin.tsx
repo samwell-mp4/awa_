@@ -86,6 +86,9 @@ export function ToolsAdmin() {
       fd.append("file", file);
       fd.append("environment", getPaddleEnvironment());
       const r = await transcribe({ data: fd });
+      if (r.error) {
+        throw new Error(r.message ?? "Não foi possível transcrever o áudio");
+      }
       setSttText(r.text);
     } catch (e) {
       toast.error((e as Error).message);
