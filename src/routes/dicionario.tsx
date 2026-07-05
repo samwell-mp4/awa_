@@ -160,7 +160,7 @@ function DictionaryPage() {
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
 
-  const hasMore = isPremium ? entries.length > visibleCount : filtered.length > FREE_LIMIT;
+  const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
   const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
 
 
