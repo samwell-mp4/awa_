@@ -38,18 +38,26 @@ export function useSubscription() {
 
   useEffect(() => {
     if (!user) return;
-    const ch = supabase
-      .channel(`sub_${user.id}_${Date.now()}_${Math.random().toString(36).slice(2)}`)
+    const suffix = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const chSub = supabase
+      .channel(`sub_${user.id}_${suffix}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "subscriptions", filter: `user_id=eq.${user.id}` },
-        () => {
-          void refetchRef.current();
-        },
+        () => void refetchRef.current(),
+      )
+      .subscribe();
+    const chRoles = supabase
+      .channel(`roles_${user.id}_${suffix}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "user_roles", filter: `user_id=eq.${user.id}` },
+        () => void refetchRef.current(),
       )
       .subscribe();
     return () => {
-      supabase.removeChannel(ch);
+      supabase.removeChannel(chSub);
+      supabase.removeChannel(chRoles);
     };
   }, [user?.id]);
 
