@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import heroAsset from "@/assets/awa-hero.jpg.asset.json";
 import { Stat } from "./stat";
 import { useUserStats } from "@/hooks/use-user-stats";
+import { useAuth } from "@/hooks/use-auth";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const heroWoman = heroAsset.url;
 
