@@ -79,7 +79,7 @@ export const listAllUsers = createServerFn({ method: "GET" })
     const users = userList?.users ?? [];
     const ids = users.map((u) => u.id);
     const [{ data: roles }, { data: profiles }, { data: subs }] = await Promise.all([
-      supabaseAdmin.from("user_roles").select("user_id,role").in("user_id", ids),
+      supabaseAdmin.from("user_roles").select("user_id,role,expires_at").in("user_id", ids),
       supabaseAdmin.from("profiles").select("id,name,photo_url").in("id", ids),
       supabaseAdmin
         .from("subscriptions")
