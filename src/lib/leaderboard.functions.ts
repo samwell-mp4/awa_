@@ -15,9 +15,11 @@ export type TopLearner = {
 export const getWeeklyTopLearners = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => inputSchema.parse(data ?? {}))
   .handler(async ({ data }): Promise<TopLearner[]> => {
+    // Use service role so we can lock down the SECURITY DEFINER RPC from
+    // anon/authenticated (the aggregate is still safe to expose publicly).
     const supabase = createClient<Database>(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
       { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
     );
     const { data: rows, error } = await supabase.rpc("weekly_top_learners", {
