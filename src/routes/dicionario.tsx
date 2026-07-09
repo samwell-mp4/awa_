@@ -1,11 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock } from "lucide-react";
+import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
+import { narratePublic } from "@/lib/narrate-public.functions";
 import patxohaDict from "@/data/patxoha-dictionary.json";
+
 
 
 export const Route = createFileRoute("/dicionario")({
@@ -297,6 +301,7 @@ function DictionaryPage() {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
+                              <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
                               <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
@@ -307,6 +312,7 @@ function DictionaryPage() {
                             {(e as any)._cat}
                           </span>
                         </div>
+
                         {e.pronunciation && (
                           <div className="mt-2 text-xs text-foreground/60">
                             {t("dictionary.pronunciation")}: <span className="text-cream">[{e.pronunciation}]</span>
@@ -359,4 +365,52 @@ function DictionaryPage() {
     </div>
   );
 }
+
+function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
+  const speak = useServerFn(narratePublic);
+  const [busy, setBusy] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cacheRef = useRef<string | null>(null);
+
+  async function play() {
+    if (busy) return;
+    try {
+      setBusy(true);
+      if (audioUrl) {
+        const a = new Audio(audioUrl);
+        audioRef.current?.pause();
+        audioRef.current = a;
+        await a.play();
+        return;
+      }
+      if (!cacheRef.current) {
+        const r = await speak({ data: { text, voice: "onyx" } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar o áudio");
+        }
+        cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
+      }
+      const a = new Audio(cacheRef.current);
+      audioRef.current?.pause();
+      audioRef.current = a;
+      await a.play();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao tocar áudio");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <button
+      onClick={play}
+      disabled={busy}
+      aria-label={`Ouvir ${text}`}
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+    >
+      {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
+    </button>
+  );
+}
+
 
