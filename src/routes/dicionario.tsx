@@ -366,3 +366,51 @@ function DictionaryPage() {
   );
 }
 
+function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
+  const speak = useServerFn(narratePublic);
+  const [busy, setBusy] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cacheRef = useRef<string | null>(null);
+
+  async function play() {
+    if (busy) return;
+    try {
+      setBusy(true);
+      if (audioUrl) {
+        const a = new Audio(audioUrl);
+        audioRef.current?.pause();
+        audioRef.current = a;
+        await a.play();
+        return;
+      }
+      if (!cacheRef.current) {
+        const r = await speak({ data: { text, voice: "onyx" } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar o áudio");
+        }
+        cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
+      }
+      const a = new Audio(cacheRef.current);
+      audioRef.current?.pause();
+      audioRef.current = a;
+      await a.play();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao tocar áudio");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <button
+      onClick={play}
+      disabled={busy}
+      aria-label={`Ouvir ${text}`}
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+    >
+      {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
+    </button>
+  );
+}
+
+
