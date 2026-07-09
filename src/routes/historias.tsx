@@ -248,13 +248,16 @@ function NarratablePhoto({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle } = useNarration(text);
+  const { speaking, loading, toggle, prefetch } = useNarration(text);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
       <button
         type="button"
         onClick={toggle}
+        onPointerEnter={prefetch}
+        onTouchStart={prefetch}
+        onFocus={prefetch}
         disabled={loading}
         className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
