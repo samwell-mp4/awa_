@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
-import { Sparkles, Mail, Smartphone } from "lucide-react";
+import { Sparkles, Mail, KeyRound } from "lucide-react";
 import authBg from "@/assets/awa-auth-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
