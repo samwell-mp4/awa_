@@ -196,3 +196,6 @@ body::before {
 /* Keep content above the ambient overlay */
 header, main, footer, section { position: relative; z-index: 1; }
 
+#lovable-badge {
+  display: none !important;
+}
