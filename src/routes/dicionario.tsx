@@ -301,6 +301,7 @@ function DictionaryPage() {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
+                              <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
                               <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
@@ -311,6 +312,7 @@ function DictionaryPage() {
                             {(e as any)._cat}
                           </span>
                         </div>
+
                         {e.pronunciation && (
                           <div className="mt-2 text-xs text-foreground/60">
                             {t("dictionary.pronunciation")}: <span className="text-cream">[{e.pronunciation}]</span>
