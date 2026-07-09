@@ -230,7 +230,12 @@ function useNarration(originalText: string) {
     }
   };
 
-  return { supported: true, speaking, loading, toggle };
+  const prefetch = () => {
+    if (narrationUrlCache.has(cacheKey) || narrationPromiseCache.has(cacheKey)) return;
+    fetchUrl().catch(() => {});
+  };
+
+  return { supported: true, speaking, loading, toggle, prefetch };
 }
 
 
@@ -243,13 +248,16 @@ function NarratablePhoto({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle } = useNarration(text);
+  const { speaking, loading, toggle, prefetch } = useNarration(text);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
       <button
         type="button"
         onClick={toggle}
+        onPointerEnter={prefetch}
+        onTouchStart={prefetch}
+        onFocus={prefetch}
         disabled={loading}
         className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
@@ -295,7 +303,7 @@ function NarratableVideo({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle } = useNarration(text);
+  const { speaking, loading, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
@@ -365,6 +373,9 @@ function NarratableVideo({
       <button
         type="button"
         onClick={handleClick}
+        onPointerEnter={prefetch}
+        onTouchStart={prefetch}
+        onFocus={prefetch}
         disabled={loading}
         className="group absolute inset-0 flex items-center justify-center focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
