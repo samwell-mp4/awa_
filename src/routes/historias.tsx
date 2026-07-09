@@ -230,7 +230,12 @@ function useNarration(originalText: string) {
     }
   };
 
-  return { supported: true, speaking, loading, toggle };
+  const prefetch = () => {
+    if (narrationUrlCache.has(cacheKey) || narrationPromiseCache.has(cacheKey)) return;
+    fetchUrl().catch(() => {});
+  };
+
+  return { supported: true, speaking, loading, toggle, prefetch };
 }
 
 
