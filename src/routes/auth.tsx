@@ -11,7 +11,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Method = "email" | "phone";
+type Method = "password" | "code";
 
 function AuthPage() {
   const navigate = useNavigate();
