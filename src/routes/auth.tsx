@@ -16,11 +16,10 @@ type Method = "password" | "code";
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [method, setMethod] = useState<Method>("email");
+  const [method, setMethod] = useState<Method>("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -30,12 +29,6 @@ function AuthPage() {
       if (data.session) navigate({ to: "/" });
     });
   }, [navigate]);
-
-  function normalizePhone(v: string) {
-    const digits = v.replace(/\D/g, "");
-    if (!digits) return "";
-    return v.trim().startsWith("+") ? `+${digits}` : `+55${digits}`;
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +44,7 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Conta criada! Você já pode entrar.");
+        toast.success("Conta criada! Confira seu e-mail para confirmar.");
         setMode("signin");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -66,22 +59,22 @@ function AuthPage() {
     }
   }
 
-  async function handleSendOtp(e: React.FormEvent) {
+  async function handleSendCode(e: React.FormEvent) {
     e.preventDefault();
-    const p = normalizePhone(phone);
-    if (!p) return toast.error("Informe um número válido");
+    if (!email) return toast.error("Informe seu e-mail");
     setBusy(true);
     try {
       const { error } = await supabase.auth.signInWithOtp({
-        phone: p,
+        email,
         options: {
           shouldCreateUser: true,
           data: name ? { name } : undefined,
+          emailRedirectTo: window.location.origin,
         },
       });
       if (error) throw error;
       setOtpSent(true);
-      toast.success("Código enviado por SMS");
+      toast.success("Enviamos um código para o seu e-mail");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro ao enviar código");
     } finally {
@@ -89,14 +82,14 @@ function AuthPage() {
     }
   }
 
-  async function handleVerifyOtp(e: React.FormEvent) {
+  async function handleVerifyCode(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
       const { error } = await supabase.auth.verifyOtp({
-        phone: normalizePhone(phone),
+        email,
         token: otp.trim(),
-        type: "sms",
+        type: "email",
       });
       if (error) throw error;
       toast.success("Bem-vindo!");
@@ -151,25 +144,25 @@ function AuthPage() {
         <div className="mt-5 grid grid-cols-2 gap-2 rounded-xl border border-gold/20 bg-forest-deep/30 p-1 text-xs font-semibold">
           <button
             type="button"
-            onClick={() => { setMethod("email"); setOtpSent(false); }}
+            onClick={() => { setMethod("password"); setOtpSent(false); }}
             className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
-              method === "email" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
+              method === "password" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
             }`}
           >
-            <Mail className="h-3.5 w-3.5" /> E-mail
+            <Mail className="h-3.5 w-3.5" /> E-mail + senha
           </button>
           <button
             type="button"
-            onClick={() => { setMethod("phone"); setOtpSent(false); }}
+            onClick={() => { setMethod("code"); setOtpSent(false); }}
             className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
-              method === "phone" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
+              method === "code" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
             }`}
           >
-            <Smartphone className="h-3.5 w-3.5" /> Celular
+            <KeyRound className="h-3.5 w-3.5" /> Código por e-mail
           </button>
         </div>
 
-        {method === "email" && (
+        {method === "password" && (
           <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
             {mode === "signup" && (
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" className={inputCls} />
@@ -182,17 +175,17 @@ function AuthPage() {
           </form>
         )}
 
-        {method === "phone" && (
-          <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="mt-4 flex flex-col gap-3">
+        {method === "code" && (
+          <form onSubmit={otpSent ? handleVerifyCode : handleSendCode} className="mt-4 flex flex-col gap-3">
             {mode === "signup" && !otpSent && (
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" className={inputCls} />
             )}
             <input
-              type="tel"
+              type="email"
               required
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="Celular (ex: 11 91234-5678)"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="E-mail"
               disabled={otpSent}
               className={inputCls}
             />
@@ -201,13 +194,13 @@ function AuthPage() {
                 required
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                placeholder="Código recebido por SMS"
+                placeholder="Código recebido por e-mail"
                 inputMode="numeric"
                 className={inputCls}
               />
             )}
             <button disabled={busy} className="mt-2 rounded-xl bg-[var(--gradient-leaf)] px-4 py-3 text-sm font-bold text-cream shadow-[var(--shadow-glow)] disabled:opacity-50">
-              {busy ? "Carregando..." : otpSent ? "Confirmar código" : "Receber código SMS"}
+              {busy ? "Carregando..." : otpSent ? "Confirmar código" : "Receber código por e-mail"}
             </button>
             {otpSent && (
               <button
@@ -215,11 +208,11 @@ function AuthPage() {
                 onClick={() => { setOtpSent(false); setOtp(""); }}
                 className="text-xs text-foreground/60 hover:text-gold"
               >
-                Trocar número
+                Trocar e-mail
               </button>
             )}
             <p className="text-[11px] text-foreground/50 text-center">
-              Números do Brasil sem código são tratados como +55.
+              O próprio site envia o código pelo seu e-mail — sem SMS.
             </p>
           </form>
         )}
@@ -228,7 +221,7 @@ function AuthPage() {
           <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="text-foreground/70 hover:text-gold">
             {mode === "signin" ? "Não tem conta? Criar uma" : "Já tem conta? Entrar"}
           </button>
-          {mode === "signin" && method === "email" && (
+          {mode === "signin" && method === "password" && (
             <Link to="/reset-password" className="text-foreground/60 hover:text-gold">
               Esqueci minha senha
             </Link>
