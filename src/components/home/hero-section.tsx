@@ -91,20 +91,6 @@ export function HeroSection() {
             {t("hero.subtitle")}
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              to="/dicionario"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110"
-            >
-              <BookOpen className="h-4 w-4" /> Explorar dicionário
-            </Link>
-            <Link
-              to="/instalar"
-              className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2.5 text-sm font-bold text-gold backdrop-blur transition hover:bg-gold/15"
-            >
-              <Download className="h-4 w-4" /> Baixar o app
-            </Link>
-          </div>
 
           <div className="mt-6 grid grid-cols-3 gap-2 rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] p-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
             <Stat icon={<Flame className="h-4 w-4 text-gold" />} label={t("hero.sequencia")} value={String(streak)} sub={t("hero.dias")} />
