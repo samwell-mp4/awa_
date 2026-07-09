@@ -1,6 +1,6 @@
 import { Award, Flame, Sparkles, Star, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+
 import { useTranslation } from "react-i18next";
 import heroAsset from "@/assets/awa-hero.jpg.asset.json";
 import { Stat } from "./stat";
