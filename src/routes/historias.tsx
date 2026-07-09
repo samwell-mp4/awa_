@@ -303,7 +303,7 @@ function NarratableVideo({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle } = useNarration(text);
+  const { speaking, loading, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
