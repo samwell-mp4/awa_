@@ -1,4 +1,4 @@
-import { Award, BookOpen, Download, Flame, Sparkles, Star, X } from "lucide-react";
+import { Award, Flame, Sparkles, Star, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
