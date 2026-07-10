@@ -204,30 +204,39 @@ function useNarration(originalText: string) {
     };
   }, [cacheKey]);
 
-  const toggle = async () => {
+  const toggle = () => {
     if (speaking) {
       audioRef.current?.pause();
       audioRef.current = null;
       setSpeaking(false);
       return;
     }
-    try {
-      const cached = narrationUrlCache.get(cacheKey);
-      if (!cached) setLoading(true);
-      const url = await fetchUrl();
-      const audio = new Audio(url);
-      audio.preload = "auto";
-      audioRef.current = audio;
-      audio.onended = () => setSpeaking(false);
-      audio.onerror = () => setSpeaking(false);
-      await audio.play();
-      setSpeaking(true);
-    } catch (err) {
-      console.error("Narração falhou:", err);
-      toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
-    } finally {
-      setLoading(false);
+    // Create Audio synchronously inside the user gesture — required for mobile autoplay.
+    const audio = new Audio();
+    audio.preload = "auto";
+    audioRef.current = audio;
+    audio.onended = () => setSpeaking(false);
+    audio.onerror = () => setSpeaking(false);
+
+    const cached = narrationUrlCache.get(cacheKey);
+    if (cached) {
+      audio.src = cached;
+      audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
+      return;
     }
+
+    setLoading(true);
+    fetchUrl()
+      .then((url) => {
+        if (audioRef.current !== audio) return;
+        audio.src = url;
+        return audio.play().then(() => setSpeaking(true));
+      })
+      .catch((err) => {
+        console.error("Narração falhou:", err);
+        toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
+      })
+      .finally(() => setLoading(false));
   };
 
   const prefetch = () => {
