@@ -167,9 +167,56 @@ function useNarration(originalText: string) {
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const narrate = useServerFn(narratePublic);
 
   const cacheKey = `${lang}::${text}`;
+
+  const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
+
+  const stopCurrent = () => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    if (utteranceRef.current && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      utteranceRef.current = null;
+    }
+    setSpeaking(false);
+  };
+
+  const speakImmediately = () => {
+    if (
+      typeof window === "undefined" ||
+      !("speechSynthesis" in window) ||
+      !("SpeechSynthesisUtterance" in window)
+    ) {
+      return false;
+    }
+
+    // Native speech starts immediately on the tap/click, without waiting for network TTS.
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = speechLang;
+    utterance.rate = 0.95;
+    utterance.pitch = 0.85;
+    utterance.onend = () => {
+      if (utteranceRef.current === utterance) {
+        utteranceRef.current = null;
+        setSpeaking(false);
+      }
+    };
+    utterance.onerror = () => {
+      if (utteranceRef.current === utterance) {
+        utteranceRef.current = null;
+        setSpeaking(false);
+      }
+    };
+
+    window.speechSynthesis.cancel();
+    utteranceRef.current = utterance;
+    setSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+    return true;
+  };
 
   const fetchUrl = (): Promise<string> => {
     const hit = narrationUrlCache.get(cacheKey);
@@ -199,16 +246,13 @@ function useNarration(originalText: string) {
 
   useEffect(() => {
     return () => {
-      audioRef.current?.pause();
-      audioRef.current = null;
+      stopCurrent();
     };
   }, [cacheKey]);
 
   const toggle = () => {
     if (speaking) {
-      audioRef.current?.pause();
-      audioRef.current = null;
-      setSpeaking(false);
+      stopCurrent();
       return;
     }
     // Create Audio synchronously inside the user gesture — required for mobile autoplay.
@@ -222,6 +266,12 @@ function useNarration(originalText: string) {
     if (cached) {
       audio.src = cached;
       audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
+      return;
+    }
+
+    if (speakImmediately()) {
+      // Warm the higher-quality audio silently for a later tap, but never block this tap.
+      fetchUrl().catch(() => {});
       return;
     }
 
