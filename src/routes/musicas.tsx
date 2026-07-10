@@ -471,7 +471,8 @@ function Player({
         <div className="mx-auto max-w-3xl px-4 md:px-8 py-4 md:py-6">
           {scEmbed(song.audio_url) ? (
             <iframe
-              src={scEmbed(song.audio_url)!}
+              ref={scIframeRef}
+              src={`${scEmbed(song.audio_url)!}&auto_play=true`}
               allow="autoplay"
               className="w-full h-24 rounded-lg border-0"
               title={song.title}
