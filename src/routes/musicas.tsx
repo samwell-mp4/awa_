@@ -601,7 +601,7 @@ function Player({
 
       {/* lyrics theater - static bilingual text */}
       <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
-        <div className="mx-auto max-w-3xl space-y-8 md:space-y-10">
+        <div className="mx-auto max-w-5xl space-y-12 md:space-y-16">
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
@@ -611,18 +611,18 @@ function Player({
                   lineRefs.current[i] = el;
                 }}
                 className={`text-center transition-all duration-500 ${
-                  active ? "scale-105" : "opacity-40"
+                  active ? "scale-110" : "opacity-40"
                 }`}
               >
                 <p
-                  className={`font-display text-xl md:text-3xl font-black leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] ${
+                  className={`font-display text-3xl md:text-6xl lg:text-7xl font-black leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.75)] ${
                     active ? "text-gold" : "text-cream"
                   }`}
                 >
                   {indLines[i] || "\u00A0"}
                 </p>
                 {ptLines[i] && (
-                  <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
+                  <p className="mt-3 md:mt-5 text-lg md:text-2xl lg:text-3xl italic text-foreground/80">
                     {ptLines[i]}
                   </p>
                 )}
