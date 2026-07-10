@@ -227,6 +227,8 @@ function Player({
   onChange: (s: Song) => void;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const scIframeRef = useRef<HTMLIFrameElement>(null);
+  const scWidgetRef = useRef<any>(null);
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -236,6 +238,7 @@ function Player({
   const lang = useLang();
   const tTitle = pickLang(song, "title", lang);
   const tArtist = pickLang(song, "artist", lang);
+  const isSC = !!scEmbed(song.audio_url);
 
   const indLines = useMemo(
     () =>
@@ -256,33 +259,99 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
+  const activeIdx =
+    maxLen > 0 && duration > 0
+      ? Math.min(maxLen - 1, Math.floor((progress / duration) * maxLen))
+      : -1;
+
+  const lineRefs = useRef<Array<HTMLDivElement | null>>([]);
+  useEffect(() => {
+    if (activeIdx < 0) return;
+    const el = lineRefs.current[activeIdx];
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeIdx]);
 
   useEffect(() => {
+    if (isSC) return;
     const a = audioRef.current;
     if (!a) return;
     a.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
-  }, [song.id]);
+  }, [song.id, isSC]);
+
+  // SoundCloud Widget API — track progress + play/pause
+  useEffect(() => {
+    if (!isSC) return;
+    let cancelled = false;
+    const ensureScript = () =>
+      new Promise<void>((resolve) => {
+        if ((window as any).SC?.Widget) return resolve();
+        const existing = document.querySelector<HTMLScriptElement>(
+          'script[src="https://w.soundcloud.com/player/api.js"]',
+        );
+        if (existing) {
+          existing.addEventListener("load", () => resolve());
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = "https://w.soundcloud.com/player/api.js";
+        s.async = true;
+        s.onload = () => resolve();
+        document.body.appendChild(s);
+      });
+
+    ensureScript().then(() => {
+      if (cancelled || !scIframeRef.current) return;
+      const SC = (window as any).SC;
+      const w = SC.Widget(scIframeRef.current);
+      scWidgetRef.current = w;
+      w.bind(SC.Widget.Events.READY, () => {
+        w.getDuration((d: number) => setDuration(d / 1000));
+        w.play();
+      });
+      w.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
+        setProgress(e.currentPosition / 1000);
+      });
+      w.bind(SC.Widget.Events.PLAY, () => setPlaying(true));
+      w.bind(SC.Widget.Events.PAUSE, () => setPlaying(false));
+      w.bind(SC.Widget.Events.FINISH, () => {
+        if (next) onChange(next);
+        else setPlaying(false);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      try {
+        scWidgetRef.current?.pause?.();
+      } catch {}
+      scWidgetRef.current = null;
+    };
+  }, [song.id, isSC]);
 
   useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    const onSpace = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.code === "Space") {
         e.preventDefault();
         toggle();
       }
     };
-    window.addEventListener("keydown", onEsc);
-    window.addEventListener("keydown", onSpace);
+    window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
-      window.removeEventListener("keydown", onEsc);
-      window.removeEventListener("keydown", onSpace);
+      window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
   function toggle() {
+    if (isSC) {
+      const w = scWidgetRef.current;
+      if (!w) return;
+      w.toggle();
+      return;
+    }
     const a = audioRef.current;
     if (!a) return;
     if (a.paused) {
