@@ -401,10 +401,13 @@ function NarratableVideo({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle, prefetch } = useNarration(text);
+  const { speaking, loading, progress, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+
+  // Fade the visual out as narration progresses: full image at start, invisible by the end.
+  const visualOpacity = speaking ? Math.max(0, 1 - progress) : 1;
 
   useEffect(() => {
     if (videoFailed) return;
@@ -454,7 +457,7 @@ function NarratableVideo({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
+    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
       <video
         ref={videoRef}
         src={src}
@@ -463,11 +466,15 @@ function NarratableVideo({
         playsInline
         loop
         preload="metadata"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover transition-opacity duration-500 ease-out"
+        style={{ opacity: visualOpacity }}
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-500"
+        style={{ opacity: visualOpacity }}
+      />
       <button
         type="button"
         onClick={handleClick}
