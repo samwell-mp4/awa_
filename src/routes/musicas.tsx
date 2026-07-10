@@ -705,7 +705,7 @@ function Player({
         </div>
       </div>
 
-      {isSC && !soundCloudWidget ? (
+      {isSC && !soundCloudWidget && (
         <iframe
           ref={scIframeRef}
           src={`${scEmbed(song.audio_url)!}&auto_play=true&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
@@ -715,7 +715,8 @@ function Player({
           tabIndex={-1}
           className="pointer-events-none absolute bottom-0 left-0 h-px w-px opacity-0 border-0"
         />
-      ) : (
+      )}
+      {!isSC && (
         <audio
           ref={audioRef}
           src={song.audio_url}
