@@ -84,6 +84,7 @@ function MusicasPage() {
 
   const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
+  const soundCloudWidgetsRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
     const hasSoundCloud = songs.some((song) => scEmbed(song.audio_url));
@@ -97,6 +98,26 @@ function MusicasPage() {
     script.async = true;
     document.body.appendChild(script);
   }, [songs]);
+
+  const pauseSoundCloudWidgets = () => {
+    Object.values(soundCloudWidgetsRef.current).forEach((widget) => {
+      try {
+        widget?.pause?.();
+      } catch {}
+    });
+  };
+
+  const openSong = (song: Song) => {
+    const widget = scEmbed(song.audio_url) ? soundCloudWidgetsRef.current[song.id] : null;
+    if (widget) {
+      pauseSoundCloudWidgets();
+      try {
+        widget.seekTo?.(0);
+        widget.play?.();
+      } catch {}
+    }
+    setPlaying(song);
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -140,7 +161,7 @@ function MusicasPage() {
             <SongCard
               key={s.id}
               song={s}
-              onClick={() => setPlaying(s)}
+              onClick={() => openSong(s)}
             />
           ))}
           {songs.length === 0 && (
@@ -151,6 +172,8 @@ function MusicasPage() {
         </div>
       </main>
 
+      <SoundCloudPreloads songs={songs} widgetsRef={soundCloudWidgetsRef} />
+
       {playing && (
         <Player
           song={playing}
@@ -158,8 +181,85 @@ function MusicasPage() {
           songs={songs}
           onClose={() => setPlaying(null)}
           onChange={setPlaying}
+          soundCloudWidget={scEmbed(playing.audio_url) ? soundCloudWidgetsRef.current[playing.id] : undefined}
         />
       )}
+    </div>
+  );
+}
+
+function SoundCloudPreloads({
+  songs,
+  widgetsRef,
+}: {
+  songs: Song[];
+  widgetsRef: { current: Record<string, any> };
+}) {
+  const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+  const soundCloudSongs = useMemo(
+    () => songs.filter((song) => scEmbed(song.audio_url)),
+    [songs],
+  );
+
+  useEffect(() => {
+    if (soundCloudSongs.length === 0) return;
+    let cancelled = false;
+    const ensureScript = () =>
+      new Promise<void>((resolve) => {
+        if ((window as any).SC?.Widget) return resolve();
+        const existing = document.querySelector<HTMLScriptElement>(
+          'script[src="https://w.soundcloud.com/player/api.js"]',
+        );
+        if (existing) {
+          existing.addEventListener("load", () => resolve(), { once: true });
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = "https://w.soundcloud.com/player/api.js";
+        script.async = true;
+        script.onload = () => resolve();
+        document.body.appendChild(script);
+      });
+
+    ensureScript().then(() => {
+      if (cancelled) return;
+      const SC = (window as any).SC;
+      if (!SC?.Widget) return;
+      soundCloudSongs.forEach((song) => {
+        if (widgetsRef.current[song.id]) return;
+        const iframe = iframeRefs.current[song.id];
+        if (!iframe) return;
+        const widget = SC.Widget(iframe);
+        widgetsRef.current[song.id] = widget;
+        widget.bind(SC.Widget.Events.READY, () => {
+          widgetsRef.current[song.id] = widget;
+          widget.getDuration(() => {});
+        });
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [soundCloudSongs, widgetsRef]);
+
+  if (soundCloudSongs.length === 0) return null;
+
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 h-px w-px overflow-hidden opacity-0">
+      {soundCloudSongs.map((song) => (
+        <iframe
+          key={song.id}
+          ref={(el) => {
+            iframeRefs.current[song.id] = el;
+          }}
+          src={`${scEmbed(song.audio_url)!}&auto_play=false&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
+          allow="autoplay; encrypted-media"
+          title={`Pré-carregamento ${song.title}`}
+          tabIndex={-1}
+          className="h-px w-px border-0"
+        />
+      ))}
     </div>
   );
 }
@@ -232,12 +332,14 @@ function Player({
   songs,
   onClose,
   onChange,
+  soundCloudWidget,
 }: {
   song: Song;
   ambient?: Ambient;
   songs: Song[];
   onClose: () => void;
   onChange: (s: Song) => void;
+  soundCloudWidget?: any;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const scIframeRef = useRef<HTMLIFrameElement>(null);
@@ -312,6 +414,47 @@ function Player({
     if (!isSC) return;
     let cancelled = false;
     let readyTimer: number | undefined;
+    const bindWidget = (widget: any) => {
+      if (cancelled || !widget) return;
+      const SC = (window as any).SC;
+      scWidgetRef.current = widget;
+      widget.bind(SC.Widget.Events.READY, () => {
+        if (cancelled) return;
+        widget.getDuration((d: number) => setDuration(d / 1000));
+        setLoadingAudio(false);
+        setPlaying(true);
+        readyTimer = window.setTimeout(() => {
+          widget.play();
+        }, 0);
+      });
+      widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
+        setLoadingAudio(false);
+        setProgress(e.currentPosition / 1000);
+      });
+      widget.bind(SC.Widget.Events.PLAY, () => {
+        setLoadingAudio(false);
+        setPlaying(true);
+      });
+      widget.bind(SC.Widget.Events.PAUSE, () => {
+        setLoadingAudio(false);
+        setPlaying(false);
+      });
+      widget.bind(SC.Widget.Events.FINISH, () => {
+        if (next) onChange(next);
+        else setPlaying(false);
+      });
+      widget.getDuration((d: number) => {
+        if (cancelled) return;
+        if (d > 0) {
+          setDuration(d / 1000);
+          setLoadingAudio(false);
+        }
+      });
+      readyTimer = window.setTimeout(() => {
+        if (!cancelled) widget.play();
+      }, 0);
+    };
+
     const ensureScript = () =>
       new Promise<void>((resolve) => {
         if ((window as any).SC?.Widget) return resolve();
@@ -330,35 +473,14 @@ function Player({
       });
 
     ensureScript().then(() => {
-      if (cancelled || !scIframeRef.current) return;
+      if (cancelled) return;
       const SC = (window as any).SC;
-      const w = SC.Widget(scIframeRef.current);
-      scWidgetRef.current = w;
-      w.bind(SC.Widget.Events.READY, () => {
-        if (cancelled) return;
-        w.getDuration((d: number) => setDuration(d / 1000));
-        setLoadingAudio(false);
-        setPlaying(true);
-        readyTimer = window.setTimeout(() => {
-          w.play();
-        }, 0);
-      });
-      w.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
-        setLoadingAudio(false);
-        setProgress(e.currentPosition / 1000);
-      });
-      w.bind(SC.Widget.Events.PLAY, () => {
-        setLoadingAudio(false);
-        setPlaying(true);
-      });
-      w.bind(SC.Widget.Events.PAUSE, () => {
-        setLoadingAudio(false);
-        setPlaying(false);
-      });
-      w.bind(SC.Widget.Events.FINISH, () => {
-        if (next) onChange(next);
-        else setPlaying(false);
-      });
+      if (soundCloudWidget) {
+        bindWidget(soundCloudWidget);
+        return;
+      }
+      if (!scIframeRef.current) return;
+      bindWidget(SC.Widget(scIframeRef.current));
     });
 
     return () => {
@@ -369,7 +491,7 @@ function Player({
       } catch {}
       scWidgetRef.current = null;
     };
-  }, [song.id, isSC]);
+  }, [song.id, isSC, next, onChange, soundCloudWidget]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -390,7 +512,7 @@ function Player({
 
   function toggle() {
     if (isSC) {
-      const w = scWidgetRef.current;
+      const w = scWidgetRef.current || soundCloudWidget;
       if (!w) {
         setPlaying(true);
         setLoadingAudio(true);
@@ -583,7 +705,7 @@ function Player({
         </div>
       </div>
 
-      {isSC ? (
+      {isSC && !soundCloudWidget ? (
         <iframe
           ref={scIframeRef}
           src={`${scEmbed(song.audio_url)!}&auto_play=true&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
@@ -635,7 +757,7 @@ function ytEmbed(url: string): string | null {
 
 function scEmbed(url: string): string | null {
   if (!/soundcloud\.com/.test(url)) return null;
-  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%23f9a825`;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%23f9a825`;
 }
 
 
