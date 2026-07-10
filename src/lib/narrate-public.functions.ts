@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
 
 
 type NarrationPayload = {
@@ -35,7 +35,6 @@ async function readGatewayError(res: Response) {
 }
 
 export const narratePublic = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
 
   .inputValidator((d: { text: string; voice?: string; lang?: string }) => d)
   .handler(async ({ data }): Promise<NarrationPayload> => {
