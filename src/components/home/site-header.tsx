@@ -46,12 +46,6 @@ export function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <Link
-            to="/planos"
-            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-bold text-gold hover:bg-gold/30"
-          >
-            <Star className="h-4 w-4" /> {t("nav.premium")}
-          </Link>
           {isAdmin && (
             <Link
               to="/admin"
@@ -157,11 +151,6 @@ function MobileDrawer({
                       >
                         <n.icon className="h-4 w-4 text-gold/90" />
                         <span className="flex-1">{n.label}</span>
-                        {n.premium && (
-                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">
-                            PREMIUM
-                          </span>
-                        )}
                       </Link>
                     ))}
                   </div>
