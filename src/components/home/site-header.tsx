@@ -151,11 +151,6 @@ function MobileDrawer({
                       >
                         <n.icon className="h-4 w-4 text-gold/90" />
                         <span className="flex-1">{n.label}</span>
-                        {n.premium && (
-                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">
-                            PREMIUM
-                          </span>
-                        )}
                       </Link>
                     ))}
                   </div>
