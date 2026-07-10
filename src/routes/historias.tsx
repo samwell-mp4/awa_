@@ -401,13 +401,11 @@ function NarratableVideo({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, progress, toggle, prefetch } = useNarration(text);
+  const { speaking, loading, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
 
-  // Fade the visual out as narration progresses: full image at start, invisible by the end.
-  const visualOpacity = speaking ? Math.max(0, 1 - progress) : 1;
 
   useEffect(() => {
     if (videoFailed) return;
