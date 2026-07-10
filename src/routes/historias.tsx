@@ -284,8 +284,22 @@ function useNarration(originalText: string) {
     const audio = new Audio();
     audio.preload = "auto";
     audioRef.current = audio;
-    audio.onended = () => setSpeaking(false);
-    audio.onerror = () => setSpeaking(false);
+    setProgress(0);
+    audio.ontimeupdate = () => {
+      if (audioRef.current !== audio) return;
+      const d = audio.duration;
+      if (Number.isFinite(d) && d > 0) {
+        setProgress(Math.min(1, audio.currentTime / d));
+      }
+    };
+    audio.onended = () => {
+      setSpeaking(false);
+      setProgress(0);
+    };
+    audio.onerror = () => {
+      setSpeaking(false);
+      setProgress(0);
+    };
 
     const cached = narrationUrlCache.get(cacheKey);
     if (cached) {
@@ -319,7 +333,7 @@ function useNarration(originalText: string) {
     fetchUrl().catch(() => {});
   };
 
-  return { supported: true, speaking, loading, toggle, prefetch };
+  return { supported: true, speaking, loading, progress, toggle, prefetch };
 }
 
 
