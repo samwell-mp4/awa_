@@ -166,13 +166,22 @@ function useNarration(originalText: string) {
   const text = translatedText || originalText;
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const progressTimerRef = useRef<number | null>(null);
   const narrate = useServerFn(narratePublic);
 
   const cacheKey = `${lang}::${text}`;
 
   const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
+
+  const clearProgressTimer = () => {
+    if (progressTimerRef.current != null) {
+      window.clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
+    }
+  };
 
   const stopCurrent = () => {
     audioRef.current?.pause();
@@ -181,7 +190,9 @@ function useNarration(originalText: string) {
       window.speechSynthesis.cancel();
       utteranceRef.current = null;
     }
+    clearProgressTimer();
     setSpeaking(false);
+    setProgress(0);
   };
 
   const speakImmediately = () => {
@@ -201,19 +212,33 @@ function useNarration(originalText: string) {
     utterance.onend = () => {
       if (utteranceRef.current === utterance) {
         utteranceRef.current = null;
+        clearProgressTimer();
         setSpeaking(false);
+        setProgress(0);
       }
     };
     utterance.onerror = () => {
       if (utteranceRef.current === utterance) {
         utteranceRef.current = null;
+        clearProgressTimer();
         setSpeaking(false);
+        setProgress(0);
       }
     };
 
     window.speechSynthesis.cancel();
     utteranceRef.current = utterance;
     setSpeaking(true);
+    setProgress(0);
+    // Estimate duration from text length (~12 chars/sec at rate 0.95)
+    const estMs = Math.max(4000, (text.length / 12) * 1000);
+    const startedAt = performance.now();
+    clearProgressTimer();
+    progressTimerRef.current = window.setInterval(() => {
+      const p = Math.min(1, (performance.now() - startedAt) / estMs);
+      setProgress(p);
+      if (p >= 1) clearProgressTimer();
+    }, 120);
     window.speechSynthesis.speak(utterance);
     return true;
   };
