@@ -85,6 +85,19 @@ function MusicasPage() {
   const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
 
+  useEffect(() => {
+    const hasSoundCloud = songs.some((song) => scEmbed(song.audio_url));
+    if (!hasSoundCloud || (window as any).SC?.Widget) return;
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src="https://w.soundcloud.com/player/api.js"]',
+    );
+    if (existing) return;
+    const script = document.createElement("script");
+    script.src = "https://w.soundcloud.com/player/api.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, [songs]);
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(76,175,80,0.18),transparent_34%),linear-gradient(180deg,oklch(0.18_0.04_145),oklch(0.10_0.03_145))]">
@@ -230,6 +243,7 @@ function Player({
   const scIframeRef = useRef<HTMLIFrameElement>(null);
   const scWidgetRef = useRef<any>(null);
   const [playing, setPlaying] = useState(true);
+  const [loadingAudio, setLoadingAudio] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const idx = songs.findIndex((s) => s.id === song.id);
@@ -272,16 +286,32 @@ function Player({
   }, [activeIdx]);
 
   useEffect(() => {
+    setProgress(0);
+    setDuration(0);
+    setLoadingAudio(true);
+    setPlaying(true);
+  }, [song.id]);
+
+  useEffect(() => {
     if (isSC) return;
     const a = audioRef.current;
     if (!a) return;
-    a.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    a.play()
+      .then(() => {
+        setLoadingAudio(false);
+        setPlaying(true);
+      })
+      .catch(() => {
+        setLoadingAudio(false);
+        setPlaying(false);
+      });
   }, [song.id, isSC]);
 
   // SoundCloud Widget API — track progress + play/pause
   useEffect(() => {
     if (!isSC) return;
     let cancelled = false;
+    let readyTimer: number | undefined;
     const ensureScript = () =>
       new Promise<void>((resolve) => {
         if ((window as any).SC?.Widget) return resolve();
@@ -305,14 +335,26 @@ function Player({
       const w = SC.Widget(scIframeRef.current);
       scWidgetRef.current = w;
       w.bind(SC.Widget.Events.READY, () => {
+        if (cancelled) return;
         w.getDuration((d: number) => setDuration(d / 1000));
-        w.play();
+        setLoadingAudio(false);
+        setPlaying(true);
+        readyTimer = window.setTimeout(() => {
+          w.play();
+        }, 0);
       });
       w.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
+        setLoadingAudio(false);
         setProgress(e.currentPosition / 1000);
       });
-      w.bind(SC.Widget.Events.PLAY, () => setPlaying(true));
-      w.bind(SC.Widget.Events.PAUSE, () => setPlaying(false));
+      w.bind(SC.Widget.Events.PLAY, () => {
+        setLoadingAudio(false);
+        setPlaying(true);
+      });
+      w.bind(SC.Widget.Events.PAUSE, () => {
+        setLoadingAudio(false);
+        setPlaying(false);
+      });
       w.bind(SC.Widget.Events.FINISH, () => {
         if (next) onChange(next);
         else setPlaying(false);
@@ -321,6 +363,7 @@ function Player({
 
     return () => {
       cancelled = true;
+      if (readyTimer) window.clearTimeout(readyTimer);
       try {
         scWidgetRef.current?.pause?.();
       } catch {}
@@ -348,7 +391,11 @@ function Player({
   function toggle() {
     if (isSC) {
       const w = scWidgetRef.current;
-      if (!w) return;
+      if (!w) {
+        setPlaying(true);
+        setLoadingAudio(true);
+        return;
+      }
       w.toggle();
       return;
     }
@@ -514,9 +561,11 @@ function Player({
             <button
               onClick={toggle}
               className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-[oklch(0.62_0.16_55)] text-bark shadow-[0_10px_40px_-5px_rgba(249,168,37,0.6)] transition-transform hover:scale-105"
-              aria-label={playing ? "Pausar" : "Tocar"}
+              aria-label={loadingAudio ? "Carregando" : playing ? "Pausar" : "Tocar"}
             >
-              {playing ? (
+              {loadingAudio ? (
+                <span className="h-7 w-7 animate-spin rounded-full border-2 border-bark/30 border-t-bark" />
+              ) : playing ? (
                 <Pause className="h-7 w-7 fill-current" />
               ) : (
                 <Play className="h-7 w-7 ml-1 fill-current" />
@@ -537,22 +586,32 @@ function Player({
       {isSC ? (
         <iframe
           ref={scIframeRef}
-          src={`${scEmbed(song.audio_url)!}&auto_play=true&visual=false&show_artwork=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&buying=false&sharing=false&download=false&hide_related=true`}
-          allow="autoplay"
+          src={`${scEmbed(song.audio_url)!}&auto_play=true&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
+          allow="autoplay; encrypted-media"
           title={song.title}
           aria-hidden="true"
           tabIndex={-1}
-          className="pointer-events-none absolute -z-10 h-0 w-0 opacity-0 border-0"
+          className="pointer-events-none absolute bottom-0 left-0 h-px w-px opacity-0 border-0"
         />
       ) : (
         <audio
           ref={audioRef}
           src={song.audio_url}
           onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
-          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+          onLoadedMetadata={(e) => {
+            setDuration(e.currentTarget.duration);
+            setLoadingAudio(false);
+          }}
+          onCanPlay={() => setLoadingAudio(false)}
           onEnded={() => (next ? onChange(next) : setPlaying(false))}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
+          onPlay={() => {
+            setLoadingAudio(false);
+            setPlaying(true);
+          }}
+          onPause={() => {
+            setLoadingAudio(false);
+            setPlaying(false);
+          }}
         />
       )}
 
