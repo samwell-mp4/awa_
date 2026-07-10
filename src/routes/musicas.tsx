@@ -479,3 +479,9 @@ function ytEmbed(url: string): string | null {
   return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&controls=0&playlist=${id}&playsinline=1&modestbranding=1&rel=0`;
 }
 
+function scEmbed(url: string): string | null {
+  if (!/soundcloud\.com/.test(url)) return null;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%23f9a825`;
+}
+
+
