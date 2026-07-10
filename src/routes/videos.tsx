@@ -143,6 +143,32 @@ function VideosPage() {
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <p className="mb-6 max-w-2xl text-sm text-foreground/70">{tIntro}</p>
 
+        <section className="mb-8 overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur">
+          <div className="relative aspect-[9/16] max-h-[720px] w-full bg-black sm:aspect-video">
+            <iframe
+              src="https://www.instagram.com/reel/DZa2jUGOYDi/embed"
+              title="Reel Instagram"
+              className="h-full w-full"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              allowFullScreen
+              scrolling="no"
+            />
+          </div>
+          <div className="p-4">
+            <h2 className="font-display text-base font-black text-cream">Destaque do Instagram</h2>
+            <a
+              href="https://www.instagram.com/reel/DZa2jUGOYDi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gold hover:underline"
+            >
+              Abrir no Instagram ↗
+            </a>
+          </div>
+        </section>
+
+
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {videos.map((v, i) => (
             <article key={i} className="group overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur transition hover:border-gold/50">
