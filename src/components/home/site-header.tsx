@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ChevronRight, LogIn, LogOut, Menu, Settings, Star, UserCircle2 } from "lucide-react";
+import { ChevronRight, LogIn, LogOut, Menu, Settings, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavContent, type NavGroup } from "@/lib/home-content";
