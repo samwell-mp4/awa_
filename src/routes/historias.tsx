@@ -464,15 +464,11 @@ function NarratableVideo({
         playsInline
         loop
         preload="metadata"
-        className="h-full w-full object-cover transition-opacity duration-500 ease-out"
-        style={{ opacity: visualOpacity }}
+        className="h-full w-full object-cover"
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-500"
-        style={{ opacity: visualOpacity }}
-      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
       <button
         type="button"
         onClick={handleClick}
