@@ -388,79 +388,90 @@ function Player({
       {/* controls */}
       <div className="absolute inset-x-0 bottom-0 z-10 border-t border-gold/15 bg-gradient-to-t from-black/95 via-black/80 to-black/40 backdrop-blur-xl">
         <div className="mx-auto max-w-3xl px-4 md:px-8 py-4 md:py-6">
-          {/* progress */}
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
-              {fmt(progress)}
-            </span>
-            <div
-              className="group relative flex-1 h-1.5 cursor-pointer rounded-full bg-gold/15"
-              onClick={(e) => {
-                const a = audioRef.current;
-                if (!a || !duration) return;
-                const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-                a.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
-              }}
-            >
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-gold to-[oklch(0.78_0.16_70)] shadow-[0_0_12px_rgba(249,168,37,0.6)]"
-                style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
-              />
-              <div
-                className="absolute top-1/2 h-3 w-3 -translate-y-1/2 -translate-x-1/2 rounded-full bg-cream opacity-0 transition-opacity group-hover:opacity-100"
-                style={{ left: `${duration ? (progress / duration) * 100 : 0}%` }}
-              />
-            </div>
-            <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
-              {fmt(duration)}
-            </span>
-          </div>
+          {scEmbed(song.audio_url) ? (
+            <iframe
+              src={scEmbed(song.audio_url)!}
+              allow="autoplay"
+              className="w-full h-24 rounded-lg border-0"
+              title={song.title}
+            />
+          ) : (
+            <>
+              {/* progress */}
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
+                  {fmt(progress)}
+                </span>
+                <div
+                  className="group relative flex-1 h-1.5 cursor-pointer rounded-full bg-gold/15"
+                  onClick={(e) => {
+                    const a = audioRef.current;
+                    if (!a || !duration) return;
+                    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+                    a.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+                  }}
+                >
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-gold to-[oklch(0.78_0.16_70)] shadow-[0_0_12px_rgba(249,168,37,0.6)]"
+                    style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
+                  />
+                  <div
+                    className="absolute top-1/2 h-3 w-3 -translate-y-1/2 -translate-x-1/2 rounded-full bg-cream opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{ left: `${duration ? (progress / duration) * 100 : 0}%` }}
+                  />
+                </div>
+                <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
+                  {fmt(duration)}
+                </span>
+              </div>
 
-          {/* buttons */}
-          <div className="mt-4 flex items-center justify-center gap-6 md:gap-10">
-            <button
-              disabled={!prev}
-              onClick={() => prev && onChange(prev)}
-              className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
-              aria-label="Anterior"
-            >
-              <ChevronLeft className="h-7 w-7" />
-            </button>
-            <button
-              onClick={toggle}
-              className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-[oklch(0.62_0.16_55)] text-bark shadow-[0_10px_40px_-5px_rgba(249,168,37,0.6)] transition-transform hover:scale-105"
-              aria-label={playing ? "Pausar" : "Tocar"}
-            >
-              {playing ? (
-                <Pause className="h-7 w-7 fill-current" />
-              ) : (
-                <Play className="h-7 w-7 ml-1 fill-current" />
-              )}
-            </button>
-            <button
-              disabled={!next}
-              onClick={() => next && onChange(next)}
-              className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
-              aria-label="Próxima"
-            >
-              <ChevronRight className="h-7 w-7" />
-            </button>
-          </div>
-
-
-
+              {/* buttons */}
+              <div className="mt-4 flex items-center justify-center gap-6 md:gap-10">
+                <button
+                  disabled={!prev}
+                  onClick={() => prev && onChange(prev)}
+                  className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
+                  aria-label="Anterior"
+                >
+                  <ChevronLeft className="h-7 w-7" />
+                </button>
+                <button
+                  onClick={toggle}
+                  className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-[oklch(0.62_0.16_55)] text-bark shadow-[0_10px_40px_-5px_rgba(249,168,37,0.6)] transition-transform hover:scale-105"
+                  aria-label={playing ? "Pausar" : "Tocar"}
+                >
+                  {playing ? (
+                    <Pause className="h-7 w-7 fill-current" />
+                  ) : (
+                    <Play className="h-7 w-7 ml-1 fill-current" />
+                  )}
+                </button>
+                <button
+                  disabled={!next}
+                  onClick={() => next && onChange(next)}
+                  className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
+                  aria-label="Próxima"
+                >
+                  <ChevronRight className="h-7 w-7" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      <audio
-        ref={audioRef}
-        src={song.audio_url}
-        onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        onEnded={() => (next ? onChange(next) : setPlaying(false))}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-      />
+      {!scEmbed(song.audio_url) && (
+        <audio
+          ref={audioRef}
+          src={song.audio_url}
+          onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
+          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+          onEnded={() => (next ? onChange(next) : setPlaying(false))}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+        />
+      )}
+
     </div>
   );
 }
