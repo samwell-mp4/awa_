@@ -166,13 +166,22 @@ function useNarration(originalText: string) {
   const text = translatedText || originalText;
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const progressTimerRef = useRef<number | null>(null);
   const narrate = useServerFn(narratePublic);
 
   const cacheKey = `${lang}::${text}`;
 
   const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
+
+  const clearProgressTimer = () => {
+    if (progressTimerRef.current != null) {
+      window.clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
+    }
+  };
 
   const stopCurrent = () => {
     audioRef.current?.pause();
@@ -181,7 +190,9 @@ function useNarration(originalText: string) {
       window.speechSynthesis.cancel();
       utteranceRef.current = null;
     }
+    clearProgressTimer();
     setSpeaking(false);
+    setProgress(0);
   };
 
   const speakImmediately = () => {
@@ -201,19 +212,33 @@ function useNarration(originalText: string) {
     utterance.onend = () => {
       if (utteranceRef.current === utterance) {
         utteranceRef.current = null;
+        clearProgressTimer();
         setSpeaking(false);
+        setProgress(0);
       }
     };
     utterance.onerror = () => {
       if (utteranceRef.current === utterance) {
         utteranceRef.current = null;
+        clearProgressTimer();
         setSpeaking(false);
+        setProgress(0);
       }
     };
 
     window.speechSynthesis.cancel();
     utteranceRef.current = utterance;
     setSpeaking(true);
+    setProgress(0);
+    // Estimate duration from text length (~12 chars/sec at rate 0.95)
+    const estMs = Math.max(4000, (text.length / 12) * 1000);
+    const startedAt = performance.now();
+    clearProgressTimer();
+    progressTimerRef.current = window.setInterval(() => {
+      const p = Math.min(1, (performance.now() - startedAt) / estMs);
+      setProgress(p);
+      if (p >= 1) clearProgressTimer();
+    }, 120);
     window.speechSynthesis.speak(utterance);
     return true;
   };
@@ -259,8 +284,22 @@ function useNarration(originalText: string) {
     const audio = new Audio();
     audio.preload = "auto";
     audioRef.current = audio;
-    audio.onended = () => setSpeaking(false);
-    audio.onerror = () => setSpeaking(false);
+    setProgress(0);
+    audio.ontimeupdate = () => {
+      if (audioRef.current !== audio) return;
+      const d = audio.duration;
+      if (Number.isFinite(d) && d > 0) {
+        setProgress(Math.min(1, audio.currentTime / d));
+      }
+    };
+    audio.onended = () => {
+      setSpeaking(false);
+      setProgress(0);
+    };
+    audio.onerror = () => {
+      setSpeaking(false);
+      setProgress(0);
+    };
 
     const cached = narrationUrlCache.get(cacheKey);
     if (cached) {
@@ -294,7 +333,7 @@ function useNarration(originalText: string) {
     fetchUrl().catch(() => {});
   };
 
-  return { supported: true, speaking, loading, toggle, prefetch };
+  return { supported: true, speaking, loading, progress, toggle, prefetch };
 }
 
 
@@ -362,10 +401,13 @@ function NarratableVideo({
   alt: string;
   text: string;
 }) {
-  const { speaking, loading, toggle, prefetch } = useNarration(text);
+  const { speaking, loading, progress, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+
+  // Fade the visual out as narration progresses: full image at start, invisible by the end.
+  const visualOpacity = speaking ? Math.max(0, 1 - progress) : 1;
 
   useEffect(() => {
     if (videoFailed) return;
@@ -415,7 +457,7 @@ function NarratableVideo({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
+    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
       <video
         ref={videoRef}
         src={src}
@@ -424,11 +466,15 @@ function NarratableVideo({
         playsInline
         loop
         preload="metadata"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover transition-opacity duration-500 ease-out"
+        style={{ opacity: visualOpacity }}
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-500"
+        style={{ opacity: visualOpacity }}
+      />
       <button
         type="button"
         onClick={handleClick}
