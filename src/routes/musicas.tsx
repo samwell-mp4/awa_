@@ -433,21 +433,33 @@ function Player({
       {/* lyrics theater - static bilingual text */}
       <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
         <div className="mx-auto max-w-3xl space-y-8 md:space-y-10">
-          {Array.from({ length: maxLen }).map((_, i) => (
-            <div
-              key={i}
-              className="text-center transition-colors duration-500"
-            >
-              <p className="font-display text-xl md:text-3xl font-black leading-tight text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                {indLines[i] || "\u00A0"}
-              </p>
-              {ptLines[i] && (
-                <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
-                  {ptLines[i]}
+          {Array.from({ length: maxLen }).map((_, i) => {
+            const active = i === activeIdx;
+            return (
+              <div
+                key={i}
+                ref={(el) => {
+                  lineRefs.current[i] = el;
+                }}
+                className={`text-center transition-all duration-500 ${
+                  active ? "scale-105" : "opacity-40"
+                }`}
+              >
+                <p
+                  className={`font-display text-xl md:text-3xl font-black leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] ${
+                    active ? "text-gold" : "text-cream"
+                  }`}
+                >
+                  {indLines[i] || "\u00A0"}
                 </p>
-              )}
-            </div>
-          ))}
+                {ptLines[i] && (
+                  <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
+                    {ptLines[i]}
+                  </p>
+                )}
+              </div>
+            );
+          })}
           {maxLen === 0 && (
             <p className="text-center text-foreground/60">Esta música ainda não tem letra cadastrada.</p>
           )}
