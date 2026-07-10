@@ -15,11 +15,12 @@ export type TopLearner = {
 export const getWeeklyTopLearners = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => inputSchema.parse(data ?? {}))
   .handler(async ({ data }): Promise<TopLearner[]> => {
-    // Use service role so we can lock down the SECURITY DEFINER RPC from
-    // anon/authenticated (the aggregate is still safe to expose publicly).
+    // Publishable key + anon EXECUTE on the SECURITY DEFINER RPC. Avoid the
+    // service-role key here: Lovable Cloud may issue sb_secret_* keys that
+    // PostgREST rejects with "Expected 3 parts in JWT; got 1".
     const supabase = createClient<Database>(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      process.env.SUPABASE_PUBLISHABLE_KEY!,
       { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
     );
     const { data: rows, error } = await supabase.rpc("weekly_top_learners", {
