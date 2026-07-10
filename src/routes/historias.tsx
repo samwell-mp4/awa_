@@ -23,7 +23,8 @@ import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
 import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
 import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
 import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
-import albumJosa from "@/assets/album/anciao-josa.png.asset.json";
+import albumJosaClean from "@/assets/album/anciao-josa-clean.jpg";
+const albumJosa = { url: albumJosaClean };
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
 
