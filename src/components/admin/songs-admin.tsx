@@ -44,6 +44,7 @@ const defaultDraft = {
   language: "Patxôhã",
   audio_url: "",
   cover_url: "",
+  video_url: "",
   ambient_video_id: "",
   lyrics_indigenous: "",
   lyrics_pt: "",
