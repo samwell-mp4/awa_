@@ -46,7 +46,7 @@ function LandingChoice() {
           O Awã Tech tem duas portas de entrada. Escolha a que combina com você.
         </p>
 
-        <div className="mt-10 grid w-full grid-cols-2 gap-3 md:gap-6">
+        <div className="mt-10 grid w-full gap-6 md:grid-cols-2">
           <ChoiceCard
             to="/adulto"
             title="Awã Tech Adulto"
