@@ -106,6 +106,7 @@ const ADULT_HREFS = new Set([
 ]);
 
 const CHILD_HREFS = new Set([
+  "/conhecimento",
   "/saudacoes",
   "/jogos",
   "/musicas",
