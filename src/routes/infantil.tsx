@@ -66,7 +66,7 @@ function InfantilHome() {
               to={h.to}
               aria-label={`Abrir ${h.label}`}
               title={h.label}
-              className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-white/0 transition-all hover:ring-white/90 hover:scale-110 focus-visible:ring-white/90 focus-visible:outline-none active:scale-95"
+              className="group absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full ring-4 ring-white/70 bg-white/20 backdrop-blur-sm transition-all hover:ring-amber-300 hover:bg-white/40 hover:scale-110 focus-visible:ring-amber-300 focus-visible:outline-none active:scale-95 animate-pulse"
               style={{
                 left: `${h.x}%`,
                 top: `${h.y}%`,
@@ -74,7 +74,9 @@ function InfantilHome() {
                 aspectRatio: "1 / 1",
               }}
             >
-              <span className="sr-only">{h.label}</span>
+              <span className="rounded-full bg-emerald-700/90 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-white shadow-lg md:text-xs">
+                {h.label}
+              </span>
             </Link>
           ))}
         </section>
