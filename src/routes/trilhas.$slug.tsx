@@ -269,14 +269,14 @@ function TrilhaPage() {
   );
 }
 
-function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggle: () => void }) {
-  const lang = useLang();
+function WordCard({ w, learned, onToggle, localize }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string }) {
+  const trAria = useTr(["Marcar como aprendida", "Marcar como não aprendida"]);
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-display text-lg font-bold text-gold truncate">{w.term_indigenous}</div>
-          <div className="text-sm text-cream/90 truncate">{pickLang(w, "term_pt", lang)}</div>
+          <div className="text-sm text-cream/90 truncate">{localize(w, "term_pt")}</div>
 
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
@@ -284,7 +284,7 @@ function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggl
           <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
           <button
             onClick={onToggle}
-            aria-label={learned ? "Marcar como não aprendida" : "Marcar como aprendida"}
+            aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
             className={`grid h-9 w-9 place-items-center rounded-full transition ${learned ? "bg-gold text-forest-deep" : "bg-leaf/15 text-leaf hover:bg-leaf/25"}`}
           >
             <Check className="h-4 w-4" />
