@@ -211,39 +211,72 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
             const matched = !!matches[p.px];
             const selected = selectedPx === p.px;
             const err = errors[p.px];
+            const base: React.CSSProperties = matched
+              ? {
+                  background: "linear-gradient(160deg,#7ac74f,#3f8f2e)",
+                  color: "#f7ffe0",
+                  boxShadow: "0 4px 0 #1f4a15, inset 0 -3px 6px rgba(0,0,0,0.2)",
+                  textDecoration: "line-through",
+                  opacity: 0.75,
+                }
+              : err
+              ? {
+                  background: "linear-gradient(160deg,#ff5470,#c81d5e)",
+                  color: "#fff",
+                  boxShadow: "0 6px 0 #7a0d38, inset 0 -3px 6px rgba(0,0,0,0.2)",
+                }
+              : selected
+              ? {
+                  background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+                  color: "#2a1a00",
+                  boxShadow:
+                    "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
+                  transform: "translateY(-2px)",
+                }
+              : {
+                  background: "linear-gradient(160deg,#6a5cff,#3b2fb8)",
+                  color: "#fff",
+                  boxShadow:
+                    "0 6px 0 #1e1770, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3)",
+                };
             return (
               <button
                 key={p.px}
                 disabled={matched}
                 onClick={() => setSelectedPx(p.px)}
-                className={`w-full rounded-xl px-4 py-4 text-left font-semibold transition min-h-[52px] ${
-                  matched
-                    ? "bg-leaf/40 text-cream line-through opacity-60"
-                    : err
-                    ? "bg-red-500/40"
-                    : selected
-                    ? "bg-gold text-forest-deep scale-[1.02]"
-                    : "bg-white/10 hover:bg-white/20"
-                }`}
-                style={!matched && !selected && !err ? { borderLeft: `4px solid ${URUCUM}` } : undefined}
+                className="w-full rounded-2xl px-4 py-4 text-left font-black transition-transform active:translate-y-1 min-h-[56px]"
+                style={base}
               >
                 {p.px}
               </button>
             );
           })}
         </div>
-        <div className="space-y-2">
-          <p className="text-xs uppercase tracking-wider text-gold/80">Português</p>
+        <div className="space-y-3">
+          <p className="text-xs uppercase tracking-wider text-gold/80 font-black">Português</p>
           {shuffledPt.map((pt) => {
             const used = Object.values(matches).includes(pt);
+            const style: React.CSSProperties = used
+              ? {
+                  background: "linear-gradient(160deg,#7ac74f,#3f8f2e)",
+                  color: "#f7ffe0",
+                  boxShadow: "0 4px 0 #1f4a15",
+                  textDecoration: "line-through",
+                  opacity: 0.7,
+                }
+              : {
+                  background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                  color: "#062a28",
+                  boxShadow:
+                    "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
+                };
             return (
               <button
                 key={pt}
                 disabled={used || !selectedPx}
                 onClick={() => handlePt(pt)}
-                className={`w-full rounded-xl px-4 py-4 text-left font-semibold transition min-h-[52px] ${
-                  used ? "bg-leaf/40 line-through opacity-60" : "bg-white/10 hover:bg-white/20 disabled:opacity-50"
-                }`}
+                className="w-full rounded-2xl px-4 py-4 text-left font-black transition-transform active:translate-y-1 min-h-[56px] disabled:opacity-60"
+                style={style}
               >
                 {pt}
               </button>
@@ -402,22 +435,37 @@ function FillGame({ onScore }: { onScore: (n: number) => void }) {
       <h3 className="mb-2 text-lg md:text-xl font-bold text-gold">Complete a frase em Patxôhã</h3>
       <p className="mb-6 text-cream/60 text-xs">Frase {i + 1} de {FILL_QUESTIONS.length}</p>
       <p className="mb-6 text-xl md:text-2xl font-serif px-2">{q.sentence}</p>
-      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 md:gap-3">
+      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-3 md:gap-4">
         {q.options.map((opt) => {
           const isAnswer = answered !== null && opt === q.answer;
           const isWrongPicked = answered === false && opt !== q.answer;
+          const style: React.CSSProperties = isAnswer
+            ? {
+                background: "linear-gradient(160deg,#7ac74f,#3f8f2e)",
+                color: "#f7ffe0",
+                boxShadow:
+                  "0 8px 0 #1f4a15, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.35)",
+                transform: "translateY(-2px)",
+              }
+            : isWrongPicked
+            ? {
+                background: "linear-gradient(160deg,#4a4670,#2c294a)",
+                color: "#cfcfe5",
+                boxShadow: "0 4px 0 #1a1830",
+                opacity: 0.7,
+              }
+            : {
+                background: "linear-gradient(160deg,#ff9a3c,#e05a1a)",
+                color: "#2a1400",
+                boxShadow:
+                  "0 8px 0 #843000, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.4)",
+              };
           return (
             <button
               key={opt}
               onClick={() => choose(opt)}
-              className={`rounded-xl px-5 py-3 md:px-6 md:py-3 font-bold transition min-w-[90px] ${
-                isAnswer
-                  ? "bg-leaf text-cream"
-                  : isWrongPicked
-                  ? "bg-white/10 opacity-50"
-                  : "bg-white/10 hover:bg-gold hover:text-forest-deep"
-              }`}
-              style={answered === null ? { borderBottom: `3px solid ${URUCUM}` } : undefined}
+              className="rounded-2xl px-6 py-4 font-black text-lg transition-transform active:translate-y-1 min-w-[110px]"
+              style={style}
             >
               {opt}
             </button>
