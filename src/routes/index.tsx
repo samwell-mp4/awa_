@@ -26,7 +26,11 @@ export const Route = createFileRoute("/")({
 
 function LandingChoice() {
   return (
-    <div className="min-h-screen text-foreground flex flex-col">
+    <div
+      className="relative min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImg.url})` }}
+    >
+      <div aria-hidden className="absolute inset-0 bg-forest-deep/70" />
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <Logo />
         <LanguageSwitcher />
