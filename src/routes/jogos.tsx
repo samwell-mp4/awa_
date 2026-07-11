@@ -71,6 +71,7 @@ function JogosPage() {
     { id: "lacuna" as const, label: "Lacuna", icon: PencilLine },
   ];
 
+  return (
     <div
       className="min-h-screen text-cream relative"
       style={{
