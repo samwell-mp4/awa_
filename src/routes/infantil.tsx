@@ -12,6 +12,7 @@ import {
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
+import infantilHero from "@/assets/infantil-hero.png.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
