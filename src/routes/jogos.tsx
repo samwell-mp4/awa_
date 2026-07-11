@@ -11,6 +11,10 @@ const TRIBAL_PATTERN =
 const WOVEN_TILE =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'><rect width='80' height='40' fill='%23c9a26a'/><g stroke='%236b3410' stroke-width='1.5' fill='none'><path d='M0 20 L20 0 L40 20 L60 0 L80 20 L60 40 L40 20 L20 40 Z'/><path d='M0 20 L20 40 M40 20 L60 40 M20 0 L40 20 M60 0 L80 20'/></g><g fill='%23a83a1a'><polygon points='20,10 26,20 20,30 14,20'/><polygon points='60,10 66,20 60,30 54,20'/></g><g fill='%23f5c542'><polygon points='40,14 44,20 40,26 36,20'/><polygon points='0,14 4,20 0,26'/><polygon points='80,14 76,20 80,26'/></g></svg>\")";
 
+// Rose/pink tribal card face for Memória (gold diamond + zigzag borders)
+const ROSE_TRIBAL_CARD =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><rect width='120' height='120' fill='%23e63e6a'/><g fill='none' stroke='%23ffd166' stroke-width='2'><rect x='6' y='6' width='108' height='108' rx='4'/><polygon points='60,20 100,60 60,100 20,60'/><polygon points='60,32 88,60 60,88 32,60'/></g><g fill='%23ffd166'><circle cx='60' cy='60' r='3'/><polygon points='10,60 16,54 22,60 16,66'/><polygon points='110,60 104,54 98,60 104,66'/><polygon points='60,10 66,4 72,10 66,16' opacity='0'/></g><g fill='none' stroke='%23ffd166' stroke-width='1.5' opacity='0.9'><path d='M6 12 L12 6 L18 12 L24 6 L30 12 L36 6 L42 12 L48 6 L54 12 L60 6 L66 12 L72 6 L78 12 L84 6 L90 12 L96 6 L102 12 L108 6 L114 12'/><path d='M6 108 L12 114 L18 108 L24 114 L30 108 L36 114 L42 108 L48 114 L54 108 L60 114 L66 108 L72 114 L78 108 L84 114 L90 108 L96 114 L102 108 L108 114 L114 108'/></g></svg>\")";
+
 export const Route = createFileRoute("/jogos")({
   head: () => ({
     meta: [
@@ -363,10 +367,19 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
 
   return (
     <div>
-      <h3 className="mb-2 text-center text-lg md:text-xl font-bold text-gold">
-        Memória Cultural Pataxó
+      <h3
+        className="mb-2 text-center text-2xl md:text-3xl font-black tracking-wide"
+        style={{
+          fontFamily: "'Playfair Display', Georgia, serif",
+          background: "linear-gradient(180deg,#fff2a8 0%,#ffd166 55%,#ffa62b 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          filter: "drop-shadow(0 2px 0 rgba(0,0,0,0.4)) drop-shadow(0 4px 6px rgba(0,0,0,0.35))",
+        }}
+      >
+        ✦ Memória Cultural Pataxó ✦
       </h3>
-      <p className="mb-4 text-center text-xs text-cream/60">Encontre os pares de símbolos sagrados.</p>
+      <p className="mb-5 text-center text-sm text-cream/80">Encontre os pares de símbolos sagrados.</p>
       <div className="grid grid-cols-3 gap-3 md:grid-cols-4 md:gap-4">
         {cards.map((c, i) => {
           const show = flipped.includes(i) || matched.includes(c.label);
@@ -374,7 +387,7 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
             <button
               key={c.id}
               onClick={() => handle(i)}
-              className="aspect-square rounded-2xl text-center font-black transition-transform active:translate-y-1"
+              className="aspect-square rounded-3xl text-center font-black transition-transform active:translate-y-1"
               style={
                 show
                   ? {
@@ -384,9 +397,11 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                         "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
                     }
                   : {
-                      background: "linear-gradient(160deg,#ff5470,#c81d5e)",
+                      backgroundImage: `${ROSE_TRIBAL_CARD}, linear-gradient(160deg,#ff4e78,#c81d5e)`,
+                      backgroundSize: "cover, auto",
+                      backgroundPosition: "center",
                       boxShadow:
-                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
+                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.4), inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 6px rgba(255,255,255,0.35)",
                     }
               }
             >
@@ -396,7 +411,7 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                   <div className="mt-1 text-[10px] md:text-xs leading-tight">{c.label}</div>
                 </div>
               ) : (
-                <Sparkles className="mx-auto h-7 w-7 text-cream/90 drop-shadow" />
+                <Sparkles className="mx-auto h-8 w-8 text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]" />
               )}
             </button>
           );
