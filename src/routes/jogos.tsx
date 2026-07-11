@@ -71,15 +71,6 @@ function JogosPage() {
     { id: "lacuna" as const, label: "Lacuna", icon: PencilLine },
   ];
 
-  return (
-    <div
-      className="min-h-screen text-cream"
-      style={{
-        background:
-          "radial-gradient(circle at 20% 10%, #ffd166 0%, transparent 45%), radial-gradient(circle at 85% 15%, #ff6b9d 0%, transparent 40%), radial-gradient(circle at 50% 90%, #4ecdc4 0%, transparent 55%), linear-gradient(160deg, #6a4cff 0%, #1e2a78 100%)",
-      }}
-    >
-      <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
     <div
       className="min-h-screen text-cream relative"
       style={{
