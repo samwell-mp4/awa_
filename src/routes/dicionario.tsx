@@ -155,6 +155,31 @@ function DictionaryPage() {
   const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
   const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
 
+  // Auto-translate visible PT texts (term_pt + example) when UI is EN/ES.
+  const ptTexts = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of visibleFiltered) {
+      if (e.term_pt) set.add(e.term_pt);
+      if (e.example) set.add(e.example);
+    }
+    return Array.from(set);
+  }, [visibleFiltered]);
+  const translated = useAutoTranslate(ptTexts);
+  const trMap = useMemo(() => {
+    const m = new Map<string, string>();
+    ptTexts.forEach((s, i) => m.set(s, translated[i] ?? s));
+    return m;
+  }, [ptTexts, translated]);
+  const localize = (e: Entry, field: "term_pt" | "example"): string => {
+    const original = (e[field] as string | null) ?? "";
+    if (!original) return "";
+    if (lang === "pt" || lang === "pat") return original;
+    const dbVal = pickLang(e, field, lang);
+    if (dbVal && dbVal !== original) return dbVal;
+    return trMap.get(original) ?? original;
+  };
+
+
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
