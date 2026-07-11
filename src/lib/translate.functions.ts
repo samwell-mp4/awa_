@@ -1,6 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertPremium } from "./premium-guard";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -20,24 +18,21 @@ function tokens(s: string) {
   return norm(s).split(" ").filter(Boolean);
 }
 
-let _dictCache: { data: Entry[]; at: number } | null = null;
-const DICT_TTL_MS = 1000 * 60 * 30; // 30 min
-
 async function fetchAllDict(): Promise<Entry[]> {
-  if (_dictCache && Date.now() - _dictCache.at < DICT_TTL_MS) return _dictCache.data;
   const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_PUBLISHABLE_KEY!,
     { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
   );
-  const PAGE = 2000;
+  const PAGE = 1000;
   let from = 0;
   const all: Entry[] = [];
+  // Loop until we get a partial page
+  // Cap at 20 pages (20k entries) for safety
   for (let i = 0; i < 20; i++) {
     const { data, error } = await supabase
       .from("dictionary")
       .select("term_indigenous,term_pt")
-      .eq("language", "Patxôhã")
       .order("term_indigenous")
       .range(from, from + PAGE - 1);
     if (error) throw new Error(error.message);
@@ -46,7 +41,6 @@ async function fetchAllDict(): Promise<Entry[]> {
     if (data.length < PAGE) break;
     from += PAGE;
   }
-  _dictCache = { data: all, at: Date.now() };
   return all;
 }
 
@@ -69,51 +63,6 @@ function pickRelevant(dict: Entry[], text: string, direction: "pt-pat" | "pat-pt
   return matches;
 }
 
-function tryDirectTranslate(dict: Entry[], text: string, direction: "pt-pat" | "pat-pt") {
-  const input = norm(text);
-  const exact = dict.find((e) => norm(direction === "pt-pat" ? e.term_pt : e.term_indigenous) === input);
-  if (exact) {
-    return {
-      traducao: direction === "pt-pat" ? exact.term_indigenous : exact.term_pt,
-      literal: `${exact.term_indigenous}=${exact.term_pt}`,
-      nota: "Encontrado diretamente no dicionário Patxôhã.",
-    };
-  }
-
-  const inputTokens = tokens(text);
-  if (inputTokens.length === 0 || inputTokens.length > 12) return null;
-
-  const bySource = new Map<string, Entry>();
-  for (const e of dict) {
-    const source = direction === "pt-pat" ? e.term_pt : e.term_indigenous;
-    const sourceTokens = tokens(source);
-    if (sourceTokens.length === 1) bySource.set(sourceTokens[0], e);
-  }
-
-  const translated: string[] = [];
-  const literal: string[] = [];
-  let found = 0;
-  for (const t of inputTokens) {
-    const e = bySource.get(t);
-    if (!e) {
-      translated.push(`${t}[?]`);
-      continue;
-    }
-    found += 1;
-    translated.push(direction === "pt-pat" ? e.term_indigenous : e.term_pt);
-    literal.push(`${e.term_indigenous}=${e.term_pt}`);
-  }
-
-  if (found === 0 || found / inputTokens.length < 0.7) return null;
-  return {
-    traducao: autoFormat(translated.join(" ")),
-    literal: literal.join("; "),
-    nota: translated.some((w) => w.endsWith("[?]"))
-      ? "Algumas palavras não foram encontradas diretamente no dicionário."
-      : "Tradução rápida feita diretamente pelo dicionário.",
-  };
-}
-
 function autoFormat(s: string): string {
   if (!s) return s;
   let out = s.trim().replace(/\s+([,.!?;:])/g, "$1").replace(/\s+/g, " ");
@@ -123,10 +72,8 @@ function autoFormat(s: string): string {
 }
 
 export const translateText = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((d: { text: string; direction: "pt-pat" | "pat-pt"; environment?: "sandbox" | "live" }) => d)
-  .handler(async ({ data, context }) => {
-    await assertPremium(context, data.environment ?? "live");
+  .inputValidator((d: { text: string; direction: "pt-pat" | "pat-pt" }) => d)
+  .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
@@ -134,9 +81,6 @@ export const translateText = createServerFn({ method: "POST" })
     if (!text) return { traducao: "", literal: "", nota: "", dict_size: 0, relevant_count: 0 };
 
     const dict = await fetchAllDict();
-    const direct = tryDirectTranslate(dict, text, data.direction);
-    if (direct) return { ...direct, dict_size: dict.length, relevant_count: direct.literal ? direct.literal.split("; ").length : 1 };
-
     const relevant = pickRelevant(dict, text, data.direction);
 
     // Always include a small core sample to give model orientation, plus all relevant matches
@@ -152,7 +96,7 @@ export const translateText = createServerFn({ method: "POST" })
     }
 
     const compact = used
-      .slice(0, 500)
+      .slice(0, 1500)
       .map((e) => `${e.term_indigenous} = ${e.term_pt}`)
       .join("\n");
 
@@ -190,24 +134,8 @@ ${compact}`;
     });
     if (!res.ok) {
       const errText = (await res.text()).slice(0, 200);
-      if (res.status === 429) {
-        return {
-          traducao: text,
-          literal: "",
-          nota: "Limite de requisições atingido. Tente novamente em instantes.",
-          dict_size: dict.length,
-          relevant_count: relevant.length,
-        };
-      }
-      if (res.status === 402) {
-        return {
-          traducao: text,
-          literal: "",
-          nota: "Créditos de IA esgotados. Mantive o texto original para o app não quebrar.",
-          dict_size: dict.length,
-          relevant_count: relevant.length,
-        };
-      }
+      if (res.status === 429) throw new Error("Limite de requisições atingido. Tente em instantes.");
+      if (res.status === 402) throw new Error("Créditos de IA esgotados.");
       throw new Error(`AI: ${res.status} ${errText}`);
     }
     const json = await res.json();

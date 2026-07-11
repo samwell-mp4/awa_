@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getPaddleEnvironment } from "@/lib/paddle";
 import { translateText } from "@/lib/translate.functions";
 import { speakText } from "@/lib/tts.functions";
 import { transcribeAudio } from "@/lib/transcribe.functions";
-import { translateAllContent } from "@/lib/translate-content.functions";
-import { Languages, Volume2, Mic, Loader2, Globe } from "lucide-react";
+import { Languages, Volume2, Mic, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function ToolsAdmin() {
   const translate = useServerFn(translateText);
   const speak = useServerFn(speakText);
   const transcribe = useServerFn(transcribeAudio);
-  const translateAll = useServerFn(translateAllContent);
-
 
   // Translate
   const [txt, setTxt] = useState("");
@@ -30,31 +26,11 @@ export function ToolsAdmin() {
   const [sttBusy, setSttBusy] = useState(false);
   const [sttText, setSttText] = useState("");
 
-  // Bulk translate content
-  const [bulkBusy, setBulkBusy] = useState(false);
-  const [bulkResult, setBulkResult] = useState<Record<string, { updated: number; skipped: number }> | null>(null);
-  const [bulkForce, setBulkForce] = useState(false);
-
-  async function onTranslateAll() {
-    setBulkBusy(true);
-    setBulkResult(null);
-    try {
-      const r = await translateAll({ data: { force: bulkForce } });
-      setBulkResult(r.summary);
-      toast.success("Conteúdo traduzido e salvo no banco.");
-    } catch (e) {
-      toast.error((e as Error).message);
-    } finally {
-      setBulkBusy(false);
-    }
-  }
-
-
   async function onTranslate() {
     setTrBusy(true);
     setTrOut(null);
     try {
-      const r = await translate({ data: { text: txt, direction: dir, environment: getPaddleEnvironment() } });
+      const r = await translate({ data: { text: txt, direction: dir } });
       setTrOut(r);
     } catch (e) {
       toast.error((e as Error).message);
@@ -66,10 +42,7 @@ export function ToolsAdmin() {
   async function onSpeak() {
     setTtsBusy(true);
     try {
-      const r = await speak({ data: { text: ttsTxt, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) {
-        throw new Error(r.message ?? "Não foi possível gerar áudio");
-      }
+      const r = await speak({ data: { text: ttsTxt } });
       setTtsUrl(`data:${r.mime};base64,${r.audio_base64}`);
     } catch (e) {
       toast.error((e as Error).message);
@@ -84,11 +57,7 @@ export function ToolsAdmin() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      fd.append("environment", getPaddleEnvironment());
       const r = await transcribe({ data: fd });
-      if (r.error) {
-        throw new Error(r.message ?? "Não foi possível transcrever o áudio");
-      }
       setSttText(r.text);
     } catch (e) {
       toast.error((e as Error).message);
@@ -193,39 +162,6 @@ export function ToolsAdmin() {
           />
         )}
       </section>
-
-      {/* Bulk translate content (populates *_en / *_es columns) */}
-      <section className={`${card} md:col-span-2`}>
-        <h2 className="flex items-center gap-2 font-display text-lg font-black text-cream">
-          <Globe className="h-5 w-5 text-gold" /> Traduzir todo o conteúdo (EN / ES)
-        </h2>
-        <p className="text-xs text-foreground/70">
-          Traduz dicionário, músicas (título, artista, descrição, letra em PT), missão, vídeo do dia,
-          trilhas e vídeos ambientes para inglês e espanhol e salva no banco. O texto original em
-          português e o Patxôhã permanecem intactos.
-        </p>
-        <label className="inline-flex items-center gap-2 text-xs text-foreground/80">
-          <input type="checkbox" checked={bulkForce} onChange={(e) => setBulkForce(e.target.checked)} />
-          Retraduzir tudo (sobrescreve traduções existentes)
-        </label>
-        <button onClick={onTranslateAll} disabled={bulkBusy} className={btn}>
-          {bulkBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
-          {bulkBusy ? "Traduzindo…" : "Traduzir tudo agora"}
-        </button>
-        {bulkResult && (
-          <div className="grid gap-2 rounded-xl border border-gold/20 bg-bg/40 p-3 text-xs sm:grid-cols-2">
-            {Object.entries(bulkResult).map(([table, r]) => (
-              <div key={table} className="flex items-center justify-between">
-                <span className="text-cream font-semibold">{table}</span>
-                <span className="text-foreground/70">
-                  ✓ {r.updated} atualizadas · {r.skipped} inalteradas
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
     </div>
-
   );
 }

@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2, RotateCcw, Archive } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Music, Loader2 } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 
 type Song = {
@@ -19,7 +19,6 @@ type Song = {
   description: string | null;
   is_active: boolean;
   order_index: number;
-  deleted_at: string | null;
 };
 
 type Ambient = { id: string; name: string; video_url: string };
@@ -45,7 +44,6 @@ const defaultDraft = {
   language: "Patxôhã",
   audio_url: "",
   cover_url: "",
-  video_url: "",
   ambient_video_id: "",
   lyrics_indigenous: "",
   lyrics_pt: "",
@@ -65,22 +63,8 @@ export function SongsAdmin() {
       const { data, error } = await supabase
         .from("songs")
         .select("*")
-        .is("deleted_at", null)
         .order("order_index")
         .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as Song[];
-    },
-  });
-
-  const { data: trashed = [] } = useQuery({
-    queryKey: ["songs_admin_trash"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("songs")
-        .select("*")
-        .not("deleted_at", "is", null)
-        .order("deleted_at", { ascending: false });
       if (error) throw error;
       return data as Song[];
     },
@@ -95,13 +79,12 @@ export function SongsAdmin() {
     },
   });
 
-  async function handleUpload(field: "audio_url" | "cover_url" | "video_url", file: File) {
+  async function handleUpload(field: "audio_url" | "cover_url", file: File) {
     setUploading(field);
     try {
-      const prefix = field === "audio_url" ? "audio" : field === "cover_url" ? "covers" : "videos";
-      const url = await uploadToSongs(file, prefix);
+      const url = await uploadToSongs(file, field === "audio_url" ? "audio" : "covers");
       setDraft((d) => ({ ...d, [field]: url }));
-      toast.success("Arquivo enviado");
+      toast.success(field === "audio_url" ? "Áudio enviado" : "Capa enviada");
     } catch (e: any) {
       toast.error("Erro: " + e.message);
     } finally {
@@ -120,7 +103,6 @@ export function SongsAdmin() {
       ambient_video_id: draft.ambient_video_id || null,
       artist: draft.artist || null,
       cover_url: draft.cover_url || null,
-      video_url: draft.video_url || null,
       description: draft.description || null,
     };
     const { error } = await supabase.from("songs").insert(payload);
@@ -180,14 +162,6 @@ export function SongsAdmin() {
             accept="image/*"
             busy={uploading === "cover_url"}
           />
-          <UploadOrUrl
-            label="Vídeo da música (upload MP4 ou cole URL)"
-            value={draft.video_url}
-            onChange={(v) => setDraft({ ...draft, video_url: v })}
-            onFile={(f) => handleUpload("video_url", f)}
-            accept="video/*"
-            busy={uploading === "video_url"}
-          />
         </div>
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
@@ -230,70 +204,6 @@ export function SongsAdmin() {
         {songs.length === 0 && (
           <div className="text-center text-foreground/60 py-8">Nenhuma música cadastrada.</div>
         )}
-      </div>
-
-      <Card>
-        <h2 className="font-display text-lg font-black text-cream mb-1 flex items-center gap-2">
-          <Archive className="h-5 w-5 text-gold" /> Lixeira ({trashed.length})
-        </h2>
-        <p className="text-xs text-foreground/60 mb-3">
-          Músicas excluídas ficam aqui e podem ser restauradas a qualquer momento.
-        </p>
-        {trashed.length === 0 ? (
-          <div className="text-center text-foreground/60 py-6 text-sm">Nenhuma música na lixeira.</div>
-        ) : (
-          <div className="grid gap-2">
-            {trashed.map((s) => (
-              <TrashRow key={s.id} song={s} />
-            ))}
-          </div>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function TrashRow({ song }: { song: Song }) {
-  const qc = useQueryClient();
-  const [busy, setBusy] = useState<"restore" | "delete" | null>(null);
-
-  async function restore() {
-    setBusy("restore");
-    const { error } = await supabase.from("songs").update({ deleted_at: null }).eq("id", song.id);
-    setBusy(null);
-    if (error) return toast.error(error.message);
-    toast.success("Música restaurada");
-    qc.invalidateQueries({ queryKey: ["songs_admin"] });
-    qc.invalidateQueries({ queryKey: ["songs_admin_trash"] });
-    qc.invalidateQueries({ queryKey: ["songs_public"] });
-  }
-
-  async function purge() {
-    if (!confirm(`Apagar permanentemente "${song.title}"? Esta ação não pode ser desfeita.`)) return;
-    setBusy("delete");
-    const { error } = await supabase.from("songs").delete().eq("id", song.id);
-    setBusy(null);
-    if (error) return toast.error(error.message);
-    toast.success("Removido definitivamente");
-    qc.invalidateQueries({ queryKey: ["songs_admin_trash"] });
-  }
-
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-gold/15 bg-card/40 px-3 py-2">
-      <div className="min-w-0">
-        <div className="truncate text-sm font-bold text-cream">{song.title}</div>
-        <div className="truncate text-[11px] text-foreground/50">
-          {song.artist ?? "—"} · excluída em {song.deleted_at ? new Date(song.deleted_at).toLocaleString() : "—"}
-        </div>
-      </div>
-      <div className="flex shrink-0 gap-2">
-        <Btn variant="outline" onClick={restore} disabled={busy !== null}>
-          {busy === "restore" ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-          Restaurar
-        </Btn>
-        <Btn variant="danger" onClick={purge} disabled={busy !== null}>
-          {busy === "delete" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-        </Btn>
       </div>
     </div>
   );
@@ -351,7 +261,6 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         language: s.language,
         audio_url: s.audio_url,
         cover_url: s.cover_url,
-        video_url: s.video_url,
         ambient_video_id: s.ambient_video_id || null,
         lyrics_indigenous: s.lyrics_indigenous,
         lyrics_pt: s.lyrics_pt,
@@ -367,15 +276,10 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
   }
 
   async function remove() {
-    if (!confirm("Mover esta música para a lixeira? Você poderá restaurá-la depois.")) return;
-    const { error } = await supabase
-      .from("songs")
-      .update({ deleted_at: new Date().toISOString() })
-      .eq("id", s.id);
+    if (!confirm("Apagar esta música?")) return;
+    const { error } = await supabase.from("songs").delete().eq("id", s.id);
     if (error) return toast.error(error.message);
-    toast.success("Movida para a lixeira");
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
-    qc.invalidateQueries({ queryKey: ["songs_admin_trash"] });
     qc.invalidateQueries({ queryKey: ["songs_public"] });
   }
 
@@ -397,7 +301,6 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         </Field>
         <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
         <Field label="URL capa"><Input value={s.cover_url ?? ""} onChange={(e) => setS({ ...s, cover_url: e.target.value })} /></Field>
-        <Field label="URL vídeo"><Input value={s.video_url ?? ""} onChange={(e) => setS({ ...s, video_url: e.target.value })} /></Field>
         <Field label="Letra indígena">
           <Textarea rows={6} value={s.lyrics_indigenous} onChange={(e) => setS({ ...s, lyrics_indigenous: e.target.value })} />
         </Field>

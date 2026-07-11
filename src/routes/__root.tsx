@@ -8,14 +8,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
-import "@/i18n";
-
 
 function NotFoundComponent() {
   return (
@@ -82,26 +78,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { name: "description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
-      { name: "author", content: "AWÃ TECH" },
-      { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { property: "og:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
+      { title: "Lovable App" },
+      { name: "description", content: "Lovable Generated Project" },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Lovable App" },
+      { property: "og:description", content: "Lovable Generated Project" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "theme-color", content: "#1B5E20" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "AWÃ TECH" },
-      { name: "twitter:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { name: "twitter:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/xWMaIOyVdBdsFhIIDgEkBMBZNw23/social-images/social-1782968871101-IMG-20260702-WA0000.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/xWMaIOyVdBdsFhIIDgEkBMBZNw23/social-images/social-1782968871101-IMG-20260702-WA0000.webp" },
+      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
-      { rel: "icon", href: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -119,11 +105,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt" suppressHydrationWarning>
-      <head suppressHydrationWarning>
+    <html lang="en">
+      <head>
         <HeadContent />
       </head>
-      <body suppressHydrationWarning>
+      <body>
         {children}
         <Scripts />
       </body>
@@ -134,62 +120,10 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  useEffect(() => {
-    // Limpa qualquer "selo" (badge) fantasma no ícone do app instalado (PWA)
-    const nav = navigator as Navigator & {
-      clearAppBadge?: () => Promise<void>;
-      setAppBadge?: (n?: number) => Promise<void>;
-    };
-    const clear = () => {
-      nav.clearAppBadge?.().catch(() => {});
-      // Alguns SOs só limpam ao explicitamente setar 0
-      nav.setAppBadge?.(0).catch(() => {});
-    };
-    clear();
-    const onVisible = () => document.visibilityState === "visible" && clear();
-    document.addEventListener("visibilitychange", onVisible);
-    window.addEventListener("focus", clear);
-    const id = window.setInterval(clear, 30000);
-    return () => {
-      document.removeEventListener("visibilitychange", onVisible);
-      window.removeEventListener("focus", clear);
-      window.clearInterval(id);
-    };
-  }, []);
-
-
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageHydrator />
-      <AppLanguageAutoTranslator />
       <Outlet />
-
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
 }
-
-function LanguageHydrator() {
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    const valid = ["pt", "en", "es"];
-    const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-    const detected = navigator.language?.slice(0, 2).toLowerCase();
-    const target = valid.includes(stored || "")
-      ? stored
-      : valid.includes(detected || "")
-        ? detected
-        : "pt";
-
-    if (!target) return;
-    document.documentElement.lang = target;
-    window.localStorage.setItem("awa_lang", target);
-    if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
-      void i18n.changeLanguage(target);
-    }
-  }, [i18n]);
-
-  return null;
-}
-

@@ -74,23 +74,11 @@
   --input: oklch(1 0 0 / 12%);
   --ring: var(--gold);
 
-  --gradient-forest: radial-gradient(
-      1200px 800px at 85% -10%,
-      oklch(0.34 0.09 145 / 0.55) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 700px at -10% 110%,
-      oklch(0.42 0.08 78 / 0.28) 0%,
-      transparent 55%
-    ),
-    linear-gradient(160deg, oklch(0.16 0.04 145) 0%, oklch(0.22 0.06 145) 55%, oklch(0.14 0.04 145) 100%);
+  --gradient-forest: linear-gradient(160deg, oklch(0.18 0.04 145) 0%, oklch(0.28 0.06 145) 60%, oklch(0.22 0.05 145) 100%);
   --gradient-gold: linear-gradient(135deg, var(--gold), oklch(0.7 0.18 55));
-  --gradient-leaf: linear-gradient(135deg, var(--leaf), oklch(0.42 0.11 145));
-  --gradient-hero-glow: radial-gradient(600px 300px at 20% 10%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 70%);
-  --shadow-glow: 0 12px 44px -12px color-mix(in oklab, var(--leaf) 55%, transparent);
-  --shadow-gold: 0 14px 40px -14px color-mix(in oklab, var(--gold) 55%, transparent);
-  --shadow-card: 0 24px 60px -24px oklch(0 0 0 / 0.7), 0 2px 0 0 color-mix(in oklab, var(--gold) 10%, transparent) inset;
+  --gradient-leaf: linear-gradient(135deg, var(--leaf), oklch(0.45 0.12 145));
+  --shadow-glow: 0 10px 40px -10px color-mix(in oklab, var(--leaf) 45%, transparent);
+  --shadow-card: 0 20px 50px -20px oklch(0 0 0 / 0.6);
   --ring-gold: 0 0 0 1px color-mix(in oklab, var(--gold) 55%, transparent);
 }
 
@@ -98,42 +86,13 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html, body { background: var(--gradient-forest); color: var(--color-foreground); overflow-x: hidden; }
+  html, body { background: var(--gradient-forest); color: var(--color-foreground); }
   body {
     font-family: var(--font-sans);
     background-attachment: fixed;
     min-height: 100vh;
-    max-width: 100vw;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    font-feature-settings: "ss01", "cv11";
   }
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    letter-spacing: -0.025em;
-    font-feature-settings: "ss01";
-  }
-  h1 { line-height: 1.02; }
-  ::selection { background: color-mix(in oklab, var(--gold) 45%, transparent); color: var(--cream); }
-  :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--background), 0 0 0 4px color-mix(in oklab, var(--gold) 70%, transparent); border-radius: 12px; }
-  a, button { transition: color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-  img { -webkit-user-drag: none; }
-}
-
-/* Ambient decorative overlay — subtle grain + leaf silhouettes */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, color-mix(in oklab, var(--gold) 30%, transparent) 50%, transparent 51%),
-    radial-gradient(1px 1px at 70% 80%, color-mix(in oklab, var(--leaf) 30%, transparent) 50%, transparent 51%),
-    radial-gradient(1px 1px at 40% 60%, color-mix(in oklab, var(--cream) 12%, transparent) 50%, transparent 51%);
-  background-size: 220px 220px, 260px 260px, 180px 180px;
-  opacity: 0.35;
-  mix-blend-mode: screen;
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
 
 @utility tribal-border {
@@ -146,56 +105,17 @@ body::before {
   );
   height: 6px;
   border-radius: 999px;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 @utility card-elev {
-  position: relative;
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, transparent) 0%, color-mix(in oklab, var(--card) 96%, black 6%) 100%);
-  border: 1px solid color-mix(in oklab, var(--gold) 22%, transparent);
-  box-shadow: var(--shadow-card), inset 0 1px 0 color-mix(in oklab, var(--gold) 20%, transparent);
-  backdrop-filter: blur(6px);
+  background: color-mix(in oklab, var(--card) 92%, black 8%);
+  border: 1px solid color-mix(in oklab, var(--gold) 25%, transparent);
+  box-shadow: var(--shadow-card), inset 0 1px 0 color-mix(in oklab, var(--gold) 18%, transparent);
 }
 
 @utility chip-gold {
   background: color-mix(in oklab, var(--gold) 18%, transparent);
   color: var(--gold);
-  border: 1px solid color-mix(in oklab, var(--gold) 45%, transparent);
-  text-shadow: 0 1px 0 color-mix(in oklab, black 30%, transparent);
-}
-
-@utility text-gradient-gold {
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility divider-gold {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--gold) 60%, transparent), transparent);
-}
-
-@keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-@utility animate-floaty { animation: floaty 6s ease-in-out infinite; }
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-@utility shimmer-gold {
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--gold) 40%, transparent), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
-}
-
-/* Keep content above the ambient overlay */
-header, main, footer, section { position: relative; z-index: 1; }
-
-#lovable-badge {
-  display: none !important;
+  border: 1px solid color-mix(in oklab, var(--gold) 40%, transparent);
 }

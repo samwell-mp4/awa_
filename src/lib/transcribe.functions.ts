@@ -1,21 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertPremium } from "./premium-guard";
 
 export const transcribeAudio = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => {
     if (!(d instanceof FormData)) throw new Error("FormData obrigatório");
     const file = d.get("file");
     if (!(file instanceof File)) throw new Error("Arquivo de áudio obrigatório");
     if (file.size === 0) throw new Error("Arquivo vazio");
     if (file.size > 24 * 1024 * 1024) throw new Error("Arquivo > 24MB");
-    const envRaw = (d.get("environment") as string | null) || "live";
-    const environment: "sandbox" | "live" = envRaw === "sandbox" ? "sandbox" : "live";
-    return { file, language: (d.get("language") as string | null) || undefined, environment };
+    return { file, language: (d.get("language") as string | null) || undefined };
   })
-  .handler(async ({ data, context }): Promise<{ text: string; error?: "PAYMENT_REQUIRED" | "STT_FAILED"; message?: string }> => {
-    await assertPremium(context, data.environment);
+  .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
@@ -29,21 +23,7 @@ export const transcribeAudio = createServerFn({ method: "POST" })
       headers: { Authorization: `Bearer ${apiKey}` },
       body: fd,
     });
-    if (!res.ok) {
-      const message = (await res.text()).slice(0, 200);
-      if (res.status === 402) {
-        return {
-          text: "",
-          error: "PAYMENT_REQUIRED",
-          message: "Créditos insuficientes para transcrever áudio agora.",
-        };
-      }
-      return {
-        text: "",
-        error: "STT_FAILED",
-        message: `Não foi possível transcrever o áudio. ${message}`,
-      };
-    }
+    if (!res.ok) throw new Error(`STT ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const json = await res.json();
     return { text: (json.text ?? "") as string };
   });

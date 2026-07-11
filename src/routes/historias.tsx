@@ -1,83 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Volume2, Square } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { useAutoTranslate } from "@/hooks/use-auto-translate";
-import { useTranslation } from "react-i18next";
-import { T } from "@/components/T";
-import { toast } from "sonner";
-
+import { ArrowLeft, MapPin, Leaf, Sparkles, Users, Palette, Shield } from "lucide-react";
 
 import danca from "@/assets/pataxo-danca.jpg";
 import aldeia from "@/assets/pataxo-aldeia.jpg";
 import artesanato from "@/assets/pataxo-artesanato.jpg";
 import monte from "@/assets/pataxo-monte-pascoal.jpg";
 import anciao from "@/assets/pataxo-anciao.jpg";
-
-import albumPaje from "@/assets/album/paje.jpg.asset.json";
-import albumGuerreiraFestival from "@/assets/album/guerreira-festival.jpg.asset.json";
-import albumGuerreiraCocar from "@/assets/album/guerreira-cocar.jpg.asset.json";
-import albumGuerreiros from "@/assets/album/guerreiros-pintura.jpg.asset.json";
-import albumCriancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
-import albumCriancaJogos from "@/assets/album/crianca-jogos.jpg.asset.json";
-import albumPintura from "@/assets/album/pintura-corporal.jpg.asset.json";
-import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
-import albumJosaClean from "@/assets/album/anciao-josa-clean.jpg";
-const albumJosa = { url: albumJosaClean };
-import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
-import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
-
-const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
-type Aldeia = (typeof ALDEIAS)[number];
-
-const album: { src: string; title: string; text: string; aldeia: Exclude<Aldeia, "Todas"> }[] = [
-  {
-    src: albumPaje.url,
-    title: "O Pajé — guardião do sagrado",
-    text: "O pajé carrega no cocar de penas e nos colares de sementes a força espiritual do povo. É ele quem conduz as rezas, cura com plantas da mata e mantém a ponte entre a aldeia e os encantados da floresta.",
-    aldeia: "Barra Velha",
-  },
-  {
-    src: albumGuerreiraFestival.url,
-    title: "Mulher Pataxó em festival",
-    text: "As pinturas de urucum no rosto marcam identidade, proteção e pertencimento. Cada traço conta de onde ela vem, de qual aldeia, de qual linhagem — a pele vira território de memória.",
-    aldeia: "Coroa Vermelha",
-  },
-  {
-    src: albumGuerreiraCocar.url,
-    title: "Cocar de plumas e flor",
-    text: "Os grafismos finos em preto no rosto representam os caminhos da mata e a coragem. O cocar com penas verdes, amarelas e a flor vermelha celebra a beleza da floresta viva que vestimos.",
-    aldeia: "Jaqueira",
-  },
-  {
-    src: albumGuerreiros.url,
-    title: "Jovens guerreiros pintados de onça",
-    text: "A pintura de jenipapo em pintas de onça convoca a força do maior predador da mata. Antes de rituais e jogos, os jovens vestem o corpo do animal-espírito para dançar, correr e resistir.",
-    aldeia: "Barra Velha",
-  },
-  {
-    src: albumCriancaCocar.url,
-    title: "Menino com cocar ancestral",
-    text: "Desde cedo as crianças aprendem que o cocar não é adorno: é responsabilidade. Usar as penas dos pais é aceitar o compromisso de cuidar da língua, da terra e das histórias do povo.",
-    aldeia: "Aldeia Velha",
-  },
-  {
-    src: albumCriancaJogos.url,
-    title: "Nova geração nos Jogos Indígenas",
-    text: "Os Jogos Indígenas Pataxó reúnem aldeias inteiras em corridas, arco e flecha, cabo de guerra e canoagem. Para as crianças, é festa; para os mais velhos, é a certeza de que a cultura segue viva.",
-    aldeia: "Boca da Mata",
-  },
-  {
-    src: albumPintura.url,
-    title: "A pintura corporal como escrita",
-    text: "Cada linha aplicada com pincel de fibra e tinta de jenipapo é uma palavra antiga. Os traços nos ombros, no rosto e no peito narram alianças, dons de caça, passagens de vida — é a escrita viva do povo.",
-    aldeia: "Jaqueira",
-  },
-];
-
-
-
 
 export const Route = createFileRoute("/historias")({
   head: () => ({
@@ -165,414 +93,31 @@ const sections: Section[] = [
       "O artesanato sustenta muitas famílias e é também forma de resistência: vender uma peça é compartilhar um pedaço vivo da cultura.",
     ],
   },
+  {
+    id: "alimentacao",
+    title: "Alimentação Tradicional",
+    icon: Leaf,
+    image: aldeia,
+    body: [
+      "A culinária Pataxó é fruto da relação íntima com a floresta e o mar: peixes assados na folha de patioba, mandioca, milho, aipim, frutos da mata e palmito.",
+      "Bebidas como o cauim, fermentado de mandioca ou de frutas, marcam celebrações e rituais.",
+      "Comer junto, ao redor do fogo, é também rezar — é reafirmar que a vida vem da terra cuidada por gerações.",
+    ],
+  },
+  {
+    id: "resistencia",
+    title: "Resistência Hoje",
+    icon: Shield,
+    image: monte,
+    body: [
+      "Os Pataxó são símbolo de resistência: lutam pela demarcação oficial de suas terras, contra o desmatamento e a exploração turística desordenada.",
+      "Fazem da cultura sua principal arma — com museus indígenas, escolas bilíngues, grupos de arte, comunicação própria e presença forte nas redes.",
+      "Em Salvador e em todo o sul da Bahia, a presença Pataxó marca a identidade baiana viva e original. Ouvir suas histórias é honrar o Brasil que existe há muito mais tempo do que 1500.",
+    ],
+  },
 ];
 
-// Module-level browser cache: same text reused across components/re-renders
-const narrationUrlCache = new Map<string, string>();
-const narrationPromiseCache = new Map<string, Promise<string>>();
-
-// Only one narration at a time: starting a new one stops the previous.
-let activeStop: (() => void) | null = null;
-function setActiveNarration(stop: () => void) {
-  if (activeStop && activeStop !== stop) {
-    try { activeStop(); } catch {}
-  }
-  activeStop = stop;
-}
-function clearActiveNarration(stop: () => void) {
-  if (activeStop === stop) activeStop = null;
-}
-
-function useNarration(originalText: string) {
-  const { i18n } = useTranslation();
-  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
-  const [translatedText] = useAutoTranslate([originalText]);
-  const text = translatedText || originalText;
-  const [speaking, setSpeaking] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const progressTimerRef = useRef<number | null>(null);
-  const narrate = useServerFn(narratePublic);
-
-  const cacheKey = `${lang}::${text}`;
-
-  const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
-
-  const clearProgressTimer = () => {
-    if (progressTimerRef.current != null) {
-      window.clearInterval(progressTimerRef.current);
-      progressTimerRef.current = null;
-    }
-  };
-
-  const stopCurrent = () => {
-    audioRef.current?.pause();
-    audioRef.current = null;
-    if (utteranceRef.current && typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      utteranceRef.current = null;
-    }
-    clearProgressTimer();
-    setSpeaking(false);
-    setProgress(0);
-    clearActiveNarration(stopCurrent);
-  };
-
-  const speakImmediately = () => {
-    if (
-      typeof window === "undefined" ||
-      !("speechSynthesis" in window) ||
-      !("SpeechSynthesisUtterance" in window)
-    ) {
-      return false;
-    }
-
-    // Native speech starts immediately on the tap/click, without waiting for network TTS.
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = speechLang;
-    utterance.rate = 0.95;
-    utterance.pitch = 0.85;
-    utterance.onend = () => {
-      if (utteranceRef.current === utterance) {
-        utteranceRef.current = null;
-        clearProgressTimer();
-        setSpeaking(false);
-        setProgress(0);
-      }
-    };
-    utterance.onerror = () => {
-      if (utteranceRef.current === utterance) {
-        utteranceRef.current = null;
-        clearProgressTimer();
-        setSpeaking(false);
-        setProgress(0);
-      }
-    };
-
-    window.speechSynthesis.cancel();
-    utteranceRef.current = utterance;
-    setSpeaking(true);
-    setProgress(0);
-    // Estimate duration from text length (~12 chars/sec at rate 0.95)
-    const estMs = Math.max(4000, (text.length / 12) * 1000);
-    const startedAt = performance.now();
-    clearProgressTimer();
-    progressTimerRef.current = window.setInterval(() => {
-      const p = Math.min(1, (performance.now() - startedAt) / estMs);
-      setProgress(p);
-      if (p >= 1) clearProgressTimer();
-    }, 120);
-    window.speechSynthesis.speak(utterance);
-    return true;
-  };
-
-  const fetchUrl = (): Promise<string> => {
-    const hit = narrationUrlCache.get(cacheKey);
-    if (hit) return Promise.resolve(hit);
-    const inflight = narrationPromiseCache.get(cacheKey);
-    if (inflight) return inflight;
-    const p = narrate({ data: { text, voice: "onyx", lang } })
-      .then((res) => {
-        if (res.error || !res.audio_base64) {
-          throw new Error(res.message ?? "Não foi possível gerar a narração.");
-        }
-        const bin = atob(res.audio_base64);
-        const bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-        const url = URL.createObjectURL(new Blob([bytes], { type: res.mime }));
-        narrationUrlCache.set(cacheKey, url);
-        narrationPromiseCache.delete(cacheKey);
-        return url;
-      })
-      .catch((err) => {
-        narrationPromiseCache.delete(cacheKey);
-        throw err;
-      });
-    narrationPromiseCache.set(cacheKey, p);
-    return p;
-  };
-
-  useEffect(() => {
-    return () => {
-      stopCurrent();
-    };
-  }, [cacheKey]);
-
-  const toggle = () => {
-    if (speaking) {
-      stopCurrent();
-      return;
-    }
-    // Stop any other narration currently playing on the page.
-    setActiveNarration(stopCurrent);
-    // Create Audio synchronously inside the user gesture — required for mobile autoplay.
-    const audio = new Audio();
-    audio.preload = "auto";
-    audioRef.current = audio;
-    setProgress(0);
-    audio.ontimeupdate = () => {
-      if (audioRef.current !== audio) return;
-      const d = audio.duration;
-      if (Number.isFinite(d) && d > 0) {
-        setProgress(Math.min(1, audio.currentTime / d));
-      }
-    };
-    audio.onended = () => {
-      setSpeaking(false);
-      setProgress(0);
-    };
-    audio.onerror = () => {
-      setSpeaking(false);
-      setProgress(0);
-    };
-
-    const cached = narrationUrlCache.get(cacheKey);
-    if (cached) {
-      audio.src = cached;
-      audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
-      return;
-    }
-
-    if (speakImmediately()) {
-      // Warm the higher-quality audio silently for a later tap, but never block this tap.
-      fetchUrl().catch(() => {});
-      return;
-    }
-
-    setLoading(true);
-    fetchUrl()
-      .then((url) => {
-        if (audioRef.current !== audio) return;
-        audio.src = url;
-        return audio.play().then(() => setSpeaking(true));
-      })
-      .catch((err) => {
-        console.error("Narração falhou:", err);
-        toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const prefetch = () => {
-    if (narrationUrlCache.has(cacheKey) || narrationPromiseCache.has(cacheKey)) return;
-    fetchUrl().catch(() => {});
-  };
-
-  return { supported: true, speaking, loading, progress, toggle, prefetch };
-}
-
-
-function NarratablePhoto({
-  src,
-  alt,
-  text,
-}: {
-  src: string;
-  alt: string;
-  text: string;
-}) {
-  const { speaking, loading, toggle, prefetch } = useNarration(text);
-
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
-      <button
-        type="button"
-        onClick={toggle}
-        onPointerEnter={prefetch}
-        onTouchStart={prefetch}
-        onFocus={prefetch}
-        disabled={loading}
-        className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
-        aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-      >
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-        />
-        {speaking && (
-          <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
-            <Square className="h-3.5 w-3.5" />
-          </div>
-        )}
-        {loading && (
-          <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm">
-            <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-          </div>
-        )}
-
-      </button>
-    </div>
-  );
-}
-function NarratableVideo({
-  src,
-  poster,
-  alt,
-  text,
-  captionBelow,
-}: {
-  src: string;
-  poster: string;
-  alt: string;
-  text: string;
-  captionBelow?: boolean;
-}) {
-  const { speaking, loading, toggle, prefetch } = useNarration(text);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-
-
-  useEffect(() => {
-    if (videoFailed) return;
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (video.error) {
-      setVideoFailed(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
-    const onError = () => setVideoFailed(true);
-    video.addEventListener("play", onPlay);
-    video.addEventListener("pause", onPause);
-    video.addEventListener("error", onError);
-    observer.observe(video);
-
-    return () => {
-      observer.disconnect();
-      video.removeEventListener("play", onPlay);
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("error", onError);
-    };
-  }, [videoFailed]);
-
-  const handleClick = () => {
-    toggle();
-  };
-
-  if (videoFailed) {
-    return <NarratablePhoto src={poster} alt={alt} text={text} />;
-  }
-
-  if (captionBelow) {
-    return (
-      <div className="flex flex-col gap-3">
-        <button
-          type="button"
-          onClick={handleClick}
-          onPointerEnter={prefetch}
-          onTouchStart={prefetch}
-          onFocus={prefetch}
-          disabled={loading}
-          aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-          className="relative block w-full overflow-hidden rounded-3xl border border-gold/30 bg-black shadow-2xl shadow-black/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
-        >
-          <video
-            ref={videoRef}
-            src={src}
-            poster={poster}
-            muted
-            playsInline
-            loop
-            preload="metadata"
-            className="pointer-events-none h-full w-full object-cover"
-            aria-label={alt}
-            onError={() => setVideoFailed(true)}
-          />
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        muted
-        playsInline
-        loop
-        preload="metadata"
-        className="h-full w-full object-cover"
-        aria-label={alt}
-        onError={() => setVideoFailed(true)}
-      />
-      <button
-        type="button"
-        onClick={handleClick}
-        onPointerEnter={prefetch}
-        onTouchStart={prefetch}
-        onFocus={prefetch}
-        disabled={loading}
-        className="absolute inset-0 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
-        aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-      />
-      {(speaking || loading) && (
-        <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
-          {loading ? (
-            <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-          ) : (
-            <Square className="h-3.5 w-3.5" />
-          )}
-        </div>
-      )}
-
-    </div>
-  );
-}
-
-
-
-
 function HistoriasPage() {
-  // Batch-translate structured content (sections + album)
-  const sectionStrings = useMemo(
-    () => sections.flatMap((s) => [s.title, ...s.body]),
-    [],
-  );
-  const tSections = useAutoTranslate(sectionStrings);
-  const translatedSections = useMemo(() => {
-    let i = 0;
-    return sections.map((s) => {
-      const title = tSections[i++] ?? s.title;
-      const body = s.body.map(() => tSections[i++] ?? "");
-      return { ...s, title, body: body.length ? body : s.body };
-    });
-  }, [tSections]);
-
-  const albumStrings = useMemo(() => album.flatMap((a) => [a.title, a.text]), []);
-  const tAlbum = useAutoTranslate(albumStrings);
-  const translatedAlbum = useMemo(
-    () =>
-      album.map((a, idx) => ({
-        ...a,
-        title: tAlbum[idx * 2] ?? a.title,
-        text: tAlbum[idx * 2 + 1] ?? a.text,
-      })),
-    [tAlbum],
-  );
-
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
@@ -593,110 +138,27 @@ function HistoriasPage() {
             to="/"
             className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
           >
-            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
+            <ArrowLeft className="h-4 w-4" /> Voltar
           </Link>
 
           <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
-            🪶 <T>Histórias do Povo</T>
+            🪶 Histórias do Povo
           </p>
           <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
-            <T>Pataxó</T> —{" "}
-            <span className="text-gold"><T>guardiões da Mata Atlântica</T></span>
+            Pataxó —{" "}
+            <span className="text-gold">guardiões da Mata Atlântica</span>
           </h1>
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
-            <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
+            Origem, território, língua, espiritualidade, arte e resistência de
+            um povo que faz da cultura sua arma mais bonita.
           </p>
-
         </div>
       </header>
 
       {/* Sections */}
       <main className="mx-auto max-w-5xl px-5 pb-32">
-        {/* Ancião Josa — destaque no topo */}
-        <section className="mb-16 md:mb-24">
-          <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 <T>Guardião da Memória</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
-              <T>Ancião</T> <span className="text-gold">Josa</span> — <T>a história de quem nunca desistiu de sua aldeia</T>
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            <NarratableVideo
-              src={videoJosa.url}
-              poster={albumJosa.url}
-              alt="Vídeo do Ancião Josa Pataxó segurando maracá tradicional em frente à oca da aldeia"
-              text={`Ancião Josa, a história de quem nunca desistiu de sua aldeia. Desde jovem, ele aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos. Por toda a sua vida, esteve na linha de frente da luta: defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo. Muitas vezes enfrentou dificuldades, mas nunca recuou, pois sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois. Hoje, como guardião da memória, ele é a referência da comunidade. Reúne os jovens para contar as histórias da origem do povo, ensina os costumes que vieram das gerações passadas, e reforça sempre: nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa. Tradição: os costumes, cantos, pinturas e a língua Patxôhã são tesouros que passam de geração em geração. Luta: defender o território, a floresta e os rios é defender a vida e o futuro do nosso povo. Sabedoria: os mais velhos são os livros vivos que guardam as histórias e os ensinamentos. Resistência: enquanto houver quem guarde e lute por esses saberes, nossa aldeia continuará existindo, forte e viva. Aldeia Velha, Povo Pataxó, nossa terra, nossa vida.`}
-              captionBelow
-            />
-
-            <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <p><T>Desde jovem, Josa aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos.</T></p>
-              <p><T>Por toda a sua vida, esteve na linha de frente da luta — defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo.</T></p>
-              <p><T>Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois.</T></p>
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                <T>“Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa.”</T>
-              </blockquote>
-
-              <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
-                {[
-                  { t: "Tradição", d: "Costumes, cantos e língua que passam de geração em geração." },
-                  { t: "Luta", d: "Defender a floresta e os rios é defender a vida." },
-                  { t: "Sabedoria", d: "Os mais velhos são livros vivos do povo." },
-                  { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
-                ].map((b) => (
-                  <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
-                    <p className="font-serif text-gold"><T>{b.t}</T></p>
-                    <p className="mt-1 text-amber-100/80"><T>{b.d}</T></p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
-                <T>Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida</T>
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* In memoriam — ancião João */}
-        <section className="mb-16 md:mb-24">
-          <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ <T>In memoriam</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              <T>A história de quem</T> <span className="text-gold"><T>nunca desistiu</T></span> <T>de sua aldeia</T>
-            </h2>
-          </div>
-
-
-          <div className="flex flex-col gap-8">
-            <NarratableVideo
-              src={videoJoao.url}
-              poster={albumAnciao.url}
-              alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
-              text={`Sou ancião João. A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
-              captionBelow
-            />
-
-            <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
-                <T>“Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida.”</T>
-              </blockquote>
-              <p><T>Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura — e por cada criança que sonha com um futuro melhor.</T></p>
-              <p><T>Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.</T></p>
-              <p className="font-serif text-gold">
-                <T>Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.</T>
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-
         <div className="space-y-16 md:space-y-24">
-          {translatedSections.map((s, i) => {
+          {sections.map((s, i) => {
             const Icon = s.icon;
             const reverse = i % 2 === 1;
             return (
@@ -707,13 +169,17 @@ function HistoriasPage() {
                   reverse ? "md:[&>*:first-child]:order-2" : ""
                 }`}
               >
-                <div className="relative">
-                  <NarratablePhoto
+                <div className="group relative overflow-hidden rounded-3xl border border-gold/25 shadow-2xl shadow-black/40">
+                  <img
                     src={s.image}
                     alt={s.title}
-                    text={`${s.title}. ${s.body.join(" ")}`}
+                    loading="lazy"
+                    width={1024}
+                    height={1024}
+                    className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs text-amber-100 backdrop-blur">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs text-amber-100 backdrop-blur">
                     <Icon className="h-3.5 w-3.5 text-gold" />
                     {s.title}
                   </div>
@@ -721,7 +187,7 @@ function HistoriasPage() {
 
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    <Icon className="h-3.5 w-3.5" /> <T>Capítulo</T> {i + 1}
+                    <Icon className="h-3.5 w-3.5" /> Capítulo {i + 1}
                   </div>
                   <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
                     {s.title}
@@ -737,99 +203,29 @@ function HistoriasPage() {
           })}
         </div>
 
-        {/* Álbum cultural */}
-        <section className="mt-20">
-          <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 <T>Álbum do Povo</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              <T>Rostos, pinturas e rituais Pataxó</T>
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
-              <T>Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.</T>
-            </p>
-          </div>
-
-          <AldeiaFilterAndAlbum items={translatedAlbum} />
-
-        </section>
-
         {/* Closing */}
         <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
           <p className="font-serif text-2xl text-gold">Ahuanã!</p>
           <p className="mt-2 text-amber-100/85">
-            <T>Que estas histórias caminhem com você. Aprenda a língua, ouça os cantos e ajude a manter viva a memória Pataxó.</T>
+            Que estas histórias caminhem com você. Aprenda a língua, ouça os
+            cantos e ajude a manter viva a memória Pataxó.
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               to="/professor"
               className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-emerald-950 hover:brightness-110"
             >
-              <T>Conversar com Professor Akuã</T>
+              Conversar com Professor Akuã
             </Link>
             <Link
               to="/musicas"
               className="rounded-full border border-gold/40 px-5 py-2 text-sm text-amber-100 hover:bg-white/5"
             >
-              <T>Ouvir cantos Pataxó</T>
+              Ouvir cantos Pataxó
             </Link>
           </div>
         </div>
-
       </main>
     </div>
   );
 }
-
-function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
-  const [aldeia, setAldeia] = useState<Aldeia>("Todas");
-  const filtered = aldeia === "Todas" ? items : items.filter((i) => i.aldeia === aldeia);
-  return (
-    <>
-      <div className="mb-6 flex flex-wrap justify-center gap-2">
-        {ALDEIAS.map((a) => (
-          <button
-            key={a}
-            onClick={() => setAldeia(a)}
-            className={`rounded-full border px-3 py-1.5 text-xs transition ${
-              aldeia === a
-                ? "border-gold bg-gold text-emerald-950"
-                : "border-gold/30 text-amber-100 hover:bg-white/5"
-            }`}
-          >
-            <MapPin className="mr-1 inline h-3 w-3" /> <T>{a}</T>
-          </button>
-        ))}
-      </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((item) => (
-          <figure
-            key={item.title}
-            className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
-          >
-            <div className="aspect-[4/5] overflow-hidden">
-              <img
-                src={item.src}
-                alt={item.title}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-            <figcaption className="p-5">
-              <div className="mb-1 inline-flex items-center gap-1 text-xs text-gold/80">
-                <MapPin className="h-3 w-3" /> {item.aldeia}
-              </div>
-              <h3 className="font-serif text-lg text-gold">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-amber-100/85">{item.text}</p>
-            </figcaption>
-          </figure>
-        ))}
-        {filtered.length === 0 && (
-          <p className="col-span-full text-center text-sm text-amber-100/70">
-            <T>Nenhuma foto desta aldeia ainda.</T>
-          </p>
-        )}
-      </div>
-    </>
-  );
-}
-

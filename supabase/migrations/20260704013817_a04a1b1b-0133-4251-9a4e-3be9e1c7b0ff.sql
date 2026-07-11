@@ -1,1 +1,0 @@
-DROP POLICY IF EXISTS "Authenticated can view all learning events for leaderboard" ON public.learning_events;

@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
+import { useState, useRef } from "react";
+import { ArrowLeft, Volume2, Loader2, Sun, Sunset, Moon, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+import { speakText } from "@/lib/tts.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/saudacoes")({
@@ -65,6 +64,15 @@ function SaudacoesPage() {
     queryFn: fetchSaudacoes,
   });
 
+  const atual = pickByHour(list);
+  const h = new Date().getHours();
+  const periodo =
+    h >= 5 && h <= 11
+      ? { label: "Bom dia", Icon: Sun }
+      : h >= 12 && h <= 17
+        ? { label: "Boa tarde", Icon: Sunset }
+        : { label: "Boa noite", Icon: Moon };
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
@@ -80,6 +88,22 @@ function SaudacoesPage() {
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-10">
+        {/* Saudação do momento */}
+        {atual && (
+          <section className="card-elev rounded-3xl p-6 md:p-8 bg-gradient-to-br from-forest-deep/60 to-bark/40 border border-gold/30">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-leaf">
+              <periodo.Icon className="h-4 w-4" /> Saudação do momento — {periodo.label}
+            </div>
+            <h1 className="mt-3 font-display text-4xl md:text-5xl font-black text-gold">
+              {atual.term_indigenous}
+            </h1>
+            <p className="mt-1 text-cream/90 text-lg">{atual.term_pt}</p>
+            {atual.pronunciation && (
+              <p className="mt-1 text-sm text-foreground/70">🗣️ {atual.pronunciation}</p>
+            )}
+            <AkuaCard s={atual} big />
+          </section>
+        )}
 
         {/* Lista completa */}
         <section className="mt-8">
@@ -103,127 +127,17 @@ function SaudacoesPage() {
   );
 }
 
-function LiveVideo({ list, loading }: { list: Saudacao[]; loading: boolean }) {
-  const [idx, setIdx] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const [source, setSource] = useState<"saudacoes" | "dicionario">("saudacoes");
-
-  const { data: full = [] } = useQuery({
-    queryKey: ["dict-patxoha-all"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("dictionary")
-        .select("id,term_pt,term_indigenous,pronunciation,example,audio_url")
-        .limit(2000);
-      if (error) throw error;
-      return (data ?? []) as Saudacao[];
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const pool = useMemo(() => {
-    const base = source === "saudacoes" ? list : full;
-    return base.filter((w) => w.term_indigenous && w.term_pt);
-  }, [source, list, full]);
-
-  useEffect(() => {
-    setIdx(0);
-  }, [source, pool.length]);
-
-  useEffect(() => {
-    if (!playing || pool.length === 0) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % pool.length), 3500);
-    return () => clearInterval(t);
-  }, [playing, pool.length]);
-
-  const current = pool[idx];
-
-  return (
-    <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-forest-deep via-bark/60 to-forest-deep shadow-2xl">
-      {/* Animated backdrop */}
-      <div className="pointer-events-none absolute inset-0 opacity-40">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-leaf/30 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gold/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-      </div>
-
-      <div className="relative p-6 md:p-10">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-red-300">
-            <Radio className="h-3.5 w-3.5 animate-pulse" /> Ao vivo — Patxôhã
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSource(source === "saudacoes" ? "dicionario" : "saudacoes")}
-              className="rounded-full border border-gold/30 bg-forest-deep/40 px-3 py-1 text-xs font-semibold text-cream hover:bg-forest-deep/70"
-            >
-              {source === "saudacoes" ? "Só saudações" : "Dicionário completo"}
-            </button>
-          </div>
-        </div>
-
-        {loading || !current ? (
-          <div className="flex h-56 items-center justify-center text-foreground/60">
-            <Loader2 className="h-6 w-6 animate-spin" />
-          </div>
-        ) : (
-          <div key={current.id} className="mt-6 min-h-[220px] animate-in fade-in zoom-in-95 duration-700">
-            <p className="text-xs uppercase tracking-widest text-leaf/80 mb-2">Palavra {idx + 1} de {pool.length}</p>
-            <h2 className="font-display text-5xl md:text-7xl font-black text-gold break-words leading-tight drop-shadow-lg">
-              {current.term_indigenous}
-            </h2>
-            <p className="mt-3 text-xl md:text-2xl text-cream/95 break-words">{current.term_pt}</p>
-            {current.pronunciation && (
-              <p className="mt-2 text-sm md:text-base text-foreground/70">🗣️ {current.pronunciation}</p>
-            )}
-          </div>
-        )}
-
-        <div className="mt-6 flex items-center justify-center gap-3">
-          <button
-            onClick={() => setPlaying((p) => !p)}
-            className="grid h-12 w-12 place-items-center rounded-full bg-gold text-forest-deep shadow-lg hover:scale-105 transition"
-            aria-label={playing ? "Pausar" : "Reproduzir"}
-          >
-            {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-          </button>
-          <button
-            onClick={() => setIdx((i) => (pool.length ? (i + 1) % pool.length : 0))}
-            className="grid h-12 w-12 place-items-center rounded-full bg-leaf/30 text-cream hover:bg-leaf/50 transition"
-            aria-label="Próxima"
-          >
-            <SkipForward className="h-5 w-5" />
-          </button>
-          {current && <PlayBtn text={current.term_indigenous} audioUrl={current.audio_url} />}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-forest-deep/60">
-          <div
-            key={`${current?.id}-${playing}`}
-            className="h-full bg-gradient-to-r from-leaf to-gold"
-            style={{
-              width: "100%",
-              animation: playing ? "shrink 3.5s linear" : "none",
-            }}
-          />
-        </div>
-        <style>{`@keyframes shrink { from { width: 0% } to { width: 100% } }`}</style>
-      </div>
-    </section>
-  );
-}
-
 function SaudacaoCard({ s }: { s: Saudacao }) {
   return (
-    <div className="card-elev rounded-2xl p-4 border border-gold/15 min-w-0">
+    <div className="card-elev rounded-2xl p-4 border border-gold/15">
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0 flex-1">
-          <div className="font-display text-lg font-bold text-gold break-words">
+        <div className="min-w-0">
+          <div className="font-display text-lg font-bold text-gold truncate">
             {s.term_indigenous}
           </div>
-          <div className="text-sm text-cream/90 break-words">{s.term_pt}</div>
+          <div className="text-sm text-cream/90 truncate">{s.term_pt}</div>
           {s.pronunciation && (
-            <div className="text-xs text-foreground/60 mt-0.5 break-words">🗣️ {s.pronunciation}</div>
+            <div className="text-xs text-foreground/60 mt-0.5">🗣️ {s.pronunciation}</div>
           )}
         </div>
         <PlayBtn text={s.term_indigenous} audioUrl={s.audio_url} />
@@ -252,8 +166,9 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
 }
 
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speak = useServerFn(narratePublic);
+  const speak = useServerFn(speakText);
   const [busy, setBusy] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const cacheRef = useRef<string | null>(null);
 
   async function play() {
@@ -261,24 +176,26 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     try {
       setBusy(true);
       if (audioUrl) {
-        await playFast(audioUrl);
+        const a = new Audio(audioUrl);
+        audioRef.current?.pause();
+        audioRef.current = a;
+        await a.play();
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "onyx" } });
-        if (r.error || !r.audio_base64) {
-          throw new Error(r.message ?? "Não foi possível gerar o áudio");
-        }
-        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+        const r = await speak({ data: { text, voice: "nova" } });
+        cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
       }
-      await playFast(cacheRef.current);
+      const a = new Audio(cacheRef.current);
+      audioRef.current?.pause();
+      audioRef.current = a;
+      await a.play();
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
       setBusy(false);
     }
   }
-
 
   return (
     <button

@@ -1,1 +1,0 @@
-ALTER TABLE public.songs ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ; CREATE INDEX IF NOT EXISTS songs_deleted_at_idx ON public.songs (deleted_at);

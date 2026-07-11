@@ -19,8 +19,6 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          name_en: string | null
-          name_es: string | null
           order_index: number
           poster_url: string | null
           video_url: string
@@ -29,8 +27,6 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
-          name_en?: string | null
-          name_es?: string | null
           order_index?: number
           poster_url?: string | null
           video_url: string
@@ -39,8 +35,6 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
-          name_en?: string | null
-          name_es?: string | null
           order_index?: number
           poster_url?: string | null
           video_url?: string
@@ -54,12 +48,8 @@ export type Database = {
           id: string
           is_active: boolean
           options: Json
-          options_en: Json | null
-          options_es: Json | null
           points: number
           question: string
-          question_en: string | null
-          question_es: string | null
           updated_at: string
         }
         Insert: {
@@ -68,12 +58,8 @@ export type Database = {
           id?: string
           is_active?: boolean
           options?: Json
-          options_en?: Json | null
-          options_es?: Json | null
           points?: number
           question: string
-          question_en?: string | null
-          question_es?: string | null
           updated_at?: string
         }
         Update: {
@@ -82,12 +68,8 @@ export type Database = {
           id?: string
           is_active?: boolean
           options?: Json
-          options_en?: Json | null
-          options_es?: Json | null
           points?: number
           question?: string
-          question_en?: string | null
-          question_es?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -96,45 +78,33 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          description_en: string | null
-          description_es: string | null
           duration_minutes: number | null
           id: string
           is_active: boolean
           thumbnail_url: string | null
           title: string
-          title_en: string | null
-          title_es: string | null
           updated_at: string
           video_url: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           duration_minutes?: number | null
           id?: string
           is_active?: boolean
           thumbnail_url?: string | null
           title: string
-          title_en?: string | null
-          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           duration_minutes?: number | null
           id?: string
           is_active?: boolean
           thumbnail_url?: string | null
           title?: string
-          title_en?: string | null
-          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
@@ -146,15 +116,11 @@ export type Database = {
           category: string
           created_at: string
           example: string | null
-          example_en: string | null
-          example_es: string | null
           id: string
           language: string
           pronunciation: string | null
           term_indigenous: string
           term_pt: string
-          term_pt_en: string | null
-          term_pt_es: string | null
           updated_at: string
         }
         Insert: {
@@ -162,15 +128,11 @@ export type Database = {
           category?: string
           created_at?: string
           example?: string | null
-          example_en?: string | null
-          example_es?: string | null
           id?: string
           language?: string
           pronunciation?: string | null
           term_indigenous: string
           term_pt: string
-          term_pt_en?: string | null
-          term_pt_es?: string | null
           updated_at?: string
         }
         Update: {
@@ -178,130 +140,12 @@ export type Database = {
           category?: string
           created_at?: string
           example?: string | null
-          example_en?: string | null
-          example_es?: string | null
           id?: string
           language?: string
           pronunciation?: string | null
           term_indigenous?: string
           term_pt?: string
-          term_pt_en?: string | null
-          term_pt_es?: string | null
           updated_at?: string
-        }
-        Relationships: []
-      }
-      email_send_log: {
-        Row: {
-          created_at: string
-          error_message: string | null
-          id: string
-          message_id: string | null
-          metadata: Json | null
-          recipient_email: string
-          status: string
-          template_name: string
-        }
-        Insert: {
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          message_id?: string | null
-          metadata?: Json | null
-          recipient_email: string
-          status: string
-          template_name: string
-        }
-        Update: {
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          message_id?: string | null
-          metadata?: Json | null
-          recipient_email?: string
-          status?: string
-          template_name?: string
-        }
-        Relationships: []
-      }
-      email_send_state: {
-        Row: {
-          auth_email_ttl_minutes: number
-          batch_size: number
-          id: number
-          retry_after_until: string | null
-          send_delay_ms: number
-          transactional_email_ttl_minutes: number
-          updated_at: string
-        }
-        Insert: {
-          auth_email_ttl_minutes?: number
-          batch_size?: number
-          id?: number
-          retry_after_until?: string | null
-          send_delay_ms?: number
-          transactional_email_ttl_minutes?: number
-          updated_at?: string
-        }
-        Update: {
-          auth_email_ttl_minutes?: number
-          batch_size?: number
-          id?: number
-          retry_after_until?: string | null
-          send_delay_ms?: number
-          transactional_email_ttl_minutes?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      email_unsubscribe_tokens: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          token: string
-          used_at: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          token: string
-          used_at?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          token?: string
-          used_at?: string | null
-        }
-        Relationships: []
-      }
-      learning_events: {
-        Row: {
-          action: string
-          created_at: string
-          id: string
-          points: number
-          trail: string | null
-          user_id: string
-        }
-        Insert: {
-          action?: string
-          created_at?: string
-          id?: string
-          points?: number
-          trail?: string | null
-          user_id: string
-        }
-        Update: {
-          action?: string
-          created_at?: string
-          id?: string
-          points?: number
-          trail?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -336,81 +180,54 @@ export type Database = {
         Row: {
           ambient_video_id: string | null
           artist: string | null
-          artist_en: string | null
-          artist_es: string | null
           audio_url: string
           cover_url: string | null
           created_at: string
-          deleted_at: string | null
           description: string | null
-          description_en: string | null
-          description_es: string | null
           duration_seconds: number | null
           id: string
           is_active: boolean
           language: string
           lyrics_indigenous: string
           lyrics_pt: string
-          lyrics_pt_en: string | null
-          lyrics_pt_es: string | null
           order_index: number
           title: string
-          title_en: string | null
-          title_es: string | null
           updated_at: string
           video_url: string | null
         }
         Insert: {
           ambient_video_id?: string | null
           artist?: string | null
-          artist_en?: string | null
-          artist_es?: string | null
           audio_url: string
           cover_url?: string | null
           created_at?: string
-          deleted_at?: string | null
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           duration_seconds?: number | null
           id?: string
           is_active?: boolean
           language?: string
           lyrics_indigenous?: string
           lyrics_pt?: string
-          lyrics_pt_en?: string | null
-          lyrics_pt_es?: string | null
           order_index?: number
           title: string
-          title_en?: string | null
-          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
         Update: {
           ambient_video_id?: string | null
           artist?: string | null
-          artist_en?: string | null
-          artist_es?: string | null
           audio_url?: string
           cover_url?: string | null
           created_at?: string
-          deleted_at?: string | null
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           duration_seconds?: number | null
           id?: string
           is_active?: boolean
           language?: string
           lyrics_indigenous?: string
           lyrics_pt?: string
-          lyrics_pt_en?: string | null
-          lyrics_pt_es?: string | null
           order_index?: number
           title?: string
-          title_en?: string | null
-          title_es?: string | null
           updated_at?: string
           video_url?: string | null
         }
@@ -424,90 +241,14 @@ export type Database = {
           },
         ]
       }
-      subscriptions: {
-        Row: {
-          cancel_at_period_end: boolean | null
-          created_at: string | null
-          current_period_end: string | null
-          current_period_start: string | null
-          environment: string
-          id: string
-          paddle_customer_id: string
-          paddle_subscription_id: string
-          price_id: string
-          product_id: string
-          status: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          cancel_at_period_end?: boolean | null
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          environment?: string
-          id?: string
-          paddle_customer_id: string
-          paddle_subscription_id: string
-          price_id: string
-          product_id: string
-          status?: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          cancel_at_period_end?: boolean | null
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          environment?: string
-          id?: string
-          paddle_customer_id?: string
-          paddle_subscription_id?: string
-          price_id?: string
-          product_id?: string
-          status?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      suppressed_emails: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          metadata: Json | null
-          reason: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          metadata?: Json | null
-          reason: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          metadata?: Json | null
-          reason?: string
-        }
-        Relationships: []
-      }
       trails: {
         Row: {
           created_at: string
           default_progress: number
           description: string | null
-          description_en: string | null
-          description_es: string | null
           id: string
           image_url: string | null
           name: string
-          name_en: string | null
-          name_es: string | null
           order_index: number
           updated_at: string
         }
@@ -515,13 +256,9 @@ export type Database = {
           created_at?: string
           default_progress?: number
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           id?: string
           image_url?: string | null
           name: string
-          name_en?: string | null
-          name_es?: string | null
           order_index?: number
           updated_at?: string
         }
@@ -529,13 +266,9 @@ export type Database = {
           created_at?: string
           default_progress?: number
           description?: string | null
-          description_en?: string | null
-          description_es?: string | null
           id?: string
           image_url?: string | null
           name?: string
-          name_en?: string | null
-          name_es?: string | null
           order_index?: number
           updated_at?: string
         }
@@ -544,21 +277,18 @@ export type Database = {
       user_roles: {
         Row: {
           created_at: string
-          expires_at: string | null
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
-          expires_at?: string | null
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
           created_at?: string
-          expires_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
@@ -570,23 +300,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      delete_email: {
-        Args: { message_id: number; queue_name: string }
-        Returns: boolean
-      }
-      email_queue_dispatch: { Args: never; Returns: undefined }
-      enqueue_email: {
-        Args: { payload: Json; queue_name: string }
-        Returns: number
-      }
-      has_active_subscription: {
-        Args: { _check_env?: string; _user_id: string }
-        Returns: boolean
-      }
-      has_premium_access: {
-        Args: { _check_env?: string; _user_id: string }
-        Returns: boolean
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -594,37 +307,9 @@ export type Database = {
         }
         Returns: boolean
       }
-      move_to_dlq: {
-        Args: {
-          dlq_name: string
-          message_id: number
-          payload: Json
-          source_queue: string
-        }
-        Returns: number
-      }
-      read_email_batch: {
-        Args: { batch_size: number; queue_name: string; vt: number }
-        Returns: {
-          message: Json
-          msg_id: number
-          read_ct: number
-        }[]
-      }
-      show_limit: { Args: never; Returns: number }
-      show_trgm: { Args: { "": string }; Returns: string[] }
-      weekly_top_learners: {
-        Args: { _limit?: number }
-        Returns: {
-          name: string
-          photo_url: string
-          points: number
-          user_id: string
-        }[]
-      }
     }
     Enums: {
-      app_role: "admin" | "user" | "premium"
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -752,7 +437,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user", "premium"],
+      app_role: ["admin", "user"],
     },
   },
 } as const

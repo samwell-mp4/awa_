@@ -5,12 +5,6 @@
 //     error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import { loadEnv } from "vite";
-
-// Load all env vars (including non-VITE_) into process.env for server routes
-const serverEnv = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
-Object.assign(process.env, serverEnv);
-
 
 export default defineConfig({
   tanstackStart: {

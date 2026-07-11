@@ -1,4 +1,4 @@
-export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
+export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais" | "cultura";
 
 export const TRAILS: Record<TrailSlug, {
   slug: TrailSlug;
@@ -67,6 +67,26 @@ export const TRAILS: Record<TrailSlug, {
     },
     apoio: "🐾 — Cada bicho é também um mestre.",
   },
+  cultura: {
+    slug: "cultura",
+    name: "Cultura",
+    emoji: "🎨",
+    color: "from-gold/50 to-forest-deep/50",
+    intro: "Corpo, ações, cores, números e alimentos — o centro onde língua e tradição se encontram.",
+    categories: ["Cultura", "Corpo", "Verbos", "Cores", "Números", "Alimentos"],
+    groups: [
+      { label: "🤍 Corpo — Mapa do Conhecimento", categories: ["Corpo"] },
+      { label: "⚡ Ações — Verbos e Tempos", categories: ["Verbos"] },
+      { label: "🎨 Cores, Números e Alimentos", categories: ["Cores", "Números", "Alimentos"] },
+      { label: "✨ Cultura", categories: ["Cultura"] },
+    ],
+    certificate: {
+      title: "🎨 GUARDIÃO DA PALAVRA E DA VIDA",
+      description: "Domina o corpo como mapa, sabe agir, falar, criar, contar e usar as cores — chegou ao centro onde língua, corpo e tradição se encontram.",
+      message: `🗣️ Professor Akuã diz:\n\n— Parabéns, caminhante! Você percorreu todo o caminho que preparei. Agora conhece o corpo que é casa, os verbos que movem a vida, as cores que pintam o mundo e tudo que faz o nosso jeito de ser único.\n\n⭐ A maior lição que você leva: A língua não está guardada só no livro ou no dicionário… ela vive quando sai da sua boca! Você se tornou portador dessa voz sagrada para os que virão depois.\n\nMakínã — Somos um povo, somos uma voz, somos eternos!\nTxuhap! — Vamos continuar sempre juntos!`,
+    },
+    apoio: "🎨 — Cada som é cor, cada palavra é parte do desenho que somos.",
+  },
 };
 
 export const FRASES_SABEDORIA = [
@@ -98,12 +118,10 @@ export function getLearned(slug: string): Set<string> {
 export function setLearned(slug: string, ids: Set<string>) {
   if (typeof window === "undefined") return;
   localStorage.setItem(KEY(slug), JSON.stringify([...ids]));
-  window.dispatchEvent(new CustomEvent("awa:progress", { detail: { slug } }));
 }
 export function markCertificate(slug: string) {
   if (typeof window === "undefined") return;
   localStorage.setItem(`awa_trilha_cert_${slug}`, new Date().toISOString());
-  window.dispatchEvent(new CustomEvent("awa:progress", { detail: { slug } }));
 }
 export function hasCertificate(slug: string): boolean {
   if (typeof window === "undefined") return false;
