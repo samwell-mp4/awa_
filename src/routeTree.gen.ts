@@ -9,23 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
+import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ReembolsoRouteImport } from './routes/reembolso'
 import { Route as ProfessorRouteImport } from './routes/professor'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasRouteImport } from './routes/musicas'
+import { Route as MinhaContaRouteImport } from './routes/minha-conta'
+import { Route as JogosRouteImport } from './routes/jogos'
+import { Route as InstalarRouteImport } from './routes/instalar'
+import { Route as InfantilRouteImport } from './routes/infantil'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
-import { Route as CulturaRouteImport } from './routes/cultura'
+import { Route as ConhecimentoRouteImport } from './routes/conhecimento'
+import { Route as CanticosRouteImport } from './routes/canticos'
+import { Route as BiografiaRouteImport } from './routes/biografia'
+import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
+import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TraduzirRoute = TraduzirRouteImport.update({
   id: '/traduzir',
   path: '/traduzir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SaudacoesRoute = SaudacoesRouteImport.update({
@@ -33,14 +61,54 @@ const SaudacoesRoute = SaudacoesRouteImport.update({
   path: '/saudacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReembolsoRoute = ReembolsoRouteImport.update({
+  id: '/reembolso',
+  path: '/reembolso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfessorRoute = ProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosRoute = PlanosRouteImport.update({
+  id: '/planos',
+  path: '/planos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MusicasRoute = MusicasRouteImport.update({
   id: '/musicas',
   path: '/musicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinhaContaRoute = MinhaContaRouteImport.update({
+  id: '/minha-conta',
+  path: '/minha-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogosRoute = JogosRouteImport.update({
+  id: '/jogos',
+  path: '/jogos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstalarRoute = InstalarRouteImport.update({
+  id: '/instalar',
+  path: '/instalar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfantilRoute = InfantilRouteImport.update({
+  id: '/infantil',
+  path: '/infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoriasRoute = HistoriasRouteImport.update({
@@ -53,14 +121,34 @@ const DicionarioRoute = DicionarioRouteImport.update({
   path: '/dicionario',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CulturaRoute = CulturaRouteImport.update({
-  id: '/cultura',
-  path: '/cultura',
+const ConhecimentoRoute = ConhecimentoRouteImport.update({
+  id: '/conhecimento',
+  path: '/conhecimento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanticosRoute = CanticosRouteImport.update({
+  id: '/canticos',
+  path: '/canticos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BiografiaRoute = BiografiaRouteImport.update({
+  id: '/biografia',
+  path: '/biografia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BemVindoRoute = BemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdultoRoute = AdultoRouteImport.update({
+  id: '/adulto',
+  path: '/adulto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -87,119 +175,281 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
+  id: '/lovable/email/auth/webhook',
+  path: '/lovable/email/auth/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
+  id: '/lovable/email/auth/preview',
+  path: '/lovable/email/auth/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
-  '/cultura': typeof CulturaRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/biografia': typeof BiografiaRoute
+  '/canticos': typeof CanticosRoute
+  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
+  '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
-  '/cultura': typeof CulturaRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/biografia': typeof BiografiaRoute
+  '/canticos': typeof CanticosRoute
+  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
+  '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
-  '/cultura': typeof CulturaRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/biografia': typeof BiografiaRoute
+  '/canticos': typeof CanticosRoute
+  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
+  '/instalar': typeof InstalarRoute
+  '/jogos': typeof JogosRoute
+  '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/planos': typeof PlanosRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/reembolso': typeof ReembolsoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
+  '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/adulto'
     | '/auth'
-    | '/cultura'
+    | '/bem-vindo'
+    | '/biografia'
+    | '/canticos'
+    | '/conhecimento'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
+    | '/instalar'
+    | '/jogos'
+    | '/minha-conta'
     | '/musicas'
+    | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
+    | '/videos'
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
+    | '/api/public/payments/webhook'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
+    | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/adulto'
     | '/auth'
-    | '/cultura'
+    | '/bem-vindo'
+    | '/biografia'
+    | '/canticos'
+    | '/conhecimento'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
+    | '/instalar'
+    | '/jogos'
+    | '/minha-conta'
     | '/musicas'
+    | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
+    | '/videos'
     | '/admin'
     | '/trilhas/$slug'
     | '/trilhas'
+    | '/api/public/payments/webhook'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
+    | '/lovable/email/queue/process'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/adulto'
     | '/auth'
-    | '/cultura'
+    | '/bem-vindo'
+    | '/biografia'
+    | '/canticos'
+    | '/conhecimento'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
+    | '/instalar'
+    | '/jogos'
+    | '/minha-conta'
     | '/musicas'
+    | '/planos'
+    | '/privacidade'
     | '/professor'
+    | '/reembolso'
+    | '/reset-password'
     | '/saudacoes'
+    | '/termos'
     | '/traduzir'
+    | '/videos'
     | '/_authenticated/admin'
     | '/trilhas/$slug'
     | '/trilhas/'
+    | '/api/public/payments/webhook'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
+    | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdultoRoute: typeof AdultoRoute
   AuthRoute: typeof AuthRoute
-  CulturaRoute: typeof CulturaRoute
+  BemVindoRoute: typeof BemVindoRoute
+  BiografiaRoute: typeof BiografiaRoute
+  CanticosRoute: typeof CanticosRoute
+  ConhecimentoRoute: typeof ConhecimentoRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
+  InfantilRoute: typeof InfantilRoute
+  InstalarRoute: typeof InstalarRoute
+  JogosRoute: typeof JogosRoute
+  MinhaContaRoute: typeof MinhaContaRoute
   MusicasRoute: typeof MusicasRoute
+  PlanosRoute: typeof PlanosRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
+  ReembolsoRoute: typeof ReembolsoRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SaudacoesRoute: typeof SaudacoesRoute
+  TermosRoute: typeof TermosRoute
   TraduzirRoute: typeof TraduzirRoute
+  VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
+  LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
+  LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
+  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/traduzir': {
       id: '/traduzir'
       path: '/traduzir'
       fullPath: '/traduzir'
       preLoaderRoute: typeof TraduzirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/saudacoes': {
@@ -209,6 +459,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SaudacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reembolso': {
+      id: '/reembolso'
+      path: '/reembolso'
+      fullPath: '/reembolso'
+      preLoaderRoute: typeof ReembolsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/professor': {
       id: '/professor'
       path: '/professor'
@@ -216,11 +480,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfessorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos': {
+      id: '/planos'
+      path: '/planos'
+      fullPath: '/planos'
+      preLoaderRoute: typeof PlanosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/musicas': {
       id: '/musicas'
       path: '/musicas'
       fullPath: '/musicas'
       preLoaderRoute: typeof MusicasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minha-conta': {
+      id: '/minha-conta'
+      path: '/minha-conta'
+      fullPath: '/minha-conta'
+      preLoaderRoute: typeof MinhaContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogos': {
+      id: '/jogos'
+      path: '/jogos'
+      fullPath: '/jogos'
+      preLoaderRoute: typeof JogosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instalar': {
+      id: '/instalar'
+      path: '/instalar'
+      fullPath: '/instalar'
+      preLoaderRoute: typeof InstalarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infantil': {
+      id: '/infantil'
+      path: '/infantil'
+      fullPath: '/infantil'
+      preLoaderRoute: typeof InfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historias': {
@@ -237,11 +543,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DicionarioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cultura': {
-      id: '/cultura'
-      path: '/cultura'
-      fullPath: '/cultura'
-      preLoaderRoute: typeof CulturaRouteImport
+    '/conhecimento': {
+      id: '/conhecimento'
+      path: '/conhecimento'
+      fullPath: '/conhecimento'
+      preLoaderRoute: typeof ConhecimentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canticos': {
+      id: '/canticos'
+      path: '/canticos'
+      fullPath: '/canticos'
+      preLoaderRoute: typeof CanticosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biografia': {
+      id: '/biografia'
+      path: '/biografia'
+      fullPath: '/biografia'
+      preLoaderRoute: typeof BiografiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bem-vindo': {
+      id: '/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof BemVindoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -249,6 +576,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adulto': {
+      id: '/adulto'
+      path: '/adulto'
+      fullPath: '/adulto'
+      preLoaderRoute: typeof AdultoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -286,6 +620,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/auth/webhook': {
+      id: '/lovable/email/auth/webhook'
+      path: '/lovable/email/auth/webhook'
+      fullPath: '/lovable/email/auth/webhook'
+      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/auth/preview': {
+      id: '/lovable/email/auth/preview'
+      path: '/lovable/email/auth/preview'
+      fullPath: '/lovable/email/auth/preview'
+      preLoaderRoute: typeof LovableEmailAuthPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -303,27 +665,35 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdultoRoute: AdultoRoute,
   AuthRoute: AuthRoute,
-  CulturaRoute: CulturaRoute,
+  BemVindoRoute: BemVindoRoute,
+  BiografiaRoute: BiografiaRoute,
+  CanticosRoute: CanticosRoute,
+  ConhecimentoRoute: ConhecimentoRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
+  InfantilRoute: InfantilRoute,
+  InstalarRoute: InstalarRoute,
+  JogosRoute: JogosRoute,
+  MinhaContaRoute: MinhaContaRoute,
   MusicasRoute: MusicasRoute,
+  PlanosRoute: PlanosRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
+  ReembolsoRoute: ReembolsoRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SaudacoesRoute: SaudacoesRoute,
+  TermosRoute: TermosRoute,
   TraduzirRoute: TraduzirRoute,
+  VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
+  LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
+  LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
+  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

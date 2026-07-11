@@ -1,23 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
+import { base64ToBlobUrl } from "@/lib/audio-play";
 import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
     meta: [
       { title: "Professor Akuã — AWÃ TECH" },
-      {
-        name: "description",
-        content:
-          "Converse com o Professor Akuã, mestre virtual de línguas indígenas brasileiras. Traduções e ensino baseados no dicionário Patxôhã.",
-      },
+      { name: "description", content: "Professor Akuã — chat com IA em Patxôhã (Premium)." },
     ],
   }),
-  component: ProfessorPage,
+  component: () => (
+    <PremiumGate title="Professor Akuã (Premium)" description="Converse com o mestre virtual de Patxôhã sem limites. Recurso exclusivo para assinantes.">
+      <ProfessorPage />
+    </PremiumGate>
+  ),
 });
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -31,6 +34,7 @@ const SUGESTOES = [
 
 function ProfessorPage() {
   const ask = useServerFn(askAkua);
+  const speak = useServerFn(speakText);
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
@@ -41,21 +45,39 @@ function ProfessorPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  async function autoSpeak(audio: HTMLAudioElement, text: string) {
+    try {
+      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ");
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) return;
+      audioRef.current?.pause();
+      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
+      audioRef.current = audio;
+      await audio.play().catch(() => {});
+    } catch {
+      /* silencioso: se falhar, mantém apenas o texto */
+    }
+  }
+
   async function send(text: string) {
     const content = text.trim();
     if (!content || loading) return;
+    // Cria o Audio dentro do gesto do usuário para liberar autoplay
+    const audio = new Audio();
     const next = [...messages, { role: "user" as const, content }];
     setMessages(next);
     setInput("");
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { messages: next } });
+      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
       setMessages([...next, { role: "assistant", content: reply }]);
+      void autoSpeak(audio, reply);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao falar com Akuã");
     } finally {
@@ -150,8 +172,12 @@ function Bubble({ role, content }: Msg) {
     if (busy) return;
     try {
       setBusy(true);
-      const r = await speak({ data: { text } });
-      const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
+      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        throw new Error(r.message ?? "Não foi possível gerar áudio");
+      }
+      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
+      audio.preload = "auto";
       audioRef.current?.pause();
       audioRef.current = audio;
       await audio.play();
@@ -209,17 +235,6 @@ function Bubble({ role, content }: Msg) {
             ),
           )}
         </div>
-        {!isUser && (
-          <button
-            onClick={() => playText(content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ","))}
-            disabled={busy}
-            className="mt-2 inline-flex items-center gap-1 rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-1 text-xs text-leaf hover:bg-leaf/20 disabled:opacity-50"
-            aria-label="Ouvir resposta inteira"
-          >
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Volume2 className="h-3 w-3" />}
-            Ouvir tudo
-          </button>
-        )}
       </div>
     </div>
   );

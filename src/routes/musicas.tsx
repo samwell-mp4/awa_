@@ -11,19 +11,21 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { PremiumGate } from "@/components/PremiumGate";
+import { pickLang, useLang } from "@/lib/pick-lang";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
     meta: [
       { title: "Cânticos Sagrados — AWÃ TECH" },
-      {
-        name: "description",
-        content:
-          "Cânticos em línguas indígenas brasileiras com legendas bilíngues sincronizadas e vídeos imersivos da floresta.",
-      },
+      { name: "description", content: "Cânticos em Patxôhã com legendas bilíngues (Premium)." },
     ],
   }),
-  component: MusicasPage,
+  component: () => (
+    <PremiumGate title="Cânticos completos (Premium)" description="Assine para ouvir todos os cânticos com legendas bilíngues e vídeos imersivos.">
+      <MusicasPage />
+    </PremiumGate>
+  ),
 });
 
 type Song = {
@@ -38,17 +40,28 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  title_en?: string | null;
+  title_es?: string | null;
+  artist_en?: string | null;
+  artist_es?: string | null;
+  description_en?: string | null;
+  description_es?: string | null;
+  lyrics_pt_en?: string | null;
+  lyrics_pt_es?: string | null;
 };
+
 
 type Ambient = { id: string; name: string; video_url: string };
 
 function MusicasPage() {
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_public"],
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("*")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -58,6 +71,8 @@ function MusicasPage() {
   });
   const { data: ambients = [] } = useQuery({
     queryKey: ["ambient_videos"],
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("ambient_videos")
@@ -67,23 +82,46 @@ function MusicasPage() {
     },
   });
 
-  const ambientMap = Object.fromEntries(ambients.map((a) => [a.id, a]));
+  const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
+  const soundCloudWidgetsRef = useRef<Record<string, any>>({});
+
+  useEffect(() => {
+    const hasSoundCloud = songs.some((song) => scEmbed(song.audio_url));
+    if (!hasSoundCloud || (window as any).SC?.Widget) return;
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src="https://w.soundcloud.com/player/api.js"]',
+    );
+    if (existing) return;
+    const script = document.createElement("script");
+    script.src = "https://w.soundcloud.com/player/api.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, [songs]);
+
+  const pauseSoundCloudWidgets = () => {
+    Object.values(soundCloudWidgetsRef.current).forEach((widget) => {
+      try {
+        widget?.pause?.();
+      } catch {}
+    });
+  };
+
+  const openSong = (song: Song) => {
+    const widget = scEmbed(song.audio_url) ? soundCloudWidgetsRef.current[song.id] : null;
+    if (widget) {
+      pauseSoundCloudWidgets();
+      try {
+        widget.seekTo?.(0);
+        widget.play?.();
+      } catch {}
+    }
+    setPlaying(song);
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* ambient backdrop */}
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-30">
-        {ambients[0] && (
-          <video
-            src={ambients[0].video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        )}
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(76,175,80,0.18),transparent_34%),linear-gradient(180deg,oklch(0.18_0.04_145),oklch(0.10_0.03_145))]">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.9)] via-[oklch(0.15_0.04_145/0.7)] to-[oklch(0.10_0.03_145/0.95)]" />
       </div>
 
@@ -123,8 +161,7 @@ function MusicasPage() {
             <SongCard
               key={s.id}
               song={s}
-              ambient={s.ambient_video_id ? ambientMap[s.ambient_video_id] : undefined}
-              onClick={() => setPlaying(s)}
+              onClick={() => openSong(s)}
             />
           ))}
           {songs.length === 0 && (
@@ -135,6 +172,8 @@ function MusicasPage() {
         </div>
       </main>
 
+      <SoundCloudPreloads songs={songs} widgetsRef={soundCloudWidgetsRef} />
+
       {playing && (
         <Player
           song={playing}
@@ -142,21 +181,100 @@ function MusicasPage() {
           songs={songs}
           onClose={() => setPlaying(null)}
           onChange={setPlaying}
+          soundCloudWidget={scEmbed(playing.audio_url) ? soundCloudWidgetsRef.current[playing.id] : undefined}
         />
       )}
     </div>
   );
 }
 
+function SoundCloudPreloads({
+  songs,
+  widgetsRef,
+}: {
+  songs: Song[];
+  widgetsRef: { current: Record<string, any> };
+}) {
+  const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+  const soundCloudSongs = useMemo(
+    () => songs.filter((song) => scEmbed(song.audio_url)),
+    [songs],
+  );
+
+  useEffect(() => {
+    if (soundCloudSongs.length === 0) return;
+    let cancelled = false;
+    const ensureScript = () =>
+      new Promise<void>((resolve) => {
+        if ((window as any).SC?.Widget) return resolve();
+        const existing = document.querySelector<HTMLScriptElement>(
+          'script[src="https://w.soundcloud.com/player/api.js"]',
+        );
+        if (existing) {
+          existing.addEventListener("load", () => resolve(), { once: true });
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = "https://w.soundcloud.com/player/api.js";
+        script.async = true;
+        script.onload = () => resolve();
+        document.body.appendChild(script);
+      });
+
+    ensureScript().then(() => {
+      if (cancelled) return;
+      const SC = (window as any).SC;
+      if (!SC?.Widget) return;
+      soundCloudSongs.forEach((song) => {
+        if (widgetsRef.current[song.id]) return;
+        const iframe = iframeRefs.current[song.id];
+        if (!iframe) return;
+        const widget = SC.Widget(iframe);
+        widgetsRef.current[song.id] = widget;
+        widget.bind(SC.Widget.Events.READY, () => {
+          widgetsRef.current[song.id] = widget;
+          widget.getDuration(() => {});
+        });
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [soundCloudSongs, widgetsRef]);
+
+  if (soundCloudSongs.length === 0) return null;
+
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 h-px w-px overflow-hidden opacity-0">
+      {soundCloudSongs.map((song) => (
+        <iframe
+          key={song.id}
+          ref={(el) => {
+            iframeRefs.current[song.id] = el;
+          }}
+          src={`${scEmbed(song.audio_url)!}&auto_play=false&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
+          allow="autoplay; encrypted-media"
+          title={`Pré-carregamento ${song.title}`}
+          tabIndex={-1}
+          className="h-px w-px border-0"
+        />
+      ))}
+    </div>
+  );
+}
+
 function SongCard({
   song,
-  ambient,
   onClick,
 }: {
   song: Song;
-  ambient?: Ambient;
   onClick: () => void;
 }) {
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
+
   return (
     <button
       onClick={onClick}
@@ -167,17 +285,10 @@ function SongCard({
         {song.cover_url ? (
           <img
             src={song.cover_url}
-            alt={song.title}
+            alt={tTitle || song.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
-          />
-        ) : ambient ? (
-          <video
-            src={ambient.video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover opacity-75 transition-all duration-700 group-hover:scale-110 group-hover:opacity-100"
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-forest-deep via-bark to-leaf/40" />
@@ -205,10 +316,10 @@ function SongCard({
           {song.language}
         </div>
         <h3 className="font-display text-xl font-black text-cream leading-tight">
-          {song.title}
+          {tTitle || song.title}
         </h3>
         {song.artist && (
-          <p className="mt-1 text-xs text-foreground/70 truncate">{song.artist}</p>
+          <p className="mt-1 text-xs text-foreground/70 truncate">{tArtist || song.artist}</p>
         )}
       </div>
     </button>
@@ -221,20 +332,29 @@ function Player({
   songs,
   onClose,
   onChange,
+  soundCloudWidget,
 }: {
   song: Song;
   ambient?: Ambient;
   songs: Song[];
   onClose: () => void;
   onChange: (s: Song) => void;
+  soundCloudWidget?: any;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const scIframeRef = useRef<HTMLIFrameElement>(null);
+  const scWidgetRef = useRef<any>(null);
   const [playing, setPlaying] = useState(true);
+  const [loadingAudio, setLoadingAudio] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const idx = songs.findIndex((s) => s.id === song.id);
   const prev = songs[idx - 1];
   const next = songs[idx + 1];
+  const lang = useLang();
+  const tTitle = pickLang(song, "title", lang);
+  const tArtist = pickLang(song, "artist", lang);
+  const isSC = !!scEmbed(song.audio_url);
 
   const indLines = useMemo(
     () =>
@@ -244,42 +364,163 @@ function Player({
         .filter(Boolean),
     [song.lyrics_indigenous],
   );
+  const lyricsTranslated = pickLang(song, "lyrics_pt", lang);
   const ptLines = useMemo(
     () =>
-      song.lyrics_pt
+      lyricsTranslated
         .split("\n")
         .map((l) => l.trim())
         .filter(Boolean),
-    [song.lyrics_pt],
+    [lyricsTranslated],
   );
+
   const maxLen = Math.max(indLines.length, ptLines.length);
+  const activeIdx =
+    maxLen > 0 && duration > 0
+      ? Math.min(maxLen - 1, Math.floor((progress / duration) * maxLen))
+      : -1;
+
+  const lineRefs = useRef<Array<HTMLDivElement | null>>([]);
+  useEffect(() => {
+    if (activeIdx < 0) return;
+    const el = lineRefs.current[activeIdx];
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeIdx]);
 
   useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    setProgress(0);
+    setDuration(0);
+    setLoadingAudio(true);
+    setPlaying(true);
   }, [song.id]);
 
   useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    const onSpace = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+    if (isSC) return;
+    const a = audioRef.current;
+    if (!a) return;
+    a.play()
+      .then(() => {
+        setLoadingAudio(false);
+        setPlaying(true);
+      })
+      .catch(() => {
+        setLoadingAudio(false);
+        setPlaying(false);
+      });
+  }, [song.id, isSC]);
+
+  // SoundCloud Widget API — track progress + play/pause
+  useEffect(() => {
+    if (!isSC) return;
+    let cancelled = false;
+    let readyTimer: number | undefined;
+    const bindWidget = (widget: any) => {
+      if (cancelled || !widget) return;
+      const SC = (window as any).SC;
+      scWidgetRef.current = widget;
+      widget.bind(SC.Widget.Events.READY, () => {
+        if (cancelled) return;
+        widget.getDuration((d: number) => setDuration(d / 1000));
+        setLoadingAudio(false);
+        setPlaying(true);
+        readyTimer = window.setTimeout(() => {
+          widget.play();
+        }, 0);
+      });
+      widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
+        setLoadingAudio(false);
+        setProgress(e.currentPosition / 1000);
+      });
+      widget.bind(SC.Widget.Events.PLAY, () => {
+        setLoadingAudio(false);
+        setPlaying(true);
+      });
+      widget.bind(SC.Widget.Events.PAUSE, () => {
+        setLoadingAudio(false);
+        setPlaying(false);
+      });
+      widget.bind(SC.Widget.Events.FINISH, () => {
+        if (next) onChange(next);
+        else setPlaying(false);
+      });
+      widget.getDuration((d: number) => {
+        if (cancelled) return;
+        if (d > 0) {
+          setDuration(d / 1000);
+          setLoadingAudio(false);
+        }
+      });
+      readyTimer = window.setTimeout(() => {
+        if (!cancelled) widget.play();
+      }, 0);
+    };
+
+    const ensureScript = () =>
+      new Promise<void>((resolve) => {
+        if ((window as any).SC?.Widget) return resolve();
+        const existing = document.querySelector<HTMLScriptElement>(
+          'script[src="https://w.soundcloud.com/player/api.js"]',
+        );
+        if (existing) {
+          existing.addEventListener("load", () => resolve());
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = "https://w.soundcloud.com/player/api.js";
+        s.async = true;
+        s.onload = () => resolve();
+        document.body.appendChild(s);
+      });
+
+    ensureScript().then(() => {
+      if (cancelled) return;
+      const SC = (window as any).SC;
+      if (soundCloudWidget) {
+        bindWidget(soundCloudWidget);
+        return;
+      }
+      if (!scIframeRef.current) return;
+      bindWidget(SC.Widget(scIframeRef.current));
+    });
+
+    return () => {
+      cancelled = true;
+      if (readyTimer) window.clearTimeout(readyTimer);
+      try {
+        scWidgetRef.current?.pause?.();
+      } catch {}
+      scWidgetRef.current = null;
+    };
+  }, [song.id, isSC, next, onChange, soundCloudWidget]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.code === "Space") {
         e.preventDefault();
         toggle();
       }
     };
-    window.addEventListener("keydown", onEsc);
-    window.addEventListener("keydown", onSpace);
+    window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
-      window.removeEventListener("keydown", onEsc);
-      window.removeEventListener("keydown", onSpace);
+      window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
   function toggle() {
+    if (isSC) {
+      const w = scWidgetRef.current || soundCloudWidget;
+      if (!w) {
+        setPlaying(true);
+        setLoadingAudio(true);
+        return;
+      }
+      w.toggle();
+      return;
+    }
     const a = audioRef.current;
     if (!a) return;
     if (a.paused) {
@@ -297,14 +538,22 @@ function Player({
       {/* cinematic background */}
       <div className="absolute inset-0 overflow-hidden">
         {song.video_url ? (
-          <video
-            src={song.video_url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover scale-110"
-          />
+          ytEmbed(song.video_url) ? (
+            <iframe
+              src={ytEmbed(song.video_url)!}
+              allow="autoplay; encrypted-media"
+              className="absolute left-1/2 top-1/2 h-[120vh] w-[220vw] -translate-x-1/2 -translate-y-1/2 md:w-[160vw] pointer-events-none border-0"
+            />
+          ) : (
+            <video
+              src={song.video_url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="h-full w-full object-cover scale-110"
+            />
+          )
         ) : ambient ? (
           <video
             src={ambient.video_url}
@@ -335,10 +584,10 @@ function Player({
             Ouvindo agora · {song.language}
           </div>
           <h2 className="font-display text-2xl md:text-4xl font-black text-cream drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-            {song.title}
+            {tTitle || song.title}
           </h2>
           {song.artist && (
-            <div className="text-sm text-foreground/80 italic">{song.artist}</div>
+            <div className="text-sm text-foreground/80 italic">{tArtist || song.artist}</div>
           )}
         </div>
         <button
@@ -352,22 +601,34 @@ function Player({
 
       {/* lyrics theater - static bilingual text */}
       <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
-        <div className="mx-auto max-w-3xl space-y-8 md:space-y-10">
-          {Array.from({ length: maxLen }).map((_, i) => (
-            <div
-              key={i}
-              className="text-center transition-colors duration-500"
-            >
-              <p className="font-display text-xl md:text-3xl font-black leading-tight text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                {indLines[i] || "\u00A0"}
-              </p>
-              {ptLines[i] && (
-                <p className="mt-2 md:mt-3 text-sm md:text-lg italic text-foreground/75">
-                  {ptLines[i]}
+        <div className="mx-auto max-w-5xl space-y-12 md:space-y-16">
+          {Array.from({ length: maxLen }).map((_, i) => {
+            const active = i === activeIdx;
+            return (
+              <div
+                key={i}
+                ref={(el) => {
+                  lineRefs.current[i] = el;
+                }}
+                className={`text-center transition-all duration-500 ${
+                  active ? "scale-110" : "opacity-40"
+                }`}
+              >
+                <p
+                  className={`font-display text-3xl md:text-6xl lg:text-7xl font-black leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.75)] ${
+                    active ? "text-gold" : "text-cream"
+                  }`}
+                >
+                  {indLines[i] || "\u00A0"}
                 </p>
-              )}
-            </div>
-          ))}
+                {ptLines[i] && (
+                  <p className="mt-3 md:mt-5 text-lg md:text-2xl lg:text-3xl italic text-foreground/80">
+                    {ptLines[i]}
+                  </p>
+                )}
+              </div>
+            );
+          })}
           {maxLen === 0 && (
             <p className="text-center text-foreground/60">Esta música ainda não tem letra cadastrada.</p>
           )}
@@ -385,10 +646,14 @@ function Player({
             <div
               className="group relative flex-1 h-1.5 cursor-pointer rounded-full bg-gold/15"
               onClick={(e) => {
-                const a = audioRef.current;
-                if (!a || !duration) return;
+                if (!duration) return;
                 const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-                a.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+                const t = ((e.clientX - rect.left) / rect.width) * duration;
+                if (isSC) {
+                  scWidgetRef.current?.seekTo?.(t * 1000);
+                } else if (audioRef.current) {
+                  audioRef.current.currentTime = t;
+                }
               }}
             >
               <div
@@ -418,9 +683,11 @@ function Player({
             <button
               onClick={toggle}
               className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-[oklch(0.62_0.16_55)] text-bark shadow-[0_10px_40px_-5px_rgba(249,168,37,0.6)] transition-transform hover:scale-105"
-              aria-label={playing ? "Pausar" : "Tocar"}
+              aria-label={loadingAudio ? "Carregando" : playing ? "Pausar" : "Tocar"}
             >
-              {playing ? (
+              {loadingAudio ? (
+                <span className="h-7 w-7 animate-spin rounded-full border-2 border-bark/30 border-t-bark" />
+              ) : playing ? (
                 <Pause className="h-7 w-7 fill-current" />
               ) : (
                 <Play className="h-7 w-7 ml-1 fill-current" />
@@ -435,21 +702,42 @@ function Player({
               <ChevronRight className="h-7 w-7" />
             </button>
           </div>
-
-
-
         </div>
       </div>
 
-      <audio
-        ref={audioRef}
-        src={song.audio_url}
-        onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        onEnded={() => (next ? onChange(next) : setPlaying(false))}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-      />
+      {isSC && !soundCloudWidget && (
+        <iframe
+          ref={scIframeRef}
+          src={`${scEmbed(song.audio_url)!}&auto_play=true&show_artwork=false&show_teaser=false&buying=false&sharing=false&download=false`}
+          allow="autoplay; encrypted-media"
+          title={song.title}
+          aria-hidden="true"
+          tabIndex={-1}
+          className="pointer-events-none absolute bottom-0 left-0 h-px w-px opacity-0 border-0"
+        />
+      )}
+      {!isSC && (
+        <audio
+          ref={audioRef}
+          src={song.audio_url}
+          onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
+          onLoadedMetadata={(e) => {
+            setDuration(e.currentTarget.duration);
+            setLoadingAudio(false);
+          }}
+          onCanPlay={() => setLoadingAudio(false)}
+          onEnded={() => (next ? onChange(next) : setPlaying(false))}
+          onPlay={() => {
+            setLoadingAudio(false);
+            setPlaying(true);
+          }}
+          onPause={() => {
+            setLoadingAudio(false);
+            setPlaying(false);
+          }}
+        />
+      )}
+
     </div>
   );
 }
@@ -460,3 +748,17 @@ function fmt(s: number) {
   const sec = Math.floor(s % 60);
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
+
+function ytEmbed(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+  if (!m) return null;
+  const id = m[1];
+  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&controls=0&playlist=${id}&playsinline=1&modestbranding=1&rel=0`;
+}
+
+function scEmbed(url: string): string | null {
+  if (!/soundcloud\.com/.test(url)) return null;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%23f9a825`;
+}
+
+

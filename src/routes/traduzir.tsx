@@ -1,23 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
     meta: [
       { title: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
-      {
-        name: "description",
-        content:
-          "Tradutor bidirecional entre Português e Patxôhã (Pataxó), usando o dicionário completo da plataforma AWÃ TECH.",
-      },
+      { name: "description", content: "Tradutor Português ⇄ Patxôhã (Premium)." },
       { property: "og:title", content: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
     ],
   }),
-  component: TraduzirPage,
+  component: () => (
+    <PremiumGate title="Tradutor Patxôhã (Premium)" description="Traduza livremente entre Português e Patxôhã usando o dicionário completo. Recurso exclusivo para assinantes.">
+      <TraduzirPage />
+    </PremiumGate>
+  ),
 });
 
 function TraduzirPage() {
@@ -27,7 +29,7 @@ function TraduzirPage() {
 
   const m = useMutation({
     mutationFn: async (vars: { text: string; direction: "pt-pat" | "pat-pt" }) =>
-      translate({ data: vars }),
+      translate({ data: { ...vars, environment: getPaddleEnvironment() } }),
   });
 
 

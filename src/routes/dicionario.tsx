@@ -1,21 +1,41 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Search, Volume2, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { speakText } from "@/lib/tts.functions";
+import { toast } from "sonner";
+import { PremiumGate } from "@/components/PremiumGate";
+import { useSubscription } from "@/hooks/use-subscription";
+import { pickLang, useLang } from "@/lib/pick-lang";
+import { narratePublic } from "@/lib/narrate-public.functions";
+import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import patxohaDict from "@/data/patxoha-dictionary.json";
+
+
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã organizado por categorias: saudações, família, natureza, animais, corpo, alimentos, verbos e números." },
+      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
     ],
   }),
-  component: DictionaryPage,
+  component: DictionaryRoute,
 });
+
+function DictionaryRoute() {
+  const { t } = useTranslation();
+  return (
+    <PremiumGate title={t("dictionary.premiumTitle")} description={t("dictionary.premiumDescription")}>
+      <DictionaryPage />
+    </PremiumGate>
+  );
+}
+
+const FREE_LIMIT = 50;
+
+
 
 type Entry = {
   id: string;
@@ -26,9 +46,20 @@ type Entry = {
   pronunciation: string | null;
   example: string | null;
   audio_url: string | null;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
 
-const ENABLED_LANGUAGES = ["Patxôhã"] as const;
+
+const PDF_DICTIONARY_ENTRIES = (patxohaDict as Array<Omit<Entry, "id">>).map((entry, index) => ({
+  id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
+  ...entry,
+  pronunciation: entry.pronunciation ?? null,
+  example: entry.example ?? null,
+  audio_url: entry.audio_url ?? null,
+})) satisfies Entry[];
 
 // Auto-categorização baseada em palavras-chave na tradução PT.
 const CATEGORY_RULES: { name: string; keywords: RegExp }[] = [
@@ -63,38 +94,24 @@ function firstLetter(s: string): string {
 }
 
 function DictionaryPage() {
+  const { t } = useTranslation();
+  const { isPremium } = useSubscription();
+  const lang = useLang();
+
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
-  const [speakingId, setSpeakingId] = useState<string | null>(null);
-  const tts = useServerFn(speakText);
-  const audioCache = useRef<Map<string, string>>(new Map());
-  const currentAudio = useRef<HTMLAudioElement | null>(null);
 
-  const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary", ENABLED_LANGUAGES.join(",")],
-    queryFn: async () => {
-      const pageSize = 1000;
-      let from = 0;
-      const all: Entry[] = [];
-      // paginar para superar o limite padrão do PostgREST (1000)
-      while (true) {
-        const { data, error } = await supabase
-          .from("dictionary")
-          .select("*")
-          .in("language", ENABLED_LANGUAGES as unknown as string[])
-          .order("term_indigenous")
-          .range(from, from + pageSize - 1);
-        if (error) throw error;
-        const chunk = (data ?? []) as Entry[];
-        all.push(...chunk);
-        if (chunk.length < pageSize) break;
-        from += pageSize;
-      }
-      return all;
-    },
-  });
+  const [visibleCount, setVisibleCount] = useState(120);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setDebouncedQuery(query.trim()), 250);
+    return () => window.clearTimeout(t);
+  }, [query]);
+
+  const entries = PDF_DICTIONARY_ENTRIES;
 
   const enriched = useMemo(
     () => entries.map((e) => ({ ...e, _cat: categorize(e), _letter: firstLetter(e.term_indigenous) })),
@@ -114,7 +131,7 @@ function DictionaryPage() {
   }, [enriched]);
 
   const filtered = useMemo(() => {
-    const q = query.toLowerCase().trim();
+    const q = debouncedQuery.toLowerCase().trim();
     const list = enriched.filter((e) => {
       const matchQ = !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
@@ -126,11 +143,47 @@ function DictionaryPage() {
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, query, cat, letter, sort]);
+  }, [enriched, debouncedQuery, cat, letter, sort]);
+
+  useEffect(() => {
+    setVisibleCount(120);
+  }, [query, cat, letter, sort]);
+
+  const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
+  const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
+
+  const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
+  const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
+
+  // Auto-translate visible PT texts (term_pt + example) when UI is EN/ES.
+  const ptTexts = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of visibleFiltered) {
+      if (e.term_pt) set.add(e.term_pt);
+      if (e.example) set.add(e.example);
+    }
+    return Array.from(set);
+  }, [visibleFiltered]);
+  const translated = useAutoTranslate(ptTexts);
+  const trMap = useMemo(() => {
+    const m = new Map<string, string>();
+    ptTexts.forEach((s, i) => m.set(s, translated[i] ?? s));
+    return m;
+  }, [ptTexts, translated]);
+  const localize = (e: Entry, field: "term_pt" | "example"): string => {
+    const original = (e[field] as string | null) ?? "";
+    if (!original) return "";
+    if (lang === "pt" || lang === "pat") return original;
+    const dbVal = pickLang(e, field, lang);
+    if (dbVal && dbVal !== original) return dbVal;
+    return trMap.get(original) ?? original;
+  };
+
+
 
   const grouped = useMemo(() => {
-    const map = new Map<string, typeof filtered>();
-    for (const e of filtered) {
+    const map = new Map<string, typeof visibleFiltered>();
+    for (const e of visibleFiltered) {
       const k = (e as any)._letter as string;
       if (!map.has(k)) map.set(k, [] as any);
       (map.get(k) as any).push(e);
@@ -138,67 +191,17 @@ function DictionaryPage() {
     return Array.from(map.entries()).sort(([a], [b]) =>
       sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
     );
-  }, [filtered, sort]);
-
-
-  async function playAudio(entry: Entry) {
-    try {
-      // pausa áudio anterior
-      if (currentAudio.current) {
-        currentAudio.current.pause();
-        currentAudio.current = null;
-      }
-
-      // 1) áudio cadastrado
-      if (entry.audio_url) {
-        const a = new Audio(entry.audio_url);
-        currentAudio.current = a;
-        await a.play();
-        return;
-      }
-
-      // 2) cache em memória da sessão
-      const cached = audioCache.current.get(entry.id);
-      if (cached) {
-        const a = new Audio(cached);
-        currentAudio.current = a;
-        await a.play();
-        return;
-      }
-
-      // 3) gera voz via TTS (Lovable AI)
-      setSpeakingId(entry.id);
-      const res = await tts({ data: { text: entry.term_indigenous, voice: "nova" } });
-      const url = `data:${res.mime};base64,${res.audio_base64}`;
-      audioCache.current.set(entry.id, url);
-      const a = new Audio(url);
-      currentAudio.current = a;
-      await a.play();
-    } catch (err: any) {
-      console.error(err);
-      // fallback navegador
-      if ("speechSynthesis" in window) {
-        const u = new SpeechSynthesisUtterance(entry.term_indigenous);
-        u.lang = "pt-BR";
-        u.rate = 0.85;
-        window.speechSynthesis.speak(u);
-      } else {
-        toast.error("Não foi possível gerar a voz");
-      }
-    } finally {
-      setSpeakingId(null);
-    }
-  }
+  }, [visibleFiltered, sort]);
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
           </Link>
           <div className="flex items-center gap-2 text-cream font-display font-black">
-            <BookOpen className="h-5 w-5 text-leaf" /> Dicionário Patxôhã
+            <BookOpen className="h-5 w-5 text-leaf" /> {t("dictionary.title")}
           </div>
           <span className="w-14" />
         </div>
@@ -211,7 +214,7 @@ function DictionaryPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar em português ou patxôhã..."
+              placeholder={t("dictionary.searchPlaceholder")}
               className="w-full rounded-xl border border-gold/25 bg-card/60 pl-10 pr-3 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60"
             />
           </div>
@@ -230,7 +233,7 @@ function DictionaryPage() {
                       : "border-gold/20 bg-card/60 text-foreground/75 hover:border-gold/40 hover:text-cream"
                   }`}
                 >
-                  {c}
+                  {t(`dictionary.categories.${c}`)}
                   <span className={`ml-1.5 text-[10px] font-semibold ${active ? "opacity-70" : "opacity-50"}`}>
                     {count}
                   </span>
@@ -241,7 +244,11 @@ function DictionaryPage() {
 
           <div className="flex items-center justify-between gap-2 pt-1">
             <div className="text-xs font-semibold text-foreground/70">
-              {filtered.length} palavra{filtered.length === 1 ? "" : "s"} encontrada{filtered.length === 1 ? "" : "s"}
+              {t("dictionary.showing", {
+                count: visibleFiltered.length,
+                plus: hasMore ? "+" : "",
+                words: t(visibleFiltered.length === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+              })}
             </div>
             <div className="flex gap-1">
               <button
@@ -274,7 +281,7 @@ function DictionaryPage() {
                   : "bg-card/60 text-foreground/70 hover:text-cream border border-gold/15"
               }`}
             >
-              TODAS
+              {t("dictionary.allLetters")}
             </button>
             {ALPHABET.map((l) => {
               const count = letterCounts.get(l) ?? 0;
@@ -288,7 +295,10 @@ function DictionaryPage() {
                       ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
                       : "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
                   }`}
-                  title={`${count} palavra(s)`}
+                  title={t("dictionary.wordCount", {
+                    count,
+                    words: t(count === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
+                  })}
                 >
                   {l}
                 </button>
@@ -298,10 +308,8 @@ function DictionaryPage() {
         </section>
 
         <section className="mt-5">
-          {isLoading ? (
-            <div className="text-center text-foreground/60 py-12">Carregando dicionário...</div>
-          ) : filtered.length === 0 ? (
-            <div className="text-center text-foreground/60 py-12">Nenhuma palavra encontrada.</div>
+          {filtered.length === 0 ? (
+            <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
             <div className="space-y-6">
               {grouped.map(([ltr, items]) => (
@@ -320,38 +328,63 @@ function DictionaryPage() {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
                               <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
-                              <button
-                                onClick={() => playAudio(e)}
-                                disabled={speakingId === e.id}
-                                className="grid h-8 w-8 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-60"
-                                aria-label="Ouvir pronúncia"
-                              >
-                                {speakingId === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
-                              </button>
+                              <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {e.term_pt}
+                              <span className="text-gold">→</span> {localize(e, "term_pt")}
                             </div>
+
                           </div>
                           <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
                             {(e as any)._cat}
                           </span>
                         </div>
+
                         {e.pronunciation && (
                           <div className="mt-2 text-xs text-foreground/60">
-                            Pronúncia: <span className="text-cream">[{e.pronunciation}]</span>
+                            {t("dictionary.pronunciation")}: <span className="text-cream">[{e.pronunciation}]</span>
                           </div>
                         )}
                         {e.example && (
                           <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                            "{e.example}"
+                            "{localize(e, "example")}"
                           </div>
                         )}
+
                       </article>
                     ))}
                   </div>
                 </div>
               ))}
+              {lockedByFree ? (
+                <div className="mt-4 card-elev rounded-3xl border border-gold/30 p-6 text-center">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--gradient-leaf)] shadow-[var(--shadow-glow)]">
+                    <Lock className="h-6 w-6 text-cream" />
+                  </div>
+                  <h3 className="mt-4 font-display text-xl font-black text-cream">
+                    {t("dictionary.freeLimitTitle", { count: FREE_LIMIT })}
+                  </h3>
+                  <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
+                    {t("dictionary.freeLimitDescription")}
+                  </p>
+                  <Link
+                    to="/planos"
+                    className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
+                  >
+                    <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
+                  </Link>
+                </div>
+              ) : hasMore ? (
+                <div className="pt-2 text-center">
+                  <button
+                    onClick={() => setVisibleCount((n) => n + 120)}
+                    className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
+                  >
+                    {t("dictionary.showMore")}
+                  </button>
+                </div>
+              ) : null}
+
             </div>
           )}
         </section>
@@ -359,4 +392,45 @@ function DictionaryPage() {
     </div>
   );
 }
+
+function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
+  const speak = useServerFn(narratePublic);
+  const [busy, setBusy] = useState(false);
+  const cacheRef = useRef<string | null>(null);
+
+  async function play() {
+    if (busy) return;
+    try {
+      setBusy(true);
+      if (audioUrl) {
+        await playFast(audioUrl);
+        return;
+      }
+      if (!cacheRef.current) {
+        const r = await speak({ data: { text, voice: "onyx" } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar o áudio");
+        }
+        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+      }
+      await playFast(cacheRef.current);
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao tocar áudio");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <button
+      onClick={play}
+      disabled={busy}
+      aria-label={`Ouvir ${text}`}
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+    >
+      {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
+    </button>
+  );
+}
+
 

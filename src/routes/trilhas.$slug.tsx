@@ -1,14 +1,47 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle,
+  ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle, ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
+import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
+import { PremiumGate } from "@/components/PremiumGate";
+import { pickLang, useLang } from "@/lib/pick-lang";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+
+function useTr(texts: string[]) {
+  const translated = useAutoTranslate(texts);
+  return useMemo(() => {
+    const m = new Map<string, string>();
+    texts.forEach((t, i) => { if (t) m.set(t, translated[i] ?? t); });
+    return (s: string) => (s ? m.get(s) ?? s : s);
+  }, [texts.join("\u0001"), translated.join("\u0001")]);
+}
+
+function useLocalize(tr: (s: string) => string) {
+  const lang = useLang();
+  return function localize<T extends Record<string, any>>(row: T, field: keyof T & string): string {
+    const original = (row?.[field] as string) ?? "";
+    if (!original) return "";
+    if (lang === "pt" || lang === "pat") return original;
+    const picked = pickLang(row, field, lang);
+    if (picked && picked !== original) return picked;
+    return tr(original);
+  };
+}
+
+const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais"];
+function nextTrailSlug(current: TrailSlug): TrailSlug {
+  const i = TRAIL_ORDER.indexOf(current);
+  return TRAIL_ORDER[(i + 1) % TRAIL_ORDER.length];
+}
+
 
 export const Route = createFileRoute("/trilhas/$slug")({
   beforeLoad: ({ params }) => {
@@ -25,7 +58,11 @@ export const Route = createFileRoute("/trilhas/$slug")({
   },
   errorComponent: ({ error }) => <div className="p-8 text-cream">{error.message}</div>,
   notFoundComponent: () => <div className="p-8 text-cream">Trilha não encontrada.</div>,
-  component: TrilhaPage,
+  component: () => (
+    <PremiumGate title="Trilhas de aprendizado (Premium)" description="Exercícios, jogos e progresso das trilhas são exclusivos para assinantes. Comece grátis pelas 25 saudações essenciais.">
+      <TrilhaPage />
+    </PremiumGate>
+  ),
 });
 
 type Word = {
@@ -36,18 +73,26 @@ type Word = {
   example: string | null;
   audio_url: string | null;
   category: string;
+  term_pt_en?: string | null;
+  term_pt_es?: string | null;
+  example_en?: string | null;
+  example_es?: string | null;
 };
+
 
 function TrilhaPage() {
   const { slug } = Route.useParams();
   const trail = TRAILS[slug as TrailSlug];
+  const navigate = useNavigate();
+  const nextSlug = nextTrailSlug(slug as TrailSlug);
+  const nextTrail = TRAILS[nextSlug];
 
   const { data: words = [], isLoading } = useQuery({
     queryKey: ["trilha-words", slug],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("dictionary")
-        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category")
+        .select("id,term_indigenous,term_pt,pronunciation,example,audio_url,category,term_pt_en,term_pt_es,example_en,example_es")
         .in("category", trail.categories)
         .order("term_pt");
       if (error) throw error;
@@ -62,13 +107,25 @@ function TrilhaPage() {
 
   useEffect(() => { setLearnedState(getLearned(slug)); }, [slug]);
 
+  function logLearningEvent(action: string) {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return;
+      supabase
+        .from("learning_events")
+        .insert({ user_id: data.user.id, trail: slug, action, points: 1 })
+        .then(() => {});
+    });
+  }
+
   function markLearned(id: string) {
     setLearnedState((prev) => {
       if (prev.has(id)) return prev;
       const next = new Set(prev); next.add(id);
       setLearned(slug, next);
+      logLearningEvent("learn_word");
       if (words.length && next.size >= words.length && !hasCertificate(slug)) {
         markCertificate(slug);
+        logLearningEvent("certificate");
         setTimeout(() => setShowCert(true), 300);
       }
       return next;
@@ -80,10 +137,13 @@ function TrilhaPage() {
   function toggleLearned(id: string) {
     setLearnedState((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      const wasAdding = !next.has(id);
+      wasAdding ? next.add(id) : next.delete(id);
       setLearned(slug, next);
+      if (wasAdding) logLearningEvent("learn_word");
       if (words.length && next.size >= words.length && !hasCertificate(slug)) {
         markCertificate(slug);
+        logLearningEvent("certificate");
         setTimeout(() => setShowCert(true), 300);
       }
       return next;
@@ -91,9 +151,9 @@ function TrilhaPage() {
   }
 
   function resetProgress() {
-    if (!confirm("Reiniciar o progresso desta trilha?")) return;
     setLearnedState(new Set());
     setLearned(slug, new Set());
+    toast.success("Novas lições prontas! Bons estudos 🌱");
   }
 
   const grouped = useMemo(() => {
@@ -105,17 +165,25 @@ function TrilhaPage() {
     return [{ label: trail.emoji + " " + trail.name, items: words }];
   }, [words, trail]);
 
+  const tr = useTr([
+    "Início", "Reiniciar", "palavras", "Praticar quiz",
+    "Associar imagem ↔ palavra", "Ver certificado", "Carregando...",
+    trail.intro, trail.apoio, trail.name,
+    ...words.flatMap((w) => [w.term_pt, w.example].filter(Boolean) as string[]),
+  ]);
+  const localize = useLocalize(tr);
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to="/trilhas" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
-            <ArrowLeft className="h-4 w-4" /> Trilhas
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+            <ArrowLeft className="h-4 w-4" /> {tr("Início")}
           </Link>
           <div className="flex items-center gap-2 font-display font-black text-cream">
-            <span>{trail.emoji}</span> {trail.name}
+            <span>{trail.emoji}</span> {tr(trail.name)}
           </div>
-          <button onClick={resetProgress} title="Reiniciar" className="text-foreground/60 hover:text-gold">
+          <button onClick={resetProgress} title={tr("Reiniciar")} className="text-foreground/60 hover:text-gold">
             <RotateCw className="h-4 w-4" />
           </button>
         </div>
@@ -123,12 +191,12 @@ function TrilhaPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
         <section className={`card-elev rounded-3xl border border-gold/25 bg-gradient-to-br ${trail.color} p-6 md:p-8`}>
-          <p className="font-display text-2xl md:text-3xl font-black text-cream">{trail.intro}</p>
-          <p className="mt-2 text-sm text-foreground/85">{trail.apoio}</p>
+          <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
+          <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
 
           <div className="mt-5">
             <div className="flex items-center justify-between text-xs font-bold text-cream/90">
-              <span>{learned.size} / {words.length} palavras</span>
+              <span>{learned.size} / {words.length} {tr("palavras")}</span>
               <span className="text-gold">{progress}%</span>
             </div>
             <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-forest-deep/60">
@@ -142,35 +210,35 @@ function TrilhaPage() {
               disabled={words.length < 4}
               className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream disabled:opacity-50"
             >
-              <Sparkles className="h-4 w-4" /> Praticar quiz
+              <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
             </button>
             <button
               onClick={() => setShowMatch(true)}
               disabled={words.length < 4}
               className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
             >
-              <Shuffle className="h-4 w-4" /> Associar imagem ↔ palavra
+              <Shuffle className="h-4 w-4" /> {tr("Associar imagem ↔ palavra")}
             </button>
             {hasCertificate(slug) && (
               <button
                 onClick={() => setShowCert(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
               >
-                <Award className="h-4 w-4" /> Ver certificado
+                <Award className="h-4 w-4" /> {tr("Ver certificado")}
               </button>
             )}
           </div>
         </section>
 
         {isLoading ? (
-          <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> Carregando...</div>
+          <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> {tr("Carregando...")}</div>
         ) : (
           grouped.map((g) => (
             <section key={g.label} className="mt-8">
               <h2 className="font-display text-xl md:text-2xl font-black text-cream mb-4">{g.label}</h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {g.items.map((w) => (
-                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} />
+                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} />
                 ))}
               </div>
             </section>
@@ -179,32 +247,44 @@ function TrilhaPage() {
       </main>
 
       {showQuiz && words.length >= 4 && (
-        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} />
+        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} localize={localize} tr={tr} />
       )}
 
       {showMatch && words.length >= 4 && (
-        <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} />
+        <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} localize={localize} tr={tr} />
       )}
 
-      {showCert && <CertificateModal trail={trail} onClose={() => setShowCert(false)} />}
+      {showCert && (
+        <CertificateModal
+          trail={trail}
+          nextTrail={nextTrail}
+          onClose={() => setShowCert(false)}
+          onNext={() => {
+            setShowCert(false);
+            navigate({ to: "/trilhas/$slug", params: { slug: nextSlug } });
+          }}
+        />
+      )}
     </div>
   );
 }
 
-function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggle: () => void }) {
+function WordCard({ w, learned, onToggle, localize }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string }) {
+  const trAria = useTr(["Marcar como aprendida", "Marcar como não aprendida"]);
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-display text-lg font-bold text-gold truncate">{w.term_indigenous}</div>
-          <div className="text-sm text-cream/90 truncate">{w.term_pt}</div>
+          <div className="text-sm text-cream/90 truncate">{localize(w, "term_pt")}</div>
+
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
         <div className="flex flex-col items-center gap-2">
           <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
           <button
             onClick={onToggle}
-            aria-label={learned ? "Marcar como não aprendida" : "Marcar como aprendida"}
+            aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
             className={`grid h-9 w-9 place-items-center rounded-full transition ${learned ? "bg-gold text-forest-deep" : "bg-leaf/15 text-leaf hover:bg-leaf/25"}`}
           >
             <Check className="h-4 w-4" />
@@ -218,7 +298,6 @@ function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggl
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
   const speak = useServerFn(speakText);
   const [busy, setBusy] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const cacheRef = useRef<string | null>(null);
 
   async function play() {
@@ -226,20 +305,17 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     try {
       setBusy(true);
       if (audioUrl) {
-        const a = new Audio(audioUrl);
-        audioRef.current?.pause();
-        audioRef.current = a;
-        await a.play();
+        await playFast(audioUrl);
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "nova" } });
-        cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
+        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar áudio");
+        }
+        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }
-      const a = new Audio(cacheRef.current);
-      audioRef.current?.pause();
-      audioRef.current = a;
-      await a.play();
+      await playFast(cacheRef.current);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
@@ -255,10 +331,11 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
   );
 }
 
-function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void }) {
+function QuizModal({ words, onClose, onCorrect, localize, tr }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void; localize: (row: any, field: string) => string; tr: (s: string) => string }) {
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
+  const trLocal = useTr(["Quiz · Acertos:", "Como se diz:", "Próxima"]);
 
   const question = useMemo(() => {
     const correct = words[Math.floor(Math.random() * words.length)];
@@ -282,11 +359,12 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
       <div className="card-elev w-full max-w-md rounded-3xl border border-gold/30 bg-card p-6">
         <div className="flex items-center justify-between">
-          <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">Quiz · Acertos: {score}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">{trLocal("Quiz · Acertos:")} {score}</div>
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
-        <p className="mt-4 text-foreground/75 text-sm">Como se diz:</p>
-        <h3 className="mt-1 font-display text-2xl font-black text-cream">{question.correct.term_pt}</h3>
+        <p className="mt-4 text-foreground/75 text-sm">{trLocal("Como se diz:")}</p>
+        <h3 className="mt-1 font-display text-2xl font-black text-cream">{localize(question.correct, "term_pt")}</h3>
+
 
         <div className="mt-5 grid gap-2">
           {question.options.map((opt) => {
@@ -310,7 +388,7 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
             onClick={() => { setPicked(null); setRound((r) => r + 1); }}
             className="mt-5 w-full rounded-full bg-[var(--gradient-leaf)] py-3 text-sm font-bold text-cream"
           >
-            Próxima
+            {trLocal("Próxima")}
           </button>
         )}
       </div>
@@ -318,20 +396,38 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
   );
 }
 
-function CertificateModal({ trail, onClose }: { trail: typeof TRAILS[TrailSlug]; onClose: () => void }) {
+function CertificateModal({
+  trail, nextTrail, onClose, onNext,
+}: {
+  trail: typeof TRAILS[TrailSlug];
+  nextTrail: typeof TRAILS[TrailSlug];
+  onClose: () => void;
+  onNext: () => void;
+}) {
+  const tr = useTr([
+    "Certificado · PATXOHÃ · 2026", "PROFESSOR AKUÃ", "Próxima trilha:",
+    trail.certificate.title, trail.certificate.description, trail.certificate.message,
+    nextTrail.name,
+  ]);
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 overflow-y-auto">
       <div className="card-elev relative w-full max-w-2xl rounded-3xl border-2 border-gold/50 bg-gradient-to-br from-forest-deep to-bark p-6 md:p-10 my-8">
         <button onClick={onClose} className="absolute right-4 top-4 text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         <div className="text-center">
           <Award className="mx-auto h-12 w-12 text-gold" />
-          <div className="mt-3 text-xs font-bold uppercase tracking-[0.22em] text-leaf">Certificado · PATXOHÃ · 2026</div>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl font-black text-gold">{trail.certificate.title}</h2>
-          <p className="mt-3 text-sm md:text-base text-cream/90">{trail.certificate.description}</p>
+          <div className="mt-3 text-xs font-bold uppercase tracking-[0.22em] text-leaf">{tr("Certificado · PATXOHÃ · 2026")}</div>
+          <h2 className="mt-3 font-display text-3xl md:text-4xl font-black text-gold">{tr(trail.certificate.title)}</h2>
+          <p className="mt-3 text-sm md:text-base text-cream/90">{tr(trail.certificate.description)}</p>
           <div className="mt-6 whitespace-pre-line text-left text-sm leading-relaxed text-foreground/85 rounded-2xl border border-gold/20 bg-forest-deep/40 p-4">
-            {trail.certificate.message}
+            {tr(trail.certificate.message)}
           </div>
-          <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">PROFESSOR AKUÃ</div>
+          <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">{tr("PROFESSOR AKUÃ")}</div>
+          <button
+            onClick={onNext}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-6 py-3 text-sm font-bold text-cream"
+          >
+            {tr("Próxima trilha:")} {nextTrail.emoji} {tr(nextTrail.name)} <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>
@@ -392,7 +488,7 @@ const EMOJI_RULES: Array<[RegExp, string]> = [
 ];
 const CAT_EMOJI: Record<string, string> = {
   Saudações: "🤝", Família: "👨‍👩‍👧", Natureza: "🌿", Animais: "🐾",
-  Corpo: "🧍", Verbos: "⚡", Cores: "🎨", Números: "🔢", Alimentos: "🍲", Cultura: "✨",
+  Corpo: "🧍", Verbos: "⚡", Cores: "🎨", Números: "🔢", Alimentos: "🍲",
 };
 function emojiFor(w: Word): string {
   for (const [re, emj] of EMOJI_RULES) if (re.test(w.term_pt)) return emj;
@@ -400,9 +496,14 @@ function emojiFor(w: Word): string {
 }
 
 function MatchModal({
-  words, learnedIds, onClose, onCorrect,
-}: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void }) {
+  words, learnedIds, onClose, onCorrect, localize, tr,
+}: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void; localize: (row: any, field: string) => string; tr: (s: string) => string }) {
+  const trLocal = useTr([
+    "Associar ·", "Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.",
+    "🌟 Awê! Você associou tudo!", "Progresso salvo nesta trilha.", "Nova rodada",
+  ]);
   const PAIR_COUNT = Math.min(4, words.length);
+
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [errors, setErrors] = useState(0);
@@ -456,12 +557,12 @@ function MatchModal({
       <div className="card-elev w-full max-w-2xl rounded-3xl border border-gold/30 bg-card p-5 md:p-6 my-4">
         <div className="flex items-center justify-between">
           <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">
-            Associar · ✅ {score} · ❌ {errors}
+            {trLocal("Associar ·")} ✅ {score} · ❌ {errors}
           </div>
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
         <p className="mt-3 text-sm text-foreground/75">
-          Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.
+          {trLocal("Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.")}
         </p>
 
         <div className="mt-5 grid grid-cols-2 gap-3 md:gap-4">
@@ -488,7 +589,7 @@ function MatchModal({
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-card/80 text-3xl">
                     {emojiFor(w)}
                   </span>
-                  <span className="text-sm font-bold text-cream">{w.term_pt}</span>
+                  <span className="text-sm font-bold text-cream">{localize(w, "term_pt")}</span>
                   {isMatched && <Check className="ml-auto h-4 w-4 text-leaf" />}
                 </button>
               );
@@ -523,13 +624,13 @@ function MatchModal({
 
         {allMatched && (
           <div className="mt-5 rounded-2xl border border-leaf/40 bg-leaf/10 p-4 text-center">
-            <p className="font-display text-lg font-black text-cream">🌟 Awê! Você associou tudo!</p>
-            <p className="mt-1 text-xs text-foreground/75">Progresso salvo nesta trilha.</p>
+            <p className="font-display text-lg font-black text-cream">{trLocal("🌟 Awê! Você associou tudo!")}</p>
+            <p className="mt-1 text-xs text-foreground/75">{trLocal("Progresso salvo nesta trilha.")}</p>
             <button
               onClick={nextRound}
               className="mt-3 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2 text-sm font-bold text-cream"
             >
-              <Shuffle className="h-4 w-4" /> Nova rodada
+              <Shuffle className="h-4 w-4" /> {trLocal("Nova rodada")}
             </button>
           </div>
         )}
