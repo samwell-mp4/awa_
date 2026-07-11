@@ -226,40 +226,42 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
             const matched = !!matches[p.px];
             const selected = selectedPx === p.px;
             const err = errors[p.px];
+            const purplePill = (extraShadow = "") => ({
+              background: `${WOVEN_TILE} right center / 60% 100% no-repeat, linear-gradient(160deg,#7a6bff,#4a3ad4)`,
+              color: "#fff",
+              boxShadow:
+                "0 8px 0 #241a80, 0 12px 22px rgba(0,0,0,0.4), inset 0 0 0 4px #6a5cff, inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 5px rgba(255,255,255,0.3)" +
+                (extraShadow ? ", " + extraShadow : ""),
+            });
             const base: React.CSSProperties = matched
               ? {
                   background: "linear-gradient(160deg,#7ac74f,#3f8f2e)",
                   color: "#f7ffe0",
                   boxShadow: "0 4px 0 #1f4a15, inset 0 -3px 6px rgba(0,0,0,0.2)",
                   textDecoration: "line-through",
-                  opacity: 0.75,
+                  opacity: 0.85,
                 }
               : err
               ? {
-                  background: "linear-gradient(160deg,#ff5470,#c81d5e)",
-                  color: "#fff",
-                  boxShadow: "0 6px 0 #7a0d38, inset 0 -3px 6px rgba(0,0,0,0.2)",
+                  ...purplePill(),
+                  background: `${WOVEN_TILE} right center / 60% 100% no-repeat, linear-gradient(160deg,#ff5470,#c81d5e)`,
+                  boxShadow:
+                    "0 8px 0 #7a0d38, 0 12px 22px rgba(0,0,0,0.4), inset 0 0 0 4px #ff7a95, inset 0 -4px 8px rgba(0,0,0,0.25)",
                 }
               : selected
               ? {
-                  background: "linear-gradient(160deg,#ffe066,#ffa62b)",
-                  color: "#2a1a00",
+                  ...purplePill(),
+                  transform: "translateY(-3px)",
                   boxShadow:
-                    "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
-                  transform: "translateY(-2px)",
+                    "0 10px 0 #241a80, 0 16px 28px rgba(0,0,0,0.45), inset 0 0 0 4px #ffd166, inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 5px rgba(255,255,255,0.35)",
                 }
-              : {
-                  background: "linear-gradient(160deg,#6a5cff,#3b2fb8)",
-                  color: "#fff",
-                  boxShadow:
-                    "0 6px 0 #1e1770, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3)",
-                };
+              : purplePill();
             return (
               <button
                 key={p.px}
                 disabled={matched}
                 onClick={() => setSelectedPx(p.px)}
-                className="w-full rounded-2xl px-4 py-4 text-left font-black transition-transform active:translate-y-1 min-h-[56px]"
+                className="w-full rounded-full pl-5 pr-[45%] py-5 text-left font-black text-lg transition-transform active:translate-y-1 min-h-[64px]"
                 style={base}
               >
                 {p.px}
@@ -280,7 +282,7 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                   opacity: 0.7,
                 }
               : {
-                  background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                  background: `${WOVEN_TILE} right center / 55% 100% no-repeat, linear-gradient(160deg,#4ecdc4,#2aa39b)`,
                   color: "#062a28",
                   boxShadow:
                     "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
