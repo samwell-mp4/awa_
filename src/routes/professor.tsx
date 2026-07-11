@@ -4,6 +4,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
+import { base64ToBlobUrl } from "@/lib/audio-play";
 import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -56,7 +57,7 @@ function ProfessorPage() {
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
-      audio.src = `data:${r.mime};base64,${r.audio_base64}`;
+      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
       audioRef.current = audio;
       await audio.play().catch(() => {});
     } catch {
@@ -175,7 +176,8 @@ function Bubble({ role, content }: Msg) {
       if (r.error || !r.audio_base64) {
         throw new Error(r.message ?? "Não foi possível gerar áudio");
       }
-      const audio = new Audio(`data:${r.mime};base64,${r.audio_base64}`);
+      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
+      audio.preload = "auto";
       audioRef.current?.pause();
       audioRef.current = audio;
       await audio.play();
