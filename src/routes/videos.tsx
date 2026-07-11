@@ -68,6 +68,7 @@ function VideosPage() {
         .from("songs")
         .select("audio_url")
         .eq("is_active", true)
+        .is("deleted_at", null)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
