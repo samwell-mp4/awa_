@@ -292,7 +292,7 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                 key={pt}
                 disabled={used || !selectedPx}
                 onClick={() => handlePt(pt)}
-                className="w-full rounded-2xl px-4 py-4 text-left font-black transition-transform active:translate-y-1 min-h-[56px] disabled:opacity-60"
+                className="w-full rounded-full pl-5 pr-[42%] py-5 text-left font-black text-lg transition-transform active:translate-y-1 min-h-[64px] disabled:opacity-60"
                 style={style}
               >
                 {pt}
