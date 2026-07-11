@@ -7,6 +7,10 @@ import jungleBg from "@/assets/jogos-jungle-bg.jpg";
 const TRIBAL_PATTERN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'><g fill='none' stroke='%23f5c542' stroke-width='1.2' opacity='0.55'><path d='M0 15 L15 0 L30 15 L45 0 L60 15 L45 30 L30 15 L15 30 Z'/><path d='M7 15 L15 7 L23 15 L15 23 Z' fill='%23c8451f' opacity='0.6' stroke='none'/><path d='M37 15 L45 7 L53 15 L45 23 Z' fill='%237a2410' opacity='0.5' stroke='none'/></g></svg>\")";
 
+// Woven wood/tribal tile for Ligação pills (rich earthy diamonds)
+const WOVEN_TILE =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'><rect width='80' height='40' fill='%23c9a26a'/><g stroke='%236b3410' stroke-width='1.5' fill='none'><path d='M0 20 L20 0 L40 20 L60 0 L80 20 L60 40 L40 20 L20 40 Z'/><path d='M0 20 L20 40 M40 20 L60 40 M20 0 L40 20 M60 0 L80 20'/></g><g fill='%23a83a1a'><polygon points='20,10 26,20 20,30 14,20'/><polygon points='60,10 66,20 60,30 54,20'/></g><g fill='%23f5c542'><polygon points='40,14 44,20 40,26 36,20'/><polygon points='0,14 4,20 0,26'/><polygon points='80,14 76,20 80,26'/></g></svg>\")";
+
 export const Route = createFileRoute("/jogos")({
   head: () => ({
     meta: [
