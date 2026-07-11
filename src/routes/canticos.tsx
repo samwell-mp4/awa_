@@ -6,6 +6,9 @@ import { useState } from "react";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
+import canticosBgAsset from "@/assets/canticos-bg.png.asset.json";
+
+const canticosBg = canticosBgAsset.url;
 
 export const Route = createFileRoute("/canticos")({
   head: () => ({
@@ -58,7 +61,15 @@ function CanticosInfantilPage() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
+    <div
+      className="min-h-screen text-foreground"
+      style={{
+        backgroundImage: `url(${canticosBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-4xl px-4 pb-16 md:px-8">
