@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Trophy, BookOpen, RefreshCw, Check } from "lucide-react";
-import jungleBg from "@/assets/jogos-jungle-bg.jpg";
+import jungleBgAsset from "@/assets/jogos-jungle-bg.png.asset.json";
+const jungleBg = jungleBgAsset.url;
 
 // Woven tribal tile for the "Ligação" category button
 const TRIBAL_WEAVE =
