@@ -105,6 +105,7 @@ export function SongsAdmin() {
       ambient_video_id: draft.ambient_video_id || null,
       artist: draft.artist || null,
       cover_url: draft.cover_url || null,
+      video_url: draft.video_url || null,
       description: draft.description || null,
     };
     const { error } = await supabase.from("songs").insert(payload);
