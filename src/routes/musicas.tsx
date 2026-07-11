@@ -63,6 +63,7 @@ function MusicasPage() {
         .from("songs")
         .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
         .eq("is_active", true)
+        .is("deleted_at", null)
         .order("order_index")
         .order("created_at", { ascending: false });
       if (error) throw error;
