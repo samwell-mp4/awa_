@@ -71,18 +71,9 @@ function JogosPage() {
       className="min-h-screen text-cream"
       style={{
         background:
-          "radial-gradient(circle at 15% 10%, #f5c542 0%, transparent 40%), radial-gradient(circle at 85% 15%, #c8451f 0%, transparent 42%), radial-gradient(circle at 50% 95%, #f0a020 0%, transparent 55%), linear-gradient(165deg, #1e4a2b 0%, #0f2a1a 60%, #3a1a0e 100%)",
+          "radial-gradient(circle at 20% 10%, #ffd166 0%, transparent 45%), radial-gradient(circle at 85% 15%, #ff6b9d 0%, transparent 40%), radial-gradient(circle at 50% 90%, #4ecdc4 0%, transparent 55%), linear-gradient(160deg, #6a4cff 0%, #1e2a78 100%)",
       }}
     >
-      {/* Faixa gráfica indígena (padrão triangular) */}
-      <div
-        aria-hidden
-        className="h-4 w-full"
-        style={{
-          background:
-            "repeating-linear-gradient(135deg, #f5c542 0 14px, #c8451f 14px 28px, #1e4a2b 28px 42px, #f5e6c4 42px 56px)",
-        }}
-      />
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
         <div className="mb-8 text-center">
           <div
