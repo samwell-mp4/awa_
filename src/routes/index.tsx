@@ -4,6 +4,7 @@ import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import bgImg from "@/assets/awa-menu-bg-v2.png.asset.json";
 import infantilBg from "@/assets/awa-infantil-menu.png.asset.json";
+import adultoBg from "@/assets/awa-adulto-menu.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,7 +53,7 @@ function LandingChoice() {
             subtitle="Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor."
             icon={<GraduationCap className="h-10 w-10" />}
             accent="from-leaf/30 to-forest-deep/50"
-            backgroundUrl={bgImg.url}
+            backgroundUrl={adultoBg.url}
           />
           <ChoiceCard
             to="/infantil"
