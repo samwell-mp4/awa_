@@ -80,12 +80,13 @@ export function SongsAdmin() {
     },
   });
 
-  async function handleUpload(field: "audio_url" | "cover_url", file: File) {
+  async function handleUpload(field: "audio_url" | "cover_url" | "video_url", file: File) {
     setUploading(field);
     try {
-      const url = await uploadToSongs(file, field === "audio_url" ? "audio" : "covers");
+      const prefix = field === "audio_url" ? "audio" : field === "cover_url" ? "covers" : "videos";
+      const url = await uploadToSongs(file, prefix);
       setDraft((d) => ({ ...d, [field]: url }));
-      toast.success(field === "audio_url" ? "Áudio enviado" : "Capa enviada");
+      toast.success("Arquivo enviado");
     } catch (e: any) {
       toast.error("Erro: " + e.message);
     } finally {
