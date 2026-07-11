@@ -557,12 +557,12 @@ function MatchModal({
       <div className="card-elev w-full max-w-2xl rounded-3xl border border-gold/30 bg-card p-5 md:p-6 my-4">
         <div className="flex items-center justify-between">
           <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">
-            Associar · ✅ {score} · ❌ {errors}
+            {trLocal("Associar ·")} ✅ {score} · ❌ {errors}
           </div>
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
         <p className="mt-3 text-sm text-foreground/75">
-          Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.
+          {trLocal("Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.")}
         </p>
 
         <div className="mt-5 grid grid-cols-2 gap-3 md:gap-4">
