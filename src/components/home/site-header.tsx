@@ -5,17 +5,18 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight, LogIn, LogOut, Menu, Settings, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useNavContent, type NavGroup } from "@/lib/home-content";
+import { useNavContent, type NavGroup, type NavMode } from "@/lib/home-content";
 import { Logo } from "./logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-export function SiteHeader() {
+export function SiteHeader({ mode = "all" }: { mode?: NavMode } = {}) {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useTranslation();
-  const { top: topNavLinks } = useNavContent();
+  const { top: topNavLinks } = useNavContent(mode);
+
 
   async function signOut() {
     await supabase.auth.signOut();
