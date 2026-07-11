@@ -83,10 +83,10 @@ function InfantilHome() {
         <p className="mt-4 text-center font-display text-sm font-black uppercase tracking-widest text-emerald-900 md:text-base">
           Toque em um selo para começar 🌿
         </p>
+        </div>
       </main>
 
       <SiteFooter />
-      </div>
     </div>
   );
 }
