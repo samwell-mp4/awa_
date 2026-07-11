@@ -46,6 +46,14 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
+        <div className="mt-4 flex justify-center">
+          <img
+            src={logoImg.url}
+            alt="Awã Tech — Línguas indígenas, culturas vivas"
+            className="h-32 w-32 rounded-3xl object-contain shadow-xl ring-4 ring-amber-300 md:h-40 md:w-40"
+            draggable={false}
+          />
+        </div>
         <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
           <img
             src={menuImg.url}
