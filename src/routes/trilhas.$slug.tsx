@@ -589,7 +589,7 @@ function MatchModal({
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-card/80 text-3xl">
                     {emojiFor(w)}
                   </span>
-                  <span className="text-sm font-bold text-cream">{pickLang(w, "term_pt", lang)}</span>
+                  <span className="text-sm font-bold text-cream">{localize(w, "term_pt")}</span>
                   {isMatched && <Check className="ml-auto h-4 w-4 text-leaf" />}
                 </button>
               );
