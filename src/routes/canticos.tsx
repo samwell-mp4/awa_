@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music2, Play } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Music2 } from "lucide-react";
+
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -58,7 +58,16 @@ function useSongs() {
 
 function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
-  const [openId, setOpenId] = useState<string | null>(null);
+
+  const emojis = ["🌈", "🦜", "🌻", "🐢", "🌿", "🥁", "🌊", "🔥", "⭐", "🌸", "🦋", "🌳", "🐒", "🎶"];
+  const cardColors = [
+    "from-pink-100 to-rose-200 ring-rose-300",
+    "from-amber-100 to-yellow-200 ring-amber-300",
+    "from-emerald-100 to-green-200 ring-emerald-300",
+    "from-sky-100 to-blue-200 ring-sky-300",
+    "from-violet-100 to-purple-200 ring-violet-300",
+    "from-orange-100 to-red-200 ring-orange-300",
+  ];
 
   return (
     <div
