@@ -43,7 +43,7 @@ function JogosPage() {
     <div
       className="min-h-screen text-cream relative"
       style={{
-        backgroundImage: `linear-gradient(180deg, rgba(10,40,20,0.35) 0%, rgba(10,40,20,0.15) 30%, rgba(10,40,20,0.55) 100%), url(${jungleBg})`,
+        backgroundImage: `url(${jungleBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center top",
         backgroundAttachment: "fixed",
