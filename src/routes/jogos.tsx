@@ -367,10 +367,19 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
 
   return (
     <div>
-      <h3 className="mb-2 text-center text-lg md:text-xl font-bold text-gold">
-        Memória Cultural Pataxó
+      <h3
+        className="mb-2 text-center text-2xl md:text-3xl font-black tracking-wide"
+        style={{
+          fontFamily: "'Playfair Display', Georgia, serif",
+          background: "linear-gradient(180deg,#fff2a8 0%,#ffd166 55%,#ffa62b 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          filter: "drop-shadow(0 2px 0 rgba(0,0,0,0.4)) drop-shadow(0 4px 6px rgba(0,0,0,0.35))",
+        }}
+      >
+        ✦ Memória Cultural Pataxó ✦
       </h3>
-      <p className="mb-4 text-center text-xs text-cream/60">Encontre os pares de símbolos sagrados.</p>
+      <p className="mb-5 text-center text-sm text-cream/80">Encontre os pares de símbolos sagrados.</p>
       <div className="grid grid-cols-3 gap-3 md:grid-cols-4 md:gap-4">
         {cards.map((c, i) => {
           const show = flipped.includes(i) || matched.includes(c.label);
@@ -378,7 +387,7 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
             <button
               key={c.id}
               onClick={() => handle(i)}
-              className="aspect-square rounded-2xl text-center font-black transition-transform active:translate-y-1"
+              className="aspect-square rounded-3xl text-center font-black transition-transform active:translate-y-1"
               style={
                 show
                   ? {
@@ -388,9 +397,11 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                         "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
                     }
                   : {
-                      background: "linear-gradient(160deg,#ff5470,#c81d5e)",
+                      backgroundImage: `${ROSE_TRIBAL_CARD}, linear-gradient(160deg,#ff4e78,#c81d5e)`,
+                      backgroundSize: "cover, auto",
+                      backgroundPosition: "center",
                       boxShadow:
-                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
+                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.4), inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 6px rgba(255,255,255,0.35)",
                     }
               }
             >
@@ -400,7 +411,7 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                   <div className="mt-1 text-[10px] md:text-xs leading-tight">{c.label}</div>
                 </div>
               ) : (
-                <Sparkles className="mx-auto h-7 w-7 text-cream/90 drop-shadow" />
+                <Sparkles className="mx-auto h-8 w-8 text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]" />
               )}
             </button>
           );
