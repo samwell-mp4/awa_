@@ -36,7 +36,7 @@ function LandingChoice() {
         <LanguageSwitcher />
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
+      <main className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
         <h1 className="font-display text-3xl font-black uppercase tracking-wide text-cream md:text-5xl">
           Escolha sua experiência
         </h1>
