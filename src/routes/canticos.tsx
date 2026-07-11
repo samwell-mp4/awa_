@@ -5,8 +5,10 @@ import { ArrowLeft, Music2 } from "lucide-react";
 import { SiteFooter } from "@/components/home/site-footer";
 import { supabase } from "@/integrations/supabase/client";
 import canticosBgAsset from "@/assets/canticos-bg-3d.jpg.asset.json";
+import canticosBgVideoAsset from "@/assets/canticos-bg-video.mp4.asset.json";
 
 const canticosBg = canticosBgAsset.url;
+const canticosBgVideo = canticosBgVideoAsset.url;
 
 export const Route = createFileRoute("/canticos")({
   head: () => ({
