@@ -475,7 +475,16 @@ function NarratableVideo({
   if (captionBelow) {
     return (
       <div className="flex flex-col gap-3">
-        <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
+        <button
+          type="button"
+          onClick={handleClick}
+          onPointerEnter={prefetch}
+          onTouchStart={prefetch}
+          onFocus={prefetch}
+          disabled={loading}
+          aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
+          className="relative block w-full overflow-hidden rounded-3xl border border-gold/30 bg-black shadow-2xl shadow-black/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+        >
           <video
             ref={videoRef}
             src={src}
@@ -484,11 +493,11 @@ function NarratableVideo({
             playsInline
             loop
             preload="metadata"
-            className="h-full w-full object-cover"
+            className="pointer-events-none h-full w-full object-cover"
             aria-label={alt}
             onError={() => setVideoFailed(true)}
           />
-        </div>
+        </button>
         <button
           type="button"
           onClick={handleClick}
