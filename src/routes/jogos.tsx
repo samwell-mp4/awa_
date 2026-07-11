@@ -67,24 +67,55 @@ function JogosPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
+    <div
+      className="min-h-screen text-cream"
+      style={{
+        background:
+          "radial-gradient(circle at 20% 10%, #ffd166 0%, transparent 45%), radial-gradient(circle at 85% 15%, #ff6b9d 0%, transparent 40%), radial-gradient(circle at 50% 90%, #4ecdc4 0%, transparent 55%), linear-gradient(160deg, #6a4cff 0%, #1e2a78 100%)",
+      }}
+    >
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gold/20 text-gold">
-            <Gamepad2 className="h-8 w-8" />
-          </div>
-          <h1 className="font-serif text-3xl md:text-5xl font-bold">Jogos Awã Tech</h1>
-          <p className="mt-3 text-cream/80 px-2">Aprenda Patxôhã brincando 🌿 — jogos culturais do povo Pataxó.</p>
           <div
-            className="mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold text-cream shadow-lg"
-            style={{ background: URUCUM }}
+            className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-[28px] text-forest-deep"
+            style={{
+              background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+              boxShadow:
+                "0 10px 0 #b26a00, 0 18px 30px rgba(0,0,0,0.35), inset 0 -6px 12px rgba(0,0,0,0.15), inset 0 4px 6px rgba(255,255,255,0.5)",
+              transform: "rotate(-4deg)",
+            }}
           >
-            <Trophy className="h-4 w-4 text-gold" /> <span>{score} pontos</span>
+            <Gamepad2 className="h-10 w-10" />
+          </div>
+          <h1
+            className="font-serif text-4xl md:text-6xl font-black tracking-tight"
+            style={{
+              background: "linear-gradient(180deg,#fff9c2 0%,#ffd166 60%,#ff9a3c 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              textShadow: "0 6px 0 rgba(0,0,0,0.15)",
+              filter: "drop-shadow(0 4px 0 rgba(178,106,0,0.5))",
+            }}
+          >
+            Jogos Awã Tech
+          </h1>
+          <p className="mt-3 text-cream/90 px-2 text-base md:text-lg font-semibold">
+            Aprenda Patxôhã brincando 🌈✨ — jogos do povo Pataxó
+          </p>
+          <div
+            className="mt-5 inline-flex items-center gap-2 rounded-full px-5 py-3 font-black text-cream text-lg"
+            style={{
+              background: "linear-gradient(160deg,#ff5470,#c81d5e)",
+              boxShadow:
+                "0 8px 0 #7a0d38, 0 14px 24px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
+            }}
+          >
+            <Trophy className="h-5 w-5 text-gold drop-shadow" /> <span>{score} pontos</span>
           </div>
         </div>
 
-        {/* Navegação em botões grandes, mobile-first */}
-        <div className="mb-6 grid grid-cols-3 gap-2 md:flex md:justify-center md:gap-3">
+        {/* Navegação chunky 3D */}
+        <div className="mb-6 grid grid-cols-3 gap-3 md:flex md:justify-center md:gap-4">
           {tabs.map((t) => {
             const Icon = t.icon;
             const active = tab === t.id;
@@ -92,26 +123,47 @@ function JogosPage() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 rounded-2xl px-3 py-3 md:px-6 md:py-3 text-sm md:text-base font-bold transition ${
+                className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 rounded-2xl px-3 py-4 md:px-7 md:py-4 text-sm md:text-base font-black transition-transform active:translate-y-1"
+                style={
                   active
-                    ? "bg-gold text-forest-deep shadow-lg scale-[1.02]"
-                    : "bg-white/10 text-cream hover:bg-white/20"
-                }`}
+                    ? {
+                        background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+                        color: "#2a1a00",
+                        boxShadow:
+                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
+                        transform: "translateY(-2px)",
+                      }
+                    : {
+                        background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                        color: "#062a28",
+                        boxShadow:
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
+                      }
+                }
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-6 w-6" />
                 <span>{t.label}</span>
               </button>
             );
           })}
         </div>
 
-        <div className="rounded-3xl bg-black/30 p-4 md:p-8 backdrop-blur border-2 border-gold/30 shadow-2xl">
+        <div
+          className="rounded-[32px] p-5 md:p-8"
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.35))",
+            border: "3px solid rgba(255,209,102,0.5)",
+            boxShadow:
+              "0 20px 0 rgba(0,0,0,0.25), 0 30px 60px rgba(0,0,0,0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
           {tab === "match" && <MatchGame onScore={(n) => setScore((s) => s + n)} />}
           {tab === "memoria" && <MemoryGame onScore={(n) => setScore((s) => s + n)} />}
           {tab === "lacuna" && <FillGame onScore={(n) => setScore((s) => s + n)} />}
         </div>
 
-        <p className="mt-6 text-center text-xs text-cream/60">
+        <p className="mt-6 text-center text-xs text-cream/70 font-semibold">
           Todos os jogos são gratuitos 🌱 — cortesia do povo Pataxó para as próximas gerações.
         </p>
       </div>
@@ -265,27 +317,36 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
         Memória Cultural Pataxó
       </h3>
       <p className="mb-4 text-center text-xs text-cream/60">Encontre os pares de símbolos sagrados.</p>
-      <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-3">
+      <div className="grid grid-cols-3 gap-3 md:grid-cols-4 md:gap-4">
         {cards.map((c, i) => {
           const show = flipped.includes(i) || matched.includes(c.label);
           return (
             <button
               key={c.id}
               onClick={() => handle(i)}
-              className={`aspect-square rounded-xl text-center font-bold transition ${
+              className="aspect-square rounded-2xl text-center font-black transition-transform active:translate-y-1"
+              style={
                 show
-                  ? "bg-gold/90 text-forest-deep"
-                  : "border-2 border-gold/30"
-              }`}
-              style={!show ? { background: URUCUM } : undefined}
+                  ? {
+                      background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+                      color: "#2a1a00",
+                      boxShadow:
+                        "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
+                    }
+                  : {
+                      background: "linear-gradient(160deg,#ff5470,#c81d5e)",
+                      boxShadow:
+                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
+                    }
+              }
             >
               {show ? (
                 <div className="flex h-full flex-col items-center justify-center p-1">
-                  <div className="text-2xl md:text-4xl">{c.emoji}</div>
-                  <div className="mt-1 text-[9px] md:text-xs leading-tight">{c.label}</div>
+                  <div className="text-3xl md:text-5xl drop-shadow">{c.emoji}</div>
+                  <div className="mt-1 text-[10px] md:text-xs leading-tight">{c.label}</div>
                 </div>
               ) : (
-                <Sparkles className="mx-auto h-6 w-6 text-gold/70" />
+                <Sparkles className="mx-auto h-7 w-7 text-cream/90 drop-shadow" />
               )}
             </button>
           );
