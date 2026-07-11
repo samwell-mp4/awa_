@@ -28,43 +28,54 @@ const albumJosa = { url: albumJosaClean };
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
 
-const album = [
+const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
+type Aldeia = (typeof ALDEIAS)[number];
+
+const album: { src: string; title: string; text: string; aldeia: Exclude<Aldeia, "Todas"> }[] = [
   {
     src: albumPaje.url,
     title: "O Pajé — guardião do sagrado",
     text: "O pajé carrega no cocar de penas e nos colares de sementes a força espiritual do povo. É ele quem conduz as rezas, cura com plantas da mata e mantém a ponte entre a aldeia e os encantados da floresta.",
+    aldeia: "Barra Velha",
   },
   {
     src: albumGuerreiraFestival.url,
     title: "Mulher Pataxó em festival",
     text: "As pinturas de urucum no rosto marcam identidade, proteção e pertencimento. Cada traço conta de onde ela vem, de qual aldeia, de qual linhagem — a pele vira território de memória.",
+    aldeia: "Coroa Vermelha",
   },
   {
     src: albumGuerreiraCocar.url,
     title: "Cocar de plumas e flor",
     text: "Os grafismos finos em preto no rosto representam os caminhos da mata e a coragem. O cocar com penas verdes, amarelas e a flor vermelha celebra a beleza da floresta viva que vestimos.",
+    aldeia: "Jaqueira",
   },
   {
     src: albumGuerreiros.url,
     title: "Jovens guerreiros pintados de onça",
     text: "A pintura de jenipapo em pintas de onça convoca a força do maior predador da mata. Antes de rituais e jogos, os jovens vestem o corpo do animal-espírito para dançar, correr e resistir.",
+    aldeia: "Barra Velha",
   },
   {
     src: albumCriancaCocar.url,
     title: "Menino com cocar ancestral",
     text: "Desde cedo as crianças aprendem que o cocar não é adorno: é responsabilidade. Usar as penas dos pais é aceitar o compromisso de cuidar da língua, da terra e das histórias do povo.",
+    aldeia: "Aldeia Velha",
   },
   {
     src: albumCriancaJogos.url,
     title: "Nova geração nos Jogos Indígenas",
     text: "Os Jogos Indígenas Pataxó reúnem aldeias inteiras em corridas, arco e flecha, cabo de guerra e canoagem. Para as crianças, é festa; para os mais velhos, é a certeza de que a cultura segue viva.",
+    aldeia: "Boca da Mata",
   },
   {
     src: albumPintura.url,
     title: "A pintura corporal como escrita",
     text: "Cada linha aplicada com pincel de fibra e tinta de jenipapo é uma palavra antiga. Os traços nos ombros, no rosto e no peito narram alianças, dons de caça, passagens de vida — é a escrita viva do povo.",
+    aldeia: "Jaqueira",
   },
 ];
+
 
 
 
