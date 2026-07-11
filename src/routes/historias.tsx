@@ -206,6 +206,7 @@ function useNarration(originalText: string) {
     clearProgressTimer();
     setSpeaking(false);
     setProgress(0);
+    clearActiveNarration(stopCurrent);
   };
 
   const speakImmediately = () => {
