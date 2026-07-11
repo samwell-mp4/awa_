@@ -173,14 +173,7 @@ function CanticosInfantilPage() {
                     )}
                   </div>
 
-                      {!s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
-                        <p className="text-sm text-emerald-800">
-                          <Music2 className="mr-1 inline h-4 w-4" />
-                          Conteúdo em breve.
-                        </p>
-                      )}
-                    </div>
-                  )}
+
                 </li>
               );
             })}
