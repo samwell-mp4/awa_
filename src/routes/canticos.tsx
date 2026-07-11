@@ -4,11 +4,7 @@ import { ArrowLeft, Music2 } from "lucide-react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { supabase } from "@/integrations/supabase/client";
-import canticosBgAsset from "@/assets/canticos-bg-3d.jpg.asset.json";
-import canticosBgVideoAsset from "@/assets/canticos-bg-video.mp4.asset.json";
 
-const canticosBg = canticosBgAsset.url;
-const canticosBgVideo = canticosBgVideoAsset.url;
 
 export const Route = createFileRoute("/canticos")({
   head: () => ({
@@ -62,23 +58,8 @@ function CanticosPage() {
   const { data: songs = [], isLoading } = useSongs();
 
   return (
-    <div className="relative min-h-screen text-foreground overflow-hidden">
-      <video
-        src={canticosBgVideo}
-        poster={canticosBg}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="fixed inset-0 -z-10 h-full w-full object-cover"
-      />
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9))",
-        }}
-      />
+    <div className="relative min-h-screen text-foreground overflow-hidden bg-background">
+
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
           <Link
