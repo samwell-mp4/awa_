@@ -2,8 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Baby, GraduationCap, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import bgImg from "@/assets/awa-tech-logo.png.asset.json";
-import adultoBg from "@/assets/awa-adulto-bg.jpg.asset.json";
+import bgImg from "@/assets/awa-menu-bg.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
