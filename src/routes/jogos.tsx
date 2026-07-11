@@ -134,10 +134,10 @@ function JogosPage() {
                         transform: "translateY(-2px)",
                       }
                     : {
-                        background: "linear-gradient(160deg,#2f7a3a,#175020)",
-                        color: "#f5e6c4",
+                        background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                        color: "#062a28",
                         boxShadow:
-                          "0 6px 0 #0b2c11, 0 10px 18px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.25)",
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
                       }
                 }
               >
