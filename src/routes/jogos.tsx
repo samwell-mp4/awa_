@@ -435,22 +435,37 @@ function FillGame({ onScore }: { onScore: (n: number) => void }) {
       <h3 className="mb-2 text-lg md:text-xl font-bold text-gold">Complete a frase em Patxôhã</h3>
       <p className="mb-6 text-cream/60 text-xs">Frase {i + 1} de {FILL_QUESTIONS.length}</p>
       <p className="mb-6 text-xl md:text-2xl font-serif px-2">{q.sentence}</p>
-      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 md:gap-3">
+      <div className="mx-auto flex max-w-md flex-wrap justify-center gap-3 md:gap-4">
         {q.options.map((opt) => {
           const isAnswer = answered !== null && opt === q.answer;
           const isWrongPicked = answered === false && opt !== q.answer;
+          const style: React.CSSProperties = isAnswer
+            ? {
+                background: "linear-gradient(160deg,#7ac74f,#3f8f2e)",
+                color: "#f7ffe0",
+                boxShadow:
+                  "0 8px 0 #1f4a15, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.35)",
+                transform: "translateY(-2px)",
+              }
+            : isWrongPicked
+            ? {
+                background: "linear-gradient(160deg,#4a4670,#2c294a)",
+                color: "#cfcfe5",
+                boxShadow: "0 4px 0 #1a1830",
+                opacity: 0.7,
+              }
+            : {
+                background: "linear-gradient(160deg,#ff9a3c,#e05a1a)",
+                color: "#2a1400",
+                boxShadow:
+                  "0 8px 0 #843000, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.4)",
+              };
           return (
             <button
               key={opt}
               onClick={() => choose(opt)}
-              className={`rounded-xl px-5 py-3 md:px-6 md:py-3 font-bold transition min-w-[90px] ${
-                isAnswer
-                  ? "bg-leaf text-cream"
-                  : isWrongPicked
-                  ? "bg-white/10 opacity-50"
-                  : "bg-white/10 hover:bg-gold hover:text-forest-deep"
-              }`}
-              style={answered === null ? { borderBottom: `3px solid ${URUCUM}` } : undefined}
+              className="rounded-2xl px-6 py-4 font-black text-lg transition-transform active:translate-y-1 min-w-[110px]"
+              style={style}
             >
               {opt}
             </button>
