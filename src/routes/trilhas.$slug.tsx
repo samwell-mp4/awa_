@@ -624,13 +624,13 @@ function MatchModal({
 
         {allMatched && (
           <div className="mt-5 rounded-2xl border border-leaf/40 bg-leaf/10 p-4 text-center">
-            <p className="font-display text-lg font-black text-cream">🌟 Awê! Você associou tudo!</p>
-            <p className="mt-1 text-xs text-foreground/75">Progresso salvo nesta trilha.</p>
+            <p className="font-display text-lg font-black text-cream">{trLocal("🌟 Awê! Você associou tudo!")}</p>
+            <p className="mt-1 text-xs text-foreground/75">{trLocal("Progresso salvo nesta trilha.")}</p>
             <button
               onClick={nextRound}
               className="mt-3 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2 text-sm font-bold text-cream"
             >
-              <Shuffle className="h-4 w-4" /> Nova rodada
+              <Shuffle className="h-4 w-4" /> {trLocal("Nova rodada")}
             </button>
           </div>
         )}
