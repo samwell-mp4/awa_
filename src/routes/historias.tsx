@@ -619,6 +619,33 @@ function HistoriasPage() {
               captionBelow
             />
 
+            <div className="space-y-4 text-amber-100/90 leading-relaxed">
+              <p><T>Desde jovem, Josa aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos.</T></p>
+              <p><T>Por toda a sua vida, esteve na linha de frente da luta — defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo.</T></p>
+              <p><T>Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois.</T></p>
+              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+                <T>“Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa.”</T>
+              </blockquote>
+
+              <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
+                {[
+                  { t: "Tradição", d: "Costumes, cantos e língua que passam de geração em geração." },
+                  { t: "Luta", d: "Defender a floresta e os rios é defender a vida." },
+                  { t: "Sabedoria", d: "Os mais velhos são livros vivos do povo." },
+                  { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
+                ].map((b) => (
+                  <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
+                    <p className="font-serif text-gold"><T>{b.t}</T></p>
+                    <p className="mt-1 text-amber-100/80"><T>{b.d}</T></p>
+                  </div>
+                ))}
+              </div>
+
+              <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
+                <T>Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida</T>
+              </p>
+            </div>
+
           </div>
         </section>
 
