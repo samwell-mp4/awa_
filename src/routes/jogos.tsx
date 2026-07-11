@@ -146,19 +146,21 @@ function JogosPage() {
                 style={
                   active
                     ? {
-                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#ffe066,#ffa62b)`,
-                        backgroundBlendMode: "overlay, normal",
+                        backgroundImage: `${TRIBAL_PATTERN_GOLD}, linear-gradient(160deg,#ffe066,#f5a623)`,
+                        backgroundSize: "48px 60px, cover",
+                        backgroundRepeat: "repeat, no-repeat",
                         color: "#2a1a00",
                         boxShadow:
-                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 0 0 3px rgba(122,36,16,0.7), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.5)",
+                          "0 8px 0 #a35a00, 0 14px 22px rgba(0,0,0,0.4), inset 0 0 0 4px #6b2a10, inset 0 0 0 7px #ffd166, inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 5px rgba(255,255,255,0.4)",
                         transform: "translateY(-2px)",
                       }
                     : {
-                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#4ecdc4,#2aa39b)`,
-                        backgroundBlendMode: "overlay, normal",
+                        backgroundImage: `${TRIBAL_PATTERN_TEAL}, linear-gradient(160deg,#4ecdc4,#2aa39b)`,
+                        backgroundSize: "72px 72px, cover",
+                        backgroundRepeat: "repeat, no-repeat",
                         color: "#062a28",
                         boxShadow:
-                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 0 0 3px rgba(20,98,93,0.7), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4)",
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.35), inset 0 0 0 4px #14625d, inset 0 0 0 7px #a8f0e8, inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4)",
                       }
                 }
               >
