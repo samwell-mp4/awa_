@@ -411,11 +411,13 @@ function NarratableVideo({
   poster,
   alt,
   text,
+  captionBelow,
 }: {
   src: string;
   poster: string;
   alt: string;
   text: string;
+  captionBelow?: boolean;
 }) {
   const { speaking, loading, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -468,6 +470,46 @@ function NarratableVideo({
 
   if (videoFailed) {
     return <NarratablePhoto src={poster} alt={alt} text={text} />;
+  }
+
+  if (captionBelow) {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
+          <video
+            ref={videoRef}
+            src={src}
+            poster={poster}
+            muted
+            playsInline
+            loop
+            preload="metadata"
+            className="h-full w-full object-cover"
+            aria-label={alt}
+            onError={() => setVideoFailed(true)}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleClick}
+          onPointerEnter={prefetch}
+          onTouchStart={prefetch}
+          onFocus={prefetch}
+          disabled={loading}
+          className="inline-flex items-center justify-center gap-2 self-center rounded-full border border-gold/40 bg-black/40 px-5 py-2.5 text-sm font-medium text-amber-100 backdrop-blur transition hover:bg-black/60 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 disabled:opacity-60"
+          aria-label={speaking ? "Parar narração" : "Ouvir narração"}
+        >
+          {loading ? (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+          ) : speaking ? (
+            <Square className="h-4 w-4 text-gold" />
+          ) : (
+            <Volume2 className="h-4 w-4 text-gold" />
+          )}
+          <span>{loading ? "Preparando voz…" : speaking ? "Parar narração" : "Ouvir narração"}</span>
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -602,6 +644,7 @@ function HistoriasPage() {
               poster={albumJosa.url}
               alt="Vídeo do Ancião Josa Pataxó segurando maracá tradicional em frente à oca da aldeia"
               text={`Ancião Josa, a história de quem nunca desistiu de sua aldeia. Desde jovem, ele aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos. Por toda a sua vida, esteve na linha de frente da luta: defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo. Muitas vezes enfrentou dificuldades, mas nunca recuou, pois sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois. Hoje, como guardião da memória, ele é a referência da comunidade. Reúne os jovens para contar as histórias da origem do povo, ensina os costumes que vieram das gerações passadas, e reforça sempre: nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa. Tradição: os costumes, cantos, pinturas e a língua Patxôhã são tesouros que passam de geração em geração. Luta: defender o território, a floresta e os rios é defender a vida e o futuro do nosso povo. Sabedoria: os mais velhos são os livros vivos que guardam as histórias e os ensinamentos. Resistência: enquanto houver quem guarde e lute por esses saberes, nossa aldeia continuará existindo, forte e viva. Aldeia Velha, Povo Pataxó, nossa terra, nossa vida.`}
+              captionBelow
             />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
@@ -650,6 +693,7 @@ function HistoriasPage() {
               poster={albumAnciao.url}
               alt="Vídeo do Ancião Pataxó sorrindo com maracá e pintura corporal ancestral"
               text={`Sou ancião João. A história de quem nunca desistiu de sua aldeia. Sou ancião do povo Pataxó. Vi minha aldeia mudar, enfrentei muitas lutas, mas nunca baixei a cabeça. Lutei por nossa terra, nossa língua, nossa cultura e por cada criança que sonha com um futuro melhor. Tradição, resistência e sabedoria. Ser ancião é mais que ter cabelos brancos: é guardar as histórias, é ensinar com o exemplo, é plantar hoje para que nossa aldeia floresça amanhã. Lutar pela aldeia é lutar pela vida. Não é fácil. Enfrentamos a invasão, o preconceito, o esquecimento. Mas seguimos firmes, porque nossa força vem de nossos antepassados e do amor que temos por nossa gente. Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida. Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura, e por cada criança que sonha com um futuro melhor. Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.`}
+              captionBelow
             />
 
             <div className="space-y-4 text-amber-100/90 leading-relaxed">
