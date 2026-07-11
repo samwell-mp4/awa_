@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { narratePublic } from "@/lib/narrate-public.functions";
+import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/saudacoes")({
