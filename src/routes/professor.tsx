@@ -4,6 +4,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
+import { base64ToBlobUrl } from "@/lib/audio-play";
 import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
