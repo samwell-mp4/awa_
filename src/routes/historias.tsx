@@ -779,3 +779,57 @@ function HistoriasPage() {
     </div>
   );
 }
+
+function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
+  const [aldeia, setAldeia] = useState<Aldeia>("Todas");
+  const filtered = aldeia === "Todas" ? items : items.filter((i) => i.aldeia === aldeia);
+  return (
+    <>
+      <div className="mb-6 flex flex-wrap justify-center gap-2">
+        {ALDEIAS.map((a) => (
+          <button
+            key={a}
+            onClick={() => setAldeia(a)}
+            className={`rounded-full border px-3 py-1.5 text-xs transition ${
+              aldeia === a
+                ? "border-gold bg-gold text-emerald-950"
+                : "border-gold/30 text-amber-100 hover:bg-white/5"
+            }`}
+          >
+            <MapPin className="mr-1 inline h-3 w-3" /> <T>{a}</T>
+          </button>
+        ))}
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((item) => (
+          <figure
+            key={item.title}
+            className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
+          >
+            <div className="aspect-[4/5] overflow-hidden">
+              <img
+                src={item.src}
+                alt={item.title}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+            <figcaption className="p-5">
+              <div className="mb-1 inline-flex items-center gap-1 text-xs text-gold/80">
+                <MapPin className="h-3 w-3" /> {item.aldeia}
+              </div>
+              <h3 className="font-serif text-lg text-gold">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-amber-100/85">{item.text}</p>
+            </figcaption>
+          </figure>
+        ))}
+        {filtered.length === 0 && (
+          <p className="col-span-full text-center text-sm text-amber-100/70">
+            <T>Nenhuma foto desta aldeia ainda.</T>
+          </p>
+        )}
+      </div>
+    </>
+  );
+}
+
