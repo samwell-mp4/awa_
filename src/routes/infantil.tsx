@@ -7,33 +7,34 @@ import {
   BookOpen,
   Map as MapIcon,
   Leaf,
-  Bird,
 } from "lucide-react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
+import infantilHero from "@/assets/infantil-hero.png.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
     meta: [
-      { title: "Awã Tech Infantil — Aprender brincando" },
+      { title: "Awã Tech Infantil — Trilha da Aldeia" },
       {
         name: "description",
         content:
-          "Área infantil do Awã Tech: jogos, músicas, saudações, histórias, vídeos e trilhas para crianças aprenderem línguas indígenas se divertindo.",
+          "Menu infantil do Awã Tech: trilhas, jogos, cânticos, histórias, saudações e vídeos para crianças aprenderem Patxohã brincando.",
       },
-      { property: "og:title", content: "Awã Tech Infantil" },
+      { property: "og:title", content: "Awã Tech Infantil — Trilha da Aldeia" },
       {
         property: "og:description",
-        content: "Jogos, músicas e vídeos para crianças aprenderem línguas indígenas brincando.",
+        content: "Jogos, cânticos, histórias e vídeos para crianças aprenderem Patxohã.",
       },
+      { property: "og:image", content: infantilHero.url },
     ],
   }),
   component: InfantilHome,
 });
 
 type Tile = {
-  to: "/jogos" | "/musicas" | "/saudacoes" | "/videos" | "/historias" | "/trilhas";
+  to: "/trilhas" | "/jogos" | "/musicas" | "/saudacoes" | "/videos" | "/historias";
   title: string;
   desc: string;
   emoji: string;
@@ -48,8 +49,8 @@ const tiles: Tile[] = [
     title: "Trilhas",
     desc: "Caminhe pela aldeia",
     emoji: "🗺️",
-    icon: <MapIcon className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-amber-300 to-orange-400",
+    icon: <MapIcon className="h-6 w-6" />,
+    bg: "bg-gradient-to-br from-amber-300 to-orange-500",
     ring: "ring-orange-200",
   },
   {
@@ -57,7 +58,7 @@ const tiles: Tile[] = [
     title: "Jogos",
     desc: "Brincadeiras Pataxó",
     emoji: "🧩",
-    icon: <Gamepad2 className="h-7 w-7" />,
+    icon: <Gamepad2 className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-fuchsia-400 to-pink-500",
     ring: "ring-pink-200",
   },
@@ -66,7 +67,7 @@ const tiles: Tile[] = [
     title: "Cânticos",
     desc: "Cante junto",
     emoji: "🥁",
-    icon: <Music2 className="h-7 w-7" />,
+    icon: <Music2 className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-red-400 to-rose-500",
     ring: "ring-rose-200",
   },
@@ -75,7 +76,7 @@ const tiles: Tile[] = [
     title: "Histórias",
     desc: "Contos da floresta",
     emoji: "📖",
-    icon: <BookOpen className="h-7 w-7" />,
+    icon: <BookOpen className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-yellow-300 to-amber-500",
     ring: "ring-amber-200",
   },
@@ -84,7 +85,7 @@ const tiles: Tile[] = [
     title: "Saudações",
     desc: "Aprenda a dizer olá",
     emoji: "👋",
-    icon: <Hand className="h-7 w-7" />,
+    icon: <Hand className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-sky-400 to-cyan-500",
     ring: "ring-cyan-200",
   },
@@ -93,7 +94,7 @@ const tiles: Tile[] = [
     title: "Vídeos",
     desc: "Assista e aprenda",
     emoji: "🎬",
-    icon: <Video className="h-7 w-7" />,
+    icon: <Video className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-emerald-400 to-green-600",
     ring: "ring-emerald-200",
   },
@@ -105,21 +106,16 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-6xl px-4 pb-16 md:px-8">
-        {/* Hero — village vibe */}
-        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 bg-gradient-to-b from-sky-300 via-emerald-300 to-amber-200 p-6 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)] md:p-10">
-          <div className="pointer-events-none absolute -left-4 top-4 text-5xl md:text-6xl">🌴</div>
-          <div className="pointer-events-none absolute right-4 top-6 text-4xl md:text-5xl">☀️</div>
-          <div className="pointer-events-none absolute bottom-3 left-6 text-3xl md:text-4xl">🌺</div>
-          <div className="pointer-events-none absolute bottom-4 right-8 text-3xl md:text-4xl">🦜</div>
-
-          <div className="relative text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-900 shadow">
-              <Leaf className="h-3.5 w-3.5" /> Awã Tech Infantil
-            </div>
-            <h1 className="mt-3 font-display text-4xl font-black uppercase tracking-wide text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.25)] md:text-6xl">
-              Bem-vindo à Aldeia!
-            </h1>
-            <p className="mx-auto mt-3 max-w-xl text-sm font-semibold text-emerald-950/80 md:text-base">
+        {/* Hero — Trilha da Aldeia illustration */}
+        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
+          <img
+            src={infantilHero.url}
+            alt="Trilha da Aldeia — Awã Tech Infantil"
+            className="block h-auto w-full select-none"
+            draggable={false}
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-emerald-950/70 via-emerald-900/20 to-transparent p-4 pt-16 text-center">
+            <p className="mx-auto max-w-xl font-display text-sm font-black uppercase tracking-widest text-white drop-shadow md:text-base">
               Escolha uma trilha e vamos aprender Patxohã brincando 🌿
             </p>
           </div>
@@ -151,8 +147,8 @@ function InfantilHome() {
         </section>
 
         {/* Fun footer strip */}
-        <section className="mt-10 flex items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-emerald-400 bg-white/60 p-4 text-emerald-900">
-          <Bird className="h-6 w-6" />
+        <section className="mt-10 flex items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-emerald-400 bg-white/60 p-4 text-emerald-900">
+          <Leaf className="h-6 w-6" />
           <span className="font-display text-sm font-bold uppercase tracking-wide md:text-base">
             Aprender é uma aventura na floresta!
           </span>
