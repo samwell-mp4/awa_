@@ -498,25 +498,6 @@ function NarratableVideo({
             onError={() => setVideoFailed(true)}
           />
         </button>
-        <button
-          type="button"
-          onClick={handleClick}
-          onPointerEnter={prefetch}
-          onTouchStart={prefetch}
-          onFocus={prefetch}
-          disabled={loading}
-          className="inline-flex items-center justify-center gap-2 self-center rounded-full border border-gold/40 bg-black/40 px-5 py-2.5 text-sm font-medium text-amber-100 backdrop-blur transition hover:bg-black/60 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 disabled:opacity-60"
-          aria-label={speaking ? "Parar narração" : "Ouvir narração"}
-        >
-          {loading ? (
-            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-          ) : speaking ? (
-            <Square className="h-4 w-4 text-gold" />
-          ) : (
-            <Volume2 className="h-4 w-4 text-gold" />
-          )}
-          <span>{loading ? "Preparando voz…" : speaking ? "Parar narração" : "Ouvir narração"}</span>
-        </button>
       </div>
     );
   }
