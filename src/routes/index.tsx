@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Baby, GraduationCap, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import bgImg from "@/assets/awa-menu-bg-v2.png.asset.json";
+import bgImg from "@/assets/awa-menu-bg.png.asset.json";
 import infantilBg from "@/assets/awa-infantil-menu.png.asset.json";
-import adultoBg from "@/assets/awa-adulto-menu-v2.jpg.asset.json";
+import adultoBg from "@/assets/awa-adulto-menu.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
