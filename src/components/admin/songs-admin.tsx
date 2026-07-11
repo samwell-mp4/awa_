@@ -272,6 +272,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         language: s.language,
         audio_url: s.audio_url,
         cover_url: s.cover_url,
+        video_url: s.video_url,
         ambient_video_id: s.ambient_video_id || null,
         lyrics_indigenous: s.lyrics_indigenous,
         lyrics_pt: s.lyrics_pt,
