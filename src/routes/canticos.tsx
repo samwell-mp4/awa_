@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music2, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Music2 } from "lucide-react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,19 +8,18 @@ import canticosBgAsset from "@/assets/canticos-bg-3d.jpg.asset.json";
 
 const canticosBg = canticosBgAsset.url;
 
-
 export const Route = createFileRoute("/canticos")({
   head: () => ({
     meta: [
       { title: "Cânticos Pataxó — AWÃ TECH" },
       {
         name: "description",
-        content: "Cânticos do povo Pataxó — ouça, assista e leia a letra em Patxôhã e português.",
+        content: "Cânticos do povo Pataxó — assista aos vídeos com letra em Patxôhã e português.",
       },
       { property: "og:title", content: "Cânticos Pataxó — AWÃ TECH" },
       {
         property: "og:description",
-        content: "Cânticos Pataxó com áudio, vídeo e letras em Patxôhã e português.",
+        content: "Cânticos Pataxó em vídeo com letras em Patxôhã e português.",
       },
     ],
   }),
@@ -60,42 +58,17 @@ function useSongs() {
 
 function CanticosPage() {
   const { data: songs = [], isLoading } = useSongs();
-  const [openId, setOpenId] = useState<string | null>(null);
-
-  const openSong = songs.find((s) => s.id === openId) ?? null;
-  const openBgVideo = openSong?.ambient_videos?.video_url || openSong?.video_url || null;
 
   return (
     <div
       className="relative min-h-screen text-foreground"
-      style={
-        openBgVideo
-          ? undefined
-          : {
-              backgroundImage: `linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9)), url(${canticosBg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center top",
-              backgroundAttachment: "fixed",
-            }
-      }
+      style={{
+        backgroundImage: `linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9)), url(${canticosBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
     >
-      {openBgVideo && (
-        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <video
-            key={openBgVideo}
-            src={openBgVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.75)] to-[oklch(0.14_0.03_145/0.9)]" />
-        </div>
-      )}
-
-
-
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
           <Link
@@ -110,8 +83,8 @@ function CanticosPage() {
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <p className="mb-6 max-w-2xl text-sm text-foreground/70">
-          Ouça e assista aos cânticos do povo Pataxó. Toque em um cântico para ver a letra em
-          Patxôhã, o vídeo e a tradução em português.
+          Assista aos cânticos do povo Pataxó. Cada cântico traz a letra em Patxôhã e a tradução em
+          português.
         </p>
 
         {isLoading ? (
@@ -121,91 +94,71 @@ function CanticosPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {songs.map((s) => {
-              const isOpen = openId === s.id;
               const videoUrl = s.video_url || s.ambient_videos?.video_url || null;
               return (
                 <article
                   key={s.id}
                   className="group overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur transition hover:border-gold/50"
                 >
-                  <button
-                    type="button"
-                    onClick={() => setOpenId(isOpen ? null : s.id)}
-                    className="flex w-full items-center gap-3 p-4 text-left"
-                  >
-                    {s.cover_url ? (
+                  <div className="relative aspect-video bg-black">
+                    {videoUrl ? (
+                      <video
+                        src={videoUrl}
+                        controls
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        poster={s.cover_url ?? undefined}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : s.cover_url ? (
                       <img
                         src={s.cover_url}
-                        alt=""
-                        className="h-14 w-14 shrink-0 rounded-xl object-cover ring-1 ring-gold/30"
+                        alt={s.title}
+                        className="h-full w-full object-cover"
                       />
                     ) : (
-                      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gold/10 text-gold ring-1 ring-gold/30">
-                        <Music2 className="h-6 w-6" />
-                      </span>
+                      <div className="grid h-full w-full place-items-center text-gold/60">
+                        <Music2 className="h-10 w-10" />
+                      </div>
                     )}
-                    <div className="min-w-0 flex-1">
-                      <h2 className="font-display text-base font-black text-cream truncate">
-                        {s.title}
-                      </h2>
-                      {s.artist && (
-                        <p className="truncate text-xs text-gold/80">{s.artist}</p>
-                      )}
+                  </div>
+
+                  <div className="p-4 space-y-3">
+                    <div>
+                      <h2 className="font-display text-base font-black text-cream">{s.title}</h2>
+                      {s.artist && <p className="text-xs text-gold/90 italic">{s.artist}</p>}
                     </div>
-                    <ChevronDown
-                      className={`h-5 w-5 shrink-0 text-gold transition-transform ${isOpen ? "rotate-180" : ""}`}
-                    />
-                  </button>
 
-                  {isOpen && (
-                    <div className="border-t border-gold/20 p-4 space-y-4">
-                      {s.lyrics_indigenous && (
-                        <div>
-                          <h3 className="mb-1 text-[10px] uppercase tracking-wider text-gold/80">
-                            Patxôhã
-                          </h3>
-                          <p className="whitespace-pre-line text-sm leading-relaxed text-cream">
-                            {s.lyrics_indigenous}
-                          </p>
-                        </div>
-                      )}
+                    {s.audio_url && (
+                      <audio controls src={s.audio_url} className="w-full">
+                        <track kind="captions" />
+                      </audio>
+                    )}
 
-                      {videoUrl ? (
-                        <div className="overflow-hidden rounded-xl border border-gold/25 bg-black">
-                          <video
-                            src={videoUrl}
-                            controls
-                            playsInline
-                            preload="metadata"
-                            poster={s.cover_url ?? undefined}
-                            className="aspect-video w-full object-cover"
-                          />
-                        </div>
-                      ) : s.audio_url ? (
-                        <audio controls src={s.audio_url} className="w-full">
-                          <track kind="captions" />
-                        </audio>
-                      ) : null}
-
-                      {s.lyrics_pt && (
-                        <div>
-                          <h3 className="mb-1 text-[10px] uppercase tracking-wider text-gold/80">
-                            Português
-                          </h3>
-                          <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/80">
-                            {s.lyrics_pt}
-                          </p>
-                        </div>
-                      )}
-
-                      {!videoUrl && !s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
-                        <p className="text-sm text-foreground/70">
-                          <Music2 className="mr-1 inline h-4 w-4" />
-                          Conteúdo em breve.
+                    {s.lyrics_indigenous && (
+                      <div>
+                        <h3 className="mb-1 text-[10px] uppercase tracking-wider text-gold/80">
+                          Patxôhã
+                        </h3>
+                        <p className="whitespace-pre-line text-sm leading-relaxed text-cream">
+                          {s.lyrics_indigenous}
                         </p>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    )}
+
+                    {s.lyrics_pt && (
+                      <div>
+                        <h3 className="mb-1 text-[10px] uppercase tracking-wider text-gold/80">
+                          Português
+                        </h3>
+                        <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/80">
+                          {s.lyrics_pt}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </article>
               );
             })}
