@@ -63,6 +63,7 @@ function LandingChoice() {
             icon={<Baby className="h-10 w-10" />}
             accent="from-gold/30 to-leaf/25"
             backgroundUrl={infantilBg.url}
+            backgroundSize="contain"
           />
         </div>
       </main>
