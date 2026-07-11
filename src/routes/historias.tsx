@@ -749,29 +749,8 @@ function HistoriasPage() {
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {translatedAlbum.map((item) => (
-              <figure
-                key={item.title}
-                className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
-              >
-                <div className="aspect-[4/5] overflow-hidden">
-                  <img
-                    src={item.src}
-                    alt={item.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <figcaption className="p-5">
-                  <h3 className="font-serif text-lg text-gold">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-amber-100/85">
-                    {item.text}
-                  </p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <AldeiaFilterAndAlbum items={translatedAlbum} />
+
         </section>
 
         {/* Closing */}
