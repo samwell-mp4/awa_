@@ -44,6 +44,7 @@ const defaultDraft = {
   language: "Patxôhã",
   audio_url: "",
   cover_url: "",
+  video_url: "",
   ambient_video_id: "",
   lyrics_indigenous: "",
   lyrics_pt: "",
@@ -79,12 +80,13 @@ export function SongsAdmin() {
     },
   });
 
-  async function handleUpload(field: "audio_url" | "cover_url", file: File) {
+  async function handleUpload(field: "audio_url" | "cover_url" | "video_url", file: File) {
     setUploading(field);
     try {
-      const url = await uploadToSongs(file, field === "audio_url" ? "audio" : "covers");
+      const prefix = field === "audio_url" ? "audio" : field === "cover_url" ? "covers" : "videos";
+      const url = await uploadToSongs(file, prefix);
       setDraft((d) => ({ ...d, [field]: url }));
-      toast.success(field === "audio_url" ? "Áudio enviado" : "Capa enviada");
+      toast.success("Arquivo enviado");
     } catch (e: any) {
       toast.error("Erro: " + e.message);
     } finally {
@@ -103,6 +105,7 @@ export function SongsAdmin() {
       ambient_video_id: draft.ambient_video_id || null,
       artist: draft.artist || null,
       cover_url: draft.cover_url || null,
+      video_url: draft.video_url || null,
       description: draft.description || null,
     };
     const { error } = await supabase.from("songs").insert(payload);
@@ -161,6 +164,14 @@ export function SongsAdmin() {
             onFile={(f) => handleUpload("cover_url", f)}
             accept="image/*"
             busy={uploading === "cover_url"}
+          />
+          <UploadOrUrl
+            label="Vídeo da música (upload MP4 ou cole URL)"
+            value={draft.video_url}
+            onChange={(v) => setDraft({ ...draft, video_url: v })}
+            onFile={(f) => handleUpload("video_url", f)}
+            accept="video/*"
+            busy={uploading === "video_url"}
           />
         </div>
 
@@ -261,6 +272,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         language: s.language,
         audio_url: s.audio_url,
         cover_url: s.cover_url,
+        video_url: s.video_url,
         ambient_video_id: s.ambient_video_id || null,
         lyrics_indigenous: s.lyrics_indigenous,
         lyrics_pt: s.lyrics_pt,
@@ -301,6 +313,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         </Field>
         <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
         <Field label="URL capa"><Input value={s.cover_url ?? ""} onChange={(e) => setS({ ...s, cover_url: e.target.value })} /></Field>
+        <Field label="URL vídeo"><Input value={s.video_url ?? ""} onChange={(e) => setS({ ...s, video_url: e.target.value })} /></Field>
         <Field label="Letra indígena">
           <Textarea rows={6} value={s.lyrics_indigenous} onChange={(e) => setS({ ...s, lyrics_indigenous: e.target.value })} />
         </Field>
