@@ -367,10 +367,9 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                         "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
                     }
                   : {
-                      background:
-                        "repeating-linear-gradient(45deg, #c8451f 0 10px, #7a2410 10px 20px), linear-gradient(160deg,#c8451f,#7a2410)",
+                      background: "linear-gradient(160deg,#ff5470,#c81d5e)",
                       boxShadow:
-                        "0 8px 0 #3d1108, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 6px rgba(255,255,255,0.25)",
+                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
                     }
               }
             >
