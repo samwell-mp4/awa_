@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
+import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
