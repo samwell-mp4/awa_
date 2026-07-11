@@ -55,6 +55,11 @@ function VideosPage() {
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [muted, setMuted] = useState(false);
+  const [aldeia, setAldeia] = useState<(typeof ALDEIAS)[number]>("Todas");
+  const filteredVideos = useMemo(
+    () => (aldeia === "Todas" ? videos : videos.filter((v) => v.aldeia === aldeia)),
+    [aldeia],
+  );
 
   const { data: bgUrl } = useQuery({
     queryKey: ["bg-song"],
