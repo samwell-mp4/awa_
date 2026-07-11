@@ -341,7 +341,6 @@ export type Database = {
           audio_url: string
           cover_url: string | null
           created_at: string
-          deleted_at: string | null
           description: string | null
           description_en: string | null
           description_es: string | null
@@ -368,7 +367,6 @@ export type Database = {
           audio_url: string
           cover_url?: string | null
           created_at?: string
-          deleted_at?: string | null
           description?: string | null
           description_en?: string | null
           description_es?: string | null
@@ -395,7 +393,6 @@ export type Database = {
           audio_url?: string
           cover_url?: string | null
           created_at?: string
-          deleted_at?: string | null
           description?: string | null
           description_en?: string | null
           description_es?: string | null
