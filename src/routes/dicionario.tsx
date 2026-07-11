@@ -8,6 +8,7 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { narratePublic } from "@/lib/narrate-public.functions";
+import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 
 
