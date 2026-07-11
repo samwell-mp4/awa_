@@ -138,6 +138,7 @@ export function useNavContent(mode: NavMode = "all") {
     {
       title: t("nav.groups.cultura"),
       items: [
+        { label: "Conhecimento", href: "/conhecimento", icon: Sparkles },
         { label: t("nav.historiasLong"), href: "/historias", icon: ScrollText },
         { label: t("nav.musicasLong"), href: "/musicas", icon: Play },
         { label: t("nav.videosLong"), href: "/videos", icon: Video },
