@@ -234,10 +234,10 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                   transform: "translateY(-2px)",
                 }
               : {
-                  background: "linear-gradient(160deg,#c8451f,#7a2410)",
-                  color: "#fff5dc",
+                  background: "linear-gradient(160deg,#6a5cff,#3b2fb8)",
+                  color: "#fff",
                   boxShadow:
-                    "0 6px 0 #3d1108, 0 10px 18px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.25)",
+                    "0 6px 0 #1e1770, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3)",
                 };
             return (
               <button
