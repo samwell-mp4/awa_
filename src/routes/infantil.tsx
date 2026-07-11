@@ -45,12 +45,12 @@ function InfantilHome() {
     <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
       <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
+      <main className="mx-auto w-full max-w-[1400px] px-2 pb-16 md:px-6">
         <div className="mt-4 flex justify-center">
           <img
             src={logoImg.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="h-32 w-32 rounded-3xl object-contain shadow-xl ring-4 ring-amber-300 md:h-40 md:w-40"
+            className="h-48 w-48 rounded-3xl object-contain shadow-xl ring-4 ring-amber-300 md:h-64 md:w-64"
             draggable={false}
           />
         </div>
