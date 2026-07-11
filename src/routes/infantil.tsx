@@ -52,8 +52,7 @@ function InfantilHome() {
           className="block h-auto w-full select-none"
           draggable={false}
         />
-        <div className="mx-auto w-full max-w-[1400px] px-2 md:px-6">
-        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
+        <section className="relative mt-4 w-full overflow-hidden">
           <img
             src={menuImg.url}
             alt="Trilha da Aldeia — toque em cada selo para abrir"
@@ -83,7 +82,6 @@ function InfantilHome() {
         <p className="mt-4 text-center font-display text-sm font-black uppercase tracking-widest text-emerald-900 md:text-base">
           Toque em um selo para começar 🌿
         </p>
-        </div>
       </main>
 
       <SiteFooter />
