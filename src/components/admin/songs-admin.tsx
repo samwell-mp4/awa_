@@ -367,10 +367,15 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
   }
 
   async function remove() {
-    if (!confirm("Apagar esta música?")) return;
-    const { error } = await supabase.from("songs").delete().eq("id", s.id);
+    if (!confirm("Mover esta música para a lixeira? Você poderá restaurá-la depois.")) return;
+    const { error } = await supabase
+      .from("songs")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", s.id);
     if (error) return toast.error(error.message);
+    toast.success("Movida para a lixeira");
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
+    qc.invalidateQueries({ queryKey: ["songs_admin_trash"] });
     qc.invalidateQueries({ queryKey: ["songs_public"] });
   }
 
