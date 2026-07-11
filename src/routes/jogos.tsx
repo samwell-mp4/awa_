@@ -80,6 +80,16 @@ function JogosPage() {
       }}
     >
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
+    <div
+      className="min-h-screen text-cream relative"
+      style={{
+        backgroundImage: `linear-gradient(180deg, rgba(10,40,20,0.35) 0%, rgba(10,40,20,0.15) 30%, rgba(10,40,20,0.55) 100%), url(${jungleBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
         <div className="mb-8 text-center">
           <div
             className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-[28px] text-forest-deep"
@@ -98,8 +108,8 @@ function JogosPage() {
               background: "linear-gradient(180deg,#fff9c2 0%,#ffd166 60%,#ff9a3c 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              textShadow: "0 6px 0 rgba(0,0,0,0.15)",
-              filter: "drop-shadow(0 4px 0 rgba(178,106,0,0.5))",
+              textShadow: "0 6px 0 rgba(0,0,0,0.35)",
+              filter: "drop-shadow(0 4px 0 rgba(0,0,0,0.5))",
             }}
           >
             Jogos Awã Tech
