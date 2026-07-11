@@ -177,29 +177,55 @@ function VideosPage() {
 
 
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((v, i) => (
-            <article key={i} className="group overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur transition hover:border-gold/50">
-              <div className="relative aspect-video bg-black">
-                <video
-                  src={v.url}
-                  controls
-                  muted
-                  playsInline
-                  preload="metadata"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="p-4 space-y-3">
-                <div>
-                  <h2 className="font-display text-base font-black text-cream">{tVideos[i * 3] ?? v.title}</h2>
-                  <p className="text-xs text-gold/90 italic">{tVideos[i * 3 + 1] ?? v.short}</p>
-                </div>
-                <p className="text-sm text-foreground/80 leading-relaxed">{tVideos[i * 3 + 2] ?? v.story}</p>
-              </div>
-            </article>
+        <div className="mb-6 flex flex-wrap gap-2">
+          {ALDEIAS.map((a) => (
+            <button
+              key={a}
+              onClick={() => setAldeia(a)}
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition ${
+                aldeia === a
+                  ? "border-gold bg-gold text-emerald-950"
+                  : "border-gold/30 text-cream hover:bg-gold/10"
+              }`}
+            >
+              <MapPin className="h-3 w-3" /> {a}
+            </button>
           ))}
         </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredVideos.map((v) => {
+            const i = videos.indexOf(v);
+            return (
+              <article key={i} className="group overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur transition hover:border-gold/50">
+                <div className="relative aspect-video bg-black">
+                  <video
+                    src={v.url}
+                    controls
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="p-4 space-y-3">
+                  <div>
+                    <div className="mb-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-gold/80">
+                      <MapPin className="h-3 w-3" /> {v.aldeia}
+                    </div>
+                    <h2 className="font-display text-base font-black text-cream">{tVideos[i * 3] ?? v.title}</h2>
+                    <p className="text-xs text-gold/90 italic">{tVideos[i * 3 + 1] ?? v.short}</p>
+                  </div>
+                  <p className="text-sm text-foreground/80 leading-relaxed">{tVideos[i * 3 + 2] ?? v.story}</p>
+                </div>
+              </article>
+            );
+          })}
+          {filteredVideos.length === 0 && (
+            <p className="col-span-full text-center text-sm text-foreground/70">Nenhum vídeo desta aldeia ainda.</p>
+          )}
+        </div>
+
       </main>
     </div>
   );
