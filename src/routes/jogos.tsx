@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
+import jungleBg from "@/assets/jogos-jungle-bg.jpg";
+
+// Tribal woven pattern (SVG data URI) — used as button texture
+const TRIBAL_PATTERN =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'><g fill='none' stroke='%23f5c542' stroke-width='1.2' opacity='0.55'><path d='M0 15 L15 0 L30 15 L45 0 L60 15 L45 30 L30 15 L15 30 Z'/><path d='M7 15 L15 7 L23 15 L15 23 Z' fill='%23c8451f' opacity='0.6' stroke='none'/><path d='M37 15 L45 7 L53 15 L45 23 Z' fill='%237a2410' opacity='0.5' stroke='none'/></g></svg>\")";
 
 export const Route = createFileRoute("/jogos")({
   head: () => ({
