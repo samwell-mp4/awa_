@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Baby, GraduationCap, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import bgImg from "@/assets/awa-tech-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,13 +26,17 @@ export const Route = createFileRoute("/")({
 
 function LandingChoice() {
   return (
-    <div className="min-h-screen text-foreground flex flex-col">
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
+    <div
+      className="relative min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImg.url})` }}
+    >
+      <div aria-hidden className="absolute inset-0 bg-forest-deep/70" />
+      <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <Logo />
         <LanguageSwitcher />
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
+      <main className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
         <h1 className="font-display text-3xl font-black uppercase tracking-wide text-cream md:text-5xl">
           Escolha sua experiência
         </h1>
