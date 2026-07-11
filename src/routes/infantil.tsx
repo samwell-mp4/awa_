@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import menuImg from "@/assets/trilha-aldeia-menu.png.asset.json";
+import logoImg from "@/assets/awa-tech-logo.png.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
