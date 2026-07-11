@@ -13,6 +13,28 @@ import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCer
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+
+function useTr(texts: string[]) {
+  const translated = useAutoTranslate(texts);
+  return useMemo(() => {
+    const m = new Map<string, string>();
+    texts.forEach((t, i) => { if (t) m.set(t, translated[i] ?? t); });
+    return (s: string) => (s ? m.get(s) ?? s : s);
+  }, [texts.join("\u0001"), translated.join("\u0001")]);
+}
+
+function useLocalize(tr: (s: string) => string) {
+  const lang = useLang();
+  return function localize<T extends Record<string, any>>(row: T, field: keyof T & string): string {
+    const original = (row?.[field] as string) ?? "";
+    if (!original) return "";
+    if (lang === "pt" || lang === "pat") return original;
+    const picked = pickLang(row, field, lang);
+    if (picked && picked !== original) return picked;
+    return tr(original);
+  };
+}
 
 const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais"];
 function nextTrailSlug(current: TrailSlug): TrailSlug {
