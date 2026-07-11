@@ -90,7 +90,7 @@ function ChoiceCard({
   return (
     <Link
       to={to}
-      className={`group relative flex min-h-[320px] flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
+      className={`group relative flex min-h-[460px] flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:min-h-[520px] md:p-8`}
       style={
         backgroundUrl
           ? {
