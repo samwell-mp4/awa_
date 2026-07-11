@@ -331,11 +331,11 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
   );
 }
 
-function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void }) {
-  const lang = useLang();
+function QuizModal({ words, onClose, onCorrect, localize, tr }: { words: Word[]; onClose: () => void; onCorrect: (id: string) => void; localize: (row: any, field: string) => string; tr: (s: string) => string }) {
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
+  const trLocal = useTr(["Quiz · Acertos:", "Como se diz:", "Próxima"]);
 
   const question = useMemo(() => {
     const correct = words[Math.floor(Math.random() * words.length)];
@@ -359,11 +359,11 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
       <div className="card-elev w-full max-w-md rounded-3xl border border-gold/30 bg-card p-6">
         <div className="flex items-center justify-between">
-          <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">Quiz · Acertos: {score}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.18em] text-leaf">{trLocal("Quiz · Acertos:")} {score}</div>
           <button onClick={onClose} className="text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         </div>
-        <p className="mt-4 text-foreground/75 text-sm">Como se diz:</p>
-        <h3 className="mt-1 font-display text-2xl font-black text-cream">{pickLang(question.correct, "term_pt", lang)}</h3>
+        <p className="mt-4 text-foreground/75 text-sm">{trLocal("Como se diz:")}</p>
+        <h3 className="mt-1 font-display text-2xl font-black text-cream">{localize(question.correct, "term_pt")}</h3>
 
 
         <div className="mt-5 grid gap-2">
@@ -388,7 +388,7 @@ function QuizModal({ words, onClose, onCorrect }: { words: Word[]; onClose: () =
             onClick={() => { setPicked(null); setRound((r) => r + 1); }}
             className="mt-5 w-full rounded-full bg-[var(--gradient-leaf)] py-3 text-sm font-bold text-cream"
           >
-            Próxima
+            {trLocal("Próxima")}
           </button>
         )}
       </div>
