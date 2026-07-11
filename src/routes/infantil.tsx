@@ -25,7 +25,7 @@ export const Route = createFileRoute("/infantil")({
 });
 
 type Hotspot = {
-  to: "/trilhas" | "/musicas" | "/historias" | "/jogos";
+  to: "/trilhas" | "/canticos" | "/historias" | "/jogos";
   label: string;
   x: number; // % from left (center of badge)
   y: number; // % from top (center of badge)
@@ -34,7 +34,7 @@ type Hotspot = {
 
 const hotspots: Hotspot[] = [
   { to: "/trilhas", label: "Trilhas", x: 51, y: 22, size: 22 },
-  { to: "/musicas", label: "Cântico", x: 76, y: 30, size: 22 },
+  { to: "/canticos", label: "Cântico", x: 76, y: 30, size: 22 },
   { to: "/historias", label: "História Infantil", x: 26, y: 40, size: 24 },
   { to: "/jogos", label: "Jogos", x: 63, y: 55, size: 22 },
 ];
