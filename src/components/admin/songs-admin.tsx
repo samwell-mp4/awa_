@@ -165,6 +165,14 @@ export function SongsAdmin() {
             accept="image/*"
             busy={uploading === "cover_url"}
           />
+          <UploadOrUrl
+            label="Vídeo da música (upload MP4 ou cole URL)"
+            value={draft.video_url}
+            onChange={(v) => setDraft({ ...draft, video_url: v })}
+            onFile={(f) => handleUpload("video_url", f)}
+            accept="video/*"
+            busy={uploading === "video_url"}
+          />
         </div>
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
