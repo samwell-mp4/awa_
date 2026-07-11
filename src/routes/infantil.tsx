@@ -7,6 +7,7 @@ import {
   BookOpen,
   Map as MapIcon,
   Leaf,
+  Sparkles,
 } from "lucide-react";
 
 import { SiteFooter } from "@/components/home/site-footer";
