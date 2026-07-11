@@ -42,18 +42,15 @@ const hotspots: Hotspot[] = [
 
 function InfantilHome() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
+    <div
+      className="relative min-h-screen bg-cover bg-center bg-fixed bg-no-repeat text-foreground"
+      style={{ backgroundImage: `url(${logoImg.url})` }}
+    >
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-sky-200/85 via-emerald-100/80 to-amber-100/85" />
+      <div className="relative">
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto w-full max-w-[1400px] px-2 pb-16 md:px-6">
-        <div className="mt-4">
-          <img
-            src={logoImg.url}
-            alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="block h-auto w-full rounded-3xl object-contain shadow-xl ring-4 ring-amber-300"
-            draggable={false}
-          />
-        </div>
         <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
           <img
             src={menuImg.url}
@@ -87,6 +84,7 @@ function InfantilHome() {
       </main>
 
       <SiteFooter />
+      </div>
     </div>
   );
 }
