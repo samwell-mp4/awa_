@@ -56,7 +56,7 @@ function ProfessorPage() {
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
-      audio.src = `data:${r.mime};base64,${r.audio_base64}`;
+      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
       audioRef.current = audio;
       await audio.play().catch(() => {});
     } catch {
