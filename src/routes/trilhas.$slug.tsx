@@ -165,17 +165,25 @@ function TrilhaPage() {
     return [{ label: trail.emoji + " " + trail.name, items: words }];
   }, [words, trail]);
 
+  const tr = useTr([
+    "Início", "Reiniciar", "palavras", "Praticar quiz",
+    "Associar imagem ↔ palavra", "Ver certificado", "Carregando...",
+    trail.intro, trail.apoio, trail.name,
+    ...words.flatMap((w) => [w.term_pt, w.example].filter(Boolean) as string[]),
+  ]);
+  const localize = useLocalize(tr);
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
-            <ArrowLeft className="h-4 w-4" /> Início
+            <ArrowLeft className="h-4 w-4" /> {tr("Início")}
           </Link>
           <div className="flex items-center gap-2 font-display font-black text-cream">
-            <span>{trail.emoji}</span> {trail.name}
+            <span>{trail.emoji}</span> {tr(trail.name)}
           </div>
-          <button onClick={resetProgress} title="Reiniciar" className="text-foreground/60 hover:text-gold">
+          <button onClick={resetProgress} title={tr("Reiniciar")} className="text-foreground/60 hover:text-gold">
             <RotateCw className="h-4 w-4" />
           </button>
         </div>
@@ -183,12 +191,12 @@ function TrilhaPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
         <section className={`card-elev rounded-3xl border border-gold/25 bg-gradient-to-br ${trail.color} p-6 md:p-8`}>
-          <p className="font-display text-2xl md:text-3xl font-black text-cream">{trail.intro}</p>
-          <p className="mt-2 text-sm text-foreground/85">{trail.apoio}</p>
+          <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
+          <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
 
           <div className="mt-5">
             <div className="flex items-center justify-between text-xs font-bold text-cream/90">
-              <span>{learned.size} / {words.length} palavras</span>
+              <span>{learned.size} / {words.length} {tr("palavras")}</span>
               <span className="text-gold">{progress}%</span>
             </div>
             <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-forest-deep/60">
@@ -202,35 +210,35 @@ function TrilhaPage() {
               disabled={words.length < 4}
               className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream disabled:opacity-50"
             >
-              <Sparkles className="h-4 w-4" /> Praticar quiz
+              <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
             </button>
             <button
               onClick={() => setShowMatch(true)}
               disabled={words.length < 4}
               className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
             >
-              <Shuffle className="h-4 w-4" /> Associar imagem ↔ palavra
+              <Shuffle className="h-4 w-4" /> {tr("Associar imagem ↔ palavra")}
             </button>
             {hasCertificate(slug) && (
               <button
                 onClick={() => setShowCert(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
               >
-                <Award className="h-4 w-4" /> Ver certificado
+                <Award className="h-4 w-4" /> {tr("Ver certificado")}
               </button>
             )}
           </div>
         </section>
 
         {isLoading ? (
-          <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> Carregando...</div>
+          <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> {tr("Carregando...")}</div>
         ) : (
           grouped.map((g) => (
             <section key={g.label} className="mt-8">
               <h2 className="font-display text-xl md:text-2xl font-black text-cream mb-4">{g.label}</h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {g.items.map((w) => (
-                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} />
+                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} />
                 ))}
               </div>
             </section>
@@ -239,11 +247,11 @@ function TrilhaPage() {
       </main>
 
       {showQuiz && words.length >= 4 && (
-        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} />
+        <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} localize={localize} tr={tr} />
       )}
 
       {showMatch && words.length >= 4 && (
-        <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} />
+        <MatchModal words={words} learnedIds={learned} onClose={() => setShowMatch(false)} onCorrect={(id) => markLearned(id)} localize={localize} tr={tr} />
       )}
 
       {showCert && (
