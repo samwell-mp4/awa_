@@ -84,6 +84,7 @@ function InfantilHome() {
       </main>
 
       <SiteFooter />
+      </div>
     </div>
   );
 }
