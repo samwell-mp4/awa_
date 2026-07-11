@@ -331,7 +331,7 @@ function DictionaryPage() {
                               <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
+                              <span className="text-gold">→</span> {localize(e, "term_pt")}
                             </div>
 
                           </div>
