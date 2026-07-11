@@ -411,11 +411,13 @@ function NarratableVideo({
   poster,
   alt,
   text,
+  captionBelow,
 }: {
   src: string;
   poster: string;
   alt: string;
   text: string;
+  captionBelow?: boolean;
 }) {
   const { speaking, loading, toggle, prefetch } = useNarration(text);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -468,6 +470,46 @@ function NarratableVideo({
 
   if (videoFailed) {
     return <NarratablePhoto src={poster} alt={alt} text={text} />;
+  }
+
+  if (captionBelow) {
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
+          <video
+            ref={videoRef}
+            src={src}
+            poster={poster}
+            muted
+            playsInline
+            loop
+            preload="metadata"
+            className="h-full w-full object-cover"
+            aria-label={alt}
+            onError={() => setVideoFailed(true)}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleClick}
+          onPointerEnter={prefetch}
+          onTouchStart={prefetch}
+          onFocus={prefetch}
+          disabled={loading}
+          className="inline-flex items-center justify-center gap-2 self-center rounded-full border border-gold/40 bg-black/40 px-5 py-2.5 text-sm font-medium text-amber-100 backdrop-blur transition hover:bg-black/60 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 disabled:opacity-60"
+          aria-label={speaking ? "Parar narração" : "Ouvir narração"}
+        >
+          {loading ? (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+          ) : speaking ? (
+            <Square className="h-4 w-4 text-gold" />
+          ) : (
+            <Volume2 className="h-4 w-4 text-gold" />
+          )}
+          <span>{loading ? "Preparando voz…" : speaking ? "Parar narração" : "Ouvir narração"}</span>
+        </button>
+      </div>
+    );
   }
 
   return (
