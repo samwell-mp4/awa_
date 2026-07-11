@@ -30,7 +30,7 @@ function LandingChoice() {
       className="relative min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${bgImg.url})` }}
     >
-      <div aria-hidden className="absolute inset-0 bg-forest-deep/70" />
+      <div aria-hidden className="absolute inset-0 bg-forest-deep/25" />
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <Logo />
         <LanguageSwitcher />
@@ -97,7 +97,7 @@ function ChoiceCard({
       }
     >
       {backgroundUrl && (
-        <div aria-hidden className="absolute inset-0 bg-forest-deep/55" />
+        <div aria-hidden className="absolute inset-0 bg-forest-deep/20" />
       )}
       <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
         {icon}
