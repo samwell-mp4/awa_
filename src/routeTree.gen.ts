@@ -22,11 +22,13 @@ import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as MinhaContaRouteImport } from './routes/minha-conta'
 import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as InstalarRouteImport } from './routes/instalar'
+import { Route as InfantilRouteImport } from './routes/infantil'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
@@ -102,6 +104,11 @@ const InstalarRoute = InstalarRouteImport.update({
   path: '/instalar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InfantilRoute = InfantilRouteImport.update({
+  id: '/infantil',
+  path: '/infantil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoriasRoute = HistoriasRouteImport.update({
   id: '/historias',
   path: '/historias',
@@ -125,6 +132,11 @@ const BemVindoRoute = BemVindoRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdultoRoute = AdultoRouteImport.update({
+  id: '/adulto',
+  path: '/adulto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -176,11 +188,13 @@ const ApiPublicPaymentsWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
   '/minha-conta': typeof MinhaContaRoute
@@ -204,11 +218,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
   '/minha-conta': typeof MinhaContaRoute
@@ -234,11 +250,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/adulto': typeof AdultoRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
   '/minha-conta': typeof MinhaContaRoute
@@ -264,11 +282,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/adulto'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
     | '/instalar'
     | '/jogos'
     | '/minha-conta'
@@ -292,11 +312,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/adulto'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
     | '/instalar'
     | '/jogos'
     | '/minha-conta'
@@ -321,11 +343,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/adulto'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/infantil'
     | '/instalar'
     | '/jogos'
     | '/minha-conta'
@@ -351,11 +375,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdultoRoute: typeof AdultoRoute
   AuthRoute: typeof AuthRoute
   BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
+  InfantilRoute: typeof InfantilRoute
   InstalarRoute: typeof InstalarRoute
   JogosRoute: typeof JogosRoute
   MinhaContaRoute: typeof MinhaContaRoute
@@ -470,6 +496,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstalarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/infantil': {
+      id: '/infantil'
+      path: '/infantil'
+      fullPath: '/infantil'
+      preLoaderRoute: typeof InfantilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/historias': {
       id: '/historias'
       path: '/historias'
@@ -503,6 +536,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adulto': {
+      id: '/adulto'
+      path: '/adulto'
+      fullPath: '/adulto'
+      preLoaderRoute: typeof AdultoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -585,11 +625,13 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdultoRoute: AdultoRoute,
   AuthRoute: AuthRoute,
   BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
+  InfantilRoute: InfantilRoute,
   InstalarRoute: InstalarRoute,
   JogosRoute: JogosRoute,
   MinhaContaRoute: MinhaContaRoute,
@@ -613,13 +655,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

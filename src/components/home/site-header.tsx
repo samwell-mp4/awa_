@@ -5,17 +5,18 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight, LogIn, LogOut, Menu, Settings, UserCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useNavContent, type NavGroup } from "@/lib/home-content";
+import { useNavContent, type NavGroup, type NavMode } from "@/lib/home-content";
 import { Logo } from "./logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-export function SiteHeader() {
+export function SiteHeader({ mode = "all" }: { mode?: NavMode } = {}) {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useTranslation();
-  const { top: topNavLinks } = useNavContent();
+  const { top: topNavLinks } = useNavContent(mode);
+
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -85,7 +86,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <MobileDrawer onClose={() => setOpen(false)} onSignOut={signOut} user={user} isAdmin={isAdmin} />
+        <MobileDrawer onClose={() => setOpen(false)} onSignOut={signOut} user={user} isAdmin={isAdmin} mode={mode} />
       )}
     </header>
   );
@@ -96,14 +97,16 @@ function MobileDrawer({
   onSignOut,
   user,
   isAdmin,
+  mode = "all",
 }: {
   onClose: () => void;
   onSignOut: () => void;
   user: ReturnType<typeof useAuth>["user"];
   isAdmin: boolean;
+  mode?: NavMode;
 }) {
   const { t } = useTranslation();
-  const { groups } = useNavContent();
+  const { groups } = useNavContent(mode);
   const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   return (
     <div className="xl:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">

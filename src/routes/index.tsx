@@ -1,62 +1,95 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { ContinueLearningCard } from "@/components/home/continue-learning";
-import { DailyMissionCard } from "@/components/home/daily-mission-card";
-import { GreetingOfMoment } from "@/components/home/greeting-of-moment";
-import { HeroSection } from "@/components/home/hero-section";
-import { InstallCTA } from "@/components/home/install-cta";
-import { RankingCard } from "@/components/home/ranking-card";
-
-import { SiteFooter } from "@/components/home/site-footer";
-import { SiteHeader } from "@/components/home/site-header";
-import { TrailsGrid } from "@/components/home/trails-grid";
-
-import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Baby, GraduationCap, ArrowRight } from "lucide-react";
+import { Logo } from "@/components/home/logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { title: "AWÃ TECH — Escolha sua experiência" },
       {
         name: "description",
         content:
-          "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas.",
+          "Entre no Awã Tech Adulto ou Awã Tech Infantil — aprenda línguas indígenas com trilhas, jogos, histórias e vídeos.",
       },
-      { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { property: "og:title", content: "AWÃ TECH — Adulto e Infantil" },
       {
         property: "og:description",
         content:
-          "Plataforma digital para aprender idiomas indígenas brasileiros através de vídeos, histórias, músicas e desafios.",
+          "Duas experiências para aprender línguas indígenas brasileiras: uma para adultos e outra para crianças.",
       },
     ],
   }),
-  component: Index,
+  component: LandingChoice,
 });
 
-function Index() {
-  const trails = useHomeTrails();
-  const { data: mission } = useDailyMission();
-
+function LandingChoice() {
   return (
-    <div className="min-h-screen text-foreground">
-      <SiteHeader />
+    <div className="min-h-screen text-foreground flex flex-col">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
+        <Logo />
+        <LanguageSwitcher />
+      </header>
 
-      <main className="mx-auto max-w-6xl px-4 md:px-8">
-        <HeroSection />
-        <GreetingOfMoment />
-        <ContinueLearningCard />
-        
-        <TrailsGrid trails={trails} />
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
+        <h1 className="font-display text-3xl font-black uppercase tracking-wide text-cream md:text-5xl">
+          Escolha sua experiência
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm text-foreground/75 md:text-base">
+          O Awã Tech tem duas portas de entrada. Escolha a que combina com você.
+        </p>
 
-        <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2">
-          <DailyMissionCard mission={mission} />
-          <RankingCard />
-        </section>
-
-        <InstallCTA />
+        <div className="mt-10 grid w-full gap-6 md:grid-cols-2">
+          <ChoiceCard
+            to="/adulto"
+            title="Awã Tech Adulto"
+            subtitle="Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor."
+            icon={<GraduationCap className="h-10 w-10" />}
+            accent="from-leaf/30 to-forest-deep/50"
+          />
+          <ChoiceCard
+            to="/infantil"
+            title="Awã Tech Infantil"
+            subtitle="Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando."
+            icon={<Baby className="h-10 w-10" />}
+            accent="from-gold/30 to-leaf/25"
+          />
+        </div>
       </main>
-
-      <SiteFooter />
     </div>
+  );
+}
+
+function ChoiceCard({
+  to,
+  title,
+  subtitle,
+  icon,
+  accent,
+}: {
+  to: "/adulto" | "/infantil";
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  accent: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className={`group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
+    >
+      <div className="grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
+        {icon}
+      </div>
+      <div>
+        <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
+          {title}
+        </div>
+        <p className="mt-2 text-sm text-foreground/85 md:text-base">{subtitle}</p>
+      </div>
+      <span className="mt-2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+        Entrar <ArrowRight className="h-4 w-4" />
+      </span>
+    </Link>
   );
 }
