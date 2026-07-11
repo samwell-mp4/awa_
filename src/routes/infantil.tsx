@@ -106,23 +106,21 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-6xl px-4 pb-16 md:px-8">
-        {/* Hero — village vibe */}
-        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 bg-gradient-to-b from-sky-300 via-emerald-300 to-amber-200 p-6 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)] md:p-10">
-          <div className="pointer-events-none absolute -left-4 top-4 text-5xl md:text-6xl">🌴</div>
-          <div className="pointer-events-none absolute right-4 top-6 text-4xl md:text-5xl">☀️</div>
-          <div className="pointer-events-none absolute bottom-3 left-6 text-3xl md:text-4xl">🌺</div>
-          <div className="pointer-events-none absolute bottom-4 right-8 text-3xl md:text-4xl">🦜</div>
-
-          <div className="relative text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-900 shadow">
+        {/* Hero — photo entrance */}
+        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
+          <img
+            src={infantilHero.url}
+            alt="Awã Tech Infantil — famílias indígenas Pataxó"
+            className="block w-full h-auto object-cover"
+            fetchPriority="high"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-4 md:p-8 text-center">
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-900 shadow">
               <Leaf className="h-3.5 w-3.5" /> Awã Tech Infantil
             </div>
-            <h1 className="mt-3 font-display text-4xl font-black uppercase tracking-wide text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.25)] md:text-6xl">
+            <h1 className="mt-2 font-display text-2xl font-black uppercase tracking-wide text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.4)] md:text-4xl">
               Bem-vindo à Aldeia!
             </h1>
-            <p className="mx-auto mt-3 max-w-xl text-sm font-semibold text-emerald-950/80 md:text-base">
-              Escolha uma trilha e vamos aprender Patxohã brincando 🌿
-            </p>
           </div>
         </section>
 
