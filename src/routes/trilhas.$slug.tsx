@@ -267,7 +267,6 @@ function WordCard({ w, learned, onToggle }: { w: Word; learned: boolean; onToggl
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
   const speak = useServerFn(speakText);
   const [busy, setBusy] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const cacheRef = useRef<string | null>(null);
 
   async function play() {
@@ -275,10 +274,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     try {
       setBusy(true);
       if (audioUrl) {
-        const a = new Audio(audioUrl);
-        audioRef.current?.pause();
-        audioRef.current = a;
-        await a.play();
+        await playFast(audioUrl);
         return;
       }
       if (!cacheRef.current) {
@@ -286,12 +282,9 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar áudio");
         }
-        cacheRef.current = `data:${r.mime};base64,${r.audio_base64}`;
+        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }
-      const a = new Audio(cacheRef.current);
-      audioRef.current?.pause();
-      audioRef.current = a;
-      await a.play();
+      await playFast(cacheRef.current);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
