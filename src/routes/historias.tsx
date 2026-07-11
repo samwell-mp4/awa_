@@ -610,7 +610,7 @@ function HistoriasPage() {
             </h2>
           </div>
 
-          <div className="grid items-center gap-8 md:grid-cols-2">
+          <div className="flex flex-col gap-8">
             <NarratableVideo
               src={videoJosa.url}
               poster={albumJosa.url}
