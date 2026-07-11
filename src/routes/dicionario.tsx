@@ -347,7 +347,7 @@ function DictionaryPage() {
                         )}
                         {e.example && (
                           <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                            "{pickLang(e, "example", lang)}"
+                            "{localize(e, "example")}"
                           </div>
                         )}
 
