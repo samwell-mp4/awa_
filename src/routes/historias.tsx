@@ -294,6 +294,8 @@ function useNarration(originalText: string) {
       stopCurrent();
       return;
     }
+    // Stop any other narration currently playing on the page.
+    setActiveNarration(stopCurrent);
     // Create Audio synchronously inside the user gesture — required for mobile autoplay.
     const audio = new Audio();
     audio.preload = "auto";
