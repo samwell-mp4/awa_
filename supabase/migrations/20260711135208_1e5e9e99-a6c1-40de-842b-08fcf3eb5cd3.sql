@@ -1,1 +1,0 @@
-CREATE POLICY "Public read songs bucket meta" ON storage.buckets FOR SELECT TO anon, authenticated USING (id = 'songs');

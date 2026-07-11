@@ -99,8 +99,6 @@ const ADULT_HREFS = new Set([
   "/trilhas",
   "/professor",
   "/historias",
-  "/musicas",
-  "/canticos",
   "/videos",
   "/biografia",
   "/instalar",
@@ -108,10 +106,9 @@ const ADULT_HREFS = new Set([
 ]);
 
 const CHILD_HREFS = new Set([
-  "/conhecimento",
   "/saudacoes",
   "/jogos",
-  "/canticos",
+  "/musicas",
   "/trilhas",
   "/historias",
   "/videos",
@@ -127,7 +124,6 @@ function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[
 
 export function useNavContent(mode: NavMode = "all") {
   const { t } = useTranslation();
-  const musicHref = mode === "infantil" ? "/canticos" : "/musicas";
   const rawGroups: NavGroup[] = [
     {
       title: t("nav.groups.lingua"),
@@ -141,10 +137,8 @@ export function useNavContent(mode: NavMode = "all") {
     {
       title: t("nav.groups.cultura"),
       items: [
-        { label: "Conhecimento", href: "/conhecimento", icon: Sparkles },
         { label: t("nav.historiasLong"), href: "/historias", icon: ScrollText },
-        { label: t("nav.musicasLong"), href: musicHref, icon: Play },
-        ...(mode === "adulto" ? [{ label: "Cânticos", href: "/canticos", icon: Play }] : []),
+        { label: t("nav.musicasLong"), href: "/musicas", icon: Play },
         { label: t("nav.videosLong"), href: "/videos", icon: Video },
         { label: t("nav.jogosLong"), href: "/jogos", icon: Trophy },
       ],
@@ -170,7 +164,7 @@ export function useNavContent(mode: NavMode = "all") {
     { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
-    { label: t("nav.musicas"), href: musicHref },
+    { label: t("nav.musicas"), href: "/musicas" },
     { label: t("nav.videos"), href: "/videos" },
     { label: t("nav.jogos"), href: "/jogos" },
   ];

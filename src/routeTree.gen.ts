@@ -25,8 +25,6 @@ import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as InfantilRouteImport } from './routes/infantil'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
-import { Route as ConhecimentoRouteImport } from './routes/conhecimento'
-import { Route as CanticosRouteImport } from './routes/canticos'
 import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -121,16 +119,6 @@ const DicionarioRoute = DicionarioRouteImport.update({
   path: '/dicionario',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConhecimentoRoute = ConhecimentoRouteImport.update({
-  id: '/conhecimento',
-  path: '/conhecimento',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CanticosRoute = CanticosRouteImport.update({
-  id: '/canticos',
-  path: '/canticos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BiografiaRoute = BiografiaRouteImport.update({
   id: '/biografia',
   path: '/biografia',
@@ -204,8 +192,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
-  '/canticos': typeof CanticosRoute
-  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/infantil': typeof InfantilRoute
@@ -236,8 +222,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
-  '/canticos': typeof CanticosRoute
-  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/infantil': typeof InfantilRoute
@@ -270,8 +254,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
-  '/canticos': typeof CanticosRoute
-  '/conhecimento': typeof ConhecimentoRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/infantil': typeof InfantilRoute
@@ -304,8 +286,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
-    | '/canticos'
-    | '/conhecimento'
     | '/dicionario'
     | '/historias'
     | '/infantil'
@@ -336,8 +316,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
-    | '/canticos'
-    | '/conhecimento'
     | '/dicionario'
     | '/historias'
     | '/infantil'
@@ -369,8 +347,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
-    | '/canticos'
-    | '/conhecimento'
     | '/dicionario'
     | '/historias'
     | '/infantil'
@@ -403,8 +379,6 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
-  CanticosRoute: typeof CanticosRoute
-  ConhecimentoRoute: typeof ConhecimentoRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
   InfantilRoute: typeof InfantilRoute
@@ -543,20 +517,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DicionarioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/conhecimento': {
-      id: '/conhecimento'
-      path: '/conhecimento'
-      fullPath: '/conhecimento'
-      preLoaderRoute: typeof ConhecimentoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/canticos': {
-      id: '/canticos'
-      path: '/canticos'
-      fullPath: '/canticos'
-      preLoaderRoute: typeof CanticosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/biografia': {
       id: '/biografia'
       path: '/biografia'
@@ -669,8 +629,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,
-  CanticosRoute: CanticosRoute,
-  ConhecimentoRoute: ConhecimentoRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
   InfantilRoute: InfantilRoute,
