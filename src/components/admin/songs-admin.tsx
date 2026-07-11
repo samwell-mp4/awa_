@@ -19,6 +19,7 @@ type Song = {
   description: string | null;
   is_active: boolean;
   order_index: number;
+  deleted_at: string | null;
 };
 
 type Ambient = { id: string; name: string; video_url: string };
