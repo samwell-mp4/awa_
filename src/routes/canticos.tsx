@@ -5,6 +5,10 @@ import { useState } from "react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { supabase } from "@/integrations/supabase/client";
+import canticosBgAsset from "@/assets/canticos-bg-3d.jpg.asset.json";
+
+const canticosBg = canticosBgAsset.url;
+
 
 export const Route = createFileRoute("/canticos")({
   head: () => ({
