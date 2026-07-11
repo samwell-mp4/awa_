@@ -507,7 +507,6 @@ function NarratableVideo({
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
       <button
         type="button"
         onClick={handleClick}
@@ -515,26 +514,18 @@ function NarratableVideo({
         onTouchStart={prefetch}
         onFocus={prefetch}
         disabled={loading}
-        className="group absolute inset-0 flex items-center justify-center focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+        className="absolute inset-0 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-      >
-        <div
-          className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/10 text-white backdrop-blur-sm transition-all ${
-            speaking ? "scale-110 animate-pulse bg-white/20" : "opacity-80 group-hover:scale-105 group-hover:opacity-100"
-          }`}
-        >
+      />
+      {(speaking || loading) && (
+        <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
           {loading ? (
             <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-          ) : speaking ? (
-            <Square className="h-4 w-4" />
           ) : (
-            <Volume2 className="h-4 w-4" />
+            <Square className="h-3.5 w-3.5" />
           )}
         </div>
-      </button>
-      <div className="pointer-events-none absolute bottom-2 left-2 right-2 flex items-center justify-between gap-2 text-[10px] tracking-wide text-amber-100/80">
-        <span>{loading ? "Preparando voz…" : speaking ? "Ouvindo…" : isPlaying ? "Toque para ouvir" : "Toque para ouvir"}</span>
-      </div>
+      )}
 
     </div>
   );
