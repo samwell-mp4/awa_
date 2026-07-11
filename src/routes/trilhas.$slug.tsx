@@ -404,24 +404,29 @@ function CertificateModal({
   onClose: () => void;
   onNext: () => void;
 }) {
+  const tr = useTr([
+    "Certificado · PATXOHÃ · 2026", "PROFESSOR AKUÃ", "Próxima trilha:",
+    trail.certificate.title, trail.certificate.description, trail.certificate.message,
+    nextTrail.name,
+  ]);
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 overflow-y-auto">
       <div className="card-elev relative w-full max-w-2xl rounded-3xl border-2 border-gold/50 bg-gradient-to-br from-forest-deep to-bark p-6 md:p-10 my-8">
         <button onClick={onClose} className="absolute right-4 top-4 text-foreground/60 hover:text-cream"><X className="h-5 w-5" /></button>
         <div className="text-center">
           <Award className="mx-auto h-12 w-12 text-gold" />
-          <div className="mt-3 text-xs font-bold uppercase tracking-[0.22em] text-leaf">Certificado · PATXOHÃ · 2026</div>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl font-black text-gold">{trail.certificate.title}</h2>
-          <p className="mt-3 text-sm md:text-base text-cream/90">{trail.certificate.description}</p>
+          <div className="mt-3 text-xs font-bold uppercase tracking-[0.22em] text-leaf">{tr("Certificado · PATXOHÃ · 2026")}</div>
+          <h2 className="mt-3 font-display text-3xl md:text-4xl font-black text-gold">{tr(trail.certificate.title)}</h2>
+          <p className="mt-3 text-sm md:text-base text-cream/90">{tr(trail.certificate.description)}</p>
           <div className="mt-6 whitespace-pre-line text-left text-sm leading-relaxed text-foreground/85 rounded-2xl border border-gold/20 bg-forest-deep/40 p-4">
-            {trail.certificate.message}
+            {tr(trail.certificate.message)}
           </div>
-          <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">PROFESSOR AKUÃ</div>
+          <div className="mt-6 text-[10px] font-semibold tracking-[0.22em] text-gold/80">{tr("PROFESSOR AKUÃ")}</div>
           <button
             onClick={onNext}
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-6 py-3 text-sm font-bold text-cream"
           >
-            Próxima trilha: {nextTrail.emoji} {nextTrail.name} <ArrowRight className="h-4 w-4" />
+            {tr("Próxima trilha:")} {nextTrail.emoji} {tr(nextTrail.name)} <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
