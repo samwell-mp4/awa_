@@ -134,17 +134,19 @@ function JogosPage() {
                 style={
                   active
                     ? {
-                        background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#ffe066,#ffa62b)`,
+                        backgroundBlendMode: "overlay, normal",
                         color: "#2a1a00",
                         boxShadow:
-                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
+                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 0 0 3px rgba(122,36,16,0.7), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.5)",
                         transform: "translateY(-2px)",
                       }
                     : {
-                        background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#4ecdc4,#2aa39b)`,
+                        backgroundBlendMode: "overlay, normal",
                         color: "#062a28",
                         boxShadow:
-                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 0 0 3px rgba(20,98,93,0.7), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4)",
                       }
                 }
               >
@@ -156,13 +158,15 @@ function JogosPage() {
         </div>
 
         <div
-          className="rounded-[32px] p-5 md:p-8"
+          className="rounded-[32px] p-5 md:p-8 relative"
           style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.35))",
-            border: "3px solid rgba(255,209,102,0.5)",
+            background:
+              "linear-gradient(180deg, rgba(30,42,120,0.85) 0%, rgba(20,28,80,0.9) 100%)",
+            border: "4px solid #f5c542",
+            outline: "3px solid #c8451f",
+            outlineOffset: "-10px",
             boxShadow:
-              "0 20px 0 rgba(0,0,0,0.25), 0 30px 60px rgba(0,0,0,0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
-            backdropFilter: "blur(6px)",
+              "0 20px 0 rgba(0,0,0,0.35), 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 8px rgba(245,197,66,0.15)",
           }}
         >
           {tab === "match" && <MatchGame onScore={(n) => setScore((s) => s + n)} />}
