@@ -72,28 +72,42 @@ function ChoiceCard({
   subtitle,
   icon,
   accent,
+  backgroundUrl,
 }: {
   to: "/adulto" | "/infantil";
   title: string;
   subtitle: string;
   icon: React.ReactNode;
   accent: string;
+  backgroundUrl?: string;
 }) {
   return (
     <Link
       to={to}
       className={`group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
+      style={
+        backgroundUrl
+          ? {
+              backgroundImage: `url(${backgroundUrl})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+          : undefined
+      }
     >
-      <div className="grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
+      {backgroundUrl && (
+        <div aria-hidden className="absolute inset-0 bg-forest-deep/55" />
+      )}
+      <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
         {icon}
       </div>
-      <div>
+      <div className="relative">
         <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
           {title}
         </div>
         <p className="mt-2 text-sm text-foreground/85 md:text-base">{subtitle}</p>
       </div>
-      <span className="mt-2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+      <span className="relative mt-2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
         Entrar <ArrowRight className="h-4 w-4" />
       </span>
     </Link>
