@@ -86,7 +86,7 @@ export function SiteHeader({ mode = "all" }: { mode?: NavMode } = {}) {
       </div>
 
       {open && (
-        <MobileDrawer onClose={() => setOpen(false)} onSignOut={signOut} user={user} isAdmin={isAdmin} />
+        <MobileDrawer onClose={() => setOpen(false)} onSignOut={signOut} user={user} isAdmin={isAdmin} mode={mode} />
       )}
     </header>
   );
