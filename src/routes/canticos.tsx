@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music2 } from "lucide-react";
+import { ArrowLeft, Music2, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -34,9 +35,11 @@ type Song = {
   artist: string | null;
   audio_url: string | null;
   cover_url: string | null;
+  video_url: string | null;
   lyrics_indigenous: string | null;
   lyrics_pt: string | null;
   description: string | null;
+  ambient_videos: { video_url: string | null } | null;
 };
 
 function useSongs() {
@@ -47,17 +50,20 @@ function useSongs() {
       const { data } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,lyrics_indigenous,lyrics_pt,description",
+          "id,title,artist,audio_url,cover_url,video_url,lyrics_indigenous,lyrics_pt,description,ambient_videos(video_url)",
         )
         .eq("is_active", true)
         .order("order_index");
-      return (data ?? []) as Song[];
+      return (data ?? []) as unknown as Song[];
     },
   });
 }
 
+
 function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
+  const [openId, setOpenId] = useState<string | null>(null);
+
 
   const emojis = ["🌈", "🦜", "🌻", "🐢", "🌿", "🥁", "🌊", "🔥", "⭐", "🌸", "🦋", "🌳", "🐒", "🎶"];
   // Playful 3D-ish palettes (top highlight → deep base) + accent ring + confetti emoji
@@ -112,21 +118,24 @@ function CanticosInfantilPage() {
             {songs.map((s, i) => {
               const style = cardStyles[i % cardStyles.length];
               const emoji = emojis[i % emojis.length];
+              const isOpen = openId === s.id;
+              const videoUrl = s.video_url || s.ambient_videos?.video_url || null;
               return (
                 <li
                   key={s.id}
                   className={`group relative overflow-hidden rounded-[2.25rem] bg-gradient-to-br ${style.grad} ring-4 ${style.ring} shadow-[0_12px_0_-4px_rgba(0,0,0,0.25),0_25px_40px_-15px_rgba(0,0,0,0.45)] transition-transform hover:-translate-y-1`}
                 >
-                  {/* glossy 3D highlight */}
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-[2.25rem] bg-gradient-to-b from-white/60 to-transparent" />
-                  {/* indigenous pattern band */}
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[repeating-linear-gradient(90deg,#fef3c7_0_10px,#b45309_10px_14px,#fef3c7_14px_24px,#065f46_24px_28px)]" />
-                  {/* floating confetti tag */}
                   <span className="absolute right-3 top-4 rotate-12 rounded-full bg-white/90 px-2 py-0.5 text-lg shadow-md ring-2 ring-white">
                     {style.tag}
                   </span>
 
-                  <div className="relative flex items-center gap-3 p-4 pt-6">
+                  <button
+                    type="button"
+                    onClick={() => setOpenId(isOpen ? null : s.id)}
+                    className="relative flex w-full items-center gap-3 p-4 pt-6 text-left active:scale-[0.98]"
+                  >
                     {s.cover_url ? (
                       <img
                         src={s.cover_url}
@@ -148,50 +157,68 @@ function CanticosInfantilPage() {
                         </p>
                       )}
                     </div>
-                  </div>
+                    <ChevronDown
+                      className={`h-8 w-8 shrink-0 text-white drop-shadow transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
 
-                  <div className="relative m-3 mt-0 rounded-[1.5rem] border-2 border-white/70 bg-white/85 p-4 shadow-inner">
-                    {s.audio_url && (
-                      <div className="rounded-2xl bg-gradient-to-b from-amber-100 to-amber-200 p-2 ring-2 ring-amber-300 shadow-[0_4px_0_-1px_rgba(180,83,9,0.4)]">
-                        <audio controls src={s.audio_url} className="w-full">
-                          <track kind="captions" />
-                        </audio>
-                      </div>
-                    )}
-                    {s.lyrics_indigenous && (
-                      <div className="mt-3 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 p-3 ring-2 ring-emerald-300 shadow-[0_4px_0_-1px_rgba(6,95,70,0.35)]">
-                        <h3 className="font-display text-base font-black uppercase text-emerald-900">
-                          🌿🪶 Patxôhã
-                        </h3>
-                        <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-emerald-900">
-                          {s.lyrics_indigenous}
-                        </p>
-                      </div>
-                    )}
-                    {s.lyrics_pt && (
-                      <div className="mt-3 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 p-3 ring-2 ring-amber-300 shadow-[0_4px_0_-1px_rgba(180,83,9,0.35)]">
-                        <h3 className="font-display text-base font-black uppercase text-amber-900">
-                          🌈☀️ Português
-                        </h3>
-                        <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-amber-900">
-                          {s.lyrics_pt}
-                        </p>
-                      </div>
-                    )}
-                    {!s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
-                      <p className="text-sm text-emerald-800">
-                        <Music2 className="mr-1 inline h-4 w-4" />
-                        Conteúdo em breve.
-                      </p>
-                    )}
-                  </div>
+                  {isOpen && (
+                    <div className="relative m-3 mt-0 rounded-[1.5rem] border-2 border-white/70 bg-white/90 p-4 shadow-inner">
+                      {s.lyrics_indigenous && (
+                        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 p-3 ring-2 ring-emerald-300 shadow-[0_4px_0_-1px_rgba(6,95,70,0.35)]">
+                          <h3 className="font-display text-base font-black uppercase text-emerald-900">
+                            🌿🪶 Patxôhã
+                          </h3>
+                          <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-emerald-900">
+                            {s.lyrics_indigenous}
+                          </p>
+                        </div>
+                      )}
 
-                  {/* bottom indigenous pattern band */}
+                      {videoUrl ? (
+                        <div className="mt-3 overflow-hidden rounded-2xl ring-4 ring-amber-300 shadow-[0_6px_0_-2px_rgba(180,83,9,0.4)]">
+                          <video
+                            src={videoUrl}
+                            controls
+                            playsInline
+                            poster={s.cover_url ?? undefined}
+                            className="aspect-video w-full bg-black object-cover"
+                          />
+                        </div>
+                      ) : s.audio_url ? (
+                        <div className="mt-3 rounded-2xl bg-gradient-to-b from-amber-100 to-amber-200 p-2 ring-2 ring-amber-300 shadow-[0_4px_0_-1px_rgba(180,83,9,0.4)]">
+                          <audio controls src={s.audio_url} className="w-full">
+                            <track kind="captions" />
+                          </audio>
+                        </div>
+                      ) : null}
+
+                      {s.lyrics_pt && (
+                        <div className="mt-3 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 p-3 ring-2 ring-amber-300 shadow-[0_4px_0_-1px_rgba(180,83,9,0.35)]">
+                          <h3 className="font-display text-base font-black uppercase text-amber-900">
+                            🌈☀️ Português
+                          </h3>
+                          <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-amber-900">
+                            {s.lyrics_pt}
+                          </p>
+                        </div>
+                      )}
+
+                      {!videoUrl && !s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
+                        <p className="text-sm text-emerald-800">
+                          <Music2 className="mr-1 inline h-4 w-4" />
+                          Conteúdo em breve.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2 bg-[repeating-linear-gradient(90deg,#fef3c7_0_10px,#065f46_10px_14px,#fef3c7_14px_24px,#b45309_24px_28px)]" />
                 </li>
               );
             })}
           </ul>
+
         )}
       </main>
 
