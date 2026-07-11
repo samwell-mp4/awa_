@@ -4,7 +4,7 @@ import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import bgImg from "@/assets/awa-menu-bg.png.asset.json";
 import infantilBg from "@/assets/awa-infantil-menu.png.asset.json";
-import adultoBg from "@/assets/awa-adulto-menu.jpg.asset.json";
+import adultoBg from "@/assets/awa-adulto-menu-v3.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
