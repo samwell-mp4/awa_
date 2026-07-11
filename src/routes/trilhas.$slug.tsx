@@ -496,9 +496,12 @@ function emojiFor(w: Word): string {
 }
 
 function MatchModal({
-  words, learnedIds, onClose, onCorrect,
-}: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void }) {
-  const lang = useLang();
+  words, learnedIds, onClose, onCorrect, localize, tr,
+}: { words: Word[]; learnedIds: Set<string>; onClose: () => void; onCorrect: (id: string) => void; localize: (row: any, field: string) => string; tr: (s: string) => string }) {
+  const trLocal = useTr([
+    "Associar ·", "Toque uma imagem à esquerda e depois a palavra correta em Patxôhã à direita.",
+    "🌟 Awê! Você associou tudo!", "Progresso salvo nesta trilha.", "Nova rodada",
+  ]);
   const PAIR_COUNT = Math.min(4, words.length);
 
   const [round, setRound] = useState(0);
