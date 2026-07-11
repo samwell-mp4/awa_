@@ -160,6 +160,18 @@ const sections: Section[] = [
 const narrationUrlCache = new Map<string, string>();
 const narrationPromiseCache = new Map<string, Promise<string>>();
 
+// Only one narration at a time: starting a new one stops the previous.
+let activeStop: (() => void) | null = null;
+function setActiveNarration(stop: () => void) {
+  if (activeStop && activeStop !== stop) {
+    try { activeStop(); } catch {}
+  }
+  activeStop = stop;
+}
+function clearActiveNarration(stop: () => void) {
+  if (activeStop === stop) activeStop = null;
+}
+
 function useNarration(originalText: string) {
   const { i18n } = useTranslation();
   const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
@@ -194,6 +206,7 @@ function useNarration(originalText: string) {
     clearProgressTimer();
     setSpeaking(false);
     setProgress(0);
+    clearActiveNarration(stopCurrent);
   };
 
   const speakImmediately = () => {
@@ -281,6 +294,8 @@ function useNarration(originalText: string) {
       stopCurrent();
       return;
     }
+    // Stop any other narration currently playing on the page.
+    setActiveNarration(stopCurrent);
     // Create Audio synchronously inside the user gesture — required for mobile autoplay.
     const audio = new Audio();
     audio.preload = "auto";
