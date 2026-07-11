@@ -71,18 +71,9 @@ function JogosPage() {
       className="min-h-screen text-cream"
       style={{
         background:
-          "radial-gradient(circle at 15% 10%, #f5c542 0%, transparent 40%), radial-gradient(circle at 85% 15%, #c8451f 0%, transparent 42%), radial-gradient(circle at 50% 95%, #f0a020 0%, transparent 55%), linear-gradient(165deg, #1e4a2b 0%, #0f2a1a 60%, #3a1a0e 100%)",
+          "radial-gradient(circle at 20% 10%, #ffd166 0%, transparent 45%), radial-gradient(circle at 85% 15%, #ff6b9d 0%, transparent 40%), radial-gradient(circle at 50% 90%, #4ecdc4 0%, transparent 55%), linear-gradient(160deg, #6a4cff 0%, #1e2a78 100%)",
       }}
     >
-      {/* Faixa gráfica indígena (padrão triangular) */}
-      <div
-        aria-hidden
-        className="h-4 w-full"
-        style={{
-          background:
-            "repeating-linear-gradient(135deg, #f5c542 0 14px, #c8451f 14px 28px, #1e4a2b 28px 42px, #f5e6c4 42px 56px)",
-        }}
-      />
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
         <div className="mb-8 text-center">
           <div
@@ -143,10 +134,10 @@ function JogosPage() {
                         transform: "translateY(-2px)",
                       }
                     : {
-                        background: "linear-gradient(160deg,#2f7a3a,#175020)",
-                        color: "#f5e6c4",
+                        background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                        color: "#062a28",
                         boxShadow:
-                          "0 6px 0 #0b2c11, 0 10px 18px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.25)",
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
                       }
                 }
               >
@@ -243,10 +234,10 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                   transform: "translateY(-2px)",
                 }
               : {
-                  background: "linear-gradient(160deg,#c8451f,#7a2410)",
-                  color: "#fff5dc",
+                  background: "linear-gradient(160deg,#6a5cff,#3b2fb8)",
+                  color: "#fff",
                   boxShadow:
-                    "0 6px 0 #3d1108, 0 10px 18px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.25)",
+                    "0 6px 0 #1e1770, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3)",
                 };
             return (
               <button
@@ -274,10 +265,10 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
                   opacity: 0.7,
                 }
               : {
-                  background: "linear-gradient(160deg,#2f7a3a,#175020)",
-                  color: "#f5e6c4",
+                  background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                  color: "#062a28",
                   boxShadow:
-                    "0 6px 0 #0b2c11, 0 10px 18px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.25)",
+                    "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
                 };
             return (
               <button
@@ -376,10 +367,9 @@ function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
                         "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
                     }
                   : {
-                      background:
-                        "repeating-linear-gradient(45deg, #c8451f 0 10px, #7a2410 10px 20px), linear-gradient(160deg,#c8451f,#7a2410)",
+                      background: "linear-gradient(160deg,#ff5470,#c81d5e)",
                       boxShadow:
-                        "0 8px 0 #3d1108, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.25), inset 0 3px 6px rgba(255,255,255,0.25)",
+                        "0 8px 0 #7a0d38, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.35)",
                     }
               }
             >
