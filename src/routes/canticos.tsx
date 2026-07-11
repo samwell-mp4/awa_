@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music2 } from "lucide-react";
+import { ArrowLeft, Music2, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -34,9 +35,11 @@ type Song = {
   artist: string | null;
   audio_url: string | null;
   cover_url: string | null;
+  video_url: string | null;
   lyrics_indigenous: string | null;
   lyrics_pt: string | null;
   description: string | null;
+  ambient_videos: { video_url: string | null } | null;
 };
 
 function useSongs() {
@@ -47,14 +50,15 @@ function useSongs() {
       const { data } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,lyrics_indigenous,lyrics_pt,description",
+          "id,title,artist,audio_url,cover_url,video_url,lyrics_indigenous,lyrics_pt,description,ambient_videos(video_url)",
         )
         .eq("is_active", true)
         .order("order_index");
-      return (data ?? []) as Song[];
+      return (data ?? []) as unknown as Song[];
     },
   });
 }
+
 
 function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
