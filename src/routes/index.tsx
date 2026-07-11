@@ -54,6 +54,7 @@ function LandingChoice() {
             icon={<GraduationCap className="h-10 w-10" />}
             accent="from-leaf/30 to-forest-deep/50"
             backgroundUrl={adultoBg.url}
+            backgroundSize="contain"
           />
           <ChoiceCard
             to="/infantil"
@@ -76,6 +77,7 @@ function ChoiceCard({
   icon,
   accent,
   backgroundUrl,
+  backgroundSize = "cover",
 }: {
   to: "/adulto" | "/infantil";
   title: string;
@@ -83,17 +85,20 @@ function ChoiceCard({
   icon: React.ReactNode;
   accent: string;
   backgroundUrl?: string;
+  backgroundSize?: "cover" | "contain";
 }) {
   return (
     <Link
       to={to}
-      className={`group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
+      className={`group relative flex min-h-[320px] flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
       style={
         backgroundUrl
           ? {
               backgroundImage: `url(${backgroundUrl})`,
-              backgroundSize: "cover",
+              backgroundSize,
               backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundColor: "hsl(var(--forest-deep, 150 40% 10%))",
             }
           : undefined
       }
