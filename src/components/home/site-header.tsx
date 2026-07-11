@@ -97,14 +97,16 @@ function MobileDrawer({
   onSignOut,
   user,
   isAdmin,
+  mode = "all",
 }: {
   onClose: () => void;
   onSignOut: () => void;
   user: ReturnType<typeof useAuth>["user"];
   isAdmin: boolean;
+  mode?: NavMode;
 }) {
   const { t } = useTranslation();
-  const { groups } = useNavContent();
+  const { groups } = useNavContent(mode);
   const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   return (
     <div className="xl:hidden border-t border-gold/20 bg-card/95 px-4 py-4 max-h-[80vh] overflow-y-auto">
