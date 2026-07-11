@@ -60,14 +60,16 @@ function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
 
   const emojis = ["🌈", "🦜", "🌻", "🐢", "🌿", "🥁", "🌊", "🔥", "⭐", "🌸", "🦋", "🌳", "🐒", "🎶"];
-  const cardColors = [
-    "from-pink-100 to-rose-200 ring-rose-300",
-    "from-amber-100 to-yellow-200 ring-amber-300",
-    "from-emerald-100 to-green-200 ring-emerald-300",
-    "from-sky-100 to-blue-200 ring-sky-300",
-    "from-violet-100 to-purple-200 ring-violet-300",
-    "from-orange-100 to-red-200 ring-orange-300",
+  // Playful 3D-ish palettes (top highlight → deep base) + accent ring + confetti emoji
+  const cardStyles = [
+    { grad: "from-rose-200 via-pink-300 to-fuchsia-500", ring: "ring-fuchsia-300", tag: "🎀" },
+    { grad: "from-amber-200 via-orange-300 to-red-500", ring: "ring-orange-300", tag: "🔥" },
+    { grad: "from-lime-200 via-emerald-300 to-teal-600", ring: "ring-emerald-300", tag: "🌿" },
+    { grad: "from-sky-200 via-cyan-300 to-blue-600", ring: "ring-cyan-300", tag: "🌊" },
+    { grad: "from-violet-200 via-purple-300 to-indigo-600", ring: "ring-violet-300", tag: "⭐" },
+    { grad: "from-yellow-200 via-amber-300 to-orange-500", ring: "ring-yellow-300", tag: "☀️" },
   ];
+
 
   return (
     <div
