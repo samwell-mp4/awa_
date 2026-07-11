@@ -91,9 +91,40 @@ export const topNavLinks = [
   { label: "Jogos", href: "/jogos" },
 ];
 
-export function useNavContent() {
+export type NavMode = "adulto" | "infantil" | "all";
+
+const ADULT_HREFS = new Set([
+  "/dicionario",
+  "/traduzir",
+  "/trilhas",
+  "/professor",
+  "/historias",
+  "/videos",
+  "/biografia",
+  "/instalar",
+  "/minha-conta",
+]);
+
+const CHILD_HREFS = new Set([
+  "/saudacoes",
+  "/jogos",
+  "/musicas",
+  "/trilhas",
+  "/historias",
+  "/videos",
+  "/instalar",
+  "/minha-conta",
+]);
+
+function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[] {
+  if (mode === "all") return items;
+  const allowed = mode === "adulto" ? ADULT_HREFS : CHILD_HREFS;
+  return items.filter((it) => allowed.has(it.href));
+}
+
+export function useNavContent(mode: NavMode = "all") {
   const { t } = useTranslation();
-  const groups: NavGroup[] = [
+  const rawGroups: NavGroup[] = [
     {
       title: t("nav.groups.lingua"),
       items: [
@@ -124,7 +155,11 @@ export function useNavContent() {
       items: [{ label: t("nav.minhaConta"), href: "/minha-conta", icon: Star }],
     },
   ];
-  const top = [
+  const groups = rawGroups
+    .map((g) => ({ ...g, items: filterByMode(g.items, mode) }))
+    .filter((g) => g.items.length > 0);
+
+  const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
     { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
@@ -133,5 +168,7 @@ export function useNavContent() {
     { label: t("nav.videos"), href: "/videos" },
     { label: t("nav.jogos"), href: "/jogos" },
   ];
+  const top = filterByMode(rawTop, mode);
   return { groups, top };
 }
+
