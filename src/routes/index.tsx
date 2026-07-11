@@ -51,7 +51,7 @@ function LandingChoice() {
             subtitle="Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor."
             icon={<GraduationCap className="h-10 w-10" />}
             accent="from-leaf/30 to-forest-deep/50"
-            backgroundUrl={adultoBg.url}
+            backgroundUrl={bgImg.url}
           />
           <ChoiceCard
             to="/infantil"
