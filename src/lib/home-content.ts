@@ -144,6 +144,7 @@ export function useNavContent(mode: NavMode = "all") {
         { label: "Conhecimento", href: "/conhecimento", icon: Sparkles },
         { label: t("nav.historiasLong"), href: "/historias", icon: ScrollText },
         { label: t("nav.musicasLong"), href: musicHref, icon: Play },
+        { label: "Cânticos", href: "/canticos", icon: Play },
         { label: t("nav.videosLong"), href: "/videos", icon: Video },
         { label: t("nav.jogosLong"), href: "/jogos", icon: Trophy },
       ],
