@@ -68,12 +68,14 @@ function CanticosPage() {
     <div className="relative min-h-screen text-foreground overflow-hidden bg-background">
       <video
         src={canticosBgVideo}
+        poster={canticosBgImage}
         autoPlay
         muted
         loop
         playsInline
         className="fixed inset-0 -z-10 h-full w-full object-cover"
       />
+
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-forest-deep/70 via-forest-deep/60 to-forest-deep/85" />
 
 
