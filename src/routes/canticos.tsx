@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music2, Play } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Music2 } from "lucide-react";
+
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -58,7 +58,16 @@ function useSongs() {
 
 function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
-  const [openId, setOpenId] = useState<string | null>(null);
+
+  const emojis = ["🌈", "🦜", "🌻", "🐢", "🌿", "🥁", "🌊", "🔥", "⭐", "🌸", "🦋", "🌳", "🐒", "🎶"];
+  const cardColors = [
+    "from-pink-100 to-rose-200 ring-rose-300",
+    "from-amber-100 to-yellow-200 ring-amber-300",
+    "from-emerald-100 to-green-200 ring-emerald-300",
+    "from-sky-100 to-blue-200 ring-sky-300",
+    "from-violet-100 to-purple-200 ring-violet-300",
+    "from-orange-100 to-red-200 ring-orange-300",
+  ];
 
   return (
     <div
@@ -97,77 +106,74 @@ function CanticosInfantilPage() {
         ) : songs.length === 0 ? (
           <p className="mt-8 text-center text-emerald-800">Nenhum cântico disponível ainda.</p>
         ) : (
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-            {songs.map((s) => {
-              const open = openId === s.id;
+          <ul className="mt-6 grid gap-5 sm:grid-cols-2">
+            {songs.map((s, i) => {
+              const color = cardColors[i % cardColors.length];
+              const emoji = emojis[i % emojis.length];
               return (
                 <li
                   key={s.id}
-                  className="overflow-hidden rounded-3xl bg-gradient-to-br from-red-100 to-rose-200 ring-4 ring-rose-300"
+                  className={`overflow-hidden rounded-[2rem] bg-gradient-to-br ${color} ring-4 shadow-lg`}
                 >
-                  <button
-                    onClick={() => setOpenId(open ? null : s.id)}
-                    className="flex w-full items-center gap-3 p-4 text-left active:scale-[0.98]"
-                  >
+                  <div className="flex items-center gap-3 p-4">
                     {s.cover_url ? (
                       <img
                         src={s.cover_url}
                         alt=""
-                        className="h-16 w-16 rounded-2xl object-cover ring-2 ring-white"
+                        className="h-16 w-16 shrink-0 rounded-2xl object-cover ring-2 ring-white"
                       />
                     ) : (
-                      <span className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-3xl shadow-inner">
-                        🎶
+                      <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white text-4xl shadow-inner">
+                        {emoji}
                       </span>
                     )}
-                    <span className="flex-1">
-                      <span className="block font-display text-lg font-black uppercase text-rose-900">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="font-display text-xl font-black uppercase leading-tight text-rose-900">
                         {s.title}
-                      </span>
+                      </h2>
                       {s.artist && (
-                        <span className="block text-xs font-semibold text-rose-800">
+                        <p className="truncate text-xs font-semibold text-rose-800">
                           {s.artist}
-                        </span>
-                      )}
-                    </span>
-                    <Play className="h-6 w-6 text-rose-700" />
-                  </button>
-
-                  {open && (
-                    <div className="border-t-2 border-rose-300/60 bg-white/70 p-4">
-                      {s.audio_url && (
-                        <audio controls src={s.audio_url} className="w-full">
-                          <track kind="captions" />
-                        </audio>
-                      )}
-                      {s.lyrics_indigenous && (
-                        <div className="mt-3">
-                          <h3 className="font-display text-sm font-black uppercase text-emerald-900">
-                            Letra (Patxohã)
-                          </h3>
-                          <p className="mt-1 whitespace-pre-line text-sm text-emerald-900">
-                            {s.lyrics_indigenous}
-                          </p>
-                        </div>
-                      )}
-                      {s.lyrics_pt && (
-                        <div className="mt-3">
-                          <h3 className="font-display text-sm font-black uppercase text-emerald-900">
-                            Tradução (Português)
-                          </h3>
-                          <p className="mt-1 whitespace-pre-line text-sm text-emerald-900/90">
-                            {s.lyrics_pt}
-                          </p>
-                        </div>
-                      )}
-                      {!s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
-                        <p className="text-sm text-emerald-800">
-                          <Music2 className="mr-1 inline h-4 w-4" />
-                          Conteúdo em breve.
                         </p>
                       )}
                     </div>
-                  )}
+                  </div>
+
+                  <div className="border-t-2 border-white/60 bg-white/70 p-4">
+                    {s.audio_url && (
+                      <audio controls src={s.audio_url} className="w-full">
+                        <track kind="captions" />
+                      </audio>
+                    )}
+                    {s.lyrics_indigenous && (
+                      <div className="mt-3 rounded-2xl bg-emerald-50 p-3 ring-2 ring-emerald-200">
+                        <h3 className="font-display text-base font-black uppercase text-emerald-900">
+                          🌿 Patxôhã
+                        </h3>
+                        <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-emerald-900">
+                          {s.lyrics_indigenous}
+                        </p>
+                      </div>
+                    )}
+                    {s.lyrics_pt && (
+                      <div className="mt-3 rounded-2xl bg-amber-50 p-3 ring-2 ring-amber-200">
+                        <h3 className="font-display text-base font-black uppercase text-amber-900">
+                          🌈 Português
+                        </h3>
+                        <p className="mt-1 whitespace-pre-line text-base leading-relaxed text-amber-900">
+                          {s.lyrics_pt}
+                        </p>
+                      </div>
+                    )}
+                    {!s.audio_url && !s.lyrics_indigenous && !s.lyrics_pt && (
+                      <p className="text-sm text-emerald-800">
+                        <Music2 className="mr-1 inline h-4 w-4" />
+                        Conteúdo em breve.
+                      </p>
+                    )}
+                  </div>
+
+
                 </li>
               );
             })}
