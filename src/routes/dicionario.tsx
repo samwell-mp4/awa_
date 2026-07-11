@@ -9,6 +9,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 
 
@@ -153,6 +154,31 @@ function DictionaryPage() {
 
   const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
   const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
+
+  // Auto-translate visible PT texts (term_pt + example) when UI is EN/ES.
+  const ptTexts = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of visibleFiltered) {
+      if (e.term_pt) set.add(e.term_pt);
+      if (e.example) set.add(e.example);
+    }
+    return Array.from(set);
+  }, [visibleFiltered]);
+  const translated = useAutoTranslate(ptTexts);
+  const trMap = useMemo(() => {
+    const m = new Map<string, string>();
+    ptTexts.forEach((s, i) => m.set(s, translated[i] ?? s));
+    return m;
+  }, [ptTexts, translated]);
+  const localize = (e: Entry, field: "term_pt" | "example"): string => {
+    const original = (e[field] as string | null) ?? "";
+    if (!original) return "";
+    if (lang === "pt" || lang === "pat") return original;
+    const dbVal = pickLang(e, field, lang);
+    if (dbVal && dbVal !== original) return dbVal;
+    return trMap.get(original) ?? original;
+  };
+
 
 
   const grouped = useMemo(() => {
@@ -305,7 +331,7 @@ function DictionaryPage() {
                               <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {pickLang(e, "term_pt", lang)}
+                              <span className="text-gold">→</span> {localize(e, "term_pt")}
                             </div>
 
                           </div>
@@ -321,7 +347,7 @@ function DictionaryPage() {
                         )}
                         {e.example && (
                           <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-xs italic text-foreground/80">
-                            "{pickLang(e, "example", lang)}"
+                            "{localize(e, "example")}"
                           </div>
                         )}
 
