@@ -62,16 +62,39 @@ function CanticosPage() {
   const { data: songs = [], isLoading } = useSongs();
   const [openId, setOpenId] = useState<string | null>(null);
 
+  const openSong = songs.find((s) => s.id === openId) ?? null;
+  const openBgVideo = openSong?.ambient_videos?.video_url || openSong?.video_url || null;
+
   return (
     <div
-      className="min-h-screen text-foreground"
-      style={{
-        backgroundImage: `linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9)), url(${canticosBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
+      className="relative min-h-screen text-foreground"
+      style={
+        openBgVideo
+          ? undefined
+          : {
+              backgroundImage: `linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9)), url(${canticosBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundAttachment: "fixed",
+            }
+      }
     >
+      {openBgVideo && (
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <video
+            key={openBgVideo}
+            src={openBgVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.75)] to-[oklch(0.14_0.03_145/0.9)]" />
+        </div>
+      )}
+
+
 
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
