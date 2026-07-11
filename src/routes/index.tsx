@@ -58,6 +58,7 @@ function LandingChoice() {
             subtitle="Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando."
             icon={<Baby className="h-10 w-10" />}
             accent="from-gold/30 to-leaf/25"
+            backgroundUrl={bgImg.url}
           />
         </div>
       </main>
