@@ -3,6 +3,7 @@ import { Baby, GraduationCap, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import bgImg from "@/assets/awa-menu-bg-v2.png.asset.json";
+import infantilBg from "@/assets/awa-infantil-menu.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,7 +60,7 @@ function LandingChoice() {
             subtitle="Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando."
             icon={<Baby className="h-10 w-10" />}
             accent="from-gold/30 to-leaf/25"
-            backgroundUrl={bgImg.url}
+            backgroundUrl={infantilBg.url}
           />
         </div>
       </main>
