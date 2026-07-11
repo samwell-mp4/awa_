@@ -65,8 +65,22 @@ export function SongsAdmin() {
       const { data, error } = await supabase
         .from("songs")
         .select("*")
+        .is("deleted_at", null)
         .order("order_index")
         .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data as Song[];
+    },
+  });
+
+  const { data: trashed = [] } = useQuery({
+    queryKey: ["songs_admin_trash"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("songs")
+        .select("*")
+        .not("deleted_at", "is", null)
+        .order("deleted_at", { ascending: false });
       if (error) throw error;
       return data as Song[];
     },
