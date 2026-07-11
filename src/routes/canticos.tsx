@@ -55,6 +55,7 @@ function useSongs() {
           "id,title,artist,audio_url,cover_url,video_url,lyrics_indigenous,lyrics_pt,description,ambient_videos(video_url)",
         )
         .eq("is_active", true)
+        .is("deleted_at", null)
         .order("order_index");
       return (data ?? []) as unknown as Song[];
     },
