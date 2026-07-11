@@ -3,9 +3,13 @@ import { useMemo, useState, useEffect } from "react";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
 import jungleBg from "@/assets/jogos-jungle-bg.jpg";
 
-// Tribal woven pattern (SVG data URI) — used as button texture
-const TRIBAL_PATTERN =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'><g fill='none' stroke='%23f5c542' stroke-width='1.2' opacity='0.55'><path d='M0 15 L15 0 L30 15 L45 0 L60 15 L45 30 L30 15 L15 30 Z'/><path d='M7 15 L15 7 L23 15 L15 23 Z' fill='%23c8451f' opacity='0.6' stroke='none'/><path d='M37 15 L45 7 L53 15 L45 23 Z' fill='%237a2410' opacity='0.5' stroke='none'/></g></svg>\")";
+// Bold tribal woven pattern for TEAL tabs (Ligação / Lacuna)
+const TRIBAL_PATTERN_TEAL =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'><g fill='none' stroke-linejoin='miter'><polygon points='36,4 68,36 36,68 4,36' fill='%23fff2c9' stroke='%23a83a1a' stroke-width='2'/><polygon points='36,14 58,36 36,58 14,36' fill='%23e63e2a' stroke='%23fff2c9' stroke-width='2'/><polygon points='36,22 50,36 36,50 22,36' fill='%23fff2c9' stroke='%236b3410' stroke-width='1.5'/><polygon points='36,30 42,36 36,42 30,36' fill='%236b3410'/><path d='M0 0 L14 14 M72 0 L58 14 M0 72 L14 58 M72 72 L58 58' stroke='%23fff2c9' stroke-width='2'/><path d='M0 0 L8 0 L8 8 M64 0 L72 0 L72 8 M0 64 L0 72 L8 72 M64 72 L72 72 L72 64' stroke='%23a83a1a' stroke-width='2'/></g></svg>\")";
+
+// Bold vertical tribal stripes for the GOLD active tab (Memória)
+const TRIBAL_PATTERN_GOLD =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='60' viewBox='0 0 48 60'><g stroke='%236b2a10' stroke-width='2' fill='none'><path d='M8 0 L8 60 M40 0 L40 60'/><path d='M4 8 L12 8 M4 16 L12 16 M4 24 L12 24 M4 32 L12 32 M4 40 L12 40 M4 48 L12 48 M4 56 L12 56'/><path d='M36 8 L44 8 M36 16 L44 16 M36 24 L44 24 M36 32 L44 32 M36 40 L44 40 M36 48 L44 48 M36 56 L44 56'/><polygon points='24,10 30,20 24,30 18,20' fill='%23c8451f'/><polygon points='24,30 30,40 24,50 18,40' fill='%236b2a10' fill-opacity='0.7'/></g></svg>\")";
 
 // Woven wood/tribal tile for Ligação pills (rich earthy diamonds)
 const WOVEN_TILE =
