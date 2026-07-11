@@ -62,6 +62,8 @@ function useSongs() {
 
 function CanticosInfantilPage() {
   const { data: songs = [], isLoading } = useSongs();
+  const [openId, setOpenId] = useState<string | null>(null);
+
 
   const emojis = ["🌈", "🦜", "🌻", "🐢", "🌿", "🥁", "🌊", "🔥", "⭐", "🌸", "🦋", "🌳", "🐒", "🎶"];
   // Playful 3D-ish palettes (top highlight → deep base) + accent ring + confetti emoji
