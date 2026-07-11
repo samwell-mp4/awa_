@@ -35,7 +35,7 @@ export const Route = createFileRoute("/infantil")({
 });
 
 type Tile = {
-  to: "/trilhas" | "/jogos" | "/musicas" | "/saudacoes" | "/videos" | "/historias";
+  to: "/trilhas" | "/jogos" | "/musicas" | "/saudacoes" | "/videos" | "/historias" | "/conhecimento";
   title: string;
   desc: string;
   emoji: string;
@@ -98,6 +98,15 @@ const tiles: Tile[] = [
     icon: <Video className="h-6 w-6" />,
     bg: "bg-gradient-to-br from-emerald-400 to-green-600",
     ring: "ring-emerald-200",
+  },
+  {
+    to: "/conhecimento",
+    title: "Conhecimento",
+    desc: "Aprender, letras, respeito e desenhar",
+    emoji: "🌿",
+    icon: <Sparkles className="h-6 w-6" />,
+    bg: "bg-gradient-to-br from-lime-400 to-emerald-600",
+    ring: "ring-lime-200",
   },
 ];
 
