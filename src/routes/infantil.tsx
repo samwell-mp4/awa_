@@ -46,11 +46,11 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto w-full max-w-[1400px] px-2 pb-16 md:px-6">
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4">
           <img
             src={logoImg.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="h-48 w-48 rounded-3xl object-contain shadow-xl ring-4 ring-amber-300 md:h-64 md:w-64"
+            className="block h-auto w-full rounded-3xl object-contain shadow-xl ring-4 ring-amber-300"
             draggable={false}
           />
         </div>
