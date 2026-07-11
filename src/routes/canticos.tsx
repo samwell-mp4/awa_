@@ -5,6 +5,10 @@ import { useState } from "react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { supabase } from "@/integrations/supabase/client";
+import canticosBgAsset from "@/assets/canticos-bg-3d.jpg.asset.json";
+
+const canticosBg = canticosBgAsset.url;
+
 
 export const Route = createFileRoute("/canticos")({
   head: () => ({
@@ -59,7 +63,16 @@ function CanticosPage() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen text-foreground">
+    <div
+      className="min-h-screen text-foreground"
+      style={{
+        backgroundImage: `linear-gradient(oklch(0.18 0.04 145 / 0.75), oklch(0.14 0.03 145 / 0.9)), url(${canticosBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
+
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
           <Link
