@@ -77,7 +77,6 @@ function ChoiceCard({
   icon,
   accent,
   backgroundUrl,
-  backgroundSize = "cover",
 }: {
   to: "/adulto" | "/infantil";
   title: string;
@@ -85,26 +84,21 @@ function ChoiceCard({
   icon: React.ReactNode;
   accent: string;
   backgroundUrl?: string;
-  backgroundSize?: "cover" | "contain";
 }) {
   return (
     <Link
       to={to}
       className={`group relative flex min-h-[460px] flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:min-h-[520px] md:p-8`}
-      style={
-        backgroundUrl
-          ? {
-              backgroundImage: `url(${backgroundUrl})`,
-              backgroundSize,
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: "hsl(var(--forest-deep, 150 40% 10%))",
-            }
-          : undefined
-      }
     >
       {backgroundUrl && (
-        <div aria-hidden className="absolute inset-0 bg-forest-deep/20" />
+        <>
+          <div
+            aria-hidden
+            className="absolute -inset-8 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${backgroundUrl})` }}
+          />
+          <div aria-hidden className="absolute inset-0 bg-forest-deep/20" />
+        </>
       )}
       <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
         {icon}
