@@ -54,7 +54,6 @@ function LandingChoice() {
             icon={<GraduationCap className="h-10 w-10" />}
             accent="from-leaf/30 to-forest-deep/50"
             backgroundUrl={adultoBg.url}
-            backgroundSize="contain"
           />
           <ChoiceCard
             to="/infantil"
@@ -63,7 +62,7 @@ function LandingChoice() {
             icon={<Baby className="h-10 w-10" />}
             accent="from-gold/30 to-leaf/25"
             backgroundUrl={infantilBg.url}
-            backgroundSize="contain"
+            
           />
         </div>
       </main>
