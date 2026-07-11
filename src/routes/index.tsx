@@ -31,7 +31,7 @@ function LandingChoice() {
       style={{ backgroundImage: `url(${bgImg.url})` }}
     >
       <div aria-hidden className="absolute inset-0 bg-forest-deep/70" />
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
+      <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <Logo />
         <LanguageSwitcher />
       </header>
