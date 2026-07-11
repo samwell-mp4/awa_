@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
+import jungleBg from "@/assets/jogos-jungle-bg.jpg";
+
+// Tribal woven pattern (SVG data URI) — used as button texture
+const TRIBAL_PATTERN =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'><g fill='none' stroke='%23f5c542' stroke-width='1.2' opacity='0.55'><path d='M0 15 L15 0 L30 15 L45 0 L60 15 L45 30 L30 15 L15 30 Z'/><path d='M7 15 L15 7 L23 15 L15 23 Z' fill='%23c8451f' opacity='0.6' stroke='none'/><path d='M37 15 L45 7 L53 15 L45 23 Z' fill='%237a2410' opacity='0.5' stroke='none'/></g></svg>\")";
 
 export const Route = createFileRoute("/jogos")({
   head: () => ({
@@ -68,10 +73,12 @@ function JogosPage() {
 
   return (
     <div
-      className="min-h-screen text-cream"
+      className="min-h-screen text-cream relative"
       style={{
-        background:
-          "radial-gradient(circle at 20% 10%, #ffd166 0%, transparent 45%), radial-gradient(circle at 85% 15%, #ff6b9d 0%, transparent 40%), radial-gradient(circle at 50% 90%, #4ecdc4 0%, transparent 55%), linear-gradient(160deg, #6a4cff 0%, #1e2a78 100%)",
+        backgroundImage: `linear-gradient(180deg, rgba(10,40,20,0.35) 0%, rgba(10,40,20,0.15) 30%, rgba(10,40,20,0.55) 100%), url(${jungleBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-14">
@@ -93,8 +100,8 @@ function JogosPage() {
               background: "linear-gradient(180deg,#fff9c2 0%,#ffd166 60%,#ff9a3c 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              textShadow: "0 6px 0 rgba(0,0,0,0.15)",
-              filter: "drop-shadow(0 4px 0 rgba(178,106,0,0.5))",
+              textShadow: "0 6px 0 rgba(0,0,0,0.35)",
+              filter: "drop-shadow(0 4px 0 rgba(0,0,0,0.5))",
             }}
           >
             Jogos Awã Tech
@@ -127,17 +134,19 @@ function JogosPage() {
                 style={
                   active
                     ? {
-                        background: "linear-gradient(160deg,#ffe066,#ffa62b)",
+                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#ffe066,#ffa62b)`,
+                        backgroundBlendMode: "overlay, normal",
                         color: "#2a1a00",
                         boxShadow:
-                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5)",
+                          "0 8px 0 #b26a00, 0 14px 22px rgba(0,0,0,0.35), inset 0 0 0 3px rgba(122,36,16,0.7), inset 0 -4px 8px rgba(0,0,0,0.2), inset 0 3px 5px rgba(255,255,255,0.5)",
                         transform: "translateY(-2px)",
                       }
                     : {
-                        background: "linear-gradient(160deg,#4ecdc4,#2aa39b)",
+                        background: `${TRIBAL_PATTERN}, linear-gradient(160deg,#4ecdc4,#2aa39b)`,
+                        backgroundBlendMode: "overlay, normal",
                         color: "#062a28",
                         boxShadow:
-                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.4)",
+                          "0 6px 0 #14625d, 0 10px 18px rgba(0,0,0,0.3), inset 0 0 0 3px rgba(20,98,93,0.7), inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4)",
                       }
                 }
               >
@@ -149,13 +158,15 @@ function JogosPage() {
         </div>
 
         <div
-          className="rounded-[32px] p-5 md:p-8"
+          className="rounded-[32px] p-5 md:p-8 relative"
           style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.35))",
-            border: "3px solid rgba(255,209,102,0.5)",
+            background:
+              "linear-gradient(180deg, rgba(30,42,120,0.85) 0%, rgba(20,28,80,0.9) 100%)",
+            border: "4px solid #f5c542",
+            outline: "3px solid #c8451f",
+            outlineOffset: "-10px",
             boxShadow:
-              "0 20px 0 rgba(0,0,0,0.25), 0 30px 60px rgba(0,0,0,0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
-            backdropFilter: "blur(6px)",
+              "0 20px 0 rgba(0,0,0,0.35), 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 8px rgba(245,197,66,0.15)",
           }}
         >
           {tab === "match" && <MatchGame onScore={(n) => setScore((s) => s + n)} />}
