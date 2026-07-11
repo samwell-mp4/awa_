@@ -313,6 +313,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         </Field>
         <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
         <Field label="URL capa"><Input value={s.cover_url ?? ""} onChange={(e) => setS({ ...s, cover_url: e.target.value })} /></Field>
+        <Field label="URL vídeo"><Input value={s.video_url ?? ""} onChange={(e) => setS({ ...s, video_url: e.target.value })} /></Field>
         <Field label="Letra indígena">
           <Textarea rows={6} value={s.lyrics_indigenous} onChange={(e) => setS({ ...s, lyrics_indigenous: e.target.value })} />
         </Field>
