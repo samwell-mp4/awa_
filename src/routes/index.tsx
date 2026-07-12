@@ -48,13 +48,28 @@ function LandingChoice() {
             icon={<GraduationCap className="h-10 w-10" />}
             accent="from-leaf/30 to-forest-deep/50"
           />
-          <ChoiceCard
+          <Link
             to="/infantil"
-            title="Awã Tech Infantil"
-            subtitle="Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando."
-            icon={<img src={infantilLogo.url} alt="Awã Tech Infantil" className="h-full w-full object-cover" />}
-            accent="from-gold/30 to-leaf/25"
-          />
+            className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-gold/30 to-leaf/25 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
+          >
+            <img
+              src={infantilLogo.url}
+              alt="Awã Tech Infantil"
+              className="block w-full h-auto"
+              draggable={false}
+            />
+            <div className="p-6 md:p-8">
+              <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
+                Awã Tech Infantil
+              </div>
+              <p className="mt-2 text-sm text-foreground/85 md:text-base">
+                Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+                Entrar <ArrowRight className="h-4 w-4" />
+              </span>
+            </div>
+          </Link>
         </div>
       </main>
     </div>
