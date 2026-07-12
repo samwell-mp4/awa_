@@ -41,6 +41,7 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  aldeia: string | null;
   title_en?: string | null;
   title_es?: string | null;
   artist_en?: string | null;
@@ -53,6 +54,8 @@ type Song = {
 
 
 type Ambient = { id: string; name: string; video_url: string };
+
+const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
 
 function MusicasPage() {
   const { data: songs = [] } = useQuery({
