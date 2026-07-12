@@ -51,7 +51,7 @@ function InfantilHome() {
           <img
             src={infantilLogo.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="block w-full h-auto rounded-[2rem] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] ring-4 ring-amber-300"
+            className="block w-full h-auto rounded-[2rem] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)]"
             fetchPriority="high"
             draggable={false}
           />
