@@ -33,15 +33,15 @@ function LandingChoice() {
         <LanguageSwitcher />
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-10 text-center md:px-8">
+      <main className="flex w-full flex-1 flex-col items-center justify-center py-10 text-center">
         <h1 className="font-display text-3xl font-black uppercase tracking-wide text-cream md:text-5xl">
           Escolha sua experiência
         </h1>
-        <p className="mt-3 max-w-2xl text-sm text-foreground/75 md:text-base">
+        <p className="mt-3 max-w-2xl px-4 text-sm text-foreground/75 md:text-base">
           O Awã Tech tem duas portas de entrada. Escolha a que combina com você.
         </p>
 
-        <div className="mt-10 grid w-full gap-6 md:grid-cols-2">
+        <div className="mt-10 grid w-full gap-0 md:grid-cols-2">
           <Link
             to="/adulto"
             className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-leaf/30 to-forest-deep/50 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
