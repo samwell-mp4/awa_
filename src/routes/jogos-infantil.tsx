@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
+import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/jogos-infantil")({
   head: () => ({
@@ -58,7 +59,12 @@ function JogosInfantilPage() {
   const [stars, setStars] = useState(0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-emerald-950">
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat text-emerald-950"
+      style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
+      }}
+    >
       <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
         <Link
           to="/infantil"
