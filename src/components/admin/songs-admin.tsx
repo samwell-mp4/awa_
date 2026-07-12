@@ -282,6 +282,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         description: s.description,
         is_active: s.is_active,
         order_index: s.order_index,
+        aldeia: s.aldeia || null,
       })
       .eq("id", s.id);
     if (error) return toast.error(error.message);
