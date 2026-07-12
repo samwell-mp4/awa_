@@ -1,103 +1,43 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Gamepad2,
-  Music2,
-  Hand,
-  Video,
-  BookOpen,
-  Map as MapIcon,
-  Leaf,
-  Bird,
-} from "lucide-react";
-
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
-import infantilHero from "@/assets/infantil-hero.png.asset.json";
+import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
     meta: [
-      { title: "Awã Tech Infantil — Aprender brincando" },
+      { title: "Awã Tech Infantil — Trilha da Aldeia" },
       {
         name: "description",
         content:
-          "Área infantil do Awã Tech: jogos, músicas, saudações, histórias, vídeos e trilhas para crianças aprenderem línguas indígenas se divertindo.",
+          "Área infantil do Awã Tech: trilhas, cânticos, histórias, jogos e amizade para crianças aprenderem línguas indígenas brincando.",
       },
       { property: "og:title", content: "Awã Tech Infantil" },
       {
         property: "og:description",
-        content: "Jogos, músicas e vídeos para crianças aprenderem línguas indígenas brincando.",
+        content: "Trilha da Aldeia — menu ilustrado para crianças no Awã Tech.",
       },
+      { property: "og:image", content: infantilMenu.url },
     ],
   }),
   component: InfantilHome,
 });
 
-type Tile = {
-  to: "/jogos" | "/musicas" | "/saudacoes" | "/videos" | "/historias" | "/trilhas";
-  title: string;
-  desc: string;
-  emoji: string;
-  icon: React.ReactNode;
-  bg: string;
-  ring: string;
+type Hotspot = {
+  to: "/trilhas" | "/musicas" | "/historias" | "/jogos" | "/saudacoes";
+  label: string;
+  // percentages relative to the image
+  top: string;
+  left: string;
 };
 
-const tiles: Tile[] = [
-  {
-    to: "/trilhas",
-    title: "Trilhas",
-    desc: "Caminhe pela aldeia",
-    emoji: "🗺️",
-    icon: <MapIcon className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-amber-300 to-orange-400",
-    ring: "ring-orange-200",
-  },
-  {
-    to: "/jogos",
-    title: "Jogos",
-    desc: "Brincadeiras Pataxó",
-    emoji: "🧩",
-    icon: <Gamepad2 className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-fuchsia-400 to-pink-500",
-    ring: "ring-pink-200",
-  },
-  {
-    to: "/musicas",
-    title: "Cânticos",
-    desc: "Cante junto",
-    emoji: "🥁",
-    icon: <Music2 className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-red-400 to-rose-500",
-    ring: "ring-rose-200",
-  },
-  {
-    to: "/historias",
-    title: "Histórias",
-    desc: "Contos da floresta",
-    emoji: "📖",
-    icon: <BookOpen className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-yellow-300 to-amber-500",
-    ring: "ring-amber-200",
-  },
-  {
-    to: "/saudacoes",
-    title: "Saudações",
-    desc: "Aprenda a dizer olá",
-    emoji: "👋",
-    icon: <Hand className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-sky-400 to-cyan-500",
-    ring: "ring-cyan-200",
-  },
-  {
-    to: "/videos",
-    title: "Vídeos",
-    desc: "Assista e aprenda",
-    emoji: "🎬",
-    icon: <Video className="h-7 w-7" />,
-    bg: "bg-gradient-to-br from-emerald-400 to-green-600",
-    ring: "ring-emerald-200",
-  },
+// Coordinates tuned to the illustrated badges in the menu image
+const hotspots: Hotspot[] = [
+  { to: "/trilhas", label: "Trilhas", top: "24%", left: "50%" },
+  { to: "/musicas", label: "Cântico", top: "32%", left: "74%" },
+  { to: "/historias", label: "História Infantil", top: "40%", left: "22%" },
+  { to: "/jogos", label: "Jogos", top: "58%", left: "64%" },
+  { to: "/saudacoes", label: "Amizade", top: "68%", left: "42%" },
 ];
 
 function InfantilHome() {
@@ -105,58 +45,44 @@ function InfantilHome() {
     <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
       <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-6xl px-4 pb-16 md:px-8">
-        {/* Hero — photo entrance */}
+      <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
           <img
-            src={infantilHero.url}
-            alt="Awã Tech Infantil — famílias indígenas Pataxó"
-            className="block w-full h-auto object-cover"
+            src={infantilMenu.url}
+            alt="Awã Tech Infantil — Trilha da Aldeia"
+            className="block w-full h-auto select-none"
             fetchPriority="high"
+            draggable={false}
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-4 md:p-8 text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-900 shadow">
-              <Leaf className="h-3.5 w-3.5" /> Awã Tech Infantil
-            </div>
-            <h1 className="mt-2 font-display text-2xl font-black uppercase tracking-wide text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.4)] md:text-4xl">
-              Bem-vindo à Aldeia!
-            </h1>
-          </div>
-        </section>
 
-        {/* Menu tiles */}
-        <section className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {tiles.map((t) => (
+          {hotspots.map((h) => (
             <Link
-              key={t.to}
-              to={t.to}
-              className={`group relative flex flex-col items-center gap-3 rounded-[1.75rem] ${t.bg} p-6 text-center text-white shadow-[0_15px_35px_-15px_rgba(0,0,0,0.45)] ring-4 ${t.ring} transition-transform hover:-translate-y-2 hover:rotate-[-1deg] active:scale-95`}
+              key={h.to + h.label}
+              to={h.to}
+              aria-label={h.label}
+              style={{ top: h.top, left: h.left }}
+              className="group absolute -translate-x-1/2 -translate-y-1/2"
             >
-              <div className="grid h-20 w-20 place-items-center rounded-full bg-white/25 text-4xl shadow-inner backdrop-blur-sm ring-4 ring-white/40">
-                <span aria-hidden>{t.emoji}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {t.icon}
-                <div className="font-display text-2xl font-black uppercase tracking-wide drop-shadow-[0_2px_0_rgba(0,0,0,0.25)]">
-                  {t.title}
-                </div>
-              </div>
-              <p className="text-sm font-semibold text-white/95">{t.desc}</p>
-              <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold uppercase tracking-wider ring-2 ring-white/40">
-                Vamos lá →
+              <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
+              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white opacity-0 shadow group-hover:opacity-100">
+                {h.label} →
               </span>
             </Link>
           ))}
         </section>
 
-        {/* Fun footer strip */}
-        <section className="mt-10 flex items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-emerald-400 bg-white/60 p-4 text-emerald-900">
-          <Bird className="h-6 w-6" />
-          <span className="font-display text-sm font-bold uppercase tracking-wide md:text-base">
-            Aprender é uma aventura na floresta!
-          </span>
-          <Leaf className="h-6 w-6" />
-        </section>
+        {/* Fallback textual menu for accessibility / small screens */}
+        <nav className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {hotspots.map((h) => (
+            <Link
+              key={"list-" + h.to + h.label}
+              to={h.to}
+              className="rounded-2xl border-2 border-amber-300 bg-white/70 px-3 py-3 text-center font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-sm hover:bg-white"
+            >
+              {h.label}
+            </Link>
+          ))}
+        </nav>
       </main>
 
       <SiteFooter />
