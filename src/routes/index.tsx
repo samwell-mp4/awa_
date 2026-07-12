@@ -80,21 +80,6 @@ function LandingChoice() {
               Entrar <ArrowRight className="h-4 w-4" />
             </span>
           </Link>
-
-          <Link
-            to="/infantil"
-            className="group relative block overflow-hidden transition hover:-translate-y-1"
-          >
-            <img
-              src={infantilLogo.url}
-              alt="Awã Tech Infantil"
-              className="block w-full h-auto"
-              draggable={false}
-            />
-            <span className="absolute bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/80 px-5 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
-              Entrar <ArrowRight className="h-4 w-4" />
-            </span>
-          </Link>
         </div>
       </main>
     </div>
