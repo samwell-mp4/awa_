@@ -108,6 +108,7 @@ export function SongsAdmin() {
       artist: draft.artist || null,
       cover_url: draft.cover_url || null,
       description: draft.description || null,
+      aldeia: draft.aldeia || null,
     };
     const { error } = await supabase.from("songs").insert(payload);
     setSaving(false);
