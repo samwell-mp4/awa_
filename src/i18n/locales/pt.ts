@@ -109,6 +109,17 @@ export default {
     trailNatureza: "Natureza",
     trailAnimais: "Animais",
   },
+  infantil: {
+    title: "Trilha da Aldeia",
+    description: "Menu ilustrado com trilhas, cânticos, histórias, jogos e amizade.",
+    hotspots: {
+      trilhas: "Trilhas",
+      cantico: "Cântico",
+      historia: "História Infantil",
+      jogos: "Jogos",
+      amizade: "Amizade",
+    },
+  },
   premium: {
     verPlanos: "Ver planos Premium",
     entrarCriar: "Entrar ou criar conta",
