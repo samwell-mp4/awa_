@@ -99,6 +99,7 @@ const ADULT_HREFS = new Set([
   "/trilhas",
   "/professor",
   "/historias",
+  "/musicas",
   "/videos",
   "/biografia",
   "/instalar",
