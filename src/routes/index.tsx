@@ -44,7 +44,7 @@ function LandingChoice() {
         <div className="mt-10 grid w-full gap-0 md:grid-cols-2">
           <Link
             to="/adulto"
-            className="group relative flex flex-col overflow-hidden text-left transition hover:-translate-y-1"
+            className="group relative block overflow-hidden transition hover:-translate-y-1"
           >
             <img
               src={adultoLogo.url}
@@ -52,21 +52,13 @@ function LandingChoice() {
               className="block w-full h-auto"
               draggable={false}
             />
-            <div className="p-6 md:p-8">
-              <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
-                Awã Tech Adulto
-              </div>
-              <p className="mt-2 text-sm text-foreground/85 md:text-base">
-                Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor.
-              </p>
-              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
-                Entrar <ArrowRight className="h-4 w-4" />
-              </span>
-            </div>
+            <span className="absolute bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/80 px-5 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+              Entrar <ArrowRight className="h-4 w-4" />
+            </span>
           </Link>
           <Link
             to="/infantil"
-            className="group relative flex flex-col overflow-hidden text-left transition hover:-translate-y-1"
+            className="group relative block overflow-hidden transition hover:-translate-y-1"
           >
             <img
               src={infantilLogo.url}
@@ -74,17 +66,9 @@ function LandingChoice() {
               className="block w-full h-auto"
               draggable={false}
             />
-            <div className="p-6 md:p-8">
-              <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
-                Awã Tech Infantil
-              </div>
-              <p className="mt-2 text-sm text-foreground/85 md:text-base">
-                Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando.
-              </p>
-              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
-                Entrar <ArrowRight className="h-4 w-4" />
-              </span>
-            </div>
+            <span className="absolute bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/80 px-5 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+              Entrar <ArrowRight className="h-4 w-4" />
+            </span>
           </Link>
         </div>
       </main>
