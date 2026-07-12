@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GraduationCap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,13 +42,28 @@ function LandingChoice() {
         </p>
 
         <div className="mt-10 grid w-full gap-6 md:grid-cols-2">
-          <ChoiceCard
+          <Link
             to="/adulto"
-            title="Awã Tech Adulto"
-            subtitle="Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor."
-            icon={<GraduationCap className="h-10 w-10" />}
-            accent="from-leaf/30 to-forest-deep/50"
-          />
+            className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-leaf/30 to-forest-deep/50 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
+          >
+            <img
+              src={adultoLogo.url}
+              alt="Awã Tech Adulto"
+              className="block w-full h-auto"
+              draggable={false}
+            />
+            <div className="p-6 md:p-8">
+              <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
+                Awã Tech Adulto
+              </div>
+              <p className="mt-2 text-sm text-foreground/85 md:text-base">
+                Trilhas, tradutor, dicionário, histórias, biografia e Espaço do Professor.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
+                Entrar <ArrowRight className="h-4 w-4" />
+              </span>
+            </div>
+          </Link>
           <Link
             to="/infantil"
             className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-gold/30 to-leaf/25 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
@@ -73,39 +89,5 @@ function LandingChoice() {
         </div>
       </main>
     </div>
-  );
-}
-
-function ChoiceCard({
-  to,
-  title,
-  subtitle,
-  icon,
-  accent,
-}: {
-  to: "/adulto" | "/infantil";
-  title: string;
-  subtitle: string;
-  icon: React.ReactNode;
-  accent: string;
-}) {
-  return (
-    <Link
-      to={to}
-      className={`group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br ${accent} p-6 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60 md:p-8`}
-    >
-      <div className="grid h-16 w-16 place-items-center rounded-2xl border border-gold/40 bg-forest-deep/40 text-gold">
-        {icon}
-      </div>
-      <div>
-        <div className="font-display text-2xl font-black uppercase tracking-wide text-cream md:text-3xl">
-          {title}
-        </div>
-        <p className="mt-2 text-sm text-foreground/85 md:text-base">{subtitle}</p>
-      </div>
-      <span className="mt-2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/50 px-4 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
-        Entrar <ArrowRight className="h-4 w-4" />
-      </span>
-    </Link>
   );
 }
