@@ -148,6 +148,16 @@ export function SongsAdmin() {
               ))}
             </select>
           </Field>
+          <Field label="Aldeia">
+            <select
+              value={draft.aldeia}
+              onChange={(e) => setDraft({ ...draft, aldeia: e.target.value })}
+              className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+            >
+              <option value="">Nenhuma</option>
+              {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
+            </select>
+          </Field>
         </div>
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
