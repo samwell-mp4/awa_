@@ -17,9 +17,12 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  aldeia: string | null;
   is_active: boolean;
   order_index: number;
 };
+
+const ALDEIAS = ["Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"];
 
 type Ambient = { id: string; name: string; video_url: string };
 
