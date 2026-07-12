@@ -29,6 +29,7 @@ import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AmizadeRouteImport } from './routes/amizade'
 import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -140,6 +141,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AmizadeRoute = AmizadeRouteImport.update({
+  id: '/amizade',
+  path: '/amizade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdultoRoute = AdultoRouteImport.update({
   id: '/adulto',
   path: '/adulto',
@@ -195,6 +201,7 @@ const ApiPublicPaymentsWebhookRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/adulto': typeof AdultoRoute
+  '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -226,6 +233,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/adulto': typeof AdultoRoute
+  '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/adulto': typeof AdultoRoute
+  '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/adulto'
+    | '/amizade'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/adulto'
+    | '/amizade'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -355,6 +366,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/adulto'
+    | '/amizade'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -388,6 +400,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdultoRoute: typeof AdultoRoute
+  AmizadeRoute: typeof AmizadeRoute
   AuthRoute: typeof AuthRoute
   BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
@@ -558,6 +571,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/amizade': {
+      id: '/amizade'
+      path: '/amizade'
+      fullPath: '/amizade'
+      preLoaderRoute: typeof AmizadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/adulto': {
       id: '/adulto'
       path: '/adulto'
@@ -646,6 +666,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdultoRoute: AdultoRoute,
+  AmizadeRoute: AmizadeRoute,
   AuthRoute: AuthRoute,
   BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,
