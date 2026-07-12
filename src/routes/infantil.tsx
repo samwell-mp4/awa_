@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
@@ -24,21 +25,20 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
 type Hotspot = {
   to: "/trilhas" | "/musicas" | "/historias" | "/jogos-infantil" | "/saudacoes";
-  label: string;
-  // percentages relative to the image
+  key: HotspotKey;
   top: string;
   left: string;
 };
 
-// Coordinates tuned to the illustrated badges in the menu image
 const hotspots: Hotspot[] = [
-  { to: "/trilhas", label: "Trilhas", top: "24%", left: "50%" },
-  { to: "/musicas", label: "Cântico", top: "32%", left: "74%" },
-  { to: "/historias", label: "História Infantil", top: "40%", left: "22%" },
-  { to: "/jogos-infantil", label: "Jogos", top: "58%", left: "64%" },
-  { to: "/saudacoes", label: "Amizade", top: "68%", left: "42%" },
+  { to: "/trilhas", key: "trilhas", top: "24%", left: "50%" },
+  { to: "/musicas", key: "cantico", top: "32%", left: "74%" },
+  { to: "/historias", key: "historia", top: "40%", left: "22%" },
+  { to: "/jogos-infantil", key: "jogos", top: "58%", left: "64%" },
+  { to: "/saudacoes", key: "amizade", top: "68%", left: "42%" },
 ];
 
 function InfantilHome() {
