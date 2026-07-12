@@ -165,17 +165,33 @@ function MusicasPage() {
           </div>
         </div>
 
+        <div className="mb-6 flex flex-wrap gap-2">
+          {ALDEIAS.map((a) => (
+            <button
+              key={a}
+              onClick={() => setAldeia(a)}
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition ${
+                aldeia === a
+                  ? "border-gold bg-gold text-emerald-950"
+                  : "border-gold/30 text-cream hover:bg-gold/10"
+              }`}
+            >
+              <MapPin className="h-3 w-3" /> {a}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {songs.map((s) => (
+          {filteredSongs.map((s) => (
             <SongCard
               key={s.id}
               song={s}
               onClick={() => openSong(s)}
             />
           ))}
-          {songs.length === 0 && (
+          {filteredSongs.length === 0 && (
             <div className="col-span-full text-center text-foreground/60 py-12">
-              Nenhum cântico publicado ainda.
+              Nenhum cântico desta aldeia ainda.
             </div>
           )}
         </div>
