@@ -47,11 +47,11 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="mt-4">
+        <div className="-mx-3 md:-mx-6 mt-0">
           <img
             src={infantilLogo.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="block w-full h-auto rounded-[2rem] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)]"
+            className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
             fetchPriority="high"
             draggable={false}
           />
