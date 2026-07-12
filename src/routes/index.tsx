@@ -44,7 +44,7 @@ function LandingChoice() {
         <div className="mt-10 grid w-full gap-0 md:grid-cols-2">
           <Link
             to="/adulto"
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-leaf/30 to-forest-deep/50 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
+            className="group relative flex flex-col overflow-hidden text-left transition hover:-translate-y-1"
           >
             <img
               src={adultoLogo.url}
