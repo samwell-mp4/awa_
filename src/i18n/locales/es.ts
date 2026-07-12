@@ -109,6 +109,17 @@ export default {
     trailNatureza: "Naturaleza",
     trailAnimais: "Animales",
   },
+  infantil: {
+    title: "Sendero de la Aldea",
+    description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
+    hotspots: {
+      trilhas: "Senderos",
+      cantico: "Canto",
+      historia: "Historia Infantil",
+      jogos: "Juegos",
+      amizade: "Amistad",
+    },
+  },
   premium: {
     verPlanos: "Ver planes Premium",
     entrarCriar: "Entrar o crear cuenta",
