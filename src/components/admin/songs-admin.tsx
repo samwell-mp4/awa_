@@ -315,6 +315,16 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
             {ambients.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
           </select>
         </Field>
+        <Field label="Aldeia">
+          <select
+            value={s.aldeia ?? ""}
+            onChange={(e) => setS({ ...s, aldeia: e.target.value || null })}
+            className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+          >
+            <option value="">Nenhuma</option>
+            {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </Field>
         <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
         <Field label="URL capa"><Input value={s.cover_url ?? ""} onChange={(e) => setS({ ...s, cover_url: e.target.value })} /></Field>
         <Field label="Letra indígena">
