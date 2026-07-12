@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import trilhasVideo from "@/assets/trilhas-alive.mp4.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
