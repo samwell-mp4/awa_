@@ -17,9 +17,12 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  aldeia: string | null;
   is_active: boolean;
   order_index: number;
 };
+
+const ALDEIAS = ["Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"];
 
 type Ambient = { id: string; name: string; video_url: string };
 
@@ -45,6 +48,7 @@ const defaultDraft = {
   audio_url: "",
   cover_url: "",
   ambient_video_id: "",
+  aldeia: "",
   lyrics_indigenous: "",
   lyrics_pt: "",
   description: "",
@@ -104,6 +108,7 @@ export function SongsAdmin() {
       artist: draft.artist || null,
       cover_url: draft.cover_url || null,
       description: draft.description || null,
+      aldeia: draft.aldeia || null,
     };
     const { error } = await supabase.from("songs").insert(payload);
     setSaving(false);
@@ -141,6 +146,16 @@ export function SongsAdmin() {
               {ambients.map((a) => (
                 <option key={a.id} value={a.id}>{a.name}</option>
               ))}
+            </select>
+          </Field>
+          <Field label="Aldeia">
+            <select
+              value={draft.aldeia}
+              onChange={(e) => setDraft({ ...draft, aldeia: e.target.value })}
+              className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+            >
+              <option value="">Nenhuma</option>
+              {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
             </select>
           </Field>
         </div>
@@ -267,6 +282,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         description: s.description,
         is_active: s.is_active,
         order_index: s.order_index,
+        aldeia: s.aldeia || null,
       })
       .eq("id", s.id);
     if (error) return toast.error(error.message);
@@ -297,6 +313,16 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
           >
             <option value="">Nenhum</option>
             {ambients.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
+          </select>
+        </Field>
+        <Field label="Aldeia">
+          <select
+            value={s.aldeia ?? ""}
+            onChange={(e) => setS({ ...s, aldeia: e.target.value || null })}
+            className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+          >
+            <option value="">Nenhuma</option>
+            {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </Field>
         <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>

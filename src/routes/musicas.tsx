@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  MapPin,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
@@ -40,6 +41,7 @@ type Song = {
   lyrics_indigenous: string;
   lyrics_pt: string;
   description: string | null;
+  aldeia: string | null;
   title_en?: string | null;
   title_es?: string | null;
   artist_en?: string | null;
@@ -53,6 +55,8 @@ type Song = {
 
 type Ambient = { id: string; name: string; video_url: string };
 
+const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
+
 function MusicasPage() {
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_public"],
@@ -61,7 +65,7 @@ function MusicasPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -84,6 +88,11 @@ function MusicasPage() {
 
   const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
+  const [aldeia, setAldeia] = useState<(typeof ALDEIAS)[number]>("Todas");
+  const filteredSongs = useMemo(
+    () => (aldeia === "Todas" ? songs : songs.filter((s) => s.aldeia === aldeia)),
+    [songs, aldeia],
+  );
   const soundCloudWidgetsRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
@@ -156,17 +165,33 @@ function MusicasPage() {
           </div>
         </div>
 
+        <div className="mb-6 flex flex-wrap gap-2">
+          {ALDEIAS.map((a) => (
+            <button
+              key={a}
+              onClick={() => setAldeia(a)}
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition ${
+                aldeia === a
+                  ? "border-gold bg-gold text-emerald-950"
+                  : "border-gold/30 text-cream hover:bg-gold/10"
+              }`}
+            >
+              <MapPin className="h-3 w-3" /> {a}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {songs.map((s) => (
+          {filteredSongs.map((s) => (
             <SongCard
               key={s.id}
               song={s}
               onClick={() => openSong(s)}
             />
           ))}
-          {songs.length === 0 && (
+          {filteredSongs.length === 0 && (
             <div className="col-span-full text-center text-foreground/60 py-12">
-              Nenhum cântico publicado ainda.
+              Nenhum cântico desta aldeia ainda.
             </div>
           )}
         </div>
@@ -312,8 +337,15 @@ function SongCard({
 
       {/* info */}
       <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold mb-1.5">
-          {song.language}
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">
+            {song.language}
+          </span>
+          {song.aldeia && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-gold/90">
+              <MapPin className="h-3 w-3" /> {song.aldeia}
+            </span>
+          )}
         </div>
         <h3 className="font-display text-xl font-black text-cream leading-tight">
           {tTitle || song.title}

@@ -334,6 +334,7 @@ export type Database = {
       }
       songs: {
         Row: {
+          aldeia: string | null
           ambient_video_id: string | null
           artist: string | null
           artist_en: string | null
@@ -361,6 +362,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          aldeia?: string | null
           ambient_video_id?: string | null
           artist?: string | null
           artist_en?: string | null
@@ -388,6 +390,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          aldeia?: string | null
           ambient_video_id?: string | null
           artist?: string | null
           artist_en?: string | null
