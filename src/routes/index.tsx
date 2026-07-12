@@ -4,6 +4,7 @@ import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
+import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,7 +28,10 @@ export const Route = createFileRoute("/")({
 
 function LandingChoice() {
   return (
-    <div className="min-h-screen text-foreground flex flex-col">
+    <div
+      className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `linear-gradient(rgba(10,20,15,0.55), rgba(10,20,15,0.75)), url(${landingBg.url})` }}
+    >
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <Logo />
         <LanguageSwitcher />
