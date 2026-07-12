@@ -52,7 +52,7 @@ function LandingChoice() {
             to="/infantil"
             title="Awã Tech Infantil"
             subtitle="Jogos, músicas, saudações e vídeos divertidos para crianças aprenderem brincando."
-            icon={<Baby className="h-10 w-10" />}
+            icon={<img src={infantilLogo.url} alt="Awã Tech Infantil" className="h-full w-full object-cover" />}
             accent="from-gold/30 to-leaf/25"
           />
         </div>
