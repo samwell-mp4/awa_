@@ -27,7 +27,7 @@ export const Route = createFileRoute("/infantil")({
 
 type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
 type Hotspot = {
-  to: "/trilhas" | "/musicas" | "/historias" | "/jogos-infantil" | "/saudacoes";
+  to: "/trilhas" | "/musicas" | "/historias" | "/jogos-infantil" | "/amizade";
   key: HotspotKey;
   top: string;
   left: string;
@@ -38,7 +38,7 @@ const hotspots: Hotspot[] = [
   { to: "/musicas", key: "cantico", top: "32%", left: "74%" },
   { to: "/historias", key: "historia", top: "40%", left: "22%" },
   { to: "/jogos-infantil", key: "jogos", top: "58%", left: "64%" },
-  { to: "/saudacoes", key: "amizade", top: "68%", left: "42%" },
+  { to: "/amizade", key: "amizade", top: "68%", left: "42%" },
 ];
 
 function InfantilHome() {
