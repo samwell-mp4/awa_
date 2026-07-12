@@ -25,7 +25,7 @@ export const Route = createFileRoute("/infantil")({
 });
 
 type Hotspot = {
-  to: "/trilhas" | "/musicas" | "/historias" | "/jogos" | "/saudacoes";
+  to: "/trilhas" | "/musicas" | "/historias" | "/jogos-infantil" | "/saudacoes";
   label: string;
   // percentages relative to the image
   top: string;
@@ -37,7 +37,7 @@ const hotspots: Hotspot[] = [
   { to: "/trilhas", label: "Trilhas", top: "24%", left: "50%" },
   { to: "/musicas", label: "Cântico", top: "32%", left: "74%" },
   { to: "/historias", label: "História Infantil", top: "40%", left: "22%" },
-  { to: "/jogos", label: "Jogos", top: "58%", left: "64%" },
+  { to: "/jogos-infantil", label: "Jogos", top: "58%", left: "64%" },
   { to: "/saudacoes", label: "Amizade", top: "68%", left: "42%" },
 ];
 

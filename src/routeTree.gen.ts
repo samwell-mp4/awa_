@@ -20,6 +20,7 @@ import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as MinhaContaRouteImport } from './routes/minha-conta'
+import { Route as JogosInfantilRouteImport } from './routes/jogos-infantil'
 import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as InfantilRouteImport } from './routes/infantil'
@@ -92,6 +93,11 @@ const MusicasRoute = MusicasRouteImport.update({
 const MinhaContaRoute = MinhaContaRouteImport.update({
   id: '/minha-conta',
   path: '/minha-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogosInfantilRoute = JogosInfantilRouteImport.update({
+  id: '/jogos-infantil',
+  path: '/jogos-infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JogosRoute = JogosRouteImport.update({
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
+  '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
   '/planos': typeof PlanosRoute
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/infantil'
     | '/instalar'
     | '/jogos'
+    | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
     | '/planos'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/infantil'
     | '/instalar'
     | '/jogos'
+    | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
     | '/planos'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/infantil'
     | '/instalar'
     | '/jogos'
+    | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
     | '/planos'
@@ -384,6 +396,7 @@ export interface RootRouteChildren {
   InfantilRoute: typeof InfantilRoute
   InstalarRoute: typeof InstalarRoute
   JogosRoute: typeof JogosRoute
+  JogosInfantilRoute: typeof JogosInfantilRoute
   MinhaContaRoute: typeof MinhaContaRoute
   MusicasRoute: typeof MusicasRoute
   PlanosRoute: typeof PlanosRoute
@@ -480,6 +493,13 @@ declare module '@tanstack/react-router' {
       path: '/minha-conta'
       fullPath: '/minha-conta'
       preLoaderRoute: typeof MinhaContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogos-infantil': {
+      id: '/jogos-infantil'
+      path: '/jogos-infantil'
+      fullPath: '/jogos-infantil'
+      preLoaderRoute: typeof JogosInfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jogos': {
@@ -634,6 +654,7 @@ const rootRouteChildren: RootRouteChildren = {
   InfantilRoute: InfantilRoute,
   InstalarRoute: InstalarRoute,
   JogosRoute: JogosRoute,
+  JogosInfantilRoute: JogosInfantilRoute,
   MinhaContaRoute: MinhaContaRoute,
   MusicasRoute: MusicasRoute,
   PlanosRoute: PlanosRoute,
