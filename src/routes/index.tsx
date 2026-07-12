@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GraduationCap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
