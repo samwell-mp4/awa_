@@ -109,6 +109,17 @@ export default {
     trailNatureza: "Nature",
     trailAnimais: "Animals",
   },
+  infantil: {
+    title: "Village Trail",
+    description: "Illustrated menu with trails, chants, stories, games and friendship.",
+    hotspots: {
+      trilhas: "Trails",
+      cantico: "Chant",
+      historia: "Kids' Story",
+      jogos: "Games",
+      amizade: "Friendship",
+    },
+  },
   premium: {
     verPlanos: "View Premium plans",
     entrarCriar: "Sign in or create an account",
