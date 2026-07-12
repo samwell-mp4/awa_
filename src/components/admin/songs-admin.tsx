@@ -48,6 +48,7 @@ const defaultDraft = {
   audio_url: "",
   cover_url: "",
   ambient_video_id: "",
+  aldeia: "",
   lyrics_indigenous: "",
   lyrics_pt: "",
   description: "",
