@@ -66,7 +66,7 @@ function LandingChoice() {
           </Link>
           <Link
             to="/infantil"
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-gold/30 to-leaf/25 text-left shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] transition hover:-translate-y-1 hover:border-gold/60"
+            className="group relative flex flex-col overflow-hidden text-left transition hover:-translate-y-1"
           >
             <img
               src={infantilLogo.url}
