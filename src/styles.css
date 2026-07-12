@@ -193,6 +193,26 @@ body::before {
   animation: shimmer 3s linear infinite;
 }
 
+@keyframes trilhas-alive {
+  0%, 100% { transform: translate3d(0,0,0) rotateY(0deg) rotateX(0deg) scale(1); }
+  25% { transform: translate3d(0,-6px,0) rotateY(12deg) rotateX(-6deg) scale(1.04); }
+  50% { transform: translate3d(0,-10px,0) rotateY(0deg) rotateX(-10deg) scale(1.06); }
+  75% { transform: translate3d(0,-6px,0) rotateY(-12deg) rotateX(-6deg) scale(1.04); }
+}
+@keyframes trilhas-glow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.15); }
+}
+@utility trilhas-alive {
+  transform-style: preserve-3d;
+  animation: trilhas-alive 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
+}
+@utility trilhas-glow {
+  animation: trilhas-glow 2.8s ease-in-out infinite;
+}
+
+
 /* Keep content above the ambient overlay */
 header, main, footer, section { position: relative; z-index: 1; }
 
