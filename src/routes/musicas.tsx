@@ -337,8 +337,15 @@ function SongCard({
 
       {/* info */}
       <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold mb-1.5">
-          {song.language}
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">
+            {song.language}
+          </span>
+          {song.aldeia && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-gold/90">
+              <MapPin className="h-3 w-3" /> {song.aldeia}
+            </span>
+          )}
         </div>
         <h3 className="font-display text-xl font-black text-cream leading-tight">
           {tTitle || song.title}
