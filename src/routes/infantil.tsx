@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
+import infantilLogo from "@/assets/infantil-logo.jpg.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
@@ -46,6 +47,16 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
+        <div className="mt-4 flex justify-center">
+          <img
+            src={infantilLogo.url}
+            alt="Awã Tech — Línguas indígenas, culturas vivas"
+            className="w-40 sm:w-48 md:w-56 rounded-3xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] ring-4 ring-amber-300"
+            fetchPriority="high"
+            draggable={false}
+          />
+        </div>
+
         <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
           <img
             src={infantilMenu.url}
