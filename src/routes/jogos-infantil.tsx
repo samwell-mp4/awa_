@@ -23,7 +23,13 @@ export const Route = createFileRoute("/jogos-infantil")({
   component: JogosInfantilPage,
 });
 
-type GameId = "memoria" | "pares" | "caca";
+type GameId =
+  | "memoria"
+  | "pares"
+  | "caca"
+  | "en-animals"
+  | "en-colors"
+  | "en-numbers";
 
 const GAMES: {
   id: GameId;
@@ -52,6 +58,55 @@ const GAMES: {
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
     color: "from-sky-400 to-indigo-500",
+  },
+];
+
+const EN_GAMES: {
+  id: GameId;
+  emoji: string;
+  title: string;
+  desc: string;
+  color: string;
+  pairs: { en: string; emoji: string; pt: string }[];
+}[] = [
+  {
+    id: "en-animals",
+    emoji: "🐾",
+    title: "Animals in English",
+    desc: "Match the animal to its English name.",
+    color: "from-lime-400 to-emerald-600",
+    pairs: [
+      { en: "Dog", emoji: "🐶", pt: "Cachorro" },
+      { en: "Cat", emoji: "🐱", pt: "Gato" },
+      { en: "Bird", emoji: "🐦", pt: "Pássaro" },
+      { en: "Fish", emoji: "🐟", pt: "Peixe" },
+    ],
+  },
+  {
+    id: "en-colors",
+    emoji: "🎨",
+    title: "Colors in English",
+    desc: "Tap the correct color name.",
+    color: "from-pink-400 to-rose-600",
+    pairs: [
+      { en: "Red", emoji: "🟥", pt: "Vermelho" },
+      { en: "Blue", emoji: "🟦", pt: "Azul" },
+      { en: "Yellow", emoji: "🟨", pt: "Amarelo" },
+      { en: "Green", emoji: "🟩", pt: "Verde" },
+    ],
+  },
+  {
+    id: "en-numbers",
+    emoji: "🔢",
+    title: "Numbers in English",
+    desc: "Match the number to its English word.",
+    color: "from-sky-400 to-blue-600",
+    pairs: [
+      { en: "One", emoji: "1️⃣", pt: "Um" },
+      { en: "Two", emoji: "2️⃣", pt: "Dois" },
+      { en: "Three", emoji: "3️⃣", pt: "Três" },
+      { en: "Four", emoji: "4️⃣", pt: "Quatro" },
+    ],
   },
 ];
 
