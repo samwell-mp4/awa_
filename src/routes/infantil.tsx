@@ -101,7 +101,7 @@ function InfantilHome() {
                 ) : (
                   <>
                     <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
-                    <span className={`pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 font-bold uppercase tracking-wider text-white shadow ${h.key === "jogos" ? "text-base px-4 py-1.5" : "text-[10px] px-2 py-0.5"}`}>
+                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
                       {label}
                     </span>
                   </>
