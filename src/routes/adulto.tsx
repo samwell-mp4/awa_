@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
 
 import { ContinueLearningCard } from "@/components/home/continue-learning";
 import { DailyMissionCard } from "@/components/home/daily-mission-card";
@@ -13,6 +14,11 @@ import { TrailsGrid } from "@/components/home/trails-grid";
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 export const Route = createFileRoute("/adulto")({
+  ssr: false,
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/auth" });
+  },
   head: () => ({
     meta: [
       { title: "Awã Tech Adulto — Trilhas, Dicionário e Cultura" },
