@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
-import { Sparkles, Mail, KeyRound } from "lucide-react";
+import { Sparkles, Mail, KeyRound, Phone } from "lucide-react";
 import authBg from "@/assets/awa-auth-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
@@ -17,7 +17,9 @@ function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [method, setMethod] = useState<Method>("password");
+  const [channel, setChannel] = useState<"email" | "phone">("email");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
@@ -59,22 +61,40 @@ function AuthPage() {
     }
   }
 
+  function normalizePhone(v: string) {
+    const t = v.trim().replace(/[^\d+]/g, "");
+    return t.startsWith("+") ? t : `+55${t.replace(/^0+/, "")}`;
+  }
+
   async function handleSendCode(e: React.FormEvent) {
     e.preventDefault();
-    if (!email) return toast.error("Informe seu e-mail");
     setBusy(true);
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true,
-          data: name ? { name } : undefined,
-          emailRedirectTo: window.location.origin,
-        },
-      });
-      if (error) throw error;
+      if (channel === "email") {
+        if (!email) throw new Error("Informe seu e-mail");
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            shouldCreateUser: true,
+            data: name ? { name } : undefined,
+            emailRedirectTo: window.location.origin,
+          },
+        });
+        if (error) throw error;
+        toast.success("Enviamos um código para o seu e-mail");
+      } else {
+        if (!phone) throw new Error("Informe seu celular");
+        const { error } = await supabase.auth.signInWithOtp({
+          phone: normalizePhone(phone),
+          options: {
+            shouldCreateUser: true,
+            data: name ? { name } : undefined,
+          },
+        });
+        if (error) throw error;
+        toast.success("Enviamos um código por SMS");
+      }
       setOtpSent(true);
-      toast.success("Enviamos um código para o seu e-mail");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro ao enviar código");
     } finally {
@@ -86,11 +106,9 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     try {
-      const { error } = await supabase.auth.verifyOtp({
-        email,
-        token: otp.trim(),
-        type: "email",
-      });
+      const { error } = channel === "email"
+        ? await supabase.auth.verifyOtp({ email, token: otp.trim(), type: "email" })
+        : await supabase.auth.verifyOtp({ phone: normalizePhone(phone), token: otp.trim(), type: "sms" });
       if (error) throw error;
       toast.success("Bem-vindo!");
       navigate({ to: "/" });
@@ -177,30 +195,64 @@ function AuthPage() {
 
         {method === "code" && (
           <form onSubmit={otpSent ? handleVerifyCode : handleSendCode} className="mt-4 flex flex-col gap-3">
+            {!otpSent && (
+              <div className="grid grid-cols-2 gap-2 rounded-xl border border-gold/20 bg-forest-deep/30 p-1 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setChannel("email")}
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
+                    channel === "email" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
+                  }`}
+                >
+                  <Mail className="h-3.5 w-3.5" /> E-mail
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setChannel("phone")}
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
+                    channel === "phone" ? "bg-gold/20 text-gold" : "text-foreground/70 hover:text-cream"
+                  }`}
+                >
+                  <Phone className="h-3.5 w-3.5" /> Celular (SMS)
+                </button>
+              </div>
+            )}
             {mode === "signup" && !otpSent && (
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" className={inputCls} />
             )}
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="E-mail"
-              disabled={otpSent}
-              className={inputCls}
-            />
+            {channel === "email" ? (
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="E-mail"
+                disabled={otpSent}
+                className={inputCls}
+              />
+            ) : (
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Celular com DDD (ex.: +55 11 91234-5678)"
+                disabled={otpSent}
+                className={inputCls}
+              />
+            )}
             {otpSent && (
               <input
                 required
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                placeholder="Código recebido por e-mail"
+                placeholder={channel === "email" ? "Código recebido por e-mail" : "Código recebido por SMS"}
                 inputMode="numeric"
                 className={inputCls}
               />
             )}
             <button disabled={busy} className="mt-2 rounded-xl bg-[var(--gradient-leaf)] px-4 py-3 text-sm font-bold text-cream shadow-[var(--shadow-glow)] disabled:opacity-50">
-              {busy ? "Carregando..." : otpSent ? "Confirmar código" : "Receber código por e-mail"}
+              {busy ? "Carregando..." : otpSent ? "Confirmar código" : channel === "email" ? "Receber código por e-mail" : "Receber código por SMS"}
             </button>
             {otpSent && (
               <button
@@ -208,12 +260,9 @@ function AuthPage() {
                 onClick={() => { setOtpSent(false); setOtp(""); }}
                 className="text-xs text-foreground/60 hover:text-gold"
               >
-                Trocar e-mail
+                {channel === "email" ? "Trocar e-mail" : "Trocar celular"}
               </button>
             )}
-            <p className="text-[11px] text-foreground/50 text-center">
-              O próprio site envia o código pelo seu e-mail — sem SMS.
-            </p>
           </form>
         )}
 
