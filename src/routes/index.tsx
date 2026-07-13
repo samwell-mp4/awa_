@@ -40,10 +40,10 @@ function LandingChoice() {
 
       <main className="flex w-full flex-1 flex-col items-center justify-center py-10 text-center">
         <h1 className="font-display text-3xl font-black uppercase tracking-wide text-cream md:text-5xl">
-          Escolha sua experiência
+          <T>Escolha sua experiência</T>
         </h1>
         <p className="mt-3 max-w-2xl px-4 text-sm text-foreground/75 md:text-base">
-          O Awã Tech tem duas portas de entrada. Escolha a que combina com você.
+          <T>O Awã Tech tem duas portas de entrada. Escolha a que combina com você.</T>
         </p>
 
         <div className="mt-10 grid w-full gap-0 md:grid-cols-2">
