@@ -237,10 +237,15 @@ function MatchGame({ onScore }: { onScore: (n: number) => void }) {
 /* ============ 2. MEMÓRIA ============ */
 function MemoryGame({ onScore }: { onScore: (n: number) => void }) {
   const [round, setRound] = useState(0);
-  const cards = useMemo(() => {
+  const [cards, setCards] = useState(() => {
+    const pick = SYMBOLS.slice(0, 6);
+    return [...pick, ...pick].map((c, i) => ({ ...c, id: i }));
+  });
+  useEffect(() => {
     const pick = shuffle(SYMBOLS).slice(0, 6);
-    return shuffle([...pick, ...pick].map((c, i) => ({ ...c, id: i })));
+    setCards(shuffle([...pick, ...pick].map((c, i) => ({ ...c, id: i }))));
   }, [round]);
+
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
   const [lastNota, setLastNota] = useState<string | null>(null);
