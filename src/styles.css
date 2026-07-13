@@ -213,6 +213,20 @@ body::before {
 }
 
 
+@keyframes kid-wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes kid-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
+}
+@keyframes kid-spin-slow { to { transform: rotate(360deg); } }
+@utility kid-wiggle { animation: kid-wiggle 1.4s ease-in-out infinite; transform-origin: center; }
+@utility kid-bounce { animation: kid-bounce 2s ease-in-out infinite; }
+@utility kid-spin-slow { animation: kid-spin-slow 18s linear infinite; }
+
+
 /* Keep content above the ambient overlay */
 header, main, footer, section { position: relative; z-index: 1; }
 
