@@ -128,11 +128,14 @@ function InfantilHome() {
         </nav>
 
         {/* Categorias com foto de fundo — Saudações, Família, Natureza, Animais */}
-        <section
-          className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)] bg-cover bg-center min-h-[52vw] md:min-h-[380px]"
-          style={{ backgroundImage: `url(${categoriasBg.url})` }}
-        >
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent via-emerald-950/40 to-emerald-950/80 p-4">
+        <section className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
+          <img
+            src={categoriasBg.url}
+            alt="Crianças Pataxó na floresta"
+            className="block w-full h-auto select-none"
+            draggable={false}
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent via-emerald-950/40 to-emerald-950/85 p-4">
             <div className="grid grid-cols-2 gap-3 md:gap-4">
               {[
                 { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋" },
