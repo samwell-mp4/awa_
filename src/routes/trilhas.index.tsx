@@ -26,7 +26,7 @@ export const Route = createFileRoute("/trilhas/")({
       },
     ],
   }),
-  component: TrilhasIndex,
+  component: TrilhaPage,
 });
 
 const clayStyles: Record<string, { emoji: string; gradient: string; ring: string }> = {
