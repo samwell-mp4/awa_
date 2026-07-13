@@ -38,7 +38,7 @@ const hotspots: Hotspot[] = [
   { to: "/trilhas", key: "trilhas", top: "24%", left: "50%" },
   { to: "/musicas-infantil", key: "cantico", top: "32%", left: "74%" },
   { to: "/historias", key: "historia", top: "40%", left: "22%" },
-  { to: "/jogos-infantil", key: "jogos", top: "58%", left: "64%" },
+  { to: "/jogos-infantil", key: "jogos", top: "62%", left: "80%" },
   { to: "/amizade", key: "amizade", top: "65%", left: "60%" },
 ];
 
@@ -104,11 +104,6 @@ function InfantilHome() {
                     <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
                       {label}
                     </span>
-                    {h.key === "jogos" && (
-                      <span className="pointer-events-none absolute left-1/2 top-[calc(100%+1.4rem)] -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                        Games
-                      </span>
-                    )}
                   </>
                 )}
               </Link>
