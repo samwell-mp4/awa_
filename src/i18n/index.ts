@@ -34,7 +34,7 @@ if (!i18n.isInitialized) {
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
-    initImmediate: false,
+    
   });
   // Belt-and-suspenders: guarantee language is "pt" for first render on both
   // server and client. Prevents any detector/cached-language race from causing
