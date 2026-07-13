@@ -122,12 +122,19 @@ function JogosPage() {
 /* ============ 1. LIGAÇÃO ============ */
 function MatchGame({ onScore }: { onScore: (n: number) => void }) {
   const [round, setRound] = useState(0);
-  const pool = useMemo(() => shuffle(VOCAB).slice(0, 4), [round]);
-  const shuffledPt = useMemo(() => shuffle(pool.map((p) => p.pt)), [pool]);
+  // Deterministic on SSR + first client render; shuffle after mount to avoid hydration mismatch.
+  const [pool, setPool] = useState(() => VOCAB.slice(0, 4));
+  const [shuffledPt, setShuffledPt] = useState(() => VOCAB.slice(0, 4).map((p) => p.pt));
+  useEffect(() => {
+    const p = shuffle(VOCAB).slice(0, 4);
+    setPool(p);
+    setShuffledPt(shuffle(p.map((x) => x.pt)));
+  }, [round]);
   const [selectedPx, setSelectedPx] = useState<string | null>(null);
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [lastNota, setLastNota] = useState<string | null>(null);
+
 
   const handlePt = (pt: string) => {
     if (!selectedPx) return;
