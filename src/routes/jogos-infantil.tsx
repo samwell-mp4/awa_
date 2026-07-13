@@ -345,7 +345,7 @@ function CatchGame({ onScore }: { onScore: () => void }) {
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/30 text-white">
             {time === 0 && (
               <p className="font-display text-2xl font-black">
-                Fim! Você pegou {hits} bichinhos 🌟
+                <T>Fim! Você pegou</T> {hits} <T>bichinhos</T> 🌟
               </p>
             )}
             <button
@@ -357,7 +357,7 @@ function CatchGame({ onScore }: { onScore: () => void }) {
               }}
               className="rounded-full bg-amber-400 px-6 py-3 font-black uppercase text-emerald-900 shadow-lg"
             >
-              {time === 0 ? "Jogar de novo" : "Começar!"}
+              <T>{time === 0 ? "Jogar de novo" : "Começar!"}</T>
             </button>
           </div>
         )}
