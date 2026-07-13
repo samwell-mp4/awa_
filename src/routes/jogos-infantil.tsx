@@ -205,12 +205,20 @@ function JogosInfantilPage() {
                 <ArrowLeft className="h-4 w-4" /> <T>Menu</T>
               </button>
               <span className="font-display text-lg font-black uppercase text-emerald-900">
-                <T>{GAMES.find((g) => g.id === game)?.title ?? ""}</T>
+                {(() => {
+                  const en = EN_GAMES.find((g) => g.id === game);
+                  if (en) return en.title;
+                  const pt = GAMES.find((g) => g.id === game)?.title ?? "";
+                  return <T>{pt}</T>;
+                })()}
               </span>
             </div>
             {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
             {game === "pares" && <PairsGame onWin={() => setStars((s) => s + 2)} />}
             {game === "caca" && <CatchGame onScore={() => setStars((s) => s + 1)} />}
+            {EN_GAMES.filter((g) => g.id === game).map((g) => (
+              <EnglishPairsGame key={g.id} pairs={g.pairs} onWin={() => setStars((s) => s + 2)} />
+            ))}
           </div>
         )}
       </main>
