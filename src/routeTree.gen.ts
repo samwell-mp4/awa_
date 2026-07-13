@@ -18,6 +18,7 @@ import { Route as ReembolsoRouteImport } from './routes/reembolso'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PlanosRouteImport } from './routes/planos'
+import { Route as MusicasInfantilRouteImport } from './routes/musicas-infantil'
 import { Route as MusicasRouteImport } from './routes/musicas'
 import { Route as MinhaContaRouteImport } from './routes/minha-conta'
 import { Route as JogosInfantilRouteImport } from './routes/jogos-infantil'
@@ -84,6 +85,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
 const PlanosRoute = PlanosRouteImport.update({
   id: '/planos',
   path: '/planos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MusicasInfantilRoute = MusicasInfantilRouteImport.update({
+  id: '/musicas-infantil',
+  path: '/musicas-infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MusicasRoute = MusicasRouteImport.update({
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
@@ -279,6 +287,7 @@ export interface FileRoutesById {
   '/jogos-infantil': typeof JogosInfantilRoute
   '/minha-conta': typeof MinhaContaRoute
   '/musicas': typeof MusicasRoute
+  '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
@@ -313,6 +322,7 @@ export interface FileRouteTypes {
     | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
+    | '/musicas-infantil'
     | '/planos'
     | '/privacidade'
     | '/professor'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
+    | '/musicas-infantil'
     | '/planos'
     | '/privacidade'
     | '/professor'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/jogos-infantil'
     | '/minha-conta'
     | '/musicas'
+    | '/musicas-infantil'
     | '/planos'
     | '/privacidade'
     | '/professor'
@@ -412,6 +424,7 @@ export interface RootRouteChildren {
   JogosInfantilRoute: typeof JogosInfantilRoute
   MinhaContaRoute: typeof MinhaContaRoute
   MusicasRoute: typeof MusicasRoute
+  MusicasInfantilRoute: typeof MusicasInfantilRoute
   PlanosRoute: typeof PlanosRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
@@ -492,6 +505,13 @@ declare module '@tanstack/react-router' {
       path: '/planos'
       fullPath: '/planos'
       preLoaderRoute: typeof PlanosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/musicas-infantil': {
+      id: '/musicas-infantil'
+      path: '/musicas-infantil'
+      fullPath: '/musicas-infantil'
+      preLoaderRoute: typeof MusicasInfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/musicas': {
@@ -678,6 +698,7 @@ const rootRouteChildren: RootRouteChildren = {
   JogosInfantilRoute: JogosInfantilRoute,
   MinhaContaRoute: MinhaContaRoute,
   MusicasRoute: MusicasRoute,
+  MusicasInfantilRoute: MusicasInfantilRoute,
   PlanosRoute: PlanosRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
@@ -697,13 +718,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
