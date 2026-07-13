@@ -126,6 +126,33 @@ function InfantilHome() {
             </Link>
           ))}
         </nav>
+
+        {/* Categorias com foto de fundo — Saudações, Família, Natureza, Animais */}
+        <section
+          className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)] bg-cover bg-center min-h-[52vw] md:min-h-[380px]"
+          style={{ backgroundImage: `url(${categoriasBg.url})` }}
+        >
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent via-emerald-950/40 to-emerald-950/80 p-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              {[
+                { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋" },
+                { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧" },
+                { slug: "natureza", key: "trailNatureza", emoji: "🌳" },
+                { slug: "animais", key: "trailAnimais", emoji: "🦜" },
+              ].map((c) => (
+                <Link
+                  key={c.slug}
+                  to="/trilhas/$slug"
+                  params={{ slug: c.slug }}
+                  className="group flex items-center gap-2 rounded-2xl border-2 border-white/70 bg-white/90 px-3 py-3 text-left font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg backdrop-blur transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+                >
+                  <span className="text-2xl md:text-3xl">{c.emoji}</span>
+                  <span>{t(`common.${c.key}`)}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
 
 
