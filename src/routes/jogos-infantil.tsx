@@ -147,22 +147,52 @@ function JogosInfantilPage() {
         </div>
 
         {!game && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {GAMES.map((g) => (
-              <button
-                key={g.id}
-                onClick={() => setGame(g.id)}
-                className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
-              >
-                <div className="text-5xl drop-shadow">{g.emoji}</div>
-                <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
-                  <T>{g.title}</T>
-                </div>
-                <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
-                <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {GAMES.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setGame(g.id)}
+                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                >
+                  <div className="text-5xl drop-shadow">{g.emoji}</div>
+                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
+                    <T>{g.title}</T>
+                  </div>
+                  <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
+                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-10 flex items-center gap-3">
+              <span className="text-3xl">🇺🇸</span>
+              <div>
+                <h2 className="font-display text-2xl font-black uppercase tracking-wide text-emerald-900 md:text-3xl">
+                  <T>Jogos em Inglês</T>
+                </h2>
+                <p className="text-sm text-emerald-800/80">
+                  <T>Aprenda inglês brincando!</T>
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {EN_GAMES.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setGame(g.id)}
+                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                >
+                  <div className="text-5xl drop-shadow">{g.emoji}</div>
+                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
+                    {g.title}
+                  </div>
+                  <div className="mt-1 text-sm text-white/90">{g.desc}</div>
+                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         {game && (
