@@ -273,7 +273,7 @@ function PairsGame({ onWin }: { onWin: () => void }) {
       </div>
       {ok.length === PAIRS.length && (
         <div className="col-span-2 text-center">
-          <p className="font-black text-emerald-700">🌟 Todos os pares!</p>
+          <p className="font-black text-emerald-700">🌟 <T>Todos os pares!</T></p>
           <button
             onClick={() => {
               setOk([]);
@@ -281,7 +281,7 @@ function PairsGame({ onWin }: { onWin: () => void }) {
             }}
             className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-2 font-black text-white"
           >
-            <RefreshCw className="h-4 w-4" /> De novo
+            <RefreshCw className="h-4 w-4" /> <T>De novo</T>
           </button>
         </div>
       )}
