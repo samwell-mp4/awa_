@@ -38,7 +38,7 @@ const hotspots: Hotspot[] = [
   { to: "/trilhas", key: "trilhas", top: "24%", left: "50%" },
   { to: "/musicas-infantil", key: "cantico", top: "32%", left: "74%" },
   { to: "/historias", key: "historia", top: "40%", left: "22%" },
-  { to: "/jogos-infantil", key: "jogos", top: "54%", left: "82%" },
+  { to: "/jogos-infantil", key: "jogos", top: "60%", left: "82%" },
   { to: "/amizade", key: "amizade", top: "65%", left: "60%" },
 ];
 
