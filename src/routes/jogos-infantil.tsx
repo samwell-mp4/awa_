@@ -188,7 +188,7 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
       </div>
       {done.length === MEM.length && (
         <div className="mt-4 text-center">
-          <p className="font-black text-emerald-700">🎉 Você achou todos!</p>
+          <p className="font-black text-emerald-700">🎉 <T>Você achou todos!</T></p>
           <button
             onClick={() => {
               setDone([]);
@@ -197,7 +197,7 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
             }}
             className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-2 font-black text-white"
           >
-            <RefreshCw className="h-4 w-4" /> Jogar de novo
+            <RefreshCw className="h-4 w-4" /> <T>Jogar de novo</T>
           </button>
         </div>
       )}
