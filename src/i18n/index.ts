@@ -34,8 +34,14 @@ if (!i18n.isInitialized) {
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
+    initImmediate: false,
   });
+  // Belt-and-suspenders: guarantee language is "pt" for first render on both
+  // server and client. Prevents any detector/cached-language race from causing
+  // hydration mismatches on translated strings.
+  i18n.language = "pt";
 }
+
 
 // Persist language changes to localStorage (browser only, post-init).
 if (isBrowser) {
