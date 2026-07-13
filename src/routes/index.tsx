@@ -76,9 +76,14 @@ function LandingChoice() {
             <img
               src={infantilLogo.url}
               alt="Awã Tech Infantil"
+              width={800}
+              height={800}
+              loading="lazy"
+              decoding="async"
               className="block w-full h-auto"
               draggable={false}
             />
+
             <span className="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-forest-deep/85 px-5 py-1.5 font-display text-lg font-black uppercase tracking-[0.18em] text-gold shadow-md">
               <T>Criança</T>
             </span>
