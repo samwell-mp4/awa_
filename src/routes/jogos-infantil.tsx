@@ -458,3 +458,87 @@ function CatchGame({ onScore }: { onScore: () => void }) {
     </div>
   );
 }
+
+/* ---------------- English Pairs ---------------- */
+function EnglishPairsGame({
+  pairs,
+  onWin,
+}: {
+  pairs: { en: string; emoji: string; pt: string }[];
+  onWin: () => void;
+}) {
+  const [round, setRound] = useState(0);
+  const words = useMemo(() => [...pairs].sort(() => Math.random() - 0.5), [round, pairs]);
+  const emojis = useMemo(() => [...pairs].sort(() => Math.random() - 0.5), [round, pairs]);
+  const [sel, setSel] = useState<string | null>(null);
+  const [ok, setOk] = useState<string[]>([]);
+
+  const pick = (emoji: string) => {
+    if (!sel) return;
+    const good = pairs.find((p) => p.en === sel)?.emoji === emoji;
+    if (good) {
+      setOk((o) => [...o, sel]);
+      if (ok.length + 1 === pairs.length) onWin();
+    }
+    setSel(null);
+  };
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      <div className="space-y-2">
+        {words.map((w) => {
+          const done = ok.includes(w.en);
+          const active = sel === w.en;
+          return (
+            <button
+              key={w.en}
+              disabled={done}
+              onClick={() => setSel(w.en)}
+              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                done
+                  ? "bg-emerald-200 line-through text-emerald-800/60"
+                  : active
+                  ? "bg-amber-400 text-emerald-900"
+                  : "bg-white text-emerald-800 hover:bg-amber-100"
+              }`}
+            >
+              {w.en}
+              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="space-y-2">
+        {emojis.map((e) => {
+          const done = ok.includes(e.en);
+          return (
+            <button
+              key={e.emoji}
+              disabled={done}
+              onClick={() => pick(e.emoji)}
+              className={`w-full rounded-2xl px-3 py-4 text-4xl transition ${
+                done ? "bg-emerald-200 opacity-50" : "bg-white hover:bg-sky-100"
+              }`}
+            >
+              {e.emoji}
+            </button>
+          );
+        })}
+      </div>
+      {ok.length === pairs.length && (
+        <div className="col-span-2 text-center">
+          <p className="font-black text-emerald-700">🌟 <T>Muito bem! All correct!</T></p>
+          <button
+            onClick={() => {
+              setOk([]);
+              setRound((r) => r + 1);
+            }}
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-2 font-black text-white"
+          >
+            <RefreshCw className="h-4 w-4" /> <T>De novo</T>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
