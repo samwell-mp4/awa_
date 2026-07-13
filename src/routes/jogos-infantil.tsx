@@ -71,7 +71,7 @@ function JogosInfantilPage() {
           to="/infantil"
           className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"
         >
-          <ArrowLeft className="h-4 w-4" /> Aldeia
+          <ArrowLeft className="h-4 w-4" /> <T>Aldeia</T>
         </Link>
         <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-2 text-sm font-black text-emerald-900 shadow">
           <Star className="h-4 w-4" /> {stars}
@@ -84,10 +84,10 @@ function JogosInfantilPage() {
             <Trophy className="h-8 w-8 text-amber-500" />
           </div>
           <h1 className="font-display text-3xl font-black uppercase tracking-wide text-emerald-900 md:text-5xl">
-            Jogos Awã Tech
+            <T>Jogos Awã Tech</T>
           </h1>
           <p className="mt-2 text-emerald-800/80">
-            Escolha um jogo e vamos brincar na aldeia! 🌿
+            <T>Escolha um jogo e vamos brincar na aldeia!</T> 🌿
           </p>
         </div>
 
@@ -101,9 +101,9 @@ function JogosInfantilPage() {
               >
                 <div className="text-5xl drop-shadow">{g.emoji}</div>
                 <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
-                  {g.title}
+                  <T>{g.title}</T>
                 </div>
-                <div className="mt-1 text-sm text-white/90">{g.desc}</div>
+                <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
                 <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
               </button>
             ))}
@@ -117,10 +117,10 @@ function JogosInfantilPage() {
                 onClick={() => setGame(null)}
                 className="inline-flex items-center gap-1 rounded-full bg-emerald-800 px-3 py-2 text-xs font-black uppercase text-white shadow"
               >
-                <ArrowLeft className="h-4 w-4" /> Menu
+                <ArrowLeft className="h-4 w-4" /> <T>Menu</T>
               </button>
               <span className="font-display text-lg font-black uppercase text-emerald-900">
-                {GAMES.find((g) => g.id === game)?.title}
+                <T>{GAMES.find((g) => g.id === game)?.title ?? ""}</T>
               </span>
             </div>
             {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
