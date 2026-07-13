@@ -59,23 +59,33 @@ const positions = [
   { top: "76%", left: "30%" },
 ];
 
-function TrilhasIndex() {
-  const { t } = useTranslation();
+function TrilhaPage() {
+  const { t, i18n } = useTranslation();
   const trails = useHomeTrails();
 
+  const captions = useMemo(
+    () => ["🗺️ Trilhas da Aldeia", "Escolha uma trilha e siga o caminho mágico!"],
+    [],
+  );
+  const [titleTr, subtitleTr] = useAutoTranslate(captions);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
+    <div
+      key={i18n.language}
+      className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground"
+    >
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <div className="mt-4 text-center">
           <h1 className="font-display text-3xl font-black text-amber-900 drop-shadow-sm md:text-5xl">
-            🗺️ Trilhas da Aldeia
+            {titleTr}
           </h1>
           <p className="mt-1 text-sm font-bold text-emerald-900/80 md:text-base">
-            Escolha uma trilha e siga o caminho mágico!
+            {subtitleTr}
           </p>
         </div>
+
 
         {/* Treasure-map parchment */}
         <section
