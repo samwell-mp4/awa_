@@ -1,53 +1,34 @@
-# Sistema multilíngue completo (PT / EN / ES + Patxohã fixo)
+# Auditoria completa e responsividade total
 
-Decisões que assumi (você pulou as perguntas):
-- **Estratégia:** adicionar colunas `*_en` e `*_es` nas tabelas de conteúdo e preencher automaticamente via Lovable AI numa migração-única + botão no admin para re-traduzir. Fallback para PT quando vazio.
-- **Patxohã:** permanece intocado nos campos originais (`pt_word`, `letra`, `texto_patxoha`) e é sempre exibido junto da tradução escolhida em músicas, dicionário, saudações, missão e histórias.
+O app tem 30+ rotas (adulto, infantil, jogos, músicas, trilhas, dicionário, admin, auth, etc.). Vou fazer em 3 fases:
 
-## O que muda no banco
+## Fase 1 — Diagnóstico (sem alterar código)
+1. Rodar build/typecheck e capturar erros reais.
+2. Rodar Playwright headless nas rotas principais (`/`, `/adulto`, `/infantil`, `/jogos`, `/musicas`, `/trilhas`, `/dicionario`, `/auth`, `/planos`, `/minha-conta`) em 3 viewports: **mobile 375px**, **tablet 768px**, **desktop 1280px**.
+3. Coletar: erros de console, requests que falham, elementos que estouram tela horizontalmente, textos cortados, botões inacessíveis.
+4. Rodar security scan do backend.
 
-Adicionar colunas de tradução (todas nullable, default NULL) em:
+## Fase 2 — Correções
+5. Corrigir qualquer erro de runtime/build encontrado.
+6. Corrigir warnings `inputValidator` → `validator` nos server functions.
+7. Ajustar componentes com problemas de responsividade usando o padrão:
+   - Headers com `grid grid-cols-[minmax(0,1fr)_auto]` + `min-w-0` + `truncate`
+   - Grids de cards adaptativos (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`)
+   - Tipografia fluida (`text-base sm:text-lg lg:text-xl`)
+   - Padding responsivo (`px-4 sm:px-6 lg:px-8`)
+   - Menus/navegação com versão mobile (sheet/drawer)
 
-- `dictionary`: `meaning_en`, `meaning_es`, `example_en`, `example_es`
-- `songs`: `title_en`, `title_es`, `artist_en`, `artist_es`, `description_en`, `description_es`
-- `daily_mission`: `question_en`, `question_es`, `options_en jsonb`, `options_es jsonb`
-- `daily_video`: `title_en`, `title_es`, `description_en`, `description_es`
-- `trails`: `name_en`, `name_es`, `description_en`, `description_es`
-- `ambient_videos`: `title_en`, `title_es`
+## Fase 3 — Validação
+8. Re-testar as mesmas rotas nos 3 viewports.
+9. Anexar screenshots comparativos.
+10. Publicar a nova versão.
 
-Patxohã não ganha coluna nova — já está no campo original.
+## Escopo importante
+- **Não** vou refazer o design (cores, fontes, layout geral) — só ajustar quebras.
+- **Não** vou mexer em lógica de negócio, banco de dados ou pagamentos, a menos que encontre um bug real.
+- Foco em: crashes, links quebrados, layout quebrado em mobile/tablet.
 
-## Backend
+## Tempo estimado
+Isto é uma tarefa grande (30+ rotas × 3 viewports = ~90 checagens). Vou trabalhar em várias mensagens: uma para diagnóstico, uma ou mais para correções priorizadas por gravidade.
 
-- Nova server function `translateContentRow` (admin-only, usa AI Gateway) que traduz uma linha inteira e grava as colunas `_en` / `_es`.
-- Nova server function `translateAllContent` que roda em batch por tabela (com progresso). Exposta como botão no admin.
-- Após a migração, disparo `translateAllContent` uma vez para popular tudo.
-
-## Frontend
-
-- Helper `pickLang(row, lang, field)` que retorna `row[field+'_'+lang] || row[field]`.
-- Refactor dos componentes de leitura para usar `pickLang`:
-  - `musicas.tsx` (galeria + player) — mostra título/artista/descrição no idioma; letra Patxohã sempre visível.
-  - `dicionario.tsx` — significado no idioma; palavra Patxohã sempre em destaque.
-  - `daily-mission-card.tsx`, `greeting-of-moment.tsx`, `daily-video`, `trails-grid`, `trilhas.$slug` — mesmo padrão.
-- Remover o `useAutoTranslate` runtime desses componentes (agora vem do banco).
-- Troca de idioma continua instantânea (i18next já faz).
-
-## Admin
-
-- Novo painel "Traduções" com botão "Traduzir tudo agora" e "Retraduzir esta linha" em cada tabela existente do admin.
-
-## Fora do escopo (confirmar depois)
-
-- Áudio TTS multilíngue (narração do Professor Akuã) — pode ser adicionado num segundo passo.
-- Tradução de vídeos gravados (só metadados mudam; áudio original permanece).
-
-## Ordem de execução
-
-1. Migração SQL (adiciona colunas).
-2. Server functions de tradução.
-3. UI de admin (botão "traduzir tudo").
-4. Refactor dos componentes de leitura com `pickLang`.
-5. Rodar tradução em massa uma vez.
-
-Aprove para eu executar — começo pela migração.
+Confirma que posso seguir?
