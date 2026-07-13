@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Pause, Play, Music2 } from "lucide-react";
+import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/musicas-infantil")({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/musicas-infantil")({
       {
         name: "description",
         content:
-          "Menu infantil de músicas e cantigas indígenas do Awã Tech: aprenda cantando com desenhos, cores e sons da floresta.",
+          "Menu infantil de cantigas indígenas do Awã Tech — bem colorido, com bichos, penas e tambor para as crianças cantarem juntas.",
       },
     ],
   }),
@@ -27,16 +27,18 @@ type Song = {
   language: string;
 };
 
-// Tribal color themes cycled across cards
+// Bright kid palettes + a matching indigenous emoji
 const THEMES = [
-  { bg: "from-rose-400 via-amber-400 to-yellow-300", ring: "ring-rose-200", emoji: "🪶" },
-  { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-200", emoji: "🌿" },
-  { bg: "from-sky-400 via-cyan-400 to-teal-300", ring: "ring-sky-200", emoji: "🐟" },
-  { bg: "from-orange-400 via-red-400 to-pink-400", ring: "ring-orange-200", emoji: "🔥" },
-  { bg: "from-violet-400 via-fuchsia-400 to-pink-300", ring: "ring-violet-200", emoji: "🦜" },
-  { bg: "from-amber-500 via-orange-400 to-rose-300", ring: "ring-amber-200", emoji: "🥁" },
-  { bg: "from-teal-400 via-emerald-400 to-lime-300", ring: "ring-teal-200", emoji: "🐢" },
-  { bg: "from-yellow-400 via-amber-400 to-orange-400", ring: "ring-yellow-200", emoji: "☀️" },
+  { bg: "from-rose-400 via-pink-400 to-fuchsia-400", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
+  { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
+  { bg: "from-sky-400 via-cyan-400 to-teal-300", ring: "ring-sky-100", emoji: "🐟", label: "Peixinho" },
+  { bg: "from-orange-400 via-red-400 to-rose-400", ring: "ring-orange-100", emoji: "🔥", label: "Fogueira" },
+  { bg: "from-violet-400 via-fuchsia-400 to-pink-300", ring: "ring-violet-100", emoji: "🦜", label: "Arara" },
+  { bg: "from-amber-500 via-orange-400 to-rose-300", ring: "ring-amber-100", emoji: "🥁", label: "Tambor" },
+  { bg: "from-teal-400 via-emerald-400 to-lime-300", ring: "ring-teal-100", emoji: "🌳", label: "Árvore" },
+  { bg: "from-yellow-400 via-amber-400 to-orange-400", ring: "ring-yellow-100", emoji: "☀️", label: "Sol" },
+  { bg: "from-indigo-400 via-blue-400 to-sky-300", ring: "ring-indigo-100", emoji: "🌙", label: "Lua" },
+  { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
 ];
 
 function MusicasInfantilPage() {
@@ -58,49 +60,54 @@ function MusicasInfantilPage() {
   const [playing, setPlaying] = useState<Song | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-emerald-950 overflow-hidden">
-      {/* Playful floating tribal shapes */}
+    <div className="min-h-screen relative overflow-hidden text-emerald-950 bg-[linear-gradient(180deg,#8ed6ff_0%,#b6f0c2_45%,#ffe28a_100%)]">
       <TribalBackdrop />
 
-      <header className="relative sticky top-0 z-30 border-b-4 border-amber-300 bg-gradient-to-r from-amber-200/90 via-yellow-100/90 to-amber-200/90 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
+      <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
           <Link
             to="/infantil"
-            className="inline-flex items-center gap-1 rounded-full bg-emerald-700 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow"
+            className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
           >
             <ArrowLeft className="h-4 w-4" /> Aldeia
           </Link>
-          <div className="flex items-center gap-2 font-display text-lg font-black text-emerald-900">
-            <Music2 className="h-5 w-5 text-rose-600" /> Cantigas
+          <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
+            🎶 Cantigas 🎶
           </div>
           <span className="w-16" />
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-4xl px-4 pb-24 pt-6">
-        {/* Big playful title */}
-        <section className="relative mb-6 rounded-[2rem] border-4 border-amber-300 bg-gradient-to-br from-white/80 to-amber-50 p-5 text-center shadow-[0_15px_40px_-20px_rgba(0,0,0,0.35)]">
-          <div className="text-5xl">🪶🥁🎶</div>
-          <h1 className="mt-2 font-display text-3xl font-black leading-tight text-emerald-900 md:text-4xl">
-            Cantigas da <span className="text-rose-600">Aldeia</span>
+      <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
+        {/* Big playful hero */}
+        <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-gradient-to-br from-amber-200 via-yellow-100 to-rose-100 p-5 text-center shadow-[0_18px_0_-8px_rgba(180,83,9,0.45),0_25px_50px_-20px_rgba(0,0,0,0.4)]">
+          <div className="flex justify-center gap-2 text-5xl">
+            <span className="kid-bounce" style={{ animationDelay: "0s" }}>🪶</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.2s" }}>🥁</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.4s" }}>🦜</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.6s" }}>🌈</span>
+          </div>
+          <h1 className="mt-2 font-display text-4xl font-black leading-none text-emerald-900 md:text-5xl">
+            Canta com a{" "}
+            <span className="inline-block kid-wiggle text-rose-600">Aldeia!</span>
           </h1>
-          <p className="mt-1 text-sm font-semibold text-emerald-800/80">
-            Escolha uma canção e cante com a floresta!
+          <p className="mt-2 text-base font-black text-emerald-800/80">
+            Toca no bichinho para ouvir a cantiga 🎵
           </p>
         </section>
 
         {isLoading ? (
-          <div className="grid animate-pulse grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-40 rounded-[1.75rem] bg-white/60" />
+              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
             ))}
           </div>
         ) : songs.length === 0 ? (
-          <p className="text-center font-semibold text-emerald-800/70">
+          <p className="text-center font-black text-emerald-800/70">
             Em breve novas cantigas 🌱
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
             {songs.map((s, i) => {
               const theme = THEMES[i % THEMES.length];
               const isActive = playing?.id === s.id;
@@ -108,36 +115,40 @@ function MusicasInfantilPage() {
                 <button
                   key={s.id}
                   onClick={() => setPlaying(isActive ? null : s)}
-                  className={`group relative flex aspect-square flex-col items-center justify-between rounded-[1.75rem] border-4 border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_25px_-8px_rgba(0,0,0,0.35)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:scale-[1.03] active:scale-95`}
+                  className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
                 >
-                  {/* Tribal top pattern */}
-                  <div className="flex w-full items-center justify-between text-[10px] font-black text-white/90">
-                    <span>▲▽▲</span>
-                    <span>{s.language}</span>
-                    <span>▽▲▽</span>
-                  </div>
+                  {/* Zigzag tribal top */}
+                  <svg viewBox="0 0 60 8" className="h-3 w-full text-white/90">
+                    <path d="M0 8 L6 0 L12 8 L18 0 L24 8 L30 0 L36 8 L42 0 L48 8 L54 0 L60 8" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
 
-                  <div className="grid h-16 w-16 place-items-center rounded-full bg-white/90 text-4xl shadow-inner ring-4 ring-white/60">
+                  {/* Big emoji / play */}
+                  <div className="relative grid h-20 w-20 place-items-center rounded-full bg-white/95 text-5xl shadow-inner ring-[6px] ring-white/70">
                     {isActive ? (
-                      <Pause className="h-7 w-7 text-emerald-800" />
+                      <Pause className="h-9 w-9 fill-emerald-800 text-emerald-800" />
                     ) : (
-                      <span aria-hidden>{theme.emoji}</span>
+                      <span aria-hidden className="kid-bounce" style={{ animationDelay: `${(i % 5) * 0.15}s` }}>
+                        {theme.emoji}
+                      </span>
                     )}
+                    {/* dotted halo */}
+                    <span className="absolute inset-0 rounded-full border-[3px] border-dashed border-white/70 kid-spin-slow" />
                   </div>
 
+                  {/* Title */}
                   <div className="w-full">
-                    <div className="line-clamp-2 font-display text-xs font-black uppercase leading-tight tracking-wide text-white drop-shadow">
+                    <div className="line-clamp-2 font-display text-sm font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]">
                       {s.title}
                     </div>
                     {s.artist && (
-                      <div className="mt-0.5 line-clamp-1 text-[10px] font-bold text-white/90">
+                      <div className="mt-0.5 line-clamp-1 text-[10px] font-black text-white/90">
                         {s.artist}
                       </div>
                     )}
                   </div>
 
-                  {/* play tag */}
-                  <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow">
+                  {/* Play tag */}
+                  <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full border-2 border-white bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-[0_4px_0_rgba(0,0,0,0.3)]">
                     {isActive ? "Tocando…" : <>Tocar <Play className="h-3 w-3 fill-current" /></>}
                   </span>
                 </button>
@@ -158,17 +169,17 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
     ref.current?.play().catch(() => {});
   }, [song.id]);
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
       <div className="mx-auto flex max-w-4xl items-center gap-3">
-        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-300 text-2xl">
+        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce">
           🎶
         </div>
         <div className="min-w-0 flex-1">
-          <div className="truncate font-display text-sm font-black text-amber-200">
+          <div className="truncate font-display text-base font-black text-amber-200">
             {song.title}
           </div>
           {song.artist && (
-            <div className="truncate text-[11px] font-semibold text-emerald-100/80">
+            <div className="truncate text-[11px] font-bold text-emerald-100/80">
               {song.artist}
             </div>
           )}
@@ -176,9 +187,10 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
         </div>
         <button
           onClick={onClose}
-          className="rounded-full bg-rose-500 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow"
+          aria-label="Fechar"
+          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
         >
-          Fechar
+          <X className="h-5 w-5" />
         </button>
       </div>
     </div>
@@ -188,22 +200,32 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
 function TribalBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -left-10 top-24 text-6xl opacity-30 rotate-[-15deg]">🪶</div>
-      <div className="absolute right-4 top-40 text-5xl opacity-30 rotate-12">🥁</div>
-      <div className="absolute left-6 bottom-40 text-6xl opacity-30">🌿</div>
-      <div className="absolute right-8 bottom-56 text-5xl opacity-30 rotate-6">🦜</div>
-      <div className="absolute left-1/2 top-10 -translate-x-1/2 text-4xl opacity-25">☀️</div>
+      {/* Big sun */}
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[7rem] opacity-40 kid-spin-slow">☀️</div>
+      {/* Floating friends */}
+      <div className="absolute left-2 top-32 text-6xl opacity-70 kid-bounce">🪶</div>
+      <div className="absolute right-3 top-44 text-6xl opacity-70 kid-wiggle">🦜</div>
+      <div className="absolute left-4 bottom-40 text-6xl opacity-70 kid-bounce" style={{ animationDelay: "0.5s" }}>🥁</div>
+      <div className="absolute right-6 bottom-56 text-6xl opacity-70 kid-wiggle" style={{ animationDelay: "0.3s" }}>🐢</div>
+      <div className="absolute left-1/3 bottom-24 text-5xl opacity-60 kid-bounce" style={{ animationDelay: "0.8s" }}>🐸</div>
+      <div className="absolute right-1/4 top-1/2 text-5xl opacity-60 kid-wiggle" style={{ animationDelay: "0.6s" }}>🐟</div>
+
+      {/* Ground grass */}
       <svg
-        className="absolute inset-x-0 top-0 h-24 w-full opacity-30"
+        className="absolute inset-x-0 bottom-0 h-24 w-full text-emerald-500/70"
         viewBox="0 0 400 40"
         preserveAspectRatio="none"
       >
-        <path
-          d="M0 20 L20 0 L40 20 L60 0 L80 20 L100 0 L120 20 L140 0 L160 20 L180 0 L200 20 L220 0 L240 20 L260 0 L280 20 L300 0 L320 20 L340 0 L360 20 L380 0 L400 20"
-          fill="none"
-          stroke="#b45309"
-          strokeWidth="3"
-        />
+        <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
+      </svg>
+
+      {/* Top tribal zigzag border */}
+      <svg
+        className="absolute inset-x-0 top-0 h-6 w-full text-amber-600/50"
+        viewBox="0 0 400 20"
+        preserveAspectRatio="none"
+      >
+        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
       </svg>
     </div>
   );
