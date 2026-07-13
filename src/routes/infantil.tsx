@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
-import trilhasVideo from "@/assets/trilhas-alive.mp4.asset.json";
+
 
 export const Route = createFileRoute("/infantil")({
   head: () => ({
@@ -92,22 +92,13 @@ function InfantilHome() {
                     </span>
                   </span>
                 ) : isTrilhas ? (
-                  <span className="relative block h-[22vw] max-h-32 w-[22vw] max-w-32 trilhas-alive">
-                    <span className="absolute -inset-2 rounded-full bg-[radial-gradient(circle,rgba(253,224,71,0.65)_0%,rgba(34,197,94,0.35)_45%,transparent_70%)] blur-md trilhas-glow" />
-                    <span className="absolute inset-0 overflow-hidden rounded-full ring-4 ring-white/70 group-hover:ring-amber-200 shadow-[0_10px_25px_-8px_rgba(0,0,0,0.5)]">
-                      <video
-                        src={trilhasVideo.url}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="h-full w-full object-cover"
-                      />
-                    </span>
-                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+                  <>
+                    <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
+                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white opacity-0 shadow group-hover:opacity-100">
                       {label} →
                     </span>
-                  </span>
+                  </>
+
 
                 ) : (
                   <>
