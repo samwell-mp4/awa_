@@ -104,11 +104,6 @@ function InfantilHome() {
                     <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
                       {label}
                     </span>
-                    {h.key === "jogos" && (
-                      <span className="pointer-events-none absolute left-1/2 top-[calc(100%+1.4rem)] -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                        Games
-                      </span>
-                    )}
                   </>
                 )}
               </Link>
