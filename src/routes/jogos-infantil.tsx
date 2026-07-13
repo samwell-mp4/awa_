@@ -23,7 +23,13 @@ export const Route = createFileRoute("/jogos-infantil")({
   component: JogosInfantilPage,
 });
 
-type GameId = "memoria" | "pares" | "caca";
+type GameId =
+  | "memoria"
+  | "pares"
+  | "caca"
+  | "en-animals"
+  | "en-colors"
+  | "en-numbers";
 
 const GAMES: {
   id: GameId;
@@ -52,6 +58,55 @@ const GAMES: {
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
     color: "from-sky-400 to-indigo-500",
+  },
+];
+
+const EN_GAMES: {
+  id: GameId;
+  emoji: string;
+  title: string;
+  desc: string;
+  color: string;
+  pairs: { en: string; emoji: string; pt: string }[];
+}[] = [
+  {
+    id: "en-animals",
+    emoji: "🐾",
+    title: "Animals in English",
+    desc: "Match the animal to its English name.",
+    color: "from-lime-400 to-emerald-600",
+    pairs: [
+      { en: "Dog", emoji: "🐶", pt: "Cachorro" },
+      { en: "Cat", emoji: "🐱", pt: "Gato" },
+      { en: "Bird", emoji: "🐦", pt: "Pássaro" },
+      { en: "Fish", emoji: "🐟", pt: "Peixe" },
+    ],
+  },
+  {
+    id: "en-colors",
+    emoji: "🎨",
+    title: "Colors in English",
+    desc: "Tap the correct color name.",
+    color: "from-pink-400 to-rose-600",
+    pairs: [
+      { en: "Red", emoji: "🟥", pt: "Vermelho" },
+      { en: "Blue", emoji: "🟦", pt: "Azul" },
+      { en: "Yellow", emoji: "🟨", pt: "Amarelo" },
+      { en: "Green", emoji: "🟩", pt: "Verde" },
+    ],
+  },
+  {
+    id: "en-numbers",
+    emoji: "🔢",
+    title: "Numbers in English",
+    desc: "Match the number to its English word.",
+    color: "from-sky-400 to-blue-600",
+    pairs: [
+      { en: "One", emoji: "1️⃣", pt: "Um" },
+      { en: "Two", emoji: "2️⃣", pt: "Dois" },
+      { en: "Three", emoji: "3️⃣", pt: "Três" },
+      { en: "Four", emoji: "4️⃣", pt: "Quatro" },
+    ],
   },
 ];
 
@@ -92,22 +147,52 @@ function JogosInfantilPage() {
         </div>
 
         {!game && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {GAMES.map((g) => (
-              <button
-                key={g.id}
-                onClick={() => setGame(g.id)}
-                className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
-              >
-                <div className="text-5xl drop-shadow">{g.emoji}</div>
-                <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
-                  <T>{g.title}</T>
-                </div>
-                <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
-                <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {GAMES.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setGame(g.id)}
+                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                >
+                  <div className="text-5xl drop-shadow">{g.emoji}</div>
+                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
+                    <T>{g.title}</T>
+                  </div>
+                  <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
+                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-10 flex items-center gap-3">
+              <span className="text-3xl">🇺🇸</span>
+              <div>
+                <h2 className="font-display text-2xl font-black uppercase tracking-wide text-emerald-900 md:text-3xl">
+                  <T>Jogos em Inglês</T>
+                </h2>
+                <p className="text-sm text-emerald-800/80">
+                  <T>Aprenda inglês brincando!</T>
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {EN_GAMES.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setGame(g.id)}
+                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                >
+                  <div className="text-5xl drop-shadow">{g.emoji}</div>
+                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
+                    {g.title}
+                  </div>
+                  <div className="mt-1 text-sm text-white/90">{g.desc}</div>
+                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         {game && (
@@ -120,12 +205,20 @@ function JogosInfantilPage() {
                 <ArrowLeft className="h-4 w-4" /> <T>Menu</T>
               </button>
               <span className="font-display text-lg font-black uppercase text-emerald-900">
-                <T>{GAMES.find((g) => g.id === game)?.title ?? ""}</T>
+                {(() => {
+                  const en = EN_GAMES.find((g) => g.id === game);
+                  if (en) return en.title;
+                  const pt = GAMES.find((g) => g.id === game)?.title ?? "";
+                  return <T>{pt}</T>;
+                })()}
               </span>
             </div>
             {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
             {game === "pares" && <PairsGame onWin={() => setStars((s) => s + 2)} />}
             {game === "caca" && <CatchGame onScore={() => setStars((s) => s + 1)} />}
+            {EN_GAMES.filter((g) => g.id === game).map((g) => (
+              <EnglishPairsGame key={g.id} pairs={g.pairs} onWin={() => setStars((s) => s + 2)} />
+            ))}
           </div>
         )}
       </main>
@@ -362,6 +455,90 @@ function CatchGame({ onScore }: { onScore: () => void }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ---------------- English Pairs ---------------- */
+function EnglishPairsGame({
+  pairs,
+  onWin,
+}: {
+  pairs: { en: string; emoji: string; pt: string }[];
+  onWin: () => void;
+}) {
+  const [round, setRound] = useState(0);
+  const words = useMemo(() => [...pairs].sort(() => Math.random() - 0.5), [round, pairs]);
+  const emojis = useMemo(() => [...pairs].sort(() => Math.random() - 0.5), [round, pairs]);
+  const [sel, setSel] = useState<string | null>(null);
+  const [ok, setOk] = useState<string[]>([]);
+
+  const pick = (emoji: string) => {
+    if (!sel) return;
+    const good = pairs.find((p) => p.en === sel)?.emoji === emoji;
+    if (good) {
+      setOk((o) => [...o, sel]);
+      if (ok.length + 1 === pairs.length) onWin();
+    }
+    setSel(null);
+  };
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      <div className="space-y-2">
+        {words.map((w) => {
+          const done = ok.includes(w.en);
+          const active = sel === w.en;
+          return (
+            <button
+              key={w.en}
+              disabled={done}
+              onClick={() => setSel(w.en)}
+              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                done
+                  ? "bg-emerald-200 line-through text-emerald-800/60"
+                  : active
+                  ? "bg-amber-400 text-emerald-900"
+                  : "bg-white text-emerald-800 hover:bg-amber-100"
+              }`}
+            >
+              {w.en}
+              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="space-y-2">
+        {emojis.map((e) => {
+          const done = ok.includes(e.en);
+          return (
+            <button
+              key={e.emoji}
+              disabled={done}
+              onClick={() => pick(e.emoji)}
+              className={`w-full rounded-2xl px-3 py-4 text-4xl transition ${
+                done ? "bg-emerald-200 opacity-50" : "bg-white hover:bg-sky-100"
+              }`}
+            >
+              {e.emoji}
+            </button>
+          );
+        })}
+      </div>
+      {ok.length === pairs.length && (
+        <div className="col-span-2 text-center">
+          <p className="font-black text-emerald-700">🌟 <T>Muito bem! All correct!</T></p>
+          <button
+            onClick={() => {
+              setOk([]);
+              setRound((r) => r + 1);
+            }}
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-2 font-black text-white"
+          >
+            <RefreshCw className="h-4 w-4" /> <T>De novo</T>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
