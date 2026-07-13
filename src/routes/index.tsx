@@ -58,10 +58,10 @@ function LandingChoice() {
               draggable={false}
             />
             <span className="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-forest-deep/85 px-5 py-1.5 font-display text-lg font-black uppercase tracking-[0.18em] text-gold shadow-md">
-              Adulto
+              <T>Adulto</T>
             </span>
             <span className="absolute bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-deep/80 px-5 py-2 text-sm font-semibold text-gold transition group-hover:bg-gold/20">
-              Entrar <ArrowRight className="h-4 w-4" />
+              <T>Entrar</T> <ArrowRight className="h-4 w-4" />
             </span>
           </Link>
           <Link
