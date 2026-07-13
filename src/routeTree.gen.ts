@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
+import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
@@ -45,6 +46,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrilhasInfantilRoute = TrilhasInfantilRouteImport.update({
+  id: '/trilhas-infantil',
+  path: '/trilhas-infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TraduzirRoute = TraduzirRouteImport.update({
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/saudacoes': typeof SaudacoesRoute
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/saudacoes': typeof SaudacoesRoute
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/saudacoes': typeof SaudacoesRoute
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
+  '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -331,6 +340,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/termos'
     | '/traduzir'
+    | '/trilhas-infantil'
     | '/videos'
     | '/admin'
     | '/trilhas/$slug'
@@ -364,6 +374,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/termos'
     | '/traduzir'
+    | '/trilhas-infantil'
     | '/videos'
     | '/admin'
     | '/trilhas/$slug'
@@ -398,6 +409,7 @@ export interface FileRouteTypes {
     | '/saudacoes'
     | '/termos'
     | '/traduzir'
+    | '/trilhas-infantil'
     | '/videos'
     | '/_authenticated/admin'
     | '/trilhas/$slug'
@@ -433,6 +445,7 @@ export interface RootRouteChildren {
   SaudacoesRoute: typeof SaudacoesRoute
   TermosRoute: typeof TermosRoute
   TraduzirRoute: typeof TraduzirRoute
+  TrilhasInfantilRoute: typeof TrilhasInfantilRoute
   VideosRoute: typeof VideosRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -449,6 +462,13 @@ declare module '@tanstack/react-router' {
       path: '/videos'
       fullPath: '/videos'
       preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trilhas-infantil': {
+      id: '/trilhas-infantil'
+      path: '/trilhas-infantil'
+      fullPath: '/trilhas-infantil'
+      preLoaderRoute: typeof TrilhasInfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/traduzir': {
@@ -707,6 +727,7 @@ const rootRouteChildren: RootRouteChildren = {
   SaudacoesRoute: SaudacoesRoute,
   TermosRoute: TermosRoute,
   TraduzirRoute: TraduzirRoute,
+  TrilhasInfantilRoute: TrilhasInfantilRoute,
   VideosRoute: VideosRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
