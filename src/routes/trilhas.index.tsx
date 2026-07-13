@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -6,6 +7,8 @@ import { SiteHeader } from "@/components/home/site-header";
 import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
+
 
 export const Route = createFileRoute("/trilhas/")({
   head: () => ({
@@ -23,7 +26,7 @@ export const Route = createFileRoute("/trilhas/")({
       },
     ],
   }),
-  component: TrilhasIndex,
+  component: TrilhaPage,
 });
 
 const clayStyles: Record<string, { emoji: string; gradient: string; ring: string }> = {
@@ -56,23 +59,33 @@ const positions = [
   { top: "76%", left: "30%" },
 ];
 
-function TrilhasIndex() {
-  const { t } = useTranslation();
+function TrilhaPage() {
+  const { t, i18n } = useTranslation();
   const trails = useHomeTrails();
 
+  const captions = useMemo(
+    () => ["🗺️ Trilhas da Aldeia", "Escolha uma trilha e siga o caminho mágico!"],
+    [],
+  );
+  const [titleTr, subtitleTr] = useAutoTranslate(captions);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
+    <div
+      key={i18n.language}
+      className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground"
+    >
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <div className="mt-4 text-center">
           <h1 className="font-display text-3xl font-black text-amber-900 drop-shadow-sm md:text-5xl">
-            🗺️ Trilhas da Aldeia
+            {titleTr}
           </h1>
           <p className="mt-1 text-sm font-bold text-emerald-900/80 md:text-base">
-            Escolha uma trilha e siga o caminho mágico!
+            {subtitleTr}
           </p>
         </div>
+
 
         {/* Treasure-map parchment */}
         <section
