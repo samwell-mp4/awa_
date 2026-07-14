@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { PublicFooter } from "@/components/PublicFooter";
 import {
   ArrowLeft,
   Download,
