@@ -198,12 +198,8 @@ function BiografiaPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="mt-12 border-t border-gold/20 bg-[oklch(0.12_0.03_145/0.8)] py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-xs text-foreground/60 md:px-8">
-          © {new Date().getFullYear()} AWÃ TECH — Culturas Vivas. Todos os direitos reservados.
-        </div>
-      </footer>
+      <PublicFooter />
+
     </div>
   );
 }
