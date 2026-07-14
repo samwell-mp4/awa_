@@ -94,6 +94,7 @@ function LandingChoice() {
           </Link>
         </div>
       </main>
+      <PublicFooter />
     </div>
   );
 }
