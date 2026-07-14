@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.weekly_top_learners(integer) FROM anon, PUBLIC;
