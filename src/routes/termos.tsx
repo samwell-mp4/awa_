@@ -36,9 +36,10 @@ function TermosPage() {
 
       <h2 className="mt-8 font-display text-xl font-bold text-gold">1. Quem somos</h2>
       <p>
-        O <b>AWÃ TECH</b> é operado por <b>Akuã</b> ("nós", "nosso"), sediado no Brasil. Ao criar uma conta ou
-        assinar, você ("usuário") celebra um contrato conosco nos termos deste documento. Se não concordar, não use
-        a plataforma.
+        O <b>AWÃ TECH</b> é operado por <b>Adler Magno Santos</b>, pessoa física inscrita no CPF sob nº
+        <b> 859.648.465-56</b>, sediado no Brasil ("nós", "nosso"). Ao criar uma conta ou assinar, você
+        ("usuário") celebra um contrato conosco nos termos deste documento. Se não concordar, não use a
+        plataforma.
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">2. Serviço</h2>
