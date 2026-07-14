@@ -249,6 +249,26 @@ function MinhaContaPage() {
           </div>
         )}
 
+        {/* PAST DUE — pagamento com problema */}
+        {user && subscription?.status === "past_due" && (
+          <div className="mt-6 rounded-2xl border-2 border-gold/60 bg-gold/10 p-5">
+            <div className="font-display text-lg font-black text-gold">Pagamento em atraso</div>
+            <p className="mt-1 text-sm text-cream/90">
+              Não conseguimos processar a última cobrança. Atualize seu método de pagamento para manter seu acesso
+              Premium ativo. O acesso será suspenso em poucos dias se o pagamento não for regularizado.
+            </p>
+            {subscription?.paddle_customer_id && (
+              <button
+                onClick={handlePortal}
+                disabled={busy}
+                className="mt-3 inline-flex items-center gap-2 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-forest-deep hover:brightness-110 disabled:opacity-50"
+              >
+                <CreditCard className="h-4 w-4" /> Atualizar método de pagamento
+              </button>
+            )}
+          </div>
+        )}
+
         {/* CONTA (se logado) */}
         {user && (
           <section className="mt-6 card-elev rounded-3xl border border-gold/25 p-6 md:p-8">
