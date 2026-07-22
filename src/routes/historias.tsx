@@ -425,6 +425,7 @@ function NarratableVideo({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
 
   useEffect(() => {
@@ -453,9 +454,12 @@ function NarratableVideo({
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
     const onError = () => setVideoFailed(true);
+    const onReady = () => setVideoReady(true);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     video.addEventListener("error", onError);
+    video.addEventListener("loadeddata", onReady);
+    video.addEventListener("canplay", onReady);
     observer.observe(video);
 
     return () => {
@@ -463,6 +467,8 @@ function NarratableVideo({
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
+      video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("canplay", onReady);
     };
   }, [videoFailed]);
 
@@ -473,6 +479,42 @@ function NarratableVideo({
   if (videoFailed) {
     return <NarratablePhoto src={poster} alt={alt} text={text} />;
   }
+
+  const mediaStack = (
+    <div
+      className="relative aspect-video w-full overflow-hidden rounded-3xl border border-gold/30 bg-cover bg-center shadow-2xl shadow-black/50"
+      style={{ backgroundImage: `url(${poster})`, backgroundColor: "#1a0f0a" }}
+    >
+      <img
+        src={poster}
+        alt={alt}
+        loading="lazy"
+        aria-hidden
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${videoReady ? "opacity-0" : "opacity-100"}`}
+      />
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        loop
+        preload="metadata"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
+        aria-label={alt}
+        onError={() => setVideoFailed(true)}
+      />
+      {(speaking || loading) && (
+        <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
+          {loading ? (
+            <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+          ) : (
+            <Square className="h-3.5 w-3.5" />
+          )}
+        </div>
+      )}
+    </div>
+  );
 
   if (captionBelow) {
     return (
@@ -485,39 +527,17 @@ function NarratableVideo({
           onFocus={prefetch}
           disabled={loading}
           aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-          className="relative block w-full overflow-hidden rounded-3xl border border-gold/30 bg-black shadow-2xl shadow-black/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+          className="block w-full rounded-3xl focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         >
-          <video
-            ref={videoRef}
-            src={src}
-            poster={poster}
-            muted
-            playsInline
-            loop
-            preload="metadata"
-            className="pointer-events-none h-full w-full object-cover"
-            aria-label={alt}
-            onError={() => setVideoFailed(true)}
-          />
+          {mediaStack}
         </button>
       </div>
     );
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50 bg-black">
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        muted
-        playsInline
-        loop
-        preload="metadata"
-        className="h-full w-full object-cover"
-        aria-label={alt}
-        onError={() => setVideoFailed(true)}
-      />
+    <div className="relative">
+      {mediaStack}
       <button
         type="button"
         onClick={handleClick}
@@ -525,19 +545,9 @@ function NarratableVideo({
         onTouchStart={prefetch}
         onFocus={prefetch}
         disabled={loading}
-        className="absolute inset-0 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+        className="absolute inset-0 rounded-3xl focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
       />
-      {(speaking || loading) && (
-        <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
-          {loading ? (
-            <span className="h-3 w-3 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-          ) : (
-            <Square className="h-3.5 w-3.5" />
-          )}
-        </div>
-      )}
-
     </div>
   );
 }
