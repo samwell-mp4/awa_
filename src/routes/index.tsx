@@ -50,6 +50,7 @@ function LandingChoice() {
         <div className="mt-10 grid w-full gap-0 md:grid-cols-2">
           <Link
             to="/adulto"
+            replace
             className="group relative block overflow-hidden transition hover:-translate-y-1"
           >
             <img
