@@ -73,6 +73,7 @@ function LandingChoice() {
           </Link>
           <Link
             to="/infantil"
+            replace
             className="group relative block overflow-hidden transition hover:-translate-y-1"
           >
             <img
