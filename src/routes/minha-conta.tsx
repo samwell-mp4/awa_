@@ -87,8 +87,9 @@ function statusLabel(status?: string | null, cancelAtEnd?: boolean | null) {
 }
 
 function MinhaContaPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const { isPremium, hasInfantil, hasAdulto, subscription, subscriptions, refetch } = useSubscription();
+
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const openPortal = useServerFn(openCustomerPortalSession);
   const navigate = useNavigate();
