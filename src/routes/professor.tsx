@@ -34,7 +34,9 @@ const SUGESTOES = [
 ];
 
 function ProfessorPage() {
+  const backTo = useLastArea();
   const ask = useServerFn(askAkua);
+
   const speak = useServerFn(speakText);
   const [messages, setMessages] = useState<Msg[]>([
     {
