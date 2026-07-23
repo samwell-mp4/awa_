@@ -82,7 +82,9 @@ type Word = {
 
 
 function TrilhaPage() {
+  const backTo = useLastArea();
   const { slug } = Route.useParams();
+
   const trail = TRAILS[slug as TrailSlug];
   const navigate = useNavigate();
   const nextSlug = nextTrailSlug(slug as TrailSlug);
