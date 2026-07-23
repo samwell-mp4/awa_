@@ -17,6 +17,7 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/musicas")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Cânticos Sagrados — AWÃ TECH" },
