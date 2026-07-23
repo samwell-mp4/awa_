@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { getPaddleEnvironment } from "@/lib/paddle";
 
 import { ContinueLearningCard } from "@/components/home/continue-learning";
 import { DailyMissionCard } from "@/components/home/daily-mission-card";
@@ -18,6 +19,12 @@ export const Route = createFileRoute("/adulto")({
   beforeLoad: async () => {
     const { data } = await supabase.auth.getUser();
     if (!data.user) throw redirect({ to: "/auth" });
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: data.user.id,
+      _plan: "adulto",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "adulto" } as any });
   },
   head: () => ({
     meta: [
