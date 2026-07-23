@@ -15,6 +15,7 @@ import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
 import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
 import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
 import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
+import josaVideoAsset from "@/assets/kids-stories/josa-video.mp4.asset.json";
 
 const monte = monteImg.url;
 const ancianoImg = linguaImg.url;
