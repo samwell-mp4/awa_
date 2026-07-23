@@ -128,7 +128,13 @@ function MinhaContaPage() {
     }
   }
 
-  function handleAssinar(priceId: "awa_premium_monthly" | "awa_premium_semestral") {
+  type PriceId =
+    | "awa_infantil_monthly"
+    | "awa_infantil_semestral"
+    | "awa_adulto_monthly"
+    | "awa_adulto_semestral";
+
+  function handleAssinar(priceId: PriceId) {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/minha-conta" } as any });
       return;
@@ -140,6 +146,15 @@ function MinhaContaPage() {
       successUrl: `${window.location.origin}/minha-conta?checkout=success`,
     });
   }
+
+  const priceLabels: Record<string, string> = {
+    awa_infantil_monthly: "Infantil Mensal (R$ 29,90)",
+    awa_infantil_semestral: "Infantil Semestral (R$ 149,90)",
+    awa_adulto_monthly: "Adulto Mensal (R$ 29,90)",
+    awa_adulto_semestral: "Adulto Semestral (R$ 149,90)",
+    awa_premium_monthly: "Premium Mensal (R$ 29,90)",
+    awa_premium_semestral: "Premium Semestral (R$ 149,90)",
+  };
 
   const s = statusLabel(subscription?.status, subscription?.cancel_at_period_end);
   const toneClass =
