@@ -6,6 +6,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
+import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
