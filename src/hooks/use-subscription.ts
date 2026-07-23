@@ -4,31 +4,60 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useAuth } from "@/hooks/use-auth";
 
+export type PlanTier = "infantil" | "adulto" | "premium" | null;
+
+function tierFromIds(productId?: string | null, priceId?: string | null): PlanTier {
+  const p = productId ?? "";
+  const r = priceId ?? "";
+  if (p === "awa_infantil" || r.startsWith("awa_infantil_")) return "infantil";
+  if (p === "awa_adulto" || r.startsWith("awa_adulto_")) return "adulto";
+  if (p === "awa_premium" || r.startsWith("awa_premium_")) return "premium";
+  return null;
+}
+
+function isSubActive(sub: {
+  status: string | null;
+  current_period_end: string | null;
+}) {
+  const end = sub.current_period_end ? new Date(sub.current_period_end).getTime() : null;
+  const now = Date.now();
+  if (sub.status === "active" || sub.status === "trialing") {
+    return end === null || end > now;
+  }
+  if (sub.status === "past_due") {
+    return end !== null && end > now - 3 * 24 * 3600 * 1000;
+  }
+  if (sub.status === "canceled") {
+    return end !== null && end > now;
+  }
+  return false;
+}
+
 export function useSubscription() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const env = useMemo(() => getPaddleEnvironment(), []);
 
   const query = useQuery({
     queryKey: ["subscription", user?.id, env],
     enabled: !!user,
     queryFn: async () => {
-      if (!user) return { isPremium: false, sub: null };
-
-      const { data: hasAccess } = await supabase.rpc("has_premium_access", {
-        _user_id: user.id,
-        _check_env: env,
-      });
-
-      const { data: sub } = await supabase
+      if (!user) {
+        return { subs: [] as any[], hasInfantil: false, hasAdulto: false };
+      }
+      const { data: subs } = await supabase
         .from("subscriptions")
         .select("*")
         .eq("user_id", user.id)
         .eq("environment", env)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .order("created_at", { ascending: false });
 
-      return { isPremium: !!hasAccess, sub };
+      const activeSubs = (subs ?? []).filter(isSubActive);
+      const tiers = new Set<PlanTier>();
+      for (const s of activeSubs) tiers.add(tierFromIds(s.product_id, s.price_id));
+
+      const hasInfantil = tiers.has("infantil") || tiers.has("premium");
+      const hasAdulto = tiers.has("adulto") || tiers.has("premium");
+      return { subs: subs ?? [], hasInfantil, hasAdulto };
     },
     refetchOnWindowFocus: true,
   });
@@ -61,11 +90,25 @@ export function useSubscription() {
     };
   }, [user?.id]);
 
+  const subs = query.data?.subs ?? [];
+  const hasInfantil = isAdmin || (query.data?.hasInfantil ?? false);
+  const hasAdulto = isAdmin || (query.data?.hasAdulto ?? false);
+  const isPremium = hasInfantil || hasAdulto;
+
+  // Prefer the most recent active sub; fallback to the most recent overall.
+  const activeSubs = subs.filter(isSubActive);
+  const primarySub = activeSubs[0] ?? subs[0] ?? null;
+
   return {
-    isPremium: query.data?.isPremium ?? false,
-    subscription: query.data?.sub ?? null,
+    isPremium,
+    hasInfantil,
+    hasAdulto,
+    subscription: primarySub,
+    subscriptions: subs,
     loading: query.isLoading,
     refetch: query.refetch,
     environment: env,
   };
 }
+
+export { tierFromIds };

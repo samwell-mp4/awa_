@@ -586,6 +586,10 @@ export type Database = {
         Args: { _check_env?: string; _user_id: string }
         Returns: boolean
       }
+      has_plan_access: {
+        Args: { _check_env?: string; _plan: string; _user_id: string }
+        Returns: boolean
+      }
       has_premium_access: {
         Args: { _check_env?: string; _user_id: string }
         Returns: boolean

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
@@ -13,6 +14,12 @@ export const Route = createFileRoute("/infantil")({
   beforeLoad: async () => {
     const { data } = await supabase.auth.getUser();
     if (!data.user) throw redirect({ to: "/auth" });
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: data.user.id,
+      _plan: "infantil",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "infantil" } as any });
   },
   head: () => ({
     meta: [
