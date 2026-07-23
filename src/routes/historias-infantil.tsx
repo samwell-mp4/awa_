@@ -15,7 +15,7 @@ import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
 import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
 import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
 import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
-import josaVideoAsset from "@/assets/kids-stories/josa-video.mp4.asset.json";
+
 
 const monte = monteImg.url;
 const ancianoImg = linguaImg.url;
@@ -54,7 +54,6 @@ type Story = {
   title: string;
   highlight: string;
   image: string;
-  video?: string;
   paragraphs: string[];
   quote?: string;
   color: string;
@@ -69,7 +68,6 @@ const STORIES: Story[] = [
     title: "Ancião Josa",
     highlight: "quem nunca desistiu da aldeia",
     image: albumJosaClean,
-    video: josaVideoAsset.url,
     paragraphs: [
       "Desde menino, Josa aprendeu que a terra é a mãe que alimenta, que guarda os antigos e ensina os novos.",
       "Ele lutou pela floresta, pelos rios e pela língua Patxôhã, para que nada do povo Pataxó se perdesse com o tempo.",
@@ -169,12 +167,12 @@ const STORIES: Story[] = [
   },
 ];
 
-// ---------- Narrator button (light, kid-friendly) ----------
+// ---------- Narrator (click-to-play on the photo) ----------
 let currentAudio: HTMLAudioElement | null = null;
 let currentSetter: ((s: "idle") => void) | null = null;
 
-function KidsNarrator({ text, color }: { text: string; color: string }) {
-  const { t, i18n } = useTranslation();
+function useKidsNarrator(text: string) {
+  const { i18n } = useTranslation();
   const [state, setState] = useState<"idle" | "loading" | "playing">("idle");
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -239,18 +237,32 @@ function KidsNarrator({ text, color }: { text: string; color: string }) {
     }
   };
 
+  return { state, progress, play };
+}
+
+function KidsNarratorBar({
+  state,
+  progress,
+  onClick,
+  color,
+}: {
+  state: "idle" | "loading" | "playing";
+  progress: number;
+  onClick: () => void;
+  color: string;
+}) {
+  const { t } = useTranslation();
   const label =
     state === "loading"
       ? t("common.kidsLoading")
       : state === "playing"
         ? t("common.kidsStop")
         : t("common.kidsListen");
-
   return (
     <div className="mt-4 flex items-center gap-3">
       <button
         type="button"
-        onClick={play}
+        onClick={onClick}
         disabled={state === "loading"}
         className="flex items-center gap-2 rounded-full border-b-4 border-black/15 px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0 disabled:opacity-70"
         style={{ background: color, fontFamily: "'Archivo Black', sans-serif" }}
@@ -270,6 +282,79 @@ function KidsNarrator({ text, color }: { text: string; color: string }) {
         />
       </div>
     </div>
+  );
+}
+
+function StoryCard({ s, idx }: { s: Story; idx: number }) {
+  const narrationText = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
+  const { state, progress, play } = useKidsNarrator(narrationText);
+  return (
+    <article
+      className="story-card relative overflow-hidden rounded-[1.75rem] border-4 border-white/70 bg-[#fffdf3] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]"
+      style={{ animationDelay: `${idx * 80}ms` }}
+    >
+      <div className="flex items-center justify-center px-4 pt-4">
+        <span
+          className="inline-flex items-center gap-2 rounded-full px-4 py-1 text-[11px] uppercase tracking-widest text-white shadow"
+          style={{ background: s.accent }}
+        >
+          <span aria-hidden>{s.chipEmoji}</span> {s.chip}
+        </span>
+      </div>
+
+      <header className="px-5 pt-3 text-center">
+        <h2
+          className="text-2xl leading-tight text-[#3a2412] md:text-3xl"
+          style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
+        >
+          {s.title} <span style={{ color: s.color }}>— {s.highlight}</span>
+        </h2>
+      </header>
+
+      <button
+        type="button"
+        onClick={play}
+        aria-label={s.title}
+        className="relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
+      >
+        <img
+          src={s.image}
+          alt={s.title}
+          loading="lazy"
+          className="h-56 w-full object-cover md:h-72"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full text-2xl text-white shadow-lg"
+          style={{ background: s.color }}
+        >
+          {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
+        </span>
+      </button>
+
+      <div className="p-5">
+        <div
+          className="rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base"
+          style={{ background: `${s.color}22` }}
+        >
+          {s.paragraphs.map((p, i) => (
+            <p key={i} className={i > 0 ? "mt-2" : ""}>
+              {p}
+            </p>
+          ))}
+          {s.quote && (
+            <blockquote
+              className="mt-3 rounded-xl border-l-4 bg-white/70 p-3 italic text-slate-700"
+              style={{ borderColor: s.accent }}
+            >
+              “{s.quote}”
+            </blockquote>
+          )}
+        </div>
+
+        <KidsNarratorBar state={state} progress={progress} onClick={play} color={s.color} />
+      </div>
+    </article>
   );
 }
 
@@ -343,81 +428,7 @@ function HistoriasInfantilPage() {
         {/* STORY CARDS */}
         <section className="mt-6 space-y-6" aria-label="Histórias infantis Pataxó">
           {STORIES.map((s, idx) => (
-            <article
-              key={s.id}
-              className="story-card relative overflow-hidden rounded-[1.75rem] border-4 border-white/70 bg-[#fffdf3] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]"
-              style={{ animationDelay: `${idx * 80}ms` }}
-            >
-              {/* chip badge */}
-              <div className="flex items-center justify-center px-4 pt-4">
-                <span
-                  className="inline-flex items-center gap-2 rounded-full px-4 py-1 text-[11px] uppercase tracking-widest text-white shadow"
-                  style={{ background: s.accent }}
-                >
-                  <span aria-hidden>{s.chipEmoji}</span> {s.chip}
-                </span>
-              </div>
-
-              {/* title */}
-              <header className="px-5 pt-3 text-center">
-                <h2
-                  className="text-2xl leading-tight text-[#3a2412] md:text-3xl"
-                  style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
-                >
-                  {s.title}{" "}
-                  <span style={{ color: s.color }}>— {s.highlight}</span>
-                </h2>
-              </header>
-
-              {/* image */}
-              <div className="mx-4 mt-4 overflow-hidden rounded-2xl border-4 border-white shadow-inner">
-                {s.video ? (
-                  <video
-                    src={s.video}
-                    poster={s.image}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="h-56 w-full object-cover md:h-72"
-                  />
-                ) : (
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    loading="lazy"
-                    className="h-56 w-full object-cover md:h-72"
-                  />
-                )}
-              </div>
-
-
-              {/* body */}
-              <div className="p-5">
-                <div
-                  className="rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base"
-                  style={{ background: `${s.color}22` }}
-                >
-                  {s.paragraphs.map((p, i) => (
-                    <p key={i} className={i > 0 ? "mt-2" : ""}>
-                      {p}
-                    </p>
-                  ))}
-                  {s.quote && (
-                    <blockquote
-                      className="mt-3 rounded-xl border-l-4 bg-white/70 p-3 italic text-slate-700"
-                      style={{ borderColor: s.accent }}
-                    >
-                      “{s.quote}”
-                    </blockquote>
-                  )}
-                </div>
-
-                <KidsNarrator
-                  color={s.color}
-                  text={`${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`}
-                />
-              </div>
-            </article>
+            <StoryCard key={s.id} s={s} idx={idx} />
           ))}
         </section>
 
