@@ -371,13 +371,25 @@ function HistoriasInfantilPage() {
 
               {/* image */}
               <div className="mx-4 mt-4 overflow-hidden rounded-2xl border-4 border-white shadow-inner">
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  loading="lazy"
-                  className="h-56 w-full object-cover md:h-72"
-                />
+                {s.video ? (
+                  <video
+                    src={s.video}
+                    poster={s.image}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="h-56 w-full object-cover md:h-72"
+                  />
+                ) : (
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    loading="lazy"
+                    className="h-56 w-full object-cover md:h-72"
+                  />
+                )}
               </div>
+
 
               {/* body */}
               <div className="p-5">
