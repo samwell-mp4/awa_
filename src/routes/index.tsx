@@ -3,18 +3,106 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight, ShieldCheck, Sparkles, Globe2 } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { T } from "@/components/T";
 import { PublicFooter } from "@/components/PublicFooter";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
-const MENU_I18N: Record<string, { adulto: string; crianca: string; adultoDesc: string; criancaDesc: string; entrar: string }> = {
-  pt: { adulto: "Adulto", crianca: "Criança", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Entrar" },
-  en: { adulto: "Adult", crianca: "Kids", adultoDesc: "Trails, translator, dictionary and Teacher's Space.", criancaDesc: "Games, songs and stories to learn while playing.", entrar: "Enter" },
-  es: { adulto: "Adulto", crianca: "Niños", adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.", criancaDesc: "Juegos, canciones e historias para aprender jugando.", entrar: "Entrar" },
-  pat: { adulto: "Adulto", crianca: "Kotxohã", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Enter" },
+type Dict = {
+  badge: string;
+  h1a: string;
+  h1b: string;
+  lead: string;
+  adulto: string;
+  crianca: string;
+  adultoDesc: string;
+  criancaDesc: string;
+  entrar: string;
+  pagTitle: string;
+  pagCopy: string;
+  multiTitle: string;
+  multiCopy: string;
+  curTitle: string;
+  curCopy: string;
 };
+
+const MENU_I18N: Record<string, Dict> = {
+  pt: {
+    badge: "Plataforma oficial AWÃ TECH",
+    h1a: "Línguas indígenas,",
+    h1b: "culturas vivas.",
+    lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
+    adulto: "Adulto",
+    crianca: "Criança",
+    adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
+    criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
+    entrar: "Entrar",
+    pagTitle: "Pagamento seguro",
+    pagCopy: "Processado por Paddle",
+    multiTitle: "Multi-idioma",
+    multiCopy: "PT · EN · ES · Patxôhã",
+    curTitle: "Curadoria cultural",
+    curCopy: "Com anciãos e educadores",
+  },
+  en: {
+    badge: "Official AWÃ TECH platform",
+    h1a: "Indigenous languages,",
+    h1b: "living cultures.",
+    lead: "Choose the experience that fits you. Guided trails, dictionary, stories and games — built with respect and cultural curation.",
+    adulto: "Adult",
+    crianca: "Kids",
+    adultoDesc: "Trails, translator, dictionary and Teacher's Space.",
+    criancaDesc: "Games, songs and stories to learn while playing.",
+    entrar: "Enter",
+    pagTitle: "Secure payment",
+    pagCopy: "Processed by Paddle",
+    multiTitle: "Multi-language",
+    multiCopy: "PT · EN · ES · Patxôhã",
+    curTitle: "Cultural curation",
+    curCopy: "With elders and educators",
+  },
+  es: {
+    badge: "Plataforma oficial AWÃ TECH",
+    h1a: "Lenguas indígenas,",
+    h1b: "culturas vivas.",
+    lead: "Elige la experiencia que combina contigo. Rutas guiadas, diccionario, historias y juegos — desarrollados con respeto y curaduría cultural.",
+    adulto: "Adulto",
+    crianca: "Niños",
+    adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.",
+    criancaDesc: "Juegos, canciones e historias para aprender jugando.",
+    entrar: "Entrar",
+    pagTitle: "Pago seguro",
+    pagCopy: "Procesado por Paddle",
+    multiTitle: "Multi-idioma",
+    multiCopy: "PT · EN · ES · Patxôhã",
+    curTitle: "Curaduría cultural",
+    curCopy: "Con ancianos y educadores",
+  },
+  pat: {
+    badge: "Plataforma oficial AWÃ TECH",
+    h1a: "Patxôhã txopai,",
+    h1b: "hãpõhã hitá.",
+    lead: "Awê kuruk apkã txopai. Trilhas, dicionário, histórias e jogos — com respeito e cultura viva.",
+    adulto: "Adulto",
+    crianca: "Kotxohã",
+    adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
+    criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
+    entrar: "Awê",
+    pagTitle: "Pagamento seguro",
+    pagCopy: "Processado por Paddle",
+    multiTitle: "Multi-idioma",
+    multiCopy: "PT · EN · ES · Patxôhã",
+    curTitle: "Curadoria cultural",
+    curCopy: "Com anciãos e educadores",
+  },
+};
+
+function useMenuDict(): Dict {
+  const { i18n } = useTranslation();
+  const raw = (i18n.language || "pt").toLowerCase();
+  const key = raw.startsWith("pat") ? "pat" : raw.slice(0, 2);
+  return MENU_I18N[key] ?? MENU_I18N.pt;
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,6 +129,7 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingChoice() {
+  const dict = useMenuDict();
   return (
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
@@ -56,18 +145,15 @@ function LandingChoice() {
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5" />
-          <T>Plataforma oficial AWÃ TECH</T>
+          {dict.badge}
         </span>
 
         <h1 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl">
-          <T>Línguas indígenas,</T>{" "}
-          <span className="text-gradient-gold"><T>culturas vivas.</T></span>
+          {dict.h1a}{" "}
+          <span className="text-gradient-gold">{dict.h1b}</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm text-foreground/80 md:text-base">
-          <T>
-            Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos —
-            desenvolvidos com respeito e curadoria cultural.
-          </T>
+          {dict.lead}
         </p>
 
         <div className="mt-12 grid w-full gap-6 md:grid-cols-2 md:gap-8">
@@ -75,21 +161,25 @@ function LandingChoice() {
             to="/adulto"
             image={adultoLogo.url}
             eyebrow="Awã Tech"
-            variant="adulto"
+            title={dict.adulto}
+            description={dict.adultoDesc}
+            entrar={dict.entrar}
             priority
           />
           <ExperienceCard
             to="/infantil"
             image={infantilLogo.url}
             eyebrow="Awã Tech"
-            variant="crianca"
+            title={dict.crianca}
+            description={dict.criancaDesc}
+            entrar={dict.entrar}
           />
         </div>
 
         <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
-          <TrustPill icon={ShieldCheck} title="Pagamento seguro" copy="Processado por Paddle" />
-          <TrustPill icon={Globe2} title="Multi-idioma" copy="PT · EN · ES · Patxôhã" />
-          <TrustPill icon={Sparkles} title="Curadoria cultural" copy="Com anciãos e educadores" />
+          <TrustPill icon={ShieldCheck} title={dict.pagTitle} copy={dict.pagCopy} />
+          <TrustPill icon={Globe2} title={dict.multiTitle} copy={dict.multiCopy} />
+          <TrustPill icon={Sparkles} title={dict.curTitle} copy={dict.curCopy} />
         </div>
       </main>
       <PublicFooter />
@@ -101,21 +191,19 @@ function ExperienceCard({
   to,
   image,
   eyebrow,
-  variant,
+  title,
+  description,
+  entrar,
   priority = false,
 }: {
   to: "/adulto" | "/infantil";
   image: string;
   eyebrow: string;
-  variant: "adulto" | "crianca";
+  title: string;
+  description: string;
+  entrar: string;
   priority?: boolean;
 }) {
-  const { i18n } = useTranslation();
-  const lang = (i18n.language || "pt").slice(0, 3).toLowerCase();
-  const key = (lang.startsWith("pat") ? "pat" : lang.slice(0, 2)) as keyof typeof MENU_I18N;
-  const dict = MENU_I18N[key] ?? MENU_I18N.pt;
-  const title = variant === "adulto" ? dict.adulto : dict.crianca;
-  const description = variant === "adulto" ? dict.adultoDesc : dict.criancaDesc;
   return (
     <Link
       to={to}
@@ -150,7 +238,7 @@ function ExperienceCard({
           </p>
         </div>
         <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          {dict.entrar} <ArrowRight className="h-4 w-4" />
+          {entrar} <ArrowRight className="h-4 w-4" />
         </span>
       </div>
     </Link>
@@ -173,10 +261,10 @@ function TrustPill({
       </span>
       <div className="min-w-0">
         <div className="text-xs font-bold uppercase tracking-wider text-cream">
-          <T>{title}</T>
+          {title}
         </div>
         <div className="truncate text-[11px] text-foreground/70">
-          <T>{copy}</T>
+          {copy}
         </div>
       </div>
     </div>
