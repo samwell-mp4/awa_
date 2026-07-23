@@ -359,13 +359,13 @@ function ProfessorPage() {
             type="submit"
             disabled={loading || !input.trim()}
             className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-forest-deep shadow-lg shadow-gold/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
-            aria-label="Enviar"
+            aria-label={t.send}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>
         </div>
         <div className="pb-2 text-center text-[10px] text-foreground/40">
-          Enter para enviar · Shift + Enter para nova linha
+          {t.hint}
         </div>
       </form>
     </div>
