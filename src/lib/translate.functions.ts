@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertPremium } from "./premium-guard";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+
 
 type Entry = { term_indigenous: string; term_pt: string };
 
