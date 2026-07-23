@@ -279,10 +279,10 @@ function ProfessorPage() {
             onClick={resetConversation}
             disabled={isEmpty && !loading}
             className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/50 hover:text-cream disabled:opacity-40"
-            title="Nova conversa"
+            title={t.newChat}
           >
             <RefreshCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Nova conversa</span>
+            <span className="hidden sm:inline">{t.newChat}</span>
           </button>
         </div>
       </header>
