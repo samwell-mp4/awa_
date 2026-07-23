@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Crown, Shield, Sparkles } from "lucide-react";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
@@ -9,50 +9,63 @@ import logoSrc from "@/assets/awa-tech-logo.png";
 export const Route = createFileRoute("/planos")({
   head: () => ({
     meta: [
-      { title: "Planos e preços — AWÃ TECH Premium" },
+      { title: "Planos e preços — AWÃ TECH" },
       {
         name: "description",
         content:
-          "AWÃ TECH Premium: dicionário Patxôhã completo, trilhas, vídeos, músicas e Professor Akuã. R$ 29,90/mês ou R$ 149,90 a cada 6 meses. Garantia de 14 dias.",
+          "Escolha sua assinatura AWÃ TECH: Infantil (trilhas, cânticos e jogos) ou Adulto (dicionário, tradutor e Professor Akuã). R$ 29,90/mês ou R$ 149,90 a cada 6 meses.",
       },
-      { property: "og:title", content: "Planos AWÃ TECH Premium" },
+      { property: "og:title", content: "Planos AWÃ TECH" },
       {
         property: "og:description",
-        content: "Aprenda Patxôhã sem limites. R$ 29,90/mês ou R$ 149,90/semestre. Cancele quando quiser.",
+        content:
+          "Duas assinaturas independentes: Infantil ou Adulto. R$ 29,90/mês ou R$ 149,90/semestre. Cancele quando quiser.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>): { checkout?: string } => {
-    const checkout = s.checkout as string | undefined;
-    return checkout ? { checkout } : {};
+  validateSearch: (s: Record<string, unknown>): { checkout?: string; need?: string } => {
+    const out: { checkout?: string; need?: string } = {};
+    if (typeof s.checkout === "string") out.checkout = s.checkout;
+    if (s.need === "infantil" || s.need === "adulto") out.need = s.need;
+    return out;
   },
   component: PlanosPage,
 });
 
-const benefits = [
+const infantilBenefits = [
+  "Trilha da Aldeia com jogos e cânticos",
+  "Histórias infantis narradas",
+  "Vídeos e músicas para crianças",
+  "Atividades sobre natureza, família e amizade",
+  "Conteúdo cultural indígena adequado à idade",
+];
+
+const adultoBenefits = [
   "Dicionário Patxôhã completo (2.700+ palavras)",
-  "Todas as trilhas de aprendizado",
-  "Vídeos e músicas da aldeia",
+  "Todas as trilhas adultas de aprendizado",
   "Professor Akuã (chat com IA) ilimitado",
   "Tradutor Português ↔ Patxôhã",
-  "Histórias e conteúdo cultural completo",
+  "Histórias, biografia e conteúdo cultural completo",
 ];
+
+type PriceId =
+  | "awa_infantil_monthly"
+  | "awa_infantil_semestral"
+  | "awa_adulto_monthly"
+  | "awa_adulto_semestral";
 
 function PlanosPage() {
   const { user, loading: authLoading } = useAuth();
-  const { isPremium } = useSubscription();
+  const { hasInfantil, hasAdulto } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
+  const search = useSearch({ from: "/planos" });
 
-  function handleAssinar(priceId: "awa_premium_monthly" | "awa_premium_semestral") {
+  function handleAssinar(priceId: PriceId) {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/planos" } as any });
-      return;
-    }
-    if (isPremium) {
-      navigate({ to: "/minha-conta" });
       return;
     }
     openCheckout({
@@ -67,11 +80,8 @@ function PlanosPage() {
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
       <PaymentTestModeBanner />
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
-          >
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
             <ArrowLeft className="h-4 w-4" /> Início
           </Link>
           <img src={logoSrc} alt="AWÃ TECH" className="h-9 w-auto" />
@@ -81,77 +91,92 @@ function PlanosPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-10 md:px-8 md:py-14">
+      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
+        {search.need && (
+          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border-2 border-gold/60 bg-gold/10 p-4 text-center text-sm text-cream">
+            <b>Assinatura necessária.</b> Para acessar a área{" "}
+            <b>{search.need === "infantil" ? "Infantil" : "Adulto"}</b>, contrate o plano abaixo. Ele libera
+            apenas essa área — a outra requer assinatura separada.
+          </div>
+        )}
+
         <section className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-gold">
-            <Crown className="h-3.5 w-3.5" /> AWÃ TECH Premium
+            <Crown className="h-3.5 w-3.5" /> AWÃ TECH — Planos
           </div>
           <h1 className="mt-4 font-display text-3xl font-black text-cream md:text-5xl">
-            Aprenda Patxôhã sem limites
+            Escolha sua assinatura
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-foreground/75 md:text-base">
-            Libere todo o dicionário, trilhas, vídeos, músicas e o Professor Akuã. Cancele quando quiser —
-            garantia de 14 dias.
+            Duas assinaturas independentes. Cada uma libera apenas a sua área — Infantil ou Adulto.
+            Cancele quando quiser.
           </p>
         </section>
 
-        <section className="mt-10 grid gap-5 md:grid-cols-2">
-          <div className="card-elev rounded-3xl border border-gold/25 p-6 md:p-8">
-            <div className="text-xs font-bold uppercase tracking-wider text-foreground/60">Mensal</div>
-            <div className="mt-2 flex items-baseline gap-1">
-              <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
-              <span className="text-sm text-foreground/60">/mês</span>
+        {/* INFANTIL */}
+        <section className="mt-12">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
+              <Baby className="h-5 w-5" />
             </div>
-            <p className="mt-2 text-sm text-foreground/70">Renova automaticamente. Cancele quando quiser.</p>
-            <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
-              {benefits.map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-leaf" /> {b}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => handleAssinar("awa_premium_monthly")}
-              disabled={checkoutLoading || authLoading}
-              className="mt-6 w-full rounded-2xl bg-[var(--gradient-leaf)] px-4 py-3.5 font-display text-sm font-black text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110 disabled:opacity-50"
-            >
-              {isPremium ? "Você já é Premium" : checkoutLoading ? "Abrindo..." : "Assinar Mensal"}
-            </button>
+            <div>
+              <h2 className="font-display text-2xl font-black text-cream">Assinatura Infantil</h2>
+              <p className="text-sm text-foreground/70">Trilhas, cânticos, jogos e histórias para crianças.</p>
+            </div>
+            {hasInfantil && (
+              <span className="ml-auto rounded-full border border-leaf/40 bg-leaf/15 px-3 py-1 text-xs font-bold text-leaf">
+                ✓ Você já tem
+              </span>
+            )}
           </div>
-
-          <div className="relative card-elev rounded-3xl border-2 border-gold/60 p-6 md:p-8">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-[10px] font-black uppercase tracking-wider text-forest-deep">
-              Melhor valor · economize 17%
-            </div>
-            <div className="text-xs font-bold uppercase tracking-wider text-gold">Semestral</div>
-            <div className="mt-2 flex items-baseline gap-1">
-              <span className="font-display text-4xl font-black text-cream">R$ 149,90</span>
-              <span className="text-sm text-foreground/60">/6 meses</span>
-            </div>
-            <p className="mt-2 text-sm text-foreground/70">Equivale a R$ 24,98/mês. Cobrado a cada 6 meses.</p>
-            <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
-              {benefits.map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-leaf" /> {b}
-                </li>
-              ))}
-              <li className="flex items-start gap-2 font-semibold text-gold">
-                <Sparkles className="mt-0.5 h-4 w-4 flex-shrink-0" /> 2 meses grátis vs. mensal
-              </li>
-            </ul>
-            <button
-              onClick={() => handleAssinar("awa_premium_semestral")}
-              disabled={checkoutLoading || authLoading}
-              className="mt-6 w-full rounded-2xl bg-gold px-4 py-3.5 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110 disabled:opacity-50"
-            >
-              {isPremium ? "Você já é Premium" : checkoutLoading ? "Abrindo..." : "Assinar Semestral"}
-            </button>
-          </div>
+          <PlanPair
+            benefits={infantilBenefits}
+            monthlyId="awa_infantil_monthly"
+            semestralId="awa_infantil_semestral"
+            onAssinar={handleAssinar}
+            checkoutLoading={checkoutLoading || authLoading}
+            highlight={search.need === "infantil"}
+            owned={hasInfantil}
+          />
         </section>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-xs text-foreground/60">
+        {/* ADULTO */}
+        <section className="mt-12">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">
+              <User className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl font-black text-cream">Assinatura Adulto</h2>
+              <p className="text-sm text-foreground/70">
+                Dicionário completo, tradutor, Professor Akuã e todo o conteúdo cultural.
+              </p>
+            </div>
+            {hasAdulto && (
+              <span className="ml-auto rounded-full border border-leaf/40 bg-leaf/15 px-3 py-1 text-xs font-bold text-leaf">
+                ✓ Você já tem
+              </span>
+            )}
+          </div>
+          <PlanPair
+            benefits={adultoBenefits}
+            monthlyId="awa_adulto_monthly"
+            semestralId="awa_adulto_semestral"
+            onAssinar={handleAssinar}
+            checkoutLoading={checkoutLoading || authLoading}
+            highlight={search.need === "adulto"}
+            owned={hasAdulto}
+          />
+        </section>
+
+        <p className="mt-10 flex items-center justify-center gap-2 text-center text-xs text-foreground/60">
           <Shield className="h-3.5 w-3.5 text-gold" />
-          Pagamento seguro processado pelo Paddle (Merchant of Record). Cartão de crédito, débito e Pix.
+          Pagamento seguro via Paddle (Merchant of Record). Cartão de crédito, débito e Pix.
+        </p>
+
+        <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-foreground/60">
+          O acesso é liberado para a conta Google usada no login. Para liberar outro Gmail, faça login
+          com essa conta e contrate uma nova assinatura.
         </p>
 
         <section className="mt-10 grid gap-3 text-sm sm:grid-cols-3">
@@ -166,6 +191,74 @@ function PlanosPage() {
           </Link>
         </section>
       </main>
+    </div>
+  );
+}
+
+function PlanPair(props: {
+  benefits: string[];
+  monthlyId: PriceId;
+  semestralId: PriceId;
+  onAssinar: (id: PriceId) => void;
+  checkoutLoading: boolean;
+  highlight?: boolean;
+  owned?: boolean;
+}) {
+  const { benefits, monthlyId, semestralId, onAssinar, checkoutLoading, highlight, owned } = props;
+  const ring = highlight ? "ring-2 ring-gold/70 shadow-[var(--shadow-glow)]" : "";
+  return (
+    <div className="grid gap-5 md:grid-cols-2">
+      <div className={`card-elev rounded-3xl border border-gold/25 p-6 md:p-8 ${ring}`}>
+        <div className="text-xs font-bold uppercase tracking-wider text-foreground/60">Mensal</div>
+        <div className="mt-2 flex items-baseline gap-1">
+          <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
+          <span className="text-sm text-foreground/60">/mês</span>
+        </div>
+        <p className="mt-2 text-sm text-foreground/70">Renova automaticamente. Cancele quando quiser.</p>
+        <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
+          {benefits.map((b) => (
+            <li key={b} className="flex items-start gap-2">
+              <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-leaf" /> {b}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() => onAssinar(monthlyId)}
+          disabled={checkoutLoading || owned}
+          className="mt-6 w-full rounded-2xl bg-[var(--gradient-leaf)] px-4 py-3.5 font-display text-sm font-black text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110 disabled:opacity-50"
+        >
+          {owned ? "Você já tem este plano" : checkoutLoading ? "Abrindo..." : "Assinar Mensal"}
+        </button>
+      </div>
+
+      <div className={`relative card-elev rounded-3xl border-2 border-gold/60 p-6 md:p-8 ${ring}`}>
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-[10px] font-black uppercase tracking-wider text-forest-deep">
+          Melhor valor · economize 17%
+        </div>
+        <div className="text-xs font-bold uppercase tracking-wider text-gold">Semestral</div>
+        <div className="mt-2 flex items-baseline gap-1">
+          <span className="font-display text-4xl font-black text-cream">R$ 149,90</span>
+          <span className="text-sm text-foreground/60">/6 meses</span>
+        </div>
+        <p className="mt-2 text-sm text-foreground/70">Equivale a R$ 24,98/mês. Cobrado a cada 6 meses.</p>
+        <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
+          {benefits.map((b) => (
+            <li key={b} className="flex items-start gap-2">
+              <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-leaf" /> {b}
+            </li>
+          ))}
+          <li className="flex items-start gap-2 font-semibold text-gold">
+            <Sparkles className="mt-0.5 h-4 w-4 flex-shrink-0" /> 2 meses grátis vs. mensal
+          </li>
+        </ul>
+        <button
+          onClick={() => onAssinar(semestralId)}
+          disabled={checkoutLoading || owned}
+          className="mt-6 w-full rounded-2xl bg-gold px-4 py-3.5 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110 disabled:opacity-50"
+        >
+          {owned ? "Você já tem este plano" : checkoutLoading ? "Abrindo..." : "Assinar Semestral"}
+        </button>
+      </div>
     </div>
   );
 }
