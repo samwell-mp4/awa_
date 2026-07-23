@@ -12,13 +12,13 @@ import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
 import monteImg from "@/assets/kids-stories/monte.jpg.asset.json";
 import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
-import aldeiaImg from "@/assets/kids-stories/aldeia.jpg.asset.json";
+import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
 import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
 import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
 
 const monte = monteImg.url;
 const ancianoImg = linguaImg.url;
-const aldeiaImage = aldeiaImg.url;
+const aldeiaImg = aldeiaAsset.url;
 const dancaImg = aweImg.url;
 const artesanatoImg = arteImg.url;
 const albumJosaClean = josaImg.url;
