@@ -41,6 +41,7 @@ function TraduzirPage() {
   const toLabel = direction === "pt-pat" ? "Patxôhã" : "Português";
 
   return (
+    <PremiumGate title="Tradutor Premium" description="Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.">
     <div className="min-h-screen pb-16 text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
