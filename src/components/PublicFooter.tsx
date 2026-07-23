@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ShieldCheck } from "lucide-react";
+import { T } from "@/components/T";
 
 export function PublicFooter() {
   const year = new Date().getFullYear();
@@ -12,12 +13,14 @@ export function PublicFooter() {
               AWÃ <span className="text-gradient-gold">TECH</span>
             </div>
             <p className="mt-2 max-w-sm text-xs leading-relaxed text-foreground/65">
-              Plataforma dedicada ao ensino e preservação de línguas indígenas
-              brasileiras, com respeito e curadoria cultural.
+              <T>
+                Plataforma dedicada ao ensino e preservação de línguas indígenas
+                brasileiras, com respeito e curadoria cultural.
+              </T>
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/20 bg-forest-deep/50 px-3 py-1.5 text-[11px] font-semibold text-foreground/75">
               <ShieldCheck className="h-3.5 w-3.5 text-gold" />
-              Pagamentos seguros via Paddle (Merchant of Record)
+              <T>Pagamentos seguros via Paddle (Merchant of Record)</T>
             </div>
           </div>
 
@@ -35,8 +38,13 @@ export function PublicFooter() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-gold/15 pt-6 text-[11px] text-foreground/55 md:flex-row">
-          <span>© {year} AWÃ TECH — Adler Magno Santos. Todos os direitos reservados.</span>
-          <span className="tracking-wider uppercase">Feito com respeito e cultura viva</span>
+          <span>
+            © {year} AWÃ TECH — Adler Magno Santos.{" "}
+            <T>Todos os direitos reservados.</T>
+          </span>
+          <span className="tracking-wider uppercase">
+            <T>Feito com respeito e cultura viva</T>
+          </span>
         </div>
       </div>
     </footer>
@@ -47,7 +55,7 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
   return (
     <div>
       <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-gold/90">
-        {title}
+        <T>{title}</T>
       </div>
       <ul className="flex flex-col gap-2">{children}</ul>
     </div>
@@ -61,7 +69,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
         to={to}
         className="text-xs font-medium text-foreground/75 transition hover:text-gold"
       >
-        {children}
+        {typeof children === "string" ? <T>{children}</T> : children}
       </Link>
     </li>
   );
