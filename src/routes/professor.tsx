@@ -299,11 +299,11 @@ function ProfessorPage() {
         {isEmpty && !loading && (
           <section className="mt-8">
             <div className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
-              Sugestões para começar
+              {t.suggestionsTitle}
             </div>
             <div className="grid gap-2.5 sm:grid-cols-2">
-              {SUGGESTIONS.map((s) => {
-                const Icon = s.icon;
+              {t.suggestions.map((s, idx) => {
+                const Icon = SUGGESTION_ICONS[idx] ?? BookOpen;
                 return (
                   <button
                     key={s.label}
