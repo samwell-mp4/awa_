@@ -584,15 +584,15 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
                     onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
                     disabled={audioBusy === "full"}
                     className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
-                    aria-label="Ouvir resposta"
-                    title="Ouvir resposta"
+                    aria-label={t.listen}
+                    title={t.listen}
                   >
                     {audioBusy === "full" ? (
                       <Loader2 className="h-3 w-3 animate-spin" />
                     ) : (
                       <Volume2 className="h-3 w-3" />
                     )}
-                    Ouvir
+                    {t.listen}
                   </button>
                 </>
               )}
