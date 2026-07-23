@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { lazy, Suspense, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -25,9 +25,22 @@ const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) 
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }] }),
+  head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
+  beforeLoad: async () => {
+    // O layout _authenticated já garante que há sessão. Aqui validamos a role
+    // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles).
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) throw redirect({ to: "/auth" });
+    const { data: isAdmin } = await supabase.rpc("has_role", {
+      _user_id: uid,
+      _role: "admin",
+    });
+    if (!isAdmin) throw redirect({ to: "/acesso-negado" });
+  },
   component: AdminPage,
 });
+
 
 type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access";
 

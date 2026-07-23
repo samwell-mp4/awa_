@@ -33,6 +33,7 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AmizadeRouteImport } from './routes/amizade'
 import { Route as AdultoRouteImport } from './routes/adulto'
+import { Route as AcessoNegadoRouteImport } from './routes/acesso-negado'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
@@ -163,6 +164,11 @@ const AdultoRoute = AdultoRouteImport.update({
   path: '/adulto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcessoNegadoRoute = AcessoNegadoRouteImport.update({
+  id: '/acesso-negado',
+  path: '/acesso-negado',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -212,6 +218,7 @@ const ApiPublicPaymentsWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
   '/auth': typeof AuthRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acesso-negado'
     | '/adulto'
     | '/amizade'
     | '/auth'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acesso-negado'
     | '/adulto'
     | '/amizade'
     | '/auth'
@@ -387,6 +398,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/acesso-negado'
     | '/adulto'
     | '/amizade'
     | '/auth'
@@ -423,6 +435,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AcessoNegadoRoute: typeof AcessoNegadoRoute
   AdultoRoute: typeof AdultoRoute
   AmizadeRoute: typeof AmizadeRoute
   AuthRoute: typeof AuthRoute
@@ -625,6 +638,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdultoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acesso-negado': {
+      id: '/acesso-negado'
+      path: '/acesso-negado'
+      fullPath: '/acesso-negado'
+      preLoaderRoute: typeof AcessoNegadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -705,6 +725,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AcessoNegadoRoute: AcessoNegadoRoute,
   AdultoRoute: AdultoRoute,
   AmizadeRoute: AmizadeRoute,
   AuthRoute: AuthRoute,
