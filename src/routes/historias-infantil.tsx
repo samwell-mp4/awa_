@@ -68,7 +68,6 @@ const STORIES: Story[] = [
     title: "Ancião Josa",
     highlight: "quem nunca desistiu da aldeia",
     image: albumJosaClean,
-    video: josaVideoAsset.url,
     paragraphs: [
       "Desde menino, Josa aprendeu que a terra é a mãe que alimenta, que guarda os antigos e ensina os novos.",
       "Ele lutou pela floresta, pelos rios e pela língua Patxôhã, para que nada do povo Pataxó se perdesse com o tempo.",
