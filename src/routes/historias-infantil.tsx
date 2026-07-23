@@ -15,6 +15,7 @@ import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
 import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
 import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
 import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
+import josaVideoAsset from "@/assets/kids-stories/josa-video.mp4.asset.json";
 
 const monte = monteImg.url;
 const ancianoImg = linguaImg.url;
@@ -53,6 +54,7 @@ type Story = {
   title: string;
   highlight: string;
   image: string;
+  video?: string;
   paragraphs: string[];
   quote?: string;
   color: string;
@@ -67,6 +69,7 @@ const STORIES: Story[] = [
     title: "Ancião Josa",
     highlight: "quem nunca desistiu da aldeia",
     image: albumJosaClean,
+    video: josaVideoAsset.url,
     paragraphs: [
       "Desde menino, Josa aprendeu que a terra é a mãe que alimenta, que guarda os antigos e ensina os novos.",
       "Ele lutou pela floresta, pelos rios e pela língua Patxôhã, para que nada do povo Pataxó se perdesse com o tempo.",
@@ -368,13 +371,25 @@ function HistoriasInfantilPage() {
 
               {/* image */}
               <div className="mx-4 mt-4 overflow-hidden rounded-2xl border-4 border-white shadow-inner">
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  loading="lazy"
-                  className="h-56 w-full object-cover md:h-72"
-                />
+                {s.video ? (
+                  <video
+                    src={s.video}
+                    poster={s.image}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="h-56 w-full object-cover md:h-72"
+                  />
+                ) : (
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    loading="lazy"
+                    className="h-56 w-full object-cover md:h-72"
+                  />
+                )}
               </div>
+
 
               {/* body */}
               <div className="p-5">
