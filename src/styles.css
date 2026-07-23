@@ -227,95 +227,102 @@ body::before {
 @utility kid-spin-slow { animation: kid-spin-slow 18s linear infinite; }
 
 
-/* ===== Kids theme — bem infantil (applied via .kids-theme wrapper) ===== */
+/* ===== Kids theme — soft 3D, light & vibrant (applied via .kids-theme wrapper) ===== */
 .kids-theme {
-  --kids-sun: #ffd166;
-  --kids-fire: #ef6c3a;
-  --kids-leaf: #4ec36b;
-  --kids-sky: #3fb7d4;
-  --kids-berry: #d64085;
-  --kids-earth: #6b3a20;
-  --kids-cream: #fff6df;
-  font-family: "Baloo 2", "Hind", ui-sans-serif, system-ui, sans-serif;
-  color: #2a1a10;
+  --kids-sky: #bfe6ff;
+  --kids-sky-2: #ffe3f1;
+  --kids-sun: #ffd76a;
+  --kids-pink: #ff89b5;
+  --kids-leaf: #7cd88a;
+  --kids-berry: #b06cd9;
+  --kids-earth: #7a4a2b;
+  --kids-cream: #fffaf0;
+  --kids-outline: #5b3a24;
+  font-family: "Baloo 2", "Hind", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  color: #3a2418;
   background:
-    /* indigenous geometric grafismo — triangles + zigzag + dots */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%23b0521f' stroke-width='2' opacity='0.28'><path d='M0 30 L15 15 L30 30 L45 15 L60 30 L75 15 L90 30 L105 15 L120 30'/><path d='M0 90 L15 105 L30 90 L45 105 L60 90 L75 105 L90 90 L105 105 L120 90'/><path d='M20 60 l10 -10 l10 10 l-10 10 z M80 60 l10 -10 l10 10 l-10 10 z'/></g><g fill='%23ef6c3a' opacity='0.35'><circle cx='60' cy='60' r='3'/><circle cx='0' cy='60' r='3'/><circle cx='120' cy='60' r='3'/></g></svg>"),
-    linear-gradient(180deg, #ffe9a8 0%, #ffd48a 25%, #ffb27a 55%, #f79968 100%);
-  background-size: 180px 180px, cover;
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><g opacity='0.35'><path d='M30 40 q10 -18 25 -6 q-8 18 -25 6z' fill='%237cd88a'/><path d='M120 100 q10 -18 25 -6 q-8 18 -25 6z' fill='%237cd88a'/><path d='M80 20 l3 8 l8 1 l-6 6 l2 8 l-7 -4 l-7 4 l2 -8 l-6 -6 l8 -1z' fill='%23ffd76a'/><path d='M20 120 l2 5 l5 1 l-4 4 l1 5 l-4 -2 l-4 2 l1 -5 l-4 -4 l5 -1z' fill='%23ff89b5'/><circle cx='140' cy='40' r='3' fill='%23b06cd9'/><circle cx='60' cy='140' r='3' fill='%233fb7d4'/></g></svg>"),
+    linear-gradient(180deg, #cfefff 0%, #ffe4f2 45%, #fff6c9 100%);
+  background-size: 220px 220px, cover;
   background-attachment: fixed;
 }
 .kids-theme h1, .kids-theme h2, .kids-theme h3, .kids-theme h4 {
-  font-family: "Archivo Black", "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Fredoka", "Baloo 2", "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
 }
-.kids-theme .font-display { font-family: "Archivo Black", "Fredoka", sans-serif !important; }
+.kids-theme .font-display { font-family: "Fredoka", "Baloo 2", "Archivo Black", sans-serif !important; font-weight: 700; }
 
 @utility kids-title {
-  font-family: "Archivo Black", sans-serif;
-  color: #6b3a20;
+  font-family: "Fredoka", "Archivo Black", sans-serif;
+  color: #ff6aa4;
   text-shadow:
-    -3px 3px 0 #fff,
-    3px 3px 0 #ef6c3a,
-    5px 6px 0 rgba(0,0,0,0.18);
+    -2px 2px 0 #fff,
+    2px 3px 0 #ffd76a,
+    4px 5px 0 rgba(122,74,43,0.20);
   letter-spacing: 0.01em;
-  line-height: 0.95;
+  line-height: 0.98;
 }
 @utility kids-card {
-  background: #fff6df;
-  border: 4px solid #6b3a20;
-  border-radius: 1.75rem;
+  background: #fffaf0;
+  border: 4px solid #ffffff;
+  outline: 3px solid #ffd76a;
+  outline-offset: -7px;
+  border-radius: 2rem;
   box-shadow:
-    0 6px 0 0 #6b3a20,
-    0 14px 30px -12px rgba(107,58,32,0.55);
+    0 6px 0 0 rgba(255,137,181,0.55),
+    0 18px 34px -14px rgba(122,74,43,0.35);
   transition: transform .18s ease, box-shadow .18s ease;
 }
 .kids-theme a:hover > .kids-card,
 .kids-theme button:hover > .kids-card,
 .kids-theme .kids-card:hover {
   transform: translateY(-3px) rotate(-0.5deg);
-  box-shadow: 0 9px 0 0 #6b3a20, 0 20px 36px -12px rgba(107,58,32,0.6);
+  box-shadow: 0 9px 0 0 rgba(255,137,181,0.6), 0 22px 40px -12px rgba(122,74,43,0.4);
 }
 @utility kids-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: #ef6c3a;
-  color: #fff;
-  border: 3px solid #6b3a20;
+  background: linear-gradient(180deg, #ffd76a, #ff89b5);
+  color: #5b3a24;
+  border: 3px solid #ffffff;
   border-radius: 999px;
   padding: 0.35rem 0.9rem;
-  font-family: "Archivo Black", sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 3px 0 0 #6b3a20;
+  box-shadow: 0 3px 0 0 rgba(255,137,181,0.7);
 }
 @utility kids-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: linear-gradient(180deg, #ffd166, #ef6c3a);
-  color: #6b3a20;
-  border: 4px solid #6b3a20;
+  background: linear-gradient(180deg, #ffe08a, #ff9ec2);
+  color: #5b3a24;
+  border: 4px solid #ffffff;
   border-radius: 999px;
   padding: 0.75rem 1.4rem;
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  box-shadow: 0 6px 0 0 #6b3a20;
+  box-shadow: 0 6px 0 0 rgba(255,137,181,0.65), 0 10px 20px -8px rgba(122,74,43,0.35);
   transition: transform .12s ease, box-shadow .12s ease;
 }
-.kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 #6b3a20; }
-.kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 #6b3a20; }
+.kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 rgba(255,137,181,0.7); }
+.kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 rgba(255,137,181,0.7); }
 
 @utility kids-panel {
-  background: rgba(255, 246, 223, 0.92);
-  border: 4px solid #6b3a20;
+  background: rgba(255, 250, 240, 0.94);
+  border: 4px solid #ffffff;
+  outline: 3px solid #bfe6ff;
+  outline-offset: -7px;
   border-radius: 2rem;
-  box-shadow: 0 10px 0 0 #6b3a20, 0 24px 50px -18px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 0 0 rgba(191,230,255,0.7), 0 24px 50px -18px rgba(122,74,43,0.25);
   backdrop-filter: blur(4px);
 }
 
