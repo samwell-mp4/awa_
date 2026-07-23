@@ -18,7 +18,7 @@ export function PremiumGate({
   const { isPremium, loading } = useSubscription();
 
   if (loading || authLoading) {
-    return <div className="grid min-h-[40vh] place-items-center text-foreground/60">{t("common.carregando")}</div>;
+    return <div className="grid min-h-[40vh] place-items-center text-foreground/60">Carregando...</div>;
   }
   if (isAdmin || isPremium) return <>{children}</>;
 
