@@ -495,11 +495,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error(t.copyFail);
     }
   }
 
-  const time = msg.at ? new Date(msg.at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+  const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
