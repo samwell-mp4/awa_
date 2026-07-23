@@ -54,7 +54,6 @@ type Story = {
   title: string;
   highlight: string;
   image: string;
-  video?: string;
   paragraphs: string[];
   quote?: string;
   color: string;
