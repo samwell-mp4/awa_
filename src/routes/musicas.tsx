@@ -17,6 +17,7 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/musicas")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Cânticos Sagrados — AWÃ TECH" },
@@ -410,15 +411,18 @@ function Player({
 
   const maxLen = Math.max(indLines.length, ptLines.length);
   // Sincronização automática das legendas.
-  // Mantém a primeira legenda visível desde o início e antecipa cada troca
-  // de linha de forma proporcional ao tamanho médio dos versos, corrigindo
-  // músicas em que a letra estava entrando atrasada.
+  // As faixas cadastradas têm trechos instrumentais/encerramentos dentro da
+  // duração total, então usar 100% do áudio deixa os versos atrasados. A letra
+  // é distribuída em uma janela mais curta e com compensação de voz para seguir
+  // o cântico adulto mais de perto.
   const activeIdx = (() => {
-    if (maxLen <= 0 || duration <= 0) return -1;
-    const averageLineTime = duration / maxLen;
-    const lead = Math.min(4.2, Math.max(1.8, averageLineTime * 0.45));
+    if (maxLen <= 0) return -1;
+    if (duration <= 0) return 0;
+    const lyricWindow = Math.max(1, duration * 0.82);
+    const averageLineTime = lyricWindow / maxLen;
+    const lead = Math.min(6.5, Math.max(3.2, averageLineTime * 0.6));
     const sungStart = 0;
-    const sungEnd = Math.max(0.001, duration);
+    const sungEnd = Math.max(0.001, lyricWindow);
     const t = Math.min(sungEnd, Math.max(sungStart, progress + lead));
     const rel = (t - sungStart) / (sungEnd - sungStart);
     return Math.max(0, Math.min(maxLen - 1, Math.floor(rel * maxLen)));

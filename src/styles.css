@@ -308,8 +308,8 @@ body::before {
   box-shadow: 0 6px 0 0 #6b3a20;
   transition: transform .12s ease, box-shadow .12s ease;
 }
-@utility kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 #6b3a20; }
-@utility kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 #6b3a20; }
+.kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 #6b3a20; }
+.kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 #6b3a20; }
 
 @utility kids-panel {
   background: rgba(255, 246, 223, 0.92);
