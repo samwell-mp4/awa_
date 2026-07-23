@@ -46,11 +46,13 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 function InstalarPage() {
+  const backTo = useLastArea();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");
   const [showIOSSteps, setShowIOSSteps] = useState(false);
   const [showAndroidSteps, setShowAndroidSteps] = useState(false);
+
 
   useEffect(() => {
     const ua = navigator.userAgent;
