@@ -166,13 +166,26 @@ function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
+  const lang = useLang();
+  const t = L10N[lang];
 
-  const [messages, setMessages] = useState<Msg[]>([WELCOME_MESSAGE]);
+  const makeWelcome = (): Msg => ({ role: "assistant", content: t.welcome, at: Date.now() });
+
+  const [messages, setMessages] = useState<Msg[]>(() => [makeWelcome()]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // When the UI language changes and no user message was sent, refresh the welcome.
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length <= 1) return [{ role: "assistant", content: t.welcome, at: Date.now() }];
+      return prev;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -203,17 +216,17 @@ function ProfessorPage() {
   async function send(text: string) {
     const content = text.trim();
     if (!content || loading) return;
-    const audio = new Audio(); // criado dentro do gesto do usuário para autoplay
+    const audio = new Audio();
     const next = [...messages, { role: "user" as const, content, at: Date.now() }];
     setMessages(next);
     setInput("");
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
+      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
       void autoSpeak(audio, reply);
     } catch (e: any) {
-      toast.error(e.message ?? "Não foi possível falar com Akuã agora.");
+      toast.error(e.message ?? t.errorSpeak);
     } finally {
       setLoading(false);
       textareaRef.current?.focus();
@@ -222,7 +235,7 @@ function ProfessorPage() {
 
   function resetConversation() {
     audioRef.current?.pause();
-    setMessages([{ ...WELCOME_MESSAGE, at: Date.now() }]);
+    setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
   }
