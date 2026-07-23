@@ -7,7 +7,6 @@ import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
 
-
 export const Route = createFileRoute("/trilhas-infantil")({
   head: () => ({
     meta: [
@@ -15,12 +14,12 @@ export const Route = createFileRoute("/trilhas-infantil")({
       {
         name: "description",
         content:
-          "Trilhas da Aldeia: mapa 3D infantil para crianças aprenderem saudações, família, natureza e animais em línguas indígenas.",
+          "Trilhas da Aldeia: mapa colorido e infantil com totens de saudações, família, natureza e animais em línguas indígenas.",
       },
       { property: "og:title", content: "Trilhas da Aldeia — Awã Tech" },
       {
         property: "og:description",
-        content: "Mapa mágico 3D infantil das trilhas de aprendizado Awã Tech.",
+        content: "Mapa mágico e divertido das trilhas de aprendizado Awã Tech.",
       },
     ],
   }),
@@ -29,93 +28,76 @@ export const Route = createFileRoute("/trilhas-infantil")({
 
 type TotemStyle = {
   emoji: string;
-  gradient: string;
-  ring: string;
-  feather: string;
-  shadow: string;
-  pattern: string;
+  color: string; // main hex
+  shadow: string; // shadow tint hex with alpha
+  islandTop: string; // island top gradient stops
+  islandBottom: string;
+  position: string; // absolute position classes
+  rotate: string;
 };
 
 const totemStyles: Record<string, TotemStyle> = {
   saudacoes: {
     emoji: "🤝",
-    gradient: "from-amber-200 via-orange-400 to-amber-700",
-    ring: "ring-amber-100",
-    feather: "#f59e0b",
-    shadow: "shadow-[0_18px_0_-6px_#7c2d12,0_28px_40px_-12px_rgba(60,20,0,0.6)]",
-    pattern: "◆",
+    color: "#ffd166",
+    shadow: "rgba(255,209,102,0.45)",
+    islandTop: "#a7f3d0",
+    islandBottom: "#6bbf8a",
+    position: "top-2 right-8",
+    rotate: "-3deg",
   },
   familia: {
     emoji: "🏠",
-    gradient: "from-yellow-200 via-orange-300 to-red-500",
-    ring: "ring-yellow-100",
-    feather: "#eab308",
-    shadow: "shadow-[0_18px_0_-6px_#7f1d1d,0_28px_40px_-12px_rgba(60,20,0,0.6)]",
-    pattern: "▲",
+    color: "#ef476f",
+    shadow: "rgba(239,71,111,0.45)",
+    islandTop: "#c4b5fd",
+    islandBottom: "#8b7ad1",
+    position: "top-36 left-4",
+    rotate: "4deg",
   },
   natureza: {
     emoji: "🌳",
-    gradient: "from-lime-200 via-emerald-400 to-green-700",
-    ring: "ring-lime-100",
-    feather: "#10b981",
-    shadow: "shadow-[0_18px_0_-6px_#14532d,0_28px_40px_-12px_rgba(0,40,10,0.6)]",
-    pattern: "✦",
+    color: "#06d6a0",
+    shadow: "rgba(6,214,160,0.45)",
+    islandTop: "#fde68a",
+    islandBottom: "#e0b04a",
+    position: "top-[280px] right-4",
+    rotate: "-4deg",
   },
   animais: {
     emoji: "🐢",
-    gradient: "from-teal-200 via-cyan-400 to-teal-700",
-    ring: "ring-teal-100",
-    feather: "#0d9488",
-    shadow: "shadow-[0_18px_0_-6px_#134e4a,0_28px_40px_-12px_rgba(0,40,40,0.6)]",
-    pattern: "●",
+    color: "#118ab2",
+    shadow: "rgba(17,138,178,0.45)",
+    islandTop: "#fca5a5",
+    islandBottom: "#c96b6b",
+    position: "bottom-4 left-8",
+    rotate: "3deg",
   },
 };
 
-const positions = [
-  { top: "20%", left: "64%" },
-  { top: "40%", left: "28%" },
-  { top: "60%", left: "70%" },
-  { top: "80%", left: "32%" },
-];
-
-/** SVG feather stuck on top of the totem */
-function Feather({ color }: { color: string }) {
+function FloatingIsland({ top, bottom, size = 140 }: { top: string; bottom: string; size?: number }) {
+  const w = size;
+  const h = Math.round(size * 0.55);
   return (
     <svg
       aria-hidden
-      viewBox="0 0 40 80"
-      className="absolute -top-10 left-1/2 h-16 w-8 -translate-x-1/2 drop-shadow-[0_4px_2px_rgba(0,0,0,0.35)]"
-      style={{ transformOrigin: "50% 100%", animation: "kids-sway 3s ease-in-out infinite" }}
+      viewBox={`0 0 ${w} ${h}`}
+      className="absolute left-1/2 top-full -translate-x-1/2 -translate-y-3"
+      style={{ width: w, height: h, filter: "drop-shadow(0 12px 12px rgba(0,0,0,0.25))" }}
     >
-      <path
-        d="M20 78 Q18 40 20 4 Q28 20 32 40 Q30 60 20 78 Z"
-        fill={color}
-        stroke="#3f2413"
-        strokeWidth="1.5"
-      />
-      <path d="M20 78 Q22 40 20 4 Q12 20 8 40 Q10 60 20 78 Z" fill={color} opacity="0.8" stroke="#3f2413" strokeWidth="1.5" />
-      <line x1="20" y1="78" x2="20" y2="8" stroke="#3f2413" strokeWidth="1.5" />
-      <circle cx="20" cy="80" r="3" fill="#7c2d12" />
+      <defs>
+        <linearGradient id={`isl-${top}-${bottom}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={top} />
+          <stop offset="55%" stopColor={top} />
+          <stop offset="55%" stopColor={bottom} />
+          <stop offset="100%" stopColor={bottom} />
+        </linearGradient>
+      </defs>
+      <ellipse cx={w / 2} cy={h * 0.35} rx={w * 0.42} ry={h * 0.42} fill={`url(#isl-${top}-${bottom})`} />
+      {/* tiny grass tufts */}
+      <path d={`M ${w * 0.3} ${h * 0.32} q 3 -6 6 0`} stroke={bottom} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d={`M ${w * 0.55} ${h * 0.28} q 3 -7 6 0`} stroke={bottom} strokeWidth="2" fill="none" strokeLinecap="round" />
     </svg>
-  );
-}
-
-/** Tribal border stripe drawn with SVG symbols */
-function TribalBorder() {
-  const symbols = ["◆", "△", "◇", "▽"];
-  return (
-    <div className="pointer-events-none absolute inset-0 rounded-[2rem]">
-      <div className="absolute inset-x-4 top-2 flex justify-between text-[10px] font-black text-amber-900/70 md:text-sm">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span key={"t" + i}>{symbols[i % symbols.length]}</span>
-        ))}
-      </div>
-      <div className="absolute inset-x-4 bottom-2 flex justify-between text-[10px] font-black text-amber-900/70 md:text-sm">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span key={"b" + i}>{symbols[(i + 2) % symbols.length]}</span>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -123,233 +105,152 @@ function TrilhaInfantilPage() {
   const { t, i18n } = useTranslation();
   const trails = useHomeTrails();
 
-  const titleTr = t("common.kidsTrailsTitle");
-  const subtitleTr = t("common.kidsTrailsSubtitle");
+  const titleTop = t("common.kidsTrailsTitle").replace(/^[^\p{L}]*/u, ""); // strip leading emoji if present
+  const subtitle = t("common.kidsTrailsSubtitle");
 
   return (
-    <div key={i18n.language} className="kids-theme min-h-screen text-foreground">
+    <div key={i18n.language} className="min-h-screen bg-[#fdfcf0] text-foreground">
       <style>{`
-        @keyframes kids-sway { 0%,100%{transform:translateX(-50%) rotate(-6deg)} 50%{transform:translateX(-50%) rotate(6deg)} }
-        @keyframes kids-bounce-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        @keyframes kids-spin-slow { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-        @keyframes kids-walk { 0%{stroke-dashoffset:0} 100%{stroke-dashoffset:-40} }
-        @keyframes kids-pop { 0%{transform:scale(.85)} 60%{transform:scale(1.08)} 100%{transform:scale(1)} }
+        @keyframes kids-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes kids-wobble { 0%,100%{transform:rotate(var(--rot))} 50%{transform:rotate(calc(var(--rot) * -1))} }
+        @keyframes kids-pop { 0%{transform:scale(.6);opacity:0} 60%{transform:scale(1.1);opacity:1} 100%{transform:scale(1)} }
+        @keyframes kids-dash { to { stroke-dashoffset: -240 } }
+        @keyframes kids-cloud { 0%{transform:translateX(-20px)} 50%{transform:translateX(20px)} 100%{transform:translateX(-20px)} }
+        .kids-totem { animation: kids-pop .5s ease-out both, kids-float 3.6s ease-in-out infinite; }
+        .kids-totem:hover { animation-play-state: paused; }
       `}</style>
 
       <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="mt-4 text-center">
-          <h1 className="kids-title text-3xl text-amber-900 drop-shadow-[0_3px_0_rgba(255,255,255,0.6)] md:text-5xl">
-            {titleTr}
-          </h1>
-          <p className="mt-2 text-sm font-bold text-emerald-900/80 md:text-base">
-            {subtitleTr}
-          </p>
-        </div>
+      <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif]">
+        <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#ffd166]/40 bg-[#fdfcf0] shadow-inner">
+          {/* Decorative clouds */}
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70">
+            <div className="absolute left-4 top-6 text-4xl" style={{ animation: "kids-cloud 12s ease-in-out infinite" }}>☁️</div>
+            <div className="absolute right-6 top-16 text-3xl" style={{ animation: "kids-cloud 15s ease-in-out infinite reverse" }}>☁️</div>
+            <div className="absolute right-10 top-2 text-2xl">☀️</div>
+          </div>
 
+          {/* Header */}
+          <header className="relative z-10 px-6 pt-10 text-center">
+            <h1
+              className="text-4xl uppercase leading-none tracking-tight text-[#118ab2]"
+              style={{ fontFamily: "'Archivo Black', 'Archivo', system-ui, sans-serif" }}
+            >
+              {titleTop.split(" ").slice(0, -1).join(" ") || "Trilhas da"}
+              <br />
+              <span className="text-[#ef476f]">
+                {titleTop.split(" ").slice(-1)[0] || "Aldeia"}
+              </span>
+            </h1>
+            <p className="mt-3 text-lg font-bold text-[#06d6a0]">{subtitle}</p>
+          </header>
 
-        <section
-          className="relative mt-6 overflow-hidden rounded-[2rem] border-[6px] border-amber-800 shadow-[0_25px_70px_-25px_rgba(0,0,0,0.6),inset_0_0_0_4px_#fde68a]"
-          style={{
-            aspectRatio: "3 / 4",
-            background:
-              "radial-gradient(ellipse at 30% 15%, #fff5d6 0%, #f2dfa8 40%, #d9b877 80%, #b8894a 100%)",
-          }}
-        >
-          {/* paper grain */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 30%, rgba(120,72,20,0.28) 0px, transparent 2px), radial-gradient(circle at 70% 60%, rgba(120,72,20,0.22) 0px, transparent 2px), radial-gradient(circle at 40% 80%, rgba(120,72,20,0.22) 0px, transparent 2px)",
-              backgroundSize: "70px 70px, 110px 110px, 95px 95px",
-            }}
-          />
-
-          <TribalBorder />
-
-          {/* Decorative jungle: trees, mountains, sun */}
-          <svg
-            aria-hidden
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 100 133"
-            preserveAspectRatio="none"
-          >
-            {/* Sun with rays */}
-            <g style={{ transformOrigin: "12px 14px", animation: "kids-spin-slow 30s linear infinite" }}>
-              {Array.from({ length: 12 }).map((_, i) => (
-                <line
-                  key={i}
-                  x1="12"
-                  y1="14"
-                  x2="12"
-                  y2="4"
-                  stroke="#f59e0b"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  transform={`rotate(${i * 30} 12 14)`}
-                />
+          {/* Adventure map area */}
+          <div className="relative mx-4 my-6 h-[520px]">
+            {/* Winding dashed trail */}
+            <svg
+              aria-hidden
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              viewBox="0 0 300 520"
+              fill="none"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M230 70 C 230 150, 70 150, 70 220 C 70 300, 230 300, 230 380 C 230 460, 70 460, 70 500"
+                stroke="#ffd166"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeDasharray="10 14"
+                style={{ animation: "kids-dash 6s linear infinite" }}
+              />
+              {/* footprints */}
+              {[
+                [150, 130], [90, 200], [150, 260], [210, 330], [150, 400], [90, 470],
+              ].map(([x, y], i) => (
+                <text key={i} x={x} y={y} fontSize="14" textAnchor="middle" opacity="0.7">
+                  {i % 2 ? "🐾" : "👣"}
+                </text>
               ))}
-              <circle cx="12" cy="14" r="4" fill="#fbbf24" stroke="#b45309" strokeWidth="0.6" />
-            </g>
+            </svg>
 
-            {/* Mountains */}
-            <path d="M0 30 L18 14 L28 24 L40 10 L55 26 L70 16 L88 28 L100 20 L100 40 L0 40 Z" fill="#a16207" opacity="0.35" />
-            <path d="M0 34 L15 22 L26 30 L40 18 L55 32 L72 22 L90 32 L100 28 L100 42 L0 42 Z" fill="#78350f" opacity="0.4" />
-
-            {/* Trees */}
-            {[
-              [8, 60], [92, 50], [10, 92], [90, 100], [50, 128], [22, 118], [78, 118],
-            ].map(([x, y], i) => (
-              <g key={"tree" + i} transform={`translate(${x} ${y})`}>
-                <rect x="-1" y="0" width="2" height="5" fill="#7c2d12" />
-                <polygon points="-5,0 5,0 0,-8" fill="#166534" />
-                <polygon points="-4,-4 4,-4 0,-10" fill="#15803d" />
-                <polygon points="-3,-8 3,-8 0,-12" fill="#22c55e" />
-              </g>
-            ))}
-
-            {/* River */}
-            <path
-              d="M -2 105 Q 20 100 35 108 Q 55 116 80 108 Q 95 104 102 108"
-              fill="none"
-              stroke="#38bdf8"
-              strokeWidth="3"
-              strokeLinecap="round"
-              opacity="0.55"
-            />
-            <path
-              d="M -2 105 Q 20 100 35 108 Q 55 116 80 108 Q 95 104 102 108"
-              fill="none"
-              stroke="#7dd3fc"
-              strokeWidth="1"
-              strokeLinecap="round"
-            />
-
-            {/* Dashed path connecting totems */}
-            <path
-              d="M 62 26 Q 40 32 26 44 Q 15 58 40 62 Q 70 66 68 78 Q 60 92 32 92 Q 20 102 40 112"
-              fill="none"
-              stroke="#7c2d12"
-              strokeWidth="1"
-              strokeDasharray="2 2.5"
-              strokeLinecap="round"
-              style={{ animation: "kids-walk 2s linear infinite" }}
-            />
-
-            {/* Footprints */}
-            {[
-              [50, 30], [34, 40], [30, 54], [50, 60], [64, 72], [50, 88], [36, 96], [40, 108],
-            ].map(([x, y], i) => (
-              <text key={"f" + i} x={x} y={y} fontSize="2.4" fill="#7c2d12" textAnchor="middle" opacity="0.75">
-                {i % 2 ? "🐾" : "👣"}
-              </text>
-            ))}
-          </svg>
-
-          {/* Compass mascot */}
-          <div
-            className="absolute left-3 top-8 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-pink-300 to-pink-500 text-3xl shadow-[0_10px_0_-3px_#9f1239,0_20px_25px_-10px_rgba(0,0,0,0.5)] ring-4 ring-white/80 md:h-24 md:w-24 md:text-5xl"
-            style={{ animation: "kids-bounce-slow 2.5s ease-in-out infinite" }}
-          >
-            🧭
-          </div>
-
-          {/* Little bird mascot */}
-          <div
-            className="absolute right-4 top-6 text-3xl md:text-5xl"
-            style={{ animation: "kids-bounce-slow 3s ease-in-out infinite" }}
-          >
-            🦜
-          </div>
-
-          {/* Totems */}
-          {trails.slice(0, 4).map((trail, i) => {
-            const slug = trailSlugMap[trail.name];
-            if (!slug) return null;
-            const style = totemStyles[slug];
-            const pos = positions[i] ?? positions[0];
-            const label = translateTrailName(t, trail.name);
-            return (
-              <Link
-                key={slug}
-                to="/trilhas/$slug"
-                params={{ slug }}
-                aria-label={label}
-                style={{ top: pos.top, left: pos.left, animation: `kids-pop .6s ease-out ${i * 0.12}s both` }}
-                className="group absolute -translate-x-1/2 -translate-y-1/2"
-              >
-                <span className="relative block">
-                  <Feather color={style.feather} />
-
-                  {/* glow */}
-                  <span
-                    className={`absolute -inset-4 rounded-full bg-gradient-to-br ${style.gradient} opacity-50 blur-lg transition group-hover:opacity-90`}
-                  />
-
-                  {/* Totem stack: cap → body → base */}
+            {/* Totems */}
+            {trails.slice(0, 4).map((trail, i) => {
+              const slug = trailSlugMap[trail.name];
+              if (!slug) return null;
+              const style = totemStyles[slug];
+              if (!style) return null;
+              const label = translateTrailName(t, trail.name);
+              return (
+                <Link
+                  key={slug}
+                  to="/trilhas/$slug"
+                  params={{ slug }}
+                  aria-label={label}
+                  className={`kids-totem group absolute ${style.position} transition-transform hover:scale-110 active:scale-95`}
+                  style={{
+                    animationDelay: `${i * 120}ms`,
+                    // @ts-expect-error CSS var
+                    "--rot": style.rotate,
+                  }}
+                >
                   <span className="relative block">
-                    {/* top cap */}
+                    {/* Glow */}
                     <span
-                      className={`relative mx-auto block h-6 w-16 rounded-t-full bg-gradient-to-b ${style.gradient} ring-2 ${style.ring} md:h-8 md:w-24`}
+                      aria-hidden
+                      className="absolute -inset-3 rounded-full opacity-70 blur-xl transition group-hover:opacity-100"
+                      style={{ background: style.color }}
                     />
-                    {/* body */}
+
+                    {/* Totem bubble */}
                     <span
-                      className={`relative grid h-[22vw] w-[22vw] max-h-32 max-w-32 place-items-center rounded-3xl bg-gradient-to-br ${style.gradient} text-[10vw] max-text-[3.5rem] ring-4 ${style.ring} ${style.shadow} transition group-hover:-translate-y-2 group-hover:rotate-[-3deg] group-active:scale-95`}
+                      className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 border-white text-white"
                       style={{
-                        backgroundImage:
-                          "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 40%), radial-gradient(circle at 50% 20%, rgba(255,255,255,0.5), transparent 60%)",
+                        background: style.color,
+                        boxShadow: `0 10px 0 -2px ${style.shadow}, 0 20px 30px -10px ${style.shadow}`,
+                        transform: `rotate(${style.rotate})`,
                       }}
                     >
-                      {/* tribal band */}
-                      <span className="absolute inset-x-0 top-3 flex justify-around text-[10px] font-black text-amber-950/70 md:text-sm">
-                        {Array.from({ length: 6 }).map((_, k) => (
-                          <span key={k}>{style.pattern}</span>
-                        ))}
-                      </span>
-                      <span className="drop-shadow-[0_3px_2px_rgba(0,0,0,0.35)]">{style.emoji}</span>
-                      <span className="absolute inset-x-0 bottom-3 flex justify-around text-[10px] font-black text-amber-950/70 md:text-sm">
-                        {Array.from({ length: 6 }).map((_, k) => (
-                          <span key={k}>{style.pattern}</span>
-                        ))}
+                      <span className="text-3xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
+                      <span
+                        className="mt-0.5 text-[10px] uppercase tracking-widest text-white"
+                        style={{ fontFamily: "'Archivo Black', sans-serif" }}
+                      >
+                        {label}
                       </span>
                     </span>
-                    {/* base plinth */}
-                    <span className="relative mx-auto -mt-1 block h-4 w-24 rounded-b-2xl bg-amber-900 shadow-[0_6px_0_-2px_#3f2413] md:h-6 md:w-32" />
-                  </span>
 
-                  {/* label plaque */}
-                  <span className="pointer-events-none absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-amber-100 bg-amber-900/95 px-4 py-1.5 font-display text-[11px] font-black uppercase tracking-wider text-amber-50 shadow-[0_4px_0_-1px_#3f2413] md:text-sm">
-                    {label}
+                    {/* Floating island shadow beneath */}
+                    <FloatingIsland top={style.islandTop} bottom={style.islandBottom} />
                   </span>
-                </span>
-              </Link>
-            );
-          })}
-        </section>
+                </Link>
+              );
+            })}
+          </div>
 
-        {/* List nav */}
-        <nav className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {trails.slice(0, 4).map((trail, i) => {
-            const slug = trailSlugMap[trail.name];
-            if (!slug) return null;
-            const style = totemStyles[slug];
-            return (
-              <Link
-                key={"list-" + slug}
-                to="/trilhas/$slug"
-                params={{ slug }}
-                className={`kids-card flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-br ${style.gradient} px-3 py-4 text-center font-display text-sm font-black uppercase tracking-wide text-amber-950 ring-2 ${style.ring} transition hover:-translate-y-1`}
-                style={{ animation: `kids-pop .5s ease-out ${i * 0.1}s both` }}
-              >
-                <span className="text-2xl drop-shadow">{style.emoji}</span>
-                {translateTrailName(t, trail.name)}
-              </Link>
-            );
-          })}
-        </nav>
+          {/* Quick nav footer */}
+          <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
+            {trails.slice(0, 4).map((trail) => {
+              const slug = trailSlugMap[trail.name];
+              if (!slug) return null;
+              const style = totemStyles[slug];
+              if (!style) return null;
+              const label = translateTrailName(t, trail.name);
+              return (
+                <Link
+                  key={"nav-" + slug}
+                  to="/trilhas/$slug"
+                  params={{ slug }}
+                  aria-label={label}
+                  className="flex h-14 items-center justify-center rounded-xl border-b-4 border-black/10 shadow-sm transition-all active:translate-y-1 active:border-b-0"
+                  style={{ background: style.color }}
+                >
+                  <span className="text-2xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </main>
 
       <SiteFooter />
