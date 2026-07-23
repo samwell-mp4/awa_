@@ -24,6 +24,12 @@ const INSTRUCTIONS: Record<string, string> = {
   es: "Habla en español con una voz masculina grave, calma y sabia, con ritmo pausado, como un anciano indígena contando una historia ancestral con emoción respetuosa.",
 };
 
+// Instruções para pronúncia de palavras isoladas do dicionário Patxôhã.
+// Sem entonação de história: articulação clara, som natural indígena.
+const WORD_INSTRUCTIONS =
+  "Pronounce this single indigenous Patxôhã (Pataxó) word clearly and naturally, as a native speaker would. Read the letters phonetically in Portuguese Brazilian phonetics: 'a' as /a/, 'e' as /e/, 'i' as /i/, 'o' as /o/, 'u' as /u/, 'x' as /ʃ/ (like 'sh'), 'nh' as /ɲ/, 'y' as /j/. Speak slowly, one time, with a warm calm male voice. No storytelling tone, no emotion, no extra words — just the word itself, well articulated.";
+
+
 async function readGatewayError(res: Response) {
   const raw = await res.text().catch(() => "");
   try {
@@ -36,7 +42,7 @@ async function readGatewayError(res: Response) {
 
 export const narratePublic = createServerFn({ method: "POST" })
 
-  .inputValidator((d: { text: string; voice?: string; lang?: string }) => d)
+  .inputValidator((d: { text: string; voice?: string; lang?: string; mode?: "story" | "word" }) => d)
   .handler(async ({ data }): Promise<NarrationPayload> => {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
@@ -44,9 +50,11 @@ export const narratePublic = createServerFn({ method: "POST" })
     if (!text.trim()) throw new Error("Texto vazio");
     const voice = data.voice ?? "onyx";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
-    const instructions = INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt;
+    const mode = data.mode ?? "story";
+    const instructions = mode === "word" ? WORD_INSTRUCTIONS : (INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt);
 
-    const k = keyFor(text, voice, lang);
+
+    const k = keyFor(text, `${voice}:${mode}`, lang);
     const hit = cache.get(k);
     if (hit) return hit;
 
