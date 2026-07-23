@@ -247,7 +247,33 @@ function MinhaContaPage() {
           )}
         </section>
 
+        {/* PAINEL ADMINISTRATIVO — só para administradores */}
+        {isAdmin && (
+          <section className="mt-6 rounded-3xl border-2 border-gold/60 bg-gradient-to-r from-gold/15 via-gold/10 to-gold/15 p-5 shadow-[var(--shadow-glow)] md:p-6">
+            <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gold">
+                  <Shield className="h-3.5 w-3.5" /> ⚙️ Você é administrador
+                </div>
+                <h2 className="mt-1 font-display text-xl font-black text-cream md:text-2xl">
+                  Painel Administrativo AWÃ TECH
+                </h2>
+                <p className="mt-1 text-xs text-foreground/75 md:text-sm">
+                  Gerencie dicionário, trilhas, vídeos, músicas, missões e acessos.
+                </p>
+              </div>
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-2 rounded-2xl bg-gold px-5 py-3 font-display text-sm font-black text-forest-deep shadow-lg hover:brightness-110"
+              >
+                🔹 Acessar Painel
+              </Link>
+            </div>
+          </section>
+        )}
+
         {/* CHECKOUT FEEDBACK */}
+
         {processing && !isPremium && (
           <div className="mt-6 flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/10 p-4">
             <Loader2 className="h-5 w-5 animate-spin text-gold" />
