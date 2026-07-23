@@ -75,5 +75,12 @@ export default {
     trailAnimais: "Txaywã",
     kidsTrailsTitle: "🗺️ Auê Pahí kaí Aldeia",
     kidsTrailsSubtitle: "Ãhõmãy pahí — auê nakão!",
+    trailDescSaudacoes: "Ãhõmãy aria kaí Pataxó — auê pekutê djã kanuã.",
+    trailDescFamilia: "Djohó awã — mãy, papai, txãy, txawi kaí aldeia.",
+    trailDescNatureza: "Awê mãtxioá — pyry, hãhãw, dohó, mata pahí.",
+    trailDescAnimais: "Txaywã kaí mata — kanamiuá, txaí, jabuti, ãpuru.",
+    kidsListen: "Auê",
+    kidsStop: "Pyrãy",
+    kidsLoading: "Ãhõmãy…",
   },
 };

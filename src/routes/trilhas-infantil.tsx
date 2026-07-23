@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/home/site-header";
 import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
+import { TrailNarrator } from "@/components/kids/trail-narrator";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   head: () => ({
@@ -227,6 +228,28 @@ function TrilhaInfantilPage() {
               );
             })}
           </div>
+
+          {/* Narração das trilhas — título e descrição com áudio */}
+          <section className="px-4 pb-4" aria-label={t("common.kidsTrailsTitle")}>
+            <div className="grid gap-3">
+              {trails.slice(0, 4).map((trail) => {
+                const slug = trailSlugMap[trail.name];
+                if (!slug) return null;
+                const style = totemStyles[slug];
+                if (!style) return null;
+                const descKey = `common.trailDesc${slug.charAt(0).toUpperCase() + slug.slice(1)}`;
+                return (
+                  <TrailNarrator
+                    key={"narr-" + slug}
+                    title={translateTrailName(t, trail.name)}
+                    description={t(descKey)}
+                    color={style.color}
+                    emoji={style.emoji}
+                  />
+                );
+              })}
+            </div>
+          </section>
 
           {/* Quick nav footer */}
           <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
