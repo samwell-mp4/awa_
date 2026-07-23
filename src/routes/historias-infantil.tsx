@@ -8,13 +8,21 @@ import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
 import { setLastArea } from "@/lib/last-area";
 
-import monte from "@/assets/pataxo-monte-pascoal.jpg";
-import ancianoImg from "@/assets/pataxo-anciao.jpg";
-import aldeiaImg from "@/assets/pataxo-aldeia.jpg";
-import dancaImg from "@/assets/pataxo-danca.jpg";
-import artesanatoImg from "@/assets/pataxo-artesanato.jpg";
-import albumJosaClean from "@/assets/album/anciao-josa-clean.jpg";
-import albumAnciao from "@/assets/album/anciao-pataxo.png.asset.json";
+import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
+import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
+import monteImg from "@/assets/kids-stories/monte.jpg.asset.json";
+import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
+import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
+import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
+import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
+
+const monte = monteImg.url;
+const ancianoImg = linguaImg.url;
+const aldeiaImg = aldeiaAsset.url;
+const dancaImg = aweImg.url;
+const artesanatoImg = arteImg.url;
+const albumJosaClean = josaImg.url;
+const albumAnciao = { url: joaoImg.url };
 
 export const Route = createFileRoute("/historias-infantil")({
   head: () => ({
