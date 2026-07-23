@@ -60,7 +60,7 @@ function AmizadePage() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat text-emerald-950"
+      className="kids-theme min-h-screen bg-cover bg-center bg-no-repeat text-emerald-950"
       style={{
         backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
       }}

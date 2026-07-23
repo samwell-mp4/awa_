@@ -64,7 +64,7 @@ function InfantilHome() {
   useEffect(() => setLastArea("/infantil"), []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
+    <div className="kids-theme min-h-screen text-foreground">
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
