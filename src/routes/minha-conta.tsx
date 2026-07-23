@@ -88,7 +88,7 @@ function statusLabel(status?: string | null, cancelAtEnd?: boolean | null) {
 
 function MinhaContaPage() {
   const { user, loading: authLoading } = useAuth();
-  const { isPremium, subscription, refetch } = useSubscription();
+  const { isPremium, hasInfantil, hasAdulto, subscription, subscriptions, refetch } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const openPortal = useServerFn(openCustomerPortalSession);
   const navigate = useNavigate();
@@ -300,13 +300,19 @@ function MinhaContaPage() {
 
             <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
               <div className="rounded-xl border border-gold/15 bg-card/40 p-3">
-                <dt className="text-[11px] uppercase tracking-wider text-foreground/50">Plano</dt>
-                <dd className="mt-0.5 text-cream">
-                  {subscription?.price_id === "awa_premium_semestral"
-                    ? "Semestral (R$ 149,90)"
-                    : subscription?.price_id === "awa_premium_monthly"
-                      ? "Mensal (R$ 29,90)"
-                      : "—"}
+                <dt className="text-[11px] uppercase tracking-wider text-foreground/50">Plano(s) ativo(s)</dt>
+                <dd className="mt-0.5 flex flex-wrap gap-1.5 text-cream">
+                  {subscriptions.length === 0 && "—"}
+                  {subscriptions.map((s: any) =>
+                    priceLabels[s.price_id] ? (
+                      <span
+                        key={s.paddle_subscription_id}
+                        className="rounded-full border border-gold/20 bg-card/60 px-2 py-0.5 text-xs"
+                      >
+                        {priceLabels[s.price_id]}
+                      </span>
+                    ) : null,
+                  )}
                 </dd>
               </div>
               <div className="rounded-xl border border-gold/15 bg-card/40 p-3">
@@ -316,6 +322,39 @@ function MinhaContaPage() {
                 <dd className="mt-0.5 text-cream">{formatDate(subscription?.current_period_end)}</dd>
               </div>
             </dl>
+
+            {/* Acesso rápido às áreas liberadas */}
+            {(hasInfantil || hasAdulto) && (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {hasInfantil && (
+                  <Link
+                    to="/infantil"
+                    className="rounded-2xl border border-leaf/40 bg-leaf/10 p-4 text-center font-display text-sm font-black text-cream hover:bg-leaf/20"
+                  >
+                    🚪 Acessar área Infantil
+                  </Link>
+                )}
+                {hasAdulto && (
+                  <Link
+                    to="/adulto"
+                    className="rounded-2xl border border-gold/40 bg-gold/10 p-4 text-center font-display text-sm font-black text-cream hover:bg-gold/20"
+                  >
+                    🚪 Acessar área Adulto
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* Adicionar o outro plano */}
+            {(hasInfantil !== hasAdulto) && (
+              <Link
+                to="/planos"
+                search={{ need: hasInfantil ? "adulto" : "infantil" } as any}
+                className="mt-4 inline-flex items-center gap-2 rounded-xl border border-gold/30 px-4 py-2 text-xs font-semibold text-gold hover:bg-gold/10"
+              >
+                🔄 Contratar também assinatura {hasInfantil ? "Adulto" : "Infantil"}
+              </Link>
+            )}
 
             <div className="mt-6 flex flex-wrap gap-3">
               {subscription?.paddle_customer_id && (
