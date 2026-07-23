@@ -101,17 +101,21 @@ function ExperienceCard({
   to,
   image,
   eyebrow,
-  title,
-  description,
+  variant,
   priority = false,
 }: {
   to: "/adulto" | "/infantil";
   image: string;
   eyebrow: string;
-  title: string;
-  description: string;
+  variant: "adulto" | "crianca";
   priority?: boolean;
 }) {
+  const { i18n } = useTranslation();
+  const lang = (i18n.language || "pt").slice(0, 3).toLowerCase();
+  const key = (lang.startsWith("pat") ? "pat" : lang.slice(0, 2)) as keyof typeof MENU_I18N;
+  const dict = MENU_I18N[key] ?? MENU_I18N.pt;
+  const title = variant === "adulto" ? dict.adulto : dict.crianca;
+  const description = variant === "adulto" ? dict.adultoDesc : dict.criancaDesc;
   return (
     <Link
       to={to}
@@ -132,21 +136,21 @@ function ExperienceCard({
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
         <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
-          <T>{eyebrow}</T>
+          {eyebrow}
         </span>
       </div>
 
       <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
         <div className="min-w-0 text-left">
           <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
-            <T>{title}</T>
+            {title}
           </div>
           <p className="mt-1 text-xs text-foreground/70 md:text-sm">
-            <T>{description}</T>
+            {description}
           </p>
         </div>
         <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          <T>Entrar</T> <ArrowRight className="h-4 w-4" />
+          {dict.entrar} <ArrowRight className="h-4 w-4" />
         </span>
       </div>
     </Link>
