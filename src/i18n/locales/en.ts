@@ -110,6 +110,13 @@ export default {
     trailAnimais: "Animals",
     kidsTrailsTitle: "🗺️ Village Trails",
     kidsTrailsSubtitle: "Tap a totem and follow the magic path!",
+    trailDescSaudacoes: "Learn to greet like the indigenous peoples, with words of respect and joy to start the day.",
+    trailDescFamilia: "Discover the names of your village family: father, mother, brother, sister and the wise elders.",
+    trailDescNatureza: "Explore the enchanted forest: the river, the sun, the moon, the trees and everything Mother Earth offers.",
+    trailDescAnimais: "Meet the animals of the forest: jaguar, armadillo, tortoise and the colorful birds singing in the village.",
+    kidsListen: "Listen",
+    kidsStop: "Stop",
+    kidsLoading: "Preparing…",
   },
   infantil: {
     title: "Village Trail",
