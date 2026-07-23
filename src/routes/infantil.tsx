@@ -61,6 +61,8 @@ const hotspots: Hotspot[] = [
 
 function InfantilHome() {
   const { t } = useTranslation();
+  useEffect(() => setLastArea("/infantil"), []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
       <SiteHeader mode="infantil" />
