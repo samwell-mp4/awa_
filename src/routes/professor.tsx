@@ -344,7 +344,7 @@ function ProfessorPage() {
                   send(input);
                 }
               }}
-              placeholder="Pergunte ao Professor Akuã…"
+              placeholder={t.placeholder}
               rows={1}
               maxLength={1000}
               className="w-full resize-none rounded-2xl border border-gold/25 bg-card/70 px-4 py-3 pr-14 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition"
