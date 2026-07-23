@@ -410,21 +410,16 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
-  // Sincronização automática das legendas.
-  // As faixas cadastradas têm trechos instrumentais/encerramentos dentro da
-  // duração total, então usar 100% do áudio deixa os versos atrasados. A letra
-  // é distribuída em uma janela mais curta e com compensação de voz para seguir
-  // o cântico adulto mais de perto.
+  // Sincronização com ajuste fixo de antecipação (estilo ontimeupdate).
+  // Distribui as linhas na janela cantada e adianta por um valor fixo,
+  // como sugerido: `tempo = currentTime - AJUSTE_FIXO`.
+  const AJUSTE_FIXO = 1.2; // segundos para adiantar a legenda
   const activeIdx = (() => {
     if (maxLen <= 0) return -1;
     if (duration <= 0) return 0;
-    const lyricWindow = Math.max(1, duration * 0.82);
-    const averageLineTime = lyricWindow / maxLen;
-    const lead = Math.min(6.5, Math.max(3.2, averageLineTime * 0.6));
-    const sungStart = 0;
-    const sungEnd = Math.max(0.001, lyricWindow);
-    const t = Math.min(sungEnd, Math.max(sungStart, progress + lead));
-    const rel = (t - sungStart) / (sungEnd - sungStart);
+    const lyricWindow = Math.max(1, duration * 0.9);
+    const t = Math.max(0, Math.min(lyricWindow, progress + AJUSTE_FIXO));
+    const rel = t / lyricWindow;
     return Math.max(0, Math.min(maxLen - 1, Math.floor(rel * maxLen)));
   })();
 
