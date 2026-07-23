@@ -54,14 +54,6 @@ type Entry = {
 };
 
 
-const PDF_DICTIONARY_ENTRIES = (patxohaDict as Array<Omit<Entry, "id">>).map((entry, index) => ({
-  id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
-  ...entry,
-  pronunciation: entry.pronunciation ?? null,
-  example: entry.example ?? null,
-  audio_url: entry.audio_url ?? null,
-})) satisfies Entry[];
-
 // Auto-categorização baseada em palavras-chave na tradução PT.
 const CATEGORY_RULES: { name: string; keywords: RegExp }[] = [
   { name: "Saudações", keywords: /\b(ol[áa]|bom dia|boa tarde|boa noite|tchau|adeus|obrigad[oa]|sauda|bem-vind|paz|sim|n[ãa]o|por favor|com licen[çc]a|desculp)\b/i },
@@ -76,7 +68,7 @@ const CATEGORY_RULES: { name: string; keywords: RegExp }[] = [
 
 const FIXED_CATEGORIES = ["Todas", "Saudações", "Família", "Natureza", "Animais", "Corpo", "Alimentos", "Verbos", "Números", "Outros"];
 
-function categorize(entry: Entry): string {
+function categorize(entry: Omit<Entry, "id">): string {
   if (entry.category && entry.category !== "Geral") return entry.category;
   const pt = entry.term_pt || "";
   for (const rule of CATEGORY_RULES) {
@@ -93,6 +85,52 @@ function firstLetter(s: string): string {
   const norm = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return /[A-Z]/.test(norm) ? norm : "#";
 }
+
+// -----------------------------------------------------------------------------
+// PRÉ-COMPUTAÇÃO ESTÁTICA (executa 1x no carregamento do módulo, não por render)
+// -----------------------------------------------------------------------------
+// Enriquece cada verbete com: categoria, letra inicial e versões em lowercase
+// para busca. Isso elimina milhares de operações de regex/toLowerCase por
+// keystroke — a busca vira comparação direta de strings pré-normalizadas.
+type EnrichedEntry = Entry & {
+  _cat: string;
+  _letter: string;
+  _indLower: string;
+  _ptLower: string;
+};
+
+const ENRICHED_ENTRIES: EnrichedEntry[] = (patxohaDict as Array<Omit<Entry, "id">>).map(
+  (entry, index) => {
+    const base: Entry = {
+      id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
+      ...entry,
+      pronunciation: entry.pronunciation ?? null,
+      example: entry.example ?? null,
+      audio_url: entry.audio_url ?? null,
+    };
+    return {
+      ...base,
+      _cat: categorize(entry),
+      _letter: firstLetter(entry.term_indigenous),
+      _indLower: (entry.term_indigenous || "").toLowerCase(),
+      _ptLower: (entry.term_pt || "").toLowerCase(),
+    };
+  },
+);
+
+const CATEGORY_COUNTS: ReadonlyMap<string, number> = (() => {
+  const m = new Map<string, number>();
+  for (const e of ENRICHED_ENTRIES) m.set(e._cat, (m.get(e._cat) ?? 0) + 1);
+  return m;
+})();
+
+const LETTER_COUNTS: ReadonlyMap<string, number> = (() => {
+  const m = new Map<string, number>();
+  for (const e of ENRICHED_ENTRIES) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
+  return m;
+})();
+
+const TOTAL_ENTRIES = ENRICHED_ENTRIES.length;
 
 function DictionaryPage() {
   const backTo = useLastArea();
