@@ -80,7 +80,7 @@ function InstalarPage() {
   }, []);
 
   async function handleInstall() {
-  const backTo = useLastArea();
+
     if (!deferredPrompt) return;
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
