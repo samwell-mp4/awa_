@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertPremium } from "./premium-guard";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+
 
 type Entry = { term_indigenous: string; term_pt: string };
 
@@ -123,10 +122,9 @@ function autoFormat(s: string): string {
 }
 
 export const translateText = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: { text: string; direction: "pt-pat" | "pat-pt"; environment?: "sandbox" | "live" }) => d)
-  .handler(async ({ data, context }) => {
-    await assertPremium(context, data.environment ?? "live");
+  .handler(async ({ data }) => {
+
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
