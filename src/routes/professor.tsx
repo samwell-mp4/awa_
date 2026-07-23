@@ -475,7 +475,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
     try {
       setAudioBusy(key);
       const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) throw new Error(r.message ?? "Não foi possível gerar áudio");
+      if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
       audioRef.current?.pause();
