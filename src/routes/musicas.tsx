@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
+import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/musicas")({
   head: () => ({
@@ -58,6 +59,7 @@ type Ambient = { id: string; name: string; video_url: string };
 const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
 
 function MusicasPage() {
+  const backTo = useLastArea();
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_public"],
     staleTime: 1000 * 60 * 30,
@@ -137,7 +139,7 @@ function MusicasPage() {
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.15_0.04_145/0.6)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link
-            to="/"
+            to={backTo as "/"}
             className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
           >
             <ArrowLeft className="h-4 w-4" /> Voltar

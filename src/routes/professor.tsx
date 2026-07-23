@@ -8,6 +8,7 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
+import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
@@ -33,7 +34,9 @@ const SUGESTOES = [
 ];
 
 function ProfessorPage() {
+  const backTo = useLastArea();
   const ask = useServerFn(askAkua);
+
   const speak = useServerFn(speakText);
   const [messages, setMessages] = useState<Msg[]>([
     {
@@ -66,6 +69,7 @@ function ProfessorPage() {
   }
 
   async function send(text: string) {
+
     const content = text.trim();
     if (!content || loading) return;
     // Cria o Audio dentro do gesto do usuário para liberar autoplay
@@ -89,7 +93,7 @@ function ProfessorPage() {
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
             <ArrowLeft className="h-4 w-4" /> Voltar
           </Link>
           <div className="flex items-center gap-2 text-cream font-display font-black">

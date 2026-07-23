@@ -18,6 +18,7 @@ import v8 from "@/assets/videos/VID-20260701-WA0089.mp4.asset.json";
 import v9 from "@/assets/videos/VID-20260701-WA0090.mp4.asset.json";
 import v10 from "@/assets/videos/VID-20260701-WA0092.mp4.asset.json";
 import { PremiumGate } from "@/components/PremiumGate";
+import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
@@ -52,6 +53,7 @@ const videos: VideoStory[] = [
 
 
 function VideosPage() {
+  const backTo = useLastArea();
   const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [muted, setMuted] = useState(false);
@@ -133,7 +135,7 @@ function VideosPage() {
     <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-sm text-cream hover:bg-gold/10">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-sm text-cream hover:bg-gold/10">
             <ArrowLeft className="h-4 w-4" /> {tHome}
           </Link>
           <h1 className="font-display text-lg font-black text-cream flex-1">{tTitle}</h1>

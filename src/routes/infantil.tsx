@@ -1,12 +1,15 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
+import { setLastArea } from "@/lib/last-area";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
+
 
 
 export const Route = createFileRoute("/infantil")({
@@ -58,6 +61,8 @@ const hotspots: Hotspot[] = [
 
 function InfantilHome() {
   const { t } = useTranslation();
+  useEffect(() => setLastArea("/infantil"), []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground">
       <SiteHeader mode="infantil" />

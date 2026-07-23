@@ -1,6 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
+import { setLastArea } from "@/lib/last-area";
 
 import { ContinueLearningCard } from "@/components/home/continue-learning";
 import { DailyMissionCard } from "@/components/home/daily-mission-card";
@@ -13,6 +15,7 @@ import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
 
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
+
 
 export const Route = createFileRoute("/adulto")({
   ssr: false,
@@ -48,6 +51,8 @@ export const Route = createFileRoute("/adulto")({
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
+  useEffect(() => setLastArea("/adulto"), []);
+
 
   return (
     <div className="min-h-screen text-foreground">
