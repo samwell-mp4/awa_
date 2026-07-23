@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, ShieldCheck, Sparkles, Globe2 } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -7,6 +8,13 @@ import { PublicFooter } from "@/components/PublicFooter";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
+
+const MENU_I18N: Record<string, { adulto: string; crianca: string; adultoDesc: string; criancaDesc: string; entrar: string }> = {
+  pt: { adulto: "Adulto", crianca: "Criança", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Entrar" },
+  en: { adulto: "Adult", crianca: "Kids", adultoDesc: "Trails, translator, dictionary and Teacher's Space.", criancaDesc: "Games, songs and stories to learn while playing.", entrar: "Enter" },
+  es: { adulto: "Adulto", crianca: "Niños", adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.", criancaDesc: "Juegos, canciones e historias para aprender jugando.", entrar: "Entrar" },
+  pat: { adulto: "Adulto", crianca: "Kotxohã", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Enter" },
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
