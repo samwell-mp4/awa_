@@ -26,6 +26,7 @@ import { Route as JogosInfantilRouteImport } from './routes/jogos-infantil'
 import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as InstalarRouteImport } from './routes/instalar'
 import { Route as InfantilRouteImport } from './routes/infantil'
+import { Route as HistoriasInfantilRouteImport } from './routes/historias-infantil'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
@@ -129,6 +130,11 @@ const InfantilRoute = InfantilRouteImport.update({
   path: '/infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistoriasInfantilRoute = HistoriasInfantilRouteImport.update({
+  id: '/historias-infantil',
+  path: '/historias-infantil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoriasRoute = HistoriasRouteImport.update({
   id: '/historias',
   path: '/historias',
@@ -226,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/historias-infantil': typeof HistoriasInfantilRoute
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/historias-infantil': typeof HistoriasInfantilRoute
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
@@ -298,6 +306,7 @@ export interface FileRoutesById {
   '/biografia': typeof BiografiaRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
+  '/historias-infantil': typeof HistoriasInfantilRoute
   '/infantil': typeof InfantilRoute
   '/instalar': typeof InstalarRoute
   '/jogos': typeof JogosRoute
@@ -335,6 +344,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/historias-infantil'
     | '/infantil'
     | '/instalar'
     | '/jogos'
@@ -370,6 +380,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/historias-infantil'
     | '/infantil'
     | '/instalar'
     | '/jogos'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/biografia'
     | '/dicionario'
     | '/historias'
+    | '/historias-infantil'
     | '/infantil'
     | '/instalar'
     | '/jogos'
@@ -443,6 +455,7 @@ export interface RootRouteChildren {
   BiografiaRoute: typeof BiografiaRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
+  HistoriasInfantilRoute: typeof HistoriasInfantilRoute
   InfantilRoute: typeof InfantilRoute
   InstalarRoute: typeof InstalarRoute
   JogosRoute: typeof JogosRoute
@@ -589,6 +602,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/historias-infantil': {
+      id: '/historias-infantil'
+      path: '/historias-infantil'
+      fullPath: '/historias-infantil'
+      preLoaderRoute: typeof HistoriasInfantilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/historias': {
       id: '/historias'
       path: '/historias'
@@ -733,6 +753,7 @@ const rootRouteChildren: RootRouteChildren = {
   BiografiaRoute: BiografiaRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
+  HistoriasInfantilRoute: HistoriasInfantilRoute,
   InfantilRoute: InfantilRoute,
   InstalarRoute: InstalarRoute,
   JogosRoute: JogosRoute,
@@ -760,13 +781,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
