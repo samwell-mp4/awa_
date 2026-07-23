@@ -21,6 +21,7 @@ import {
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
+import { useLang, type Lang } from "@/lib/pick-lang";
 import logoSrc from "@/assets/awa-tech-logo.png";
 
 export const Route = createFileRoute("/professor")({
@@ -46,49 +47,145 @@ export const Route = createFileRoute("/professor")({
 
 type Msg = { role: "user" | "assistant"; content: string; at?: number };
 
-const WELCOME_MESSAGE: Msg = {
-  role: "assistant",
-  content:
-    "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
-  at: Date.now(),
+type L10n = {
+  welcome: string;
+  subtitle: string;
+  newChat: string;
+  suggestionsTitle: string;
+  placeholder: string;
+  hint: string;
+  copy: string;
+  copied: string;
+  listen: string;
+  send: string;
+  suggestions: { label: string; prompt: string }[];
+  errorSpeak: string;
+  errorAudio: string;
+  copyFail: string;
+  localeTime: string;
 };
 
-type Suggestion = { icon: React.ComponentType<{ className?: string }>; label: string; prompt: string };
+const L10N: Record<Lang, L10n> = {
+  pt: {
+    welcome:
+      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+    subtitle: "Mestre de Patxôhã · Online",
+    newChat: "Nova conversa",
+    suggestionsTitle: "Sugestões para começar",
+    placeholder: "Pergunte ao Professor Akuã…",
+    hint: "Enter para enviar · Shift + Enter para nova linha",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Ouvir",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
+      { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
+      { label: "Família", prompt: "Como se dizem os nomes dos membros da família (pai, mãe, filho, irmão) em Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Fale sobre a história e a importância do povo Pataxó para o Brasil." },
+    ],
+    errorSpeak: "Não foi possível falar com Akuã agora.",
+    errorAudio: "Erro ao gerar áudio",
+    copyFail: "Não foi possível copiar.",
+    localeTime: "pt-BR",
+  },
+  en: {
+    welcome:
+      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — when I teach a word, you can hear it by clicking the audio icon.",
+    subtitle: "Patxôhã Master · Online",
+    newChat: "New chat",
+    suggestionsTitle: "Suggestions to get started",
+    placeholder: "Ask Professor Akuã…",
+    hint: "Enter to send · Shift + Enter for a new line",
+    copy: "Copy",
+    copied: "Copied",
+    listen: "Listen",
+    send: "Send",
+    suggestions: [
+      { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
+      { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
+      { label: "Family", prompt: "How do you say the family members (father, mother, son, brother) in Patxôhã?" },
+      { label: "Pataxó Culture", prompt: "Tell me about the history and importance of the Pataxó people for Brazil." },
+    ],
+    errorSpeak: "Could not reach Akuã right now.",
+    errorAudio: "Error generating audio",
+    copyFail: "Could not copy.",
+    localeTime: "en-US",
+  },
+  es: {
+    welcome:
+      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — cuando enseñe una palabra, podrás escucharla haciendo clic en el ícono de audio.",
+    subtitle: "Maestro de Patxôhã · En línea",
+    newChat: "Nueva conversación",
+    suggestionsTitle: "Sugerencias para empezar",
+    placeholder: "Pregunta al Profesor Akuã…",
+    hint: "Enter para enviar · Shift + Enter para nueva línea",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Escuchar",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
+      { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
+      { label: "Familia", prompt: "¿Cómo se dicen los miembros de la familia (padre, madre, hijo, hermano) en Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Cuéntame sobre la historia y la importancia del pueblo Pataxó para Brasil." },
+    ],
+    errorSpeak: "No fue posible hablar con Akuã ahora.",
+    errorAudio: "Error al generar audio",
+    copyFail: "No fue posible copiar.",
+    localeTime: "es-ES",
+  },
+  pat: {
+    welcome:
+      "Kanhgág! Arnã **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar o Patxôhã, parente. Awere doy!",
+    subtitle: "Patxôhã · Online",
+    newChat: "Txuhap!",
+    suggestionsTitle: "Sugestões",
+    placeholder: "Pergunte ao Professor Akuã…",
+    hint: "Enter · Shift + Enter",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Ouvir",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
+      { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
+      { label: "Família", prompt: "Como se diz família em Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Fale sobre o povo Pataxó." },
+    ],
+    errorSpeak: "Ãhô — não foi possível falar com Akuã agora.",
+    errorAudio: "Erro ao gerar áudio",
+    copyFail: "Não foi possível copiar.",
+    localeTime: "pt-BR",
+  },
+};
 
-const SUGGESTIONS: Suggestion[] = [
-  {
-    icon: Sunrise,
-    label: "Saudações do dia",
-    prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã.",
-  },
-  {
-    icon: BookOpen,
-    label: "Vocabulário",
-    prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã.",
-  },
-  {
-    icon: Users,
-    label: "Família",
-    prompt: "Como se dizem os nomes dos membros da família (pai, mãe, filho, irmão) em Patxôhã?",
-  },
-  {
-    icon: Globe,
-    label: "Cultura Pataxó",
-    prompt: "Fale sobre a história e a importância do povo Pataxó para o Brasil.",
-  },
-];
+const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
+  const lang = useLang();
+  const t = L10N[lang];
 
-  const [messages, setMessages] = useState<Msg[]>([WELCOME_MESSAGE]);
+  const makeWelcome = (): Msg => ({ role: "assistant", content: t.welcome, at: Date.now() });
+
+  const [messages, setMessages] = useState<Msg[]>(() => [makeWelcome()]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // When the UI language changes and no user message was sent, refresh the welcome.
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length <= 1) return [{ role: "assistant", content: t.welcome, at: Date.now() }];
+      return prev;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -119,17 +216,17 @@ function ProfessorPage() {
   async function send(text: string) {
     const content = text.trim();
     if (!content || loading) return;
-    const audio = new Audio(); // criado dentro do gesto do usuário para autoplay
+    const audio = new Audio();
     const next = [...messages, { role: "user" as const, content, at: Date.now() }];
     setMessages(next);
     setInput("");
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
+      const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
       void autoSpeak(audio, reply);
     } catch (e: any) {
-      toast.error(e.message ?? "Não foi possível falar com Akuã agora.");
+      toast.error(e.message ?? t.errorSpeak);
     } finally {
       setLoading(false);
       textareaRef.current?.focus();
@@ -138,7 +235,7 @@ function ProfessorPage() {
 
   function resetConversation() {
     audioRef.current?.pause();
-    setMessages([{ ...WELCOME_MESSAGE, at: Date.now() }]);
+    setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
   }
@@ -173,7 +270,7 @@ function ProfessorPage() {
                 Professor Akuã
               </div>
               <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
-                Mestre de Patxôhã · Online
+                {t.subtitle}
               </div>
             </div>
           </div>
@@ -182,10 +279,10 @@ function ProfessorPage() {
             onClick={resetConversation}
             disabled={isEmpty && !loading}
             className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/50 hover:text-cream disabled:opacity-40"
-            title="Nova conversa"
+            title={t.newChat}
           >
             <RefreshCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Nova conversa</span>
+            <span className="hidden sm:inline">{t.newChat}</span>
           </button>
         </div>
       </header>
@@ -202,11 +299,11 @@ function ProfessorPage() {
         {isEmpty && !loading && (
           <section className="mt-8">
             <div className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
-              Sugestões para começar
+              {t.suggestionsTitle}
             </div>
             <div className="grid gap-2.5 sm:grid-cols-2">
-              {SUGGESTIONS.map((s) => {
-                const Icon = s.icon;
+              {t.suggestions.map((s, idx) => {
+                const Icon = SUGGESTION_ICONS[idx] ?? BookOpen;
                 return (
                   <button
                     key={s.label}
@@ -247,7 +344,7 @@ function ProfessorPage() {
                   send(input);
                 }
               }}
-              placeholder="Pergunte ao Professor Akuã…"
+              placeholder={t.placeholder}
               rows={1}
               maxLength={1000}
               className="w-full resize-none rounded-2xl border border-gold/25 bg-card/70 px-4 py-3 pr-14 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition"
@@ -262,13 +359,13 @@ function ProfessorPage() {
             type="submit"
             disabled={loading || !input.trim()}
             className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-forest-deep shadow-lg shadow-gold/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
-            aria-label="Enviar"
+            aria-label={t.send}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>
         </div>
         <div className="pb-2 text-center text-[10px] text-foreground/40">
-          Enter para enviar · Shift + Enter para nova linha
+          {t.hint}
         </div>
       </form>
     </div>
@@ -364,6 +461,8 @@ function parseBlocks(content: string): Block[] {
 }
 
 function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
+  const lang = useLang();
+  const t = L10N[lang];
   const isUser = msg.role === "user";
   const speak = useServerFn(speakText);
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
@@ -376,14 +475,14 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
     try {
       setAudioBusy(key);
       const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) throw new Error(r.message ?? "Não foi possível gerar áudio");
+      if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
       audioRef.current?.pause();
       audioRef.current = audio;
       await audio.play();
     } catch (e: any) {
-      toast.error(e.message ?? "Erro ao gerar áudio");
+      toast.error(e.message ?? t.errorAudio);
     } finally {
       setAudioBusy(null);
     }
@@ -396,11 +495,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error(t.copyFail);
     }
   }
 
-  const time = msg.at ? new Date(msg.at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+  const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -472,11 +571,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
               <button
                 onClick={copyMessage}
                 className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition"
-                aria-label="Copiar mensagem"
-                title="Copiar"
+                aria-label={t.copy}
+                title={t.copy}
               >
                 {copied ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
-                {copied ? "Copiado" : "Copiar"}
+                {copied ? t.copied : t.copy}
               </button>
               {isLast && (
                 <>
@@ -485,15 +584,15 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
                     onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
                     disabled={audioBusy === "full"}
                     className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
-                    aria-label="Ouvir resposta"
-                    title="Ouvir resposta"
+                    aria-label={t.listen}
+                    title={t.listen}
                   >
                     {audioBusy === "full" ? (
                       <Loader2 className="h-3 w-3 animate-spin" />
                     ) : (
                       <Volume2 className="h-3 w-3" />
                     )}
-                    Ouvir
+                    {t.listen}
                   </button>
                 </>
               )}
