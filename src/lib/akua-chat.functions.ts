@@ -82,7 +82,19 @@ export const askAkua = createServerFn({ method: "POST" })
     const compact = used.map((e) => `${e.term_indigenous} = ${e.term_pt}`).join("\n");
 
 
-    const system = `Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
+    const langCode = data.lang ?? "pt";
+    const langInstruction =
+      langCode === "en"
+        ? "IMPORTANT: Reply ENTIRELY in English. All explanations, cultural notes, headings, lists and dictionary help must be in English. Keep Patxôhã words untranslated inside [ex]...||...[/ex] blocks, but the translation after `||` should be in English (not Portuguese)."
+        : langCode === "es"
+        ? "IMPORTANTE: Responde COMPLETAMENTE en español. Todas las explicaciones, notas culturales, títulos, listas y ayuda del diccionario deben estar en español. Mantén las palabras en Patxôhã dentro de los bloques [ex]...||...[/ex], pero la traducción después de `||` debe estar en español (no en portugués)."
+        : langCode === "pat"
+        ? "IMPORTANTE: Responda preferencialmente em Patxôhã sempre que possível, com tradução curta em português entre parênteses. Explicações longas podem ficar em português simples."
+        : "IMPORTANTE: Responda SEMPRE em português brasileiro claro e acolhedor.";
+
+    const system = `${langInstruction}
+
+Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
 
 REGRAS DE COMPORTAMENTO:
 - Responda QUALQUER pergunta do usuário com profundidade, clareza e utilidade — sobre qualquer assunto (tecnologia, ciência, escola, trabalho, saúde, código, escrita, ideias, conselhos, tradução de qualquer idioma, matemática, programação, vida pessoal, criatividade, etc.).
