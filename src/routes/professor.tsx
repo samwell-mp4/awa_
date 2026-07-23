@@ -571,11 +571,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
               <button
                 onClick={copyMessage}
                 className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition"
-                aria-label="Copiar mensagem"
-                title="Copiar"
+                aria-label={t.copy}
+                title={t.copy}
               >
                 {copied ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
-                {copied ? "Copiado" : "Copiar"}
+                {copied ? t.copied : t.copy}
               </button>
               {isLast && (
                 <>
