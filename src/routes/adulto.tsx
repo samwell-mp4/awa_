@@ -51,6 +51,8 @@ export const Route = createFileRoute("/adulto")({
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
+  useEffect(() => setLastArea("/adulto"), []);
+
 
   return (
     <div className="min-h-screen text-foreground">
