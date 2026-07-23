@@ -3,12 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
-import { narratePublic } from "@/lib/narrate-public.functions";
+
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
