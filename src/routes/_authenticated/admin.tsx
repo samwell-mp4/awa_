@@ -64,42 +64,20 @@ const SECTIONS: Section[] = [
 ];
 
 function AdminPage() {
-  const { user, isAdmin, loading } = useAuth();
+  const { loading } = useAuth();
   const [tab, setTab] = useState<Tab>("home");
-  const [checking, setChecking] = useState(true);
-  const [allowed, setAllowed] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loading || !user) return;
-    setAllowed(isAdmin);
-    setChecking(false);
-  }, [user, isAdmin, loading]);
 
   async function signOut() {
     await supabase.auth.signOut();
     navigate({ to: "/" });
   }
 
-  if (loading || checking) {
+  if (loading) {
     return <div className="grid min-h-screen place-items-center text-foreground/70">Carregando painel...</div>;
   }
 
-  if (!isAdmin && !allowed) {
-    return (
-      <div className="grid min-h-screen place-items-center px-4">
-        <div className="card-elev max-w-md rounded-2xl p-6 text-center">
-          <h1 className="font-display text-2xl font-black text-cream">Acesso restrito</h1>
-          <p className="mt-2 text-sm text-foreground/70">
-            Sua conta não tem permissão de administrador. Peça a um admin para conceder o acesso.
-          </p>
-          <Link to="/" className="mt-4 inline-block text-gold hover:underline text-sm font-semibold">
-            ← Voltar à página inicial
-          </Link>
-        </div>
-      </div>
-    );
-  }
+
 
   const active = SECTIONS.find((s) => s.k === tab);
   const groups: Array<Section["group"]> = ["Conteúdo", "Comunidade", "Sistema"];
