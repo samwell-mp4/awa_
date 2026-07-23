@@ -189,7 +189,7 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mãtxó abençoe, benção - mãtxó",
+    "term_indigenous": "mãtxó",
     "term_pt": "abençoe, benção",
     "language": "Patxôhã",
     "category": "Geral",
@@ -3798,7 +3798,7 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "e’ntë bigode - e’ntë",
+    "term_indigenous": "e’ntë",
     "term_pt": "bigode",
     "language": "Patxôhã",
     "category": "Geral",
@@ -4851,8 +4851,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "komá caderninho fappet’kwi caderno - fappet /tappet",
+    "term_indigenous": "komá caderninho fappet’kwi",
     "term_pt": "cadela",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "fappet /tappet",
+    "term_pt": "caderno",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -8415,8 +8424,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "éymãgã’ã cutia - ngahé",
+    "term_indigenous": "éymãgã’ã",
     "term_pt": "curvou",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "ngahé",
+    "term_pt": "cutia",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -11826,8 +11844,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "korimã extenso - kũy",
+    "term_indigenous": "korimã",
     "term_pt": "expor, divulgar",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "kũy",
+    "term_pt": "extenso",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -13041,17 +13068,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txatxiká galinha - xukakay",
+    "term_indigenous": "txatxiká",
     "term_pt": "galho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xukakayína",
-    "term_pt": "galinha de angola",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -13061,6 +13079,15 @@
   {
     "term_indigenous": "xukakay",
     "term_pt": "galinha",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "xukakayína",
+    "term_pt": "galinha de angola",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -13599,8 +13626,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "xohã gwakxó - pouco",
+    "term_indigenous": "xohã",
     "term_pt": "guerreiro",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "pouco",
+    "term_pt": "gwakxó",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -13788,8 +13824,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hoyxek humano - abkhây",
+    "term_indigenous": "hoyxek",
     "term_pt": "horta, viveiro",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "abkhây",
+    "term_pt": "humano",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -14472,8 +14517,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "amahây’txẽ joelhar - amahây’ré",
+    "term_indigenous": "amahây’txẽ",
     "term_pt": "joelhado",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "amahây’ré",
+    "term_pt": "joelhar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -14724,8 +14778,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "humãhã jurema - kenãhé",
+    "term_indigenous": "humãhã",
     "term_pt": "jura",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "kenãhé",
+    "term_pt": "jurema",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -16542,8 +16605,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "pêãgõ’irá matar - pêãgõ",
+    "term_indigenous": "pêãgõ’irá",
     "term_pt": "matando",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "pêãgõ",
+    "term_pt": "matar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -18387,8 +18459,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "petetxiãg ovo goro - petxiõg",
+    "term_indigenous": "petetxiãg",
     "term_pt": "ovo",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "petxiõg",
+    "term_pt": "ovo goro",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -18810,7 +18891,7 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ihãyré passar ihãyré -",
+    "term_indigenous": "ihãyré passar ihãyré",
     "term_pt": "passar",
     "language": "Patxôhã",
     "category": "Geral",
@@ -18864,8 +18945,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "pàkây pássaro/mata - zabêlê",
+    "term_indigenous": "pàkây",
     "term_pt": "pássaro",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "zabêlê",
+    "term_pt": "pássaro/mata",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -20844,8 +20934,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txakê’txẽ purificando - txakêhây’irá",
+    "term_indigenous": "txakê’txẽ",
     "term_pt": "purificado",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "txakêhây’irá",
+    "term_pt": "purificando",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -21105,8 +21204,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "quero - pakka quieto - tuphôk",
+    "term_indigenous": "quero - pakka",
     "term_pt": "quero",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "tuphôk",
+    "term_pt": "quieto",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -22761,8 +22869,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mipây’ã sentimento - mipây",
+    "term_indigenous": "mipây’ã",
     "term_pt": "senti, sentiu",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "mipây",
+    "term_pt": "sentimento",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -24309,8 +24426,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kotê’ã tórax, peito - ekäp/ekéw",
+    "term_indigenous": "kotê’ã",
     "term_pt": "tomou",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "ekäp/ekéw",
+    "term_pt": "tórax, peito",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -25938,8 +26064,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "naxoxì’ĩ você - anehõ, mupuk",
+    "term_indigenous": "naxoxì’ĩ",
     "term_pt": "voarei",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "anehõ, mupuk",
+    "term_pt": "você",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26064,8 +26199,35 @@
     "audio_url": null
   },
   {
+    "term_indigenous": "a’ãpa’i",
+    "term_pt": "doente",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "a’m’nakêy",
+    "term_pt": "acerola",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "a’u",
+    "term_pt": "vem cá",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
     "term_indigenous": "ã’ùhàkĩ",
-    "term_pt": "punho cego ã’wà’wì - ãbakoháy - memória",
+    "term_pt": "punho cego",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26073,8 +26235,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ãbuá",
-    "term_pt": "saliência, ondulação ãburê - marisco",
+    "term_indigenous": "abelha preta",
+    "term_pt": "pagnõ",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26082,62 +26244,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ábwa",
-    "term_pt": "ler ãbway’oy - trilha",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãbwĩ",
-    "term_pt": "subiar ãdxehê - pitanga ãdxewí - confusão",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãdxewitá",
-    "term_pt": "confuso ãdxuara - rosa",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aga",
-    "term_pt": "machadinha ãgã - serpente",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãgaypĩhĩ",
-    "term_pt": "trocar ãghaba - assombração",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãgĩkuy",
-    "term_pt": "aba agnikatõ - braço inferior",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãgõ",
-    "term_pt": "amanhecer ãgo’hi - blusa",
+    "term_indigenous": "abençoe, benção",
+    "term_pt": "mãtxó",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26146,7 +26254,7 @@
   },
   {
     "term_indigenous": "ãgohó",
-    "term_pt": "lua ãgohó ãkirê - lua crescente",
+    "term_pt": "ῖhé, mayõ ῖhé - lua nova",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26154,71 +26262,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ãgohó",
-    "term_pt": "ῖhé, mayõ ῖhé - lua nova ãgôkay - seios, peito ãgowé - série",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãgoyrã",
-    "term_pt": "abóbora ãgtxay - data",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ahábm",
-    "term_pt": "feijão preto ahãí - espreguiçar ahamãg sinceridade -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aháwãy",
-    "term_pt": "territorial ãhãyã - copa",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aheb",
-    "term_pt": "menstruação ãhëbm - sangrar ahekã - conto ahenãpê - transformou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãhiaré",
-    "term_pt": "viagem ãhirâtê - escravidão ãhirô - escravo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ahnã",
-    "term_pt": "eu ãhô - não ahõhê - como",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãhõkã",
-    "term_pt": "desprezo ahû - ferir",
+    "term_indigenous": "ahãí",
+    "term_pt": "espreguiçar ahamãg sinceridade",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26235,8 +26280,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "aĩ’ĩy",
-    "term_pt": "testa aió - colocar",
+    "term_indigenous": "aké",
+    "term_pt": "tripa",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26244,8 +26289,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "aiówatá",
-    "term_pt": "colocação aitxa - gema ajú - amarelo",
+    "term_indigenous": "akehé",
+    "term_pt": "estômago",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26253,8 +26298,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "akâié’ã",
-    "term_pt": "liderou akâié’atê - liderança",
+    "term_indigenous": "ãko",
+    "term_pt": "mulher solteira akô _filho, entiado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26262,116 +26307,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "akâié’kãd",
-    "term_pt": "liderará akâiéko-cacique",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkaitxẽ",
-    "term_pt": "marcado akãniú - fugir akãniú’ã - fugiu akãniú’ĩ - fugirei akãniú’irá - fugindo akãniú’kãd - fugirá",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "akãniú’txẽ",
-    "term_pt": "fugido akãniú’xó - fujo(a) âkapã - bolsa",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "akaragá",
-    "term_pt": "julgar akaribó - barco",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "akãtxẽ",
-    "term_pt": "teiú akatxury - discriminação âkâwtxy- correr akdxihi - tudo akê - aguentar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkë",
-    "term_pt": "barrigudo aké - tripa akê’xó - aguento(a) akehé - estômago ãkêhé - pingo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "akeĩg",
-    "term_pt": "leão ãkesê - quase aketá - receber ãkêtê - ganhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkêtê’xó",
-    "term_pt": "ganha(o) ãkgaré - sobre akiop’kanay - fígado ãkirê - crescer, desenvolver",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkirê’xó",
-    "term_pt": "cresça(o) ãko - mulher solteira akô _filho, entiado akõ -rapaz akõ’kwi - rapazinho akõ’puá - rapazão",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkopa",
-    "term_pt": "ave akôtanay - cunhado",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "akpây",
-    "term_pt": "dela ãksã - vitória âksa’rai - vez",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aktê",
-    "term_pt": "neve aktxé - papagaio aktxôpetã - dente de leite",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãkú",
-    "term_pt": "nenê akuã - flecha akuêg - trabalho",
+    "term_indigenous": "aktxé",
+    "term_pt": "papagaio",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26398,7 +26335,7 @@
   },
   {
     "term_indigenous": "amagay",
-    "term_pt": "canivete(faca) amahây - joelho amahây’ã - joelhou amahây’nig - joelheira",
+    "term_pt": "canivete(faca)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26407,7 +26344,7 @@
   },
   {
     "term_indigenous": "amâhây’ré",
-    "term_pt": "joelhar amahây’txẽ - joelhado amahây’xó - joelha",
+    "term_pt": "joelhar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26415,35 +26352,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ámaji",
-    "term_pt": "joelho amakoháy - cérebro amanay - faca cega amañũ -limpar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "amayhã",
-    "term_pt": "relâmpago amiãxax - suspender",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "amiãxax’ã",
-    "term_pt": "suspendeu amiãxax’irá - suspendo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "amiãxax’xó",
-    "term_pt": "suspendo amix - escrever",
+    "term_indigenous": "ãmãré",
+    "term_pt": "dever, atividades",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26460,8 +26370,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "amohôy",
-    "term_pt": "defunto, cadáver amukaú - breve/correr añá - jararaca añá’háb - caiçaca añá’voë - jibóia",
+    "term_indigenous": "amukaú",
+    "term_pt": "breve/correr",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26469,8 +26379,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "añaxiá",
-    "term_pt": "sucuruiuba anaymô - dispensa anehõ/mupuk - você",
+    "term_indigenous": "anehõ/mupuk",
+    "term_pt": "você",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26496,8 +26406,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "anõ’hisay",
-    "term_pt": "bustiê anohã - capivara anũkay - busto",
+    "term_indigenous": "ãpakatay",
+    "term_pt": "artelhos",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26505,62 +26415,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ãpahabokoy",
-    "term_pt": "dedo médio ãpahabtaĩg - unha ãpaká - pé ãpakatay -artelhos",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãpatxá",
-    "term_pt": "panturrilha ãpatxahây - perna",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãpatxahây’kwi",
-    "term_pt": "perninha ãpatxahây’puá - pernão",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "apêhũtxẽ’xó",
-    "term_pt": "desconfio ãpekôy - corpo ãpekôy’kwi - corpinho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "- respondarei aperenã’ĩ aperenã’irá",
-    "term_pt": "respondendo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aperenã’xó",
-    "term_pt": "responde apetxienã - um",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "apêtxuk’xó",
-    "term_pt": "volta apêtxury - mentira,fofoca, intriga apiak - quanto ãpiäkxex - quantidade apiba - acabou",
+    "term_indigenous": "apetxienã",
+    "term_pt": "um",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26577,8 +26433,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "apkí",
-    "term_pt": "macaco aranha apoãga - venda",
+    "term_indigenous": "aragwá",
+    "term_pt": "lugar onde se faz o ritual, a dança",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26586,8 +26442,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ãpoká’xó",
-    "term_pt": "choro âpókây - abatido aponãhi - feliz aponẽ - felicidade aponitô - bastante aporênô - triste",
+    "term_indigenous": "aranaxuá",
+    "term_pt": "zoada/mar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26595,17 +26451,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "aporênô’wãy",
-    "term_pt": "tristeza apôy - vem ápôytxeká - vem cá âpuâg - esperança",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãre’m’xó",
-    "term_pt": "consola arẽgá - brincar",
+    "term_indigenous": "arayñũ",
+    "term_pt": "marrom ãre’m , consolar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26631,15 +26478,6 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "arẽgá’xó",
-    "term_pt": "brinca areneá - falar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "areneá’ã",
     "term_pt": "falou",
     "language": "Patxôhã",
@@ -26658,8 +26496,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "areneá’xó",
-    "term_pt": "fala aresú - rezar/orar",
+    "term_indigenous": "aresú",
+    "term_pt": "rezar/orar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26704,52 +26542,7 @@
   },
   {
     "term_indigenous": "aresú’xó",
-    "term_pt": "reza(o)/ora(o) ariponã - aprender",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "arukay’xó",
-    "term_pt": "sacio arupãb - educação arutxu - fascinado ãsikaáb - pequeno(a) ãsunãy - causa ataká’ôy - embocadura",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãtëkáy",
-    "term_pt": "universo atêkuã - até amanhã",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãtõhũ",
-    "term_pt": "fala, linguagem atokohê - desistir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atokohê’xó",
-    "term_pt": "desista(o) atöõ - mãe de leite",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãtóy",
-    "term_pt": "canino atpatôy - cabeçalho",
+    "term_pt": "reza(o)/ora(o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26758,7 +26551,16 @@
   },
   {
     "term_indigenous": "atuhiabá’xó",
-    "term_pt": "castiga(o) atxa’á - roça atxà’kã - socorro atxà’kã’ã - socorreu",
+    "term_pt": "castiga(o)",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "atxà’kã’ã",
+    "term_pt": "socorreu",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26775,8 +26577,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "atxà’kãd",
-    "term_pt": "socorrerá atxabn- virar",
+    "term_indigenous": "atxabn’xó",
+    "term_pt": "vira(o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26784,35 +26586,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "atxabn’ĩ",
-    "term_pt": "virarei atxabn’kãd - virará",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atxabn’txẽ",
-    "term_pt": "virado atxabn’xó - vira(o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãtxad",
-    "term_pt": "rir atxagá - gritar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atxagá’xó",
-    "term_pt": "grita atxakauí - cagar, defecar",
+    "term_indigenous": "atxakauí",
+    "term_pt": "cagar, defecar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26866,7 +26641,7 @@
   },
   {
     "term_indigenous": "atxakauí’xó",
-    "term_pt": "caga(o), defeca(o) atxary - talher atxe - pena atxekô - cocha atxekô’puá - cochão",
+    "term_pt": "caga(o), defeca(o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26874,53 +26649,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "atxetôy",
-    "term_pt": "cabeleireiro atxibá - praia ãtxihĩ - espirro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atxipay’kwi",
-    "term_pt": "pescocinho atxiu’pá - adulterar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atxiu’pá’xó",
-    "term_pt": "adultera(o) ãtxoê - apontar, indicar, mostrar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ãtxoê’xó",
-    "term_pt": "mostra atxohã - língua",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "atxukjú’xó",
-    "term_pt": "invado atxũy - dente de animal ãtyatĩ - queixo ava - pupila avẽg - sangue",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "- assobio avĩ ãwá",
-    "term_pt": "vigiar",
+    "term_indigenous": "atxiu’pá",
+    "term_pt": "adulterar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26937,17 +26667,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "awhó",
-    "term_pt": "gol awôy - pau de alio",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "awptxuy",
-    "term_pt": "osso ãwré - lixo áxiná, exna - onça fêmea ãxoap - fome",
+    "term_pt": "osso",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -26955,44 +26676,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ãxoék",
-    "term_pt": "café ãyhã - pedaço, parte Ãyhãh=componente ãykê - igual aymag - tirar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "aymag’xó",
-    "term_pt": "tiro(a) ãyra - acolá",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "b’ĩytxâb’",
-    "term_pt": "rã b’o’hi - pano",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "b’óhoy",
-    "term_pt": "seta b’ók’ai - arco, bodoque",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "bãduhá",
-    "term_pt": "cavaquinho bãgô- besta",
+    "term_indigenous": "ãyhã",
+    "term_pt": "pedaço, parte Ãyhãh=componente",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27036,15 +26721,6 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "bâk’ahab’txẽ",
-    "term_pt": "apagado bâk’ahab’xó - apago (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "bakírá",
     "term_pt": "índio que andou debaixo do chão",
     "language": "Patxôhã",
@@ -27054,26 +26730,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "bihniki’txẽ",
-    "term_pt": "rasgado bihniki’xó - rasga (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "bĩkĩ’ú",
-    "term_pt": "macaco prego birí - distante",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "biriré’txẽ",
-    "term_pt": "alongado biriré’xó - alonga (o)",
+    "term_indigenous": "bihniki’xó",
+    "term_pt": "rasga (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27082,34 +26740,7 @@
   },
   {
     "term_indigenous": "bokoy",
-    "term_pt": "médio bokwãdxê coco - bolukunã - boa noite na saída res/p",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "boptxeg",
-    "term_pt": "macaco guariba boré - oriço do mar/caça do mato",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "bruktxijú",
-    "term_pt": "filho da puta bue - cachorro do mato",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "bugaí",
-    "term_pt": "copo bugaú - ligeiro bukëhë - caititu bukehe - sujo",
+    "term_pt": "médio bokwãdxê coco",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27118,7 +26749,7 @@
   },
   {
     "term_indigenous": "búkuhu",
-    "term_pt": "cinza bura - borbulhar",
+    "term_pt": "cinza",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27126,26 +26757,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "burá’txẽ",
-    "term_pt": "borbulhado burá’xó - borbulho (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "burisé",
-    "term_pt": "favor burokuxó - abdome butispey - sal",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "dahabm",
-    "term_pt": "fogão dawê - adeus",
+    "term_indigenous": "burá’xó",
+    "term_pt": "borbulho (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27154,7 +26767,7 @@
   },
   {
     "term_indigenous": "dayapó",
-    "term_pt": "filtro dxá’á - que",
+    "term_pt": "filtro",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27162,17 +26775,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "dxá’ú",
-    "term_pt": "qual dxahá - para dxê - ver",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "dxê’ã",
-    "term_pt": "viu dxê’ê - tu dxê’êp - vós",
+    "term_indigenous": "ê’txũi",
+    "term_pt": "esposo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27181,7 +26785,7 @@
   },
   {
     "term_indigenous": "eatiá",
-    "term_pt": "socó fisga éb’m - edhú - moro",
+    "term_pt": "socó fisga",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27189,8 +26793,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ẽghöm",
-    "term_pt": "sangue egnetopne - monte ëh - sapocaia ehä/ehé - caçula",
+    "term_indigenous": "ehä/ehé",
+    "term_pt": "caçula",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27198,26 +26802,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ẽháy",
-    "term_pt": "tucano ehenã - molhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ehetĩ",
-    "term_pt": "búzio, caramujo comestível êhigã - achar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "êhigã’txẽ",
-    "term_pt": "achado êhigã’xó - acho (a) êhú - lado eitábm - dedo mindinho",
+    "term_indigenous": "êhigã’xó",
+    "term_pt": "acho (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27234,35 +26820,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ekanuy",
-    "term_pt": "raso ekäp/ekéw - tórax, peito",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ekay",
-    "term_pt": "taquara eképohó - soprar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ekepohó’txẽ",
-    "term_pt": "soprado ekepohó’xó - sopra eketãnay - irmão mais velho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "eketãnay",
-    "term_pt": "primogênito eketohê - preparar",
+    "term_indigenous": "eketohê",
+    "term_pt": "preparar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27279,71 +26838,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "êktowãy",
-    "term_pt": "fraqueza ektxiamani - sereia",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ékui",
-    "term_pt": "regada êkwô - divisão",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ëm",
-    "term_pt": "bracelete ematxã - descubra",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "êmây",
-    "term_pt": "colo emohábm - cavidade",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "enikahaw",
-    "term_pt": "feijão carioquinha entë - bigode",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "eoató",
-    "term_pt": "vermelho eoató’kwi - vermelhinho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "eohám",
-    "term_pt": "célula eoĩ - orelha",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "eoĩ’puá",
-    "term_pt": "orelhão eoĩkãy - ouvido eopáy - mel",
+    "term_indigenous": "entë",
+    "term_pt": "bigode",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27352,7 +26848,7 @@
   },
   {
     "term_indigenous": "ẽp’oy",
-    "term_pt": "brinco feminino êparé - protagonista epkorab - brinco masculino (pauzinho) epotôy - cabeludo",
+    "term_pt": "brinco feminino",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27360,8 +26856,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ẽpub",
-    "term_pt": "ponta epukuy - cinza cor erekatã - cesta",
+    "term_indigenous": "epkorab",
+    "term_pt": "brinco masculino (pauzinho)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27369,26 +26865,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "erepé",
-    "term_pt": "lago, poça eretxá atxemãg - presta atenção ertõ - amo etã - ventre, útero etakô - esse etaniã - cada",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "etóĩ",
-    "term_pt": "boné etxã - porca êtxawê - ensino(a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "êtxawê’txẽ",
-    "term_pt": "ensinado êtxawênuk - ensinamento etxiãg - testículo",
+    "term_indigenous": "epukuy",
+    "term_pt": "cinza cor",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27397,7 +26875,7 @@
   },
   {
     "term_indigenous": "euhmã’txẽ",
-    "term_pt": "agitado agito (a) euhmã’xó -",
+    "term_pt": "agitado agito (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27405,44 +26883,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "eumã’xó",
-    "term_pt": "ligo ewaĩg - cágado exinay - filhote de paca",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "eyhnã",
-    "term_pt": "tigre éymágã - curva",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "éymãgã’ã",
-    "term_pt": "curvou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "éymágã’xó",
-    "term_pt": "curvo eymma - cervo fahãtö - melhor fap’bwá - livro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "fap’bwá’kwi",
-    "term_pt": "livrinho fappet/tappet - caderno",
+    "term_indigenous": "fappet/tappet",
+    "term_pt": "caderno",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27451,7 +26893,7 @@
   },
   {
     "term_indigenous": "fappet’kwi",
-    "term_pt": "caderninho forô - apagador",
+    "term_pt": "caderninho",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27459,26 +26901,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ga’mhây",
-    "term_pt": "sombrio gâahãy - constelação",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "gããhây",
-    "term_pt": "escuro gãjé, gõgó - caranguejo do rio galinha - xukakay",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "gãry",
-    "term_pt": "corgo, igarapé gâtxay - prato",
+    "term_indigenous": "galinha",
+    "term_pt": "xukakay",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27487,25 +26911,7 @@
   },
   {
     "term_indigenous": "gãzá",
-    "term_pt": "reco-reco gnewi - preguiça gnipektó - dedo indicador",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "goagnám",
-    "term_pt": "bota goirã - barriga",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "goirã’kwi",
-    "term_pt": "barriguinha goirã’puá - barrigão goroara - goiaba goyá - beber",
+    "term_pt": "reco-reco",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27514,7 +26920,7 @@
   },
   {
     "term_indigenous": "guanãbi",
-    "term_pt": "beija-flor guarapjóp - guaraná gwai - barriga oca",
+    "term_pt": "beija-flor",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27522,8 +26928,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "gwakxó",
-    "term_pt": "pouco gwakxó - pouco",
+    "term_indigenous": "gwai",
+    "term_pt": "barriga oca",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27531,17 +26937,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hã",
-    "term_pt": "sim hã’mxomá - artesanato",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hab",
-    "term_pt": "bezerro hab - bezerro hãbkaháy - atleta, maratonista haêdxê - jeito, aparência hãgnahay - amanhã",
+    "term_indigenous": "hãbkaháy",
+    "term_pt": "atleta, maratonista",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27550,16 +26947,7 @@
   },
   {
     "term_indigenous": "hãgüi’xó",
-    "term_pt": "anoiteça hágujê - mangaba",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hágurê",
-    "term_pt": "manga hahá’n - país",
+    "term_pt": "anoiteça",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27576,8 +26964,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãhão",
-    "term_pt": "terra, chão hãhãw - terra hãhúhê - namorar",
+    "term_indigenous": "hãhúhê’xó",
+    "term_pt": "namoro (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27585,8 +26973,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãhúhê’txẽ",
-    "term_pt": "namorado hãhúhê’xó - namoro (a) hãhúhêhê - chamar",
+    "term_indigenous": "hãhúhêhê’xó",
+    "term_pt": "chamo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27594,35 +26982,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãhúhêhê’txẽ",
-    "term_pt": "chamado hãhúhêhê’xó - chamo (a) hãktô - repente haktxé - chover",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hamãgui",
-    "term_pt": "mato hàmàhãy - folha hamahay, hamahí - anta fêmea",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hamanãy",
-    "term_pt": "punhal hamãtẽ - calor",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hamátxiha",
-    "term_pt": "oportunidade hambkaháy - atleta, maratonista hamegãĩg - cotovelo hamiá - dançar",
+    "term_indigenous": "hambkaháy",
+    "term_pt": "atleta, maratonista",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27648,17 +27009,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hamikahay",
-    "term_pt": "aniversário hamikáĩ - brotar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "hamikáĩ’txẽ",
-    "term_pt": "brotado hamikáĩ’xó - broto (a) hamipá - aparecer",
+    "term_pt": "brotado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27666,17 +27018,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hamipá’xó",
-    "term_pt": "apareço hamói - percorrer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hamotxê",
-    "term_pt": "terra é seca hampágn - sapo hãmxomá - artesanato hanã’ũhé - atmosfera hãp’ãtxè - suar",
+    "term_indigenous": "hamikáĩ’xó",
+    "term_pt": "broto (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27685,7 +27028,7 @@
   },
   {
     "term_indigenous": "hãp’uy",
-    "term_pt": "fojo - buraco hãpágn - sapo hãpãy- piada, estória inventada hâpe - gato hâpe’kwi - gatinho",
+    "term_pt": "fojo - buraco",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27693,8 +27036,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãpo’txĩg",
-    "term_pt": "rígido haptáy - queimar",
+    "term_indigenous": "hãpãy",
+    "term_pt": "piada, estória inventada",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27702,17 +27045,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "haptáy’txẽ",
-    "term_pt": "queimado haptáy’xó - queima (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hãptxiy’kãd",
-    "term_pt": "pagará hãptxiy’xó - pago (a) haptxôy - depois",
+    "term_indigenous": "haptáy’xó",
+    "term_pt": "queima (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27721,7 +27055,7 @@
   },
   {
     "term_indigenous": "hãptxu’ay",
-    "term_pt": "caneca hâtây - parar",
+    "term_pt": "caneca",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27729,26 +27063,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hâtây’txẽ",
-    "term_pt": "parado hâtây’xó - paro (a) hãtiá - serra",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hãtiá’kwi",
-    "term_pt": "serrinha hãtö - uma",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hãtoáy’kwi",
-    "term_pt": "potinho hãtsá’i - ar",
+    "term_indigenous": "hâtây’xó",
+    "term_pt": "paro (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27765,35 +27081,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hàtxá",
-    "term_pt": "fora hãtxay-correto, apropriado",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hãtxõaĩ",
-    "term_pt": "vácuo hãtxotxay - jóia, ótimo, beleza",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hãwúy",
-    "term_pt": "pó hayapó - maribondo hayô - sol hayôkunã - bom dia",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "hayôxó",
-    "term_pt": "bom dia -res/p hãytxâtê criação - hãytxô - criador",
+    "term_pt": "bom dia -res/p hãytxâtê criação",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27801,8 +27090,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãytxo’kãd",
-    "term_pt": "criará hãytxo’ré - criar",
+    "term_indigenous": "hãytxo’xó",
+    "term_pt": "cria (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27810,8 +27099,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hãytxo’txẽ",
-    "term_pt": "criado hãytxo’xó - cria (o) hayuã - eclipse haywã - eclipse hekaré - separar",
+    "term_indigenous": "hemũgãy",
+    "term_pt": "onça macho",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27819,8 +27108,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hekaré’xó",
-    "term_pt": "separa hekhã - pêssego hemãkô - irmã adotiva hemoá - barulho hemũgãy - onça macho henohê - pisar",
+    "term_indigenous": "heruê awê",
+    "term_pt": "- ritual sagrado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27828,8 +27117,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "henohê’ã",
-    "term_pt": "pisou henohê’ĩ -pisarei",
+    "term_indigenous": "hõpuê’xó",
+    "term_pt": "decreto (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27837,53 +27126,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hierú’xó",
-    "term_pt": "livra higuá - lá hĩpu - idade",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hĩtad",
-    "term_pt": "macaco guigó hitap - velho, antigo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hitup’ré",
-    "term_pt": "alegrar hitupex - alegra hitxá - pescar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hitxá’txẽ",
-    "term_pt": "pescado hitxá’xó - pesca(o) hiukunãy - escuro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hũayõ’kwi",
-    "term_pt": "clarinho hũbá - lugar, ambiente hũdxê’ê - contigo hũdxê’êp - convosco hũgoré - mudar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hũhotehô",
-    "term_pt": "conosco hũkã - teu hukab - permanecer",
+    "term_indigenous": "hotehô",
+    "term_pt": "nós",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27900,44 +27144,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "hũkãdxê",
-    "term_pt": "concordo hukêhemã - sobrinha humãhã - jura",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hũnänãy",
-    "term_pt": "desculpe hũnitxi - vários",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "hũpakã",
-    "term_pt": "compadre consagrar hũpaniõ -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "hũpaniõ’txẽ",
-    "term_pt": "consagrado hũpaniõ’xó - consagro(a) hureb - tomate hũtopehê - consigo hũtxeká - com licença",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "i’ngwa",
-    "term_pt": "clavícula iaba - maldade iakatã - pois",
+    "term_pt": "compadre consagrar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27946,7 +27154,16 @@
   },
   {
     "term_indigenous": "iamani",
-    "term_pt": "mãe d’água iapirõ - fulano ĩata - essência ĩbá - mata ibará - capim do rio ĩbĩkai mosca",
+    "term_pt": "mãe d’água",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "ibará",
+    "term_pt": "capim do rio ĩbĩkai mosca",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27991,7 +27208,7 @@
   },
   {
     "term_indigenous": "iboré’txẽ",
-    "term_pt": "pecado iboré’xó - peco (a)",
+    "term_pt": "pecado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -27999,8 +27216,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ídây",
-    "term_pt": "muringa ĩderê - quem dera",
+    "term_indigenous": "iboré’xó",
+    "term_pt": "peco (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28017,8 +27234,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "iẽ",
-    "term_pt": "a iẽhã - assim",
+    "term_indigenous": "ihãyré",
+    "term_pt": "passar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28026,8 +27243,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ĩgihòbòku",
-    "term_pt": "chefe, pajé ĩgorá - negro ihã - até",
+    "term_indigenous": "ihãyré’xó",
+    "term_pt": "passa (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28035,8 +27252,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ihãyrétxẽ",
-    "term_pt": "passado ihê - aquele(a) ĩhê - cola ĩhé - moça",
+    "term_indigenous": "ihui’xó",
+    "term_pt": "espalho (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28044,8 +27261,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ĩhé’kwi",
-    "term_pt": "mocinha ĩhép’t - leite",
+    "term_indigenous": "ikahó",
+    "term_pt": "manuteção",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28053,8 +27270,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ihixú",
-    "term_pt": "nação ihmã - pata ihõ - arder",
+    "term_indigenous": "ikô apiba",
+    "term_pt": "por fim",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28062,8 +27279,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ihui’kãd",
-    "term_pt": "espalhará ihui’xó - espalho (a)",
+    "term_indigenous": "ikô iamã",
+    "term_pt": "por nada",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28071,8 +27288,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "Ikaháwatá",
-    "term_pt": "conservação ikahó - manuteção ikaré - abacate",
+    "term_indigenous": "ikoêg",
+    "term_pt": "do mesmo modo ikôtxeká por favor",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28080,8 +27297,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ikãtãy",
-    "term_pt": "este ikek’rõ - diverso ikená - ignorância",
+    "term_indigenous": "inurây",
+    "term_pt": "maçã",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28089,8 +27306,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ikenitá",
-    "term_pt": "ignorante ikerãy - melão iketá - receber",
+    "term_indigenous": "ĩtxê",
+    "term_pt": "boa",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28098,8 +27315,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "iketá’xó",
-    "term_pt": "receba (o) iketxak - posso ikexkô - morango ikhã - luta",
+    "term_indigenous": "ĩtxê hamôp",
+    "term_pt": "boa noite na saída",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28107,8 +27324,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ikhã’ré",
-    "term_pt": "lutar iknuy - machucar",
+    "term_indigenous": "ĩtxê niató",
+    "term_pt": "boa tarde",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28116,8 +27333,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "iõre",
-    "term_pt": "ou ipa’mtxôy - refeição, alimento",
+    "term_indigenous": "itxihikay",
+    "term_pt": "fruta amarga que dá no mato",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28125,8 +27342,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ipaê’txũi",
-    "term_pt": "sogro ipakâié - professor ĩpãkéga - adoentado ipakeĩg - camaleão ipakéy - borboleta",
+    "term_indigenous": "ĩxerẽbtxó",
+    "term_pt": "penteio feminino",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28134,8 +27351,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ipakéy’kwi",
-    "term_pt": "borboletinha ipamakã - pai",
+    "term_indigenous": "ĩxerẽbtxuy",
+    "term_pt": "penteio masculino",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28143,8 +27360,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ipamakã’puá",
-    "term_pt": "paizão ĩpámakiame - homem velho ipâtoy - delícia",
+    "term_indigenous": "ĩxerẽgwá",
+    "term_pt": "pestana",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28152,8 +27369,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ipehnãg",
-    "term_pt": "doçura ipek - pato",
+    "term_indigenous": "jetxiguí’xó",
+    "term_pt": "enterro(a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28161,188 +27378,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ipek’kwi",
-    "term_pt": "patinho iperâgn - castanha ipetoy - nuca",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "irapã",
-    "term_pt": "solidariedade irêk - onde",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "írepy",
-    "term_pt": "veia iretuá - roxo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "iretuá’kwi",
-    "term_pt": "roxinho irisnã - contente ĩsikap - nariz isikap’kwi - narizinho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "isikap’puá",
-    "term_pt": "narigão isiké - rosto/face itahabm - fogueira",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "itãxâh",
-    "term_pt": "tinta ĩtehemã - irmã",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "itohã",
-    "term_pt": "céu itôi - pilão itsã - ao",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ítsaĩ",
-    "term_pt": "bicho de pé itxãg - abalar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ĩtxenere",
-    "term_pt": "origem itxewá - salvar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "itxewá’txẽ",
-    "term_pt": "salvado itxewá’xó - salva(o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "jakú",
-    "term_pt": "envergonhado japoterú - quando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "jaroba",
-    "term_pt": "bebida tradicional jaypô - saindo jetxiguí - enterrar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "jetxiguí’txẽ",
-    "term_pt": "enterrado jetxiguí’xó - enterro(a) jiktayá - passarinho jirakã - mesa jiráp ajudar -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "jiráp’txẽ",
-    "term_pt": "ajudado jiráp’xó - ajudo(a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "jitá",
-    "term_pt": "farinha, povilho jokana - mulher joôkrêtõ - cigarro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "joôpek",
-    "term_pt": "fogo joôpek urufú - isqueiro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "joôpek’kwi",
-    "term_pt": "foguinho juktã - vaca kã’mxì - recorrer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kã’mxì’txẽ",
-    "term_pt": "recorrido kã’mxì’xó - recorre, recorro kaáy - embira kabahay - égua",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kãbui",
-    "term_pt": "apelido kãdara- cacau kãdawê - festa",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kãdawê’ré",
-    "term_pt": "festejar, celebrar kaêhá - reserva",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kagngá",
-    "term_pt": "sacola kãgtsaha - morder",
+    "term_indigenous": "jirakã",
+    "term_pt": "mesa jiráp ajudar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28360,7 +27397,7 @@
   },
   {
     "term_indigenous": "kaháy",
-    "term_pt": "cozinhar ou assar em folhas kaheytá - laranja",
+    "term_pt": "cozinhar ou assar em folhas",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28368,8 +27405,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kahnãkó",
-    "term_pt": "mania kahnek - tóxico kâhu - sim, correto, ok kahũko - malandro kâi - admirar",
+    "term_indigenous": "kâhu",
+    "term_pt": "sim, correto, ok",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28377,8 +27414,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kâi’ã",
-    "term_pt": "admirou kâi’aô - admirador kâi’ĩ - admirei",
+    "term_indigenous": "kâi’xó",
+    "term_pt": "admiro (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28386,8 +27423,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "- admirando kâi’irá kâi’txẽ",
-    "term_pt": "admirado kâi’xó - admiro (a)",
+    "term_indigenous": "kamarú",
+    "term_pt": "árvore kamayurá(kamaruá/kamarur",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28395,44 +27432,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kamõnẽ’ã",
-    "term_pt": "cobiçou kamõnẽ’aô - cobiçador kamõnẽ’ĩ - cobiçarei kamõnẽ’irá - cobiçando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kamõnẽ’txẽ",
-    "term_pt": "cobiçado kamõnẽ’xó - cobiça(o) kamuñẽ - mole",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kamuñẽ’kwi",
-    "term_pt": "molinho kamusika - veado mateiro kãmxí - recorrer kãnã - minha kãñañãy - diabo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kâniako",
-    "term_pt": "macho kanurú - urucum kanuytá - sofrimento kãpãy - calúnia kapirnã - lontra",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kaponetú",
-    "term_pt": "pai adotivo kaporená - clamor, súplica",
+    "term_indigenous": "á)",
+    "term_pt": "coragem",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28450,7 +27451,7 @@
   },
   {
     "term_indigenous": "kaptxuai",
-    "term_pt": "caçarola karadorí - cama de ripa",
+    "term_pt": "caçarola",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28458,8 +27459,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "karamú",
-    "term_pt": "cisma karnẽtú - nosso kartãga - lealdade kartê - jaca kartonetú - amigo kartonetú’kwi - amiguinho",
+    "term_indigenous": "katxohã’xó",
+    "term_pt": "mastigo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28467,8 +27468,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kartonetú’puá",
-    "term_pt": "amigão karuriba - serno kasiaká - também",
+    "term_indigenous": "kâxkay’xó",
+    "term_pt": "fico (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28476,8 +27477,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "katerú",
-    "term_pt": "cor katôneí - veio katũbayá -mãe da mata",
+    "term_indigenous": "kehãtiá’xó",
+    "term_pt": "erra (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28485,71 +27486,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "katxahab",
-    "term_pt": "esgotado katxarã - colher kãtxê - surgir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "katxihé’ré",
-    "term_pt": "desejar katxohã - mastigar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "katxohã’txẽ",
-    "term_pt": "mastigado katxohã’xó - mastigo (a) kâupetõ - meu kavãg - feijão de corda",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kawatá",
-    "term_pt": "coração kãwây - causo, estórias kãx - ruído, bagunça kax’mkay - voz kâxkay - ficar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kâxkay’txẽ",
-    "term_pt": "ficado kâxkay’xó - fico (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kaxü",
-    "term_pt": "machado kayãbá - dinheiro kayboka - cachaça",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kehãtiá’ré",
-    "term_pt": "errar kehãtiá’xó - erra (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kehé",
-    "term_pt": "chuveiro kehetohê - avô kekatxá - rio",
+    "term_indigenous": "kepây",
+    "term_pt": "ela kesabá rede de pescar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28558,7 +27496,7 @@
   },
   {
     "term_indigenous": "ketxe’xó",
-    "term_pt": "combina (o) ketxi - almejar",
+    "term_pt": "combina (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28566,35 +27504,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "ketxi’ã",
-    "term_pt": "almejou ketxi’ĩ - almejarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ketxi’txẽ",
-    "term_pt": "almejado ketxi’xó - almejo (a) ketxihé - desejo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ketxihé’ã",
-    "term_pt": "desejou ketxihé’ĩ - desejarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ketxihé’irá",
-    "term_pt": "desejando ketxihé’txẽ - desejado",
+    "term_indigenous": "ketxi’xó",
+    "term_pt": "almejo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28611,89 +27522,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kiãká",
-    "term_pt": "escorrimento kiãká’ré - escorrer, fluir, escoar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kiãkaré’xó",
-    "term_pt": "escorre kiarô - destino kigwê - pente kihũikô - esconder",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kihũikô’xó",
-    "term_pt": "esconde kijẽmi - casa",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "koahú",
-    "term_pt": "anão koáty - nanico",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kõbatê",
-    "term_pt": "inimigo kõdõgá - reclamar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kõdõgá’xó",
-    "term_pt": "reclama(o) koet’hatê - precisão koet’hi - preciso kohã - cerveja",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "kôhay’ĩ",
-    "term_pt": "caçarei kôhay’irá - caçando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kôhay’xó",
-    "term_pt": "caço kôhayrá - caçando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "Kohayrãh",
-    "term_pt": "procurar Kohayrãh’ã - procurei Kohayrãh’ĩ - procurarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "Kohayrãh’txẽ",
-    "term_pt": "procurado Kohayrãh’xó - procura (o) kôhayré - caçar",
+    "term_pt": "caçarei",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28710,44 +27540,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kohoy",
-    "term_pt": "cipó koĩ - umbigo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kokaã’ũ",
-    "term_pt": "aracuã kokawã, pét - casa kokëeka - araponga",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kokö",
-    "term_pt": "raposa kokonĩbó - macuco koktxã - bocejar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "koktxã’ã",
-    "term_pt": "bocejou koktxã’ĩ - bocejarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "koktxã’xó",
-    "term_pt": "boceja (o) kôkuã - cabeça kôkuã’kwi - cabecinha",
+    "term_pt": "boceja (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28756,7 +27550,7 @@
   },
   {
     "term_indigenous": "komá",
-    "term_pt": "cadela konehõ - filho",
+    "term_pt": "cadela",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28764,8 +27558,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kõpokixay’ã",
-    "term_pt": "conversou kõpokixay’aô - conversador kõpokixay’ĩ - conversarei",
+    "term_indigenous": "kõpokixay’xó",
+    "term_pt": "converso (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28773,8 +27567,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kõpokixay’txẽ",
-    "term_pt": "conversado kõpokixay’xó - converso (a)",
+    "term_indigenous": "korihé’xó",
+    "term_pt": "cuido (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28782,8 +27576,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "koriê",
-    "term_pt": "mosca korihé - cuidar",
+    "term_indigenous": "korimã’xó",
+    "term_pt": "divulgo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28791,134 +27585,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "korihé’ã",
-    "term_pt": "cuidou korihé’aô - cuidador korihé’ĩ-cuidarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "korihé’txẽ",
-    "term_pt": "cuidado korihé’xó - cuido (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "korimã",
-    "term_pt": "expor, divulgar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "korimã’ã",
-    "term_pt": "divulgou korimã’ĩ - divulgarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "korimã’txẽ",
-    "term_pt": "divulgado korimã’xó - divulgo (a) kôrtú - nome kôrtuãga - identidade kotê - tomar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kotê’ã",
-    "term_pt": "tomou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kotorô’txẽ",
-    "term_pt": "visitado kovekoy - corpo masculino koxuk - desenhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "koxuk’txẽ",
-    "term_pt": "desenhado koxuk’xó - desenha(o) kóxut - tatu peba koysaba - pindaíba",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "krairé",
-    "term_pt": "apontador kramiã - agora krãpuãy - agradou krayré - remédio",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kriüá",
-    "term_pt": "araçá kuã - saber, conhecer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuã’xó",
-    "term_pt": "sei, sabe kuãgõ - entontar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuãgõ’xó",
-    "term_pt": "entonta kuãhi - sábio",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "Kuãsê",
-    "term_pt": "sabedoria kubik - moleque",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuhô",
-    "term_pt": "fui kuhú - andar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuhú’txẽ",
-    "term_pt": "andado kuhú’xó - anda (o) kuhukê - filha",
+    "term_indigenous": "kuhú’xó",
+    "term_pt": "anda (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28935,8 +27603,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kukaitebá",
-    "term_pt": "tartaruga do mar kuké - cachorro kümâ - engolir",
+    "term_indigenous": "kümã’xó",
+    "term_pt": "engola (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28944,17 +27612,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kümã’txẽ",
-    "term_pt": "engolido kümã’xó - engola (o) kumãdá - feijão kumúhuá - mar kumuruguaxé - chefe",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kumuruké",
-    "term_pt": "prefeito kunã - próximo kunihá - demora kup - caneta",
+    "term_indigenous": "kup",
+    "term_pt": "caneta",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28963,7 +27622,7 @@
   },
   {
     "term_indigenous": "kuparaka",
-    "term_pt": "onça-preta kupinehe - garoto",
+    "term_pt": "onça-preta",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -28971,98 +27630,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "kurú",
-    "term_pt": "pé de fumo kuruka - miúdo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kũy",
-    "term_pt": "extenso kũydã - pele",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuypô",
-    "term_pt": "vento kuytã - vaso kuytãwré - lixeira",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "kuyuna",
-    "term_pt": "farinha kwok - veneno loyiá - transar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "loyiá’ã",
-    "term_pt": "transou loyiá’ĩ - transarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "loyiá’txẽ",
-    "term_pt": "transado loyiá’xó - transo(a) m’gurutá - lima",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "m’kahã",
-    "term_pt": "espelho m’karanã - murta mà’ngĩ - mudo mãb’ó - traíra (falso) mãdubi - amendoim mãgãĩ - homossexual",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãgtsiá",
-    "term_pt": "tiririca mãguepá - transar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãguepá’txẽ",
-    "term_pt": "transado mãguepá’xó - transo (a) mãguha - astros mãgutá - comer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãgutá’xó",
-    "term_pt": "como mãgutxi - comida mãgutxiá - céu da boca mãgwãhã - sapatão mãgwi - afastar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãgwi’txẽ",
-    "term_pt": "afastado mãgwi’xó - afasta (o) mahãm - peixe do rio",
+    "term_indigenous": "mãguepá’xó",
+    "term_pt": "transo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29071,7 +27640,7 @@
   },
   {
     "term_indigenous": "mahikó",
-    "term_pt": "beija-flor macho mãhũ’há - meteoros",
+    "term_pt": "beija-flor macho",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29079,8 +27648,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mãkây",
-    "term_pt": "beijo makiame - senhor (a)",
+    "term_indigenous": "makiame",
+    "term_pt": "senhor (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29088,53 +27657,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "makínã",
-    "term_pt": "gente makirá - marmitas",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mâkôy",
-    "term_pt": "orgulho mãnãy - veado manãytê - boi mangutá - comer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãpã",
-    "term_pt": "presente, instante mãpxé - verdade marakãyñã maracá, - chocalho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "maroxĩ’txẽ",
-    "term_pt": "estudado maroxĩ’xó - estuda(o) masaká - colar, gargantilha",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mãtá",
-    "term_pt": "perua choca matamonetá - tia maturẽbá - mata grossa matxaka - colar mãtxó - abençoe, benção",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "may",
-    "term_pt": "garganta mayõ - luz, sol mayogená - mau, ruim, péssimo",
+    "term_indigenous": "mãpxé",
+    "term_pt": "verdade marakãyñã maracá",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29143,7 +27667,7 @@
   },
   {
     "term_indigenous": "mayõ",
-    "term_pt": "ῖhé - lua mb’itâg - jabuticaba mbahikó -domicílio",
+    "term_pt": "luz, sol",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29151,8 +27675,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mbarikë",
-    "term_pt": "bolsa fetal, casulo mbekú - panela de pressão mbikakáy - fresco",
+    "term_indigenous": "mayõ",
+    "term_pt": "ῖhé - lua",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29160,35 +27684,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mê’á",
-    "term_pt": "é meãdxú - ervas mehexó - cheguei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mehexó’ã",
-    "term_pt": "chegou mehexó’ĩ - chegerei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mehexó’txẽ",
-    "term_pt": "chegado mehexó’xó - chego (a) merkí - açúcar merkp’xuy - suco",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mì’mna",
-    "term_pt": "esteira mi’nptóy - careca, calvo",
+    "term_indigenous": "mehexó’xó",
+    "term_pt": "chego (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29205,8 +27702,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mibntoy",
-    "term_pt": "lousa, quadro mihai - riqueza mihasê - rico",
+    "term_indigenous": "mihasê",
+    "term_pt": "rico",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29224,25 +27721,7 @@
   },
   {
     "term_indigenous": "míkahab",
-    "term_pt": "chão plano mĩkahêbkôy corrida -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "míkay",
-    "term_pt": "pedra, casa, faca de pedra mikui - carrapato pequeno",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mimábm",
-    "term_pt": "matriz mimãká - tangirina mimãti - matagal",
+    "term_pt": "chão plano mĩkahêbkôy corrida",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29251,7 +27730,7 @@
   },
   {
     "term_indigenous": "mimô’ã’txẽ",
-    "term_pt": "gostado mimô’ã’xó - gosto (a)",
+    "term_pt": "gostado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29259,8 +27738,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mipab’heb",
-    "term_pt": "alcool, cachaça mipaká - capoeira mipây - sentimento mipây’ã - senti, sentiu mipây’ĩ - sentirei",
+    "term_indigenous": "mimô’ã’xó",
+    "term_pt": "gosto (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29269,43 +27748,7 @@
   },
   {
     "term_indigenous": "miriaú",
-    "term_pt": "boa tarde -res/p miruã - besouro mitá - fruteira",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "miúbm",
-    "term_pt": "matriarca, freira mkâ - tanto",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mmĩp’oi",
-    "term_pt": "canoa jangada moatepá - marchar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "moatepá’xó",
-    "term_pt": "marcha mõdahã - tamanduá mõdxê - forma",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mõdxetxẽ",
-    "term_pt": "formado moeká - abaixar",
+    "term_pt": "boa tarde -res/p",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29314,7 +27757,7 @@
   },
   {
     "term_indigenous": "mohab",
-    "term_pt": "músculo moikã jogar -",
+    "term_pt": "músculo moikã jogar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29322,8 +27765,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "moikã’xó",
-    "term_pt": "joga môj - foi mõpõy - adorar",
+    "term_indigenous": "mukiã’xó",
+    "term_pt": "assa(o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29331,8 +27774,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "morotó",
-    "term_pt": "larva mõtxay - oferecer",
+    "term_indigenous": "mukueme",
+    "term_pt": "indisposição, desanimado, abatido",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29340,8 +27783,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mowĩ",
-    "term_pt": "javali moytãxö - pintor moytãxö’wãy -pintura",
+    "term_indigenous": "mukuyãga",
+    "term_pt": "bumbum",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29349,8 +27792,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "mũdé",
-    "term_pt": "ladão muekôy - ajoelhar",
+    "term_indigenous": "mukxá’xó",
+    "term_pt": "abro (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29358,8 +27801,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "muekôy’xó",
-    "term_pt": "ajoelho múguru - limão muhũ - dormir",
+    "term_indigenous": "murici",
+    "term_pt": "silêncio mutxatxãguê pedir menos",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29367,8 +27810,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "muhũ’irá",
-    "term_pt": "dormindo muhũ’xó - dormo(a) muhuá - perigo",
+    "term_indigenous": "muxaú",
+    "term_pt": "onça pelada",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29376,80 +27819,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "muhuãga",
-    "term_pt": "perigoso muhujé - viajar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "muhutí",
-    "term_pt": "bicho homem, gente muká - unir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "- unido muká’txẽ mukará",
-    "term_pt": "paca",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukari’ã",
-    "term_pt": "juntou mukari’ĩ - juntarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukari’xó",
-    "term_pt": "junte mukaú - reunir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukaú’xó",
-    "term_pt": "reune mũkiá - assar mukiã - assou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukiã’aô",
-    "term_pt": "assador mukiã’ĩ - assarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukunarú",
-    "term_pt": "puba mukusuy - peixe mukuxé - braço superior mukuyãga - bumbum mukxá - abrir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "mukxá’txẽ",
-    "term_pt": "aberto mukxá’xó - abro (a) mupãri - determinar",
+    "term_indigenous": "n’hẽ",
+    "term_pt": "derramar, transbordar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29466,8 +27837,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "n’hẽ’txẽ",
-    "term_pt": "derramado n’hẽ’xó - derramo (a) naãhã - sem",
+    "term_indigenous": "n’hẽ’xó",
+    "term_pt": "derramo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29475,8 +27846,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "nãgùñã",
-    "term_pt": "exausto nãhã - aguadente",
+    "term_indigenous": "nakíyã",
+    "term_pt": "ancestral nakohuy _ corda",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29484,62 +27855,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "náha",
-    "term_pt": "roda nahão - feijão andu",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nãhë",
-    "term_pt": "cotia nakatxê - burduna",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nakây",
-    "term_pt": "ninho nãkayá - sereno",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ñámà’txì’ã",
-    "term_pt": "casou ñámà’txì’ĩ - casarei ñámà’txì’irá - casando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ñámá’txì’xó",
-    "term_pt": "caso namũ - mistura(o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "namũ’txẽ",
-    "term_pt": "misturado nãnä - comparecer, vir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nãnä’ã",
-    "term_pt": "compareceu nãnä’ĩ-comparecerei",
+    "term_indigenous": "naktamañã",
+    "term_pt": "noiva, comprometida (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29565,33 +27882,6 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "naóy",
-    "term_pt": "dedo anular napinotô - nossa nãptxê - existe nãptxê’ã - existiu nãptxê’ĩ-existirei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nãptxê’xó",
-    "term_pt": "existo nawã - fruta nãxẽykô - lembrança naxoxí - voar naxoxì’ã - voou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "naxoxì’ĩ",
-    "term_pt": "voarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "naxoxì’txẽ",
     "term_pt": "voado",
     "language": "Patxôhã",
@@ -29601,8 +27891,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "naxoxì’xó",
-    "term_pt": "voô nayhé - vencer",
+    "term_indigenous": "ngakuá’xó",
+    "term_pt": "despejo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29610,35 +27900,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "nayhé’xó",
-    "term_pt": "vence nãyko - costas nehõyñã - sobrinho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ñeöy",
-    "term_pt": "preguiça de cara branca ngaha - orvalho, água",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ngahé",
-    "term_pt": "cutia ngakuá - despejar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ngakuá’txẽ",
-    "term_pt": "despejado ngakuá’xó - despejo (a) niag - atual niãhé - acordar",
+    "term_indigenous": "niamisũ",
+    "term_pt": "deus",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29655,8 +27918,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "nioakô",
-    "term_pt": "filiação nioaktxũ - afilhado nioniêmã - um (artigo) nioamirã - afilhada niôgâ - aceso",
+    "term_indigenous": "niôgâ",
+    "term_pt": "aceso",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29664,35 +27927,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "niognãsê",
-    "term_pt": "brilho niogni’toxĩgá - brilhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niogni’toxigá’xó",
-    "term_pt": "brilha niognĩgãhi - enegia, áurea",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niognũy",
-    "term_pt": "cumprimento niõhã - curto",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niohãg",
-    "term_pt": "intermediário niõhukê - neta nioiãketõ - breve",
+    "term_indigenous": "niognĩgãhi",
+    "term_pt": "enegia, áurea",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29709,61 +27945,7 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "niõñixina’xó",
-    "term_pt": "cintila niorukirã - entre casca",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niotsok",
-    "term_pt": "chifre niotsoktsoy - chifrudo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niotxarú",
-    "term_pt": "tronco, caule niõtxi - avó",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niotxikajo",
-    "term_pt": "árvore nioxek - conviver",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nioxek’xó",
-    "term_pt": "convive nipatxiõ - abraçar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nipatxiõ’ã",
-    "term_pt": "abraçou nipatxiõ’ĩ - abraçarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "- abraçado nipatxiõ’txẽ nipatxiõ’xó",
+    "term_indigenous": "nipatxiõ’xó",
     "term_pt": "abraço (a)",
     "language": "Patxôhã",
     "category": "Geral",
@@ -29772,26 +27954,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "nipketó",
-    "term_pt": "dedo polegar nipxox - acender",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nipxox’txẽ",
-    "term_pt": "acendido nipxox’xó - acende(o) nitinawã - muitas frutas",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nitpketó",
-    "term_pt": "dedo polegar nitxi - muito nitxuké - partir nitxuké’ã - partiu",
+    "term_indigenous": "nitxuké’ã",
+    "term_pt": "partiu",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29800,7 +27964,7 @@
   },
   {
     "term_indigenous": "nitxuké’xó",
-    "term_pt": "parto niũghaxĩgá - feder",
+    "term_pt": "parto",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29826,35 +27990,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "niũghaxĩgá’xó",
-    "term_pt": "fede niũpatxi - juntar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "niũpatxi’xó",
-    "term_pt": "junto nkâh - necessidade",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nkuna’ã",
-    "term_pt": "beber noãtxó - numa nogakayt - esquentar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nogakayt’txẽ",
-    "term_pt": "esquentado nogakayt’xó - esquento(a) nokhô - jamais nokoxí - entrar",
+    "term_indigenous": "nokoxí",
+    "term_pt": "entrar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29871,35 +28008,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "nokoxi’xó",
-    "term_pt": "entro nokpây - presença",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "noktxiopetã",
-    "term_pt": "preguiçoso nokxoõ - morrer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nokxoõ’txẽ",
-    "term_pt": "morrido nokxoõ’xó - morre(o) nomaysõ bom - normá - jantar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "notanatxá’txẽ",
-    "term_pt": "pintado notanatxá’xó - pinta(o) nõtẽ - agente nõtehê - comprar",
+    "term_indigenous": "nokxoõ’xó",
+    "term_pt": "morre(o) nomaysõ bom",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29908,43 +28018,7 @@
   },
   {
     "term_indigenous": "nõtehê’xó",
-    "term_pt": "compro notxanatxá - pintar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ntxékui",
-    "term_pt": "patroa, mulher nũgã - seu",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nuhatê",
-    "term_pt": "força nuhé - força",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nuhé’irá",
-    "term_pt": "forçando nuhé’ré - forçar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "nuhé’xó",
-    "term_pt": "forço nuhtĩ - cabeceira nuhwãy - fortaleza",
+    "term_pt": "compro",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29953,7 +28027,16 @@
   },
   {
     "term_indigenous": "nukaú’xó",
-    "term_pt": "transito (a) nukôi - ajoelhar nukuĩ - rótula do joelho",
+    "term_pt": "transito (a)",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "nuptxaptamãg",
+    "term_pt": "frio",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29962,7 +28045,7 @@
   },
   {
     "term_indigenous": "õg’wã’txẽ",
-    "term_pt": "desabado desabe õg’wã’xó -",
+    "term_pt": "desabado desabe",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29971,7 +28054,7 @@
   },
   {
     "term_indigenous": "ohóy",
-    "term_pt": "mandioca-doce okehê - autoridade okehôy - poder",
+    "term_pt": "mandioca-doce",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -29979,89 +28062,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "okehôy’xó",
-    "term_pt": "pode okená - lamento (a) okená’ã - lamentou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okená’txẽ",
-    "term_pt": "lamentado okixay - declarar okixay’ã - declarou okixay’ĩ - declararei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okixay’irá",
-    "term_pt": "declarando okixay’txẽ - declarado",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okixay’xó",
-    "term_pt": "declaro(a) oknikenãg - almoçar oknikenãg’ã - almoçou/almocei oknikenãg’ĩ - almoçarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "oknikenãg’irá",
-    "term_pt": "almoçando oknikenãg’xó - almoço(a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okrixú’kãd",
-    "term_pt": "corçará okrixú’ré - corçar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okrixú’txẽ",
-    "term_pt": "corçado ôkwiá - abrigo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "okwiá’ã",
-    "term_pt": "abrigou ôkwiá’ĩ - abrigarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ôkwiá’txẽ",
-    "term_pt": "abrigado opiâkex - abundante orísá - levanta ótopãrug - despedir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ótopãrug’xó",
-    "term_pt": "despede otxab - espiga de milho otxemã - uso",
+    "term_indigenous": "okená",
+    "term_pt": "lamento (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30070,7 +28072,7 @@
   },
   {
     "term_indigenous": "otxemã’txẽ",
-    "term_pt": "usado (a) oukí - esquilo",
+    "term_pt": "usado (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30078,8 +28080,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "oypá",
-    "term_pt": "cágado d’água oytám - farinha de guerra õytxé - andar, passear",
+    "term_indigenous": "õytxé’xó",
+    "term_pt": "passeio (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30087,8 +28089,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "õytxé’txẽ",
-    "term_pt": "passeado õytxé’xó - passeio (a)",
+    "term_indigenous": "pahábnã",
+    "term_pt": "mutuca pâhâi _casa p/ comércio",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30096,8 +28098,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "õyxté’ã",
-    "term_pt": "passeou õyxte’ĩ - passearei",
+    "term_indigenous": "pajĩku",
+    "term_pt": "casa, barraco pâkai _ cará, corró",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30105,8 +28107,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "p’ap’ai/ pâpây",
-    "term_pt": "abelha paaĩg - couro, pele paáy - pedregulho",
+    "term_indigenous": "pakjú",
+    "term_pt": "cozinhar",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30114,61 +28116,7 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "paekabué",
-    "term_pt": "fazenda pãgêhe - costumes página - aremõtxê pagnõ - abelha preta",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pagwi",
-    "term_pt": "esperto pahab - mão pahábnã - mutuca pâhâi _casa p/ comércio",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pahamenãy",
-    "term_pt": "palma da mão pahaptay - boi de canga pahogtabm - além disso",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pahu’irá",
-    "term_pt": "sonhando pahu’ré - sonhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pahunú",
-    "term_pt": "sonhador paï - arpão paiúba - jangada pajarú - madeira",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pakhêtxê",
-    "term_pt": "cultural pakjú - cozinhar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "- cozinhado pakjú’txẽ pakjú’xó",
+    "term_indigenous": "pakjú’xó",
     "term_pt": "conzinho (a)",
     "language": "Patxôhã",
     "category": "Geral",
@@ -30186,8 +28134,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "paktã",
-    "term_pt": "certo pâktê - agradecimento, reconhecimento pakté - dispõe",
+    "term_indigenous": "pâktê",
+    "term_pt": "agradecimento, reconhecimento",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30196,7 +28144,7 @@
   },
   {
     "term_indigenous": "pâktê’ã",
-    "term_pt": "agradeci pakté’ã - disponhou",
+    "term_pt": "agradeci",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30204,8 +28152,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "pâktê’ĩ",
-    "term_pt": "agradecerei pakté’ĩ - disponharei",
+    "term_indigenous": "pakté’xó",
+    "term_pt": "disponho (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30213,17 +28161,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "pâmuhu’ã",
-    "term_pt": "repousou pâmuhu’ĩ - repousarei pâmuhu’irá - repousando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pâmuhu’txẽ",
-    "term_pt": "repousado pâmuhu’xó - repouso (a)",
+    "term_indigenous": "pakuyo’ῖhé",
+    "term_pt": "solteira",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30232,7 +28171,7 @@
   },
   {
     "term_indigenous": "parnẽ",
-    "term_pt": "dar/ mim dá parnê’ã - deu parnê’ĩ - darei",
+    "term_pt": "dar/ mim dá",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30240,8 +28179,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "parnê’irá",
-    "term_pt": "dando parnê’txẽ - dado parnê’xó - dou/dá parukã - alguém passar - ihãyré pássaro/mata - zabêlê",
+    "term_indigenous": "parnê’ĩ",
+    "term_pt": "darei",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30249,8 +28188,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "patatxay",
-    "term_pt": "sapato pataxi - aldeia patayó - pé grande pateremô - desapareceu",
+    "term_indigenous": "passar",
+    "term_pt": "ihãyré",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30258,17 +28197,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "patxitxá’xó",
-    "term_pt": "faz/faço patxô - baixo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "patxôhã",
-    "term_pt": "idioma, dialeto, língua patxutxá - furar",
+    "term_indigenous": "pássaro/mata",
+    "term_pt": "zabêlê",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30285,8 +28215,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "patxutxá’txẽ",
-    "term_pt": "furado patxutxá’xó - fura (o) patxutxô - cortar",
+    "term_indigenous": "patxutxá’xó",
+    "term_pt": "fura (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30294,8 +28224,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "patxutxô’txẽ",
-    "term_pt": "cortado patxutxô’xó - corta (o) pâx - no paxaká - levar",
+    "term_indigenous": "patxutxô’xó",
+    "term_pt": "corta (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30303,8 +28233,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "paxaká’txẽ",
-    "term_pt": "levado paxaká’xó - leva (o) paxẽg - cajá",
+    "term_indigenous": "paxaká’xó",
+    "term_pt": "leva (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30312,62 +28242,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "paxúkixay",
-    "term_pt": "papel paynaê - cobertor pe’ohi - vestido pêãgõ - matar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pêãgõ’irá",
-    "term_pt": "matando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pêãgõ’txẽ",
-    "term_pt": "matado pêãgõ’xó - mata (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pegpáy",
-    "term_pt": "abelha de casca vermelha pehĩ - luz, claridade",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pêhnã",
-    "term_pt": "abelha giti pejô - grávida pekasú - pombo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pemohõ",
-    "term_pt": "cansado, fadigado penaô - pisada, rasto",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "peobtoy",
-    "term_pt": "coluna vertebral perakuã - deixar, abandonar",
+    "term_indigenous": "pêãgõ’xó",
+    "term_pt": "mata (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30385,7 +28261,7 @@
   },
   {
     "term_indigenous": "perakwã’txẽ",
-    "term_pt": "deixado deixo (a) perakwã’xó - petaniãg - cadê petây - pimenta malagueta",
+    "term_pt": "deixado deixo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30394,7 +28270,7 @@
   },
   {
     "term_indigenous": "petékétõ",
-    "term_pt": "beija-flor peternã - pimenta",
+    "term_pt": "beija-flor",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30402,8 +28278,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "petetxiãg",
-    "term_pt": "ovo petõi - tem",
+    "term_indigenous": "pinapõ’xó",
+    "term_pt": "olha (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30411,62 +28287,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "petxiõg",
-    "term_pt": "ovo goro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "piátê",
-    "term_pt": "relógio piâtsë - redor piâtsë’ã - redoôu",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "piâtsë’xó",
-    "term_pt": "redoô piây - lagarta",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "piay",
-    "term_pt": "moeda pihãg - casa de festa pilão - itôi pinapõ - olhar pinapõ’ã - olhou pinapõ’ĩ - olharei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pinapõ’txẽ",
-    "term_pt": "olhado pinapõ’xó - olha (o) pirãy - tímido pirikã - quente",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "piririkã",
-    "term_pt": "espilético, gaiato, saltitante pitím - manchas poá - águia poahab - jaracuçu poahab - jaracuçu",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "pohói",
-    "term_pt": "vareta pohóyn - trave poitãg - arco pôkâkey - buscar",
+    "term_indigenous": "pirikã",
+    "term_pt": "quente",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30475,16 +28297,7 @@
   },
   {
     "term_indigenous": "pôkâkey’xó",
-    "term_pt": "busco (a) pokãyá - planta pokotxõg - piolho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "poniôgâ",
-    "term_pt": "panela poniohõ - macaco poniohõ - macaco poôtá - longe pori - perto poriñok - ficar quieto",
+    "term_pt": "busco (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30493,61 +28306,7 @@
   },
   {
     "term_indigenous": "potãg",
-    "term_pt": "responsável potehé chuva, tempestade - potoitã - misericórdia pôtuy - bêbado",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ramikô",
-    "term_pt": "terreno ramuhu - maré rẽbá - grossa(o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "rekôy",
-    "term_pt": "grupo remoá - barulho ribá - duro ruknãg - rebojo sapsuĩ - friagem sarã - raiz",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "sarãdí",
-    "term_pt": "raizeiro sãrug - cujo seyká - sobra",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "siratã",
-    "term_pt": "filho de deus siratã - jesus sirirã - aranha sirnã - arroz",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "Social",
-    "term_pt": "hãhãeãga soẽmó - convidar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "soêmó’ã",
-    "term_pt": "convidou soêmó’ĩ - convidarei",
+    "term_pt": "responsável potehé chuva, tempestade",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30556,61 +28315,7 @@
   },
   {
     "term_indigenous": "soêmó’xó",
-    "term_pt": "convido (a) somohõ - folia",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "sonãy",
-    "term_pt": "sono sõnaymohõ - sonambro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "sonẽ",
-    "term_pt": "recém nascido sunĩa - carne suniatá - cantar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "suniatá’txẽ",
-    "term_pt": "cantado suniatá’xó - canto(a) suriãg - enviar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "suriãg’ã",
-    "term_pt": "enviou suriãg’ĩ - enviarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "suriãg’txẽ",
-    "term_pt": "enviado suriãg’xó - envio suyhê - pensamento",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "suyhê’aô",
-    "term_pt": "pensador suyhê’ĩ - pensarei",
+    "term_pt": "convido (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30627,24 +28332,6 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "taaháy",
-    "term_pt": "urubu tabtxirá - valente",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tahão",
-    "term_pt": "café tãhi - saboroso",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "tahú",
     "term_pt": "bichotahu - ronco",
     "language": "Patxôhã",
@@ -30654,17 +28341,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tâiko",
-    "term_pt": "gosto, paladar, sabor tãikotxó - gozo, prazer takaúy - oral, bucal",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "takay",
-    "term_pt": "mal-humorado takohã -boa noite takunahé - bem tamañá’ĩ - habitar",
+    "term_pt": "mal-humorado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30672,8 +28350,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tamañá’ĩ’kãd",
-    "term_pt": "habitará tamañá’ĩ’txẽ -habitado tamañá’ĩ’xó - habito (a)",
+    "term_indigenous": "tamañá’ĩ’xó",
+    "term_pt": "habito (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30682,7 +28360,7 @@
   },
   {
     "term_indigenous": "tamãpê",
-    "term_pt": "beira tamikuã estrela - tamonetá - tio tamoxi - me, mim tamuré - canoa tanara - natureza",
+    "term_pt": "beira tamikuã estrela",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30690,8 +28368,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tanumúhũ’txẽ",
-    "term_pt": "adormecido tanumúhũ’xó - adormeço",
+    "term_indigenous": "tapetapokpay’xó",
+    "term_pt": "nego (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30699,8 +28377,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tap’óke",
-    "term_pt": "carvão tapave - casa /reunião tapayñũ - preto tapetapokpay - negar",
+    "term_indigenous": "taputá",
+    "term_pt": "bem-vindo",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30708,8 +28386,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tapetapokpay’txẽ",
-    "term_pt": "negado tapetapokpay’xó - nego (a) tapetep - colégio",
+    "term_indigenous": "tibirimã",
+    "term_pt": "panela de barro tibirisá cair",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30717,107 +28395,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tapitatá",
-    "term_pt": "banana madura tapitébm - gelo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "taptéy",
-    "term_pt": "procedência tapuritú - mais tapurumã - jovem guerreiro taputá - bem-vindo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "taputarí",
-    "term_pt": "parente tará - verde",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tarakwatê",
-    "term_pt": "forte tarú - estralo tatibá - cheio, repleto, pleno tawá - barro tawãy - parede",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tayatê",
-    "term_pt": "por que taygá - domínio tãyhú - gota, pingo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "teptxiá",
-    "term_pt": "caititu fêmea teratõ - ombro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "teymá",
-    "term_pt": "fubá tibirimã - panela de barro tibirisá cair -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tibirisá’txẽ",
-    "term_pt": "caido tibirisá’xó - cai (o) tihiy - rede de dormir tikã - bico",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tikã’ã",
-    "term_pt": "bicou tikã’ĩ - bicarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tikã’ré",
-    "term_pt": "bicar tikãtikã - bicada",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tĩpã",
-    "term_pt": "broto titú - arrepiado tohê - sede tohẽporé - rodagem, pista",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tohõ",
-    "term_pt": "gavião tohõhê - época",
+    "term_indigenous": "tibirisá’xó",
+    "term_pt": "cai (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30826,7 +28405,34 @@
   },
   {
     "term_indigenous": "tõĩ",
-    "term_pt": "tãĩ - perereca tokêrê - quer (o) tokmã - tudo bem tokonohê - pra",
+    "term_pt": "tãĩ - perereca",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "tokêrê",
+    "term_pt": "quer (o)",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "tokmã",
+    "term_pt": "tudo bem",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "tomaysõ",
+    "term_pt": "gordura",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30835,7 +28441,7 @@
   },
   {
     "term_indigenous": "topatê",
-    "term_pt": "cadeira topê - sentar",
+    "term_pt": "cadeira",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30844,25 +28450,7 @@
   },
   {
     "term_indigenous": "topê’xó",
-    "term_pt": "sento (a) topehê - ele topehêp - eles",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tornẽpuhú",
-    "term_pt": "algum tornõ - vai",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tornõhêhê",
-    "term_pt": "acontecimento, ocorrência torotê - estar",
+    "term_pt": "sento (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30871,7 +28459,7 @@
   },
   {
     "term_indigenous": "totã",
-    "term_pt": "lagartixa, taruíra totsá cuia -",
+    "term_pt": "lagartixa, taruíra totsá cuia",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30880,7 +28468,7 @@
   },
   {
     "term_indigenous": "toyhnã",
-    "term_pt": "beija-flor fêmea trioká - caminhar",
+    "term_pt": "beija-flor fêmea",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30888,8 +28476,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "trioká’txẽ",
-    "term_pt": "caminhado trioká’xó - caminha (o) tsaápketõ - coxo tsaẽhú - artes tsägô/txägô - tchau",
+    "term_indigenous": "trioká’xó",
+    "term_pt": "caminha (o)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30897,8 +28485,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tsiubtsiá",
-    "term_pt": "porco reprodutor, barrão tso’á - quebrar",
+    "term_indigenous": "tsaẽhú",
+    "term_pt": "artes",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30906,17 +28494,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tso’ã",
-    "term_pt": "quebrou tso’á’ĩ - quebrarei",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tso’á’txẽ",
-    "term_pt": "quebrado tso’á’xó - quebro (a)",
+    "term_indigenous": "tso’á’xó",
+    "term_pt": "quebro (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30933,35 +28512,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tsohob’txẽ",
-    "term_pt": "absorvido tsohob’xó-absorvo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tsôpẽhnã",
-    "term_pt": "doce tsoupá - búfalo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "tsowĩ",
-    "term_pt": "monstro tuãkây - carambola tuêrú - evitar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "tuêrú’xó",
-    "term_pt": "evito (a) tuhup - rede de pescar, arrastão tuhutari - hoje tukê tukehê boa sorte -",
+    "term_pt": "evito (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30969,8 +28521,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tukjú’ĩ",
-    "term_pt": "pegarei tukjú’irá - pegando",
+    "term_indigenous": "tuhutari",
+    "term_pt": "hoje tukê tukehê boa sorte",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30978,8 +28530,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tukjú’txẽ",
-    "term_pt": "pegado tukjú’xó - pego (a)",
+    "term_indigenous": "tukjú’xó",
+    "term_pt": "pego (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30987,8 +28539,17 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "tukoyhnã",
-    "term_pt": "carneiro tup’o’hi - camisa tupavê - ancião tupaxi - produto tuphôk - quieto",
+    "term_indigenous": "txag’rú",
+    "term_pt": "lugar",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "txakaui",
+    "term_pt": "urinar (mijar)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -30997,7 +28558,25 @@
   },
   {
     "term_indigenous": "txakaui’ã",
-    "term_pt": "urinou (mijou) txakaui’ĩ - urinarei (mijarei) txakaui’irá - urinando (mijando)",
+    "term_pt": "urinou (mijou)",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "txakaui’ĩ",
+    "term_pt": "urinarei (mijarei)",
+    "language": "Patxôhã",
+    "category": "Geral",
+    "pronunciation": null,
+    "example": null,
+    "audio_url": null
+  },
+  {
+    "term_indigenous": "txakaui’irá",
+    "term_pt": "urinando (mijando)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31006,7 +28585,7 @@
   },
   {
     "term_indigenous": "txakaui’txẽ",
-    "term_pt": "urinado (mijado) txakaui’xó - urina (mija)",
+    "term_pt": "urinado (mijado)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31014,8 +28593,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txakê",
-    "term_pt": "puro txakehây - purificar",
+    "term_indigenous": "txakaui’xó",
+    "term_pt": "urina (mija)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31032,17 +28611,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txakêhây’irá",
-    "term_pt": "purificando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "txakêhây’txẽ",
-    "term_pt": "purificado txakêhây’xó - purifica (o) txakid - carrapato txakó - pulando txakó’ã - pulei",
+    "term_pt": "purificado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31050,8 +28620,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txakó’ĩ",
-    "term_pt": "pularei txakó’ré - pular txakó’xó - pulo (a) txakpeketõ - lençol",
+    "term_indigenous": "txakó’xó",
+    "term_pt": "pulo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31059,8 +28629,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txàmãgay",
-    "term_pt": "passarinha txamãgui - desocupado",
+    "term_indigenous": "txamihakabu",
+    "term_pt": "rapé txanã criança/bebê",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31068,8 +28638,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txawhiña",
-    "term_pt": "praga txaxó - menos",
+    "term_indigenous": "txihi",
+    "term_pt": "índio",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31077,8 +28647,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txây",
-    "term_pt": "virtude, bem txayá - más txayará - diante txaygã - irritado, bravo txayhô - santo txayuã - dia",
+    "term_indigenous": "txôpay",
+    "term_pt": "deus criador/primeiro índio da historia/ deus da água",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31086,8 +28656,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txéã",
-    "term_pt": "só txêk - ali txemãkô - último txenã - certeza",
+    "term_indigenous": "uhitué",
+    "term_pt": "alegre uhuy _ aipim",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31095,8 +28665,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txená",
-    "term_pt": "solitário txepây - esta txepiá - transporte",
+    "term_indigenous": "ûmip",
+    "term_pt": "trazer trouxe",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31104,8 +28674,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txeytxuy",
-    "term_pt": "léndia txiãgá - branco",
+    "term_indigenous": "watxatxũ",
+    "term_pt": "banho",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31113,305 +28683,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "txiäng",
-    "term_pt": "água chuva txiape - piso, solo, pavimentação",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txĩbero",
-    "term_pt": "cachimbo txiê - nadador txihi - índio txihihãe - indígena",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txipã",
-    "term_pt": "saúva txó - do txoarã - mito, conto",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txobhá",
-    "term_pt": "cura txoehá -cruz txoeki - passarinho txõg - aqui",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txohob’txẽ",
-    "term_pt": "absorvido txohoy - corno txokâui - peidar txokoyrã - neblina txonãg - água",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txopetã’txẽ",
-    "term_pt": "amolado txopetã’xó - amolo (a) txũg - tornozelo txuhap, txuhab, ahĩkábm - vamos txuhu - gamela",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txuĩg",
-    "term_pt": "nervo txuinãg - trigo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txuk’ay",
-    "term_pt": "inseto txupa - batata",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "txuratê",
-    "term_pt": "fofoqueiro txury - mentiroso",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uãk’ï",
-    "term_pt": "sapo boi uãkãga - fidelidade uãkahây - integridade",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uãkapiba",
-    "term_pt": "inacabado uãkmuká - desunir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uãkmuká’xó",
-    "term_pt": "desuno uãknitxi - demais uará - garça uãrehá - preservar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uãrehá’txẽ",
-    "term_pt": "preservado uãrehá’xó - preserva (o) udxeop - mamão udxêre - encontrar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uênã’txẽ",
-    "term_pt": "louvado uênã’xó - louvo (a) uẽtxá - fina (o) ũg - e ug’rug - impedir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ug’rug’txẽ",
-    "term_pt": "impedido ug’rug’xó - impeça (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uguaxerê",
-    "term_pt": "governo, reino ũguriá - ingresso uhãdxé - idéia uhâi - tatu",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uhamo",
-    "term_pt": "cima uhitué - alegre uhuy _ aipim uĩ - na uĩãtãy - nisso uĩdxaruá - aquecer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uĩdxaruá’txẽ",
-    "term_pt": "aquecido uĩdxaruá’xó - aqueço (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uĩtãĩ",
-    "term_pt": "neste uĩtamõ - horizonte",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "uĩtxêpoy",
-    "term_pt": "nesta ukã - tão ũkãdxê - acordo",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ukãri",
-    "term_pt": "escolha,opção, preferência ukãtarí - durante",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ukĩg",
-    "term_pt": "mico leão ukitxavy - macaco, sagüi ũkôtxê - novo último - txemãkô ûmip - trazer trouxe ûmip’ã -",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ûmip’xó",
-    "term_pt": "trago (a) ûmiptê - trouxe",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "úna’ã",
-    "term_pt": "água unãtú - esqueça",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "unãtú’irá",
-    "term_pt": "esquecendo unãtú’ré - esquecer unãtú’ré - esquecer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "unãtú’txẽ",
-    "term_pt": "esquecido ünĩ - carne de gente unputxay - situação upâ - da upãrug - pedir",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "upãrug’xó",
-    "term_pt": "peço ũpú - de upuhãy - cigarro uputxay - estado urataká - cocar uraxikã - ingá",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "urufú",
-    "term_pt": "labareda urumã - jovem",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ütxakô",
-    "term_pt": "cebola utxê - mandar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "utxê’txẽ",
-    "term_pt": "mandado utxê’xó - manda (o) ũtxeká - encanto",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "ũtxeka’txẽ",
-    "term_pt": "encantado ũxé - em ũxéapiãk - enquanto úxehã - então uxetey - figura uyhâ - depende vouquié - gambá",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "w’ë",
-    "term_pt": "lobo watxatxũ - banho",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "watxunig",
-    "term_pt": "banheiro wayã - pomba wekanã paz - wêrâ - tentar, aventurar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "wêrâ’xó",
-    "term_pt": "tento, aventuro (o) werimehy - amor",
+    "term_indigenous": "wayã",
+    "term_pt": "pomba wekanã paz",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31428,125 +28701,8 @@
     "audio_url": null
   },
   {
-    "term_indigenous": "wêteré’txẽ",
-    "term_pt": "retirado wêteré’xó - retira (o)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xahá",
-    "term_pt": "lançar xahá - lançar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xahobn",
-    "term_pt": "peito xâkây - comer",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xâkây’irá",
-    "term_pt": "comendo xâkây’xó - como (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
     "term_indigenous": "xâkây",
-    "term_pt": "txẽ - comido xâkpây - terminou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xaöm",
-    "term_pt": "porco do mato xarikuã - dom",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xarú",
-    "term_pt": "sariguê xatibá - onda forte xauaũ - infantil xavaská - beber, golar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xavaská’xó",
-    "term_pt": "bebo xayêki - prosar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xayêki’txẽ",
-    "term_pt": "prosado xayêki’xó - prosa (o) xaygâ - posse",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xayhê",
-    "term_pt": "razão xex - riscar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xex’txẽ",
-    "term_pt": "riscado xex’xó - risca (o) xĩ - amarrar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xĩ’txẽ",
-    "term_pt": "amarrado xĩ’xó - amarra (o) xinay - filhote de paca",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xohã",
-    "term_pt": "guerreiro",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xokunã",
-    "term_pt": "cafeteira xóop - beber xoóp’ã -bebeu",
+    "term_pt": "txẽ - comido",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31555,25 +28711,7 @@
   },
   {
     "term_indigenous": "xoóp’txẽ",
-    "term_pt": "bebido bebo (a) xoóp’xó - xopá - derivar xopá’ã - derivou",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xopá’txẽ",
-    "term_pt": "derivado xopá’xó - derivo (a)",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "xukakayína",
-    "term_pt": "galinha de angola xuktakako - franga",
+    "term_pt": "bebido bebo (a)",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
@@ -31582,25 +28720,7 @@
   },
   {
     "term_indigenous": "yamã/awêry",
-    "term_pt": "obrigado ygué - saco zĩgá - remar",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "zĩgá’ĩ",
-    "term_pt": "remarei zĩgá’irá - remando",
-    "language": "Patxôhã",
-    "category": "Geral",
-    "pronunciation": null,
-    "example": null,
-    "audio_url": null
-  },
-  {
-    "term_indigenous": "zĩgá’txẽ",
-    "term_pt": "remado zĩgá’xó - remo (a)",
+    "term_pt": "obrigado",
     "language": "Patxôhã",
     "category": "Geral",
     "pronunciation": null,
