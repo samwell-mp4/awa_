@@ -75,16 +75,14 @@ function LandingChoice() {
             to="/adulto"
             image={adultoLogo.url}
             eyebrow="Awã Tech"
-            title="Adulto"
-            description="Trilhas, tradutor, dicionário e Espaço do Professor."
+            variant="adulto"
             priority
           />
           <ExperienceCard
             to="/infantil"
             image={infantilLogo.url}
             eyebrow="Awã Tech"
-            title="Criança"
-            description="Jogos, músicas e histórias para aprender brincando."
+            variant="crianca"
           />
         </div>
 
