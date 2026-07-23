@@ -1,62 +1,110 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { getPaddleEnvironment } from "@/lib/paddle";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
-import { ArrowLeft, Send, Sparkles, Loader2, Volume2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Send,
+  Loader2,
+  Volume2,
+  Copy,
+  Check,
+  RefreshCcw,
+  BookOpen,
+  Sunrise,
+  Users,
+  Globe,
+} from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
+import logoSrc from "@/assets/awa-tech-logo.png";
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
     meta: [
       { title: "Professor Akuã — AWÃ TECH" },
-      { name: "description", content: "Professor Akuã — chat com IA em Patxôhã (Premium)." },
+      { name: "description", content: "Converse com o mestre virtual de Patxôhã. Aprenda pronúncia, vocabulário e cultura com o Professor Akuã." },
+      { property: "og:title", content: "Professor Akuã — Mestre de Patxôhã" },
+      { property: "og:description", content: "Aprenda Patxôhã com um mestre virtual, com áudio, exemplos e cultura indígena." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
-    <PremiumGate title="Professor Akuã (Premium)" description="Converse com o mestre virtual de Patxôhã sem limites. Recurso exclusivo para assinantes.">
+    <PremiumGate
+      title="Professor Akuã (Premium)"
+      description="Converse com o mestre virtual de Patxôhã sem limites. Recurso exclusivo para assinantes."
+    >
       <ProfessorPage />
     </PremiumGate>
   ),
 });
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: "user" | "assistant"; content: string; at?: number };
 
-const SUGESTOES = [
-  "Como se diz 'bom dia' em Patxôhã?",
-  "Como pronunciar as palavras nasais (ã, õ)?",
-  "Me ensine as saudações do dia (manhã, tarde, noite)",
-  "Posso usar Patxôhã fora da aldeia?",
+const WELCOME_MESSAGE: Msg = {
+  role: "assistant",
+  content:
+    "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+  at: Date.now(),
+};
+
+type Suggestion = { icon: React.ComponentType<{ className?: string }>; label: string; prompt: string };
+
+const SUGGESTIONS: Suggestion[] = [
+  {
+    icon: Sunrise,
+    label: "Saudações do dia",
+    prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã.",
+  },
+  {
+    icon: BookOpen,
+    label: "Vocabulário",
+    prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã.",
+  },
+  {
+    icon: Users,
+    label: "Família",
+    prompt: "Como se dizem os nomes dos membros da família (pai, mãe, filho, irmão) em Patxôhã?",
+  },
+  {
+    icon: Globe,
+    label: "Cultura Pataxó",
+    prompt: "Fale sobre a história e a importância do povo Pataxó para o Brasil.",
+  },
 ];
 
 function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
-
   const speak = useServerFn(speakText);
-  const [messages, setMessages] = useState<Msg[]>([
-    {
-      role: "assistant",
-      content:
-        "🌿 Olá! Eu sou o **Professor Akuã**. Venho da terra, da floresta e da memória dos antepassados.\n\nEstou aqui para ensinar, responder dúvidas e acompanhar você em cada passo para conhecer e falar a língua **Patxôhã**.\n\nAqui não é só palavra: é respeito, é origem, é manter viva a nossa voz! 🪶✨",
-    },
-  ]);
+
+  const [messages, setMessages] = useState<Msg[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  // Auto-resize textarea
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
+  }, [input]);
+
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
-      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ");
+      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
@@ -64,70 +112,119 @@ function ProfessorPage() {
       audioRef.current = audio;
       await audio.play().catch(() => {});
     } catch {
-      /* silencioso: se falhar, mantém apenas o texto */
+      /* silencioso: mantém apenas o texto */
     }
   }
 
   async function send(text: string) {
-
     const content = text.trim();
     if (!content || loading) return;
-    // Cria o Audio dentro do gesto do usuário para liberar autoplay
-    const audio = new Audio();
-    const next = [...messages, { role: "user" as const, content }];
+    const audio = new Audio(); // criado dentro do gesto do usuário para autoplay
+    const next = [...messages, { role: "user" as const, content, at: Date.now() }];
     setMessages(next);
     setInput("");
     setLoading(true);
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment() } });
-      setMessages([...next, { role: "assistant", content: reply }]);
+      setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
       void autoSpeak(audio, reply);
     } catch (e: any) {
-      toast.error(e.message ?? "Erro ao falar com Akuã");
+      toast.error(e.message ?? "Não foi possível falar com Akuã agora.");
     } finally {
       setLoading(false);
+      textareaRef.current?.focus();
     }
   }
 
+  function resetConversation() {
+    audioRef.current?.pause();
+    setMessages([{ ...WELCOME_MESSAGE, at: Date.now() }]);
+    setInput("");
+    textareaRef.current?.focus();
+  }
+
+  const isEmpty = messages.length <= 1;
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
+    <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.9)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+          <Link
+            to={backTo as "/"}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold/90 hover:text-gold transition"
+          >
             <ArrowLeft className="h-4 w-4" /> Voltar
           </Link>
-          <div className="flex items-center gap-2 text-cream font-display font-black">
-            <Sparkles className="h-5 w-5 text-leaf" /> Professor Akuã
+
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <img
+                src={logoSrc}
+                alt=""
+                className="h-9 w-9 rounded-full border border-gold/40 object-cover shadow-md"
+              />
+              <span
+                aria-hidden
+                className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
+              />
+            </div>
+            <div className="leading-tight">
+              <div className="font-display text-sm font-black text-cream md:text-base">
+                Professor Akuã
+              </div>
+              <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
+                Mestre de Patxôhã · Online
+              </div>
+            </div>
           </div>
-          <span className="w-14" />
+
+          <button
+            onClick={resetConversation}
+            disabled={isEmpty && !loading}
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/50 hover:text-cream disabled:opacity-40"
+            title="Nova conversa"
+          >
+            <RefreshCcw className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Nova conversa</span>
+          </button>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-40 pt-6">
-        <div className="space-y-4">
+      <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
+        <div className="space-y-5">
           {messages.map((m, i) => (
-            <Bubble key={i} role={m.role} content={m.content} />
+            <Bubble key={i} msg={m} isLast={i === messages.length - 1} />
           ))}
-          {loading && (
-            <div className="flex items-center gap-2 text-sm text-foreground/60">
-              <Loader2 className="h-4 w-4 animate-spin" /> Akuã está pensando...
-            </div>
-          )}
+          {loading && <TypingIndicator />}
           <div ref={endRef} />
         </div>
 
-        {messages.length <= 1 && (
-          <div className="mt-6 grid gap-2 sm:grid-cols-2">
-            {SUGESTOES.map((s) => (
-              <button
-                key={s}
-                onClick={() => send(s)}
-                className="text-left rounded-xl border border-gold/20 bg-card/40 px-3 py-2 text-sm text-foreground/80 hover:border-gold/50 hover:text-cream"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+        {isEmpty && !loading && (
+          <section className="mt-8">
+            <div className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
+              Sugestões para começar
+            </div>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {SUGGESTIONS.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <button
+                    key={s.label}
+                    onClick={() => send(s.prompt)}
+                    className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-card/40 p-3.5 text-left transition hover:border-gold/50 hover:bg-card/60"
+                  >
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-leaf/15 text-leaf transition group-hover:bg-leaf/25">
+                      <Icon className="h-4.5 w-4.5" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold text-cream">{s.label}</div>
+                      <div className="mt-0.5 line-clamp-2 text-xs text-foreground/65">{s.prompt}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
         )}
       </main>
 
@@ -136,50 +233,150 @@ function ProfessorPage() {
           e.preventDefault();
           send(input);
         }}
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl"
       >
         <div className="mx-auto flex max-w-3xl items-end gap-2 px-4 py-3 md:px-8">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                send(input);
-              }
-            }}
-            placeholder="Pergunte ao Professor Akuã..."
-            rows={1}
-            className="flex-1 resize-none rounded-2xl border border-gold/25 bg-card/60 px-4 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 max-h-32"
-          />
+          <div className="relative flex-1">
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send(input);
+                }
+              }}
+              placeholder="Pergunte ao Professor Akuã…"
+              rows={1}
+              maxLength={1000}
+              className="w-full resize-none rounded-2xl border border-gold/25 bg-card/70 px-4 py-3 pr-14 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition"
+            />
+            {input.length > 800 && (
+              <div className="absolute right-3 bottom-1.5 text-[10px] font-semibold text-foreground/50">
+                {input.length}/1000
+              </div>
+            )}
+          </div>
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-bark disabled:opacity-40"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-forest-deep shadow-lg shadow-gold/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
             aria-label="Enviar"
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>
+        </div>
+        <div className="pb-2 text-center text-[10px] text-foreground/40">
+          Enter para enviar · Shift + Enter para nova linha
         </div>
       </form>
     </div>
   );
 }
 
-function Bubble({ role, content }: Msg) {
-  const isUser = role === "user";
-  const speak = useServerFn(speakText);
-  const [busy, setBusy] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+function TypingIndicator() {
+  return (
+    <div className="flex justify-start">
+      <div className="flex items-center gap-2 rounded-2xl border border-leaf/20 bg-card/50 px-4 py-3">
+        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf" />
+      </div>
+    </div>
+  );
+}
 
-  async function playText(text: string) {
-    if (busy) return;
-    try {
-      setBusy(true);
-      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) {
-        throw new Error(r.message ?? "Não foi possível gerar áudio");
+// --- Message rendering ------------------------------------------------------
+
+type InlineToken =
+  | { type: "text"; value: string }
+  | { type: "bold"; value: string }
+  | { type: "italic"; value: string }
+  | { type: "code"; value: string };
+
+function tokenizeInline(text: string): InlineToken[] {
+  const tokens: InlineToken[] = [];
+  const re = /(\*\*([^*\n]+)\*\*|`([^`\n]+)`|\*([^*\n]+)\*)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) tokens.push({ type: "text", value: text.slice(last, m.index) });
+    if (m[2]) tokens.push({ type: "bold", value: m[2] });
+    else if (m[3]) tokens.push({ type: "code", value: m[3] });
+    else if (m[4]) tokens.push({ type: "italic", value: m[4] });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
+  return tokens;
+}
+
+function renderInline(text: string, keyPrefix: string) {
+  return tokenizeInline(text).map((tok, i) => {
+    const k = `${keyPrefix}-${i}`;
+    if (tok.type === "bold") return <strong key={k} className="font-bold text-cream">{tok.value}</strong>;
+    if (tok.type === "italic") return <em key={k} className="italic text-cream/90">{tok.value}</em>;
+    if (tok.type === "code")
+      return (
+        <code key={k} className="rounded bg-forest-deep/60 px-1.5 py-0.5 font-mono text-[0.85em] text-gold">
+          {tok.value}
+        </code>
+      );
+    return <span key={k}>{tok.value}</span>;
+  });
+}
+
+type Block =
+  | { type: "paragraph"; text: string }
+  | { type: "bullets"; items: string[] }
+  | { type: "example"; pat: string; pt: string };
+
+function parseBlocks(content: string): Block[] {
+  // Extract [ex]…||…[/ex] as example blocks; split the rest into paragraphs / bullet groups.
+  const blocks: Block[] = [];
+  const re = /\[ex\]([\s\S]*?)\|\|([\s\S]*?)\[\/ex\]/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  const pushText = (raw: string) => {
+    const chunks = raw.split(/\n{2,}/);
+    for (const chunk of chunks) {
+      const trimmed = chunk.trim();
+      if (!trimmed) continue;
+      const lines = trimmed.split("\n").map((l) => l.trim());
+      const isList = lines.every((l) => /^([-*•]\s+|\d+[.)]\s+)/.test(l));
+      if (isList && lines.length > 1) {
+        blocks.push({
+          type: "bullets",
+          items: lines.map((l) => l.replace(/^([-*•]\s+|\d+[.)]\s+)/, "")),
+        });
+      } else {
+        blocks.push({ type: "paragraph", text: trimmed });
       }
+    }
+  };
+  while ((m = re.exec(content)) !== null) {
+    if (m.index > last) pushText(content.slice(last, m.index));
+    blocks.push({ type: "example", pat: m[1].trim(), pt: m[2].trim() });
+    last = m.index + m[0].length;
+  }
+  if (last < content.length) pushText(content.slice(last));
+  return blocks;
+}
+
+function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
+  const isUser = msg.role === "user";
+  const speak = useServerFn(speakText);
+  const [audioBusy, setAudioBusy] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
+
+  async function playText(text: string, key: string) {
+    if (audioBusy) return;
+    try {
+      setAudioBusy(key);
+      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) throw new Error(r.message ?? "Não foi possível gerar áudio");
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
       audioRef.current?.pause();
@@ -188,55 +385,119 @@ function Bubble({ role, content }: Msg) {
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao gerar áudio");
     } finally {
-      setBusy(false);
+      setAudioBusy(null);
     }
   }
 
-  // Parse [ex]indígena || português[/ex] into inline example cards.
-  const parts: Array<{ type: "text"; value: string } | { type: "ex"; pt: string; pat: string }> = [];
-  const re = /\[ex\]([\s\S]*?)\|\|([\s\S]*?)\[\/ex\]/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(content)) !== null) {
-    if (m.index > last) parts.push({ type: "text", value: content.slice(last, m.index) });
-    parts.push({ type: "ex", pat: m[1].trim(), pt: m[2].trim() });
-    last = m.index + m[0].length;
+  async function copyMessage() {
+    try {
+      const plain = msg.content.replace(/\[ex\]([^|]+)\|\|([^\]]+)\[\/ex\]/g, "$1 ($2)").replace(/\*\*/g, "");
+      await navigator.clipboard.writeText(plain);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
   }
-  if (last < content.length) parts.push({ type: "text", value: content.slice(last) });
+
+  const time = msg.at ? new Date(msg.at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div
-        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-          isUser
-            ? "bg-gold/20 text-cream border border-gold/30"
-            : "bg-card/60 text-foreground/90 border border-leaf/20"
-        }`}
-      >
-        <div className="space-y-2">
-          {parts.map((p, i) =>
-            p.type === "text" ? (
-              <span key={i} className="whitespace-pre-wrap">{p.value}</span>
-            ) : (
-              <div
-                key={i}
-                className="my-1 rounded-xl border border-gold/30 bg-forest-deep/40 px-3 py-2"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="font-display text-base text-gold">{p.pat}</div>
-                  <button
-                    onClick={() => playText(p.pat)}
-                    disabled={busy}
-                    className="shrink-0 grid h-7 w-7 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
-                    aria-label={`Ouvir ${p.pat}`}
-                    title="Ouvir pronúncia"
-                  >
-                    {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
-                  </button>
+      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
+        <div
+          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+            isUser
+              ? "border border-gold/40 bg-gold/15 text-cream"
+              : "border border-leaf/25 bg-card/70 text-foreground/90"
+          }`}
+        >
+          <div className="space-y-2.5">
+            {blocks.map((b, i) => {
+              if (b.type === "paragraph") {
+                return (
+                  <p key={i} className="whitespace-pre-wrap">
+                    {renderInline(b.text, `p${i}`)}
+                  </p>
+                );
+              }
+              if (b.type === "bullets") {
+                return (
+                  <ul key={i} className="ml-1 space-y-1">
+                    {b.items.map((item, j) => (
+                      <li key={j} className="flex gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
+                        <span>{renderInline(item, `b${i}-${j}`)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                );
+              }
+              // example
+              const key = `ex-${i}`;
+              return (
+                <div key={i} className="my-1 rounded-xl border border-gold/30 bg-forest-deep/50 px-3 py-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="font-display text-base font-black text-gold">{b.pat}</div>
+                    <button
+                      onClick={() => playText(b.pat, key)}
+                      disabled={audioBusy === key}
+                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition hover:bg-leaf/30 disabled:opacity-50"
+                      aria-label={`Ouvir ${b.pat}`}
+                      title="Ouvir pronúncia"
+                    >
+                      {audioBusy === key ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Volume2 className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="mt-0.5 text-xs text-foreground/70">{b.pt}</div>
                 </div>
-                <div className="text-xs text-foreground/70 mt-0.5">{p.pt}</div>
-              </div>
-            ),
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          className={`flex items-center gap-2 px-1 text-[10px] text-foreground/40 ${
+            isUser ? "flex-row-reverse" : ""
+          }`}
+        >
+          {time && <span>{time}</span>}
+          {!isUser && (
+            <>
+              <span aria-hidden>·</span>
+              <button
+                onClick={copyMessage}
+                className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition"
+                aria-label="Copiar mensagem"
+                title="Copiar"
+              >
+                {copied ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                {copied ? "Copiado" : "Copiar"}
+              </button>
+              {isLast && (
+                <>
+                  <span aria-hidden>·</span>
+                  <button
+                    onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
+                    disabled={audioBusy === "full"}
+                    className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
+                    aria-label="Ouvir resposta"
+                    title="Ouvir resposta"
+                  >
+                    {audioBusy === "full" ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Volume2 className="h-3 w-3" />
+                    )}
+                    Ouvir
+                  </button>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
