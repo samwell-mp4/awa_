@@ -11,6 +11,7 @@ import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
+import { useLastArea } from "@/lib/last-area";
 
 
 
@@ -94,6 +95,7 @@ function firstLetter(s: string): string {
 }
 
 function DictionaryPage() {
+  const backTo = useLastArea();
   const { t } = useTranslation();
   const { isPremium } = useSubscription();
   const lang = useLang();
@@ -197,7 +199,7 @@ function DictionaryPage() {
     <div className="min-h-screen pb-24 md:pb-12">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
             <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
           </Link>
           <div className="flex items-center gap-2 text-cream font-display font-black">

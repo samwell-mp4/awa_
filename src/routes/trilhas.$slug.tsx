@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { useLastArea } from "@/lib/last-area";
 
 function useTr(texts: string[]) {
   const translated = useAutoTranslate(texts);
@@ -151,6 +152,7 @@ function TrilhaPage() {
   }
 
   function resetProgress() {
+  const backTo = useLastArea();
     setLearnedState(new Set());
     setLearned(slug, new Set());
     toast.success("Novas lições prontas! Bons estudos 🌱");
@@ -177,7 +179,7 @@ function TrilhaPage() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
             <ArrowLeft className="h-4 w-4" /> {tr("Início")}
           </Link>
           <div className="flex items-center gap-2 font-display font-black text-cream">

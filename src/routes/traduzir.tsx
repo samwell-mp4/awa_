@@ -6,6 +6,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { PremiumGate } from "@/components/PremiumGate";
+import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/traduzir")({
 });
 
 function TraduzirPage() {
+  const backTo = useLastArea();
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
   const translate = useServerFn(translateText);
@@ -46,7 +48,7 @@ function TraduzirPage() {
     <div className="min-h-screen pb-16 text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <Link to="/" className="flex items-center gap-2 text-gold font-bold">
+          <Link to={backTo as "/"} className="flex items-center gap-2 text-gold font-bold">
             <Home className="h-4 w-4" /> AWÃ TECH
           </Link>
           <div className="flex items-center gap-2 text-leaf">

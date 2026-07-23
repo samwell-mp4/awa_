@@ -18,6 +18,7 @@ import {
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import appPreviewAsset from "@/assets/app-preview.png.asset.json";
+import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/instalar")({
   head: () => ({
@@ -77,6 +78,7 @@ function InstalarPage() {
   }, []);
 
   async function handleInstall() {
+  const backTo = useLastArea();
     if (!deferredPrompt) return;
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -91,7 +93,7 @@ function InstalarPage() {
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to={backTo as "/"} className="flex items-center gap-2.5">
             <img
               src={logoSrc}
               alt="AWÃ TECH"
@@ -104,7 +106,7 @@ function InstalarPage() {
             </div>
           </Link>
           <Link
-            to="/"
+            to={backTo as "/"}
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -282,7 +284,7 @@ function InstalarPage() {
         {/* CTA */}
         <div className="mt-12 text-center">
           <Link
-            to="/"
+            to={backTo as "/"}
             className="inline-flex items-center justify-center rounded-full border border-gold/40 bg-card/60 px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-gold/10"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

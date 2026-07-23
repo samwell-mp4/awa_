@@ -27,6 +27,7 @@ import albumJosaClean from "@/assets/album/anciao-josa-clean.jpg";
 const albumJosa = { url: albumJosaClean };
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
+import { useLastArea } from "@/lib/last-area";
 
 const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
 type Aldeia = (typeof ALDEIAS)[number];
@@ -556,6 +557,7 @@ function NarratableVideo({
 
 
 function HistoriasPage() {
+  const backTo = useLastArea();
   // Batch-translate structured content (sections + album)
   const sectionStrings = useMemo(
     () => sections.flatMap((s) => [s.title, ...s.body]),
@@ -600,7 +602,7 @@ function HistoriasPage() {
 
         <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
           <Link
-            to="/"
+            to={backTo as "/"}
             className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
           >
             <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
