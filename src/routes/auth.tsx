@@ -52,9 +52,19 @@ function AuthPage() {
         <button
           onClick={handleGoogle}
           disabled={busy}
-          className="mt-6 w-full rounded-xl border border-gold/30 bg-card/60 px-4 py-3 text-sm font-semibold text-cream hover:bg-gold/10 disabled:opacity-50"
+          className="mt-6 w-full rounded-xl border border-gold/30 bg-card/60 px-4 py-3 text-sm font-semibold text-cream hover:bg-gold/10 disabled:opacity-70"
         >
-          {busy ? "Carregando..." : "Continuar com Google"}
+          {busy ? (
+            <span className="flex items-center justify-center gap-3">
+              <img src={adultoLogo.url} alt="" className="h-7 w-7 rounded-full object-cover ring-1 ring-gold/40 animate-pulse" />
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[10px] font-bold tracking-[0.2em] text-gold/80">AWÃ TECH</span>
+                <span className="text-xs text-foreground/80">Conectando com o Google…</span>
+              </span>
+            </span>
+          ) : (
+            "Continuar com Google"
+          )}
         </button>
       </div>
     </div>
