@@ -69,5 +69,11 @@ export default {
     fechar: "Iawê",
     enviar: "Ãhy",
     idioma: "Patxôhã",
+    trailSaudacoes: "Aria",
+    trailFamilia: "Djohó Awã",
+    trailNatureza: "Awê Mãtxioá",
+    trailAnimais: "Txaywã",
+    kidsTrailsTitle: "🗺️ Auê Pahí kaí Aldeia",
+    kidsTrailsSubtitle: "Ãhõmãy pahí — auê nakão!",
   },
 };

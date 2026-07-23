@@ -108,6 +108,8 @@ export default {
     trailFamilia: "Family",
     trailNatureza: "Nature",
     trailAnimais: "Animals",
+    kidsTrailsTitle: "🗺️ Village Trails",
+    kidsTrailsSubtitle: "Tap a totem and follow the magic path!",
   },
   infantil: {
     title: "Village Trail",
