@@ -461,6 +461,8 @@ function parseBlocks(content: string): Block[] {
 }
 
 function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
+  const lang = useLang();
+  const t = L10N[lang];
   const isUser = msg.role === "user";
   const speak = useServerFn(speakText);
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
