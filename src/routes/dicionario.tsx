@@ -151,29 +151,16 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  const entries = PDF_DICTIONARY_ENTRIES;
+  // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
+  const enriched = ENRICHED_ENTRIES;
+  const counts = CATEGORY_COUNTS;
+  const letterCounts = LETTER_COUNTS;
 
-  const enriched = useMemo(
-    () => entries.map((e) => ({ ...e, _cat: categorize(e), _letter: firstLetter(e.term_indigenous) })),
-    [entries],
-  );
-
-  const counts = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const e of enriched) m.set(e._cat, (m.get(e._cat) ?? 0) + 1);
-    return m;
-  }, [enriched]);
-
-  const letterCounts = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const e of enriched) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
-    return m;
-  }, [enriched]);
-
-  const filtered = useMemo(() => {
+  const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
     const list = enriched.filter((e) => {
-      const matchQ = !q || e.term_indigenous.toLowerCase().includes(q) || e.term_pt.toLowerCase().includes(q);
+      // Usa campos pré-normalizados — sem toLowerCase() por keystroke.
+      const matchQ = !q || e._indLower.includes(q) || e._ptLower.includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
       const matchL = letter === "Todas" || e._letter === letter;
       return matchQ && matchC && matchL;
