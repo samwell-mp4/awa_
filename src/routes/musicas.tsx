@@ -409,10 +409,21 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
-  const activeIdx =
-    maxLen > 0 && duration > 0
-      ? Math.min(maxLen - 1, Math.floor((progress / duration) * maxLen))
-      : -1;
+  // Sincronização automática das legendas.
+  // Distribui as linhas apenas na parte cantada (descontando intro/outro
+  // instrumentais) e adiciona um pequeno "lead" para que a legenda
+  // apareça um instante ANTES da voz — evita a sensação de atraso.
+  const activeIdx = (() => {
+    if (maxLen <= 0 || duration <= 0) return -1;
+    const INTRO_RATIO = 0.05; // ~5% de intro instrumental
+    const OUTRO_RATIO = 0.07; // ~7% de outro/fade
+    const LEAD = 0.7; // segundos de antecipação
+    const sungStart = duration * INTRO_RATIO;
+    const sungEnd = Math.max(sungStart + 0.001, duration * (1 - OUTRO_RATIO));
+    const t = Math.min(sungEnd, Math.max(sungStart, progress + LEAD));
+    const rel = (t - sungStart) / (sungEnd - sungStart);
+    return Math.max(0, Math.min(maxLen - 1, Math.floor(rel * maxLen)));
+  })();
 
   const lineRefs = useRef<Array<HTMLDivElement | null>>([]);
   useEffect(() => {
