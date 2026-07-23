@@ -67,7 +67,7 @@ function ProfessorPage() {
   }
 
   async function send(text: string) {
-  const backTo = useLastArea();
+
     const content = text.trim();
     if (!content || loading) return;
     // Cria o Audio dentro do gesto do usuário para liberar autoplay
