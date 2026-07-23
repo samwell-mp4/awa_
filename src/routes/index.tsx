@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, ShieldCheck, Sparkles, Globe2 } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -7,6 +8,13 @@ import { PublicFooter } from "@/components/PublicFooter";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
+
+const MENU_I18N: Record<string, { adulto: string; crianca: string; adultoDesc: string; criancaDesc: string; entrar: string }> = {
+  pt: { adulto: "Adulto", crianca: "Criança", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Entrar" },
+  en: { adulto: "Adult", crianca: "Kids", adultoDesc: "Trails, translator, dictionary and Teacher's Space.", criancaDesc: "Games, songs and stories to learn while playing.", entrar: "Enter" },
+  es: { adulto: "Adulto", crianca: "Niños", adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.", criancaDesc: "Juegos, canciones e historias para aprender jugando.", entrar: "Entrar" },
+  pat: { adulto: "Adulto", crianca: "Kotxohã", adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.", criancaDesc: "Jogos, músicas e histórias para aprender brincando.", entrar: "Enter" },
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,16 +75,14 @@ function LandingChoice() {
             to="/adulto"
             image={adultoLogo.url}
             eyebrow="Awã Tech"
-            title="Adulto"
-            description="Trilhas, tradutor, dicionário e Espaço do Professor."
+            variant="adulto"
             priority
           />
           <ExperienceCard
             to="/infantil"
             image={infantilLogo.url}
             eyebrow="Awã Tech"
-            title="Criança"
-            description="Jogos, músicas e histórias para aprender brincando."
+            variant="crianca"
           />
         </div>
 
@@ -95,17 +101,21 @@ function ExperienceCard({
   to,
   image,
   eyebrow,
-  title,
-  description,
+  variant,
   priority = false,
 }: {
   to: "/adulto" | "/infantil";
   image: string;
   eyebrow: string;
-  title: string;
-  description: string;
+  variant: "adulto" | "crianca";
   priority?: boolean;
 }) {
+  const { i18n } = useTranslation();
+  const lang = (i18n.language || "pt").slice(0, 3).toLowerCase();
+  const key = (lang.startsWith("pat") ? "pat" : lang.slice(0, 2)) as keyof typeof MENU_I18N;
+  const dict = MENU_I18N[key] ?? MENU_I18N.pt;
+  const title = variant === "adulto" ? dict.adulto : dict.crianca;
+  const description = variant === "adulto" ? dict.adultoDesc : dict.criancaDesc;
   return (
     <Link
       to={to}
@@ -126,21 +136,21 @@ function ExperienceCard({
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
         <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
-          <T>{eyebrow}</T>
+          {eyebrow}
         </span>
       </div>
 
       <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
         <div className="min-w-0 text-left">
           <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
-            <T>{title}</T>
+            {title}
           </div>
           <p className="mt-1 text-xs text-foreground/70 md:text-sm">
-            <T>{description}</T>
+            {description}
           </p>
         </div>
         <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          <T>Entrar</T> <ArrowRight className="h-4 w-4" />
+          {dict.entrar} <ArrowRight className="h-4 w-4" />
         </span>
       </div>
     </Link>
