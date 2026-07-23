@@ -62,7 +62,7 @@ function MusicasInfantilPage() {
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
+      className="kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
       style={{
         backgroundImage: `url(${bgAsset.url})`,
         backgroundSize: "cover",

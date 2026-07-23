@@ -227,6 +227,101 @@ body::before {
 @utility kid-spin-slow { animation: kid-spin-slow 18s linear infinite; }
 
 
+/* ===== Kids theme — bem infantil (applied via .kids-theme wrapper) ===== */
+.kids-theme {
+  --kids-sun: #ffd166;
+  --kids-fire: #ef6c3a;
+  --kids-leaf: #4ec36b;
+  --kids-sky: #3fb7d4;
+  --kids-berry: #d64085;
+  --kids-earth: #6b3a20;
+  --kids-cream: #fff6df;
+  font-family: "Baloo 2", "Hind", ui-sans-serif, system-ui, sans-serif;
+  color: #2a1a10;
+  background:
+    /* indigenous geometric grafismo — triangles + zigzag + dots */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%23b0521f' stroke-width='2' opacity='0.28'><path d='M0 30 L15 15 L30 30 L45 15 L60 30 L75 15 L90 30 L105 15 L120 30'/><path d='M0 90 L15 105 L30 90 L45 105 L60 90 L75 105 L90 90 L105 105 L120 90'/><path d='M20 60 l10 -10 l10 10 l-10 10 z M80 60 l10 -10 l10 10 l-10 10 z'/></g><g fill='%23ef6c3a' opacity='0.35'><circle cx='60' cy='60' r='3'/><circle cx='0' cy='60' r='3'/><circle cx='120' cy='60' r='3'/></g></svg>"),
+    linear-gradient(180deg, #ffe9a8 0%, #ffd48a 25%, #ffb27a 55%, #f79968 100%);
+  background-size: 180px 180px, cover;
+  background-attachment: fixed;
+}
+.kids-theme h1, .kids-theme h2, .kids-theme h3, .kids-theme h4 {
+  font-family: "Archivo Black", "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.kids-theme .font-display { font-family: "Archivo Black", "Fredoka", sans-serif !important; }
+
+@utility kids-title {
+  font-family: "Archivo Black", sans-serif;
+  color: #6b3a20;
+  text-shadow:
+    -3px 3px 0 #fff,
+    3px 3px 0 #ef6c3a,
+    5px 6px 0 rgba(0,0,0,0.18);
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+@utility kids-card {
+  background: #fff6df;
+  border: 4px solid #6b3a20;
+  border-radius: 1.75rem;
+  box-shadow:
+    0 6px 0 0 #6b3a20,
+    0 14px 30px -12px rgba(107,58,32,0.55);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.kids-theme a:hover > .kids-card,
+.kids-theme button:hover > .kids-card,
+.kids-theme .kids-card:hover {
+  transform: translateY(-3px) rotate(-0.5deg);
+  box-shadow: 0 9px 0 0 #6b3a20, 0 20px 36px -12px rgba(107,58,32,0.6);
+}
+@utility kids-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #ef6c3a;
+  color: #fff;
+  border: 3px solid #6b3a20;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-family: "Archivo Black", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 0 #6b3a20;
+}
+@utility kids-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #ffd166, #ef6c3a);
+  color: #6b3a20;
+  border: 4px solid #6b3a20;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  font-family: "Archivo Black", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: 0 6px 0 0 #6b3a20;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+@utility kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 #6b3a20; }
+@utility kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 #6b3a20; }
+
+@utility kids-panel {
+  background: rgba(255, 246, 223, 0.92);
+  border: 4px solid #6b3a20;
+  border-radius: 2rem;
+  box-shadow: 0 10px 0 0 #6b3a20, 0 24px 50px -18px rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+}
+
+@keyframes kids-float { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+@utility kids-float { animation: kids-float 3.6s ease-in-out infinite; }
+
 /* Keep content above the ambient overlay */
 header, main, footer, section { position: relative; z-index: 1; }
 

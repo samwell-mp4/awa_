@@ -71,7 +71,7 @@ function TrilhaInfantilPage() {
   return (
     <div
       key={i18n.language}
-      className="min-h-screen bg-gradient-to-b from-sky-200 via-emerald-100 to-amber-100 text-foreground"
+      className="kids-theme min-h-screen text-foreground"
     >
       <SiteHeader mode="infantil" />
 
