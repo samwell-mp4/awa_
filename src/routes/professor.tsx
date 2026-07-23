@@ -482,7 +482,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
       audioRef.current = audio;
       await audio.play();
     } catch (e: any) {
-      toast.error(e.message ?? "Erro ao gerar áudio");
+      toast.error(e.message ?? t.errorAudio);
     } finally {
       setAudioBusy(null);
     }
