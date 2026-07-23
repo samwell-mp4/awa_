@@ -47,37 +47,120 @@ export const Route = createFileRoute("/professor")({
 
 type Msg = { role: "user" | "assistant"; content: string; at?: number };
 
-const WELCOME_MESSAGE: Msg = {
-  role: "assistant",
-  content:
-    "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
-  at: Date.now(),
+type L10n = {
+  welcome: string;
+  subtitle: string;
+  newChat: string;
+  suggestionsTitle: string;
+  placeholder: string;
+  hint: string;
+  copy: string;
+  copied: string;
+  listen: string;
+  send: string;
+  suggestions: { label: string; prompt: string }[];
+  errorSpeak: string;
+  errorAudio: string;
+  copyFail: string;
+  localeTime: string;
 };
 
-type Suggestion = { icon: React.ComponentType<{ className?: string }>; label: string; prompt: string };
+const L10N: Record<Lang, L10n> = {
+  pt: {
+    welcome:
+      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+    subtitle: "Mestre de Patxôhã · Online",
+    newChat: "Nova conversa",
+    suggestionsTitle: "Sugestões para começar",
+    placeholder: "Pergunte ao Professor Akuã…",
+    hint: "Enter para enviar · Shift + Enter para nova linha",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Ouvir",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
+      { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
+      { label: "Família", prompt: "Como se dizem os nomes dos membros da família (pai, mãe, filho, irmão) em Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Fale sobre a história e a importância do povo Pataxó para o Brasil." },
+    ],
+    errorSpeak: "Não foi possível falar com Akuã agora.",
+    errorAudio: "Erro ao gerar áudio",
+    copyFail: "Não foi possível copiar.",
+    localeTime: "pt-BR",
+  },
+  en: {
+    welcome:
+      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — when I teach a word, you can hear it by clicking the audio icon.",
+    subtitle: "Patxôhã Master · Online",
+    newChat: "New chat",
+    suggestionsTitle: "Suggestions to get started",
+    placeholder: "Ask Professor Akuã…",
+    hint: "Enter to send · Shift + Enter for a new line",
+    copy: "Copy",
+    copied: "Copied",
+    listen: "Listen",
+    send: "Send",
+    suggestions: [
+      { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
+      { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
+      { label: "Family", prompt: "How do you say the family members (father, mother, son, brother) in Patxôhã?" },
+      { label: "Pataxó Culture", prompt: "Tell me about the history and importance of the Pataxó people for Brazil." },
+    ],
+    errorSpeak: "Could not reach Akuã right now.",
+    errorAudio: "Error generating audio",
+    copyFail: "Could not copy.",
+    localeTime: "en-US",
+  },
+  es: {
+    welcome:
+      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — cuando enseñe una palabra, podrás escucharla haciendo clic en el ícono de audio.",
+    subtitle: "Maestro de Patxôhã · En línea",
+    newChat: "Nueva conversación",
+    suggestionsTitle: "Sugerencias para empezar",
+    placeholder: "Pregunta al Profesor Akuã…",
+    hint: "Enter para enviar · Shift + Enter para nueva línea",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Escuchar",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
+      { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
+      { label: "Familia", prompt: "¿Cómo se dicen los miembros de la familia (padre, madre, hijo, hermano) en Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Cuéntame sobre la historia y la importancia del pueblo Pataxó para Brasil." },
+    ],
+    errorSpeak: "No fue posible hablar con Akuã ahora.",
+    errorAudio: "Error al generar audio",
+    copyFail: "No fue posible copiar.",
+    localeTime: "es-ES",
+  },
+  pat: {
+    welcome:
+      "Kanhgág! Arnã **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar o Patxôhã, parente. Awere doy!",
+    subtitle: "Patxôhã · Online",
+    newChat: "Txuhap!",
+    suggestionsTitle: "Sugestões",
+    placeholder: "Pergunte ao Professor Akuã…",
+    hint: "Enter · Shift + Enter",
+    copy: "Copiar",
+    copied: "Copiado",
+    listen: "Ouvir",
+    send: "Enviar",
+    suggestions: [
+      { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
+      { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
+      { label: "Família", prompt: "Como se diz família em Patxôhã?" },
+      { label: "Cultura Pataxó", prompt: "Fale sobre o povo Pataxó." },
+    ],
+    errorSpeak: "Ãhô — não foi possível falar com Akuã agora.",
+    errorAudio: "Erro ao gerar áudio",
+    copyFail: "Não foi possível copiar.",
+    localeTime: "pt-BR",
+  },
+};
 
-const SUGGESTIONS: Suggestion[] = [
-  {
-    icon: Sunrise,
-    label: "Saudações do dia",
-    prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã.",
-  },
-  {
-    icon: BookOpen,
-    label: "Vocabulário",
-    prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã.",
-  },
-  {
-    icon: Users,
-    label: "Família",
-    prompt: "Como se dizem os nomes dos membros da família (pai, mãe, filho, irmão) em Patxôhã?",
-  },
-  {
-    icon: Globe,
-    label: "Cultura Pataxó",
-    prompt: "Fale sobre a história e a importância do povo Pataxó para o Brasil.",
-  },
-];
+const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
   const backTo = useLastArea();
