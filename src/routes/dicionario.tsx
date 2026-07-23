@@ -354,7 +354,7 @@ function DictionaryPage() {
                           </div>
                         )}
 
-                      </article>
+                      </PlayableCard>
                     ))}
                   </div>
                 </div>
