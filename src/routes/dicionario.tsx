@@ -396,7 +396,26 @@ function DictionaryPage() {
   );
 }
 
-function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
+function PlayIndicator() {
+  return (
+    <span
+      aria-hidden
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf group-hover:bg-leaf/40 group-hover:scale-110 transition"
+    >
+      <Volume2 className="h-3.5 w-3.5" />
+    </span>
+  );
+}
+
+function PlayableCard({
+  text,
+  audioUrl,
+  children,
+}: {
+  text: string;
+  audioUrl: string | null;
+  children: React.ReactNode;
+}) {
   const speak = useServerFn(narratePublic);
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
@@ -410,7 +429,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "onyx" } });
+        const r = await speak({ data: { text, voice: "onyx", mode: "word" } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar o áudio");
         }
@@ -425,15 +444,29 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
   }
 
   return (
-    <button
+    <article
+      role="button"
+      tabIndex={0}
       onClick={play}
-      disabled={busy}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          play();
+        }
+      }}
       aria-label={`Ouvir ${text}`}
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+      aria-busy={busy}
+      className={`group card-elev rounded-2xl p-4 cursor-pointer select-none transition hover:border-leaf/40 hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf ${busy ? "opacity-70" : ""}`}
     >
-      {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Volume2 className="h-3.5 w-3.5" />}
-    </button>
+      {busy && (
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-leaf">
+          <Loader2 className="h-3 w-3 animate-spin" /> Tocando…
+        </div>
+      )}
+      {children}
+    </article>
   );
 }
+
 
 
