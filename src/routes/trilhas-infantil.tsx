@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -7,7 +6,7 @@ import { SiteHeader } from "@/components/home/site-header";
 import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
-import { useAutoTranslate } from "@/hooks/use-auto-translate";
+
 
 export const Route = createFileRoute("/trilhas-infantil")({
   head: () => ({
