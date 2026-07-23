@@ -147,5 +147,6 @@ function TraduzirPage() {
         </p>
       </main>
     </div>
+    </PremiumGate>
   );
 }
