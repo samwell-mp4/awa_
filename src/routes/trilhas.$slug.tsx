@@ -154,7 +154,8 @@ function TrilhaPage() {
   }
 
   function resetProgress() {
-  const backTo = useLastArea();
+
+
     setLearnedState(new Set());
     setLearned(slug, new Set());
     toast.success("Novas lições prontas! Bons estudos 🌱");
