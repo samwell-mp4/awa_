@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+
+import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 import { useLastArea } from "@/lib/last-area";
@@ -416,9 +416,7 @@ function PlayableCard({
   audioUrl: string | null;
   children: React.ReactNode;
 }) {
-  const speak = useServerFn(narratePublic);
   const [busy, setBusy] = useState(false);
-  const cacheRef = useRef<string | null>(null);
 
   async function play() {
     if (busy) return;
@@ -428,14 +426,28 @@ function PlayableCard({
         await playFast(audioUrl);
         return;
       }
-      if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "onyx", mode: "word" } });
-        if (r.error || !r.audio_base64) {
-          throw new Error(r.message ?? "Não foi possível gerar o áudio");
-        }
-        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+      // Uses browser's built-in speech synthesis — no credits required.
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+        toast.error("Seu navegador não suporta síntese de voz.");
+        return;
       }
-      await playFast(cacheRef.current);
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "pt-BR";
+      utter.rate = 0.85;
+      utter.pitch = 1;
+      const voices = synth.getVoices();
+      const preferred =
+        voices.find((v) => /pt[-_]BR/i.test(v.lang) && /male|masc|ricardo|daniel|luciano/i.test(v.name)) ||
+        voices.find((v) => /pt[-_]BR/i.test(v.lang)) ||
+        voices.find((v) => /^pt/i.test(v.lang));
+      if (preferred) utter.voice = preferred;
+      await new Promise<void>((resolve) => {
+        utter.onend = () => resolve();
+        utter.onerror = () => resolve();
+        synth.speak(utter);
+      });
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
@@ -467,6 +479,7 @@ function PlayableCard({
     </article>
   );
 }
+
 
 
 
