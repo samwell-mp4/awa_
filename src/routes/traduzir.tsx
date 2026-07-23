@@ -5,22 +5,17 @@ import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
-import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
     meta: [
       { title: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
-      { name: "description", content: "Tradutor Português ⇄ Patxôhã (Premium)." },
+      { name: "description", content: "Tradutor Português ⇄ Patxôhã gratuito." },
       { property: "og:title", content: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
     ],
   }),
-  component: () => (
-    <PremiumGate title="Tradutor Patxôhã (Premium)" description="Traduza livremente entre Português e Patxôhã usando o dicionário completo. Recurso exclusivo para assinantes.">
-      <TraduzirPage />
-    </PremiumGate>
-  ),
+  component: TraduzirPage,
 });
 
 function TraduzirPage() {
