@@ -270,7 +270,7 @@ function ProfessorPage() {
                 Professor Akuã
               </div>
               <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
-                Mestre de Patxôhã · Online
+                {t.subtitle}
               </div>
             </div>
           </div>
