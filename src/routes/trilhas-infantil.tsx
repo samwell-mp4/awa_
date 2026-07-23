@@ -124,11 +124,8 @@ function TrilhaInfantilPage() {
   const { t, i18n } = useTranslation();
   const trails = useHomeTrails();
 
-  const captions = useMemo(
-    () => ["🗺️ Trilhas da Aldeia", "Toque num totem e siga o caminho mágico!"],
-    [],
-  );
-  const [titleTr, subtitleTr] = useAutoTranslate(captions);
+  const titleTr = t("common.kidsTrailsTitle");
+  const subtitleTr = t("common.kidsTrailsSubtitle");
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen text-foreground">
@@ -151,6 +148,7 @@ function TrilhaInfantilPage() {
             {subtitleTr}
           </p>
         </div>
+
 
         <section
           className="relative mt-6 overflow-hidden rounded-[2rem] border-[6px] border-amber-800 shadow-[0_25px_70px_-25px_rgba(0,0,0,0.6),inset_0_0_0_4px_#fde68a]"
