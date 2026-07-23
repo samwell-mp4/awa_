@@ -325,12 +325,12 @@ function DictionaryPage() {
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">
                     {items.map((e) => (
-                      <article key={e.id} className="card-elev rounded-2xl p-4">
+                      <PlayableCard key={e.id} text={e.term_indigenous} audioUrl={e.audio_url}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-display text-xl font-black text-cream">{e.term_indigenous}</h3>
-                              <PlayBtn text={e.term_indigenous} audioUrl={e.audio_url} />
+                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">{e.term_indigenous}</h3>
+                              <PlayIndicator />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
                               <span className="text-gold">→</span> {localize(e, "term_pt")}
@@ -341,6 +341,7 @@ function DictionaryPage() {
                             {(e as any)._cat}
                           </span>
                         </div>
+
 
                         {e.pronunciation && (
                           <div className="mt-2 text-xs text-foreground/60">
