@@ -53,62 +53,17 @@ type Hotspot = {
 };
 
 const hotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", top: "24%", left: "50%" },
-  { to: "/musicas-infantil", key: "cantico", top: "32%", left: "74%" },
-  { to: "/historias-infantil", key: "historia", top: "40%", left: "22%" },
-  { to: "/jogos-infantil", key: "jogos", top: "40%", left: "82%" },
-  
+  { to: "/trilhas-infantil", key: "trilhas", top: "22%", left: "28%" },
+  { to: "/musicas-infantil", key: "cantico", top: "22%", left: "72%" },
+  { to: "/historias-infantil", key: "historia", top: "40%", left: "28%" },
+  { to: "/jogos-infantil", key: "jogos", top: "40%", left: "72%" },
+  { to: "/amizade", key: "amizade", top: "58%", left: "28%" },
 ];
 
-function InfantilHome() {
-  const { t } = useTranslation();
-  useEffect(() => setLastArea("/infantil"), []);
+function InfantilHomeInner() { return null; }
 
-  return (
-    <div className="kids-theme min-h-screen text-foreground">
-      <SiteHeader mode="infantil" />
-
-      <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="-mx-3 md:-mx-6 mt-0">
-          <img
-            src={infantilLogo.url}
-            alt="Awã Tech — Línguas indígenas, culturas vivas"
-            className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
-            fetchPriority="high"
-            draggable={false}
-          />
-        </div>
-
-
-        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
-          <video
-            src={menuVideo.url}
-            poster={infantilMenu.url}
-            className="block w-full h-auto select-none"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label={t("infantil.title")}
-            draggable={false}
-          />
-
-
-          {hotspots.map((h) => {
-            const label = t(`infantil.hotspots.${h.key}`);
-            return (
-              <Link
-                key={h.to + h.key}
-                to={h.to}
-                aria-label={label}
-                style={{ top: h.top, left: h.left, perspective: "600px" }}
-                className="group absolute -translate-x-1/2 -translate-y-1/2"
-              >
-                <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
-              </Link>
-            );
-          })}
+const HOTSPOT_BTN_CLASS =
+  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 px-4 py-2 md:px-6 md:py-3 font-display font-black uppercase tracking-wide text-emerald-900 text-[3vw] md:text-base leading-tight text-center shadow-[0_6px_0_-1px_rgba(0,0,0,0.2),0_10px_20px_-8px_rgba(0,0,0,0.35)] ring-2 ring-amber-300 hover:ring-amber-400 hover:-translate-y-[calc(50%+2px)] active:translate-y-[calc(-50%+2px)] transition min-w-[28vw] md:min-w-[9rem]";
 
         </section>
 
