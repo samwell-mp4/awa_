@@ -96,15 +96,20 @@ function InfantilHome() {
             draggable={false}
           />
 
-          {hotspots.map((h) => (
-            <Link
-              key={h.to + h.key}
-              to={h.to}
-              aria-label={t(`infantil.hotspots.${h.key}`)}
-              style={{ top: h.top, left: h.left, width: "26vw", height: "10vw" }}
-              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
-            />
-          ))}
+          {hotspots.map((h) => {
+            const label = t(`infantil.hotspots.${h.key}`);
+            return (
+              <Link
+                key={h.to + h.key}
+                to={h.to}
+                aria-label={label}
+                style={{ top: h.top, left: h.left }}
+                className={HOTSPOT_BTN_CLASS}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </section>
 
 
