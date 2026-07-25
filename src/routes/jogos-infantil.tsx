@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
 import { T } from "@/components/T";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 
