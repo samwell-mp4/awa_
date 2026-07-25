@@ -27,6 +27,11 @@ type GameId =
   | "memoria"
   | "pares"
   | "caca"
+  | "acerte"
+  | "ordenar"
+  | "cores"
+  | "adivinhe"
+  | "colorir"
   | "en-animals"
   | "en-colors"
   | "en-numbers";
@@ -58,6 +63,41 @@ const GAMES: {
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
     color: "from-sky-400 to-indigo-500",
+  },
+  {
+    id: "acerte",
+    emoji: "🎯",
+    title: "Acerte a Palavra",
+    desc: "Veja a figura e toque na palavra certa.",
+    color: "from-fuchsia-400 to-purple-600",
+  },
+  {
+    id: "ordenar",
+    emoji: "🧮",
+    title: "Ordene os Números",
+    desc: "Coloque os números do menor ao maior.",
+    color: "from-teal-400 to-cyan-600",
+  },
+  {
+    id: "cores",
+    emoji: "🌈",
+    title: "Junte a Cor ao Nome",
+    desc: "Toque na cor certa para cada nome.",
+    color: "from-rose-400 to-red-500",
+  },
+  {
+    id: "adivinhe",
+    emoji: "🦜",
+    title: "Adivinhe o Bicho",
+    desc: "Ouça a dica e escolha o bichinho!",
+    color: "from-lime-400 to-green-600",
+  },
+  {
+    id: "colorir",
+    emoji: "🎨",
+    title: "Desenhar e Colorir",
+    desc: "Pinte símbolos e bichos da aldeia.",
+    color: "from-orange-400 to-amber-600",
   },
 ];
 
