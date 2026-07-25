@@ -98,7 +98,6 @@ function InfantilHome() {
           {hotspots.map((h) => {
             const label = t(`infantil.hotspots.${h.key}`);
             const isAmizade = h.key === "amizade";
-            const isTrilhas = h.key === "trilhas";
             return (
               <Link
                 key={h.to + h.key}
@@ -113,28 +112,12 @@ function InfantilHome() {
                     <span className="absolute inset-[14%] rounded-full bg-gradient-to-br from-amber-200 to-amber-400 grid place-items-center text-[6vw] max-text-[2rem] drop-shadow">
                       💛
                     </span>
-                    <span className="absolute left-1/2 top-[102%] -translate-x-1/2 whitespace-nowrap rounded-md bg-amber-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-950 shadow">
-                      {label}
-                    </span>
                   </span>
-                ) : isTrilhas ? (
-                  <>
-                    <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
-                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                      {label}
-                    </span>
-                  </>
                 ) : (
-                  <>
-                    <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
-                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-900/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                      {label}
-                    </span>
-                  </>
+                  <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
                 )}
               </Link>
             );
-
           })}
 
         </section>
