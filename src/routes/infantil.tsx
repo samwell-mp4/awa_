@@ -61,11 +61,12 @@ const hotspots: Hotspot[] = [
 ];
 
 const HOTSPOT_BTN_CLASS =
-  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 px-3 py-2 md:px-6 md:py-3 font-display font-black uppercase tracking-wide text-emerald-900 text-[2.8vw] md:text-base leading-tight text-center shadow-[0_6px_0_-1px_rgba(0,0,0,0.2),0_10px_20px_-8px_rgba(0,0,0,0.35)] ring-2 ring-amber-300 hover:ring-amber-400 transition min-w-[26vw] md:min-w-[9rem] whitespace-nowrap";
+  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 font-display text-[clamp(0.62rem,2.7vw,1rem)] font-black uppercase leading-tight text-center text-emerald-900 shadow-lg ring-2 ring-amber-300 transition hover:bg-white hover:ring-amber-400 md:px-5 md:py-3";
 
 function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
+  const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
 
   return (
     <div className="kids-theme min-h-screen text-foreground">
@@ -82,7 +83,7 @@ function InfantilHome() {
           />
         </div>
 
-        <section key={i18n.language} className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
+        <section key={languageKey} className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
           <video
             src={menuVideo.url}
             poster={infantilMenu.url}
@@ -98,19 +99,22 @@ function InfantilHome() {
 
           {hotspots.map((h) => (
             <Link
-              key={h.to + h.key}
+              key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
               aria-label={t(`infantil.hotspots.${h.key}`)}
-              style={{ top: h.top, left: h.left, width: "26vw", height: "10vw" }}
-              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
-            />
+              title={t(`infantil.hotspots.${h.key}`)}
+              style={{ top: h.top, left: h.left, minWidth: "25%" }}
+              className={HOTSPOT_BTN_CLASS}
+            >
+              {t(`infantil.hotspots.${h.key}`)}
+            </Link>
           ))}
         </section>
 
 
 
         {/* Categorias com foto de fundo — Saudações, Família, Natureza, Animais */}
-        <section className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
+        <section key={`categorias-${languageKey}`} className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
           <img
             src={categoriasBg.url}
             alt="Crianças Pataxó na floresta"
