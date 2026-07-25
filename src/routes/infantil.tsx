@@ -61,7 +61,7 @@ const hotspots: Hotspot[] = [
 ];
 
 const HOTSPOT_BTN_CLASS =
-  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 px-3 py-2 md:px-6 md:py-3 font-display font-black uppercase tracking-wide text-emerald-900 text-[2.8vw] md:text-base leading-tight text-center shadow-[0_6px_0_-1px_rgba(0,0,0,0.2),0_10px_20px_-8px_rgba(0,0,0,0.35)] ring-2 ring-amber-300 hover:ring-amber-400 transition min-w-[26vw] md:min-w-[9rem] whitespace-nowrap";
+  "absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-white px-4 py-3 md:px-7 md:py-4 font-display font-black uppercase tracking-wide text-emerald-900 text-[3.2vw] md:text-lg leading-tight text-center shadow-[0_6px_0_-1px_rgba(0,0,0,0.2),0_10px_20px_-8px_rgba(0,0,0,0.35)] ring-4 ring-amber-300 hover:ring-amber-400 transition w-[38vw] md:w-[13rem] h-[10vw] md:h-14 whitespace-nowrap z-10";
 
 function InfantilHome() {
   const { t } = useTranslation();
