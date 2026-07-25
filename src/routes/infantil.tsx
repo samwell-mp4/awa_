@@ -97,7 +97,6 @@ function InfantilHome() {
 
           {hotspots.map((h) => {
             const label = t(`infantil.hotspots.${h.key}`);
-            const isAmizade = h.key === "amizade";
             return (
               <Link
                 key={h.to + h.key}
@@ -106,16 +105,7 @@ function InfantilHome() {
                 style={{ top: h.top, left: h.left, perspective: "600px" }}
                 className="group absolute -translate-x-1/2 -translate-y-1/2"
               >
-                {isAmizade ? (
-                  <span className="relative block h-[18vw] max-h-28 w-[18vw] max-w-28">
-                    <span className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 shadow-[0_6px_18px_-4px_rgba(120,60,0,0.55)] ring-4 ring-amber-200 transition group-hover:scale-105 group-hover:ring-white/80" />
-                    <span className="absolute inset-[14%] rounded-full bg-gradient-to-br from-amber-200 to-amber-400 grid place-items-center text-[6vw] max-text-[2rem] drop-shadow">
-                      💛
-                    </span>
-                  </span>
-                ) : (
-                  <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
-                )}
+                <span className="block h-[18vw] max-h-28 w-[18vw] max-w-28 rounded-full ring-4 ring-white/0 transition group-hover:ring-white/70 group-active:scale-95 group-hover:scale-105" />
               </Link>
             );
           })}
