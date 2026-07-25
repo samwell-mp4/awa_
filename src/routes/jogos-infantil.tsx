@@ -256,6 +256,11 @@ function JogosInfantilPage() {
             {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
             {game === "pares" && <PairsGame onWin={() => setStars((s) => s + 2)} />}
             {game === "caca" && <CatchGame onScore={() => setStars((s) => s + 1)} />}
+            {game === "acerte" && <AcertePalavraGame onWin={() => setStars((s) => s + 1)} />}
+            {game === "ordenar" && <OrdenarNumerosGame onWin={() => setStars((s) => s + 2)} />}
+            {game === "cores" && <CoresGame onWin={() => setStars((s) => s + 2)} />}
+            {game === "adivinhe" && <AdivinheBichoGame onWin={() => setStars((s) => s + 1)} />}
+            {game === "colorir" && <ColorirCanvas />}
             {EN_GAMES.filter((g) => g.id === game).map((g) => (
               <EnglishPairsGame key={g.id} pairs={g.pairs} onWin={() => setStars((s) => s + 2)} />
             ))}
