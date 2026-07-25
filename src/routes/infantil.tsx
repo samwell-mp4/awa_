@@ -112,18 +112,6 @@ function InfantilHome() {
 
         </section>
 
-        {/* Fallback textual menu for accessibility / small screens */}
-        <nav className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {hotspots.map((h) => (
-            <Link
-              key={"list-" + h.to + h.key}
-              to={h.to}
-              className="rounded-2xl border-2 border-amber-300 bg-white/70 px-3 py-3 text-center font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-sm hover:bg-white"
-            >
-              {t(`infantil.hotspots.${h.key}`)}
-            </Link>
-          ))}
-        </nav>
 
         {/* Categorias com foto de fundo — Saudações, Família, Natureza, Animais */}
         <section className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
