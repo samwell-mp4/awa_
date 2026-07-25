@@ -57,7 +57,7 @@ const hotspots: Hotspot[] = [
   { to: "/musicas-infantil", key: "cantico", top: "32%", left: "74%" },
   { to: "/historias-infantil", key: "historia", top: "40%", left: "22%" },
   { to: "/jogos-infantil", key: "jogos", top: "40%", left: "82%" },
-  { to: "/amizade", key: "amizade", top: "65%", left: "60%" },
+  
 ];
 
 function InfantilHome() {
