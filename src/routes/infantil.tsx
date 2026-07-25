@@ -9,6 +9,7 @@ import { setLastArea } from "@/lib/last-area";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
+import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 
 
 
@@ -80,13 +81,19 @@ function InfantilHome() {
 
 
         <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
-          <img
-            src={infantilMenu.url}
-            alt={t("infantil.title")}
+          <video
+            src={menuVideo.url}
+            poster={infantilMenu.url}
             className="block w-full h-auto select-none"
-            fetchPriority="high"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label={t("infantil.title")}
             draggable={false}
           />
+
 
           {hotspots.map((h) => {
             const label = t(`infantil.hotspots.${h.key}`);
