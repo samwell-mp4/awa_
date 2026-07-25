@@ -82,7 +82,7 @@ function InfantilHome() {
           />
         </div>
 
-        <section className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
+        <section key={i18n.language} className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
           <video
             src={menuVideo.url}
             poster={infantilMenu.url}
