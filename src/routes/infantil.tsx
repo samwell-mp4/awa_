@@ -48,20 +48,17 @@ type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
 type Hotspot = {
   to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
   key: HotspotKey;
-  top: string;
-  left: string;
+  emoji: string;
+  color: string;
 };
 
 const hotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", top: "22%", left: "28%" },
-  { to: "/musicas-infantil", key: "cantico", top: "22%", left: "72%" },
-  { to: "/historias-infantil", key: "historia", top: "40%", left: "28%" },
-  { to: "/jogos-infantil", key: "jogos", top: "40%", left: "72%" },
-  { to: "/amizade", key: "amizade", top: "58%", left: "28%" },
+  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
+  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
+  { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
+  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
+  { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
-
-const HOTSPOT_BTN_CLASS =
-  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 font-display text-[clamp(0.62rem,2.7vw,1rem)] font-black uppercase leading-tight text-center text-emerald-900 shadow-lg ring-2 ring-amber-300 transition hover:bg-white hover:ring-amber-400 md:px-5 md:py-3";
 
 function InfantilHome() {
   const { t, i18n } = useTranslation();
@@ -96,17 +93,20 @@ function InfantilHome() {
             aria-label={t("infantil.title")}
             draggable={false}
           />
+        </section>
 
+        {/* Menu labels below the video */}
+        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
           {hotspots.map((h) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
               aria-label={t(`infantil.hotspots.${h.key}`)}
-              title={t(`infantil.hotspots.${h.key}`)}
-              style={{ top: h.top, left: h.left, minWidth: "25%" }}
-              className={HOTSPOT_BTN_CLASS}
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              style={{ borderColor: h.color }}
             >
-              {t(`infantil.hotspots.${h.key}`)}
+              <span className="text-2xl md:text-3xl" aria-hidden>{h.emoji}</span>
+              <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`)}</span>
             </Link>
           ))}
         </section>
