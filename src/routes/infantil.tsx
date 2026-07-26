@@ -95,8 +95,8 @@ function InfantilHome() {
           />
         </section>
 
-        {/* Menu labels below the video */}
-        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
+        {/* Menu labels below the video — todos juntos */}
+        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
           {hotspots.map((h) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
@@ -109,39 +109,24 @@ function InfantilHome() {
               <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`)}</span>
             </Link>
           ))}
-        </section>
-
-
-
-        {/* Categorias com foto de fundo — Saudações, Família, Natureza, Animais */}
-        <section key={`categorias-${languageKey}`} className="relative mt-8 overflow-hidden rounded-[2rem] border-4 border-emerald-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]">
-          <img
-            src={categoriasBg.url}
-            alt="Crianças Pataxó na floresta"
-            className="block w-full h-auto select-none"
-            draggable={false}
-          />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent via-emerald-950/40 to-emerald-950/85 p-4">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {[
-                { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋" },
-                { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧" },
-                { slug: "natureza", key: "trailNatureza", emoji: "🌳" },
-                { slug: "animais", key: "trailAnimais", emoji: "🦜" },
-              ].map((c) => (
-                <Link
-                  key={c.slug}
-                  to="/trilhas/$slug"
-                  params={{ slug: c.slug }}
-                  aria-label={t(`common.${c.key}`)}
-                  className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
-                >
-                  <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
-                  <span className="text-center leading-tight">{t(`common.${c.key}`)}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+          {[
+            { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
+            { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
+            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
+            { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
+          ].map((c) => (
+            <Link
+              key={`${languageKey}-${c.slug}`}
+              to="/trilhas/$slug"
+              params={{ slug: c.slug }}
+              aria-label={t(`common.${c.key}`)}
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              style={{ borderColor: c.color }}
+            >
+              <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
+              <span className="text-center leading-tight">{t(`common.${c.key}`)}</span>
+            </Link>
+          ))}
         </section>
       </main>
 
