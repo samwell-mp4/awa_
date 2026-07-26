@@ -48,20 +48,17 @@ type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
 type Hotspot = {
   to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
   key: HotspotKey;
-  top: string;
-  left: string;
+  emoji: string;
+  color: string;
 };
 
 const hotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", top: "22%", left: "28%" },
-  { to: "/musicas-infantil", key: "cantico", top: "22%", left: "72%" },
-  { to: "/historias-infantil", key: "historia", top: "40%", left: "28%" },
-  { to: "/jogos-infantil", key: "jogos", top: "40%", left: "72%" },
-  { to: "/amizade", key: "amizade", top: "58%", left: "28%" },
+  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
+  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
+  { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
+  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
+  { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
-
-const HOTSPOT_BTN_CLASS =
-  "absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 font-display text-[clamp(0.62rem,2.7vw,1rem)] font-black uppercase leading-tight text-center text-emerald-900 shadow-lg ring-2 ring-amber-300 transition hover:bg-white hover:ring-amber-400 md:px-5 md:py-3";
 
 function InfantilHome() {
   const { t, i18n } = useTranslation();
