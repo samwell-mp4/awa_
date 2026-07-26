@@ -93,17 +93,20 @@ function InfantilHome() {
             aria-label={t("infantil.title")}
             draggable={false}
           />
+        </section>
 
+        {/* Menu labels below the video */}
+        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
           {hotspots.map((h) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
               aria-label={t(`infantil.hotspots.${h.key}`)}
-              title={t(`infantil.hotspots.${h.key}`)}
-              style={{ top: h.top, left: h.left, minWidth: "25%" }}
-              className={HOTSPOT_BTN_CLASS}
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              style={{ borderColor: h.color }}
             >
-              {t(`infantil.hotspots.${h.key}`)}
+              <span className="text-2xl md:text-3xl" aria-hidden>{h.emoji}</span>
+              <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`)}</span>
             </Link>
           ))}
         </section>
