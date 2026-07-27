@@ -114,6 +114,7 @@ function PlanosPage() {
         </section>
 
         {/* INFANTIL */}
+        {search.need !== "adulto" && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
@@ -143,8 +144,10 @@ function PlanosPage() {
             owned={hasInfantil}
           />
         </section>
+        )}
 
         {/* ADULTO */}
+        {search.need !== "infantil" && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">
@@ -176,6 +179,7 @@ function PlanosPage() {
             owned={hasAdulto}
           />
         </section>
+        )}
 
         <p className="mt-10 flex items-center justify-center gap-2 text-center text-xs text-foreground/60">
           <Shield className="h-3.5 w-3.5 text-gold" />
