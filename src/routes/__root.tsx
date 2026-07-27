@@ -14,6 +14,9 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
+import { supabase } from "@/integrations/supabase/client";
+import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
+import { toast } from "sonner";
 import "@/i18n";
 
 
