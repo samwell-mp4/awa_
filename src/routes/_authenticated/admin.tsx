@@ -14,6 +14,7 @@ import {
   Crown,
   LayoutGrid,
   ChevronRight,
+  KeyRound,
 } from "lucide-react";
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
