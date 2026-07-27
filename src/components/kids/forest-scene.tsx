@@ -14,7 +14,7 @@ export function KidsForestScene() {
         @keyframes ktf-flap { 0%,100%{ transform: scaleX(1); } 50%{ transform: scaleX(0.75); } }
         @keyframes ktf-fall { 0%{ transform: translateY(-10vh) rotate(0deg); opacity:0; } 10%{ opacity:.9;} 100%{ transform: translateY(110vh) rotate(540deg); opacity: 0.15; } }
         @keyframes ktf-pulse { 0%,100%{ opacity:.55; transform: scale(1);} 50%{ opacity:.9; transform: scale(1.08);} }
-        .ktf-layer{ position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+        .ktf-layer{ position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .ktf-item{ position:absolute; will-change: transform; }
         .ktf-sun{ animation: ktf-spin-slow 60s linear infinite; }
         .ktf-sway{ animation: ktf-sway 6s ease-in-out infinite; transform-origin: 50% 100%; }
