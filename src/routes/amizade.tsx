@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
+import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/amizade")({
