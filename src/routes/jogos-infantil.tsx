@@ -402,21 +402,26 @@ function PairsGame({ onWin }: { onWin: () => void }) {
           const done = ok.includes(w.px);
           const active = sel === w.px;
           return (
-            <button
-              key={w.px}
-              disabled={done}
-              onClick={() => setSel(w.px)}
-              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
-                done
-                  ? "bg-emerald-200 line-through text-emerald-800/60"
-                  : active
-                  ? "bg-amber-400 text-emerald-900"
-                  : "bg-white text-emerald-800 hover:bg-amber-100"
-              }`}
-            >
-              {w.px}
-              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
-            </button>
+            <div key={w.px} className="flex items-center gap-2">
+              <button
+                disabled={done}
+                onClick={() => {
+                  setSel(w.px);
+                  speak(w.px, "pt-BR");
+                }}
+                className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                  done
+                    ? "bg-emerald-200 line-through text-emerald-800/60"
+                    : active
+                    ? "bg-amber-400 text-emerald-900"
+                    : "bg-white text-emerald-800 hover:bg-amber-100"
+                }`}
+              >
+                {w.px}
+                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+              </button>
+              {!done && <SpeakBtn text={w.px} />}
+            </div>
           );
         })}
       </div>
