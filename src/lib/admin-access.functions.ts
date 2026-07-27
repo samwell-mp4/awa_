@@ -166,6 +166,6 @@ export const checkMyLoginAllowed = createServerFn({ method: "GET" })
     const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId);
     const email = u?.user?.email ?? null;
     const phone = u?.user?.phone ?? null;
-    const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email, _phone: phone });
+    const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email ?? "", _phone: phone ?? "" });
     return { allowed: !!data };
   });
