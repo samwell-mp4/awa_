@@ -116,3 +116,56 @@ export const listAllUsers = createServerFn({ method: "GET" })
       })
       .sort((a, b) => (b.last_sign_in_at ?? b.created_at).localeCompare(a.last_sign_in_at ?? a.created_at));
   });
+
+// ============ ALLOWLIST (liberação de login) ============
+
+export const listAllowlist = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin
+      .from("login_allowlist")
+      .select("id,email,phone,note,created_at")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  });
+
+export const addAllowlist = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { email?: string; phone?: string; note?: string }) => d)
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const email = data.email?.trim().toLowerCase() || null;
+    const phone = data.phone?.trim() || null;
+    if (!email && !phone) throw new Error("Informe email ou celular");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("login_allowlist")
+      .insert({ email, phone, note: data.note?.trim() || null, created_by: context.userId });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const removeAllowlist = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => d)
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("login_allowlist").delete().eq("id", data.id);
+    if (error) throw error;
+    return { ok: true };
+  });
+
+export const checkMyLoginAllowed = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId);
+    const email = u?.user?.email ?? null;
+    const phone = u?.user?.phone ?? null;
+    const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email, _phone: phone });
+    return { allowed: !!data };
+  });
