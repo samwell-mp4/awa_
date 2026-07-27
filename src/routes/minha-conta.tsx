@@ -169,7 +169,6 @@ function MinhaContaPage() {
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
       <PaymentTestModeBanner />
-      <PlanExpiryBanner />
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link
