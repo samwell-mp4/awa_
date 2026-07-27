@@ -14,6 +14,7 @@ import {
   Crown,
   LayoutGrid,
   ChevronRight,
+  KeyRound,
 } from "lucide-react";
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
@@ -23,6 +24,7 @@ const DictionaryAdmin = lazy(() => import("@/components/admin/dictionary-admin")
 const SongsAdmin = lazy(() => import("@/components/admin/songs-admin").then((m) => ({ default: m.SongsAdmin })));
 const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) => ({ default: m.ToolsAdmin })));
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
+const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
@@ -42,7 +44,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist";
 
 type Section = {
   k: Tab;
@@ -60,6 +62,7 @@ const SECTIONS: Section[] = [
   { k: "video", label: "Vídeo do dia", icon: Video, desc: "Curadoria do card diário.", group: "Conteúdo", accent: "from-forest/40 to-leaf/20" },
   { k: "mission", label: "Missão", icon: Trophy, desc: "Missão diária e recompensas.", group: "Comunidade", accent: "from-gold/30 to-earth/20" },
   { k: "access", label: "Acesso Premium", icon: Crown, desc: "Liberar / revogar assinantes.", group: "Comunidade", accent: "from-gold/35 to-leaf/15" },
+  { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
 ];
 
@@ -212,6 +215,7 @@ function AdminPage() {
                   {tab === "dictionary" && <DictionaryAdmin />}
                   {tab === "tools" && <ToolsAdmin />}
                   {tab === "access" && <AccessAdmin />}
+                  {tab === "allowlist" && <AllowlistAdmin />}
                 </Suspense>
               </div>
             </div>

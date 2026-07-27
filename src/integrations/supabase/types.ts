@@ -305,6 +305,33 @@ export type Database = {
         }
         Relationships: []
       }
+      login_allowlist: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          email: string | null
+          id: string
+          note: string | null
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          note?: string | null
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          note?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -599,6 +626,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_login_allowed: {
+        Args: { _email: string; _phone: string }
         Returns: boolean
       }
       move_to_dlq: {

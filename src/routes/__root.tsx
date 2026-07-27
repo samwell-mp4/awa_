@@ -14,6 +14,9 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
+import { supabase } from "@/integrations/supabase/client";
+import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
+import { toast } from "sonner";
 import "@/i18n";
 
 
@@ -156,6 +159,33 @@ function RootComponent() {
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("focus", clear);
       window.clearInterval(id);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function verify() {
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        if (!sess.session) return;
+        const res = await checkMyLoginAllowed();
+        if (cancelled) return;
+        if (!res.allowed) {
+          toast.error("Acesso não liberado. Contate o administrador do AWÃ TECH.");
+          await supabase.auth.signOut();
+          window.location.replace("/acesso-negado");
+        }
+      } catch {
+        // silencioso — se falhar, mantém sessão para não travar por erro de rede
+      }
+    }
+    verify();
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") verify();
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
     };
   }, []);
 
