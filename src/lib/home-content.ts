@@ -107,11 +107,12 @@ const ADULT_HREFS = new Set([
 ]);
 
 const CHILD_HREFS = new Set([
-  "/trilhas-infantil",
-  "/musicas-infantil",
-  "/historias-infantil",
-  "/jogos-infantil",
-  "/amizade",
+  "/saudacoes",
+  "/jogos",
+  "/musicas",
+  "/trilhas",
+  "/historias",
+  "/videos",
   "/instalar",
   "/minha-conta",
 ]);
@@ -124,30 +125,6 @@ function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[
 
 export function useNavContent(mode: NavMode = "all") {
   const { t } = useTranslation();
-
-  if (mode === "infantil") {
-    const kidsGroups: NavGroup[] = [
-      {
-        title: t("nav.groups.cultura"),
-        items: [
-          { label: t("infantil.hotspots.trilhas"), href: "/trilhas-infantil", icon: Award },
-          { label: t("infantil.hotspots.cantico"), href: "/musicas-infantil", icon: Play },
-          { label: t("infantil.hotspots.historia"), href: "/historias-infantil", icon: ScrollText },
-          { label: t("infantil.hotspots.jogos"), href: "/jogos-infantil", icon: Trophy },
-          { label: t("infantil.hotspots.amizade"), href: "/amizade", icon: Sparkles },
-        ],
-      },
-      {
-        title: t("nav.groups.quemSomos"),
-        items: [
-          { label: t("nav.instalar"), href: "/instalar", icon: Download },
-          { label: t("nav.minhaConta"), href: "/minha-conta", icon: Star },
-        ],
-      },
-    ];
-    return { groups: kidsGroups, top: [] as { label: string; href: string }[] };
-  }
-
   const rawGroups: NavGroup[] = [
     {
       title: t("nav.groups.lingua"),
@@ -195,5 +172,4 @@ export function useNavContent(mode: NavMode = "all") {
   const top = filterByMode(rawTop, mode);
   return { groups, top };
 }
-
 

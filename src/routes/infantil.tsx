@@ -10,7 +10,6 @@ import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
 import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
-import { KidsForestScene } from "@/components/kids/forest-scene";
 
 
 
@@ -68,7 +67,6 @@ function InfantilHome() {
 
   return (
     <div className="kids-theme min-h-screen text-foreground">
-      <KidsForestScene />
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">

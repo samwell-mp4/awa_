@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
 import { T } from "@/components/T";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
-import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/jogos-infantil")({
   head: () => ({
@@ -162,9 +161,7 @@ function JogosInfantilPage() {
         backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
       }}
     >
-      <KidsForestScene />
       <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-
         <Link
           to="/infantil"
           className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"

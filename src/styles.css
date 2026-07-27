@@ -245,7 +245,6 @@ body::before {
     linear-gradient(180deg, #cfefff 0%, #ffe4f2 45%, #fff6c9 100%);
   background-size: 220px 220px, cover;
   background-attachment: fixed;
-  isolation: isolate;
 }
 /* Pataxó grafismo strips — top & bottom on every kids screen */
 .kids-theme::before,
