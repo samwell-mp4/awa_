@@ -198,8 +198,8 @@ function TrilhaPage() {
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
         <section className={`rounded-[2rem] border-4 p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)] ${isKids ? "border-amber-300 bg-gradient-to-br from-yellow-100 via-orange-100 to-emerald-100" : `card-elev border-gold/25 bg-gradient-to-br ${trail.color}`}`}>
-          <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
-          <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
+          <p className={`font-display text-2xl md:text-3xl font-black ${isKids ? "text-emerald-900" : "text-cream"}`}>{tr(trail.intro)}</p>
+          <p className={`mt-2 text-sm ${isKids ? "text-emerald-800/90" : "text-foreground/85"}`}>{tr(trail.apoio)}</p>
 
           <div className="mt-5">
             <div className="flex items-center justify-between text-xs font-bold text-cream/90">
