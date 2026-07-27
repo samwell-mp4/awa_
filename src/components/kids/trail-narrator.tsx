@@ -22,6 +22,22 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const urlRef = useRef<string | null>(null);
 
+  const lang = i18n.language.slice(0, 2).toLowerCase();
+
+  // Re-fetch narration when the UI language changes.
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (urlRef.current) {
+      URL.revokeObjectURL(urlRef.current);
+      urlRef.current = null;
+    }
+    setState("idle");
+    setProgress(0);
+  }, [lang]);
+
   useEffect(() => {
     return () => {
       if (audioRef.current) {
