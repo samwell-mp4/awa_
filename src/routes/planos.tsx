@@ -133,6 +133,10 @@ function PlanosPage() {
             benefits={infantilBenefits}
             monthlyId="awa_infantil_monthly"
             semestralId="awa_infantil_semestral"
+            monthlyPrice="R$ 29,90"
+            semestralPrice="R$ 149,90"
+            semestralEquivalent="Equivale a R$ 24,98/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "infantil"}
