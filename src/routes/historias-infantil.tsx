@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/home/site-footer";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
 import { setLastArea } from "@/lib/last-area";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
@@ -391,7 +392,10 @@ function HistoriasInfantilPage() {
         .story-card { animation: card-pop .5s ease-out both; }
       `}</style>
 
+      <KidsForestScene />
       <SiteHeader mode="infantil" />
+
+
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
         {/* HERO panel — matches the reference book style */}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/musicas-infantil")({
   head: () => ({
@@ -70,7 +71,9 @@ function MusicasInfantilPage() {
         backgroundAttachment: "fixed",
       }}
     >
+      <KidsForestScene />
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
+
 
       <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
