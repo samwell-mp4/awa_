@@ -7,6 +7,7 @@ import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   head: () => ({
