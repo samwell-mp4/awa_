@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
 import { T } from "@/components/T";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/jogos-infantil")({
   head: () => ({
