@@ -24,7 +24,6 @@ import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { openCustomerPortalSession } from "@/lib/customer-portal.functions";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
-import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import logoSrc from "@/assets/awa-tech-logo.png";
 
 export const Route = createFileRoute("/minha-conta")({
