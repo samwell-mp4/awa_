@@ -24,6 +24,7 @@ const DictionaryAdmin = lazy(() => import("@/components/admin/dictionary-admin")
 const SongsAdmin = lazy(() => import("@/components/admin/songs-admin").then((m) => ({ default: m.SongsAdmin })));
 const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) => ({ default: m.ToolsAdmin })));
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
+const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
