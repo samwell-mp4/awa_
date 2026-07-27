@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
+import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/jogos")({
   head: () => ({
