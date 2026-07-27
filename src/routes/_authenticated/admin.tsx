@@ -215,6 +215,7 @@ function AdminPage() {
                   {tab === "dictionary" && <DictionaryAdmin />}
                   {tab === "tools" && <ToolsAdmin />}
                   {tab === "access" && <AccessAdmin />}
+                  {tab === "allowlist" && <AllowlistAdmin />}
                 </Suspense>
               </div>
             </div>
