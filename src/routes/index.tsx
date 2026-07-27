@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, ShieldCheck, Sparkles, Globe2 } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles, Globe2, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
+import { useAuth } from "@/hooks/use-auth";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
