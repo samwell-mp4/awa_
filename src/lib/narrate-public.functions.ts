@@ -46,7 +46,7 @@ export const narratePublic = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<NarrationPayload> => {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
-    const text = (data.text ?? "").slice(0, 4000);
+    let text = (data.text ?? "").slice(0, 4000);
     if (!text.trim()) throw new Error("Texto vazio");
     const voice = data.voice ?? "onyx";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
@@ -57,6 +57,39 @@ export const narratePublic = createServerFn({ method: "POST" })
     const k = keyFor(text, `${voice}:${mode}`, lang);
     const hit = cache.get(k);
     if (hit) return hit;
+
+    // For story mode, translate the source Portuguese text to the target
+    // language before TTS so the audio actually matches the UI language.
+    if (mode === "story" && (lang === "en" || lang === "es")) {
+      const target = lang === "en" ? "English" : "Spanish (español)";
+      try {
+        const tr = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            messages: [
+              {
+                role: "system",
+                content: `Translate the user's text from Brazilian Portuguese to ${target}. Keep proper nouns and indigenous Patxôhã/Pataxó words unchanged. Preserve punctuation. Reply ONLY as strict JSON: {"t":"..."}.`,
+              },
+              { role: "user", content: text },
+            ],
+            response_format: { type: "json_object" },
+          }),
+        });
+        if (tr.ok) {
+          const j = await tr.json();
+          const raw: string = j.choices?.[0]?.message?.content ?? "{}";
+          const parsed = JSON.parse(raw);
+          if (typeof parsed?.t === "string" && parsed.t.trim()) {
+            text = parsed.t.slice(0, 4000);
+          }
+        }
+      } catch {
+        /* fall back to original text */
+      }
+    }
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",

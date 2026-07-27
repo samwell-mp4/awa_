@@ -178,6 +178,19 @@ function useKidsNarrator(text: string) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const urlRef = useRef<string | null>(null);
 
+  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
+
+  // Reset cached audio when the UI language changes so narration re-fetches
+  // in the newly-selected language instead of replaying the old blob.
+  useEffect(() => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    urlRef.current = null;
+    setState("idle");
+    setProgress(0);
+  }, [lang]);
+
   useEffect(() => {
     return () => {
       audioRef.current?.pause();
