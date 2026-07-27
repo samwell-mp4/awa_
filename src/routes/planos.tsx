@@ -13,13 +13,13 @@ export const Route = createFileRoute("/planos")({
       {
         name: "description",
         content:
-          "Escolha sua assinatura AWÃ TECH: Infantil (trilhas, cânticos e jogos) ou Adulto (dicionário, tradutor e Professor Akuã). R$ 29,90/mês ou R$ 149,90 a cada 6 meses.",
+          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 35,00/mês ou R$ 180,00/semestre).",
       },
       { property: "og:title", content: "Planos AWÃ TECH" },
       {
         property: "og:description",
         content:
-          "Duas assinaturas independentes: Infantil ou Adulto. R$ 29,90/mês ou R$ 149,90/semestre. Cancele quando quiser.",
+          "Duas assinaturas independentes: Infantil ou Adulto. Cancele quando quiser.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -133,6 +133,10 @@ function PlanosPage() {
             benefits={infantilBenefits}
             monthlyId="awa_infantil_monthly"
             semestralId="awa_infantil_semestral"
+            monthlyPrice="R$ 29,90"
+            semestralPrice="R$ 149,90"
+            semestralEquivalent="Equivale a R$ 24,98/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "infantil"}
@@ -162,6 +166,10 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
+            monthlyPrice="R$ 35,00"
+            semestralPrice="R$ 180,00"
+            semestralEquivalent="Equivale a R$ 30,00/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 14%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "adulto"}
@@ -199,19 +207,26 @@ function PlanPair(props: {
   benefits: string[];
   monthlyId: PriceId;
   semestralId: PriceId;
+  monthlyPrice: string;
+  semestralPrice: string;
+  semestralEquivalent: string;
+  savingsBadge: string;
   onAssinar: (id: PriceId) => void;
   checkoutLoading: boolean;
   highlight?: boolean;
   owned?: boolean;
 }) {
-  const { benefits, monthlyId, semestralId, onAssinar, checkoutLoading, highlight, owned } = props;
+  const {
+    benefits, monthlyId, semestralId, monthlyPrice, semestralPrice,
+    semestralEquivalent, savingsBadge, onAssinar, checkoutLoading, highlight, owned,
+  } = props;
   const ring = highlight ? "ring-2 ring-gold/70 shadow-[var(--shadow-glow)]" : "";
   return (
     <div className="grid gap-5 md:grid-cols-2">
       <div className={`card-elev rounded-3xl border border-gold/25 p-6 md:p-8 ${ring}`}>
         <div className="text-xs font-bold uppercase tracking-wider text-foreground/60">Mensal</div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
+          <span className="font-display text-4xl font-black text-cream">{monthlyPrice}</span>
           <span className="text-sm text-foreground/60">/mês</span>
         </div>
         <p className="mt-2 text-sm text-foreground/70">Renova automaticamente. Cancele quando quiser.</p>
@@ -233,14 +248,14 @@ function PlanPair(props: {
 
       <div className={`relative card-elev rounded-3xl border-2 border-gold/60 p-6 md:p-8 ${ring}`}>
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-[10px] font-black uppercase tracking-wider text-forest-deep">
-          Melhor valor · economize 17%
+          {savingsBadge}
         </div>
         <div className="text-xs font-bold uppercase tracking-wider text-gold">Semestral</div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-display text-4xl font-black text-cream">R$ 149,90</span>
+          <span className="font-display text-4xl font-black text-cream">{semestralPrice}</span>
           <span className="text-sm text-foreground/60">/6 meses</span>
         </div>
-        <p className="mt-2 text-sm text-foreground/70">Equivale a R$ 24,98/mês. Cobrado a cada 6 meses.</p>
+        <p className="mt-2 text-sm text-foreground/70">{semestralEquivalent}</p>
         <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
           {benefits.map((b) => (
             <li key={b} className="flex items-start gap-2">
