@@ -31,7 +31,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "awatech"
+const SITE_NAME = "Awã Tech"
 const SENDER_DOMAIN = "notify.awa-tech.store"
 const ROOT_DOMAIN = "awa-tech.store"
 const FROM_DOMAIN = "awa-tech.store"
