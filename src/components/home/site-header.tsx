@@ -121,8 +121,18 @@ function MobileDrawer({
 }) {
   const { t } = useTranslation();
   const { groups } = useNavContent(mode);
-  const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   const isKids = mode === "infantil";
+  const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
+  const [openGroupsKids, setOpenGroupsKids] = useState<Set<string>>(
+    () => new Set(groups.map((g) => g.title)),
+  );
+  const toggleKidsGroup = (title: string) =>
+    setOpenGroupsKids((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      return next;
+    });
 
   if (isKids) {
     return (
