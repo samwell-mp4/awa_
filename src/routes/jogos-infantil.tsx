@@ -817,6 +817,7 @@ function CoresGame({ onWin }: { onWin: () => void }) {
       </p>
       <p className="mt-2 font-display text-3xl font-black uppercase text-emerald-900">
         {target.name}
+        <SpeakBtn text={target.name} className="ml-2 align-middle" />
       </p>
       <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3">
         {opts.map((o) => (
