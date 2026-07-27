@@ -184,8 +184,8 @@ function TrilhaPage() {
     <div className={`min-h-screen ${isKids ? "kids-theme" : ""}`}>
       <header className={`sticky top-0 z-40 border-b backdrop-blur-xl ${isKids ? "border-amber-300/60 bg-white/85" : "border-gold/20 bg-[oklch(0.18_0.04_145/0.75)]"}`}>
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className={`inline-flex items-center gap-2 text-sm font-semibold hover:underline ${isKids ? "text-emerald-800" : "text-gold"}`}>
-            <ArrowLeft className="h-4 w-4" /> {tr("Início")}
+          <Link to={(isKids ? "/trilhas-infantil" : "/trilhas") as "/"} className={`inline-flex items-center gap-2 text-sm font-semibold hover:underline ${isKids ? "text-emerald-800" : "text-gold"}`}>
+            <ArrowLeft className="h-4 w-4" /> {tr("Trilhas")}
           </Link>
           <div className={`flex items-center gap-2 font-display font-black ${isKids ? "text-emerald-900 text-xl" : "text-cream"}`}>
             <span className={isKids ? "text-3xl" : ""}>{trail.emoji}</span> {tr(trail.name)}
