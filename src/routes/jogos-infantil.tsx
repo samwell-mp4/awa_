@@ -657,7 +657,7 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
       <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-3xl bg-gradient-to-br from-amber-100 to-emerald-100 text-8xl shadow-inner">
         {q.emoji}
       </div>
-      <p className="mt-3 font-black text-emerald-800"><T>Qual é a palavra?</T></p>
+      <p className="mt-3 font-black text-emerald-800"><T>Qual é a palavra?</T> <SpeakBtn text={q.answer} className="ml-1 align-middle" /></p>
       <div className="mx-auto mt-4 flex max-w-md flex-wrap justify-center gap-2">
         {q.options.map((o) => {
           const isRight = state && o === q.answer;
