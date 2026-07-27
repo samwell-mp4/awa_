@@ -1,8 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
+import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
+import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+
+/** Botão de áudio reutilizável — toca a palavra em voz alta. */
+function SpeakBtn({
+  text,
+  lang = "pt-BR",
+  className = "",
+  label = "Ouvir",
+}: {
+  text: string;
+  lang?: string;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        speak(text, lang);
+      }}
+      aria-label={`${label}: ${text}`}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow hover:bg-emerald-700 active:scale-95 ${className}`}
+    >
+      <Volume2 className="h-4 w-4" />
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/jogos-infantil")({
   head: () => ({
@@ -374,21 +402,26 @@ function PairsGame({ onWin }: { onWin: () => void }) {
           const done = ok.includes(w.px);
           const active = sel === w.px;
           return (
-            <button
-              key={w.px}
-              disabled={done}
-              onClick={() => setSel(w.px)}
-              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
-                done
-                  ? "bg-emerald-200 line-through text-emerald-800/60"
-                  : active
-                  ? "bg-amber-400 text-emerald-900"
-                  : "bg-white text-emerald-800 hover:bg-amber-100"
-              }`}
-            >
-              {w.px}
-              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
-            </button>
+            <div key={w.px} className="flex items-center gap-2">
+              <button
+                disabled={done}
+                onClick={() => {
+                  setSel(w.px);
+                  speak(w.px, "pt-BR");
+                }}
+                className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                  done
+                    ? "bg-emerald-200 line-through text-emerald-800/60"
+                    : active
+                    ? "bg-amber-400 text-emerald-900"
+                    : "bg-white text-emerald-800 hover:bg-amber-100"
+                }`}
+              >
+                {w.px}
+                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+              </button>
+              {!done && <SpeakBtn text={w.px} />}
+            </div>
           );
         })}
       </div>
@@ -535,21 +568,26 @@ function EnglishPairsGame({
           const done = ok.includes(w.en);
           const active = sel === w.en;
           return (
-            <button
-              key={w.en}
-              disabled={done}
-              onClick={() => setSel(w.en)}
-              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
-                done
-                  ? "bg-emerald-200 line-through text-emerald-800/60"
-                  : active
-                  ? "bg-amber-400 text-emerald-900"
-                  : "bg-white text-emerald-800 hover:bg-amber-100"
-              }`}
-            >
-              {w.en}
-              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
-            </button>
+            <div key={w.en} className="flex items-center gap-2">
+              <button
+                disabled={done}
+                onClick={() => {
+                  setSel(w.en);
+                  speak(w.en, "en-US");
+                }}
+                className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                  done
+                    ? "bg-emerald-200 line-through text-emerald-800/60"
+                    : active
+                    ? "bg-amber-400 text-emerald-900"
+                    : "bg-white text-emerald-800 hover:bg-amber-100"
+                }`}
+              >
+                {w.en}
+                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+              </button>
+              {!done && <SpeakBtn text={w.en} lang="en-US" />}
+            </div>
           );
         })}
       </div>
@@ -619,7 +657,7 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
       <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-3xl bg-gradient-to-br from-amber-100 to-emerald-100 text-8xl shadow-inner">
         {q.emoji}
       </div>
-      <p className="mt-3 font-black text-emerald-800"><T>Qual é a palavra?</T></p>
+      <p className="mt-3 font-black text-emerald-800"><T>Qual é a palavra?</T> <SpeakBtn text={q.answer} className="ml-1 align-middle" /></p>
       <div className="mx-auto mt-4 flex max-w-md flex-wrap justify-center gap-2">
         {q.options.map((o) => {
           const isRight = state && o === q.answer;
@@ -627,7 +665,10 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
           return (
             <button
               key={o}
-              onClick={() => choose(o)}
+              onClick={() => {
+                speak(o, "pt-BR");
+                choose(o);
+              }}
               className={`min-w-[110px] rounded-2xl px-5 py-3 font-black uppercase transition ${
                 isRight
                   ? "bg-emerald-500 text-white"
@@ -667,6 +708,7 @@ function OrdenarNumerosGame({ onWin }: { onWin: () => void }) {
     setSeq([]);
   }, [target]);
   const pick = (n: number) => {
+    speak(String(n), "pt-BR");
     setPool((p) => p.filter((x) => x !== n));
     setSeq((s) => [...s, n]);
   };
@@ -751,6 +793,9 @@ function CoresGame({ onWin }: { onWin: () => void }) {
       .slice(0, 3);
     return [target, ...others].sort(() => Math.random() - 0.5);
   }, [target]);
+  useEffect(() => {
+    if (target?.name) speak(target.name, "pt-BR");
+  }, [target?.name]);
   const pick = (hex: string) => {
     if (feedback) return;
     if (hex === target.hex) {
@@ -772,6 +817,7 @@ function CoresGame({ onWin }: { onWin: () => void }) {
       </p>
       <p className="mt-2 font-display text-3xl font-black uppercase text-emerald-900">
         {target.name}
+        <SpeakBtn text={target.name} className="ml-2 align-middle" />
       </p>
       <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3">
         {opts.map((o) => (
@@ -818,6 +864,9 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
       .slice(0, 3);
     return [q, ...others].sort(() => Math.random() - 0.5);
   }, [i]);
+  useEffect(() => {
+    if (q?.hint) speak(q.hint, "pt-BR");
+  }, [i]);
   const choose = (n: string) => {
     if (state) return;
     if (n === q.name) {
@@ -833,7 +882,7 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
     <div className="text-center">
       <div className="mx-auto max-w-md rounded-3xl bg-gradient-to-br from-emerald-100 to-sky-100 p-6 shadow-inner">
         <p className="text-2xl">🕵️‍♂️</p>
-        <p className="mt-2 font-black text-emerald-900"><T>{q.hint}</T></p>
+        <p className="mt-2 font-black text-emerald-900"><T>{q.hint}</T> <SpeakBtn text={q.hint} className="ml-1 align-middle" /></p>
       </div>
       <div className="mx-auto mt-5 grid max-w-md grid-cols-2 gap-3">
         {opts.map((o) => {
