@@ -568,21 +568,26 @@ function EnglishPairsGame({
           const done = ok.includes(w.en);
           const active = sel === w.en;
           return (
-            <button
-              key={w.en}
-              disabled={done}
-              onClick={() => setSel(w.en)}
-              className={`w-full rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
-                done
-                  ? "bg-emerald-200 line-through text-emerald-800/60"
-                  : active
-                  ? "bg-amber-400 text-emerald-900"
-                  : "bg-white text-emerald-800 hover:bg-amber-100"
-              }`}
-            >
-              {w.en}
-              <span className="ml-2 text-xs opacity-70">({w.pt})</span>
-            </button>
+            <div key={w.en} className="flex items-center gap-2">
+              <button
+                disabled={done}
+                onClick={() => {
+                  setSel(w.en);
+                  speak(w.en, "en-US");
+                }}
+                className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
+                  done
+                    ? "bg-emerald-200 line-through text-emerald-800/60"
+                    : active
+                    ? "bg-amber-400 text-emerald-900"
+                    : "bg-white text-emerald-800 hover:bg-amber-100"
+                }`}
+              >
+                {w.en}
+                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+              </button>
+              {!done && <SpeakBtn text={w.en} lang="en-US" />}
+            </div>
           );
         })}
       </div>
