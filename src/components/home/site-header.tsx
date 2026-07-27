@@ -121,8 +121,18 @@ function MobileDrawer({
 }) {
   const { t } = useTranslation();
   const { groups } = useNavContent(mode);
-  const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   const isKids = mode === "infantil";
+  const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
+  const [openGroupsKids, setOpenGroupsKids] = useState<Set<string>>(
+    () => new Set(groups.map((g) => g.title)),
+  );
+  const toggleKidsGroup = (title: string) =>
+    setOpenGroupsKids((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      return next;
+    });
 
   if (isKids) {
     return (
@@ -135,7 +145,7 @@ function MobileDrawer({
         </div>
         <div className="flex flex-col gap-3">
           {groups.map((group: NavGroup, gi) => {
-            const isOpen = openGroup === group.title;
+            const isOpen = openGroupsKids.has(group.title);
             const palette = ["#ef476f", "#06d6a0", "#118ab2", "#ffd166", "#f4a261", "#c77dff"];
             const color = palette[gi % palette.length];
             return (
@@ -145,7 +155,7 @@ function MobileDrawer({
               >
                 <button
                   type="button"
-                  onClick={() => setOpenGroup(isOpen ? null : group.title)}
+                  onClick={() => toggleKidsGroup(group.title)}
                   aria-expanded={isOpen}
                   className="flex w-full items-center gap-2 px-4 py-4 text-left text-base font-black uppercase tracking-wide text-white"
                   style={{ background: color }}
