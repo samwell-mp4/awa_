@@ -62,9 +62,9 @@ function JogosPage() {
   const [score, setScore] = useState(0);
 
   const tabs = [
-    { id: "match" as const, label: "Ligação", icon: BookOpen },
-    { id: "memoria" as const, label: "Memória", icon: Puzzle },
-    { id: "lacuna" as const, label: "Lacuna", icon: PencilLine },
+    { id: "match" as const, label: "Ligação", desc: "Ligue palavras Patxôhã ao português.", icon: BookOpen },
+    { id: "memoria" as const, label: "Memória", desc: "Encontre os pares de cartas.", icon: Puzzle },
+    { id: "lacuna" as const, label: "Lacuna", desc: "Complete a frase com a palavra certa.", icon: PencilLine },
   ];
 
   return (
