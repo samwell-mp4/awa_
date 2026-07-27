@@ -131,6 +131,7 @@ export const Route = createFileRoute("/")({
 
 function LandingChoice() {
   const dict = useMenuDict();
+  const { user, loading } = useAuth();
   return (
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
@@ -138,10 +139,32 @@ function LandingChoice() {
         backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${landingBg.url})`,
       }}
     >
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-5 md:px-8">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
         <Logo />
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageSwitcher />
+          {!loading && (
+            user ? (
+              <Link
+                to="/minha-conta"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gold/90 backdrop-blur-sm hover:bg-forest-deep/90 md:px-4 md:py-2 md:text-xs"
+              >
+                <UserRound className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : dict.entrar === "Awê" ? "Kua konã" : "Minha conta"}</span>
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-forest-deep shadow-md hover:brightness-110 md:px-4 md:py-2 md:text-xs"
+              >
+                <LogIn className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                {dict.entrar}
+              </Link>
+            )
+          )}
+        </div>
       </header>
+
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
