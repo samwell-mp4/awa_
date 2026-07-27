@@ -323,8 +323,31 @@ function TrilhaPage() {
   );
 }
 
-function WordCard({ w, learned, onToggle, localize }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string }) {
+function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string; isKids?: boolean }) {
   const trAria = useTr(["Marcar como aprendida", "Marcar como não aprendida"]);
+  if (isKids) {
+    return (
+      <div className={`rounded-3xl border-4 p-4 transition ${learned ? "border-emerald-400 bg-emerald-50" : "border-amber-300 bg-white/80"} shadow-md`}>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="font-display text-xl font-black text-emerald-900 truncate">{w.term_indigenous}</div>
+            <div className="text-base font-bold text-orange-700 truncate">{localize(w, "term_pt")}</div>
+            {w.pronunciation && <div className="text-sm text-emerald-800/80 mt-0.5">🗣️ {w.pronunciation}</div>}
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
+            <button
+              onClick={onToggle}
+              aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
+              className={`grid h-11 w-11 place-items-center rounded-full border-b-4 transition active:translate-y-[2px] ${learned ? "border-emerald-700 bg-emerald-500 text-white" : "border-amber-500 bg-amber-300 text-emerald-900"}`}
+            >
+              <Check className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
