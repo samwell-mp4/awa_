@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/musicas-infantil")({
   head: () => ({
