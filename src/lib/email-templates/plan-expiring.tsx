@@ -16,7 +16,7 @@ const Email = ({ name, planName = 'Awã Tech', daysLeft = 7, expiresOn, manageUr
   return (
     <Html lang="pt" dir="ltr">
       <Head />
-      <Preview>Seu plano {planName} vence em {daysLeft} {daysLeft === 1 ? 'dia' : 'dias'}</Preview>
+      <Preview>{`Seu plano ${planName} vence em ${daysLeft} ${daysLeft === 1 ? 'dia' : 'dias'}`}</Preview>
       <Body style={styles.main}>
         <Container style={styles.container}>
           <BrandHeader />

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
 import { Route as TraduzirRouteImport } from './routes/traduzir'
 import { Route as TermosRouteImport } from './routes/termos'
@@ -48,10 +49,16 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicHooksPlanExpiryRouteImport } from './routes/api/public/hooks/plan-expiry'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrilhasInfantilRoute = TrilhasInfantilRouteImport.update({
@@ -247,6 +254,12 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksPlanExpiryRoute =
+  ApiPublicHooksPlanExpiryRouteImport.update({
+    id: '/api/public/hooks/plan-expiry',
+    path: '/api/public/hooks/plan-expiry',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -275,12 +288,14 @@ export interface FileRoutesByFullPath {
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/trilhas-infantil': typeof TrilhasInfantilRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/plan-expiry': typeof ApiPublicHooksPlanExpiryRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -315,12 +330,14 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/trilhas-infantil': typeof TrilhasInfantilRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/plan-expiry': typeof ApiPublicHooksPlanExpiryRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -357,12 +374,14 @@ export interface FileRoutesById {
   '/termos': typeof TermosRoute
   '/traduzir': typeof TraduzirRoute
   '/trilhas-infantil': typeof TrilhasInfantilRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/plan-expiry': typeof ApiPublicHooksPlanExpiryRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -399,12 +418,14 @@ export interface FileRouteTypes {
     | '/termos'
     | '/traduzir'
     | '/trilhas-infantil'
+    | '/unsubscribe'
     | '/videos'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/plan-expiry'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -439,12 +460,14 @@ export interface FileRouteTypes {
     | '/termos'
     | '/traduzir'
     | '/trilhas-infantil'
+    | '/unsubscribe'
     | '/videos'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/plan-expiry'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -480,12 +503,14 @@ export interface FileRouteTypes {
     | '/termos'
     | '/traduzir'
     | '/trilhas-infantil'
+    | '/unsubscribe'
     | '/videos'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/plan-expiry'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -522,11 +547,13 @@ export interface RootRouteChildren {
   TermosRoute: typeof TermosRoute
   TraduzirRoute: typeof TraduzirRoute
   TrilhasInfantilRoute: typeof TrilhasInfantilRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   VideosRoute: typeof VideosRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicHooksPlanExpiryRoute: typeof ApiPublicHooksPlanExpiryRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -542,6 +569,13 @@ declare module '@tanstack/react-router' {
       path: '/videos'
       fullPath: '/videos'
       preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trilhas-infantil': {
@@ -810,6 +844,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/plan-expiry': {
+      id: '/api/public/hooks/plan-expiry'
+      path: '/api/public/hooks/plan-expiry'
+      fullPath: '/api/public/hooks/plan-expiry'
+      preLoaderRoute: typeof ApiPublicHooksPlanExpiryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -852,11 +893,13 @@ const rootRouteChildren: RootRouteChildren = {
   TermosRoute: TermosRoute,
   TraduzirRoute: TraduzirRoute,
   TrilhasInfantilRoute: TrilhasInfantilRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   VideosRoute: VideosRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicHooksPlanExpiryRoute: ApiPublicHooksPlanExpiryRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
