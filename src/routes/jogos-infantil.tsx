@@ -793,6 +793,9 @@ function CoresGame({ onWin }: { onWin: () => void }) {
       .slice(0, 3);
     return [target, ...others].sort(() => Math.random() - 0.5);
   }, [target]);
+  useEffect(() => {
+    if (target?.name) speak(target.name, "pt-BR");
+  }, [target?.name]);
   const pick = (hex: string) => {
     if (feedback) return;
     if (hex === target.hex) {
