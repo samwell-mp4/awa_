@@ -197,55 +197,102 @@ function TrilhaPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
-        <section className={`rounded-[2rem] border-4 p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)] ${isKids ? "border-amber-300 bg-gradient-to-br from-yellow-100 via-orange-100 to-emerald-100" : `card-elev border-gold/25 bg-gradient-to-br ${trail.color}`}`}>
-          <p className={`font-display text-2xl md:text-3xl font-black ${isKids ? "text-emerald-900" : "text-cream"}`}>{tr(trail.intro)}</p>
-          <p className={`mt-2 text-sm ${isKids ? "text-emerald-800/90" : "text-foreground/85"}`}>{tr(trail.apoio)}</p>
-
-          <div className="mt-5">
-            <div className="flex items-center justify-between text-xs font-bold text-cream/90">
-              <span>{learned.size} / {words.length} {tr("palavras")}</span>
-              <span className="text-gold">{progress}%</span>
+        {isKids ? (
+          <section className="relative overflow-hidden rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-br from-yellow-100 via-orange-100 to-emerald-100 p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
+            <div className="flex flex-col items-center text-center">
+              <div className="text-7xl md:text-8xl drop-shadow-md animate-[wiggle_2s_ease-in-out_infinite]" aria-hidden>{trail.emoji}</div>
+              <h1 className="mt-3 font-display text-3xl md:text-4xl font-black text-emerald-900">{tr(trail.name)}</h1>
+              <p className="mt-2 text-base md:text-lg font-bold text-emerald-800/90 max-w-xl">{tr("Vamos brincar e aprender!")}</p>
             </div>
-            <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-forest-deep/60">
-              <div className="h-full bg-[var(--gradient-gold)] transition-all" style={{ width: `${progress}%` }} />
-            </div>
-          </div>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            <button
-              onClick={() => setShowQuiz(true)}
-              disabled={words.length < 4}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream disabled:opacity-50"
-            >
-              <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
-            </button>
-            <button
-              onClick={() => setShowMatch(true)}
-              disabled={words.length < 4}
-              className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
-            >
-              <Shuffle className="h-4 w-4" /> {tr("Associar imagem ↔ palavra")}
-            </button>
-            {hasCertificate(slug) && (
+            <div className="mt-5 mx-auto max-w-md">
+              <div className="flex items-center justify-between text-sm font-black text-emerald-900">
+                <span>⭐ {learned.size} / {words.length}</span>
+                <span>{progress}%</span>
+              </div>
+              <div className="mt-2 h-5 w-full overflow-hidden rounded-full border-2 border-amber-300 bg-white/70">
+                <div className="h-full bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 transition-all" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <button
-                onClick={() => setShowCert(true)}
-                className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
+                onClick={() => setShowQuiz(true)}
+                disabled={words.length < 4}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-emerald-700 bg-gradient-to-b from-emerald-400 to-emerald-500 px-6 py-4 text-lg font-black text-white shadow-lg transition active:translate-y-[3px] active:border-b-2 disabled:opacity-50"
               >
-                <Award className="h-4 w-4" /> {tr("Ver certificado")}
+                <Sparkles className="h-6 w-6" /> {tr("Jogar")}
               </button>
-            )}
-          </div>
-        </section>
+              <button
+                onClick={() => setShowMatch(true)}
+                disabled={words.length < 4}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-orange-600 bg-gradient-to-b from-amber-400 to-orange-400 px-6 py-4 text-lg font-black text-white shadow-lg transition active:translate-y-[3px] active:border-b-2 disabled:opacity-50"
+              >
+                <Shuffle className="h-6 w-6" /> {tr("Combinar")}
+              </button>
+              {hasCertificate(slug) && (
+                <button
+                  onClick={() => setShowCert(true)}
+                  className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-yellow-600 bg-gradient-to-b from-yellow-300 to-amber-400 px-6 py-4 text-lg font-black text-emerald-900 shadow-lg transition active:translate-y-[3px] active:border-b-2"
+                >
+                  <Award className="h-6 w-6" /> {tr("Medalha")}
+                </button>
+              )}
+            </div>
+          </section>
+        ) : (
+          <section className={`card-elev rounded-[2rem] border-4 border-gold/25 bg-gradient-to-br ${trail.color} p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]`}>
+            <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
+            <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
+
+            <div className="mt-5">
+              <div className="flex items-center justify-between text-xs font-bold text-cream/90">
+                <span>{learned.size} / {words.length} {tr("palavras")}</span>
+                <span className="text-gold">{progress}%</span>
+              </div>
+              <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-forest-deep/60">
+                <div className="h-full bg-[var(--gradient-gold)] transition-all" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              <button
+                onClick={() => setShowQuiz(true)}
+                disabled={words.length < 4}
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream disabled:opacity-50"
+              >
+                <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
+              </button>
+              <button
+                onClick={() => setShowMatch(true)}
+                disabled={words.length < 4}
+                className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
+              >
+                <Shuffle className="h-4 w-4" /> {tr("Associar imagem ↔ palavra")}
+              </button>
+              {hasCertificate(slug) && (
+                <button
+                  onClick={() => setShowCert(true)}
+                  className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
+                >
+                  <Award className="h-4 w-4" /> {tr("Ver certificado")}
+                </button>
+              )}
+            </div>
+          </section>
+        )}
 
         {isLoading ? (
           <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> {tr("Carregando...")}</div>
         ) : (
           grouped.map((g) => (
             <section key={g.label} className="mt-8">
-              <h2 className="font-display text-xl md:text-2xl font-black text-cream mb-4">{g.label}</h2>
+              <h2 className={`font-display text-xl md:text-2xl font-black mb-4 ${isKids ? "text-emerald-900" : "text-cream"}`}>
+                {isKids ? "✨ " : ""}{g.label}
+              </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {g.items.map((w) => (
-                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} />
+                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} isKids={isKids} />
                 ))}
               </div>
             </section>
@@ -276,8 +323,31 @@ function TrilhaPage() {
   );
 }
 
-function WordCard({ w, learned, onToggle, localize }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string }) {
+function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string; isKids?: boolean }) {
   const trAria = useTr(["Marcar como aprendida", "Marcar como não aprendida"]);
+  if (isKids) {
+    return (
+      <div className={`rounded-3xl border-4 p-4 transition ${learned ? "border-emerald-400 bg-emerald-50" : "border-amber-300 bg-white/80"} shadow-md`}>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="font-display text-xl font-black text-emerald-900 truncate">{w.term_indigenous}</div>
+            <div className="text-base font-bold text-orange-700 truncate">{localize(w, "term_pt")}</div>
+            {w.pronunciation && <div className="text-sm text-emerald-800/80 mt-0.5">🗣️ {w.pronunciation}</div>}
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
+            <button
+              onClick={onToggle}
+              aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
+              className={`grid h-11 w-11 place-items-center rounded-full border-b-4 transition active:translate-y-[2px] ${learned ? "border-emerald-700 bg-emerald-500 text-white" : "border-amber-500 bg-amber-300 text-emerald-900"}`}
+            >
+              <Check className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
       <div className="flex items-start justify-between gap-2">
