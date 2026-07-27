@@ -62,6 +62,7 @@ const SECTIONS: Section[] = [
   { k: "video", label: "Vídeo do dia", icon: Video, desc: "Curadoria do card diário.", group: "Conteúdo", accent: "from-forest/40 to-leaf/20" },
   { k: "mission", label: "Missão", icon: Trophy, desc: "Missão diária e recompensas.", group: "Comunidade", accent: "from-gold/30 to-earth/20" },
   { k: "access", label: "Acesso Premium", icon: Crown, desc: "Liberar / revogar assinantes.", group: "Comunidade", accent: "from-gold/35 to-leaf/15" },
+  { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
 ];
 
