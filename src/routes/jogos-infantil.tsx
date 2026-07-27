@@ -307,6 +307,14 @@ function JogosInfantilPage() {
 
 /* ---------------- Memória ---------------- */
 const MEM = ["🦜", "🐒", "🐢", "🐆", "🌿", "🌺"];
+const MEM_NAMES: Record<string, string> = {
+  "🦜": "Arara",
+  "🐒": "Macaco",
+  "🐢": "Tartaruga",
+  "🐆": "Onça",
+  "🌿": "Folha",
+  "🌺": "Flor",
+};
 function MemoryGame({ onWin }: { onWin: () => void }) {
   const [round, setRound] = useState(0);
   const cards = useMemo(
@@ -344,9 +352,11 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
           return (
             <button
               key={i}
-              onClick={() =>
-                !show && flip.length < 2 && setFlip((f) => [...f, i])
-              }
+              onClick={() => {
+                if (show || flip.length >= 2) return;
+                speak(MEM_NAMES[c.v] ?? "", "pt-BR");
+                setFlip((f) => [...f, i]);
+              }}
               className={`aspect-square rounded-2xl text-4xl transition ${
                 show
                   ? "bg-amber-200"
