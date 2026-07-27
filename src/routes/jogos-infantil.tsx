@@ -1,8 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy } from "lucide-react";
+import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
+import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+
+/** Botão de áudio reutilizável — toca a palavra em voz alta. */
+function SpeakBtn({
+  text,
+  lang = "pt-BR",
+  className = "",
+  label = "Ouvir",
+}: {
+  text: string;
+  lang?: string;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        speak(text, lang);
+      }}
+      aria-label={`${label}: ${text}`}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow hover:bg-emerald-700 active:scale-95 ${className}`}
+    >
+      <Volume2 className="h-4 w-4" />
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/jogos-infantil")({
   head: () => ({
