@@ -287,10 +287,12 @@ function TrilhaPage() {
         ) : (
           grouped.map((g) => (
             <section key={g.label} className="mt-8">
-              <h2 className="font-display text-xl md:text-2xl font-black text-cream mb-4">{g.label}</h2>
+              <h2 className={`font-display text-xl md:text-2xl font-black mb-4 ${isKids ? "text-emerald-900" : "text-cream"}`}>
+                {isKids ? "✨ " : ""}{g.label}
+              </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {g.items.map((w) => (
-                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} />
+                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} isKids={isKids} />
                 ))}
               </div>
             </section>
