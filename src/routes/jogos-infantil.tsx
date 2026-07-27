@@ -882,7 +882,7 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
     <div className="text-center">
       <div className="mx-auto max-w-md rounded-3xl bg-gradient-to-br from-emerald-100 to-sky-100 p-6 shadow-inner">
         <p className="text-2xl">🕵️‍♂️</p>
-        <p className="mt-2 font-black text-emerald-900"><T>{q.hint}</T></p>
+        <p className="mt-2 font-black text-emerald-900"><T>{q.hint}</T> <SpeakBtn text={q.hint} className="ml-1 align-middle" /></p>
       </div>
       <div className="mx-auto mt-5 grid max-w-md grid-cols-2 gap-3">
         {opts.map((o) => {
