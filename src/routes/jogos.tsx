@@ -92,7 +92,10 @@ function JogosPage() {
             return (
               <button
                 key={t.id}
-                onClick={() => setTab(t.id)}
+                onClick={() => {
+                  speak(`${t.label}. ${t.desc}`, "pt-BR");
+                  setTab(t.id);
+                }}
                 className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 rounded-2xl px-3 py-3 md:px-6 md:py-3 text-sm md:text-base font-bold transition ${
                   active
                     ? "bg-gold text-forest-deep shadow-lg scale-[1.02]"
