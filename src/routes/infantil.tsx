@@ -68,6 +68,7 @@ function InfantilHome() {
 
   return (
     <div className="kids-theme min-h-screen text-foreground">
+      <KidsForestScene />
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
