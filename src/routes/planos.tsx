@@ -166,6 +166,10 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
+            monthlyPrice="R$ 35,00"
+            semestralPrice="R$ 180,00"
+            semestralEquivalent="Equivale a R$ 30,00/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 14%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "adulto"}
