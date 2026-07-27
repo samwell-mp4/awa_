@@ -131,13 +131,13 @@ export function useNavContent(mode: NavMode = "all") {
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
         { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
-        { label: t("nav.trilhas"), href: "/trilhas", icon: Award },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
       ],
     },
     {
       title: t("nav.groups.cultura"),
       items: [
+        { label: t("nav.trilhas"), href: "/trilhas", icon: Award },
         { label: t("nav.historiasLong"), href: "/historias", icon: ScrollText },
         { label: t("nav.musicasLong"), href: "/musicas", icon: Play },
         { label: t("nav.videosLong"), href: "/videos", icon: Video },
