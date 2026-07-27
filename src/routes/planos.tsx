@@ -13,13 +13,13 @@ export const Route = createFileRoute("/planos")({
       {
         name: "description",
         content:
-          "Escolha sua assinatura AWÃ TECH: Infantil (trilhas, cânticos e jogos) ou Adulto (dicionário, tradutor e Professor Akuã). R$ 29,90/mês ou R$ 149,90 a cada 6 meses.",
+          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 35,00/mês ou R$ 180,00/semestre).",
       },
       { property: "og:title", content: "Planos AWÃ TECH" },
       {
         property: "og:description",
         content:
-          "Duas assinaturas independentes: Infantil ou Adulto. R$ 29,90/mês ou R$ 149,90/semestre. Cancele quando quiser.",
+          "Duas assinaturas independentes: Infantil ou Adulto. Cancele quando quiser.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
