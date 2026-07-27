@@ -207,19 +207,26 @@ function PlanPair(props: {
   benefits: string[];
   monthlyId: PriceId;
   semestralId: PriceId;
+  monthlyPrice: string;
+  semestralPrice: string;
+  semestralEquivalent: string;
+  savingsBadge: string;
   onAssinar: (id: PriceId) => void;
   checkoutLoading: boolean;
   highlight?: boolean;
   owned?: boolean;
 }) {
-  const { benefits, monthlyId, semestralId, onAssinar, checkoutLoading, highlight, owned } = props;
+  const {
+    benefits, monthlyId, semestralId, monthlyPrice, semestralPrice,
+    semestralEquivalent, savingsBadge, onAssinar, checkoutLoading, highlight, owned,
+  } = props;
   const ring = highlight ? "ring-2 ring-gold/70 shadow-[var(--shadow-glow)]" : "";
   return (
     <div className="grid gap-5 md:grid-cols-2">
       <div className={`card-elev rounded-3xl border border-gold/25 p-6 md:p-8 ${ring}`}>
         <div className="text-xs font-bold uppercase tracking-wider text-foreground/60">Mensal</div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
+          <span className="font-display text-4xl font-black text-cream">{monthlyPrice}</span>
           <span className="text-sm text-foreground/60">/mês</span>
         </div>
         <p className="mt-2 text-sm text-foreground/70">Renova automaticamente. Cancele quando quiser.</p>
@@ -241,14 +248,14 @@ function PlanPair(props: {
 
       <div className={`relative card-elev rounded-3xl border-2 border-gold/60 p-6 md:p-8 ${ring}`}>
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-[10px] font-black uppercase tracking-wider text-forest-deep">
-          Melhor valor · economize 17%
+          {savingsBadge}
         </div>
         <div className="text-xs font-bold uppercase tracking-wider text-gold">Semestral</div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-display text-4xl font-black text-cream">R$ 149,90</span>
+          <span className="font-display text-4xl font-black text-cream">{semestralPrice}</span>
           <span className="text-sm text-foreground/60">/6 meses</span>
         </div>
-        <p className="mt-2 text-sm text-foreground/70">Equivale a R$ 24,98/mês. Cobrado a cada 6 meses.</p>
+        <p className="mt-2 text-sm text-foreground/70">{semestralEquivalent}</p>
         <ul className="mt-5 space-y-2.5 text-sm text-cream/90">
           {benefits.map((b) => (
             <li key={b} className="flex items-start gap-2">
