@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
+import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/amizade")({
@@ -95,7 +96,10 @@ function AmizadePage() {
             {GAMES.map((g) => (
               <button
                 key={g.id}
-                onClick={() => setGame(g.id)}
+                onClick={() => {
+                  speak(`${g.title}. ${g.desc}`, "pt-BR");
+                  setGame(g.id);
+                }}
                 className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
               >
                 <div className="text-5xl drop-shadow">{g.emoji}</div>

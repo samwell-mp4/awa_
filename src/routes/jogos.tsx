@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect } from "react";
 import { Gamepad2, Trophy, RefreshCw, Check, X, Sparkles, BookOpen, Puzzle, PencilLine } from "lucide-react";
+import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/jogos")({
   head: () => ({
@@ -61,9 +62,9 @@ function JogosPage() {
   const [score, setScore] = useState(0);
 
   const tabs = [
-    { id: "match" as const, label: "Ligação", icon: BookOpen },
-    { id: "memoria" as const, label: "Memória", icon: Puzzle },
-    { id: "lacuna" as const, label: "Lacuna", icon: PencilLine },
+    { id: "match" as const, label: "Ligação", desc: "Ligue palavras Patxôhã ao português.", icon: BookOpen },
+    { id: "memoria" as const, label: "Memória", desc: "Encontre os pares de cartas.", icon: Puzzle },
+    { id: "lacuna" as const, label: "Lacuna", desc: "Complete a frase com a palavra certa.", icon: PencilLine },
   ];
 
   return (
@@ -91,7 +92,10 @@ function JogosPage() {
             return (
               <button
                 key={t.id}
-                onClick={() => setTab(t.id)}
+                onClick={() => {
+                  speak(`${t.label}. ${t.desc}`, "pt-BR");
+                  setTab(t.id);
+                }}
                 className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 rounded-2xl px-3 py-3 md:px-6 md:py-3 text-sm md:text-base font-bold transition ${
                   active
                     ? "bg-gold text-forest-deep shadow-lg scale-[1.02]"
