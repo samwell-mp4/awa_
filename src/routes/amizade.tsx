@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+import { KidsForestScene } from "@/components/kids/forest-scene";
 
 export const Route = createFileRoute("/amizade")({
   head: () => ({
