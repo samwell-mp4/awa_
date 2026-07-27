@@ -178,26 +178,28 @@ function TrilhaPage() {
   ]);
   const localize = useLocalize(tr);
 
+  const isKids = typeof backTo === "string" && backTo.includes("infantil");
+
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
+    <div className={`min-h-screen ${isKids ? "kids-theme" : ""}`}>
+      <header className={`sticky top-0 z-40 border-b backdrop-blur-xl ${isKids ? "border-amber-300/60 bg-white/85" : "border-gold/20 bg-[oklch(0.18_0.04_145/0.75)]"}`}>
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+          <Link to={backTo as "/"} className={`inline-flex items-center gap-2 text-sm font-semibold hover:underline ${isKids ? "text-emerald-800" : "text-gold"}`}>
             <ArrowLeft className="h-4 w-4" /> {tr("Início")}
           </Link>
-          <div className="flex items-center gap-2 font-display font-black text-cream">
-            <span>{trail.emoji}</span> {tr(trail.name)}
+          <div className={`flex items-center gap-2 font-display font-black ${isKids ? "text-emerald-900 text-xl" : "text-cream"}`}>
+            <span className={isKids ? "text-3xl" : ""}>{trail.emoji}</span> {tr(trail.name)}
           </div>
-          <button onClick={resetProgress} title={tr("Reiniciar")} className="text-foreground/60 hover:text-gold">
+          <button onClick={resetProgress} title={tr("Reiniciar")} className={isKids ? "text-emerald-700 hover:text-amber-600" : "text-foreground/60 hover:text-gold"}>
             <RotateCw className="h-4 w-4" />
           </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
-        <section className={`card-elev rounded-3xl border border-gold/25 bg-gradient-to-br ${trail.color} p-6 md:p-8`}>
-          <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
-          <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
+        <section className={`rounded-[2rem] border-4 p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)] ${isKids ? "border-amber-300 bg-gradient-to-br from-yellow-100 via-orange-100 to-emerald-100" : `card-elev border-gold/25 bg-gradient-to-br ${trail.color}`}`}>
+          <p className={`font-display text-2xl md:text-3xl font-black ${isKids ? "text-emerald-900" : "text-cream"}`}>{tr(trail.intro)}</p>
+          <p className={`mt-2 text-sm ${isKids ? "text-emerald-800/90" : "text-foreground/85"}`}>{tr(trail.apoio)}</p>
 
           <div className="mt-5">
             <div className="flex items-center justify-between text-xs font-bold text-cream/90">
