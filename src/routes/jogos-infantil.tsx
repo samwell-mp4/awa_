@@ -665,7 +665,10 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
           return (
             <button
               key={o}
-              onClick={() => choose(o)}
+              onClick={() => {
+                speak(o, "pt-BR");
+                choose(o);
+              }}
               className={`min-w-[110px] rounded-2xl px-5 py-3 font-black uppercase transition ${
                 isRight
                   ? "bg-emerald-500 text-white"
