@@ -162,6 +162,33 @@ function RootComponent() {
     };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function verify() {
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        if (!sess.session) return;
+        const res = await checkMyLoginAllowed();
+        if (cancelled) return;
+        if (!res.allowed) {
+          toast.error("Acesso não liberado. Contate o administrador do AWÃ TECH.");
+          await supabase.auth.signOut();
+          window.location.replace("/acesso-negado");
+        }
+      } catch {
+        // silencioso — se falhar, mantém sessão para não travar por erro de rede
+      }
+    }
+    verify();
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") verify();
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
