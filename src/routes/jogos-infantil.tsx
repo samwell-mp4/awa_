@@ -708,6 +708,7 @@ function OrdenarNumerosGame({ onWin }: { onWin: () => void }) {
     setSeq([]);
   }, [target]);
   const pick = (n: number) => {
+    speak(String(n), "pt-BR");
     setPool((p) => p.filter((x) => x !== n));
     setSeq((s) => [...s, n]);
   };
