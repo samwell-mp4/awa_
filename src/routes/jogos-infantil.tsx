@@ -864,6 +864,9 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
       .slice(0, 3);
     return [q, ...others].sort(() => Math.random() - 0.5);
   }, [i]);
+  useEffect(() => {
+    if (q?.hint) speak(q.hint, "pt-BR");
+  }, [i]);
   const choose = (n: string) => {
     if (state) return;
     if (n === q.name) {
