@@ -162,6 +162,13 @@ export const removeAllowlist = createServerFn({ method: "POST" })
 export const checkMyLoginAllowed = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    // Admin sempre tem acesso liberado
+    const { data: isAdmin } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (isAdmin) return { allowed: true };
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId);
     const email = u?.user?.email ?? null;
