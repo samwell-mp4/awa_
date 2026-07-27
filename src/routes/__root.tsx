@@ -14,6 +14,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
+import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { toast } from "sonner";
@@ -194,6 +195,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
       <AppLanguageAutoTranslator />
+      <PlanExpiryBanner />
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />
