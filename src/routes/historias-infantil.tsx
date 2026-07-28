@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
