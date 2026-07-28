@@ -4,6 +4,7 @@ import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+import { SiteHeader } from "@/components/home/site-header";
 
 /** Botão de áudio reutilizável — toca a palavra em voz alta. */
 function SpeakBtn({
@@ -189,6 +190,8 @@ function JogosInfantilPage() {
         backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
       }}
     >
+      <SiteHeader mode="infantil" />
+
       <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
         <Link
           to="/infantil"
