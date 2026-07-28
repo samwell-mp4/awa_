@@ -117,11 +117,24 @@ const CHILD_HREFS = new Set([
   "/minha-conta",
 ]);
 
+// Kids must land on the child-themed versions of these sections
+const CHILD_HREF_MAP: Record<string, string> = {
+  "/musicas": "/musicas-infantil",
+  "/trilhas": "/trilhas-infantil",
+  "/historias": "/historias-infantil",
+  "/jogos": "/jogos-infantil",
+};
+
 function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[] {
   if (mode === "all") return items;
   const allowed = mode === "adulto" ? ADULT_HREFS : CHILD_HREFS;
-  return items.filter((it) => allowed.has(it.href));
+  const filtered = items.filter((it) => allowed.has(it.href));
+  if (mode !== "infantil") return filtered;
+  return filtered.map((it) =>
+    CHILD_HREF_MAP[it.href] ? { ...it, href: CHILD_HREF_MAP[it.href] } : it,
+  );
 }
+
 
 export function useNavContent(mode: NavMode = "all") {
   const { t } = useTranslation();
