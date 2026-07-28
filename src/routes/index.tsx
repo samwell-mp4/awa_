@@ -8,8 +8,12 @@ import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
-import videoAdulto from "@/assets/video-adulto.mp4.asset.json";
-import videoInfantil from "@/assets/video-infantil.mp4.asset.json";
+import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
+import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
+import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
+import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
+import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
+import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
 type Dict = {
@@ -137,6 +141,18 @@ function useLangKey(): string {
   return raw.startsWith("pat") ? "pat" : raw.slice(0, 2);
 }
 
+const VIDEO_BY_LANG: Record<string, { adulto: string; infantil: string }> = {
+  pt: { adulto: videoAdultoPt.url, infantil: videoInfantilPt.url },
+  en: { adulto: videoAdultoEn.url, infantil: videoInfantilEn.url },
+  es: { adulto: videoAdultoEs.url, infantil: videoInfantilEs.url },
+  pat: { adulto: videoAdultoPt.url, infantil: videoInfantilPt.url },
+};
+
+function useVideoSources() {
+  const key = useLangKey();
+  return VIDEO_BY_LANG[key] ?? VIDEO_BY_LANG.pt;
+}
+
 function useMenuDict(): Dict {
   const key = useLangKey();
   return MENU_I18N[key] ?? MENU_I18N.pt;
@@ -201,6 +217,7 @@ export const Route = createFileRoute("/")({
 function LandingChoice() {
   const dict = useMenuDict();
   const vdict = useVideoDict();
+  const videoSrc = useVideoSources();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   // Depois de assinar, mostramos apenas a área contratada.
@@ -295,14 +312,16 @@ function LandingChoice() {
           >
             {!pending && showAdulto && (
               <PresentationVideo
-                src={videoAdulto.url}
+                key={videoSrc.adulto}
+                src={videoSrc.adulto}
                 poster={adultoLogo.url}
                 label={vdict.adulto}
               />
             )}
             {!pending && showInfantil && (
               <PresentationVideo
-                src={videoInfantil.url}
+                key={videoSrc.infantil}
+                src={videoSrc.infantil}
                 poster={infantilLogo.url}
                 label={vdict.infantil}
               />
