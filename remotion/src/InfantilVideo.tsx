@@ -141,7 +141,7 @@ const KidOpening: React.FC = () => {
             />
           </div>
         </Float>
-        <Sequence from={26}>
+        <Sequence from={26} layout="none">
           <div style={{ textAlign: "center", marginTop: 36 }}>
             <Pop>
               <div
@@ -386,7 +386,7 @@ const KidClosing: React.FC = () => {
             />
           </div>
         </Float>
-        <Sequence from={14}>
+        <Sequence from={14} layout="none">
           <div style={{ textAlign: "center", marginTop: 38 }}>
             <Pop>
               <div

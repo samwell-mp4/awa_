@@ -113,7 +113,7 @@ const Opening: React.FC = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
-        <Sequence from={30}>
+        <Sequence from={30} layout="none">
           <div style={{ textAlign: "center", marginTop: 44 }}>
             <Reveal>
               <div
@@ -153,7 +153,7 @@ const Opening: React.FC = () => {
 /* ---------------- Scene 2 — Proposta ---------------- */
 const Statement: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: DEEP }}>
-    <KenBurns src="pataxo-anciao.jpg" from={1.1} to={1.24} x={-60} />
+    <KenBurns src="pataxo-aldeia.jpg" from={1.1} to={1.24} x={-60} />
     <AbsoluteFill
       style={{
         background:
@@ -315,7 +315,7 @@ const Languages: React.FC = () => {
   const langs = ["Português", "English", "Español", "Patxôhã"];
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
-      <KenBurns src="landing-bg.jpg" from={1.2} to={1.05} />
+      <KenBurns src="pataxo-danca.jpg" from={1.2} to={1.05} />
       <AbsoluteFill style={{ background: "rgba(7,22,15,0.78)" }} />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Reveal>
@@ -395,7 +395,7 @@ const Closing: React.FC = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
-        <Sequence from={16}>
+        <Sequence from={16} layout="none">
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <Reveal>
               <div
