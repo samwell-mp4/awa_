@@ -134,6 +134,15 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
         <button
           type="button"
           onClick={play}
+          onPointerEnter={() =>
+            prewarmNarration({
+              text: `${title}. ${description}`,
+              lang,
+              mode: "story",
+              voice: "onyx",
+            })
+          }
+
           disabled={state === "loading"}
           aria-label={label}
           className="flex items-center gap-2 rounded-full border-b-4 border-black/15 px-4 py-2 text-sm font-black uppercase tracking-wide text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0 disabled:opacity-70"
