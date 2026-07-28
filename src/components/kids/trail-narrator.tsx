@@ -76,19 +76,17 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       if (!url) {
         const lang = i18n.language.slice(0, 2).toLowerCase();
         const text = `${title}. ${description}`;
-        const res = await narratePublic({
-          data: { text, lang, mode: "story", voice: "onyx" },
-        });
-        if (res.error || !res.audio_base64) {
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+        if (!url) {
           setState("idle");
           return;
         }
-        url = base64ToBlobUrl(res.audio_base64, res.mime || "audio/mpeg");
         urlRef.current = url;
       }
       const a = audioRef.current ?? new Audio();
       audioRef.current = a;
-      a.src = url;
+      if (a.src !== url) a.src = url;
+
       a.currentTime = 0;
       a.ontimeupdate = () => {
         if (a.duration > 0) setProgress(a.currentTime / a.duration);
