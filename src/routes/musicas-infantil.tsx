@@ -5,6 +5,7 @@ import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
+import { SiteHeader } from "@/components/home/site-header";
 
 export const Route = createFileRoute("/musicas-infantil")({
   head: () => ({
@@ -79,6 +80,8 @@ function MusicasInfantilPage() {
       }}
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
+
+      <SiteHeader mode="infantil" />
 
       <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">

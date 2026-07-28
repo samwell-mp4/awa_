@@ -110,7 +110,7 @@ function TrilhaInfantilPage() {
   const subtitle = t("common.kidsTrailsSubtitle");
 
   return (
-    <div key={i18n.language} className="min-h-screen bg-[#fdfcf0] text-foreground">
+    <div key={i18n.language} className="kids-theme min-h-screen bg-[#fdfcf0] text-foreground">
       <style>{`
         @keyframes kids-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes kids-wobble { 0%,100%{transform:rotate(var(--rot))} 50%{transform:rotate(calc(var(--rot) * -1))} }
