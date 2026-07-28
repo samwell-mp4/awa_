@@ -186,10 +186,26 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     ref.current?.play().catch(() => {});
     setProgress(0);
+  }, [song.id]);
+
+  // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      const a = ref.current;
+      if (a) {
+        setProgress(a.currentTime);
+        if (a.duration && Number.isFinite(a.duration)) setDuration(a.duration);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [song.id]);
 
   const split = (v: string | null | undefined) =>
@@ -202,15 +218,43 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   const transLines = split(pickLang(song as any, "lyrics_pt", lang));
   const maxLen = Math.max(indLines.length, transLines.length);
 
-  // Approximate line sync from playback progress.
-  const activeIdx =
-    duration > 0 && maxLen > 0
-      ? Math.min(maxLen - 1, Math.floor((progress / duration) * maxLen))
-      : -1;
+  // Duração proporcional ao tamanho de cada verso (versos longos duram mais)
+  const bounds = useMemo(() => {
+    if (maxLen === 0 || duration <= 0) return [] as number[];
+    const weights = Array.from({ length: maxLen }, (_, i) => {
+      const len = (indLines[i] || transLines[i] || "").length;
+      return Math.max(8, len);
+    });
+    const total = weights.reduce((a, b) => a + b, 0);
+    const out: number[] = [];
+    let acc = 0;
+    for (const w of weights) {
+      acc += w;
+      out.push((acc / total) * duration);
+    }
+    return out;
+  }, [maxLen, duration, song.id, lang]);
+
+  // Pequena antecipação para a legenda chegar junto com a voz
+  const LEAD = 0.25;
+  const activeIdx = useMemo(() => {
+    if (!bounds.length) return -1;
+    const t = progress + LEAD;
+    for (let i = 0; i < bounds.length; i++) if (t < bounds[i]) return i;
+    return bounds.length - 1;
+  }, [progress, bounds]);
 
   useEffect(() => {
-    lineRefs.current[activeIdx]?.scrollIntoView({ block: "center", behavior: "smooth" });
+    const box = boxRef.current;
+    const el = lineRefs.current[activeIdx];
+    if (!box || !el) return;
+    // rola apenas o painel de legendas, não a página
+    box.scrollTo({
+      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
+      behavior: "smooth",
+    });
   }, [activeIdx]);
+
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
