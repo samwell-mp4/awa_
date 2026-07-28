@@ -259,7 +259,7 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
       {maxLen > 0 && (
-        <div className="mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 scroll-smooth">
+        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2">
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
