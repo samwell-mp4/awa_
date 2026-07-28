@@ -282,7 +282,30 @@ function LandingChoice() {
           )}
         </div>
 
-
+        <section className="mt-16 w-full">
+          <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
+            {vdict.title}
+          </h2>
+          <p className="mt-2 text-sm text-foreground/75">{vdict.lead}</p>
+          <div
+            className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
+          >
+            {!pending && showAdulto && (
+              <PresentationVideo
+                src={videoAdulto.url}
+                poster={adultoLogo.url}
+                label={vdict.adulto}
+              />
+            )}
+            {!pending && showInfantil && (
+              <PresentationVideo
+                src={videoInfantil.url}
+                poster={infantilLogo.url}
+                label={vdict.infantil}
+              />
+            )}
+          </div>
+        </section>
 
       </main>
       <PublicFooter />
