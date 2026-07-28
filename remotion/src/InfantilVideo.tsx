@@ -296,7 +296,7 @@ const KidMenu: React.FC = () => {
                     padding: "14px 0 18px",
                   }}
                 >
-                  {c.e} {c.t}
+                  {c.t}
                 </div>
               </div>
             );
