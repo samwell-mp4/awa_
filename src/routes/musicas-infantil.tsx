@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 
 export const Route = createFileRoute("/musicas-infantil")({
@@ -26,7 +27,12 @@ type Song = {
   audio_url: string;
   cover_url: string | null;
   language: string;
+  lyrics_indigenous: string | null;
+  lyrics_pt: string | null;
+  lyrics_pt_en: string | null;
+  lyrics_pt_es: string | null;
 };
+
 
 // Bright kid palettes + a matching indigenous emoji
 const THEMES = [
@@ -49,7 +55,9 @@ function MusicasInfantilPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,audio_url,cover_url,language")
+        .select(
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es",
+        )
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -174,11 +182,67 @@ function MusicasInfantilPage() {
 
 function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   const ref = useRef<HTMLAudioElement>(null);
+  const lang = useLang();
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => {
     ref.current?.play().catch(() => {});
+    setProgress(0);
   }, [song.id]);
+
+  const split = (v: string | null | undefined) =>
+    (v ?? "")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+  const indLines = split(song.lyrics_indigenous);
+  const transLines = split(pickLang(song as any, "lyrics_pt", lang));
+  const maxLen = Math.max(indLines.length, transLines.length);
+
+  // Approximate line sync from playback progress.
+  const activeIdx =
+    duration > 0 && maxLen > 0
+      ? Math.min(maxLen - 1, Math.floor((progress / duration) * maxLen))
+      : -1;
+
+  useEffect(() => {
+    lineRefs.current[activeIdx]?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [activeIdx]);
+
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
+      {maxLen > 0 && (
+        <div className="mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 scroll-smooth">
+          {Array.from({ length: maxLen }).map((_, i) => {
+            const active = i === activeIdx;
+            return (
+              <div
+                key={i}
+                ref={(el) => {
+                  lineRefs.current[i] = el;
+                }}
+                className={`py-1 text-center transition-all duration-300 ${
+                  active ? "scale-105" : "opacity-50"
+                }`}
+              >
+                <p
+                  className={`font-display text-base font-black leading-tight ${
+                    active ? "text-amber-300" : "text-amber-100"
+                  }`}
+                >
+                  {indLines[i] || "\u00A0"}
+                </p>
+                {transLines[i] && (
+                  <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
       <div className="mx-auto flex max-w-4xl items-center gap-3">
         <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce">
           🎶
@@ -192,8 +256,16 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
               {song.artist}
             </div>
           )}
-          <audio ref={ref} src={song.audio_url} controls className="mt-1 w-full" />
+          <audio
+            ref={ref}
+            src={song.audio_url}
+            controls
+            className="mt-1 w-full"
+            onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
+            onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || 0)}
+          />
         </div>
+
         <button
           onClick={onClose}
           aria-label="Fechar"
