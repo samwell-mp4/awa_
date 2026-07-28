@@ -13,6 +13,7 @@ import {
 import { TransitionSeries, springTiming, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
+import { NARRATION_LANG } from "./narration-lang";
 import { loadFont as loadDisplay } from "@remotion/google-fonts/PlayfairDisplay";
 import { loadFont as loadBody } from "@remotion/google-fonts/Inter";
 
@@ -26,7 +27,7 @@ const DEEP = "#07160F";
 /** Narração da cena (inicia logo após a entrada visual). */
 const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
   <Sequence from={from} layout="none">
-    <Audio src={staticFile(`audio/${id}.mp3`)} volume={1} />
+    <Audio src={staticFile(`audio/${NARRATION_LANG}/${id}.mp3`)} volume={1} />
   </Sequence>
 );
 
