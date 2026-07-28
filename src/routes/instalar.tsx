@@ -127,7 +127,6 @@ function InstalarPage() {
             <div className="relative mx-auto max-w-md">
               <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-leaf/20 via-gold/10 to-earth/20 blur-2xl" />
               <img
-                loading="lazy"
                 decoding="async"
                 src={appPreviewAsset.url}
                 alt="Prévia do aplicativo Awã Tech em três telas: início, dicionário e música"
@@ -136,6 +135,7 @@ function InstalarPage() {
                 height={1024}
                 loading="eager"
               />
+
             </div>
             <div className="mt-4 text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2 text-xs font-semibold text-cream backdrop-blur-md shadow-lg sm:text-sm">
