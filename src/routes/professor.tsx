@@ -256,6 +256,8 @@ function ProfessorPage() {
           <div className="flex items-center gap-3">
             <div className="relative">
               <img
+                loading="lazy"
+                decoding="async"
                 src={logoSrc}
                 alt=""
                 className="h-9 w-9 rounded-full border border-gold/40 object-cover shadow-md"

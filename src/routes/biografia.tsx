@@ -37,6 +37,8 @@ function BiografiaPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <Link to={backTo as "/"} className="flex items-center gap-2.5">
             <img
+              loading="lazy"
+              decoding="async"
               src={logoSrc}
               alt="AWÃ TECH"
               className="h-10 w-10 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
@@ -62,6 +64,8 @@ function BiografiaPage() {
         <section className="relative overflow-hidden rounded-3xl border border-gold/20 bg-card/40">
           <div className="absolute inset-0">
             <img
+              loading="lazy"
+              decoding="async"
               src={heroWoman}
               alt="Mulher indígena na floresta"
               className="h-full w-full object-cover opacity-25"
