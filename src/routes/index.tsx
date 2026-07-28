@@ -200,6 +200,7 @@ export const Route = createFileRoute("/")({
 
 function LandingChoice() {
   const dict = useMenuDict();
+  const vdict = useVideoDict();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   // Depois de assinar, mostramos apenas a área contratada.
