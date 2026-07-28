@@ -217,11 +217,7 @@ function LandingChoice() {
         </div>
 
 
-        <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
-          <TrustPill icon={ShieldCheck} title={dict.pagTitle} copy={dict.pagCopy} />
-          <TrustPill icon={Globe2} title={dict.multiTitle} copy={dict.multiCopy} />
-          <TrustPill icon={Sparkles} title={dict.curTitle} copy={dict.curCopy} />
-        </div>
+
       </main>
       <PublicFooter />
     </div>
