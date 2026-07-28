@@ -7,7 +7,7 @@ export const RemotionRoot = () => (
     <Composition
       id="adulto"
       component={AdultoVideo}
-      durationInFrames={518}
+      durationInFrames={1495}
       fps={30}
       width={1920}
       height={1080}
@@ -15,7 +15,7 @@ export const RemotionRoot = () => (
     <Composition
       id="infantil"
       component={InfantilVideo}
-      durationInFrames={490}
+      durationInFrames={1363}
       fps={30}
       width={1920}
       height={1080}

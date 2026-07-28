@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   Img,
   Sequence,
   interpolate,
@@ -21,6 +22,13 @@ const body = loadBody("normal", { weights: ["400", "600", "700"], subsets: ["lat
 const GOLD = "#D7B15A";
 const CREAM = "#F4E9D4";
 const DEEP = "#07160F";
+
+/** Narração da cena (inicia logo após a entrada visual). */
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
+  <Sequence from={from} layout="none">
+    <Audio src={staticFile(`audio/${id}.mp3`)} volume={1} />
+  </Sequence>
+);
 
 const Grain: React.FC = () => (
   <AbsoluteFill
@@ -93,6 +101,7 @@ const Opening: React.FC = () => {
   const logo = spring({ frame: frame - 6, fps, config: { damping: 18, stiffness: 90, mass: 1.4 } });
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
+      <Narration id="a1" from={14} />
       <KenBurns src="pataxo-monte-pascoal.jpg" from={1.15} to={1.3} />
       <Grain />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
@@ -153,6 +162,7 @@ const Opening: React.FC = () => {
 /* ---------------- Scene 2 — Proposta ---------------- */
 const Statement: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: DEEP }}>
+    <Narration id="a2" />
     <KenBurns src="pataxo-aldeia.jpg" from={1.1} to={1.24} x={-60} />
     <AbsoluteFill
       style={{
@@ -199,122 +209,140 @@ const Statement: React.FC = () => (
   </AbsoluteFill>
 );
 
-/* ---------------- Scene 3 — Recursos ---------------- */
-const FEATURES = [
-  { img: "trail-saudacoes.jpg", t: "Trilhas guiadas", d: "Do primeiro Awê à conversa" },
-  { img: "trail-natureza.jpg", t: "Dicionário Patxôhã", d: "Milhares de palavras com áudio" },
-  { img: "pataxo-danca.jpg", t: "Tradutor cultural", d: "Traduza e ouça na hora" },
-  { img: "pataxo-aldeia.jpg", t: "Espaço do Professor", d: "Materiais para a sala de aula" },
-];
+/* ---------------- Cenas 3-6 — Recursos em destaque ---------------- */
+type FeatureProps = {
+  audio: string;
+  index: string;
+  image: string;
+  eyebrow: string;
+  title: string;
+  desc: string;
+  bullets: string[];
+  side?: "left" | "right";
+};
 
-const Features: React.FC = () => {
+const FeatureScene: React.FC<FeatureProps> = ({
+  audio,
+  index,
+  image,
+  eyebrow,
+  title,
+  desc,
+  bullets,
+  side = "left",
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const isLeft = side === "left";
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
+      <Narration id={audio} />
+      <KenBurns src={image} from={1.06} to={1.2} x={isLeft ? -40 : 40} />
       <AbsoluteFill
         style={{
-          background:
-            "radial-gradient(90% 70% at 15% 0%, rgba(215,177,90,0.14) 0%, rgba(7,22,15,0) 60%), #07160F",
+          background: isLeft
+            ? "linear-gradient(90deg, rgba(7,22,15,0.96) 0%, rgba(7,22,15,0.86) 42%, rgba(7,22,15,0.1) 100%)"
+            : "linear-gradient(270deg, rgba(7,22,15,0.96) 0%, rgba(7,22,15,0.86) 42%, rgba(7,22,15,0.1) 100%)",
         }}
       />
-      <AbsoluteFill style={{ padding: "90px 120px" }}>
-        <Reveal>
+      <AbsoluteFill
+        style={{
+          justifyContent: "center",
+          padding: "0 120px",
+          alignItems: isLeft ? "flex-start" : "flex-end",
+        }}
+      >
+        <div style={{ maxWidth: 900, textAlign: isLeft ? "left" : "right" }}>
+          <Reveal>
+            <div
+              style={{
+                fontFamily: body,
+                fontWeight: 700,
+                fontSize: 22,
+                letterSpacing: 9,
+                color: GOLD,
+              }}
+            >
+              {index} · {eyebrow}
+            </div>
+          </Reveal>
+          <Reveal delay={8}>
+            <div
+              style={{
+                fontFamily: display,
+                fontWeight: 900,
+                fontSize: 86,
+                color: CREAM,
+                lineHeight: 1.05,
+                marginTop: 20,
+              }}
+            >
+              {title}
+            </div>
+          </Reveal>
+          <Reveal delay={20}>
+            <div
+              style={{
+                fontFamily: body,
+                fontSize: 32,
+                color: "rgba(244,233,212,0.8)",
+                marginTop: 24,
+                lineHeight: 1.4,
+              }}
+            >
+              {desc}
+            </div>
+          </Reveal>
           <div
             style={{
-              fontFamily: body,
-              fontSize: 24,
-              letterSpacing: 10,
-              color: GOLD,
-              fontWeight: 700,
+              display: "flex",
+              gap: 16,
+              marginTop: 40,
+              flexWrap: "wrap",
+              justifyContent: isLeft ? "flex-start" : "flex-end",
             }}
           >
-            O QUE VOCÊ ENCONTRA
-          </div>
-        </Reveal>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 34,
-            marginTop: 54,
-          }}
-        >
-          {FEATURES.map((f, i) => {
-            const s = spring({
-              frame: frame - 14 - i * 11,
-              fps,
-              config: { damping: 22, stiffness: 140 },
-            });
-            return (
-              <div
-                key={f.t}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 28,
-                  padding: 22,
-                  borderRadius: 26,
-                  border: "1px solid rgba(215,177,90,0.28)",
-                  background: "rgba(255,255,255,0.035)",
-                  opacity: s,
-                  transform: `translateX(${interpolate(s, [0, 1], [i % 2 ? 70 : -70, 0])}px)`,
-                }}
-              >
+            {bullets.map((b, i) => {
+              const s = spring({
+                frame: frame - 34 - i * 10,
+                fps,
+                config: { damping: 20, stiffness: 150 },
+              });
+              return (
                 <div
+                  key={b}
                   style={{
-                    width: 132,
-                    height: 132,
-                    borderRadius: 20,
-                    overflow: "hidden",
-                    flexShrink: 0,
-                    border: `2px solid ${GOLD}`,
+                    fontFamily: body,
+                    fontWeight: 600,
+                    fontSize: 26,
+                    color: CREAM,
+                    padding: "14px 28px",
+                    borderRadius: 999,
+                    border: "1px solid rgba(215,177,90,0.5)",
+                    background: "rgba(215,177,90,0.08)",
+                    opacity: s,
+                    transform: `translateY(${interpolate(s, [0, 1], [26, 0])}px)`,
                   }}
                 >
-                  <Img
-                    src={staticFile(`images/${f.img}`)}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
+                  {b}
                 </div>
-                <div>
-                  <div
-                    style={{
-                      fontFamily: display,
-                      fontWeight: 700,
-                      fontSize: 44,
-                      color: CREAM,
-                      lineHeight: 1.1,
-                    }}
-                  >
-                    {f.t}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: body,
-                      fontSize: 25,
-                      color: "rgba(244,233,212,0.7)",
-                      marginTop: 8,
-                    }}
-                  >
-                    {f.d}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
-/* ---------------- Scene 4 — Idiomas ---------------- */
+/* ---------------- Scene 7 — Idiomas ---------------- */
 const Languages: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const langs = ["Português", "English", "Español", "Patxôhã"];
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
+      <Narration id="a7" />
       <KenBurns src="pataxo-danca.jpg" from={1.2} to={1.05} />
       <AbsoluteFill style={{ background: "rgba(7,22,15,0.78)" }} />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
@@ -334,7 +362,7 @@ const Languages: React.FC = () => {
         <div style={{ display: "flex", gap: 22, marginTop: 52 }}>
           {langs.map((l, i) => {
             const s = spring({
-              frame: frame - 20 - i * 8,
+              frame: frame - 30 - i * 16,
               fps,
               config: { damping: 12, stiffness: 160 },
             });
@@ -363,7 +391,71 @@ const Languages: React.FC = () => {
   );
 };
 
-/* ---------------- Scene 5 — Fecho ---------------- */
+/* ---------------- Scene 8 — Memória viva ---------------- */
+const Quote: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ backgroundColor: DEEP }}>
+      <Narration id="a8" />
+      <KenBurns src="pataxo-anciao.jpg" from={1.05} to={1.18} x={30} />
+      <AbsoluteFill
+        style={{
+          background:
+            "linear-gradient(270deg, rgba(7,22,15,0.95) 0%, rgba(7,22,15,0.8) 45%, rgba(7,22,15,0.2) 100%)",
+        }}
+      />
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "flex-end", padding: "0 120px" }}>
+        <div style={{ maxWidth: 880, textAlign: "right" }}>
+          <Reveal>
+            <div style={{ fontFamily: display, fontSize: 140, color: GOLD, lineHeight: 0.6 }}>”</div>
+          </Reveal>
+          <Reveal delay={10}>
+            <div
+              style={{
+                fontFamily: display,
+                fontWeight: 700,
+                fontSize: 68,
+                color: CREAM,
+                lineHeight: 1.2,
+                marginTop: 30,
+              }}
+            >
+              Cada palavra aprendida é uma{" "}
+              <span style={{ color: GOLD }}>memória que continua viva.</span>
+            </div>
+          </Reveal>
+          <Reveal delay={30}>
+            <div
+              style={{
+                fontFamily: body,
+                fontSize: 26,
+                letterSpacing: 6,
+                color: "rgba(244,233,212,0.65)",
+                marginTop: 34,
+              }}
+            >
+              ANCIÃOS PATAXÓ · ALDEIA
+            </div>
+          </Reveal>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 26 }}>
+            <div
+              style={{
+                height: 3,
+                width: interpolate(frame - 34, [0, 30], [0, 220], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                }),
+                background: GOLD,
+              }}
+            />
+          </div>
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------------- Scene 9 — Fecho ---------------- */
 const Closing: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -371,6 +463,7 @@ const Closing: React.FC = () => {
   const glow = 0.5 + 0.5 * Math.sin(frame / 14);
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
+      <Narration id="a9" />
       <AbsoluteFill
         style={{
           background:
@@ -430,38 +523,91 @@ const Closing: React.FC = () => {
   );
 };
 
+const T_FADE = (
+  <TransitionSeries.Transition
+    presentation={fade()}
+    timing={linearTiming({ durationInFrames: 20 })}
+  />
+);
+
 export const AdultoVideo: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: DEEP }}>
     <TransitionSeries>
-      <TransitionSeries.Sequence durationInFrames={120}>
+      <TransitionSeries.Sequence durationInFrames={150}>
         <Opening />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: 22 })}
-      />
-      <TransitionSeries.Sequence durationInFrames={120}>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={220}>
         <Statement />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition
         presentation={slide({ direction: "from-right" })}
-        timing={springTiming({ config: { damping: 200 }, durationInFrames: 26 })}
+        timing={springTiming({ config: { damping: 200 }, durationInFrames: 20 })}
       />
-      <TransitionSeries.Sequence durationInFrames={150}>
-        <Features />
+      <TransitionSeries.Sequence durationInFrames={200}>
+        <FeatureScene
+          audio="a3"
+          index="01"
+          image="trail-saudacoes.jpg"
+          eyebrow="TRILHAS GUIADAS"
+          title="Do primeiro Awê à conversa"
+          desc="Lições curtas e progressivas, com áudio nativo e prática diária."
+          bullets={["Saudações", "Família", "Natureza", "Animais"]}
+          side="left"
+        />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: 20 })}
-      />
-      <TransitionSeries.Sequence durationInFrames={100}>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={180}>
+        <FeatureScene
+          audio="a4"
+          index="02"
+          image="trail-natureza.jpg"
+          eyebrow="DICIONÁRIO PATXÔHÃ"
+          title="Milhares de palavras com áudio"
+          desc="Busque, ouça a pronúncia original e salve suas palavras favoritas."
+          bullets={["Busca instantânea", "Pronúncia real", "Favoritos"]}
+          side="right"
+        />
+      </TransitionSeries.Sequence>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={150}>
+        <FeatureScene
+          audio="a5"
+          index="03"
+          image="pataxo-danca.jpg"
+          eyebrow="TRADUTOR CULTURAL"
+          title="Traduza e ouça na hora"
+          desc="Frases do dia a dia traduzidas com o contexto cultural da aldeia."
+          bullets={["Texto e voz", "Contexto cultural"]}
+          side="left"
+        />
+      </TransitionSeries.Sequence>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={180}>
+        <FeatureScene
+          audio="a6"
+          index="04"
+          image="pataxo-aldeia.jpg"
+          eyebrow="ESPAÇO DO PROFESSOR"
+          title="Materiais para a sala de aula"
+          desc="Planos de aula, atividades e recursos prontos para educadores."
+          bullets={["Planos de aula", "Atividades", "Turmas"]}
+          side="right"
+        />
+      </TransitionSeries.Sequence>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={235}>
         <Languages />
+      </TransitionSeries.Sequence>
+      {T_FADE}
+      <TransitionSeries.Sequence durationInFrames={170}>
+        <Quote />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition
         presentation={slide({ direction: "from-bottom" })}
-        timing={springTiming({ config: { damping: 200 }, durationInFrames: 24 })}
+        timing={springTiming({ config: { damping: 200 }, durationInFrames: 20 })}
       />
-      <TransitionSeries.Sequence durationInFrames={120}>
+      <TransitionSeries.Sequence durationInFrames={170}>
         <Closing />
       </TransitionSeries.Sequence>
     </TransitionSeries>
