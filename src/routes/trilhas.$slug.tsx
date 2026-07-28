@@ -15,6 +15,7 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useLastArea } from "@/lib/last-area";
+import { SiteHeader } from "@/components/home/site-header";
 
 function useTr(texts: string[]) {
   const translated = useAutoTranslate(texts);
@@ -182,6 +183,7 @@ function TrilhaPage() {
 
   return (
     <div className={`min-h-screen ${isKids ? "kids-theme" : ""}`}>
+      {isKids ? <SiteHeader mode="infantil" /> : null}
       <header className={`sticky top-0 z-40 border-b backdrop-blur-xl ${isKids ? "border-amber-300/60 bg-white/85" : "border-gold/20 bg-[oklch(0.18_0.04_145/0.75)]"}`}>
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link to={(isKids ? "/trilhas-infantil" : "/trilhas") as "/"} className={`inline-flex items-center gap-2 text-sm font-semibold hover:underline ${isKids ? "text-emerald-800" : "text-gold"}`}>
