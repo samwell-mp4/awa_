@@ -128,3 +128,39 @@ function InfantilHome() {
     </div>
   );
 }
+
+function VideoMenu({ src, label }: { src: string; label: string }) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const onReady = () => setReady(true);
+    if (v.readyState >= 3) setReady(true);
+    v.addEventListener("loadeddata", onReady);
+    v.addEventListener("playing", onReady);
+    // Try to kickstart playback (some browsers stall autoplay silently)
+    v.play().catch(() => {});
+    return () => {
+      v.removeEventListener("loadeddata", onReady);
+      v.removeEventListener("playing", onReady);
+    };
+  }, [src]);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      className="block w-full h-auto select-none transition-opacity duration-300"
+      style={{ opacity: ready ? 1 : 0, background: "#0b3d2e" }}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      aria-label={label}
+      draggable={false}
+    />
+  );
+}
