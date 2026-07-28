@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, ShieldCheck, Sparkles, Globe2, LogIn, UserRound } from "lucide-react";
+import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
@@ -217,11 +217,7 @@ function LandingChoice() {
         </div>
 
 
-        <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
-          <TrustPill icon={ShieldCheck} title={dict.pagTitle} copy={dict.pagCopy} />
-          <TrustPill icon={Globe2} title={dict.multiTitle} copy={dict.multiCopy} />
-          <TrustPill icon={Sparkles} title={dict.curTitle} copy={dict.curCopy} />
-        </div>
+
       </main>
       <PublicFooter />
     </div>
@@ -286,28 +282,3 @@ function ExperienceCard({
   );
 }
 
-function TrustPill({
-  icon: Icon,
-  title,
-  copy,
-}: {
-  icon: typeof ShieldCheck;
-  title: string;
-  copy: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl border border-gold/15 bg-forest-deep/50 px-4 py-3 backdrop-blur-sm">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--gradient-leaf)] text-cream shadow-[var(--shadow-glow)]">
-        <Icon className="h-4 w-4" />
-      </span>
-      <div className="min-w-0">
-        <div className="text-xs font-bold uppercase tracking-wider text-cream">
-          {title}
-        </div>
-        <div className="truncate text-[11px] text-foreground/70">
-          {copy}
-        </div>
-      </div>
-    </div>
-  );
-}
