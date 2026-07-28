@@ -1,1 +1,1 @@
-export const NARRATION_LANG = "es";
+export const NARRATION_LANG = "pt";
