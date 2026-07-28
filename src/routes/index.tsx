@@ -99,12 +99,78 @@ const MENU_I18N: Record<string, Dict> = {
   },
 };
 
-function useMenuDict(): Dict {
+const VIDEO_I18N: Record<
+  string,
+  { title: string; lead: string; adulto: string; infantil: string }
+> = {
+  pt: {
+    title: "Conheça o AWÃ TECH",
+    lead: "Dois aplicativos, uma raiz. Assista à apresentação de cada experiência.",
+    adulto: "Apresentação — Adulto",
+    infantil: "Apresentação — Infantil",
+  },
+  en: {
+    title: "Meet AWÃ TECH",
+    lead: "Two apps, one root. Watch the presentation of each experience.",
+    adulto: "Presentation — Adults",
+    infantil: "Presentation — Kids",
+  },
+  es: {
+    title: "Conoce AWÃ TECH",
+    lead: "Dos aplicaciones, una raíz. Mira la presentación de cada experiencia.",
+    adulto: "Presentación — Adultos",
+    infantil: "Presentación — Niños",
+  },
+  pat: {
+    title: "Awê! AWÃ TECH",
+    lead: "Mokoi aplicativo, petá raiz. Nih hã apresentação.",
+    adulto: "Apresentação — Adulto",
+    infantil: "Apresentação — Kutkuxú",
+  },
+};
+
+function useLangKey(): string {
   const { i18n } = useTranslation();
   const raw = (i18n.language || "pt").toLowerCase();
-  const key = raw.startsWith("pat") ? "pat" : raw.slice(0, 2);
+  return raw.startsWith("pat") ? "pat" : raw.slice(0, 2);
+}
+
+function useMenuDict(): Dict {
+  const key = useLangKey();
   return MENU_I18N[key] ?? MENU_I18N.pt;
 }
+
+function useVideoDict() {
+  const key = useLangKey();
+  return VIDEO_I18N[key] ?? VIDEO_I18N.pt;
+}
+
+function PresentationVideo({
+  src,
+  label,
+  poster,
+}: {
+  src: string;
+  label: string;
+  poster?: string;
+}) {
+  return (
+    <figure className="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl backdrop-blur-sm">
+      <video
+        className="aspect-video w-full"
+        src={src}
+        poster={poster}
+        controls
+        playsInline
+        preload="none"
+      />
+      <figcaption className="px-4 py-3 text-sm font-medium text-white/80">
+        {label}
+      </figcaption>
+    </figure>
+  );
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
