@@ -180,25 +180,33 @@ function LandingChoice() {
           {dict.lead}
         </p>
 
-        <div className="mt-12 grid w-full gap-6 md:grid-cols-2 md:gap-8">
-          <ExperienceCard
-            to="/adulto"
-            image={adultoLogo.url}
-            eyebrow="Awã Tech"
-            title={dict.adulto}
-            description={dict.adultoDesc}
-            entrar={dict.entrar}
-            priority
-          />
-          <ExperienceCard
-            to="/infantil"
-            image={infantilLogo.url}
-            eyebrow="Awã Tech"
-            title={dict.crianca}
-            description={dict.criancaDesc}
-            entrar={dict.entrar}
-          />
+        <div
+          className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
+        >
+          {showAdulto && (
+            <ExperienceCard
+              to="/adulto"
+              image={adultoLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.adulto}
+              description={dict.adultoDesc}
+              entrar={dict.entrar}
+              priority
+            />
+          )}
+          {showInfantil && (
+            <ExperienceCard
+              to="/infantil"
+              image={infantilLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.crianca}
+              description={dict.criancaDesc}
+              entrar={dict.entrar}
+              priority={!showAdulto}
+            />
+          )}
         </div>
+
 
         <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
           <TrustPill icon={ShieldCheck} title={dict.pagTitle} copy={dict.pagCopy} />
