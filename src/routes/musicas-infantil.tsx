@@ -55,7 +55,9 @@ function MusicasInfantilPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,audio_url,cover_url,language")
+        .select(
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es",
+        )
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
