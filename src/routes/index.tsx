@@ -8,6 +8,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
+import videoAdulto from "@/assets/video-adulto.mp4.asset.json";
+import videoInfantil from "@/assets/video-infantil.mp4.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
 type Dict = {
