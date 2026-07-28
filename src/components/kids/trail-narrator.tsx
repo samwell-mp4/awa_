@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getNarrationUrl, prewarmNarration } from "@/lib/narration-cache";
 
 type Props = {
   title: string;
