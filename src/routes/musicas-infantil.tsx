@@ -27,7 +27,12 @@ type Song = {
   audio_url: string;
   cover_url: string | null;
   language: string;
+  lyrics_indigenous: string | null;
+  lyrics_pt: string | null;
+  lyrics_pt_en: string | null;
+  lyrics_pt_es: string | null;
 };
+
 
 // Bright kid palettes + a matching indigenous emoji
 const THEMES = [
