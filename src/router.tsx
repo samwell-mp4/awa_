@@ -20,8 +20,10 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreload: "intent",
-    defaultPreloadStaleTime: 0,
-    defaultPreloadDelay: 50,
+    // Reuse preloaded route data instead of refetching it on navigation.
+    defaultPreloadStaleTime: 1000 * 30,
+    defaultPreloadDelay: 30,
+
   });
 
   return router;
