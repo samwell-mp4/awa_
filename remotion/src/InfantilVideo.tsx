@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   Img,
   Sequence,
   interpolate,
@@ -108,6 +109,13 @@ const Confetti: React.FC<{ count?: number }> = ({ count = 26 }) => {
   );
 };
 
+/** Narração da cena */
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
+  <Sequence from={from} layout="none">
+    <Audio src={staticFile(`audio/${id}.mp3`)} volume={1} />
+  </Sequence>
+);
+
 /* ---------------- 1 — Abertura ---------------- */
 const KidOpening: React.FC = () => {
   const frame = useCurrentFrame();
@@ -115,6 +123,7 @@ const KidOpening: React.FC = () => {
   const logo = spring({ frame: frame - 4, fps, config: { damping: 8, stiffness: 130 } });
   return (
     <AbsoluteFill style={{ background: `radial-gradient(80% 70% at 50% 30%, #2FBF7C 0%, ${NIGHT} 100%)` }}>
+      <Narration id="k1" from={16} />
       <Img
         src={staticFile("images/infantil-categorias-bg.jpg")}
         style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }}
@@ -182,6 +191,7 @@ const KidStatement: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ background: SKY }}>
+      <Narration id="k2" />
       <Img
         src={staticFile("images/jogos-infantil-bg.jpg")}
         style={{
@@ -230,77 +240,127 @@ const KidStatement: React.FC = () => {
   );
 };
 
-/* ---------------- 3 — Menu de brincadeiras ---------------- */
-const CARDS = [
-  { img: "jogos-infantil-bg.jpg", t: "Jogos", c: CLAY, e: "🎮" },
-  { img: "musicas-infantil-bg.jpg", t: "Cantigas", c: LEAF, e: "🎵" },
-  { img: "trail-animais.jpg", t: "Histórias", c: "#4EA8E8", e: "📖" },
-  { img: "trail-familia.jpg", t: "Trilhas", c: SUN, e: "🌿" },
-];
+/* ---------------- 3 a 6 — Brincadeiras narradas ---------------- */
+type KidFeatureProps = {
+  audio: string;
+  img: string;
+  emoji: string;
+  title: string;
+  desc: string;
+  color: string;
+  chips: string[];
+  flip?: boolean;
+};
 
-const KidMenu: React.FC = () => {
+const KidFeature: React.FC<KidFeatureProps> = ({
+  audio,
+  img,
+  emoji,
+  title,
+  desc,
+  color,
+  chips,
+  flip = false,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return (
     <AbsoluteFill style={{ background: `linear-gradient(180deg, #FFF6E2 0%, #FFE6B8 100%)` }}>
-      <Confetti count={16} />
-      <ZigZag top={0} color={LEAF} />
-      <AbsoluteFill style={{ padding: "110px 90px 80px", alignItems: "center" }}>
-        <Pop>
+      <Narration id={audio} />
+      <Confetti count={14} />
+      <ZigZag top={0} color={color} />
+      <ZigZag bottom={0} color={LEAF} />
+      <AbsoluteFill
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 70,
+          padding: "90px 110px",
+          flexDirection: flip ? "row-reverse" : "row",
+        }}
+      >
+        <Float amp={12}>
           <div
             style={{
-              fontFamily: display,
-              fontWeight: 700,
-              fontSize: 68,
-              color: NIGHT,
+              width: 660,
+              height: 520,
+              borderRadius: 56,
+              overflow: "hidden",
+              border: `12px solid ${color}`,
+              boxShadow: "0 30px 60px rgba(18,59,44,0.28)",
+              transform: `rotate(${flip ? 2.5 : -2.5}deg) scale(${interpolate(
+                spring({ frame, fps, config: { damping: 10, stiffness: 130 } }),
+                [0, 1],
+                [0.6, 1],
+              )})`,
             }}
           >
-            Escolha e divirta-se
+            <Img
+              src={staticFile(`images/${img}`)}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transform: `scale(${1.05 + frame / 3000})`,
+              }}
+            />
           </div>
-        </Pop>
-        <div style={{ display: "flex", gap: 34, marginTop: 60 }}>
-          {CARDS.map((c, i) => {
-            const s = spring({
-              frame: frame - 16 - i * 10,
-              fps,
-              config: { damping: 9, stiffness: 150 },
-            });
-            return (
-              <div
-                key={c.t}
-                style={{
-                  width: 340,
-                  borderRadius: 40,
-                  overflow: "hidden",
-                  background: "#fff",
-                  border: `8px solid ${c.c}`,
-                  boxShadow: "0 24px 40px rgba(18,59,44,0.22)",
-                  transform: `scale(${interpolate(s, [0, 1], [0.4, 1])}) translateY(${Math.sin(frame / 18 + i) * 8}px) rotate(${interpolate(s, [0, 1], [i % 2 ? 8 : -8, 0])}deg)`,
-                  opacity: Math.min(1, s * 1.5),
-                }}
-              >
-                <div style={{ height: 250, overflow: "hidden" }}>
-                  <Img
-                    src={staticFile(`images/${c.img}`)}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </div>
+        </Float>
+        <div style={{ width: 780 }}>
+          <Pop>
+            <div style={{ fontSize: 96, lineHeight: 1 }}>{emoji}</div>
+          </Pop>
+          <Pop delay={10}>
+            <div
+              style={{
+                fontFamily: display,
+                fontWeight: 700,
+                fontSize: 88,
+                color: NIGHT,
+                lineHeight: 1.05,
+                marginTop: 14,
+              }}
+            >
+              {title}
+            </div>
+          </Pop>
+          <Pop delay={22}>
+            <div
+              style={{
+                fontFamily: body,
+                fontWeight: 500,
+                fontSize: 40,
+                color: "#3C6152",
+                marginTop: 20,
+                lineHeight: 1.3,
+              }}
+            >
+              {desc}
+            </div>
+          </Pop>
+          <div style={{ display: "flex", gap: 16, marginTop: 34, flexWrap: "wrap" }}>
+            {chips.map((c, i) => {
+              const s = spring({ frame: frame - 36 - i * 10, fps, config: { damping: 9 } });
+              return (
                 <div
+                  key={c}
                   style={{
-                    background: c.c,
-                    color: "#fff",
-                    fontFamily: display,
+                    fontFamily: body,
                     fontWeight: 700,
-                    fontSize: 44,
-                    textAlign: "center",
-                    padding: "14px 0 18px",
+                    fontSize: 30,
+                    color: "#fff",
+                    background: color,
+                    padding: "12px 28px",
+                    borderRadius: 999,
+                    opacity: Math.min(1, s * 1.6),
+                    transform: `scale(${interpolate(s, [0, 1], [0.4, 1])})`,
                   }}
                 >
-                  {c.t}
+                  {c}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -367,6 +427,7 @@ const KidClosing: React.FC = () => {
   const s = spring({ frame, fps, config: { damping: 9 } });
   return (
     <AbsoluteFill style={{ background: `radial-gradient(70% 70% at 50% 40%, #2FBF7C 0%, ${NIGHT} 100%)` }}>
+      <Narration id="k7" from={10} />
       <Confetti count={30} />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Float amp={10}>
@@ -427,35 +488,90 @@ export const InfantilVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: NIGHT }}>
       <TransitionSeries>
-        <TransitionSeries.Sequence durationInFrames={110}>
+        <TransitionSeries.Sequence durationInFrames={160}>
           <KidOpening />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
           presentation={clockWipe({ width, height })}
-          timing={linearTiming({ durationInFrames: 24 })}
+          timing={linearTiming({ durationInFrames: 22 })}
         />
-        <TransitionSeries.Sequence durationInFrames={110}>
+        <TransitionSeries.Sequence durationInFrames={145}>
           <KidStatement />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
           presentation={slide({ direction: "from-right" })}
-          timing={springTiming({ config: { damping: 200 }, durationInFrames: 24 })}
+          timing={springTiming({ config: { damping: 200 }, durationInFrames: 22 })}
         />
-        <TransitionSeries.Sequence durationInFrames={140}>
-          <KidMenu />
+        <TransitionSeries.Sequence durationInFrames={205}>
+          <KidFeature
+            audio="k3"
+            img="jogos-infantil-bg.jpg"
+            emoji="🎮"
+            title="Jogos coloridos"
+            desc="Descubra os animais, as cores e a natureza brincando!"
+            color={CLAY}
+            chips={["Animais", "Cores", "Natureza"]}
+          />
+        </TransitionSeries.Sequence>
+        <TransitionSeries.Transition
+          presentation={fade()}
+          timing={linearTiming({ durationInFrames: 22 })}
+        />
+        <TransitionSeries.Sequence durationInFrames={240}>
+          <KidFeature
+            audio="k4"
+            img="musicas-infantil-bg.jpg"
+            emoji="🎵"
+            title="Cantigas da aldeia"
+            desc="Cante junto com a letra em Patxôhã e em português!"
+            color={LEAF}
+            chips={["Legendas", "Patxôhã", "Português"]}
+            flip
+          />
+        </TransitionSeries.Sequence>
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-left" })}
+          timing={springTiming({ config: { damping: 200 }, durationInFrames: 22 })}
+        />
+        <TransitionSeries.Sequence durationInFrames={255}>
+          <KidFeature
+            audio="k5"
+            img="trail-animais.jpg"
+            emoji="📖"
+            title="Histórias encantadas"
+            desc="Contadas pelos anciãos, cheias de bichos, florestas e magia."
+            color="#4EA8E8"
+            chips={["Narração", "Ilustrações", "Anciãos"]}
+          />
+        </TransitionSeries.Sequence>
+        <TransitionSeries.Transition
+          presentation={fade()}
+          timing={linearTiming({ durationInFrames: 22 })}
+        />
+        <TransitionSeries.Sequence durationInFrames={205}>
+          <KidFeature
+            audio="k6"
+            img="trail-familia.jpg"
+            emoji="🌿"
+            title="Trilhas de aventura"
+            desc="Colecione estrelinhas a cada palavra nova que aprender!"
+            color={SUN}
+            chips={["Estrelinhas", "Missões", "Prêmios"]}
+            flip
+          />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
           presentation={fade()}
           timing={linearTiming({ durationInFrames: 20 })}
         />
-        <TransitionSeries.Sequence durationInFrames={110}>
+        <TransitionSeries.Sequence durationInFrames={120}>
           <KidWords />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
           presentation={slide({ direction: "from-bottom" })}
           timing={springTiming({ config: { damping: 200 }, durationInFrames: 22 })}
         />
-        <TransitionSeries.Sequence durationInFrames={110}>
+        <TransitionSeries.Sequence durationInFrames={185}>
           <KidClosing />
         </TransitionSeries.Sequence>
       </TransitionSeries>
