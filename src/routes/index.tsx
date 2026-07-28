@@ -312,6 +312,7 @@ function LandingChoice() {
           >
             {!pending && showAdulto && (
               <PresentationVideo
+                key={videoSrc.adulto}
                 src={videoSrc.adulto}
                 poster={adultoLogo.url}
                 label={vdict.adulto}
@@ -319,6 +320,7 @@ function LandingChoice() {
             )}
             {!pending && showInfantil && (
               <PresentationVideo
+                key={videoSrc.infantil}
                 src={videoSrc.infantil}
                 poster={infantilLogo.url}
                 label={vdict.infantil}
