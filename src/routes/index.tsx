@@ -132,6 +132,13 @@ export const Route = createFileRoute("/")({
 function LandingChoice() {
   const dict = useMenuDict();
   const { user, loading } = useAuth();
+  const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
+  // Depois de assinar, mostramos apenas a área contratada.
+  const hasAny = hasInfantil || hasAdulto;
+  const showAdulto = !hasAny || hasAdulto;
+  const showInfantil = !hasAny || hasInfantil;
+  const onlyOne = showAdulto !== showInfantil;
+
   return (
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
