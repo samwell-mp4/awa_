@@ -5,6 +5,7 @@ import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
 import { useAuth } from "@/hooks/use-auth";
+import { useSubscription } from "@/hooks/use-subscription";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
@@ -132,6 +133,14 @@ export const Route = createFileRoute("/")({
 function LandingChoice() {
   const dict = useMenuDict();
   const { user, loading } = useAuth();
+  const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
+  // Depois de assinar, mostramos apenas a área contratada.
+  const pending = !!user && subLoading;
+  const hasAny = hasInfantil || hasAdulto;
+  const showAdulto = !hasAny || hasAdulto;
+  const showInfantil = !hasAny || hasInfantil;
+  const onlyOne = showAdulto !== showInfantil;
+
   return (
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
@@ -180,25 +189,33 @@ function LandingChoice() {
           {dict.lead}
         </p>
 
-        <div className="mt-12 grid w-full gap-6 md:grid-cols-2 md:gap-8">
-          <ExperienceCard
-            to="/adulto"
-            image={adultoLogo.url}
-            eyebrow="Awã Tech"
-            title={dict.adulto}
-            description={dict.adultoDesc}
-            entrar={dict.entrar}
-            priority
-          />
-          <ExperienceCard
-            to="/infantil"
-            image={infantilLogo.url}
-            eyebrow="Awã Tech"
-            title={dict.crianca}
-            description={dict.criancaDesc}
-            entrar={dict.entrar}
-          />
+        <div
+          className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
+        >
+          {!pending && showAdulto && (
+            <ExperienceCard
+              to="/adulto"
+              image={adultoLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.adulto}
+              description={dict.adultoDesc}
+              entrar={dict.entrar}
+              priority
+            />
+          )}
+          {!pending && showInfantil && (
+            <ExperienceCard
+              to="/infantil"
+              image={infantilLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.crianca}
+              description={dict.criancaDesc}
+              entrar={dict.entrar}
+              priority={!showAdulto}
+            />
+          )}
         </div>
+
 
         <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
           <TrustPill icon={ShieldCheck} title={dict.pagTitle} copy={dict.pagCopy} />
