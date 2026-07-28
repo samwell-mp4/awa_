@@ -185,7 +185,6 @@ function useKidsNarrator(text: string) {
   useEffect(() => {
     audioRef.current?.pause();
     audioRef.current = null;
-    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     urlRef.current = null;
     setState("idle");
     setProgress(0);
@@ -195,7 +194,6 @@ function useKidsNarrator(text: string) {
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
-      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
       urlRef.current = null;
     };
   }, []);
@@ -219,17 +217,14 @@ function useKidsNarrator(text: string) {
     try {
       let url = urlRef.current;
       if (!url) {
-        const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
-        const res = await narratePublic({
-          data: { text, lang, mode: "story", voice: "onyx" },
-        });
-        if (res.error || !res.audio_base64) {
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+        if (!url) {
           setState("idle");
           return;
         }
-        url = base64ToBlobUrl(res.audio_base64, res.mime || "audio/mpeg");
         urlRef.current = url;
       }
+
       const a = audioRef.current ?? new Audio();
       audioRef.current = a;
       a.src = url;
