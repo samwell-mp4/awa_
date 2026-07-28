@@ -97,6 +97,8 @@ function InstalarPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <Link to={backTo as "/"} className="flex items-center gap-2.5">
             <img
+              loading="lazy"
+              decoding="async"
               src={logoSrc}
               alt="AWÃ TECH"
               className="h-10 w-10 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
@@ -125,6 +127,7 @@ function InstalarPage() {
             <div className="relative mx-auto max-w-md">
               <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-leaf/20 via-gold/10 to-earth/20 blur-2xl" />
               <img
+                decoding="async"
                 src={appPreviewAsset.url}
                 alt="Prévia do aplicativo Awã Tech em três telas: início, dicionário e música"
                 className="relative mx-auto w-full max-w-sm rounded-3xl"
@@ -132,6 +135,7 @@ function InstalarPage() {
                 height={1024}
                 loading="eager"
               />
+
             </div>
             <div className="mt-4 text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2 text-xs font-semibold text-cream backdrop-blur-md shadow-lg sm:text-sm">

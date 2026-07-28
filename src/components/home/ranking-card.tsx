@@ -78,7 +78,7 @@ export function RankingCard() {
                 {i === 0 ? <Crown className="mx-auto h-4 w-4" /> : i + 1}
               </span>
               {u.photo_url ? (
-                <img src={u.photo_url} alt="" className="h-9 w-9 rounded-full object-cover" />
+                <img loading="lazy" decoding="async" src={u.photo_url} alt="" className="h-9 w-9 rounded-full object-cover" />
               ) : (
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/25 text-xs font-bold text-cream">
                   {initials(u.name)}

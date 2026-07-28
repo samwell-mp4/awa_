@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getNarrationUrl, prewarmNarration } from "@/lib/narration-cache";
 
 type Props = {
   title: string;
@@ -24,16 +23,13 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
 
   const lang = i18n.language.slice(0, 2).toLowerCase();
 
-  // Re-fetch narration when the UI language changes.
+  // Drop the local reference when the UI language changes (cache keeps the audio).
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
-    if (urlRef.current) {
-      URL.revokeObjectURL(urlRef.current);
-      urlRef.current = null;
-    }
+    urlRef.current = null;
     setState("idle");
     setProgress(0);
   }, [lang]);
@@ -44,12 +40,10 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
         audioRef.current.pause();
         audioRef.current = null;
       }
-      if (urlRef.current) {
-        URL.revokeObjectURL(urlRef.current);
-        urlRef.current = null;
-      }
+      urlRef.current = null;
     };
   }, []);
+
 
   const stop = () => {
     if (audioRef.current) {
@@ -77,19 +71,17 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       if (!url) {
         const lang = i18n.language.slice(0, 2).toLowerCase();
         const text = `${title}. ${description}`;
-        const res = await narratePublic({
-          data: { text, lang, mode: "story", voice: "onyx" },
-        });
-        if (res.error || !res.audio_base64) {
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+        if (!url) {
           setState("idle");
           return;
         }
-        url = base64ToBlobUrl(res.audio_base64, res.mime || "audio/mpeg");
         urlRef.current = url;
       }
       const a = audioRef.current ?? new Audio();
       audioRef.current = a;
-      a.src = url;
+      if (a.src !== url) a.src = url;
+
       a.currentTime = 0;
       a.ontimeupdate = () => {
         if (a.duration > 0) setProgress(a.currentTime / a.duration);
@@ -142,6 +134,15 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
         <button
           type="button"
           onClick={play}
+          onPointerEnter={() =>
+            prewarmNarration({
+              text: `${title}. ${description}`,
+              lang,
+              mode: "story",
+              voice: "onyx",
+            })
+          }
+
           disabled={state === "loading"}
           aria-label={label}
           className="flex items-center gap-2 rounded-full border-b-4 border-black/15 px-4 py-2 text-sm font-black uppercase tracking-wide text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0 disabled:opacity-70"

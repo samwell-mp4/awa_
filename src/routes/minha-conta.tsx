@@ -186,6 +186,8 @@ function MinhaContaPage() {
         <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-[oklch(0.18_0.05_145/0.55)] p-6 text-center backdrop-blur md:p-10">
           <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-gold/10 blur-3xl" />
           <img
+            loading="lazy"
+            decoding="async"
             src={logoSrc}
             alt="AWÃ TECH"
             className="mx-auto h-20 w-20 rounded-full bg-cream/95 p-1 shadow-[var(--shadow-glow)] ring-2 ring-gold/50 md:h-24 md:w-24"
