@@ -135,6 +135,7 @@ function LandingChoice() {
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   // Depois de assinar, mostramos apenas a área contratada.
+  const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
   const showAdulto = !hasAny || hasAdulto;
   const showInfantil = !hasAny || hasInfantil;
@@ -191,7 +192,7 @@ function LandingChoice() {
         <div
           className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
         >
-          {showAdulto && (
+          {!pending && showAdulto && (
             <ExperienceCard
               to="/adulto"
               image={adultoLogo.url}
@@ -202,7 +203,7 @@ function LandingChoice() {
               priority
             />
           )}
-          {showInfantil && (
+          {!pending && showInfantil && (
             <ExperienceCard
               to="/infantil"
               image={infantilLogo.url}
