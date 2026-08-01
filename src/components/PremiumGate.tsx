@@ -37,6 +37,8 @@ export function PremiumGate({
         <p className="mx-auto mt-2 max-w-md text-sm text-foreground/70">{description}</p>
         <Link
           to="/planos"
+          search={{ need: area } as any}
+
           className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
         >
           <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
