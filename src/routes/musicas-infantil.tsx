@@ -209,7 +209,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     const a = ref.current;
     if (!a) return;
     a.load();
-    a.play().catch(() => {});
+    void a.play()?.catch(() => {});
   }, [song.id]);
 
   // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
@@ -262,7 +262,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     if (!a) return;
     setAudioError(false);
     a.load();
-    a.play().catch(() => {});
+    void a.play()?.catch(() => {});
   }
 
 
