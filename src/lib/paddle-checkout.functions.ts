@@ -17,8 +17,15 @@ export const createPaddleCheckout = createServerFn({ method: "POST" })
       `/prices?external_id=${encodeURIComponent(data.priceId)}`,
     );
     const priceJson = await priceRes.json();
-    const paddlePriceId = priceJson.data?.[0]?.id as string | undefined;
-    if (!paddlePriceId) throw new Error("Price not found");
+    const list: any[] = priceJson.data ?? [];
+    const paddlePriceId = (
+      list.filter((p) => (p.status ?? "active") === "active")[0] ?? list[0]
+    )?.id as string | undefined;
+    if (!paddlePriceId) {
+      throw new Error(
+        "Este plano ainda não está disponível para cobrança neste ambiente. Tente novamente em instantes.",
+      );
+    }
 
     const txRes = await gatewayFetch(data.environment, `/transactions`, {
       method: "POST",
@@ -29,8 +36,20 @@ export const createPaddleCheckout = createServerFn({ method: "POST" })
     });
     if (!txRes.ok) {
       const t = await txRes.text();
+      let code = "";
+      try {
+        code = JSON.parse(t)?.error?.code ?? "";
+      } catch {
+        /* corpo não-JSON */
+      }
+      if (code === "transaction_checkout_not_enabled") {
+        throw new Error(
+          "Os pagamentos ainda estão em análise final e serão liberados em breve. Enquanto isso não é possível concluir a assinatura — tente novamente mais tarde.",
+        );
+      }
       throw new Error(`Paddle transaction failed: ${txRes.status} ${t.slice(0, 200)}`);
     }
+
     const txJson = await txRes.json();
     const transactionId = txJson?.data?.id as string | undefined;
     if (!transactionId) throw new Error("No transaction id returned");
