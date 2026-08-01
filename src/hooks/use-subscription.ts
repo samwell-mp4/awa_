@@ -24,9 +24,10 @@ function isSubActive(sub: {
   if (sub.status === "active" || sub.status === "trialing") {
     return end === null || end > now;
   }
-  if (sub.status === "past_due") {
-    return end !== null && end > now - 3 * 24 * 3600 * 1000;
-  }
+  // Pagamento recusado corta o acesso imediatamente (o Paddle segue tentando
+  // cobrar; ao voltar para "active" o acesso é restaurado pelo webhook).
+  if (sub.status === "past_due") return false;
+
   if (sub.status === "canceled") {
     return end !== null && end > now;
   }

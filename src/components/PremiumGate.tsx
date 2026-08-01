@@ -6,21 +6,26 @@ import { useAuth } from "@/hooks/use-auth";
 
 export function PremiumGate({
   children,
+  area = "adulto",
   title = "Conteúdo Premium",
   description = "Assine o AWÃ TECH Premium para desbloquear todo o conteúdo.",
 }: {
   children: React.ReactNode;
+  /** Which subscription unlocks this content. Each plan only unlocks its own area. */
+  area?: "adulto" | "infantil";
   title?: string;
   description?: string;
 }) {
   const { t } = useTranslation();
   const { user, loading: authLoading, isAdmin } = useAuth();
-  const { isPremium, loading } = useSubscription();
+  const { hasAdulto, hasInfantil, loading } = useSubscription();
+  const allowed = area === "infantil" ? hasInfantil : hasAdulto;
 
   if (loading || authLoading) {
     return <div className="grid min-h-[40vh] place-items-center text-foreground/60">Carregando...</div>;
   }
-  if (isAdmin || isPremium) return <>{children}</>;
+  if (isAdmin || allowed) return <>{children}</>;
+
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 md:py-20">
@@ -32,6 +37,8 @@ export function PremiumGate({
         <p className="mx-auto mt-2 max-w-md text-sm text-foreground/70">{description}</p>
         <Link
           to="/planos"
+          search={{ need: area } as any}
+
           className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
         >
           <Crown className="h-4 w-4" /> {t("premium.verPlanos")}

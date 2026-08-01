@@ -151,8 +151,8 @@ function MinhaContaPage() {
   const priceLabels: Record<string, string> = {
     awa_infantil_monthly: "Infantil Mensal (R$ 29,90)",
     awa_infantil_semestral: "Infantil Semestral (R$ 149,90)",
-    awa_adulto_monthly: "Adulto Mensal (R$ 29,90)",
-    awa_adulto_semestral: "Adulto Semestral (R$ 149,90)",
+    awa_adulto_monthly: "Adulto Mensal (R$ 35,00)",
+    awa_adulto_semestral: "Adulto Semestral (R$ 180,00)",
     awa_premium_monthly: "Premium Mensal (R$ 29,90)",
     awa_premium_semestral: "Premium Semestral (R$ 149,90)",
   };

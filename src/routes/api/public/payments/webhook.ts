@@ -11,18 +11,32 @@ function getSupabase() {
   return _supabase;
 }
 
+function externalIds(items: any[] | undefined) {
+  const item = items?.[0];
+  return {
+    priceId: item?.price?.importMeta?.externalId as string | undefined,
+    productId: item?.product?.importMeta?.externalId as string | undefined,
+  };
+}
+
 async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
   const { id, customerId, items, status, currentBillingPeriod, customData } = data;
   const userId = customData?.userId;
   if (!userId) {
-    console.error("No userId in customData");
+    console.error("payments-webhook: subscription without customData.userId", {
+      subscriptionId: id,
+      customerId,
+      env,
+    });
     return;
   }
-  const item = items[0];
-  const priceId = item.price.importMeta?.externalId;
-  const productId = item.product.importMeta?.externalId;
+  const { priceId, productId } = externalIds(items);
   if (!priceId || !productId) {
-    console.warn("Skipping: missing importMeta.externalId");
+    console.warn("payments-webhook: missing importMeta.externalId", {
+      subscriptionId: id,
+      rawPriceId: items?.[0]?.price?.id,
+      rawProductId: items?.[0]?.product?.id,
+    });
     return;
   }
   await getSupabase().from("subscriptions").upsert(
@@ -35,6 +49,7 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
       status,
       current_period_start: currentBillingPeriod?.startsAt,
       current_period_end: currentBillingPeriod?.endsAt,
+      cancel_at_period_end: false,
       environment: env,
       updated_at: new Date().toISOString(),
     },
@@ -43,16 +58,24 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
 }
 
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
-  const { id, status, currentBillingPeriod, scheduledChange } = data;
+  const { id, status, items, currentBillingPeriod, scheduledChange } = data;
+  // Plan changes (upgrade/downgrade in the customer portal) must move the tier
+  // too, otherwise the user keeps the entitlement of the old plan forever.
+  const { priceId, productId } = externalIds(items);
+  const patch: Database["public"]["Tables"]["subscriptions"]["Update"] = {
+    status,
+    current_period_start: currentBillingPeriod?.startsAt,
+    current_period_end: currentBillingPeriod?.endsAt,
+    cancel_at_period_end: scheduledChange?.action === "cancel",
+    updated_at: new Date().toISOString(),
+  };
+  if (priceId && productId) {
+    patch.price_id = priceId;
+    patch.product_id = productId;
+  }
   await getSupabase()
     .from("subscriptions")
-    .update({
-      status,
-      current_period_start: currentBillingPeriod?.startsAt,
-      current_period_end: currentBillingPeriod?.endsAt,
-      cancel_at_period_end: scheduledChange?.action === "cancel",
-      updated_at: new Date().toISOString(),
-    })
+    .update(patch)
     .eq("paddle_subscription_id", id)
     .eq("environment", env);
 }
@@ -62,6 +85,35 @@ async function handleSubscriptionCanceled(data: any, env: PaddleEnv) {
     .from("subscriptions")
     .update({ status: "canceled", updated_at: new Date().toISOString() })
     .eq("paddle_subscription_id", data.id)
+    .eq("environment", env);
+}
+
+/** Renewal succeeded: refresh the paid period so access never lapses. */
+async function handleTransactionCompleted(data: any, env: PaddleEnv) {
+  const subscriptionId = data?.subscriptionId;
+  if (!subscriptionId) return;
+  const period = data?.billingPeriod;
+  const patch: Database["public"]["Tables"]["subscriptions"]["Update"] = {
+    status: "active",
+    updated_at: new Date().toISOString(),
+  };
+  if (period?.startsAt) patch.current_period_start = period.startsAt;
+  if (period?.endsAt) patch.current_period_end = period.endsAt;
+  await getSupabase()
+    .from("subscriptions")
+    .update(patch)
+    .eq("paddle_subscription_id", subscriptionId)
+    .eq("environment", env);
+}
+
+/** Renewal failed: mark dunning so the app can warn and gate access. */
+async function handlePaymentFailed(data: any, env: PaddleEnv) {
+  const subscriptionId = data?.subscriptionId;
+  if (!subscriptionId) return;
+  await getSupabase()
+    .from("subscriptions")
+    .update({ status: "past_due", updated_at: new Date().toISOString() })
+    .eq("paddle_subscription_id", subscriptionId)
     .eq("environment", env);
 }
 
@@ -77,10 +129,17 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
     case EventName.SubscriptionCanceled:
       await handleSubscriptionCanceled(event.data, env);
       break;
+    case EventName.TransactionCompleted:
+      await handleTransactionCompleted(event.data, env);
+      break;
+    case EventName.TransactionPaymentFailed:
+      await handlePaymentFailed(event.data, env);
+      break;
     default:
       console.log("Unhandled event:", event.eventType);
   }
 }
+
 
 export const Route = createFileRoute("/api/public/payments/webhook")({
   server: {

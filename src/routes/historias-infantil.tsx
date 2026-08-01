@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -25,6 +26,8 @@ const albumJosaClean = josaImg.url;
 const albumAnciao = { url: joaoImg.url };
 
 export const Route = createFileRoute("/historias-infantil")({
+  ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Histórias e Narrativas — Awã Tech Infantil" },

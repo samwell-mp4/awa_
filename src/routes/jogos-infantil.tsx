@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
@@ -34,6 +35,8 @@ function SpeakBtn({
 }
 
 export const Route = createFileRoute("/jogos-infantil")({
+  ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Jogos Awã Tech Infantil — Brincar e Aprender" },
