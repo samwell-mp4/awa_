@@ -15,6 +15,7 @@ import {
   LayoutGrid,
   ChevronRight,
   KeyRound,
+  CreditCard,
 } from "lucide-react";
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
@@ -24,6 +25,7 @@ const DictionaryAdmin = lazy(() => import("@/components/admin/dictionary-admin")
 const SongsAdmin = lazy(() => import("@/components/admin/songs-admin").then((m) => ({ default: m.SongsAdmin })));
 const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) => ({ default: m.ToolsAdmin })));
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
+const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").then((m) => ({ default: m.PaymentsAdmin })));
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -44,7 +46,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments";
 
 type Section = {
   k: Tab;
@@ -63,6 +65,7 @@ const SECTIONS: Section[] = [
   { k: "mission", label: "Missão", icon: Trophy, desc: "Missão diária e recompensas.", group: "Comunidade", accent: "from-gold/30 to-earth/20" },
   { k: "access", label: "Acesso Premium", icon: Crown, desc: "Liberar / revogar assinantes.", group: "Comunidade", accent: "from-gold/35 to-leaf/15" },
   { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
+  { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
 ];
 
@@ -216,6 +219,7 @@ function AdminPage() {
                   {tab === "tools" && <ToolsAdmin />}
                   {tab === "access" && <AccessAdmin />}
                   {tab === "allowlist" && <AllowlistAdmin />}
+                  {tab === "payments" && <PaymentsAdmin />}
                 </Suspense>
               </div>
             </div>
