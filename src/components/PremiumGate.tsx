@@ -6,21 +6,26 @@ import { useAuth } from "@/hooks/use-auth";
 
 export function PremiumGate({
   children,
+  area = "adulto",
   title = "Conteúdo Premium",
   description = "Assine o AWÃ TECH Premium para desbloquear todo o conteúdo.",
 }: {
   children: React.ReactNode;
+  /** Which subscription unlocks this content. Each plan only unlocks its own area. */
+  area?: "adulto" | "infantil";
   title?: string;
   description?: string;
 }) {
   const { t } = useTranslation();
   const { user, loading: authLoading, isAdmin } = useAuth();
-  const { isPremium, loading } = useSubscription();
+  const { hasAdulto, hasInfantil, loading } = useSubscription();
+  const allowed = area === "infantil" ? hasInfantil : hasAdulto;
 
   if (loading || authLoading) {
     return <div className="grid min-h-[40vh] place-items-center text-foreground/60">Carregando...</div>;
   }
-  if (isAdmin || isPremium) return <>{children}</>;
+  if (isAdmin || allowed) return <>{children}</>;
+
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 md:py-20">
