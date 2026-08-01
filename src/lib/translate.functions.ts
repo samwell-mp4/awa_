@@ -127,7 +127,7 @@ export const translateText = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { text: string; direction: "pt-pat" | "pat-pt"; environment?: "sandbox" | "live" }) => d)
   .handler(async ({ data, context }) => {
-    await assertPremium(context, data.environment ?? "live");
+    await assertPremium(context, data.environment ?? "live", "adulto");
 
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");

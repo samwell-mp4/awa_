@@ -15,7 +15,7 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     return { file, language: (d.get("language") as string | null) || undefined, environment };
   })
   .handler(async ({ data, context }): Promise<{ text: string; error?: "PAYMENT_REQUIRED" | "STT_FAILED"; message?: string }> => {
-    await assertPremium(context, data.environment);
+    await assertPremium(context, data.environment, "adulto");
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 

@@ -62,7 +62,7 @@ export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
   .handler(async ({ data, context }) => {
-    await assertPremium(context, data.environment ?? "live");
+    await assertPremium(context, data.environment ?? "live", "adulto");
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
