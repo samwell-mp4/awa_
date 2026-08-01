@@ -124,7 +124,7 @@ describe("<MiniPlayer /> infantil — áudio + legendas sempre carregados", () =
     expect(src).toContain("computeLyricBounds");
     expect(src).toContain("activeLineIndex");
     // rola apenas o painel de legendas
-    expect(src).toContain("box.scrollTo");
+    expect(src).toContain("box.scrollTo?.(");
     expect(src).not.toContain("scrollIntoView");
   });
 });

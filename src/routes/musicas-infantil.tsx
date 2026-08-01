@@ -251,7 +251,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     const el = lineRefs.current[activeIdx];
     if (!box || !el) return;
     // rola apenas o painel de legendas, não a página
-    box.scrollTo({
+    box.scrollTo?.({
       top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
       behavior: "smooth",
     });
