@@ -7,6 +7,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
+import {
+  activeLineIndex,
+  computeLyricBounds,
+  resolveDuration,
+  splitLyrics,
+} from "@/lib/lyric-sync";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
@@ -35,6 +41,7 @@ type Song = {
   lyrics_pt: string | null;
   lyrics_pt_en: string | null;
   lyrics_pt_es: string | null;
+  duration_seconds: number | null;
 };
 
 
@@ -60,7 +67,7 @@ function MusicasInfantilPage() {
       const { data, error } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es",
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds",
         )
         .eq("is_active", true)
         .order("order_index")
@@ -309,9 +316,20 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
             src={song.audio_url}
             controls
             className="mt-1 w-full"
+            preload="auto"
+            data-testid="kids-audio"
             onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
-            onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || 0)}
+            onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration || 0)}
+            onError={() => setAudioError(true)}
           />
+          {audioError && (
+            <button
+              onClick={retryAudio}
+              className="mt-1 rounded-xl border-2 border-white bg-amber-300 px-3 py-1 font-display text-xs font-black text-emerald-950"
+            >
+              Tocar de novo 🔁
+            </button>
+          )}
         </div>
 
         <button
