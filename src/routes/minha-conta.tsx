@@ -386,20 +386,6 @@ function MinhaContaPage() {
             )}
 
             <div className="mt-6 flex flex-wrap gap-3">
-              {subscription?.paddle_customer_id && (
-                <button
-                  onClick={handlePortal}
-                  disabled={busy}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[var(--gradient-leaf)] px-4 py-3 text-sm font-bold text-cream shadow-[var(--shadow-glow)] disabled:opacity-50"
-                >
-                  {busy ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <CreditCard className="h-4 w-4" />
-                  )}
-                  Gerenciar assinatura
-                </button>
-              )}
               <button
                 onClick={handleSignOut}
                 className="inline-flex items-center gap-2 rounded-2xl border border-gold/30 px-4 py-3 text-sm font-medium text-foreground/85 hover:bg-gold/10"
@@ -407,6 +393,7 @@ function MinhaContaPage() {
                 <LogOut className="h-4 w-4" /> Sair da conta
               </button>
             </div>
+
 
             <p className="mt-4 flex items-start gap-2 text-xs text-foreground/60">
               <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
