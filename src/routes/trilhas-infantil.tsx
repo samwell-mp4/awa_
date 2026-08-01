@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -9,6 +10,8 @@ import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
 
 export const Route = createFileRoute("/trilhas-infantil")({
+  ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Trilhas da Aldeia — Awã Tech Infantil" },

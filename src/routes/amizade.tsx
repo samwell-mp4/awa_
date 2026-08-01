@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
 import { speak } from "@/lib/speak";
@@ -6,6 +7,8 @@ import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
 
 export const Route = createFileRoute("/amizade")({
+  ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Amizade Awã Tech Infantil — Brincar entre amigos" },
