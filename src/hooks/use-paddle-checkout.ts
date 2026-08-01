@@ -34,8 +34,15 @@ export function usePaddleCheckout() {
         },
       });
     } catch (e: any) {
-      toast.error("Não foi possível abrir o checkout: " + e.message);
+      const msg = String(e?.message ?? "");
+      // Mensagens já traduzidas pelo servidor aparecem como estão.
+      toast.error(
+        /[À-ú]/.test(msg) && !msg.startsWith("Paddle")
+          ? msg
+          : "Não foi possível abrir o pagamento agora. Tente novamente em alguns minutos.",
+      );
     } finally {
+
       setLoading(false);
     }
   };
