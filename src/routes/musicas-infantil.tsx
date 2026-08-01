@@ -186,17 +186,23 @@ function MusicasInfantilPage() {
   );
 }
 
-function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
+export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   const ref = useRef<HTMLAudioElement>(null);
   const lang = useLang();
   const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
+  const [audioError, setAudioError] = useState(false);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    ref.current?.play().catch(() => {});
     setProgress(0);
+    setAudioDuration(0);
+    setAudioError(false);
+    const a = ref.current;
+    if (!a) return;
+    a.load();
+    a.play().catch(() => {});
   }, [song.id]);
 
   // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
@@ -206,7 +212,7 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
       const a = ref.current;
       if (a) {
         setProgress(a.currentTime);
-        if (a.duration && Number.isFinite(a.duration)) setDuration(a.duration);
+        if (a.duration && Number.isFinite(a.duration)) setAudioDuration(a.duration);
       }
       raf = requestAnimationFrame(tick);
     };
@@ -214,41 +220,24 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
     return () => cancelAnimationFrame(raf);
   }, [song.id]);
 
-  const split = (v: string | null | undefined) =>
-    (v ?? "")
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean);
-
-  const indLines = split(song.lyrics_indigenous);
-  const transLines = split(pickLang(song as any, "lyrics_pt", lang));
+  const indLines = splitLyrics(song.lyrics_indigenous);
+  const transLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang));
   const maxLen = Math.max(indLines.length, transLines.length);
 
-  // Duração proporcional ao tamanho de cada verso (versos longos duram mais)
-  const bounds = useMemo(() => {
-    if (maxLen === 0 || duration <= 0) return [] as number[];
-    const weights = Array.from({ length: maxLen }, (_, i) => {
-      const len = (indLines[i] || transLines[i] || "").length;
-      return Math.max(8, len);
-    });
-    const total = weights.reduce((a, b) => a + b, 0);
-    const out: number[] = [];
-    let acc = 0;
-    for (const w of weights) {
-      acc += w;
-      out.push((acc / total) * duration);
-    }
-    return out;
-  }, [maxLen, duration, song.id, lang]);
+  // Duração real do áudio; se o metadata ainda não carregou, usa a duração
+  // cadastrada para as legendas já começarem sincronizadas.
+  const duration = resolveDuration(audioDuration, song.duration_seconds);
 
-  // Pequena antecipação para a legenda chegar junto com a voz
-  const LEAD = 0.25;
-  const activeIdx = useMemo(() => {
-    if (!bounds.length) return -1;
-    const t = progress + LEAD;
-    for (let i = 0; i < bounds.length; i++) if (t < bounds[i]) return i;
-    return bounds.length - 1;
-  }, [progress, bounds]);
+  const bounds = useMemo(
+    () =>
+      computeLyricBounds(
+        Array.from({ length: maxLen }, (_, i) => indLines[i] || transLines[i] || ""),
+        duration,
+      ),
+    [maxLen, duration, song.id, lang],
+  );
+
+  const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -260,6 +249,15 @@ function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
       behavior: "smooth",
     });
   }, [activeIdx]);
+
+  function retryAudio() {
+    const a = ref.current;
+    if (!a) return;
+    setAudioError(false);
+    a.load();
+    a.play().catch(() => {});
+  }
+
 
 
   return (
