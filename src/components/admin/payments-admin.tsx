@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { AlertTriangle, CheckCircle2, CreditCard, RefreshCw } from "lucide-react";
@@ -31,6 +32,7 @@ export function PaymentsAdmin() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const env = getPaddleEnvironment();
   const isSandbox = env === "sandbox";
+  const [method, setMethod] = useState<"all" | "card" | "pix">("all");
 
   const { data, isFetching, refetch, error } = useQuery({
     queryKey: ["payments_catalog_check"],
@@ -112,10 +114,22 @@ export function PaymentsAdmin() {
         {isSandbox ? (
           <>
             <p className="mt-1 text-sm text-foreground/70">
-              Abre o pagamento em <b>modo teste</b> (sem cobrança real). Use o cartão{" "}
-              <b>4242 4242 4242 4242</b>, CVC <b>123</b> e validade futura. Para testar recusa:{" "}
-              <b>4000 0000 0000 0002</b>.
+              Abre o pagamento em <b>modo teste</b> (sem cobrança real). Escolha o meio de pagamento
+              abaixo. No cartão use <b>4242 4242 4242 4242</b>, CVC <b>123</b> e validade futura
+              (para recusa: <b>4000 0000 0000 0002</b>). No <b>Pix</b> o QR Code de teste é
+              simulado — nenhum valor é cobrado.
             </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {(["all", "card", "pix"] as const).map((m) => (
+                <Btn
+                  key={m}
+                  variant={method === m ? "primary" : "outline"}
+                  onClick={() => setMethod(m)}
+                >
+                  {m === "all" ? "Todos os meios" : m === "card" ? "Cartão" : "Pix"}
+                </Btn>
+              ))}
+            </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {TEST_PLANS.map((p) => (
                 <Btn
@@ -128,6 +142,7 @@ export function PaymentsAdmin() {
                       priceId: p.id,
                       userId: user.id,
                       email: user.email,
+                      allowedPaymentMethods: method === "all" ? undefined : [method],
                       successUrl: `${window.location.origin}/minha-conta?checkout=success`,
                     })
                   }
@@ -138,9 +153,12 @@ export function PaymentsAdmin() {
             </div>
             <p className="mt-3 text-xs text-foreground/50">
               A assinatura de teste é criada na sua própria conta de admin e não afeta o site real.
+              Observação: planos com cobrança recorrente podem exigir cartão — se o Pix não
+              aparecer, use "Todos os meios".
             </p>
           </>
         ) : (
+
           <p className="mt-1 text-sm text-foreground/70">
             Você está no site publicado (ambiente real), onde qualquer pagamento é cobrado de
             verdade. Para testar sem cobrança, abra o <b>preview</b> do projeto e use este mesmo
