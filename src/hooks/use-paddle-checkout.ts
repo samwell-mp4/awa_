@@ -11,6 +11,8 @@ export function usePaddleCheckout() {
     userId: string;
     email?: string;
     successUrl?: string;
+    /** Restringe os meios de pagamento (ex.: ["pix"] ou ["card"]). Vazio = todos. */
+    allowedPaymentMethods?: string[];
   }) => {
     setLoading(true);
     try {
