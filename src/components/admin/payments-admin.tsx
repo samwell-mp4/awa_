@@ -32,7 +32,18 @@ export function PaymentsAdmin() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const env = getPaddleEnvironment();
   const isSandbox = env === "sandbox";
-  const [method, setMethod] = useState<"all" | "card" | "pix">("all");
+  const [method, setMethod] = useState<"all" | "card" | "pix">("card");
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(value);
+      setTimeout(() => setCopied(null), 1500);
+    } catch {
+      /* clipboard indisponível */
+    }
+  };
 
   const { data, isFetching, refetch, error } = useQuery({
     queryKey: ["payments_catalog_check"],
