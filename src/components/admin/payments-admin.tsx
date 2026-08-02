@@ -32,6 +32,7 @@ export function PaymentsAdmin() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const env = getPaddleEnvironment();
   const isSandbox = env === "sandbox";
+  const [method, setMethod] = useState<"all" | "card" | "pix">("all");
 
   const { data, isFetching, refetch, error } = useQuery({
     queryKey: ["payments_catalog_check"],
