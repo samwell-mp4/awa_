@@ -483,7 +483,7 @@ function NarratableVideo({
 
   const mediaStack = (
     <div
-      className="relative aspect-video w-full overflow-hidden rounded-3xl border border-gold/30 bg-cover bg-center shadow-2xl shadow-black/50"
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-none border-y border-gold/30 bg-cover bg-center shadow-2xl shadow-black/50 sm:aspect-video sm:rounded-3xl sm:border"
       style={{ backgroundImage: `url(${poster})`, backgroundColor: "#1a0f0a" }}
     >
       <img
