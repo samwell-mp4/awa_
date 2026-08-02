@@ -33,6 +33,9 @@ export function usePaddleCheckout() {
           allowLogout: false,
           variant: "one-page",
           locale: "pt",
+          ...(options.allowedPaymentMethods?.length
+            ? { allowedPaymentMethods: options.allowedPaymentMethods }
+            : {}),
         },
       });
     } catch (e: any) {
