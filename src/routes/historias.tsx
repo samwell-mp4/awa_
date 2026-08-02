@@ -519,7 +519,7 @@ function NarratableVideo({
 
   if (captionBelow) {
     return (
-      <div className="flex flex-col gap-3">
+      <div className="-mx-5 flex flex-col gap-3 sm:mx-0 lg:mx-[calc(50%-45vw)] lg:w-[90vw] xl:mx-[calc(50%-44vw)] xl:w-[88vw]">
         <button
           type="button"
           onClick={handleClick}
@@ -528,13 +528,14 @@ function NarratableVideo({
           onFocus={prefetch}
           disabled={loading}
           aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-          className="block w-full rounded-3xl focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+          className="block w-full rounded-none focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 sm:rounded-3xl"
         >
           {mediaStack}
         </button>
       </div>
     );
   }
+
 
   return (
     <div className="relative">
