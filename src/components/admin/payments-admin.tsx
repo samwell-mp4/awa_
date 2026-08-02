@@ -141,6 +141,37 @@ export function PaymentsAdmin() {
                 </Btn>
               ))}
             </div>
+
+            {method !== "pix" && (
+              <div className="mt-4 rounded-2xl border border-gold/20 bg-card/40 p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-gold">
+                  Cartão de teste (toque para copiar)
+                </p>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {[
+                    { label: "Cartão aprovado", value: "4242424242424242" },
+                    { label: "Cartão recusado", value: "4000000000000002" },
+                    { label: "CVC", value: "123" },
+                    { label: "Validade", value: "12/32" },
+                  ].map((f) => (
+                    <button
+                      key={f.label}
+                      type="button"
+                      onClick={() => void copy(f.value)}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-gold/20 bg-background/40 px-3 py-2 text-left text-sm text-cream transition hover:border-gold/50"
+                    >
+                      <span className="text-foreground/70">{f.label}</span>
+                      <span className="font-mono font-semibold">
+                        {copied === f.value ? "copiado!" : f.value}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-3 text-xs text-foreground/50">
+                  Use qualquer nome no titular e qualquer CEP. Nada é cobrado.
+                </p>
+              </div>
+            )}
             <div className="mt-4 flex flex-wrap gap-2">
               {TEST_PLANS.map((p) => (
                 <Btn
