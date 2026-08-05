@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Volume2, VolumeX, MapPin } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 
@@ -55,61 +53,18 @@ const videos: VideoStory[] = [
 function VideosPage() {
   const backTo = useLastArea();
   const { t } = useTranslation();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [muted, setMuted] = useState(false);
   const [aldeia, setAldeia] = useState<(typeof ALDEIAS)[number]>("Todas");
   const filteredVideos = useMemo(
     () => (aldeia === "Todas" ? videos : videos.filter((v) => v.aldeia === aldeia)),
     [aldeia],
   );
 
-  const { data: bgUrl } = useQuery({
-    queryKey: ["bg-song"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("songs")
-        .select("audio_url")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      return data?.audio_url ?? null;
-    },
-    staleTime: 60 * 60 * 1000,
-  });
-
-  useEffect(() => {
-    if (!bgUrl) return;
-    const a = new Audio(bgUrl);
-    a.loop = true;
-    a.volume = 0.35;
-    audioRef.current = a;
-    const start = () => {
-      a.play().catch(() => {});
-      window.removeEventListener("pointerdown", start);
-    };
-    a.play().catch(() => window.addEventListener("pointerdown", start, { once: true }));
-    return () => {
-      a.pause();
-      audioRef.current = null;
-      window.removeEventListener("pointerdown", start);
-    };
-  }, [bgUrl]);
-
-  useEffect(() => {
-    if (audioRef.current) audioRef.current.muted = muted;
-  }, [muted]);
-
   // Collect all localizable strings (page chrome + video captions) and translate in one batch
   const staticStrings = useMemo(
     () => [
       "Vídeos Pataxó",
       "Início",
-      "Ativar música de fundo",
-      "Silenciar música de fundo",
-      "Música off",
-      "Música on",
-      "Assista aos vídeos com música indígena tocando ao fundo. Cada cena vem acompanhada da sua história escrita.",
+      "Assista aos vídeos da aldeia. Cada cena vem acompanhada da sua história escrita.",
     ],
     [],
   );
@@ -120,10 +75,6 @@ function VideosPage() {
   const [
     tTitle,
     tHome,
-    tMuteOn,
-    tMuteOff,
-    tMusicOff,
-    tMusicOn,
     tIntro,
   ] = useAutoTranslate(staticStrings);
   const tVideos = useAutoTranslate(videoStrings);
@@ -139,14 +90,6 @@ function VideosPage() {
             <ArrowLeft className="h-4 w-4" /> {tHome}
           </Link>
           <h1 className="font-display text-lg font-black text-cream flex-1">{tTitle}</h1>
-          <button
-            onClick={() => setMuted((m) => !m)}
-            className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-xs text-cream hover:bg-gold/10"
-            aria-label={muted ? tMuteOn : tMuteOff}
-          >
-            {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            {muted ? tMusicOff : tMusicOn}
-          </button>
         </div>
       </header>
 
