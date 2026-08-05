@@ -97,28 +97,21 @@ function VideosPage() {
         <p className="mb-6 max-w-2xl text-sm text-foreground/70">{tIntro}</p>
 
         <section className="mb-8 overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur">
-          <div className="relative aspect-[9/16] max-h-[720px] w-full bg-black sm:aspect-video">
+          <div className="relative aspect-[9/16] max-h-[720px] w-full overflow-hidden bg-black sm:aspect-video">
             <iframe
               src="https://www.instagram.com/reel/DZa2jUGOYDi/embed"
-              title="Reel Instagram"
-              className="h-full w-full"
+              title="Vídeo em destaque"
+              className="absolute left-1/2 top-1/2 h-[calc(100%+180px)] w-[calc(100%+2px)] -translate-x-1/2 -translate-y-1/2 border-0"
               allow="autoplay; encrypted-media; picture-in-picture; web-share"
               allowFullScreen
               scrolling="no"
             />
-          </div>
-          <div className="p-4">
-            <h2 className="font-display text-base font-black text-cream">Destaque do Instagram</h2>
-            <a
-              href="https://www.instagram.com/reel/DZa2jUGOYDi/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-gold hover:underline"
-            >
-              Abrir no Instagram ↗
-            </a>
+            {/* Cobre cabeçalho e rodapé de marca do player externo */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-black" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-black" />
           </div>
         </section>
+
 
 
 
