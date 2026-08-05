@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/traduzir")({
 });
 
 function TraduzirPage() {
+  const { t } = useTranslation();
   const backTo = useLastArea();
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
@@ -37,11 +39,11 @@ function TraduzirPage() {
     m.reset();
   };
 
-  const fromLabel = direction === "pt-pat" ? "Português" : "Patxôhã";
-  const toLabel = direction === "pt-pat" ? "Patxôhã" : "Português";
+  const fromLabel = direction === "pt-pat" ? t("translator.portugues") : t("translator.patxoha");
+  const toLabel = direction === "pt-pat" ? t("translator.patxoha") : t("translator.portugues");
 
   return (
-    <PremiumGate title="Tradutor Premium" description="Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.">
+    <PremiumGate title={t("translator.premiumTitle")} description={t("translator.premiumDescription")}>
     <div className="min-h-screen pb-16 text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
@@ -50,18 +52,16 @@ function TraduzirPage() {
           </Link>
           <div className="flex items-center gap-2 text-leaf">
             <Languages className="h-5 w-5" />
-            <span className="text-sm font-medium">Tradutor</span>
+            <span className="text-sm font-medium">{t("translator.label")}</span>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-3xl px-4 pt-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gold mb-2">
-          Tradutor Patxôhã ⇄ Português
+          {t("translator.title")}
         </h1>
-        <p className="text-foreground/70 mb-8">
-          Tradução assistida por IA usando o dicionário oficial da plataforma.
-        </p>
+        <p className="text-foreground/70 mb-8">{t("translator.subtitle")}</p>
 
         <div className="flex items-center justify-center gap-3 mb-4">
           <span className="px-4 py-2 rounded-full bg-forest-deep/60 border border-gold/30 text-sm font-semibold">
@@ -69,7 +69,7 @@ function TraduzirPage() {
           </span>
           <button
             onClick={swap}
-            aria-label="Inverter direção"
+            aria-label={t("translator.swap")}
             className="p-2 rounded-full bg-gold text-forest-deep hover:scale-110 transition-transform"
           >
             <ArrowLeftRight className="h-4 w-4" />
@@ -88,20 +88,22 @@ function TraduzirPage() {
               rows={8}
               placeholder={
                 direction === "pt-pat"
-                  ? "Digite uma palavra ou frase em português..."
-                  : "Digite uma palavra ou frase em Patxôhã..."
+                  ? t("translator.placeholderPt")
+                  : t("translator.placeholderPat")
               }
               className="w-full bg-transparent resize-none outline-none text-foreground placeholder:text-foreground/40 mt-2"
             />
             <div className="flex justify-between items-center mt-3">
-              <span className="text-xs text-foreground/50">{text.length} caracteres</span>
+              <span className="text-xs text-foreground/50">
+                {t("translator.chars", { count: text.length })}
+              </span>
               <button
                 onClick={() => m.mutate({ text, direction })}
                 disabled={!text.trim() || m.isPending}
                 className="px-4 py-2 rounded-full bg-gold text-forest-deep font-bold disabled:opacity-50 flex items-center gap-2"
               >
                 {m.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                Traduzir
+                {t("translator.translate")}
               </button>
             </div>
           </div>
@@ -110,12 +112,12 @@ function TraduzirPage() {
             <label className="text-xs uppercase tracking-wide text-gold">{toLabel}</label>
             {m.isPending && (
               <div className="flex items-center gap-2 text-foreground/60 mt-4">
-                <Loader2 className="h-4 w-4 animate-spin" /> Traduzindo...
+                <Loader2 className="h-4 w-4 animate-spin" /> {t("translator.translating")}
               </div>
             )}
             {m.isError && (
               <p className="text-red-300 mt-2 text-sm">
-                Erro: {(m.error as Error).message}
+                {t("translator.error")}: {(m.error as Error).message}
               </p>
             )}
             {m.data && (
@@ -126,7 +128,7 @@ function TraduzirPage() {
 
                 {m.data.literal && (
                   <div className="text-xs text-leaf border-t border-gold/10 pt-2">
-                    <span className="font-semibold">Palavra por palavra:</span> {m.data.literal}
+                    <span className="font-semibold">{t("translator.wordByWord")}</span> {m.data.literal}
                   </div>
                 )}
                 {m.data.nota && (
@@ -135,15 +137,13 @@ function TraduzirPage() {
               </div>
             )}
             {!m.data && !m.isPending && !m.isError && (
-              <p className="text-foreground/40 mt-4 text-sm">
-                A tradução aparecerá aqui.
-              </p>
+              <p className="text-foreground/40 mt-4 text-sm">{t("translator.empty")}</p>
             )}
           </div>
         </div>
 
         <p className="text-xs text-foreground/50 mt-6 text-center">
-          ⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].
+          {t("translator.disclaimer")}
         </p>
       </main>
     </div>
