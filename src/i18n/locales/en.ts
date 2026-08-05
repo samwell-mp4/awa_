@@ -165,4 +165,25 @@ export default {
       Outros: "Other",
     },
   },
+  translator: {
+    title: "Patxôhã ⇄ Portuguese Translator",
+    subtitle: "AI-assisted translation using the platform's official dictionary.",
+    label: "Translator",
+    premiumTitle: "Premium Translator",
+    premiumDescription:
+      "Subscribe to AWÃ TECH Premium to use the Patxôhã ⇄ Portuguese translator.",
+    portugues: "Portuguese",
+    patxoha: "Patxôhã",
+    swap: "Swap direction",
+    placeholderPt: "Type a word or phrase in Portuguese...",
+    placeholderPat: "Type a word or phrase in Patxôhã...",
+    chars: "{{count}} characters",
+    translate: "Translate",
+    translating: "Translating...",
+    error: "Error",
+    wordByWord: "Word by word:",
+    empty: "The translation will appear here.",
+    disclaimer:
+      "⚠️ AI-assisted translation — words missing from the dictionary are marked with [?].",
+  },
 };
