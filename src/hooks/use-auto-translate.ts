@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { translateI18n } from "@/lib/i18n-translate.functions";
+import { staticTranslate } from "@/lib/static-glossary";
 
 const LS_PREFIX = "awa_i18n_";
 
