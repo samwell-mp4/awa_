@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { translateI18n } from "@/lib/i18n-translate.functions";
+import { staticTranslate } from "@/lib/static-glossary";
 
 const LS_PREFIX = "awa_i18n_";
 
@@ -40,11 +41,17 @@ export function useAutoTranslate(texts: (string | null | undefined)[]): string[]
       return;
     }
     const cache = loadCache(lang);
-    const initial = normalized.map((s) => cache[s.trim()] ?? s);
-    setOut(initial);
+    // Glossário estático primeiro (instantâneo, funciona offline), depois cache.
+    const resolve = (s: string) =>
+      staticTranslate(s, lang) ?? cache[s.trim()] ?? s;
+    setOut(normalized.map(resolve));
 
     const missing = Array.from(
-      new Set(normalized.map((s) => s.trim()).filter((s) => s && !(s in cache))),
+      new Set(
+        normalized
+          .map((s) => s.trim())
+          .filter((s) => s && !staticTranslate(s, lang) && !(s in cache)),
+      ),
     );
     if (missing.length === 0) return;
 
@@ -58,7 +65,7 @@ export function useAutoTranslate(texts: (string | null | undefined)[]): string[]
           if (value) next[src] = value;
         });
         saveCache(lang, next);
-        setOut(normalized.map((s) => next[s.trim()] ?? s));
+        setOut(normalized.map((s) => staticTranslate(s, lang) ?? next[s.trim()] ?? s));
       })
       .catch(() => {
         /* keep originals */
