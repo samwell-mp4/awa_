@@ -440,7 +440,7 @@ function PairsGame({ onWin }: { onWin: () => void }) {
                 }`}
               >
                 {w.px}
-                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+                <span className="ml-2 text-xs opacity-70">(<T>{w.pt}</T>)</span>
               </button>
               {!done && <SpeakBtn text={w.px} />}
             </div>
@@ -606,7 +606,7 @@ function EnglishPairsGame({
                 }`}
               >
                 {w.en}
-                <span className="ml-2 text-xs opacity-70">({w.pt})</span>
+                <span className="ml-2 text-xs opacity-70">(<T>{w.pt}</T>)</span>
               </button>
               {!done && <SpeakBtn text={w.en} lang="en-US" />}
             </div>
@@ -838,7 +838,7 @@ function CoresGame({ onWin }: { onWin: () => void }) {
         <T>Rodada</T> {i + 1} / {shuffled.length}
       </p>
       <p className="mt-2 font-display text-3xl font-black uppercase text-emerald-900">
-        {target.name}
+        <T>{target.name}</T>
         <SpeakBtn text={target.name} className="ml-2 align-middle" />
       </p>
       <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3">
