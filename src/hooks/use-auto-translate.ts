@@ -41,11 +41,17 @@ export function useAutoTranslate(texts: (string | null | undefined)[]): string[]
       return;
     }
     const cache = loadCache(lang);
-    const initial = normalized.map((s) => cache[s.trim()] ?? s);
-    setOut(initial);
+    // Glossário estático primeiro (instantâneo, funciona offline), depois cache.
+    const resolve = (s: string) =>
+      staticTranslate(s, lang) ?? cache[s.trim()] ?? s;
+    setOut(normalized.map(resolve));
 
     const missing = Array.from(
-      new Set(normalized.map((s) => s.trim()).filter((s) => s && !(s in cache))),
+      new Set(
+        normalized
+          .map((s) => s.trim())
+          .filter((s) => s && !staticTranslate(s, lang) && !(s in cache)),
+      ),
     );
     if (missing.length === 0) return;
 
