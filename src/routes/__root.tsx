@@ -199,8 +199,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
+      <RealtimeContentSync />
       <AppLanguageAutoTranslator />
       <PlanExpiryBanner />
+
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />
