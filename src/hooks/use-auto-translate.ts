@@ -65,7 +65,7 @@ export function useAutoTranslate(texts: (string | null | undefined)[]): string[]
           if (value) next[src] = value;
         });
         saveCache(lang, next);
-        setOut(normalized.map((s) => next[s.trim()] ?? s));
+        setOut(normalized.map((s) => staticTranslate(s, lang) ?? next[s.trim()] ?? s));
       })
       .catch(() => {
         /* keep originals */
