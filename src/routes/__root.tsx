@@ -17,6 +17,8 @@ import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslato
 import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
+import { RealtimeContentSync } from "@/hooks/use-realtime-content";
+
 import { toast } from "sonner";
 import "@/i18n";
 
@@ -199,8 +201,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
+      <RealtimeContentSync />
       <AppLanguageAutoTranslator />
       <PlanExpiryBanner />
+
       <Outlet />
 
       <Toaster theme="dark" position="top-right" richColors />
