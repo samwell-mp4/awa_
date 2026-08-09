@@ -270,7 +270,8 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
 }
 
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speak = useServerFn(narratePublic);
+  const speakFn = useServerFn(narratePublic);
+  const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
 
@@ -283,7 +284,8 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "onyx" } });
+        const isKids = typeof backTo === "string" && backTo.includes("infantil");
+        const r = await speakFn({ data: { text, voice: isKids ? "nova" : "onyx" } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar o áudio");
         }
