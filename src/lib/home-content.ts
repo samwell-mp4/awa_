@@ -41,7 +41,7 @@ export const rankingSeed = [
 ];
 
 export const resourceCards: { icon: LucideIcon; label: string; desc: string }[] = [
-  { icon: ScrollText, label: "Vídeos e Registros", desc: "Narrativas ancestrais em texto e áudio." },
+  { icon: ScrollText, label: "Histórias e Narrativa", desc: "Narrativas ancestrais em texto e áudio." },
   { icon: Video, label: "Vídeos", desc: "Cenas e narrativas da aldeia Pataxó." },
 ];
 
@@ -51,9 +51,9 @@ export type NavGroup = { title: string; items: NavItem[] };
 // Static fallback (used by any non-hook consumer). Prefer useNavContent() in components.
 export const navGroups: NavGroup[] = [
   {
-    title: "Professor Akuã",
+    title: "Tradutor",
     items: [
-      { label: "Professor Akuã", href: "/traduzir", icon: BookOpen },
+      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Dicionário", href: "/dicionario", icon: Library },
       { label: "Trilhas", href: "/trilhas", icon: Award },
     ],
@@ -61,9 +61,9 @@ export const navGroups: NavGroup[] = [
   {
     title: "Cultura e Expressões",
     items: [
-      { label: "Vídeos e Registros", href: "/historias", icon: ScrollText },
+      { label: "Histórias e Narrativa", href: "/historias", icon: ScrollText },
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
-      { label: "Vídeos e Registros", href: "/videos", icon: Video },
+      { label: "Vídeos", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
     ],
   },
