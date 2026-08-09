@@ -38,7 +38,7 @@ function useLocalize(tr: (s: string) => string) {
   };
 }
 
-const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais"];
+const TRAIL_ORDER: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais", "videos"];
 function nextTrailSlug(current: TrailSlug): TrailSlug {
   const i = TRAIL_ORDER.indexOf(current);
   return TRAIL_ORDER[(i + 1) % TRAIL_ORDER.length];

@@ -1,4 +1,4 @@
-export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
+export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais" | "videos";
 
 export const TRAILS: Record<TrailSlug, {
   slug: TrailSlug;
@@ -66,6 +66,20 @@ export const TRAILS: Record<TrailSlug, {
       message: `🗣️ Professor Akuã diz:\n\n— O bicho não é só coisa que existe: ele é mestre também! Você viu como a onça é forte, como a abelha trabalha junta, como a tartaruga tem paciência e como o pássaro leva mensagem ao céu.\n\nAgora, quando ouvir um canto ou ver um movimento na mata, já sabe o nome e já sabe o que ele veio ensinar. O olhar do Pataxó enxerga muito mais do que só os olhos!\n\nEscute a voz da floresta, ela responde!`,
     },
     apoio: "🐾 — Cada bicho é também um mestre.",
+  },
+  videos: {
+    slug: "videos",
+    name: "Vídeos e Registros",
+    emoji: "🎥",
+    color: "from-orange-400 to-amber-600",
+    intro: "Assista a vídeos e registros culturais da nossa aldeia.",
+    categories: ["História e Narrativa"],
+    certificate: {
+      title: "🎥 GUARDIÃO DA MEMÓRIA",
+      description: "Valoriza os registros visuais e a história viva do nosso povo.",
+      message: "🗣️ Professor Akuã diz:\n\n— Ver e ouvir os registros da nossa gente é manter a chama da memória acesa. Parabéns por valorizar nossa história viva!",
+    },
+    apoio: "🎥 — Registros que mantêm nossa cultura viva.",
   },
 };
 
