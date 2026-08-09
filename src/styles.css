@@ -46,28 +46,28 @@
 :root {
   --radius: 1rem;
 
-  /* Brand palette */
-  --forest-deep: oklch(0.18 0.04 145);     /* darker, more neutral forest */
-  --forest: oklch(0.28 0.06 145);          /* slightly desaturated */
-  --leaf: oklch(0.62 0.16 142);            /* #4CAF50 */
+  /* Brand palette — Neutral/Gold theme */
+  --forest-deep: oklch(0.18 0.04 78);     /* deep charcoal brown */
+  --forest: oklch(0.28 0.05 78);          /* charcoal earth */
+  --leaf: oklch(0.45 0.12 78);            /* desaturated gold/brown */
   --gold: oklch(0.78 0.14 78);             /* #F9A825 */
   --earth: oklch(0.38 0.06 45);            /* #5D4037 */
   --cream: oklch(0.96 0.02 90);
 
-  --background: oklch(0.14 0.03 145);
+  --background: oklch(0.14 0.02 78);
   --foreground: oklch(0.96 0.02 90);
-  --card: oklch(0.24 0.05 145);
+  --card: oklch(0.22 0.04 78);
   --card-foreground: oklch(0.96 0.02 90);
-  --popover: oklch(0.24 0.05 145);
+  --popover: oklch(0.22 0.04 78);
   --popover-foreground: oklch(0.96 0.02 90);
-  --primary: var(--leaf);
-  --primary-foreground: oklch(0.16 0.03 145);
-  --secondary: oklch(0.28 0.05 145);
+  --primary: var(--gold);
+  --primary-foreground: oklch(0.16 0.02 78);
+  --secondary: oklch(0.26 0.04 78);
   --secondary-foreground: oklch(0.96 0.02 90);
-  --muted: oklch(0.28 0.04 145);
+  --muted: oklch(0.26 0.03 78);
   --muted-foreground: oklch(0.78 0.03 95);
   --accent: var(--gold);
-  --accent-foreground: oklch(0.18 0.04 145);
+  --accent-foreground: oklch(0.18 0.03 78);
   --destructive: oklch(0.6 0.22 27);
   --destructive-foreground: oklch(0.98 0.01 90);
   --border: oklch(0.4 0.04 90 / 25%);
@@ -88,7 +88,7 @@
   --gradient-gold: linear-gradient(135deg, var(--gold), oklch(0.7 0.18 55));
   --gradient-leaf: linear-gradient(135deg, var(--leaf), oklch(0.42 0.11 78));
   --gradient-hero-glow: radial-gradient(600px 300px at 20% 10%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 70%);
-  --shadow-glow: 0 12px 44px -12px color-mix(in oklab, var(--leaf) 55%, transparent);
+  --shadow-glow: 0 12px 44px -12px color-mix(in oklab, var(--gold) 35%, transparent);
   --shadow-gold: 0 14px 40px -14px color-mix(in oklab, var(--gold) 55%, transparent);
   --shadow-card: 0 24px 60px -24px oklch(0 0 0 / 0.7), 0 2px 0 0 color-mix(in oklab, var(--gold) 10%, transparent) inset;
   --ring-gold: 0 0 0 1px color-mix(in oklab, var(--gold) 55%, transparent);
@@ -120,7 +120,7 @@
   img { -webkit-user-drag: none; }
 }
 
-/* Ambient decorative overlay — subtle grain + leaf silhouettes */
+/* Ambient decorative overlay — subtle grain + golden silhouettes */
 body::before {
   content: "";
   position: fixed;
@@ -245,6 +245,8 @@ body::before {
     linear-gradient(180deg, #cfefff 0%, #ffe4f2 45%, #fff6c9 100%);
   background-size: 220px 220px, cover;
   background-attachment: fixed;
+  padding-top: 22px;
+  padding-bottom: 22px;
 }
 /* Pataxó grafismo strips — top & bottom on every kids screen */
 .kids-theme::before,
@@ -263,8 +265,7 @@ body::before {
 }
 .kids-theme::before { top: 0; }
 .kids-theme::after { bottom: 0; transform: scaleY(-1); }
-/* Give content room so strips don't overlap headers/footers */
-.kids-theme { padding-top: 22px; padding-bottom: 22px; }
+
 .kids-theme h1, .kids-theme h2, .kids-theme h3, .kids-theme h4 {
   font-family: "Fredoka", "Baloo 2", "Archivo Black", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
