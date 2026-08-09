@@ -193,19 +193,7 @@ function JogosInfantilPage() {
         backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
       }}
     >
-      <SiteHeader mode="infantil" />
-
-      <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link
-          to="/infantil"
-          className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"
-        >
-          <ArrowLeft className="h-4 w-4" /> <T>Aldeia</T>
-        </Link>
-        <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-2 text-sm font-black text-emerald-900 shadow">
-          <Star className="h-4 w-4" /> {stars}
-        </div>
-      </header>
+      <SiteHeader mode="infantil" showBackButton title="Jogos" />
 
       <main className="mx-auto max-w-3xl px-4 pb-16">
         <div className="text-center">
