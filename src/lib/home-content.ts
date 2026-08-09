@@ -52,10 +52,10 @@ export type NavGroup = { title: string; items: NavItem[] };
 // Static fallback (used by any non-hook consumer). Prefer useNavContent() in components.
 export const navGroups: NavGroup[] = [
   {
-    title: "Língua e Conhecimento",
+    title: "Professor Akuã",
     items: [
       { label: "Dicionário", href: "/dicionario", icon: Library },
-      { label: "Professor Akuã", href: "/traduzir", icon: BookOpen },
+      
       { label: "Trilhas", href: "/trilhas", icon: Award },
     ],
   },
@@ -142,7 +142,7 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
-        { label: t("nav.professor"), href: "/traduzir", icon: BookOpen },
+        
       ],
     },
     {
