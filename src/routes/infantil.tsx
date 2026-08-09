@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
-import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import infantilLogo from "@/assets/infantil-logo.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
 import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 

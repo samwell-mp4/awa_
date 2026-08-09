@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
-import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import infantilLogo from "@/assets/infantil-logo.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
 import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
