@@ -605,11 +605,9 @@ function HistoriasPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_145/0.5)] via-[oklch(0.16_0.04_145/0.75)] to-[oklch(0.16_0.04_145)]" />
         </div>
 
+        <SiteHeader showBackButton />
         <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
-          <SiteHeader showBackButton />
-
-          <div className="mt-8">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">
+          <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
             🪶 <T>Histórias do Povo</T>
           </p>
           <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
@@ -619,7 +617,6 @@ function HistoriasPage() {
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
             <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
-
         </div>
       </header>
 
