@@ -77,15 +77,6 @@ const totemStyles: Record<string, TotemStyle> = {
     position: "bottom-4 left-8",
     rotate: "3deg",
   },
-  videos: {
-    emoji: "🎥",
-    color: "#f4a261",
-    shadow: "rgba(244,162,97,0.45)",
-    islandTop: "#bae6fd",
-    islandBottom: "#7dd3fc",
-    position: "bottom-12 right-12",
-    rotate: "-2deg",
-  },
 };
 
 function FloatingIsland({ top, bottom, size = 140 }: { top: string; bottom: string; size?: number }) {

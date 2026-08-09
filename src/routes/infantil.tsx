@@ -10,7 +10,7 @@ import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
 import menuVideo from "@/assets/infantil-menu-video-new.mp4.asset.json";
-import subLogoVideo from "@/assets/infantil-sub-logo-video.mp4.asset.json";
+
 
 
 
@@ -79,9 +79,6 @@ function InfantilHome() {
             fetchPriority="high"
             draggable={false}
           />
-          <div className="w-full mt-[-2px] relative z-10 border-b-4 border-amber-300">
-            <VideoMenu src={subLogoVideo.url} label="Awã Tech Infantil" />
-          </div>
         </div>
 
 
@@ -104,7 +101,7 @@ function InfantilHome() {
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
             { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#1b4332" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
-            { slug: "videos", key: "trailVideos", emoji: "🎥", color: "#f4a261" },
+            
           ].map((c) => (
             <Link
               key={`${languageKey}-${c.slug}`}
