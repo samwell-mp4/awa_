@@ -188,13 +188,14 @@ function ProfessorPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // If we're coming from the kids area, make the initial welcome child-voiced.
     const isKids = typeof backTo === "string" && backTo.includes("infantil");
-    if (isKids && messages.length <= 1) {
+    if (messages.length <= 1) {
       const timer = setTimeout(() => {
         const intro = L10N[lang].welcome.replace(/\*\*|__/g, "");
-        speakChild(intro, lang === "en" ? "en-US" : "pt-BR", 0.85, 1.5);
+        speakChild(intro, lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR", 0.85, isKids ? 1.5 : 1.0);
       }, 1000);
       return () => clearTimeout(timer);
     }
+
   }, [lang, backTo]);
 
   useEffect(() => {
