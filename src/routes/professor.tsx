@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
+import { speak as speakChild } from "@/lib/speak";
 import {
   ArrowLeft,
   Send,
@@ -165,7 +166,7 @@ const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
-  const speak = useServerFn(speakText);
+  const speakFn = useServerFn(speakText);
   const lang = useLang();
   const t = L10N[lang];
 
@@ -190,7 +191,7 @@ function ProfessorPage() {
     if (isKids && messages.length <= 1) {
       const timer = setTimeout(() => {
         const intro = L10N[lang].welcome.replace(/\*\*|__/g, "");
-        speak(intro, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+        speakChild(intro, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
       }, 1000);
       return () => clearTimeout(timer);
     }
@@ -211,7 +212,7 @@ function ProfessorPage() {
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      const r = await speakFn({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
       audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
