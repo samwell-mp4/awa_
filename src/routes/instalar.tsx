@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { speak, stopSpeak } from "@/lib/speak";
 import { PublicFooter } from "@/components/PublicFooter";
 import {
   ArrowLeft,
@@ -77,6 +78,12 @@ function InstalarPage() {
 
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  useEffect(() => {
+    const text = "Aprenda como instalar o aplicativo AWÃ TECH no seu celular. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã de forma rápida e segura.";
+    speak(text);
+    return () => stopSpeak();
   }, []);
 
   async function handleInstall() {

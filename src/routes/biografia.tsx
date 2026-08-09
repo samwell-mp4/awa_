@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
+import { speak, stopSpeak } from "@/lib/speak";
 import { SiteHeader } from "@/components/home/site-header";
 import { PublicFooter } from "@/components/PublicFooter";
 
@@ -31,6 +33,13 @@ export const Route = createFileRoute("/biografia")({
 
 function BiografiaPage() {
   const backTo = useLastArea();
+  
+  useEffect(() => {
+    const text = "Bem-vindo à biografia da AWÃ TECH. Somos uma plataforma dedicada a preservar e ensinar as línguas e culturas dos povos originários do Brasil, unindo sabedoria ancestral e tecnologia.";
+    speak(text);
+    return () => stopSpeak();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader showBackButton title="Biografia" />
