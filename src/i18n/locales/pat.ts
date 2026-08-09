@@ -86,4 +86,8 @@ export default {
     kidsLoading: "Ãhõmãy…",
     tagline: "HÃPÕHÃ HITÁ",
   },
+  audioExplanations: {
+    biografia: "Aria aiú AWÃ TECH. Kaí Patxôhã — nossa língua viva, sabedoria dos antepassados e tecnologia do povo Pataxó.",
+    instalar: "Ãhy App AWÃ TECH kaí aldeia. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã."
+  }
 };
