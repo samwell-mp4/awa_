@@ -79,6 +79,9 @@ function InfantilHome() {
             fetchPriority="high"
             draggable={false}
           />
+          <div className="w-full mt-[-2px] relative z-10 border-b-4 border-amber-300">
+            <VideoMenu src={menuVideo.url} label="Awã Tech Infantil" />
+          </div>
         </div>
 
 
