@@ -28,7 +28,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
     setCoords({ top: r.bottom + 8, right: window.innerWidth - r.right });
   }, [open]);
 
-  const currentCode = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+  const currentCode = (i18n.language || "pt").slice(0, 2).toLowerCase();
   const current = SUPPORTED_LANGS.find((l) => l.code === currentCode) ?? SUPPORTED_LANGS[0];
 
   function change(code: LangCode) {

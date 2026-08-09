@@ -233,7 +233,7 @@ function LanguageHydrator() {
       }
       document.documentElement.lang = target;
       window.localStorage.setItem("awa_lang", target);
-      if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+      if ((i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
         void i18n.changeLanguage(target);
       }
     }, 0);
