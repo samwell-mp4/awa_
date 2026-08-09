@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Mail } from "lucide-react";
 import { SiteHeader } from "@/components/home/site-header";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
@@ -136,6 +136,18 @@ function TraduzirPage() {
         <p className="text-xs text-foreground/50 mt-6 text-center">
           {t("translator.disclaimer")}
         </p>
+
+        <div className="mt-8 flex justify-center">
+          <a
+            href={t("translator.contact.link")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-5 py-2.5 text-sm font-semibold text-gold transition hover:bg-gold/10 hover:border-gold/50"
+          >
+            <Mail className="h-4 w-4" />
+            {t("translator.contact.google")}
+          </a>
+        </div>
       </main>
     </div>
     </PremiumGate>

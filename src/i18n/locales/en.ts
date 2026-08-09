@@ -185,5 +185,9 @@ export default {
     empty: "The translation will appear here.",
     disclaimer:
       "⚠️ AI-assisted translation — words missing from the dictionary are marked with [?].",
+    contact: {
+      google: "Contact via Google",
+      link: "https://forms.gle/vH4yK8T8A7G6F5E4"
+    }
   },
 };
