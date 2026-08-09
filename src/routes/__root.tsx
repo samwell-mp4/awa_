@@ -216,21 +216,21 @@ function LanguageHydrator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Defer language switch to after hydration completes to avoid
-    // hydration mismatches on SSR-rendered translated strings.
-    const timer = window.setTimeout(() => {
-      const valid = ["pt", "en", "es", "pat"];
-      const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-      // Não usamos detecção automática do navegador para evitar mismatch com o server "pt"
-      const target = valid.includes(stored || "") ? stored : "pt";
-      
-      if (target && (i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
-        document.documentElement.lang = target;
-        window.localStorage.setItem("awa_lang", target);
-        void i18n.changeLanguage(target);
-      }
-    }, 100);
-    return () => window.clearTimeout(timer);
+    const valid = ["pt", "en", "es", "pat"];
+    
+    // Check localStorage and cookies
+    const stored = window.localStorage.getItem("awa_lang");
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('awa_lang='))?.split('=')[1];
+    
+    const target = valid.includes(stored || "") ? stored : (valid.includes(cookie || "") ? cookie : "pt");
+    
+    const current = (i18n.language || "pt").split("-")[0].toLowerCase();
+    
+    if (target && current !== target) {
+      console.log(`[i18n] Hydrating language: ${current} -> ${target}`);
+      void i18n.changeLanguage(target);
+      document.documentElement.lang = target;
+    }
   }, [i18n]);
 
   return null;
