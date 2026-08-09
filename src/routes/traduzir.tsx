@@ -13,7 +13,7 @@ import { PremiumGate } from "@/components/PremiumGate";
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
     meta: [
-      { title: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
+      { title: "Professor Akuã Patxôhã ⇄ Português — AWÃ TECH" },
       { name: "description", content: "Tradutor Português ⇄ Patxôhã gratuito." },
       { property: "og:title", content: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
     ],
