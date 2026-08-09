@@ -58,7 +58,7 @@ export default {
     entrarCriar: "Entrar / Crear cuenta",
     sair: "Salir",
     groups: {
-      lingua: "Lengua y Conocimiento",
+      lingua: "Professor Akuã",
       cultura: "Cultura y Expresiones",
       quemSomos: "Sobre nosotros y Ayuda",
       usuario: "Área del Usuario",
