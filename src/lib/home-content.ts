@@ -62,7 +62,7 @@ export const navGroups: NavGroup[] = [
   {
     title: "Cultura e Expressões",
     items: [
-      { label: "Histórias e Narrativas", href: "/historias", icon: ScrollText },
+      { label: "Vídeos e Registros", href: "/historias", icon: ScrollText },
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
       { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
