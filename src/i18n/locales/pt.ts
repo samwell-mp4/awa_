@@ -167,7 +167,7 @@ export default {
   },
   translator: {
     title: "Tradutor Patxôhã ⇄ Português",
-    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma.",
+    subtitle: "Tradução assistida usando o dicionário oficial da plataforma.",
     label: "Tradutor",
     premiumTitle: "Tradutor Premium",
     premiumDescription: "Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.",
@@ -183,7 +183,7 @@ export default {
     wordByWord: "Palavra por palavra:",
     empty: "A tradução aparecerá aqui.",
     disclaimer:
-      "⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].",
+      "⚠️ Tradução assistida — palavras ausentes do dicionário são marcadas com [?].",
     contact: {
       google: "Entrar em contato via Google",
       link: "https://forms.gle/vH4yK8T8A7G6F5E4"
