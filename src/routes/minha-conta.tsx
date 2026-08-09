@@ -16,7 +16,6 @@ import {
   Star,
   UserPlus,
 } from "lucide-react";
-import { SiteHeader } from "@/components/home/site-header";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -169,7 +168,18 @@ function MinhaContaPage() {
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
       <PaymentTestModeBanner />
-      <SiteHeader showBackButton title="Minha Conta" />
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" /> Início
+          </Link>
+          <img src={logoSrc} alt="AWÃ TECH" className="h-9 w-auto" />
+          <div className="w-16" />
+        </div>
+      </header>
 
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-14">
         {/* HERO / BOAS-VINDAS */}
