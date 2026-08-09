@@ -30,7 +30,7 @@ export function SiteHeader({ mode = "all", showBackButton = false, title }: { mo
     <header
       className={
         isKids
-          ? "sticky top-0 z-40 backdrop-blur-xl bg-gradient-to-r from-[#ffd166] via-[#ef476f] to-[#06d6a0] border-b-4 border-white/70 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
+          ? "sticky top-0 z-40 backdrop-blur-xl bg-gradient-to-r from-[#ffd166] via-[#ef476f] to-[#06d6a0] border-b-4 border-white/70 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)] px-4 sm:px-6 lg:px-8"
           : "sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.14_0.04_145/0.75)] border-b border-gold/25 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.6)]"
       }
     >

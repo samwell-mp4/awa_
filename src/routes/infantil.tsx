@@ -70,8 +70,8 @@ function InfantilHome() {
     <div className="kids-theme min-h-screen text-foreground">
       <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="-mx-3 md:-mx-6 mt-0 flex flex-col items-center">
+      <main className="mx-auto w-full max-w-none px-0 pb-16">
+        <div className="flex flex-col items-center w-full">
           <img
             src={infantilLogo.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
@@ -86,7 +86,7 @@ function InfantilHome() {
 
 
         {/* Menu labels below the video — todos juntos */}
-        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 px-3 md:px-8 max-w-6xl mx-auto">
           {hotspots.map((h) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
