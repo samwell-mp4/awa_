@@ -108,7 +108,7 @@ export default {
     trailFamilia: "Familia",
     trailNatureza: "Naturaleza",
     trailAnimais: "Animales",
-    trailVideos: "Videos",
+    trailVideos: "Videos y Registros",
     kidsTrailsTitle: "🗺️ Senderos de la Aldea",
     kidsTrailsSubtitle: "¡Toca un tótem y sigue el camino mágico!",
     trailDescSaudacoes: "Aprende a saludar como los pueblos indígenas, con palabras de respeto y alegría para comenzar el día.",

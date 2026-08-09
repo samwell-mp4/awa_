@@ -133,7 +133,7 @@ function TrilhaInfantilPage() {
         .kids-totem:hover { animation-play-state: paused; }
       `}</style>
 
-      <SiteHeader mode="infantil" showBackButton title="Trilhas" />
+      <SiteHeader mode="infantil" showBackButton title={t("nav.videosLong")} />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif]">
         <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#ffd166]/40 bg-[#fdfcf0] shadow-inner">
