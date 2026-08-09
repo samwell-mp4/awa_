@@ -83,6 +83,7 @@ function SaudacoesPage() {
       speak(welcomeText, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, isKids ? 1.5 : 1.0);
     }, 1000);
 
+
     return () => clearTimeout(timer);
   }, [i18n.language, backTo]);
 
