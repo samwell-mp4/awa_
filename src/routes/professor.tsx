@@ -28,9 +28,9 @@ import logoSrc from "@/assets/awa-tech-logo.png";
 export const Route = createFileRoute("/professor")({
   head: () => ({
     meta: [
-      { title: "Professor Akuã — AWÃ TECH" },
-      { name: "description", content: "Converse com o mestre virtual de Patxôhã. Aprenda pronúncia, vocabulário e cultura com o Professor Akuã." },
-      { property: "og:title", content: "Professor Akuã — Mestre de Patxôhã" },
+      { title: "Tradutor — AWÃ TECH" },
+      { name: "description", content: "Converse com o mestre virtual de Patxôhã. Aprenda pronúncia, vocabulário e cultura com o Tradutor." },
+      { property: "og:title", content: "Tradutor — Mestre de Patxôhã" },
       { property: "og:description", content: "Aprenda Patxôhã com um mestre virtual, com áudio, exemplos e cultura indígena." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/professor")({
   }),
   component: () => (
     <PremiumGate
-      title="Professor Akuã (Premium)"
+      title="Tradutor (Premium)"
       description="Converse com o mestre virtual de Patxôhã sem limites. Recurso exclusivo para assinantes."
     >
       <ProfessorPage />
@@ -69,7 +69,7 @@ type L10n = {
 const L10N: Record<Lang, L10n> = {
   pt: {
     welcome:
-      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+      "Kanhgág! Sou o **Tradutor**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
     subtitle: "Mestre de Patxôhã · Online",
     newChat: "Nova conversa",
     suggestionsTitle: "Sugestões para começar",

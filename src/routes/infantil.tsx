@@ -32,7 +32,7 @@ export const Route = createFileRoute("/infantil")({
       {
         name: "description",
         content:
-          "Área infantil do Awã Tech: trilhas, cânticos, histórias, jogos e amizade para crianças aprenderem línguas indígenas brincando.",
+          "Área infantil do Awã Tech: trilhas, cânticos, histórias e amizade para crianças aprenderem línguas indígenas brincando.",
       },
       { property: "og:title", content: "Awã Tech Infantil" },
       {

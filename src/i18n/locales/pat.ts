@@ -5,14 +5,14 @@ export default {
     dicionario: "Ãhõmãy Patxôhã",
     tradutor: "Tuxauá Nakão",
     trilhas: "Auê Pahí",
-    historias: "Nakãy Ohã (Vídeos e Registros)",
+    historias: "Nakãy Ohã (Histórias e Narrativa)",
     musicas: "Ĩmãyã",
     videos: "Nakãy Ohã",
     jogos: "Kutxâ",
-    professor: "Kaí Akuã",
-    historiasLong: "Nakãy Ohã (Vídeos e Registros)",
+    professor: "Kaí Tradutor",
+    historiasLong: "Nakãy Ohã (Histórias e Narrativa)",
     musicasLong: "Ĩmãyã (Cantigas)",
-    videosLong: "Nakãy Ohã (Vídeos e Registros)",
+    videosLong: "Nakãy Ohã (Histórias e Narrativa)",
     jogosLong: "Kutxâ (Jogos)",
     biografia: "Awã Tech Nakão",
     instalar: "Ãhy App",
@@ -88,6 +88,6 @@ export default {
   },
   audioExplanations: {
     biografia: "Aria aiú AWÃ TECH. Kaí Patxôhã — nossa língua viva, sabedoria dos antepassados e tecnologia do povo Pataxó.",
-    instalar: "Ãhy App AWÃ TECH kaí aldeia. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã."
+    instalar: "Ãhy App AWÃ TECH kaí aldeia. Adicione à sua tela inicial para acessar o dicionário, músicas e o Tradutor."
   }
 };

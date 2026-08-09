@@ -35,13 +35,13 @@ export const Route = createFileRoute("/adulto")({
       {
         name: "description",
         content:
-          "Área adulta do Awã Tech: trilhas de aprendizado, Professor Akuã, dicionário, histórias e biografia.",
+          "Área adulta do Awã Tech: trilhas de aprendizado, Tradutor, dicionário, histórias e biografia.",
       },
       { property: "og:title", content: "Awã Tech Adulto" },
       {
         property: "og:description",
         content:
-          "Aprofunde-se nas línguas indígenas com trilhas, Professor Akuã e muito mais.",
+          "Aprofunde-se nas línguas indígenas com trilhas, Tradutor e muito mais.",
       },
     ],
   }),
