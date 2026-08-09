@@ -165,7 +165,7 @@ function InstalarPage() {
               Baixe o <span className="text-leaf">Awã Tech</span>
             </h1>
             <p className="mt-4 text-lg text-foreground/80 md:text-xl">
-              Leve o dicionário Patxôhã, as músicas, as histórias e o Professor Akuã no seu celular — sem
+              Leve o dicionário Patxôhã, as músicas, as histórias e o Tradutor no seu celular — sem
               precisar da loja de apps.
             </p>
 
