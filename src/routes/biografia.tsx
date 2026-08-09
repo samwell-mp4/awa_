@@ -37,7 +37,7 @@ function BiografiaPage() {
   const { t, i18n } = useTranslation();
   
   useEffect(() => {
-    const text = t("translator.audioExplanations.biografia");
+    const text = t("audioExplanations.biografia");
     speak(text, i18n.language);
     return () => stopSpeak();
   }, [t, i18n.language]);

@@ -83,7 +83,7 @@ function InstalarPage() {
   }, []);
 
   useEffect(() => {
-    const text = t("translator.audioExplanations.instalar");
+    const text = t("audioExplanations.instalar");
     speak(text, i18n.language);
     return () => stopSpeak();
   }, [t, i18n.language]);
