@@ -245,50 +245,7 @@ function ProfessorPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.9)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold/90 hover:text-gold transition"
-          >
-            <ArrowLeft className="h-4 w-4" /> Voltar
-          </Link>
-
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={logoSrc}
-                alt=""
-                className="h-9 w-9 rounded-full border border-gold/40 object-cover shadow-md"
-              />
-              <span
-                aria-hidden
-                className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
-              />
-            </div>
-            <div className="leading-tight">
-              <div className="font-display text-sm font-black text-cream md:text-base">
-                Professor Akuã
-              </div>
-              <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
-                {t.subtitle}
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={resetConversation}
-            disabled={isEmpty && !loading}
-            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/50 hover:text-cream disabled:opacity-40"
-            title={t.newChat}
-          >
-            <RefreshCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{t.newChat}</span>
-          </button>
-        </div>
-      </header>
+      <SiteHeader showBackButton title="Professor Akuã" />
 
       <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
         <div className="space-y-5">
