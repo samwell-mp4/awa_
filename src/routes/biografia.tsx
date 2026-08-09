@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
+import { useEffect } from "react";
+import { speak } from "@/lib/speak";
+import { useTranslation } from "react-i18next";
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -30,6 +33,20 @@ export const Route = createFileRoute("/biografia")({
 
 function BiografiaPage() {
   const backTo = useLastArea();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Delay slightly to ensure user interaction "warms up" the engine
+    const timer = setTimeout(() => {
+      const bioText = i18n.language === "pt" 
+        ? "Conheça a história da Awã Tech: uma plataforma dedicada ao ensino de línguas indígenas brasileiras e à preservação de culturas vivas. Nossa missão é unir a tecnologia à sabedoria ancestral dos povos indígenas."
+        : "Discover the story of Awã Tech: a platform dedicated to teaching Brazilian indigenous languages and preserving living cultures. Our mission is to bridge technology with the ancestral wisdom of indigenous peoples.";
+      
+      speak(bioText, i18n.language === "pt" ? "pt-BR" : "en-US");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
