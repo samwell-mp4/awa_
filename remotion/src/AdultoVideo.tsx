@@ -13,7 +13,7 @@ import {
 import { TransitionSeries, springTiming, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
-import { NARRATION_LANG } from "./narration-lang";
+import { getNarrationLang } from "./narration-lang";
 import { loadFont as loadDisplay } from "@remotion/google-fonts/PlayfairDisplay";
 import { loadFont as loadBody } from "@remotion/google-fonts/Inter";
 
@@ -25,11 +25,14 @@ const CREAM = "#F4E9D4";
 const DEEP = "#07160F";
 
 /** Narração da cena (inicia logo após a entrada visual). */
-const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
-  <Sequence from={from} layout="none">
-    <Audio src={staticFile(`audio/${NARRATION_LANG}/${id}.mp3`)} volume={1} />
-  </Sequence>
-);
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => {
+  const lang = getNarrationLang();
+  return (
+    <Sequence from={from} layout="none">
+      <Audio src={staticFile(`audio/${lang}/${id}.mp3`)} volume={1} />
+    </Sequence>
+  );
+};
 
 const Grain: React.FC = () => (
   <AbsoluteFill
@@ -187,9 +190,9 @@ const Statement: React.FC = () => (
             maxWidth: 1050,
           }}
         >
-          {NARRATION_LANG === "pt" ? "Línguas indígenas," : NARRATION_LANG === "es" ? "Lenguas indígenas," : "Indigenous languages,"}
+          {getNarrationLang() === "pt" ? "Línguas indígenas," : getNarrationLang() === "es" ? "Lenguas indígenas," : "Indigenous languages,"}
           <br />
-          <span style={{ color: GOLD }}>{NARRATION_LANG === "pt" ? "culturas vivas." : NARRATION_LANG === "es" ? "culturas vivas." : "living cultures."}</span>
+          <span style={{ color: GOLD }}>{getNarrationLang() === "pt" ? "culturas vivas." : getNarrationLang() === "es" ? "culturas vivas." : "living cultures."}</span>
         </div>
       </Reveal>
       <Reveal delay={26}>
@@ -203,9 +206,9 @@ const Statement: React.FC = () => (
             lineHeight: 1.45,
           }}
         >
-          {NARRATION_LANG === "pt" 
+          {getNarrationLang() === "pt" 
             ? "Aprenda Patxôhã com curadoria de anciãos e educadores da aldeia." 
-            : NARRATION_LANG === "es"
+            : getNarrationLang() === "es"
             ? "Aprende Patxôhã con la curaduría de ancianos y educadores de la aldea."
             : "Learn Patxôhã with curation from village elders and educators."}
         </div>
@@ -345,8 +348,8 @@ const Languages: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const langs = ["Português", "English", "Español", "Patxôhã"];
-  const title = NARRATION_LANG === "pt" ? "Quatro idiomas," : NARRATION_LANG === "es" ? "Cuatro idiomas," : "Four languages,";
-  const suffix = NARRATION_LANG === "pt" ? "uma raiz." : NARRATION_LANG === "es" ? "una raíz." : "one root.";
+  const title = getNarrationLang() === "pt" ? "Quatro idiomas," : getNarrationLang() === "es" ? "Cuatro idiomas," : "Four languages,";
+  const suffix = getNarrationLang() === "pt" ? "uma raiz." : getNarrationLang() === "es" ? "una raíz." : "one root.";
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
       <Narration id="a7" />
@@ -427,8 +430,8 @@ const Quote: React.FC = () => {
                 marginTop: 30,
               }}
             >
-              {NARRATION_LANG === "pt" ? "Cada palavra aprendida é uma" : NARRATION_LANG === "es" ? "Cada palabra aprendida es una" : "Every word learned is a"}
-              <span style={{ color: GOLD }}> {NARRATION_LANG === "pt" ? "memória que continua viva." : NARRATION_LANG === "es" ? "memoria que continúa viva." : "memory that stays alive."}</span>
+              {getNarrationLang() === "pt" ? "Cada palavra aprendida é uma" : getNarrationLang() === "es" ? "Cada palabra aprendida es una" : "Every word learned is a"}
+              <span style={{ color: GOLD }}> {getNarrationLang() === "pt" ? "memória que continua viva." : getNarrationLang() === "es" ? "memoria que continúa viva." : "memory that stays alive."}</span>
             </div>
           </Reveal>
           <Reveal delay={30}>

@@ -14,7 +14,7 @@ import { TransitionSeries, springTiming, linearTiming } from "@remotion/transiti
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
 import { clockWipe } from "@remotion/transitions/clock-wipe";
-import { NARRATION_LANG } from "./narration-lang";
+import { getNarrationLang } from "./narration-lang";
 import { loadFont as loadDisplay } from "@remotion/google-fonts/Fredoka";
 import { loadFont as loadBody } from "@remotion/google-fonts/Baloo2";
 
@@ -111,11 +111,14 @@ const Confetti: React.FC<{ count?: number }> = ({ count = 26 }) => {
 };
 
 /** Narração da cena */
-const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
-  <Sequence from={from} layout="none">
-    <Audio src={staticFile(`audio/${NARRATION_LANG}/${id}.mp3`)} volume={1} />
-  </Sequence>
-);
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => {
+  const lang = getNarrationLang();
+  return (
+    <Sequence from={from} layout="none">
+      <Audio src={staticFile(`audio/${lang}/${id}.mp3`)} volume={1} />
+    </Sequence>
+  );
+};
 
 /* ---------------- 1 — Abertura ---------------- */
 const KidOpening: React.FC = () => {
@@ -217,9 +220,9 @@ const KidStatement: React.FC = () => {
               textShadow: `0 8px 0 rgba(0,0,0,0.25)`,
             }}
           >
-            {NARRATION_LANG === "pt" ? "Aprender Patxôhã" : NARRATION_LANG === "es" ? "¡Aprender Patxôhã" : "Learn Patxôhã"}
+            {getNarrationLang() === "pt" ? "Aprender Patxôhã" : getNarrationLang() === "es" ? "¡Aprender Patxôhã" : "Learn Patxôhã"}
             <br />
-            <span style={{ color: SUN }}>{NARRATION_LANG === "pt" ? "brincando!" : NARRATION_LANG === "es" ? "jugando!" : "by playing!"}</span>
+            <span style={{ color: SUN }}>{getNarrationLang() === "pt" ? "brincando!" : getNarrationLang() === "es" ? "jugando!" : "by playing!"}</span>
           </div>
         </Pop>
         <Pop delay={20}>
@@ -233,9 +236,9 @@ const KidStatement: React.FC = () => {
               textAlign: "center",
             }}
           >
-            {NARRATION_LANG === "pt" 
+            {getNarrationLang() === "pt" 
               ? "Jogos, cantigas e histórias da aldeia para as crianças" 
-              : NARRATION_LANG === "es"
+              : getNarrationLang() === "es"
               ? "Juegos, canciones e historias de la aldea para niños"
               : "Games, songs and village stories for children"}
           </div>
@@ -394,7 +397,7 @@ const getWords = (lang: string) => {
 const KidWords: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const WORDS = getWords(NARRATION_LANG);
+  const WORDS = getWords(getNarrationLang());
   return (
     <AbsoluteFill style={{ background: NIGHT }}>
       <Img
@@ -406,7 +409,7 @@ const KidWords: React.FC = () => {
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Pop>
           <div style={{ fontFamily: display, fontWeight: 700, fontSize: 60, color: SUN }}>
-            {NARRATION_LANG === "pt" ? "Suas primeiras palavras" : NARRATION_LANG === "es" ? "Tus primeras palabras" : "Your first words"}
+            {getNarrationLang() === "pt" ? "Suas primeiras palavras" : getNarrationLang() === "es" ? "Tus primeras palabras" : "Your first words"}
           </div>
         </Pop>
         <div style={{ display: "flex", gap: 40, marginTop: 60 }}>
@@ -477,7 +480,7 @@ const KidClosing: React.FC = () => {
                   textShadow: `0 7px 0 ${CLAY}`,
                 }}
               >
-                {NARRATION_LANG === "pt" ? "Awê! Vamos brincar?" : NARRATION_LANG === "es" ? "¡Awê! ¿Vamos a jugar?" : "Awê! Let's play?"}
+                {getNarrationLang() === "pt" ? "Awê! Vamos brincar?" : getNarrationLang() === "es" ? "¡Awê! ¿Vamos a jugar?" : "Awê! Let's play?"}
               </div>
             </Pop>
             <Pop delay={14}>
