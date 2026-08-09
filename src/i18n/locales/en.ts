@@ -43,7 +43,7 @@ export default {
     musicas: "Music",
     videos: "Videos",
     jogos: "Games",
-    professor: "Teacher's Space",
+    professor: "Professor Akuã",
     historiasLong: "Stories & Narratives",
     musicasLong: "Songs & Chants",
     videosLong: "Videos & Records",
