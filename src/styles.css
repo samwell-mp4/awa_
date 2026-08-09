@@ -129,7 +129,7 @@ body::before {
   z-index: 0;
   background-image:
     radial-gradient(1px 1px at 20% 30%, color-mix(in oklab, var(--gold) 30%, transparent) 50%, transparent 51%),
-    radial-gradient(1px 1px at 70% 80%, color-mix(in oklab, var(--leaf) 30%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 70% 80%, color-mix(in oklab, var(--gold) 30%, transparent) 50%, transparent 51%),
     radial-gradient(1px 1px at 40% 60%, color-mix(in oklab, var(--cream) 12%, transparent) 50%, transparent 51%);
   background-size: 220px 220px, 260px 260px, 180px 180px;
   opacity: 0.35;
