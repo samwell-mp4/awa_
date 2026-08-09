@@ -217,9 +217,9 @@ const KidStatement: React.FC = () => {
               textShadow: `0 8px 0 rgba(0,0,0,0.25)`,
             }}
           >
-            Aprender Patxôhã
+            {NARRATION_LANG === "pt" ? "Aprender Patxôhã" : NARRATION_LANG === "es" ? "¡Aprender Patxôhã" : "Learn Patxôhã"}
             <br />
-            <span style={{ color: SUN }}>brincando!</span>
+            <span style={{ color: SUN }}>{NARRATION_LANG === "pt" ? "brincando!" : NARRATION_LANG === "es" ? "jugando!" : "by playing!"}</span>
           </div>
         </Pop>
         <Pop delay={20}>
@@ -233,7 +233,11 @@ const KidStatement: React.FC = () => {
               textAlign: "center",
             }}
           >
-            Jogos, cantigas e histórias da aldeia para as crianças
+            {NARRATION_LANG === "pt" 
+              ? "Jogos, cantigas e histórias da aldeia para as crianças" 
+              : NARRATION_LANG === "es"
+              ? "Juegos, canciones e historias de la aldea para niños"
+              : "Games, songs and village stories for children"}
           </div>
         </Pop>
       </AbsoluteFill>
@@ -460,7 +464,7 @@ const KidClosing: React.FC = () => {
                   textShadow: `0 7px 0 ${CLAY}`,
                 }}
               >
-                Awê! Vamos brincar?
+                {NARRATION_LANG === "pt" ? "Awê! Vamos brincar?" : NARRATION_LANG === "es" ? "¡Awê! ¿Vamos a jugar?" : "Awê! Let's play?"}
               </div>
             </Pop>
             <Pop delay={14}>

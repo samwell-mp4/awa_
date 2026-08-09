@@ -187,9 +187,9 @@ const Statement: React.FC = () => (
             maxWidth: 1050,
           }}
         >
-          Línguas indígenas,
+          {NARRATION_LANG === "pt" ? "Línguas indígenas," : NARRATION_LANG === "es" ? "Lenguas indígenas," : "Indigenous languages,"}
           <br />
-          <span style={{ color: GOLD }}>culturas vivas.</span>
+          <span style={{ color: GOLD }}>{NARRATION_LANG === "pt" ? "culturas vivas." : NARRATION_LANG === "es" ? "culturas vivas." : "living cultures."}</span>
         </div>
       </Reveal>
       <Reveal delay={26}>
@@ -203,7 +203,11 @@ const Statement: React.FC = () => (
             lineHeight: 1.45,
           }}
         >
-          Aprenda Patxôhã com curadoria de anciãos e educadores da aldeia.
+          {NARRATION_LANG === "pt" 
+            ? "Aprenda Patxôhã com curadoria de anciãos e educadores da aldeia." 
+            : NARRATION_LANG === "es"
+            ? "Aprende Patxôhã con la curaduría de ancianos y educadores de la aldea."
+            : "Learn Patxôhã with curation from village elders and educators."}
         </div>
       </Reveal>
     </AbsoluteFill>
@@ -341,6 +345,8 @@ const Languages: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const langs = ["Português", "English", "Español", "Patxôhã"];
+  const title = NARRATION_LANG === "pt" ? "Quatro idiomas," : NARRATION_LANG === "es" ? "Cuatro idiomas," : "Four languages,";
+  const suffix = NARRATION_LANG === "pt" ? "uma raiz." : NARRATION_LANG === "es" ? "una raíz." : "one root.";
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
       <Narration id="a7" />
@@ -357,7 +363,7 @@ const Languages: React.FC = () => {
               textAlign: "center",
             }}
           >
-            Quatro idiomas, <span style={{ color: GOLD }}>uma raiz.</span>
+            {title} <span style={{ color: GOLD }}>{suffix}</span>
           </div>
         </Reveal>
         <div style={{ display: "flex", gap: 22, marginTop: 52 }}>
@@ -421,8 +427,8 @@ const Quote: React.FC = () => {
                 marginTop: 30,
               }}
             >
-              Cada palavra aprendida é uma{" "}
-              <span style={{ color: GOLD }}>memória que continua viva.</span>
+              {NARRATION_LANG === "pt" ? "Cada palavra aprendida é uma" : NARRATION_LANG === "es" ? "Cada palabra aprendida es una" : "Every word learned is a"}
+              <span style={{ color: GOLD }}> {NARRATION_LANG === "pt" ? "memória que continua viva." : NARRATION_LANG === "es" ? "memoria que continúa viva." : "memory that stays alive."}</span>
             </div>
           </Reveal>
           <Reveal delay={30}>
