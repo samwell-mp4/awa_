@@ -12,6 +12,7 @@ import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 import { useLastArea } from "@/lib/last-area";
+import { speak as speakChild } from "@/lib/speak";
 
 
 
@@ -456,12 +457,13 @@ function PlayableCard({
         toast.error("Seu navegador não suporta síntese de voz.");
         return;
       }
+      const isKids = typeof backTo === "string" && backTo.includes("infantil");
       const synth = window.speechSynthesis;
       synth.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "pt-BR";
-      utter.rate = 0.85;
-      utter.pitch = 1;
+      utter.rate = isKids ? 1.1 : 0.85;
+      utter.pitch = isKids ? 1.5 : 1;
       const voices = synth.getVoices();
       const preferred =
         voices.find((v) => /pt[-_]BR/i.test(v.lang) && /male|masc|ricardo|daniel|luciano/i.test(v.name)) ||
