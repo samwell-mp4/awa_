@@ -108,7 +108,7 @@ export default {
     trailFamilia: "Family",
     trailNatureza: "Nature",
     trailAnimais: "Animals",
-    trailVideos: "Videos",
+    trailVideos: "Videos and Records",
     kidsTrailsTitle: "🗺️ Village Trails",
     kidsTrailsSubtitle: "Tap a totem and follow the magic path!",
     trailDescSaudacoes: "Learn to greet like the indigenous peoples, with words of respect and joy to start the day.",
