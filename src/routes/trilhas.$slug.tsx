@@ -16,6 +16,7 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useLastArea } from "@/lib/last-area";
 import { SiteHeader } from "@/components/home/site-header";
+import { speak as speakChild } from "@/lib/speak";
 
 function useTr(texts: string[]) {
   const translated = useAutoTranslate(texts);
@@ -337,7 +338,7 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
             {w.pronunciation && <div className="text-sm text-emerald-800/80 mt-0.5">🗣️ {w.pronunciation}</div>}
           </div>
           <div className="flex flex-col items-center gap-2">
-            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
+            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} isKids={isKids} />
             <button
               onClick={onToggle}
               aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
@@ -360,7 +361,7 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
         <div className="flex flex-col items-center gap-2">
-          <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
+          <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} isKids={isKids} />
           <button
             onClick={onToggle}
             aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
@@ -374,8 +375,8 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
   );
 }
 
-function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speak = useServerFn(speakText);
+function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | null; isKids?: boolean }) {
+  const speakFn = useServerFn(speakText);
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
 
@@ -383,12 +384,16 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     if (busy) return;
     try {
       setBusy(true);
+      if (isKids && !audioUrl) {
+        speakChild(text, "pt-BR", 1.1, 1.5);
+        return;
+      }
       if (audioUrl) {
         await playFast(audioUrl);
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar áudio");
         }

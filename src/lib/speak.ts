@@ -77,7 +77,7 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 1, pitch: number = 1.05) {
   const s = synth();
   if (!s || !text) return;
   try {
@@ -89,7 +89,7 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1) {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
       u.rate = rate;
-      u.pitch = 1.05;
+      u.pitch = pitch;
       u.volume = 1;
       const v = pickVoice(lang);
       if (v) u.voice = v;

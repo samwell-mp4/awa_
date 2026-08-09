@@ -71,7 +71,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       if (!url) {
         const lang = i18n.language.slice(0, 2).toLowerCase();
         const text = `${title}. ${description}`;
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "nova" });
         if (!url) {
           setState("idle");
           return;
@@ -139,7 +139,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
               text: `${title}. ${description}`,
               lang,
               mode: "story",
-              voice: "onyx",
+              voice: "nova",
             })
           }
 
