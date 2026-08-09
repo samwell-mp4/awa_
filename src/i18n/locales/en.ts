@@ -30,7 +30,7 @@ export default {
     wisdomCta: "Tap to enter the trails guided by Professor Akuã →",
     resourcesTitle: "Platform resources",
     resourcesSubtitle: "Everything you need to dive into the languages and cultures of Indigenous peoples.",
-    resourceHistoriasLabel: "Stories",
+    resourceHistoriasLabel: "Videos & Records",
     resourceHistoriasDesc: "Ancestral narratives in text and audio.",
     resourceVideosLabel: "Videos",
     resourceVideosDesc: "Scenes and narratives from the Pataxó village.",

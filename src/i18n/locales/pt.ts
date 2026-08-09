@@ -30,7 +30,7 @@ export default {
     wisdomCta: "Toque para entrar nas trilhas guiadas pelo Professor Akuã →",
     resourcesTitle: "Recursos da plataforma",
     resourcesSubtitle: "Tudo o que você precisa para mergulhar nas línguas e culturas dos povos originários.",
-    resourceHistoriasLabel: "Histórias",
+    resourceHistoriasLabel: "Vídeos e Registros",
     resourceHistoriasDesc: "Narrativas ancestrais em texto e áudio.",
     resourceVideosLabel: "Vídeos",
     resourceVideosDesc: "Cenas e narrativas da aldeia Pataxó.",
