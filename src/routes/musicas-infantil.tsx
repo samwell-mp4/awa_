@@ -87,7 +87,7 @@ function MusicasInfantilPage() {
       const text = i18n.language === "pt"
         ? "Vamos cantar e nos divertir com as cantigas da nossa aldeia! Escolha uma música para começar."
         : "Let's sing and have fun with our village songs! Choose a song to start.";
-      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language]);

@@ -398,7 +398,7 @@ function HistoriasInfantilPage() {
       const text = i18n.language === "pt"
         ? "Bem-vindo às nossas histórias e narrativas! Aqui você vai conhecer os nossos anciãos e aprender sobre a nossa cultura. Escolha uma história para ouvir."
         : "Welcome to our stories and narratives! Here you will meet our elders and learn about our culture. Choose a story to listen to.";
-      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language]);

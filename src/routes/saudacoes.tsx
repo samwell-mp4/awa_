@@ -78,7 +78,7 @@ function SaudacoesPage() {
       const welcomeText = i18n.language === "pt"
         ? "Olá amiguinho! Vamos aprender as saudações da nossa aldeia? Como dizemos bom dia, boa tarde e muito mais em Patxôhã!"
         : "Hello little friend! Let's learn our village greetings? How we say good morning, good afternoon and much more in Patxôhã!";
-      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language, backTo]);

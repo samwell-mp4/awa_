@@ -71,7 +71,7 @@ function InfantilHome() {
       const introText = i18n.language === "pt"
         ? "Bem-vindo ao Awã Tech Infantil. Aqui você pode explorar as trilhas da aldeia, ouvir cânticos, ler histórias, jogar e fazer amigos, tudo enquanto aprende sobre as nossas línguas indígenas."
         : "Welcome to Awã Tech Kids. Here you can explore village trails, listen to songs, read stories, play games, and make friends, all while learning about our indigenous languages.";
-      speak(introText, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(introText, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1500);
     return () => clearTimeout(timer);
   }, [i18n.language]);

@@ -34,7 +34,7 @@ function TraduzirPage() {
       const welcomeText = i18n.language === "pt"
         ? "Olá! Eu sou o tradutor da aldeia. Digite uma palavra para eu te ajudar a falar Patxôhã!"
         : "Hello! I am the village translator. Type a word and I will help you speak Patxôhã!";
-      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language, backTo]);
