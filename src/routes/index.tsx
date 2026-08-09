@@ -137,8 +137,7 @@ const VIDEO_I18N: Record<
 
 function useLangKey(): string {
   const { i18n } = useTranslation();
-  const raw = (i18n.language || "pt").slice(0, 2).toLowerCase();
-  // Incluímos 'pat' como chave válida para o menu da landing page se for o caso
+  const raw = (i18n.language || "pt").split("-")[0].toLowerCase();
   return ["pt", "en", "es", "pat"].includes(raw) ? raw : "pt";
 }
 

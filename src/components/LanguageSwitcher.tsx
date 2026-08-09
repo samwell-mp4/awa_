@@ -28,11 +28,15 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
     setCoords({ top: r.bottom + 8, right: window.innerWidth - r.right });
   }, [open]);
 
-  const currentCode = (i18n.language || "pt").slice(0, 2).toLowerCase();
+  const currentCode = (i18n.language || "pt").split("-")[0].toLowerCase();
   const current = SUPPORTED_LANGS.find((l) => l.code === currentCode) ?? SUPPORTED_LANGS[0];
 
   function change(code: LangCode) {
-    if (typeof window !== "undefined") window.localStorage.setItem("awa_lang", code);
+    console.log(`[i18n] Manually changing language to: ${code}`);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("awa_lang", code);
+      document.cookie = `awa_lang=${code}; path=/; max-age=31536000; SameSite=Lax`;
+    }
     if (typeof document !== "undefined") document.documentElement.lang = code;
     void i18n.changeLanguage(code);
     setOpen(false);

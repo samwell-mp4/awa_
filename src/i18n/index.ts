@@ -18,9 +18,7 @@ export type LangCode = (typeof SUPPORTED_LANGS)[number]["code"];
 const isBrowser = typeof window !== "undefined";
 
 if (!i18n.isInitialized) {
-  // Init synchronously with "pt" on BOTH server and client so the first
-  // client render matches SSR HTML exactly. Language switching happens
-  // post-hydration in LanguageHydrator (__root.tsx) via useEffect.
+  // Sync initialization
   void i18n.use(initReactI18next).init({
     resources: {
       pt: { translation: pt },
@@ -35,26 +33,26 @@ if (!i18n.isInitialized) {
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
-    
   });
-  // Belt-and-suspenders: guarantee language is "pt" for first render on both
-  // server and client. Prevents any detector/cached-language race from causing
-  // hydration mismatches on translated strings.
+  
+  // Basic initialization
   i18n.language = "pt";
 }
 
-
-// Persist language changes to localStorage (browser only, post-init).
+// Persist language changes to localStorage and cookies (browser only).
 if (isBrowser) {
   i18n.on("languageChanged", (lng) => {
-    const code = (lng || "pt").slice(0, 2).toLowerCase();
+    if (!lng) return;
+    const code = lng.split("-")[0].toLowerCase();
     if (["pt", "en", "es", "pat"].includes(code)) {
       try {
         window.localStorage.setItem("awa_lang", code);
-      } catch {
-        /* ignore quota */
+        // Add a cookie for better SSR sync if needed
+        document.cookie = `awa_lang=${code}; path=/; max-age=31536000; SameSite=Lax`;
+        document.documentElement.lang = code;
+      } catch (e) {
+        console.warn("Failed to persist language:", e);
       }
-      document.documentElement.lang = code;
     }
   });
 }
