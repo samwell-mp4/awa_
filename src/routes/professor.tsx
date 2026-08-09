@@ -185,7 +185,16 @@ function ProfessorPage() {
       return prev;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang]);
+    // If we're coming from the kids area, make the initial welcome child-voiced.
+    const isKids = typeof backTo === "string" && backTo.includes("infantil");
+    if (isKids && messages.length <= 1) {
+      const timer = setTimeout(() => {
+        const intro = L10N[lang].welcome.replace(/\*\*|__/g, "");
+        speak(intro, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [lang, backTo]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
