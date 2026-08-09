@@ -233,7 +233,7 @@ body::before {
   --kids-sky-2: #ffe3f1;
   --kids-sun: #ffd76a;
   --kids-pink: #ff89b5;
-  --kids-leaf: #7cd88a;
+  --kids-leaf: #538f5e; /* Original green tone */
   --kids-berry: #b06cd9;
   --kids-earth: #7a4a2b;
   --kids-cream: #fffaf0;
@@ -258,7 +258,7 @@ body::before {
   height: 22px;
   z-index: 40;
   pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='22' viewBox='0 0 80 22'><rect width='80' height='22' fill='%23f4d9a8'/><path d='M0 22 L10 4 L20 22 Z' fill='%23c4632a'/><path d='M20 22 L30 4 L40 22 Z' fill='%232f6d3a'/><path d='M40 22 L50 4 L60 22 Z' fill='%23e08e2b'/><path d='M60 22 L70 4 L80 22 Z' fill='%23884321'/><path d='M0 0 h80 v3 h-80z' fill='%23884321'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='22' viewBox='0 0 80 22'><rect width='80' height='22' fill='%23538f5e'/><path d='M0 22 L10 4 L20 22 Z' fill='%23c4632a'/><path d='M20 22 L30 4 L40 22 Z' fill='%232f6d3a'/><path d='M40 22 L50 4 L60 22 Z' fill='%23e08e2b'/><path d='M60 22 L70 4 L80 22 Z' fill='%23884321'/><path d='M0 0 h80 v3 h-80z' fill='%23884321'/></svg>");
   background-repeat: repeat-x;
   background-size: 80px 22px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
