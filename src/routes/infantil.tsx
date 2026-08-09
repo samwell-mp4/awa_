@@ -151,8 +151,8 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
     <video
       ref={ref}
       src={src}
-      className="block w-full h-auto select-none transition-opacity duration-300"
-      style={{ opacity: ready ? 1 : 0, background: "#0b3d2e" }}
+      className="block w-full h-auto select-none transition-opacity duration-300 bg-black"
+      style={{ opacity: ready ? 1 : 0 }}
       autoPlay
       loop
       muted
