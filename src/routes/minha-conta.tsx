@@ -16,6 +16,7 @@ import {
   Star,
   UserPlus,
 } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
