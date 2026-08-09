@@ -22,12 +22,12 @@ export default {
     rankingTop: "Mais pontos",
     rankingPts: "pts",
     installTitle: "Instale o Awã Tech no seu celular",
-    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Professor Akuã com um toque — como um app nativo.",
+    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Tradutor com um toque — como um app nativo.",
     installAndroid: "No Chrome, toque no menu ⋮ e escolha Adicionar à tela inicial ou Instalar app.",
     installIos: "No Safari, toque no botão Compartilhar e depois em Adicionar à Tela de Início.",
     installCta: "Ver instruções completas",
     wisdomTitle: "Sabedoria do dia · Trilhas",
-    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Professor Akuã →",
+    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Tradutor →",
     resourcesTitle: "Recursos da plataforma",
     resourcesSubtitle: "Tudo o que você precisa para mergulhar nas línguas e culturas dos povos originários.",
     resourceHistoriasLabel: "Histórias e Narrativa",
@@ -193,6 +193,6 @@ export default {
   },
   audioExplanations: {
     biografia: "Bem-vindo à biografia da AWÃ TECH. Somos uma plataforma dedicada a preservar e ensinar as línguas e culturas dos povos originários do Brasil, unindo sabedoria ancestral e tecnologia.",
-    instalar: "Aprenda como instalar o aplicativo AWÃ TECH no seu celular. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã de forma rápida e segura."
+    instalar: "Aprenda como instalar o aplicativo AWÃ TECH no seu celular. Adicione à sua tela inicial para acessar o dicionário, músicas e o Tradutor de forma rápida e segura."
   }
 };
