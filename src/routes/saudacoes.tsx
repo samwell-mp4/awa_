@@ -72,14 +72,17 @@ function SaudacoesPage() {
 
   useEffect(() => {
     const isKids = typeof backTo === "string" && backTo.includes("infantil");
-    if (!isKids) return;
-
+    
     const timer = setTimeout(() => {
-      const welcomeText = i18n.language === "pt"
-        ? "Olá amiguinho! Vamos aprender as saudações da nossa aldeia? Como dizemos bom dia, boa tarde e muito mais em Patxôhã!"
-        : "Hello little friend! Let's learn our village greetings? How we say good morning, good afternoon and much more in Patxôhã!";
-      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
+      const welcomeText = i18n.language === "en"
+        ? "Hello! Let's learn our village greetings? How we say good morning, good afternoon and much more in Patxôhã!"
+        : i18n.language === "es"
+        ? "¡Hola! ¿Vamos a aprender los saludos de nuestra aldea? ¡Cómo decimos buenos días, buenas tardes e muito más en Patxôhã!"
+        : "Olá! Vamos aprender as saudações da nossa aldeia? Como dizemos bom dia, boa tarde e muito mais em Patxôhã!";
+      
+      speak(welcomeText, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, isKids ? 1.5 : 1.0);
     }, 1000);
+
     return () => clearTimeout(timer);
   }, [i18n.language, backTo]);
 
