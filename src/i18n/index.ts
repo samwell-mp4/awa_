@@ -10,7 +10,6 @@ export const SUPPORTED_LANGS = [
   { code: "pt", label: "Português", flag: "🇧🇷" },
   { code: "en", label: "English", flag: "🇺🇸" },
   { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "pat", label: "Patxôhã", flag: "🏹" },
 ] as const;
 
 export type LangCode = (typeof SUPPORTED_LANGS)[number]["code"];
@@ -18,7 +17,9 @@ export type LangCode = (typeof SUPPORTED_LANGS)[number]["code"];
 const isBrowser = typeof window !== "undefined";
 
 if (!i18n.isInitialized) {
-  // Sync initialization
+  // Init synchronously with "pt" on BOTH server and client so the first
+  // client render matches SSR HTML exactly. Language switching happens
+  // post-hydration in LanguageHydrator (__root.tsx) via useEffect.
   void i18n.use(initReactI18next).init({
     resources: {
       pt: { translation: pt },
@@ -28,31 +29,31 @@ if (!i18n.isInitialized) {
     },
     lng: "pt",
     fallbackLng: "pt",
-    supportedLngs: ["pt", "en", "es", "pat"],
+    supportedLngs: ["pt", "en", "es"],
     load: "languageOnly",
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
+    
   });
-  
-  // Basic initialization
+  // Belt-and-suspenders: guarantee language is "pt" for first render on both
+  // server and client. Prevents any detector/cached-language race from causing
+  // hydration mismatches on translated strings.
   i18n.language = "pt";
 }
 
-// Persist language changes to localStorage and cookies (browser only).
+
+// Persist language changes to localStorage (browser only, post-init).
 if (isBrowser) {
   i18n.on("languageChanged", (lng) => {
-    if (!lng) return;
-    const code = lng.split("-")[0].toLowerCase();
-    if (["pt", "en", "es", "pat"].includes(code)) {
+    const code = (lng || "pt").slice(0, 2).toLowerCase();
+    if (["pt", "en", "es"].includes(code)) {
       try {
         window.localStorage.setItem("awa_lang", code);
-        // Add a cookie for better SSR sync if needed
-        document.cookie = `awa_lang=${code}; path=/; max-age=31536000; SameSite=Lax`;
-        document.documentElement.lang = code;
-      } catch (e) {
-        console.warn("Failed to persist language:", e);
+      } catch {
+        /* ignore quota */
       }
+      document.documentElement.lang = code;
     }
   });
 }

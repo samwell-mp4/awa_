@@ -82,6 +82,5 @@ export default {
     kidsListen: "Auê",
     kidsStop: "Pyrãy",
     kidsLoading: "Ãhõmãy…",
-    tagline: "HÃPÕHÃ HITÁ",
   },
 };

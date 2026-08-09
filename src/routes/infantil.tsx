@@ -7,9 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
-import infantilLogo from "@/assets/infantil-logo.jpg.asset.json";
+import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
-import menuVideo from "@/assets/trilhas-alive.mp4.asset.json";
+import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 
 
 
@@ -53,7 +53,7 @@ type Hotspot = {
 };
 
 const hotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#2d6a4f" },
+  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
@@ -82,7 +82,8 @@ function InfantilHome() {
 
         <section
           key={languageKey}
-          className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)] bg-black"
+          className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
+          style={{ background: "#0b3d2e" }}
         >
           <VideoMenu src={menuVideo.url} label={t("infantil.title")} />
         </section>
@@ -94,7 +95,7 @@ function InfantilHome() {
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
               aria-label={t(`infantil.hotspots.${h.key}`)}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-[#3a2418] shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
               style={{ borderColor: h.color }}
             >
               <span className="text-2xl md:text-3xl" aria-hidden>{h.emoji}</span>
@@ -104,7 +105,7 @@ function InfantilHome() {
           {[
             { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
-            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#1b4332" },
+            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
           ].map((c) => (
             <Link
@@ -112,7 +113,7 @@ function InfantilHome() {
               to="/trilhas/$slug"
               params={{ slug: c.slug }}
               aria-label={t(`common.${c.key}`)}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-[#3a2418] shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
               style={{ borderColor: c.color }}
             >
               <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
@@ -151,8 +152,8 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
     <video
       ref={ref}
       src={src}
-      className="block w-full h-auto select-none transition-opacity duration-300 bg-black"
-      style={{ opacity: ready ? 1 : 0 }}
+      className="block w-full h-auto select-none transition-opacity duration-300"
+      style={{ opacity: ready ? 1 : 0, background: "#0b3d2e" }}
       autoPlay
       loop
       muted

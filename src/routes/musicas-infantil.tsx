@@ -91,7 +91,22 @@ function MusicasInfantilPage() {
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
 
-      <SiteHeader mode="infantil" showBackButton title="Cânticos" />
+      <SiteHeader mode="infantil" />
+
+      <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
+          <Link
+            to="/infantil"
+            className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
+          >
+            <ArrowLeft className="h-4 w-4" /> Aldeia
+          </Link>
+          <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
+            🎶 Cantigas 🎶
+          </div>
+          <span className="w-16" />
+        </div>
+      </header>
 
       <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
         {/* Big playful hero */}

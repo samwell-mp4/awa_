@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home, Mail } from "lucide-react";
-import { SiteHeader } from "@/components/home/site-header";
+import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -46,7 +45,17 @@ function TraduzirPage() {
   return (
     <PremiumGate title={t("translator.premiumTitle")} description={t("translator.premiumDescription")}>
     <div className="min-h-screen pb-16 text-foreground">
-        <SiteHeader showBackButton title={t("translator.title")} />
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+          <Link to={backTo as "/"} className="flex items-center gap-2 text-gold font-bold">
+            <Home className="h-4 w-4" /> AWÃ TECH
+          </Link>
+          <div className="flex items-center gap-2 text-leaf">
+            <Languages className="h-5 w-5" />
+            <span className="text-sm font-medium">{t("translator.label")}</span>
+          </div>
+        </div>
+      </header>
 
       <main className="mx-auto max-w-3xl px-4 pt-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gold mb-2">
@@ -136,18 +145,6 @@ function TraduzirPage() {
         <p className="text-xs text-foreground/50 mt-6 text-center">
           {t("translator.disclaimer")}
         </p>
-
-        <div className="mt-8 flex justify-center">
-          <a
-            href={t("translator.contact.link")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-5 py-2.5 text-sm font-semibold text-gold transition hover:bg-gold/10 hover:border-gold/50"
-          >
-            <Mail className="h-4 w-4" />
-            {t("translator.contact.google")}
-          </a>
-        </div>
       </main>
     </div>
     </PremiumGate>
