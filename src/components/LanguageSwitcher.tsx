@@ -31,15 +31,16 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const currentCode = (i18n.language || "pt").split("-")[0].toLowerCase();
   const current = SUPPORTED_LANGS.find((l) => l.code === currentCode) ?? SUPPORTED_LANGS[0];
 
-  function change(code: LangCode) {
+  async function change(code: LangCode) {
     console.log(`[i18n] Manually changing language to: ${code}`);
     if (typeof window !== "undefined") {
       window.localStorage.setItem("awa_lang", code);
       document.cookie = `awa_lang=${code}; path=/; max-age=31536000; SameSite=Lax`;
+      document.documentElement.lang = code;
     }
-    if (typeof document !== "undefined") document.documentElement.lang = code;
-    void i18n.changeLanguage(code);
+    await i18n.changeLanguage(code);
     setOpen(false);
+    // Force a small delay and re-render if needed, but changeLanguage should handle it.
   }
 
   return (
