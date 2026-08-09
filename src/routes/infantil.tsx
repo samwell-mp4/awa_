@@ -104,7 +104,7 @@ function InfantilHome() {
           {[
             { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
-            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
+            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#1b4332" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
           ].map((c) => (
             <Link
