@@ -37,7 +37,7 @@ export default {
   },
   nav: {
     dicionario: "Dictionary",
-    tradutor: "Translator",
+    tradutor: "Professor Akuã",
     trilhas: "Trails",
     historias: "Stories",
     musicas: "Music",
@@ -168,12 +168,12 @@ export default {
     },
   },
   translator: {
-    title: "Patxôhã ⇄ Portuguese Translator",
+    title: "Professor Akuã Patxôhã ⇄ Portuguese",
     subtitle: "Translation assisted by official dictionary of the platform.",
-    label: "Translator",
-    premiumTitle: "Premium Translator",
+    label: "Professor Akuã",
+    premiumTitle: "Professor Akuã Premium",
     premiumDescription:
-      "Subscribe to AWÃ TECH Premium to use the Patxôhã ⇄ Portuguese translator.",
+      "Subscribe to AWÃ TECH Premium to use the Professor Akuã Patxôhã ⇄ Portuguese.",
     portugues: "Portuguese",
     patxoha: "Patxôhã",
     swap: "Swap direction",
