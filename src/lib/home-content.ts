@@ -32,7 +32,7 @@ export const trailSlugMap: Record<string, TrailSlug> = {
   Família: "familia",
   Natureza: "natureza",
   Animais: "animais",
-  Vídeos: "videos",
+  "História e Narrativa": "videos",
 };
 
 export const rankingSeed = [
