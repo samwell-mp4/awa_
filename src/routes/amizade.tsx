@@ -103,7 +103,7 @@ function AmizadePage() {
               <button
                 key={g.id}
                 onClick={() => {
-                  speak(`${g.title}. ${g.desc}`, "pt-BR");
+                  speak(`${g.title}. ${g.desc}`, "pt-BR", 1.1, 1.5);
                   setGame(g.id);
                 }}
                 className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
