@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { speak, stopSpeak } from "@/lib/speak";
 import { PublicFooter } from "@/components/PublicFooter";
 import {
@@ -48,6 +49,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 function InstalarPage() {
   const backTo = useLastArea();
+  const { t, i18n } = useTranslation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");
@@ -81,10 +83,10 @@ function InstalarPage() {
   }, []);
 
   useEffect(() => {
-    const text = "Aprenda como instalar o aplicativo AWÃ TECH no seu celular. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã de forma rápida e segura.";
-    speak(text);
+    const text = t("translator.audioExplanations.instalar");
+    speak(text, i18n.language);
     return () => stopSpeak();
-  }, []);
+  }, [t, i18n.language]);
 
   async function handleInstall() {
 
