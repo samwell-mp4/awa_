@@ -233,7 +233,7 @@ function useNarration(originalText: string) {
     // Native speech starts immediately on the tap/click, without waiting for network TTS.
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = speechLang;
-    utterance.rate = 0.95;
+    utterance.rate = 0.85;
     utterance.pitch = 0.85;
     utterance.onend = () => {
       if (utteranceRef.current === utterance) {
