@@ -96,7 +96,7 @@ export default {
     ola: "Olá,",
   },
   common: {
-    voltar: "Voltar",
+    voltar: "Volta",
     carregando: "Carregando...",
     salvar: "Salvar",
     cancelar: "Cancelar",
