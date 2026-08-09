@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { speak, stopSpeak } from "@/lib/speak";
 import { PublicFooter } from "@/components/PublicFooter";
 import {
   ArrowLeft,
@@ -47,6 +49,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 function InstalarPage() {
   const backTo = useLastArea();
+  const { t, i18n } = useTranslation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");
@@ -78,6 +81,12 @@ function InstalarPage() {
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
+
+  useEffect(() => {
+    const text = t("audioExplanations.instalar");
+    speak(text, i18n.language);
+    return () => stopSpeak();
+  }, [t, i18n.language]);
 
   async function handleInstall() {
 

@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
+import { speak, stopSpeak } from "@/lib/speak";
 import { SiteHeader } from "@/components/home/site-header";
 import { PublicFooter } from "@/components/PublicFooter";
 
@@ -31,6 +34,14 @@ export const Route = createFileRoute("/biografia")({
 
 function BiografiaPage() {
   const backTo = useLastArea();
+  const { t, i18n } = useTranslation();
+  
+  useEffect(() => {
+    const text = t("audioExplanations.biografia");
+    speak(text, i18n.language);
+    return () => stopSpeak();
+  }, [t, i18n.language]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader showBackButton title="Biografia" />

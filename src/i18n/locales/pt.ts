@@ -191,4 +191,8 @@ export default {
       link: "https://forms.gle/vH4yK8T8A7G6F5E4"
     }
   },
+  audioExplanations: {
+    biografia: "Bem-vindo à biografia da AWÃ TECH. Somos uma plataforma dedicada a preservar e ensinar as línguas e culturas dos povos originários do Brasil, unindo sabedoria ancestral e tecnologia.",
+    instalar: "Aprenda como instalar o aplicativo AWÃ TECH no seu celular. Adicione à sua tela inicial para acessar o dicionário, músicas e o Professor Akuã de forma rápida e segura."
+  }
 };

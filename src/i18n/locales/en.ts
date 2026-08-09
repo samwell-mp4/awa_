@@ -192,4 +192,8 @@ export default {
       link: "https://forms.gle/vH4yK8T8A7G6F5E4"
     }
   },
+  audioExplanations: {
+    biografia: "Welcome to the AWÃ TECH biography. We are a platform dedicated to preserving and teaching the languages and cultures of Brazil's Indigenous peoples, joining ancestral wisdom and technology.",
+    instalar: "Learn how to install the AWÃ TECH app on your phone. Add it to your home screen to access the dictionary, music, and Professor Akuã quickly and safely."
+  }
 };
