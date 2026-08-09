@@ -10,6 +10,7 @@ import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
 import menuVideo from "@/assets/infantil-menu-video-new.mp4.asset.json";
+import subLogoVideo from "@/assets/infantil-sub-logo-video.mp4.asset.json";
 
 
 
@@ -70,7 +71,7 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="-mx-3 md:-mx-6 mt-0">
+        <div className="-mx-3 md:-mx-6 mt-0 flex flex-col items-center">
           <img
             src={infantilLogo.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
@@ -78,6 +79,9 @@ function InfantilHome() {
             fetchPriority="high"
             draggable={false}
           />
+          <div className="w-full mt-[-2px] relative z-10">
+            <VideoMenu src={subLogoVideo.url} label="Awã Tech Infantil" />
+          </div>
         </div>
 
         <section
