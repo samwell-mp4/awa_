@@ -25,13 +25,14 @@ export const fallbackTrailImages: Record<string, string> = {
   Animais: trailAnimais,
 };
 
-export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
+export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais" | "historiaenarrativa";
 
 export const trailSlugMap: Record<string, TrailSlug> = {
   Saudações: "saudacoes",
   Família: "familia",
   Natureza: "natureza",
   Animais: "animais",
+  "História e Narrativa": "historiaenarrativa",
 };
 
 export const rankingSeed = [
@@ -41,7 +42,7 @@ export const rankingSeed = [
 ];
 
 export const resourceCards: { icon: LucideIcon; label: string; desc: string }[] = [
-  { icon: ScrollText, label: "Histórias e Narrativa", desc: "Narrativas ancestrais em texto e áudio." },
+  { icon: ScrollText, label: "Histórias", desc: "Narrativas ancestrais em texto e áudio." },
   { icon: Video, label: "Vídeos", desc: "Cenas e narrativas da aldeia Pataxó." },
 ];
 
@@ -51,19 +52,20 @@ export type NavGroup = { title: string; items: NavItem[] };
 // Static fallback (used by any non-hook consumer). Prefer useNavContent() in components.
 export const navGroups: NavGroup[] = [
   {
-    title: "Tradutor",
+    title: "Língua e Conhecimento",
     items: [
-      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Dicionário", href: "/dicionario", icon: Library },
+      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
+      { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
   },
   {
     title: "Cultura e Expressões",
     items: [
-      { label: "Histórias e Narrativa", href: "/historias", icon: ScrollText },
+      { label: "Histórias e Narrativas", href: "/historias", icon: ScrollText },
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
-      { label: "Vídeos", href: "/videos", icon: Video },
+      { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
     ],
   },
@@ -82,7 +84,7 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
-  { label: "Professor Akuã", href: "/traduzir" },
+  { label: "Tradutor", href: "/traduzir" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
@@ -96,6 +98,7 @@ const ADULT_HREFS = new Set([
   "/dicionario",
   "/traduzir",
   "/trilhas",
+  "/professor",
   "/historias",
   "/musicas",
   "/videos",
@@ -140,8 +143,9 @@ export function useNavContent(mode: NavMode = "all") {
     {
       title: t("nav.groups.lingua"),
       items: [
-        { label: t("nav.professor"), href: "/traduzir", icon: BookOpen },
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
+        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
+        { label: t("nav.professor"), href: "/professor", icon: Sparkles },
       ],
     },
     {
@@ -171,8 +175,8 @@ export function useNavContent(mode: NavMode = "all") {
     .filter((g) => g.items.length > 0);
 
   const rawTop = [
-    { label: t("nav.professor"), href: "/traduzir" },
     { label: t("nav.dicionario"), href: "/dicionario" },
+    { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },
