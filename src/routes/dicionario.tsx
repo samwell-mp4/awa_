@@ -152,6 +152,19 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
+  useEffect(() => {
+    const isKids = typeof backTo === "string" && backTo.includes("infantil");
+    if (!isKids) return;
+
+    const timer = setTimeout(() => {
+      const welcomeText = lang === "en"
+        ? "Welcome to our dictionary! Search for any word to learn how we say it in Patxôhã."
+        : "Bem-vindo ao nosso dicionário! Procure qualquer palavra para aprender como dizemos em Patxôhã.";
+      speakChild(welcomeText, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [lang, backTo]);
+
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
   const enriched = ENRICHED_ENTRIES;
   const counts = CATEGORY_COUNTS;
@@ -442,6 +455,7 @@ function PlayableCard({
   audioUrl: string | null;
   children: React.ReactNode;
 }) {
+  const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
 
   async function play() {
