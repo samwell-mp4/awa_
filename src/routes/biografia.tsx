@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { PublicFooter } from "@/components/PublicFooter";
 
 import logoSrc from "@/assets/awa-tech-logo.png";
@@ -32,32 +33,7 @@ function BiografiaPage() {
   const backTo = useLastArea();
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="flex items-center gap-2.5">
-            <img
-              loading="lazy"
-              decoding="async"
-              src={logoSrc}
-              alt="AWÃ TECH"
-              className="h-10 w-10 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
-            />
-            <div className="leading-none">
-              <div className="font-display text-lg font-black tracking-tight text-cream">
-                AWÃ <span className="text-leaf">TECH</span>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar
-          </Link>
-        </div>
-      </header>
+      <SiteHeader showBackButton title="Biografia" />
 
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8">
         {/* Hero */}

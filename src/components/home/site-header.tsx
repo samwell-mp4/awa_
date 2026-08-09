@@ -9,7 +9,7 @@ import { useNavContent, type NavGroup, type NavMode } from "@/lib/home-content";
 import { Logo } from "./logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: NavMode; showBackButton?: boolean } = {}) {
+export function SiteHeader({ mode = "all", showBackButton = false, title }: { mode?: NavMode; showBackButton?: boolean; title?: string } = {}) {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -61,7 +61,13 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
           </button>
         )}
         <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
-          <Logo />
+          {title ? (
+            <h1 className={isKids ? "font-['Fredoka'] text-xl font-black text-white" : "font-display text-lg font-black text-cream"}>
+              {title}
+            </h1>
+          ) : (
+            <Logo />
+          )}
         </div>
         {!isKids && (
           <nav className="hidden xl:flex items-center gap-1">

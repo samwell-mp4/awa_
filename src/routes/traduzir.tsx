@@ -5,6 +5,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -45,17 +46,7 @@ function TraduzirPage() {
   return (
     <PremiumGate title={t("translator.premiumTitle")} description={t("translator.premiumDescription")}>
     <div className="min-h-screen pb-16 text-foreground">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <Link to={backTo as "/"} className="flex items-center gap-2 text-gold font-bold">
-            <Home className="h-4 w-4" /> AWÃ TECH
-          </Link>
-          <div className="flex items-center gap-2 text-leaf">
-            <Languages className="h-5 w-5" />
-            <span className="text-sm font-medium">{t("translator.label")}</span>
-          </div>
-        </div>
-      </header>
+        <SiteHeader showBackButton title={t("translator.title")} />
 
       <main className="mx-auto max-w-3xl px-4 pt-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gold mb-2">

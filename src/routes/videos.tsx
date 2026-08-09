@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { useTranslation } from "react-i18next";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
@@ -84,14 +85,7 @@ function VideosPage() {
 
   return (
     <div className="min-h-screen text-foreground">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-sm text-cream hover:bg-gold/10">
-            <ArrowLeft className="h-4 w-4" /> {tHome}
-          </Link>
-          <h1 className="font-display text-lg font-black text-cream flex-1">{tTitle}</h1>
-        </div>
-      </header>
+      <SiteHeader showBackButton />
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <p className="mb-6 max-w-2xl text-sm text-foreground/70">{tIntro}</p>

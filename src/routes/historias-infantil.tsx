@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ArrowLeft } from "lucide-react";
 
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
@@ -401,7 +402,7 @@ function HistoriasInfantilPage() {
         .story-card { animation: card-pop .5s ease-out both; }
       `}</style>
 
-      <SiteHeader mode="infantil" showBackButton />
+      <SiteHeader mode="infantil" showBackButton title="Histórias" />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
         {/* HERO panel — matches the reference book style */}
