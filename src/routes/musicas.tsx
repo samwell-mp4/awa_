@@ -139,9 +139,6 @@ function MusicasPage() {
       </div>
 
       <SiteHeader showBackButton title={t("nav.musicasLong")} />
-          <span className="w-14" />
-        </div>
-      </header>
 
       <main className="mx-auto max-w-6xl px-4 md:px-8 py-10 md:py-16">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between border-b border-gold/20 pb-6 mb-10">
