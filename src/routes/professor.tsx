@@ -69,7 +69,7 @@ type L10n = {
 const L10N: Record<Lang, L10n> = {
   pt: {
     welcome:
-      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+      "Kanhgág! Sou o **Tradutor**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
     subtitle: "Mestre de Patxôhã · Online",
     newChat: "Nova conversa",
     suggestionsTitle: "Sugestões para começar",

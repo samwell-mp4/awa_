@@ -29,7 +29,7 @@ export const Route = createFileRoute("/instalar")({
       {
         name: "description",
         content:
-          "Instale o Awã Tech no Android ou iPhone e acesse dicionário, músicas, histórias e Professor Akuã como um app.",
+          "Instale o Awã Tech no Android ou iPhone e acesse dicionário, músicas, histórias e Tradutor como um app.",
       },
       { property: "og:title", content: "Baixar o App — AWÃ TECH" },
       {
@@ -290,7 +290,7 @@ function InstalarPage() {
             />
             <Benefit
               icon={Sparkles}
-              title="Professor Akuã"
+              title="Tradutor"
               text="Converse com o professor virtual quando quiser."
             />
           </div>

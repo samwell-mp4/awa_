@@ -22,12 +22,12 @@ export default {
     rankingTop: "Más puntos",
     rankingPts: "pts",
     installTitle: "Instala Awã Tech en tu celular",
-    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Profesor Akuã con un toque — como una app nativa.",
+    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Traductor con un toque — como una app nativa.",
     installAndroid: "En Chrome, toca el menú ⋮ y elige Añadir a la pantalla de inicio o Instalar app.",
     installIos: "En Safari, toca el botón Compartir y luego Añadir a Pantalla de Inicio.",
     installCta: "Ver instrucciones completas",
     wisdomTitle: "Sabiduría del día · Senderos",
-    wisdomCta: "Toca para entrar en los senderos guiados por el Profesor Akuã →",
+    wisdomCta: "Toca para entrar en los senderos guiados por el Traductor →",
     resourcesTitle: "Recursos de la plataforma",
     resourcesSubtitle: "Todo lo que necesitas para sumergirte en las lenguas y culturas de los pueblos originarios.",
     resourceHistoriasLabel: "Historias y Narrativas",
@@ -194,6 +194,6 @@ export default {
   },
   audioExplanations: {
     biografia: "Bienvenido a la biografía de AWÃ TECH. Somos una plataforma dedicada a preservar y enseñar las lenguas y culturas de los pueblos originarios de Brasil, uniendo sabiduría ancestral y tecnología.",
-    instalar: "Aprenda a instalar la aplicación AWÃ TECH en su celular. Agréguela a su pantalla de inicio para acceder al diccionario, la música y al Profesor Akuã de forma rápida y segura."
+    instalar: "Aprenda a instalar la aplicación AWÃ TECH en su celular. Agréguela a su pantalla de inicio para acceder al diccionario, la música y al Traductor de forma rápida y segura."
   }
 };
