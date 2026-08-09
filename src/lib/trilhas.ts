@@ -73,7 +73,7 @@ export const TRAILS: Record<TrailSlug, {
     emoji: "🎥",
     color: "from-orange-400 to-amber-600",
     intro: "Assista a vídeos e registros culturais da nossa aldeia.",
-    categories: ["História e Narrativa"],
+    categories: ["História e Narrativa", "Cultura", "Vídeos e Registros"],
     certificate: {
       title: "🎥 GUARDIÃO DA MEMÓRIA",
       description: "Valoriza os registros visuais e a história viva do nosso povo.",
