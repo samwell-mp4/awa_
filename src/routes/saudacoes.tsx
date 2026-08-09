@@ -8,6 +8,8 @@ import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { toast } from "sonner";
 import { useLastArea } from "@/lib/last-area";
+import { useTranslation } from "react-i18next";
+import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/saudacoes")({
   head: () => ({
@@ -62,10 +64,24 @@ export function parseExample(ex: string | null) {
 
 function SaudacoesPage() {
   const backTo = useLastArea();
+  const { i18n } = useTranslation();
   const { data: list = [], isLoading } = useQuery({
     queryKey: ["saudacoes"],
     queryFn: fetchSaudacoes,
   });
+
+  useEffect(() => {
+    const isKids = typeof backTo === "string" && backTo.includes("infantil");
+    if (!isKids) return;
+
+    const timer = setTimeout(() => {
+      const welcomeText = i18n.language === "pt"
+        ? "Olá amiguinho! Vamos aprender as saudações da nossa aldeia? Como dizemos bom dia, boa tarde e muito mais em Patxôhã!"
+        : "Hello little friend! Let's learn our village greetings? How we say good morning, good afternoon and much more in Patxôhã!";
+      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language, backTo]);
 
   return (
     <div className="min-h-screen">
