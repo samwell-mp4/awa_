@@ -595,7 +595,7 @@ function EnglishPairsGame({
                 disabled={done}
                 onClick={() => {
                   setSel(w.en);
-                  speak(w.en, "en-US");
+                  speak(w.en, "en-US", 1.1, 1.5);
                 }}
                 className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
                   done
@@ -688,7 +688,7 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
             <button
               key={o}
               onClick={() => {
-                speak(o, "pt-BR");
+                speak(o, "pt-BR", 1.1, 1.5);
                 choose(o);
               }}
               className={`min-w-[110px] rounded-2xl px-5 py-3 font-black uppercase transition ${
@@ -730,7 +730,7 @@ function OrdenarNumerosGame({ onWin }: { onWin: () => void }) {
     setSeq([]);
   }, [target]);
   const pick = (n: number) => {
-    speak(String(n), "pt-BR");
+    speak(String(n), "pt-BR", 1.1, 1.5);
     setPool((p) => p.filter((x) => x !== n));
     setSeq((s) => [...s, n]);
   };
@@ -816,7 +816,7 @@ function CoresGame({ onWin }: { onWin: () => void }) {
     return [target, ...others].sort(() => Math.random() - 0.5);
   }, [target]);
   useEffect(() => {
-    if (target?.name) speak(target.name, "pt-BR");
+    if (target?.name) speak(target.name, "pt-BR", 1.1, 1.5);
   }, [target?.name]);
   const pick = (hex: string) => {
     if (feedback) return;
@@ -887,7 +887,7 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
     return [q, ...others].sort(() => Math.random() - 0.5);
   }, [i]);
   useEffect(() => {
-    if (q?.hint) speak(q.hint, "pt-BR");
+    if (q?.hint) speak(q.hint, "pt-BR", 1.1, 1.5);
   }, [i]);
   const choose = (n: string) => {
     if (state) return;
