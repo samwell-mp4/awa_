@@ -189,5 +189,4 @@ export default {
       link: "https://forms.gle/vH4yK8T8A7G6F5E4"
     }
   },
-  },
 };
