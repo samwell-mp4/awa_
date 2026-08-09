@@ -5,6 +5,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -45,9 +46,7 @@ function TraduzirPage() {
   return (
     <PremiumGate title={t("translator.premiumTitle")} description={t("translator.premiumDescription")}>
     <div className="min-h-screen pb-16 text-foreground">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <Link to={backTo as "/"} className="flex items-center gap-2 text-gold font-bold">
+      <SiteHeader showBackButton title={t("translator.title")} />
             <Home className="h-4 w-4" /> AWÃ TECH
           </Link>
           <div className="flex items-center gap-2 text-leaf">

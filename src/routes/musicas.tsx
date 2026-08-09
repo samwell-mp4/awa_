@@ -12,6 +12,7 @@ import {
   X,
   MapPin,
 } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
@@ -137,17 +138,7 @@ function MusicasPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.9)] via-[oklch(0.15_0.04_145/0.7)] to-[oklch(0.10_0.03_145/0.95)]" />
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.15_0.04_145/0.6)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
-          >
-            <ArrowLeft className="h-4 w-4" /> Voltar
-          </Link>
-          <div className="flex items-center gap-2 text-cream font-display font-black">
-            <Music className="h-5 w-5 text-leaf" /> Cânticos
-          </div>
+      <SiteHeader showBackButton title={t("nav.musicasLong")} />
           <span className="w-14" />
         </div>
       </header>
