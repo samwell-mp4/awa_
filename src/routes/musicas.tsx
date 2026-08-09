@@ -61,6 +61,7 @@ type Ambient = { id: string; name: string; video_url: string };
 const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
 
 function MusicasPage() {
+  const { t } = useTranslation();
   const backTo = useLastArea();
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_public"],
