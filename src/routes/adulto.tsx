@@ -54,7 +54,21 @@ export const Route = createFileRoute("/adulto")({
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
+  const { i18n } = useTranslation();
   useEffect(() => setLastArea("/adulto"), []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const welcomeText = i18n.language === "en"
+        ? "Welcome to the Awã Tech adult area. Explore your learning trails, use the translator, or talk to Professor Akuã."
+        : i18n.language === "es"
+        ? "Bienvenidos al área de adultos de Awã Tech. Explora tus rutas de aprendizaje, utiliza el traductor o habla con el Profesor Akuã."
+        : "Bem-vindo à área adulta do Awã Tech. Explore suas trilhas de aprendizado, use o tradutor ou converse com o Professor Akuã.";
+      speak(welcomeText, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.0);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
+
 
 
   return (
