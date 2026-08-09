@@ -61,8 +61,8 @@ const totemStyles: Record<string, TotemStyle> = {
   },
   natureza: {
     emoji: "🌳",
-    color: "#06d6a0",
-    shadow: "rgba(6,214,160,0.45)",
+    color: "#2d6a4f",
+    shadow: "rgba(45,106,79,0.45)",
     islandTop: "#fde68a",
     islandBottom: "#e0b04a",
     position: "top-[280px] right-4",
@@ -154,7 +154,7 @@ function TrilhaInfantilPage() {
                 {titleTop.split(" ").slice(-1)[0] || "Aldeia"}
               </span>
             </h1>
-            <p className="mt-3 text-lg font-bold text-[#06d6a0]">{subtitle}</p>
+            <p className="mt-3 text-lg font-bold text-[#2d6a4f]">{subtitle}</p>
           </header>
 
           {/* Adventure map area */}
