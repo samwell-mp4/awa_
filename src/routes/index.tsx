@@ -218,6 +218,7 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingChoice() {
+  const { i18n } = useTranslation();
   const dict = useMenuDict();
   const vdict = useVideoDict();
   const videoSrc = useVideoSources();
