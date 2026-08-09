@@ -373,15 +373,28 @@ const KidFeature: React.FC<KidFeatureProps> = ({
 };
 
 /* ---------------- 4 — Palavras ---------------- */
-const WORDS = [
-  { pt: "Sol", px: "Txãí" },
-  { pt: "Água", px: "Nixí" },
-  { pt: "Olá!", px: "Awê!" },
-];
+const getWords = (lang: string) => {
+  if (lang === "es") return [
+    { label: "Sol", px: "Txãí" },
+    { label: "Agua", px: "Nixí" },
+    { label: "¡Hola!", px: "Awê!" },
+  ];
+  if (lang === "en") return [
+    { label: "Sun", px: "Txãí" },
+    { label: "Water", px: "Nixí" },
+    { label: "Hello!", px: "Awê!" },
+  ];
+  return [
+    { label: "Sol", px: "Txãí" },
+    { label: "Água", px: "Nixí" },
+    { label: "Olá!", px: "Awê!" },
+  ];
+};
 
 const KidWords: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const WORDS = getWords(NARRATION_LANG);
   return (
     <AbsoluteFill style={{ background: NIGHT }}>
       <Img
@@ -393,7 +406,7 @@ const KidWords: React.FC = () => {
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Pop>
           <div style={{ fontFamily: display, fontWeight: 700, fontSize: 60, color: SUN }}>
-            Suas primeiras palavras
+            {NARRATION_LANG === "pt" ? "Suas primeiras palavras" : NARRATION_LANG === "es" ? "Tus primeras palabras" : "Your first words"}
           </div>
         </Pop>
         <div style={{ display: "flex", gap: 40, marginTop: 60 }}>
@@ -401,7 +414,7 @@ const KidWords: React.FC = () => {
             const s = spring({ frame: frame - 22 - i * 14, fps, config: { damping: 8 } });
             return (
               <div
-                key={w.pt}
+                key={w.label}
                 style={{
                   background: "rgba(255,246,226,0.96)",
                   borderRadius: 34,
@@ -412,7 +425,7 @@ const KidWords: React.FC = () => {
                   border: `6px solid ${LEAF}`,
                 }}
               >
-                <div style={{ fontFamily: body, fontSize: 34, color: "#3C6152" }}>{w.pt}</div>
+                <div style={{ fontFamily: body, fontSize: 34, color: "#3C6152" }}>{w.label}</div>
                 <div style={{ fontFamily: display, fontWeight: 700, fontSize: 72, color: CLAY }}>
                   {w.px}
                 </div>
