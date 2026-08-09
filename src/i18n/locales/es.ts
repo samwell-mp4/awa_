@@ -185,5 +185,10 @@ export default {
     empty: "La traducción aparecerá aquí.",
     disclaimer:
       "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
+    contact: {
+      google: "Contactar vía Google",
+      link: "https://forms.gle/vH4yK8T8A7G6F5E4"
+    }
+  },
   },
 };
