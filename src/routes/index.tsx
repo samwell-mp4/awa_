@@ -249,7 +249,7 @@ function LandingChoice() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gold/90 backdrop-blur-sm hover:bg-forest-deep/90 md:px-4 md:py-2 md:text-xs"
               >
                 <UserRound className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : (dict.entrar === "Awê" || i18n.language === 'pat') ? "Kua konã" : "Minha conta"}</span>
+                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : (dict.entrar === "Awê" || i18n.language.startsWith('pat')) ? "Kua konã" : "Minha conta"}</span>
               </Link>
             ) : (
               <Link
