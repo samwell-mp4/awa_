@@ -14,8 +14,8 @@ export const Route = createFileRoute("/traduzir")({
   head: () => ({
     meta: [
       { title: "Professor Akuã Patxôhã ⇄ Português — AWÃ TECH" },
-      { name: "description", content: "Tradutor Português ⇄ Patxôhã gratuito." },
-      { property: "og:title", content: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
+      { name: "description", content: "Professor Akuã Português ⇄ Patxôhã gratuito." },
+      { property: "og:title", content: "Professor Akuã Patxôhã ⇄ Português — AWÃ TECH" },
     ],
   }),
   component: TraduzirPage,
