@@ -104,7 +104,7 @@ function InfantilHome() {
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
             { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#1b4332" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
-            { slug: "historiaenarrativa", key: "trailHistoriaenarrativa", emoji: "📜", color: "#f4a261" },
+            { slug: "videos", key: "trailVideos", emoji: "🎥", color: "#f4a261" },
           ].map((c) => (
             <Link
               key={`${languageKey}-${c.slug}`}

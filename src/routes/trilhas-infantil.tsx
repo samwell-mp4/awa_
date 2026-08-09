@@ -77,8 +77,8 @@ const totemStyles: Record<string, TotemStyle> = {
     position: "bottom-4 left-8",
     rotate: "3deg",
   },
-  historiaenarrativa: {
-    emoji: "📜",
+  videos: {
+    emoji: "🎥",
     color: "#f4a261",
     shadow: "rgba(244,162,97,0.45)",
     islandTop: "#bae6fd",
