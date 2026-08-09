@@ -8,6 +8,8 @@ type VoiceMap = Record<string, SpeechSynthesisVoice | undefined>;
 const voiceCache: VoiceMap = {};
 let voicesReady = false;
 let warmed = false;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+
 
 function synth(): SpeechSynthesis | null {
   if (typeof window === "undefined") return null;
