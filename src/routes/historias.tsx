@@ -591,7 +591,7 @@ function HistoriasPage() {
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
-      <header className="relative overflow-hidden">
+      <header className="relative overflow-visible">
         <div className="absolute inset-0">
           <img
             loading="lazy"
@@ -606,14 +606,10 @@ function HistoriasPage() {
         </div>
 
         <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
-          >
-            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
-          </Link>
+          <SiteHeader showBackButton />
 
-          <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
+          <div className="mt-8">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">
             🪶 <T>Histórias do Povo</T>
           </p>
           <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
