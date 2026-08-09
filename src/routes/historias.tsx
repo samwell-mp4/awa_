@@ -5,6 +5,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useTranslation } from "react-i18next";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 import { T } from "@/components/T";
 import { toast } from "sonner";
 
