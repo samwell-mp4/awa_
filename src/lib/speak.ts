@@ -77,7 +77,7 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1, pitch: number = 1.05) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85, pitch: number = 1.05) {
   const s = synth();
   if (!s || !text) return;
   try {
