@@ -395,10 +395,13 @@ function HistoriasInfantilPage() {
   useEffect(() => {
     setLastArea("/infantil");
     const timer = setTimeout(() => {
-      const text = i18n.language === "pt"
-        ? "Bem-vindo às nossas histórias e narrativas! Aqui você vai conhecer os nossos anciãos e aprender sobre a nossa cultura. Escolha uma história para ouvir."
-        : "Welcome to our stories and narratives! Here you will meet our elders and learn about our culture. Choose a story to listen to.";
-      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
+      const text = i18n.language === "en"
+        ? "Welcome to our stories and narratives! Here you will meet our elders and learn about our culture. Choose a story to listen to."
+        : i18n.language === "es"
+        ? "¡Bienvenidos a nuestras historias y narrativas! Aquí conocerás a nuestros ancianos y aprenderás sobre nuestra cultura. Elige una historia para escuchar."
+        : "Bem-vindo às nossas histórias e narrativas! Aqui você vai conhecer os nossos anciãos e aprender sobre a nossa cultura. Escolha uma história para ouvir.";
+      speak(text, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.5);
+
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language]);

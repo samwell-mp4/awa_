@@ -116,10 +116,13 @@ function TrilhaInfantilPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const text = i18n.language === "pt"
-        ? "Explore o mapa da aldeia e descubra as nossas trilhas de aprendizado! Cada totem tem uma surpresa para você."
-        : "Explore the village map and discover our learning trails! Each totem has a surprise for you.";
-      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
+      const text = i18n.language === "en"
+        ? "Explore the village map and discover our learning trails! Each totem has a surprise for you."
+        : i18n.language === "es"
+        ? "¡Explora el mapa de la aldea y descubre nuestras rutas de aprendizaje! Cada tótem tiene una sorpresa para ti."
+        : "Explore o mapa da aldeia e descubra as nossas trilhas de aprendizado! Cada totem tem uma surpresa para você.";
+      speak(text, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.5);
+
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language]);
