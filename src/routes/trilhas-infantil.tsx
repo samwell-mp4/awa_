@@ -119,7 +119,7 @@ function TrilhaInfantilPage() {
       const text = i18n.language === "pt"
         ? "Explore o mapa da aldeia e descubra as nossas trilhas de aprendizado! Cada totem tem uma surpresa para você."
         : "Explore the village map and discover our learning trails! Each totem has a surprise for you.";
-      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [i18n.language]);

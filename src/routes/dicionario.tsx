@@ -160,7 +160,7 @@ function DictionaryPage() {
       const welcomeText = lang === "en"
         ? "Welcome to our dictionary! Search for any word to learn how we say it in Patxôhã."
         : "Bem-vindo ao nosso dicionário! Procure qualquer palavra para aprender como dizemos em Patxôhã.";
-      speakChild(welcomeText, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+      speakChild(welcomeText, lang === "en" ? "en-US" : "pt-BR", 0.85, 1.5);
     }, 1000);
     return () => clearTimeout(timer);
   }, [lang, backTo]);

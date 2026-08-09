@@ -58,7 +58,7 @@ function warmUp() {
     // Silent utterance primes the engine so the first real speak is instant.
     const u = new SpeechSynthesisUtterance(" ");
     u.volume = 0;
-    u.rate = 1;
+    u.rate = 0.85;
     s.speak(u);
     s.cancel();
   } catch {
@@ -77,7 +77,7 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1, pitch: number = 1.05) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85, pitch: number = 1.05) {
   const s = synth();
   if (!s || !text) return;
   try {

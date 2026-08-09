@@ -191,7 +191,7 @@ function ProfessorPage() {
     if (isKids && messages.length <= 1) {
       const timer = setTimeout(() => {
         const intro = L10N[lang].welcome.replace(/\*\*|__/g, "");
-        speakChild(intro, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+        speakChild(intro, lang === "en" ? "en-US" : "pt-BR", 0.85, 1.5);
       }, 1000);
       return () => clearTimeout(timer);
     }
