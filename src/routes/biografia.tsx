@@ -33,18 +33,7 @@ function BiografiaPage() {
   const backTo = useLastArea();
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
       <SiteHeader showBackButton title="Biografia" />
-          </Link>
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar
-          </Link>
-        </div>
-      </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8">
         {/* Hero */}
