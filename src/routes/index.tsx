@@ -138,7 +138,8 @@ const VIDEO_I18N: Record<
 function useLangKey(): string {
   const { i18n } = useTranslation();
   const raw = (i18n.language || "pt").slice(0, 2).toLowerCase();
-  return ["pt", "en", "es"].includes(raw) ? raw : "pt";
+  // Incluímos 'pat' como chave válida para o menu da landing page se for o caso
+  return ["pt", "en", "es", "pat"].includes(raw) ? raw : "pt";
 }
 
 const VIDEO_BY_LANG: Record<string, { adulto: string; infantil: string }> = {
@@ -217,6 +218,7 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingChoice() {
+  const { i18n } = useTranslation();
   const dict = useMenuDict();
   const vdict = useVideoDict();
   const videoSrc = useVideoSources();
@@ -247,7 +249,7 @@ function LandingChoice() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gold/90 backdrop-blur-sm hover:bg-forest-deep/90 md:px-4 md:py-2 md:text-xs"
               >
                 <UserRound className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : dict.entrar === "Awê" ? "Kua konã" : "Minha conta"}</span>
+                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : (dict.entrar === "Awê" || i18n.language === 'pat') ? "Kua konã" : "Minha conta"}</span>
               </Link>
             ) : (
               <Link

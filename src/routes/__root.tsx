@@ -219,7 +219,7 @@ function LanguageHydrator() {
     // Defer language switch to after hydration completes to avoid
     // hydration mismatches on SSR-rendered translated strings.
     const timer = window.setTimeout(() => {
-      const valid = ["pt", "en", "es"];
+      const valid = ["pt", "en", "es", "pat"];
       const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
       const detected = navigator.language?.slice(0, 2).toLowerCase();
       const target = valid.includes(stored || "")
