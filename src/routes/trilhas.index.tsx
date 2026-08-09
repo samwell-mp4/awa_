@@ -32,15 +32,9 @@ function TrilhasPage() {
   const trails = useHomeTrails();
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader mode="adulto" />
+      <SiteHeader mode="adulto" showBackButton />
       <main className="mx-auto max-w-6xl px-3 pb-16 sm:px-4 md:px-8">
-        <div className="mt-6">
-          <Link
-            to="/adulto"
-            className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
-          >
-            <ArrowLeft className="h-4 w-4" /> {t("Voltar")}
-          </Link>
+        <div className="mt-2">
           <div className="tribal-border w-16 mb-2" />
           <h1 className="font-display text-3xl font-black text-cream md:text-4xl">
             {t("home.trailsTitle")}
