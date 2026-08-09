@@ -10,6 +10,7 @@ export const SUPPORTED_LANGS = [
   { code: "pt", label: "Português", flag: "🇧🇷" },
   { code: "en", label: "English", flag: "🇺🇸" },
   { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "pat", label: "Patxôhã", flag: "🏹" },
 ] as const;
 
 export type LangCode = (typeof SUPPORTED_LANGS)[number]["code"];
@@ -29,7 +30,7 @@ if (!i18n.isInitialized) {
     },
     lng: "pt",
     fallbackLng: "pt",
-    supportedLngs: ["pt", "en", "es"],
+    supportedLngs: ["pt", "en", "es", "pat"],
     load: "languageOnly",
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
@@ -47,7 +48,7 @@ if (!i18n.isInitialized) {
 if (isBrowser) {
   i18n.on("languageChanged", (lng) => {
     const code = (lng || "pt").slice(0, 2).toLowerCase();
-    if (["pt", "en", "es"].includes(code)) {
+    if (["pt", "en", "es", "pat"].includes(code)) {
       try {
         window.localStorage.setItem("awa_lang", code);
       } catch {

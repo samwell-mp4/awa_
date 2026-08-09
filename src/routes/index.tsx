@@ -138,7 +138,8 @@ const VIDEO_I18N: Record<
 function useLangKey(): string {
   const { i18n } = useTranslation();
   const raw = (i18n.language || "pt").slice(0, 2).toLowerCase();
-  return ["pt", "en", "es"].includes(raw) ? raw : "pt";
+  // Incluímos 'pat' como chave válida para o menu da landing page se for o caso
+  return ["pt", "en", "es", "pat"].includes(raw) ? raw : "pt";
 }
 
 const VIDEO_BY_LANG: Record<string, { adulto: string; infantil: string }> = {
