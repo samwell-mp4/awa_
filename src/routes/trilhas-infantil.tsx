@@ -8,6 +8,8 @@ import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
+import { speak } from "@/lib/speak";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   ssr: false,
@@ -111,6 +113,16 @@ function TrilhaInfantilPage() {
 
   const titleTop = t("common.kidsTrailsTitle").replace(/^[^\p{L}]*/u, ""); // strip leading emoji if present
   const subtitle = t("common.kidsTrailsSubtitle");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const text = i18n.language === "pt"
+        ? "Explore o mapa da aldeia e descubra as nossas trilhas de aprendizado! Cada totem tem uma surpresa para você."
+        : "Explore the village map and discover our learning trails! Each totem has a surprise for you.";
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen bg-[#fdfcf0] text-foreground">

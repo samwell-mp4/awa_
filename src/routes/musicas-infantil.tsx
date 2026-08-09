@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
+import { speak } from "@/lib/speak";
+import { useTranslation } from "react-i18next";
 import {
   activeLineIndex,
   computeLyricBounds,
@@ -60,6 +62,7 @@ const THEMES = [
 ];
 
 function MusicasInfantilPage() {
+  const { t, i18n } = useTranslation();
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     staleTime: 1000 * 60 * 30,
@@ -78,6 +81,16 @@ function MusicasInfantilPage() {
   });
 
   const [playing, setPlaying] = useState<Song | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const text = i18n.language === "pt"
+        ? "Vamos cantar e nos divertir com as cantigas da nossa aldeia! Escolha uma música para começar."
+        : "Let's sing and have fun with our village songs! Choose a song to start.";
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
 
   return (
     <div

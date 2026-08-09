@@ -12,6 +12,7 @@ import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 import { useLastArea } from "@/lib/last-area";
+import { speak as speakChild } from "@/lib/speak";
 
 
 
@@ -150,6 +151,19 @@ function DictionaryPage() {
     const t = window.setTimeout(() => setDebouncedQuery(query.trim()), 250);
     return () => window.clearTimeout(t);
   }, [query]);
+
+  useEffect(() => {
+    const isKids = typeof backTo === "string" && backTo.includes("infantil");
+    if (!isKids) return;
+
+    const timer = setTimeout(() => {
+      const welcomeText = lang === "en"
+        ? "Welcome to our dictionary! Search for any word to learn how we say it in Patxôhã."
+        : "Bem-vindo ao nosso dicionário! Procure qualquer palavra para aprender como dizemos em Patxôhã.";
+      speakChild(welcomeText, lang === "en" ? "en-US" : "pt-BR", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [lang, backTo]);
 
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
   const enriched = ENRICHED_ENTRIES;
@@ -441,6 +455,7 @@ function PlayableCard({
   audioUrl: string | null;
   children: React.ReactNode;
 }) {
+  const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
 
   async function play() {
@@ -456,12 +471,13 @@ function PlayableCard({
         toast.error("Seu navegador não suporta síntese de voz.");
         return;
       }
+      const isKids = typeof backTo === "string" && backTo.includes("infantil");
       const synth = window.speechSynthesis;
       synth.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "pt-BR";
-      utter.rate = 0.85;
-      utter.pitch = 1;
+      utter.rate = isKids ? 1.1 : 0.85;
+      utter.pitch = isKids ? 1.5 : 1;
       const voices = synth.getVoices();
       const preferred =
         voices.find((v) => /pt[-_]BR/i.test(v.lang) && /male|masc|ricardo|daniel|luciano/i.test(v.name)) ||

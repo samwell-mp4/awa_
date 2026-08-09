@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
@@ -185,6 +186,18 @@ const EN_GAMES: {
 function JogosInfantilPage() {
   const [game, setGame] = useState<GameId | null>(null);
   const [stars, setStars] = useState(0);
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const text = i18n.language === "pt"
+        ? "Vamos jogar! Escolha um dos nossos jogos divertidos e ganhe muitas estrelas."
+        : "Let's play! Choose one of our fun games and win many stars.";
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
 
   return (
     <div

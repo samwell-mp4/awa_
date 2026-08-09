@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
 import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
+import { speak } from "@/lib/speak";
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
@@ -391,7 +392,16 @@ function JungleBorder() {
 
 function HistoriasInfantilPage() {
   const { t, i18n } = useTranslation();
-  useEffect(() => setLastArea("/infantil"), []);
+  useEffect(() => {
+    setLastArea("/infantil");
+    const timer = setTimeout(() => {
+      const text = i18n.language === "pt"
+        ? "Bem-vindo às nossas histórias e narrativas! Aqui você vai conhecer os nossos anciãos e aprender sobre a nossa cultura. Escolha uma história para ouvir."
+        : "Welcome to our stories and narratives! Here you will meet our elders and learn about our culture. Choose a story to listen to.";
+      speak(text, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen text-foreground">

@@ -7,6 +7,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
+import { speak } from "@/lib/speak";
+import { useEffect } from "react";
 import { PremiumGate } from "@/components/PremiumGate";
 
 export const Route = createFileRoute("/traduzir")({
@@ -21,8 +23,21 @@ export const Route = createFileRoute("/traduzir")({
 });
 
 function TraduzirPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const backTo = useLastArea();
+
+  useEffect(() => {
+    const isKids = typeof backTo === "string" && backTo.includes("infantil");
+    if (!isKids) return;
+
+    const timer = setTimeout(() => {
+      const welcomeText = i18n.language === "pt"
+        ? "Olá! Eu sou o tradutor da aldeia. Digite uma palavra para eu te ajudar a falar Patxôhã!"
+        : "Hello! I am the village translator. Type a word and I will help you speak Patxôhã!";
+      speak(welcomeText, i18n.language === "pt" ? "pt-BR" : "en-US", 1.1, 1.5);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [i18n.language, backTo]);
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
   const translate = useServerFn(translateText);
