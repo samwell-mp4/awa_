@@ -82,8 +82,7 @@ function InfantilHome() {
 
         <section
           key={languageKey}
-          className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
-          style={{ background: "#0b3d2e" }}
+          className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)] bg-black"
         >
           <VideoMenu src={menuVideo.url} label={t("infantil.title")} />
         </section>
