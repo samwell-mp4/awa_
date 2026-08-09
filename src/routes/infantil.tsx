@@ -65,6 +65,16 @@ function InfantilHome() {
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const introText = i18n.language === "pt"
+        ? "Bem-vindo ao Awã Tech Infantil. Aqui você pode explorar as trilhas da aldeia, ouvir cânticos, ler histórias, jogar e fazer amigos, tudo enquanto aprende sobre as nossas línguas indígenas."
+        : "Welcome to Awã Tech Kids. Here you can explore village trails, listen to songs, read stories, play games, and make friends, all while learning about our indigenous languages.";
+      speak(introText, i18n.language === "pt" ? "pt-BR" : "en-US");
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
+
   return (
     <div className="kids-theme min-h-screen text-foreground">
       <SiteHeader mode="infantil" />
