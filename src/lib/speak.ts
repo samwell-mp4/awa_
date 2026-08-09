@@ -58,7 +58,7 @@ function warmUp() {
     // Silent utterance primes the engine so the first real speak is instant.
     const u = new SpeechSynthesisUtterance(" ");
     u.volume = 0;
-    u.rate = 1;
+    u.rate = 0.85;
     s.speak(u);
     s.cancel();
   } catch {
