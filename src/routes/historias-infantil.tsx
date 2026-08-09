@@ -109,7 +109,7 @@ const STORIES: Story[] = [
       "Os Pataxó vivem no sul da Bahia há muitos e muitos luares, guardando as praias, as matas e o sagrado Monte Pascoal.",
       "São quase 50 aldeias espalhadas pela Bahia e Minas Gerais — cada uma com sua história, seu cacique e seu jeito de cuidar da terra.",
     ],
-    color: "#06d6a0",
+    color: "#2d6a4f",
     accent: "#264653",
   },
   {
@@ -461,7 +461,7 @@ function HistoriasInfantilPage() {
             </Link>
             <Link
               to="/trilhas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#06d6a0] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
+              className="rounded-full border-b-4 border-black/15 bg-[#2d6a4f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               🗺️ Trilhas

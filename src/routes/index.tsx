@@ -235,7 +235,7 @@ function LandingChoice() {
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${landingBg.url})`,
+        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.9) 100%), url(${landingBg.url})`,
       }}
     >
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
