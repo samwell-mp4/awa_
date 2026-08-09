@@ -25,15 +25,13 @@ export const fallbackTrailImages: Record<string, string> = {
   Animais: trailAnimais,
 };
 
-export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais" | "videos";
+export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
 
 export const trailSlugMap: Record<string, TrailSlug> = {
   Saudações: "saudacoes",
   Família: "familia",
   Natureza: "natureza",
   Animais: "animais",
-  "História e Narrativa": "videos",
-  "videos": "videos",
 };
 
 export const rankingSeed = [
