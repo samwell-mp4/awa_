@@ -52,7 +52,7 @@ function TraduzirPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-gold mb-2">
           {t("translator.title")}
         </h1>
-        <p className="text-foreground/70 mb-8">{t("translator.subtitle").replace(/IA/g, '')}</p>
+        <p className="text-foreground/70 mb-8">{t("translator.subtitle")}</p>
 
         <div className="flex items-center justify-center gap-3 mb-4">
           <span className="px-4 py-2 rounded-full bg-forest-deep/60 border border-gold/30 text-sm font-semibold">
@@ -134,7 +134,7 @@ function TraduzirPage() {
         </div>
 
         <p className="text-xs text-foreground/50 mt-6 text-center">
-          {t("translator.disclaimer").replace(/IA/g, '')}
+          {t("translator.disclaimer")}
         </p>
 
         <div className="mt-8 flex justify-center">
