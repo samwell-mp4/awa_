@@ -27,7 +27,7 @@ function SpeakBtn({
         speak(text, lang);
       }}
       aria-label={`${label}: ${text}`}
-      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow hover:bg-emerald-700 active:scale-95 ${className}`}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-600 text-white shadow hover:bg-amber-700 active:scale-95 ${className}`}
     >
       <Volume2 className="h-4 w-4" />
     </button>
@@ -80,7 +80,7 @@ const GAMES: {
     emoji: "🧠",
     title: "Memória da Floresta",
     desc: "Ache os pares de bichos e plantas.",
-    color: "from-emerald-400 to-emerald-600",
+    color: "from-amber-500 to-orange-600",
   },
   {
     id: "pares",
@@ -354,7 +354,7 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
               className={`aspect-square rounded-2xl text-4xl transition ${
                 show
                   ? "bg-amber-200"
-                  : "bg-emerald-600 text-transparent hover:bg-emerald-700"
+                  : "bg-amber-600 text-transparent hover:bg-amber-700"
               }`}
             >
               {show ? c.v : "?"}
