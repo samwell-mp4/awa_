@@ -22,12 +22,12 @@ export default {
     rankingTop: "Mais pontos",
     rankingPts: "pts",
     installTitle: "Instale o Awã Tech no seu celular",
-    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Professor Akuã com um toque — como um app nativo.",
+    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Tradutor com um toque — como um app nativo.",
     installAndroid: "No Chrome, toque no menu ⋮ e escolha Adicionar à tela inicial ou Instalar app.",
     installIos: "No Safari, toque no botão Compartilhar e depois em Adicionar à Tela de Início.",
     installCta: "Ver instruções completas",
     wisdomTitle: "Sabedoria do dia · Trilhas",
-    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Professor Akuã →",
+    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Tradutor →",
     resourcesTitle: "Recursos da plataforma",
     resourcesSubtitle: "Tudo o que você precisa para mergulhar nas línguas e culturas dos povos originários.",
     resourceHistoriasLabel: "Histórias",
@@ -96,7 +96,7 @@ export default {
     ola: "Olá,",
   },
   common: {
-    voltar: "Volta",
+    voltar: "Voltar",
     carregando: "Carregando...",
     salvar: "Salvar",
     cancelar: "Cancelar",
@@ -108,14 +108,12 @@ export default {
     trailFamilia: "Família",
     trailNatureza: "Natureza",
     trailAnimais: "Animais",
-    trailHistoriaenarrativa: "História e Narrativa",
     kidsTrailsTitle: "🗺️ Trilhas da Aldeia",
     kidsTrailsSubtitle: "Toque num totem e siga o caminho mágico!",
     trailDescSaudacoes: "Aprenda a cumprimentar como os povos indígenas, com palavras de respeito e alegria para começar o dia.",
     trailDescFamilia: "Descubra os nomes da sua família na aldeia: pai, mãe, irmão, irmã e os anciãos que guardam a sabedoria.",
     trailDescNatureza: "Explore a floresta encantada: o rio, o sol, a lua, as árvores e tudo que a Mãe Terra oferece.",
     trailDescAnimais: "Conheça os bichos da mata: onça, tatu, jabuti e as aves coloridas que cantam pela aldeia.",
-    trailDescHistoriaenarrativa: "Mergulhe nas histórias e lendas ancestrais passadas de geração em geração pelos anciãos da aldeia.",
     kidsListen: "Ouvir",
     kidsStop: "Parar",
     kidsLoading: "Preparando…",
@@ -169,7 +167,7 @@ export default {
   },
   translator: {
     title: "Tradutor Patxôhã ⇄ Português",
-    subtitle: "Tradução assistida usando o dicionário oficial da plataforma.",
+    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma.",
     label: "Tradutor",
     premiumTitle: "Tradutor Premium",
     premiumDescription: "Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.",
@@ -185,10 +183,6 @@ export default {
     wordByWord: "Palavra por palavra:",
     empty: "A tradução aparecerá aqui.",
     disclaimer:
-      "⚠️ Tradução assistida — palavras ausentes do dicionário são marcadas com [?].",
-    contact: {
-      google: "Entrar em contato via Google",
-      link: "https://forms.gle/vH4yK8T8A7G6F5E4"
-    }
+      "⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].",
   },
 };

@@ -27,7 +27,7 @@ function SpeakBtn({
         speak(text, lang);
       }}
       aria-label={`${label}: ${text}`}
-      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-600 text-white shadow hover:bg-amber-700 active:scale-95 ${className}`}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow hover:bg-emerald-700 active:scale-95 ${className}`}
     >
       <Volume2 className="h-4 w-4" />
     </button>
@@ -80,7 +80,7 @@ const GAMES: {
     emoji: "🧠",
     title: "Memória da Floresta",
     desc: "Ache os pares de bichos e plantas.",
-    color: "from-amber-500 to-orange-600",
+    color: "from-emerald-400 to-emerald-600",
   },
   {
     id: "pares",
@@ -193,7 +193,19 @@ function JogosInfantilPage() {
         backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
       }}
     >
-      <SiteHeader mode="infantil" showBackButton title="Jogos" />
+      <SiteHeader mode="infantil" />
+
+      <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
+        <Link
+          to="/infantil"
+          className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"
+        >
+          <ArrowLeft className="h-4 w-4" /> <T>Aldeia</T>
+        </Link>
+        <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-2 text-sm font-black text-emerald-900 shadow">
+          <Star className="h-4 w-4" /> {stars}
+        </div>
+      </header>
 
       <main className="mx-auto max-w-3xl px-4 pb-16">
         <div className="text-center">
@@ -354,7 +366,7 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
               className={`aspect-square rounded-2xl text-4xl transition ${
                 show
                   ? "bg-amber-200"
-                  : "bg-amber-600 text-transparent hover:bg-amber-700"
+                  : "bg-emerald-600 text-transparent hover:bg-emerald-700"
               }`}
             >
               {show ? c.v : "?"}

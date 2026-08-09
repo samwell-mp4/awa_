@@ -10,7 +10,7 @@ export function Logo() {
         <img
           src={logoSrc}
           alt="AWÃ TECH"
-          className="relative h-12 w-12 rounded-full bg-black/60 p-0.5 ring-2 ring-gold/40 object-contain shadow-[var(--shadow-gold)]"
+          className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 object-contain shadow-[var(--shadow-gold)]"
         />
       </div>
       <div className="leading-none">

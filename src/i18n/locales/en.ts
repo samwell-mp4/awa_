@@ -22,12 +22,12 @@ export default {
     rankingTop: "Most points",
     rankingPts: "pts",
     installTitle: "Install Awã Tech on your phone",
-    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Professor Akuã with one tap — like a native app.",
+    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Translator with one tap — like a native app.",
     installAndroid: "In Chrome, tap the ⋮ menu and choose Add to home screen or Install app.",
     installIos: "In Safari, tap the Share button then Add to Home Screen.",
     installCta: "See full instructions",
     wisdomTitle: "Wisdom of the day · Trails",
-    wisdomCta: "Tap to enter the trails guided by Professor Akuã →",
+    wisdomCta: "Tap to enter the trails guided by the Translator →",
     resourcesTitle: "Platform resources",
     resourcesSubtitle: "Everything you need to dive into the languages and cultures of Indigenous peoples.",
     resourceHistoriasLabel: "Stories",
@@ -108,14 +108,12 @@ export default {
     trailFamilia: "Family",
     trailNatureza: "Nature",
     trailAnimais: "Animals",
-    trailHistoriaenarrativa: "Story and Narrative",
     kidsTrailsTitle: "🗺️ Village Trails",
     kidsTrailsSubtitle: "Tap a totem and follow the magic path!",
     trailDescSaudacoes: "Learn to greet like the indigenous peoples, with words of respect and joy to start the day.",
     trailDescFamilia: "Discover the names of your village family: father, mother, brother, sister and the wise elders.",
     trailDescNatureza: "Explore the enchanted forest: the river, the sun, the moon, the trees and everything Mother Earth offers.",
     trailDescAnimais: "Meet the animals of the forest: jaguar, armadillo, tortoise and the colorful birds singing in the village.",
-    trailDescHistoriaenarrativa: "Dive into ancestral stories and legends passed down through generations by the village elders.",
     kidsListen: "Listen",
     kidsStop: "Stop",
     kidsLoading: "Preparing…",
@@ -169,7 +167,7 @@ export default {
   },
   translator: {
     title: "Patxôhã ⇄ Portuguese Translator",
-    subtitle: "Translation assisted by official dictionary of the platform.",
+    subtitle: "AI-assisted translation using the platform's official dictionary.",
     label: "Translator",
     premiumTitle: "Premium Translator",
     premiumDescription:
@@ -186,10 +184,6 @@ export default {
     wordByWord: "Word by word:",
     empty: "The translation will appear here.",
     disclaimer:
-      "⚠️ Translation assisted — words missing from the dictionary are marked with [?].",
-    contact: {
-      google: "Contact via Google",
-      link: "https://forms.gle/vH4yK8T8A7G6F5E4"
-    }
+      "⚠️ AI-assisted translation — words missing from the dictionary are marked with [?].",
   },
 };

@@ -53,7 +53,7 @@ const MENU_I18N: Record<string, Dict> = {
     curCopy: "Com anciãos e educadores",
   },
   en: {
-    badge: "Official platform AWÃ TECH",
+    badge: "Official AWÃ TECH platform",
     h1a: "Indigenous languages,",
     h1b: "living cultures.",
     lead: "Choose the experience that fits you. Guided trails, dictionary, stories and games — built with respect and cultural curation.",
@@ -87,7 +87,7 @@ const MENU_I18N: Record<string, Dict> = {
     curCopy: "Con ancianos y educadores",
   },
   pat: {
-    badge: "Awê petá AWÃ TECH",
+    badge: "Plataforma oficial AWÃ TECH",
     h1a: "Patxôhã txopai,",
     h1b: "hãpõhã hitá.",
     lead: "Awê kuruk apkã txopai. Trilhas, dicionário, histórias e jogos — com respeito e cultura viva.",
@@ -137,9 +137,8 @@ const VIDEO_I18N: Record<
 
 function useLangKey(): string {
   const { i18n } = useTranslation();
-  const raw = (i18n.language || "pt").split("-")[0].toLowerCase();
-  const supported = ["pt", "en", "es", "pat"];
-  return supported.includes(raw) ? raw : "pt";
+  const raw = (i18n.language || "pt").toLowerCase();
+  return raw.startsWith("pat") ? "pat" : raw.slice(0, 2);
 }
 
 const VIDEO_BY_LANG: Record<string, { adulto: string; infantil: string }> = {
@@ -194,23 +193,21 @@ function PresentationVideo({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { title: "AWÃ TECH — Línguas indígenas, culturas vivas" },
       {
         name: "description",
         content:
-          "Plataforma educativa para o ensino de línguas e culturas indígenas. Explore trilhas guiadas, dicionário interativo e jogos educativos.",
+          "Plataforma AWÃ TECH: aprenda línguas indígenas brasileiras com trilhas guiadas, dicionário, histórias, jogos e vídeos — para adultos e crianças.",
       },
-      { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { property: "og:title", content: "AWÃ TECH — Línguas indígenas, culturas vivas" },
       {
         property: "og:description",
         content:
-          "Aprenda línguas indígenas brasileiras com conteúdos exclusivos para adultos e crianças.",
+          "Duas experiências dedicadas ao ensino de línguas indígenas: uma para adultos e outra para crianças.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://awa-tech.store" },
-      { property: "og:image", content: "https://awa-tech.store/og-awa-tech.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.png" },
     ],
     links: [{ rel: "canonical", href: "https://awa-tech.store" }],
   }),
@@ -218,7 +215,6 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingChoice() {
-  const { i18n } = useTranslation();
   const dict = useMenuDict();
   const vdict = useVideoDict();
   const videoSrc = useVideoSources();
@@ -235,7 +231,7 @@ function LandingChoice() {
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.9) 100%), url(${landingBg.url})`,
+        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${landingBg.url})`,
       }}
     >
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
@@ -249,7 +245,7 @@ function LandingChoice() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gold/90 backdrop-blur-sm hover:bg-forest-deep/90 md:px-4 md:py-2 md:text-xs"
               >
                 <UserRound className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : (dict.entrar === "Awê" || i18n.language.startsWith('pat')) ? "Kua konã" : "Minha conta"}</span>
+                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : dict.entrar === "Awê" ? "Kua konã" : "Minha conta"}</span>
               </Link>
             ) : (
               <Link
@@ -266,6 +262,10 @@ function LandingChoice() {
 
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
+        <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
+          <Sparkles className="h-3.5 w-3.5" />
+          {dict.badge}
+        </span>
 
         <h1 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl">
           {dict.h1a}{" "}

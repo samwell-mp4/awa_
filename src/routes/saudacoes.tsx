@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
-import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
@@ -70,7 +69,17 @@ function SaudacoesPage() {
 
   return (
     <div className="min-h-screen">
-      <SiteHeader showBackButton title="Saudações" />
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+            <ArrowLeft className="h-4 w-4" /> Voltar
+          </Link>
+          <div className="flex items-center gap-2 font-display font-black text-cream">
+            <Sparkles className="h-5 w-5 text-leaf" /> Saudações
+          </div>
+          <span className="w-14" />
+        </div>
+      </header>
 
       <main className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-10">
 

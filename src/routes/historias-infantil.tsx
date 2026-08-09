@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft } from "lucide-react";
 
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
@@ -109,7 +108,7 @@ const STORIES: Story[] = [
       "Os Pataxó vivem no sul da Bahia há muitos e muitos luares, guardando as praias, as matas e o sagrado Monte Pascoal.",
       "São quase 50 aldeias espalhadas pela Bahia e Minas Gerais — cada uma com sua história, seu cacique e seu jeito de cuidar da terra.",
     ],
-    color: "#2d6a4f",
+    color: "#06d6a0",
     accent: "#264653",
   },
   {
@@ -402,7 +401,7 @@ function HistoriasInfantilPage() {
         .story-card { animation: card-pop .5s ease-out both; }
       `}</style>
 
-      <SiteHeader mode="infantil" showBackButton title="Histórias" />
+      <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
         {/* HERO panel — matches the reference book style */}
@@ -412,6 +411,9 @@ function HistoriasInfantilPage() {
           <div className="relative z-10">
             <div className="flex items-start gap-3">
               <div className="flex-1">
+                <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-[#2f6d3a] px-3 py-1 text-[10px] uppercase tracking-widest text-white">
+                  🪶 {t("common.kidsStoriesChip") ?? "Histórias do Povo"}
+                </p>
                 <h1
                   className="text-3xl leading-[1.05] tracking-tight text-[#4b2e1f] md:text-5xl"
                   style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
@@ -461,7 +463,7 @@ function HistoriasInfantilPage() {
             </Link>
             <Link
               to="/trilhas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#2d6a4f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
+              className="rounded-full border-b-4 border-black/15 bg-[#06d6a0] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               🗺️ Trilhas

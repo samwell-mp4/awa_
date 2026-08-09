@@ -22,12 +22,12 @@ export default {
     rankingTop: "Más puntos",
     rankingPts: "pts",
     installTitle: "Instala Awã Tech en tu celular",
-    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Profesor Akuã con un toque — como una app nativa.",
+    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Traductor con un toque — como una app nativa.",
     installAndroid: "En Chrome, toca el menú ⋮ y elige Añadir a la pantalla de inicio o Instalar app.",
     installIos: "En Safari, toca el botón Compartir y luego Añadir a Pantalla de Inicio.",
     installCta: "Ver instrucciones completas",
     wisdomTitle: "Sabiduría del día · Senderos",
-    wisdomCta: "Toca para entrar en los senderos guiados por el Profesor Akuã →",
+    wisdomCta: "Toca para entrar en los senderos guiados por el Traductor →",
     resourcesTitle: "Recursos de la plataforma",
     resourcesSubtitle: "Todo lo que necesitas para sumergirte en las lenguas y culturas de los pueblos originarios.",
     resourceHistoriasLabel: "Historias",
@@ -108,14 +108,12 @@ export default {
     trailFamilia: "Familia",
     trailNatureza: "Naturaleza",
     trailAnimais: "Animales",
-    trailHistoriaenarrativa: "Historia y Narrativa",
     kidsTrailsTitle: "🗺️ Senderos de la Aldea",
     kidsTrailsSubtitle: "¡Toca un tótem y sigue el camino mágico!",
     trailDescSaudacoes: "Aprende a saludar como los pueblos indígenas, con palabras de respeto y alegría para comenzar el día.",
     trailDescFamilia: "Descubre los nombres de tu familia en la aldea: padre, madre, hermano, hermana y los ancianos sabios.",
     trailDescNatureza: "Explora el bosque encantado: el río, el sol, la luna, los árboles y todo lo que ofrece la Madre Tierra.",
     trailDescAnimais: "Conoce los animales del bosque: jaguar, armadillo, tortuga y las aves coloridas que cantan en la aldea.",
-    trailDescHistoriaenarrativa: "Sumérgete en historias y leyendas ancestrales transmitidas de generación en generación por los ancianos de la aldea.",
     kidsListen: "Escuchar",
     kidsStop: "Detener",
     kidsLoading: "Preparando…",
@@ -169,7 +167,7 @@ export default {
   },
   translator: {
     title: "Traductor Patxôhã ⇄ Portugués",
-    subtitle: "Traducción asistida usando el diccionario oficial de la plataforma.",
+    subtitle: "Traducción asistida por IA usando el diccionario oficial de la plataforma.",
     label: "Traductor",
     premiumTitle: "Traductor Premium",
     premiumDescription:
@@ -186,10 +184,6 @@ export default {
     wordByWord: "Palabra por palabra:",
     empty: "La traducción aparecerá aquí.",
     disclaimer:
-      "⚠️ Traducción asistida — las palabras ausentes del diccionario se marcan con [?].",
-    contact: {
-      google: "Contactar vía Google",
-      link: "https://forms.gle/vH4yK8T8A7G6F5E4"
-    }
+      "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
   },
 };

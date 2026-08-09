@@ -61,8 +61,8 @@ const totemStyles: Record<string, TotemStyle> = {
   },
   natureza: {
     emoji: "🌳",
-    color: "#2d6a4f",
-    shadow: "rgba(45,106,79,0.45)",
+    color: "#06d6a0",
+    shadow: "rgba(6,214,160,0.45)",
     islandTop: "#fde68a",
     islandBottom: "#e0b04a",
     position: "top-[280px] right-4",
@@ -76,15 +76,6 @@ const totemStyles: Record<string, TotemStyle> = {
     islandBottom: "#c96b6b",
     position: "bottom-4 left-8",
     rotate: "3deg",
-  },
-  historiaenarrativa: {
-    emoji: "📜",
-    color: "#f4a261",
-    shadow: "rgba(244,162,97,0.45)",
-    islandTop: "#bae6fd",
-    islandBottom: "#7dd3fc",
-    position: "bottom-12 right-12",
-    rotate: "-2deg",
   },
 };
 
@@ -133,7 +124,7 @@ function TrilhaInfantilPage() {
         .kids-totem:hover { animation-play-state: paused; }
       `}</style>
 
-      <SiteHeader mode="infantil" showBackButton title="Trilhas" />
+      <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif]">
         <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#ffd166]/40 bg-[#fdfcf0] shadow-inner">
@@ -163,7 +154,7 @@ function TrilhaInfantilPage() {
                 {titleTop.split(" ").slice(-1)[0] || "Aldeia"}
               </span>
             </h1>
-            <p className="mt-3 text-lg font-bold text-[#2d6a4f]">{subtitle}</p>
+            <p className="mt-3 text-lg font-bold text-[#06d6a0]">{subtitle}</p>
           </header>
 
           {/* Adventure map area */}
@@ -195,7 +186,7 @@ function TrilhaInfantilPage() {
             </svg>
 
             {/* Totems */}
-            {trails.slice(0, 5).map((trail, i) => {
+            {trails.slice(0, 4).map((trail, i) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];
@@ -251,7 +242,7 @@ function TrilhaInfantilPage() {
           {/* Narração das trilhas — título e descrição com áudio */}
           <section className="px-4 pb-4" aria-label={t("common.kidsTrailsTitle")}>
             <div className="grid gap-3">
-              {trails.slice(0, 5).map((trail) => {
+              {trails.slice(0, 4).map((trail) => {
                 const slug = trailSlugMap[trail.name];
                 if (!slug) return null;
                 const style = totemStyles[slug];
@@ -272,7 +263,7 @@ function TrilhaInfantilPage() {
 
           {/* Quick nav footer */}
           <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
-            {trails.slice(0, 5).map((trail) => {
+            {trails.slice(0, 4).map((trail) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];

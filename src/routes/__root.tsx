@@ -89,10 +89,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { name: "description", content: "Conecte-se com as raízes do Brasil através do AWÃ TECH. Uma plataforma educativa dedicada ao ensino de línguas e culturas indígenas brasileiras." },
+      { name: "description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
       { name: "author", content: "AWÃ TECH" },
       { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { property: "og:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e jogos. Explore a cultura Pataxó e muito mais." },
+      { property: "og:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#1B5E20" },
@@ -100,11 +100,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "AWÃ TECH" },
       { name: "twitter:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { name: "twitter:description", content: "Conecte-se com as raízes do Brasil através do AWÃ TECH. Aprenda línguas e culturas indígenas brasileiras." },
+      { name: "twitter:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
       { property: "og:image", content: "https://awa-tech.store/og-awa-tech.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { property: "og:image:alt", content: "Logo AWÃ TECH" },
       { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.png" },
     ],
     links: [
@@ -216,21 +216,28 @@ function LanguageHydrator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    const valid = ["pt", "en", "es", "pat"];
-    
-    // Check localStorage and cookies
-    const stored = window.localStorage.getItem("awa_lang");
-    const cookie = document.cookie.split('; ').find(row => row.startsWith('awa_lang='))?.split('=')[1];
-    
-    const target = valid.includes(stored || "") ? stored : (valid.includes(cookie || "") ? cookie : "pt");
-    
-    const current = (i18n.language || "pt").split("-")[0].toLowerCase();
-    
-    if (target && current !== target) {
-      console.log(`[i18n] Hydrating language: ${current} -> ${target}`);
-      void i18n.changeLanguage(target);
+    // Defer language switch to after hydration completes to avoid
+    // hydration mismatches on SSR-rendered translated strings.
+    const timer = window.setTimeout(() => {
+      const valid = ["pt", "en", "es"];
+      const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
+      const detected = navigator.language?.slice(0, 2).toLowerCase();
+      const target = valid.includes(stored || "")
+        ? stored
+        : valid.includes(detected || "")
+          ? detected
+          : "pt";
+      if (!target || target === "pt") {
+        document.documentElement.lang = "pt";
+        return;
+      }
       document.documentElement.lang = target;
-    }
+      window.localStorage.setItem("awa_lang", target);
+      if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+        void i18n.changeLanguage(target);
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [i18n]);
 
   return null;

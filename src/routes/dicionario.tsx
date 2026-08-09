@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+
 import { useTranslation } from "react-i18next";
-import { Search, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
-import { SiteHeader } from "@/components/home/site-header";
+import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useSubscription } from "@/hooks/use-subscription";
@@ -222,7 +222,18 @@ function DictionaryPage() {
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
-      <SiteHeader showBackButton />
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
+          </Link>
+          <div className="flex items-center gap-2 text-cream font-display font-black">
+            <BookOpen className="h-5 w-5 text-leaf" /> {t("dictionary.title")}
+          </div>
+          <span className="w-14" />
+        </div>
+      </header>
+
       <main className="mx-auto max-w-5xl px-4 md:px-8">
         <section className="mt-6 card-elev rounded-2xl p-4 space-y-3">
           <div className="relative">
