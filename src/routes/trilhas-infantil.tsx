@@ -77,6 +77,15 @@ const totemStyles: Record<string, TotemStyle> = {
     position: "bottom-4 left-8",
     rotate: "3deg",
   },
+  historiaenarrativa: {
+    emoji: "📜",
+    color: "#f4a261",
+    shadow: "rgba(244,162,97,0.45)",
+    islandTop: "#bae6fd",
+    islandBottom: "#7dd3fc",
+    position: "bottom-12 right-12",
+    rotate: "-2deg",
+  },
 };
 
 function FloatingIsland({ top, bottom, size = 140 }: { top: string; bottom: string; size?: number }) {
@@ -186,7 +195,7 @@ function TrilhaInfantilPage() {
             </svg>
 
             {/* Totems */}
-            {trails.slice(0, 4).map((trail, i) => {
+            {trails.slice(0, 5).map((trail, i) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];
@@ -242,7 +251,7 @@ function TrilhaInfantilPage() {
           {/* Narração das trilhas — título e descrição com áudio */}
           <section className="px-4 pb-4" aria-label={t("common.kidsTrailsTitle")}>
             <div className="grid gap-3">
-              {trails.slice(0, 4).map((trail) => {
+              {trails.slice(0, 5).map((trail) => {
                 const slug = trailSlugMap[trail.name];
                 if (!slug) return null;
                 const style = totemStyles[slug];
@@ -263,7 +272,7 @@ function TrilhaInfantilPage() {
 
           {/* Quick nav footer */}
           <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
-            {trails.slice(0, 4).map((trail) => {
+            {trails.slice(0, 5).map((trail) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];
