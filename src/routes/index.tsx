@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { speak } from "@/lib/speak";
+
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -220,7 +223,22 @@ function LandingChoice() {
   const videoSrc = useVideoSources();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const welcome = i18n.language === "en"
+        ? "Welcome to AWÃ TECH. Indigenous languages, living cultures. Choose your experience."
+        : i18n.language === "es"
+        ? "Bienvenidos a AWÃ TECH. Lenguas indígenas, culturas vivas. Elige tu experiencia."
+        : "Bem-vindo ao AWÃ TECH. Línguas indígenas, culturas vivas. Escolha a sua experiência.";
+      speak(welcome, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.0);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
+
   // Depois de assinar, mostramos apenas a área contratada.
+
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
   const showAdulto = !hasAny || hasAdulto;

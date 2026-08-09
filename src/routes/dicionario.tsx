@@ -154,15 +154,18 @@ function DictionaryPage() {
 
   useEffect(() => {
     const isKids = typeof backTo === "string" && backTo.includes("infantil");
-    if (!isKids) return;
 
     const timer = setTimeout(() => {
       const welcomeText = lang === "en"
         ? "Welcome to our dictionary! Search for any word to learn how we say it in Patxôhã."
+        : lang === "es"
+        ? "¡Bienvenidos a nuestro diccionario! Busca cualquier palabra para aprender como se dice en Patxôhã."
         : "Bem-vindo ao nosso dicionário! Procure qualquer palavra para aprender como dizemos em Patxôhã.";
-      speakChild(welcomeText, lang === "en" ? "en-US" : "pt-BR", 0.85, 1.5);
+      
+      speakChild(welcomeText, lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR", 0.85, isKids ? 1.5 : 1.0);
     }, 1000);
     return () => clearTimeout(timer);
+
   }, [lang, backTo]);
 
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).

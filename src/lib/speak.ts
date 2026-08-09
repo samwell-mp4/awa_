@@ -8,6 +8,8 @@ type VoiceMap = Record<string, SpeechSynthesisVoice | undefined>;
 const voiceCache: VoiceMap = {};
 let voicesReady = false;
 let warmed = false;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+
 
 function synth(): SpeechSynthesis | null {
   if (typeof window === "undefined") return null;
@@ -93,8 +95,18 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85,
       u.volume = 1;
       const v = pickVoice(lang);
       if (v) u.voice = v;
+      
+      activeUtterance = u;
+      u.onend = () => {
+        if (activeUtterance === u) activeUtterance = null;
+      };
+      u.onerror = () => {
+        if (activeUtterance === u) activeUtterance = null;
+      };
+      
       s.speak(u);
     };
+
     // 30ms is enough for Chrome/Safari to release the previous utterance.
     setTimeout(start, 30);
   } catch {
