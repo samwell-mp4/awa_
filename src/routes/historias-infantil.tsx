@@ -411,9 +411,6 @@ function HistoriasInfantilPage() {
           <div className="relative z-10">
             <div className="flex items-start gap-3">
               <div className="flex-1">
-                <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-[#2f6d3a] px-3 py-1 text-[10px] uppercase tracking-widest text-white">
-                  🪶 {t("common.kidsStoriesChip") ?? "Histórias do Povo"}
-                </p>
                 <h1
                   className="text-3xl leading-[1.05] tracking-tight text-[#4b2e1f] md:text-5xl"
                   style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
