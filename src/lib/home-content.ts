@@ -42,7 +42,7 @@ export const rankingSeed = [
 ];
 
 export const resourceCards: { icon: LucideIcon; label: string; desc: string }[] = [
-  { icon: ScrollText, label: "Histórias", desc: "Narrativas ancestrais em texto e áudio." },
+  { icon: ScrollText, label: "Vídeos e Registros", desc: "Narrativas ancestrais em texto e áudio." },
   { icon: Video, label: "Vídeos", desc: "Cenas e narrativas da aldeia Pataxó." },
 ];
 
