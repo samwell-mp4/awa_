@@ -5,6 +5,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useTranslation } from "react-i18next";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 import { T } from "@/components/T";
 import { toast } from "sonner";
 
@@ -589,7 +591,7 @@ function HistoriasPage() {
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
-      <header className="relative overflow-hidden">
+      <header className="relative overflow-visible">
         <div className="absolute inset-0">
           <img
             loading="lazy"
@@ -603,14 +605,8 @@ function HistoriasPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_145/0.5)] via-[oklch(0.16_0.04_145/0.75)] to-[oklch(0.16_0.04_145)]" />
         </div>
 
+        <SiteHeader showBackButton />
         <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
-          >
-            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
-          </Link>
-
           <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
             🪶 <T>Histórias do Povo</T>
           </p>
@@ -621,7 +617,6 @@ function HistoriasPage() {
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
             <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
-
         </div>
       </header>
 
