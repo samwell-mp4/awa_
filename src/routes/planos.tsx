@@ -156,7 +156,7 @@ function PlanosPage() {
             <div>
               <h2 className="font-display text-2xl font-black text-cream">Assinatura Adulto</h2>
               <p className="text-sm text-foreground/70">
-                Dicionário completo, Professor Akuã e todo o conteúdo cultural.
+                Dicionário completo, tradutor, Professor Akuã e todo o conteúdo cultural.
               </p>
             </div>
             {hasAdulto && (

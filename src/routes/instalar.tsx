@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { speak, stopSpeak } from "@/lib/speak";
 import { PublicFooter } from "@/components/PublicFooter";
 import {
   ArrowLeft,
@@ -29,7 +27,7 @@ export const Route = createFileRoute("/instalar")({
       {
         name: "description",
         content:
-          "Instale o Awã Tech no Android ou iPhone e acesse dicionário, músicas, histórias e Tradutor como um app.",
+          "Instale o Awã Tech no Android ou iPhone e acesse dicionário, músicas, histórias e Professor Akuã como um app.",
       },
       { property: "og:title", content: "Baixar o App — AWÃ TECH" },
       {
@@ -49,7 +47,6 @@ interface BeforeInstallPromptEvent extends Event {
 
 function InstalarPage() {
   const backTo = useLastArea();
-  const { t, i18n } = useTranslation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");
@@ -81,12 +78,6 @@ function InstalarPage() {
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
-
-  useEffect(() => {
-    const text = t("audioExplanations.instalar");
-    speak(text, i18n.language);
-    return () => stopSpeak();
-  }, [t, i18n.language]);
 
   async function handleInstall() {
 
@@ -165,7 +156,7 @@ function InstalarPage() {
               Baixe o <span className="text-leaf">Awã Tech</span>
             </h1>
             <p className="mt-4 text-lg text-foreground/80 md:text-xl">
-              Leve o dicionário Patxôhã, as músicas, as histórias e o Tradutor no seu celular — sem
+              Leve o dicionário Patxôhã, as músicas, as histórias e o Professor Akuã no seu celular — sem
               precisar da loja de apps.
             </p>
 
@@ -290,7 +281,7 @@ function InstalarPage() {
             />
             <Benefit
               icon={Sparkles}
-              title="Tradutor"
+              title="Professor Akuã"
               text="Converse com o professor virtual quando quiser."
             />
           </div>
