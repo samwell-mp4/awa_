@@ -476,7 +476,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const lang = useLang();
   const t = L10N[lang];
   const isUser = msg.role === "user";
-  const speak = useServerFn(speakText);
+  const speakFn = useServerFn(speakText);
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
