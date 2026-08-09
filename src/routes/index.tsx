@@ -53,7 +53,7 @@ const MENU_I18N: Record<string, Dict> = {
     curCopy: "Com anciãos e educadores",
   },
   en: {
-    badge: "Official AWÃ TECH platform",
+    badge: "Official platform AWÃ TECH",
     h1a: "Indigenous languages,",
     h1b: "living cultures.",
     lead: "Choose the experience that fits you. Guided trails, dictionary, stories and games — built with respect and cultural curation.",
@@ -87,7 +87,7 @@ const MENU_I18N: Record<string, Dict> = {
     curCopy: "Con ancianos y educadores",
   },
   pat: {
-    badge: "Plataforma oficial AWÃ TECH",
+    badge: "Awê petá AWÃ TECH",
     h1a: "Patxôhã txopai,",
     h1b: "hãpõhã hitá.",
     lead: "Awê kuruk apkã txopai. Trilhas, dicionário, histórias e jogos — com respeito e cultura viva.",

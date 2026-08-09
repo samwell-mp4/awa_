@@ -221,22 +221,15 @@ function LanguageHydrator() {
     const timer = window.setTimeout(() => {
       const valid = ["pt", "en", "es", "pat"];
       const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-      const detected = navigator.language?.slice(0, 2).toLowerCase();
-      const target = valid.includes(stored || "")
-        ? stored
-        : valid.includes(detected || "")
-          ? detected
-          : "pt";
-      if (!target || target === "pt") {
-        document.documentElement.lang = "pt";
-        return;
-      }
-      document.documentElement.lang = target;
-      window.localStorage.setItem("awa_lang", target);
-      if ((i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+      // Não usamos detecção automática do navegador para evitar mismatch com o server "pt"
+      const target = valid.includes(stored || "") ? stored : "pt";
+      
+      if (target && (i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+        document.documentElement.lang = target;
+        window.localStorage.setItem("awa_lang", target);
         void i18n.changeLanguage(target);
       }
-    }, 0);
+    }, 100);
     return () => window.clearTimeout(timer);
   }, [i18n]);
 
