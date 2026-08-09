@@ -53,7 +53,7 @@ type Hotspot = {
 };
 
 const hotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
+  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#2d6a4f" },
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
