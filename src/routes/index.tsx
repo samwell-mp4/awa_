@@ -193,21 +193,23 @@ function PresentationVideo({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AWÃ TECH — Línguas indígenas, culturas vivas" },
+      { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
       {
         name: "description",
         content:
-          "Plataforma AWÃ TECH: aprenda línguas indígenas brasileiras com trilhas guiadas, dicionário, histórias, jogos e vídeos — para adultos e crianças.",
+          "Plataforma educativa para o ensino de línguas e culturas indígenas. Explore trilhas guiadas, dicionário interativo e jogos educativos.",
       },
-      { property: "og:title", content: "AWÃ TECH — Línguas indígenas, culturas vivas" },
+      { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
       {
         property: "og:description",
         content:
-          "Duas experiências dedicadas ao ensino de línguas indígenas: uma para adultos e outra para crianças.",
+          "Aprenda línguas indígenas brasileiras com conteúdos exclusivos para adultos e crianças.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://awa-tech.store" },
+      { property: "og:image", content: "https://awa-tech.store/og-awa-tech.png" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.png" },
     ],
     links: [{ rel: "canonical", href: "https://awa-tech.store" }],
   }),
