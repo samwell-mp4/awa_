@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
