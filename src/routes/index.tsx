@@ -138,7 +138,8 @@ const VIDEO_I18N: Record<
 function useLangKey(): string {
   const { i18n } = useTranslation();
   const raw = (i18n.language || "pt").split("-")[0].toLowerCase();
-  return ["pt", "en", "es", "pat"].includes(raw) ? raw : "pt";
+  const supported = ["pt", "en", "es", "pat"];
+  return supported.includes(raw) ? raw : "pt";
 }
 
 const VIDEO_BY_LANG: Record<string, { adulto: string; infantil: string }> = {
