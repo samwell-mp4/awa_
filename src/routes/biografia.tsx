@@ -36,11 +36,10 @@ function BiografiaPage() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Delay slightly to ensure user interaction "warms up" the engine
     const timer = setTimeout(() => {
       const bioText = i18n.language === "pt" 
-        ? "Conheça a história da Awã Tech: uma plataforma dedicada ao ensino de línguas indígenas brasileiras e à preservação de culturas vivas. Nossa missão é unir a tecnologia à sabedoria ancestral dos povos indígenas."
-        : "Discover the story of Awã Tech: a platform dedicated to teaching Brazilian indigenous languages and preserving living cultures. Our mission is to bridge technology with the ancestral wisdom of indigenous peoples.";
+        ? "AWÃ TECH. Tecnologia que preserva a memória, fortalece as raízes e conecta o futuro à sabedoria ancestral. O Awã Tech nasceu com a missão de unir a tecnologia à sabedoria ancestral dos povos indígenas. Criado para preservar, valorizar e ensinar as línguas e culturas originárias do Brasil, o projeto busca garantir que esses conhecimentos continuem vivos e sejam compartilhados com as futuras gerações. Por meio de um aplicativo moderno e acessível, o Awã Tech oferece aulas de idiomas indígenas, áudios com pronúncia de falantes nativos, histórias tradicionais, músicas, vídeos, jogos educativos e conteúdos culturais. A plataforma conecta tradição e inovação, tornando o aprendizado envolvente para crianças, jovens e adultos."
+        : "AWÃ TECH. Technology that preserves memory, strengthens roots, and connects the future to ancestral wisdom. Awã Tech was born with the mission of bridging technology with the ancestral wisdom of indigenous peoples. Created to preserve, value, and teach the original languages and cultures of Brazil, the project seeks to ensure that this knowledge remains alive and shared with future generations. Through a modern and accessible application, Awã Tech offers indigenous language classes, audio with native speaker pronunciation, traditional stories, music, videos, educational games, and cultural content. The platform connects tradition and innovation, making learning engaging for children, youth, and adults.";
       
       speak(bioText, i18n.language === "pt" ? "pt-BR" : "en-US");
     }, 1000);

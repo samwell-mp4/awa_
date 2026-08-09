@@ -59,8 +59,8 @@ function InstalarPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       const installText = i18n.language === "pt"
-        ? "Instale o Awã Tech no seu celular. Leve o dicionário, as músicas, as histórias e o Professor Akuã com você para qualquer lugar, sem precisar baixar da loja de aplicativos."
-        : "Install Awã Tech on your phone. Take the dictionary, songs, stories, and Professor Akuã with you anywhere, without needing to download from an app store.";
+        ? "Baixe o Awã Tech. Leve o dicionário Patxôhã, as músicas, as histórias e o Tradutor no seu celular — sem precisar da loja de apps. Instale o Awã Tech no seu celular. Leve o dicionário, as músicas, as histórias e o Tradutor com você para qualquer lugar, sem precisar baixar da loja de aplicativos."
+        : "Download Awã Tech. Take the Patxôhã dictionary, songs, stories, and Translator on your phone — without needing an app store. Install Awã Tech on your phone. Take the dictionary, songs, stories, and Translator with you anywhere, without needing to download from an app store.";
       
       speak(installText, i18n.language === "pt" ? "pt-BR" : "en-US");
     }, 1000);

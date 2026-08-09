@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
+import { speak } from "@/lib/speak";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
@@ -64,6 +65,16 @@ function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const introText = i18n.language === "pt"
+        ? "Bem-vindo ao Awã Tech Infantil. Aqui você pode explorar as trilhas da aldeia, ouvir cânticos, ler histórias, jogar e fazer amigos, tudo enquanto aprende sobre as nossas línguas indígenas."
+        : "Welcome to Awã Tech Kids. Here you can explore village trails, listen to songs, read stories, play games, and make friends, all while learning about our indigenous languages.";
+      speak(introText, i18n.language === "pt" ? "pt-BR" : "en-US");
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [i18n.language]);
 
   return (
     <div className="kids-theme min-h-screen text-foreground">
