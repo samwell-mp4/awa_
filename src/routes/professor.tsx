@@ -18,6 +18,7 @@ import {
   Users,
   Globe,
 } from "lucide-react";
+import { SiteHeader } from "@/components/home/site-header";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
