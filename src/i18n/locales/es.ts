@@ -27,7 +27,7 @@ export default {
     installIos: "En Safari, toca el botón Compartir y luego Añadir a Pantalla de Inicio.",
     installCta: "Ver instrucciones completas",
     wisdomTitle: "Sabiduría del día · Senderos",
-    wisdomCta: "Toca para entrar en los senderos guiados por el Profesor Akuã →",
+    wisdomCta: "Toca para entrar en los senderos guiados por el Traductor →",
     resourcesTitle: "Recursos de la plataforma",
     resourcesSubtitle: "Todo lo que necesitas para sumergirte en las lenguas y culturas de los pueblos originarios.",
     resourceHistoriasLabel: "Historias",
