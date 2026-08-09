@@ -55,9 +55,8 @@ export const navGroups: NavGroup[] = [
     title: "Língua e Conhecimento",
     items: [
       { label: "Dicionário", href: "/dicionario", icon: Library },
-      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
+      { label: "Professor Akuã", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
-      { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
   },
   {
@@ -84,7 +83,7 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
-  { label: "Tradutor", href: "/traduzir" },
+  { label: "Professor Akuã", href: "/traduzir" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
@@ -98,7 +97,6 @@ const ADULT_HREFS = new Set([
   "/dicionario",
   "/traduzir",
   "/trilhas",
-  "/professor",
   "/historias",
   "/musicas",
   "/videos",
@@ -144,8 +142,7 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
-        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
-        { label: t("nav.professor"), href: "/professor", icon: Sparkles },
+        { label: t("nav.professor"), href: "/traduzir", icon: BookOpen },
       ],
     },
     {
@@ -176,7 +173,7 @@ export function useNavContent(mode: NavMode = "all") {
 
   const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
-    { label: t("nav.tradutor"), href: "/traduzir" },
+    { label: t("nav.professor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },
