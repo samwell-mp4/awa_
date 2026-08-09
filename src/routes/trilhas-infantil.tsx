@@ -140,9 +140,9 @@ function TrilhaInfantilPage() {
             <Link
               to="/infantil"
               className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-black text-[#118ab2] shadow ring-2 ring-[#ffd166]/60 hover:scale-105 active:scale-95"
-              aria-label={t("Voltar")}
+              aria-label={t("common.voltar")}
             >
-              <span aria-hidden>←</span> {t("Voltar")}
+              <span aria-hidden>←</span> {t("common.voltar")}
             </Link>
             <h1
               className="text-4xl uppercase leading-none tracking-tight text-[#118ab2]"
@@ -186,7 +186,7 @@ function TrilhaInfantilPage() {
             </svg>
 
             {/* Totems */}
-            {trails.slice(0, 5).map((trail, i) => {
+            {trails.slice(0, 4).map((trail, i) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];
@@ -242,7 +242,7 @@ function TrilhaInfantilPage() {
           {/* Narração das trilhas — título e descrição com áudio */}
           <section className="px-4 pb-4" aria-label={t("common.kidsTrailsTitle")}>
             <div className="grid gap-3">
-              {trails.slice(0, 5).map((trail) => {
+              {trails.slice(0, 4).map((trail) => {
                 const slug = trailSlugMap[trail.name];
                 if (!slug) return null;
                 const style = totemStyles[slug];
@@ -263,7 +263,7 @@ function TrilhaInfantilPage() {
 
           {/* Quick nav footer */}
           <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
-            {trails.slice(0, 5).map((trail) => {
+            {trails.slice(0, 4).map((trail) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;
               const style = totemStyles[slug];
