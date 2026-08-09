@@ -94,7 +94,7 @@ function InfantilHome() {
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
               aria-label={t(`infantil.hotspots.${h.key}`)}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-[#3a2418] shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
               style={{ borderColor: h.color }}
             >
               <span className="text-2xl md:text-3xl" aria-hidden>{h.emoji}</span>
@@ -112,7 +112,7 @@ function InfantilHome() {
               to="/trilhas/$slug"
               params={{ slug: c.slug }}
               aria-label={t(`common.${c.key}`)}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-[#3a2418] shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
               style={{ borderColor: c.color }}
             >
               <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
