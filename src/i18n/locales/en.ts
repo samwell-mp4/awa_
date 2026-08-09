@@ -22,12 +22,12 @@ export default {
     rankingTop: "Most points",
     rankingPts: "pts",
     installTitle: "Install Awã Tech on your phone",
-    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Professor Akuã with one tap — like a native app.",
+    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Translator with one tap — like a native app.",
     installAndroid: "In Chrome, tap the ⋮ menu and choose Add to home screen or Install app.",
     installIos: "In Safari, tap the Share button then Add to Home Screen.",
     installCta: "See full instructions",
     wisdomTitle: "Wisdom of the day · Trails",
-    wisdomCta: "Tap to enter the trails guided by Professor Akuã →",
+    wisdomCta: "Tap to enter the trails guided by Translator →",
     resourcesTitle: "Platform resources",
     resourcesSubtitle: "Everything you need to dive into the languages and cultures of Indigenous peoples.",
     resourceHistoriasLabel: "Stories & Narratives",
@@ -194,6 +194,6 @@ export default {
   },
   audioExplanations: {
     biografia: "Welcome to the AWÃ TECH biography. We are a platform dedicated to preserving and teaching the languages and cultures of Brazil's Indigenous peoples, joining ancestral wisdom and technology.",
-    instalar: "Learn how to install the AWÃ TECH app on your phone. Add it to your home screen to access the dictionary, music, and Professor Akuã quickly and safely."
+    instalar: "Learn how to install the AWÃ TECH app on your phone. Add it to your home screen to access the dictionary, music, and Translator quickly and safely."
   }
 };
