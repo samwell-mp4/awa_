@@ -167,7 +167,7 @@ export default {
   },
   translator: {
     title: "Traductor Patxôhã ⇄ Portugués",
-    subtitle: "Traducción asistida por IA usando el diccionario oficial de la plataforma.",
+    subtitle: "Traducción asistida usando el diccionario oficial de la plataforma.",
     label: "Traductor",
     premiumTitle: "Traductor Premium",
     premiumDescription:
@@ -184,7 +184,7 @@ export default {
     wordByWord: "Palabra por palabra:",
     empty: "La traducción aparecerá aquí.",
     disclaimer:
-      "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
+      "⚠️ Traducción asistida — las palabras ausentes del diccionario se marcan con [?].",
     contact: {
       google: "Contactar vía Google",
       link: "https://forms.gle/vH4yK8T8A7G6F5E4"
