@@ -53,10 +53,19 @@ const KenBurns: React.FC<{ src: string; from?: number; to?: number; x?: number }
   const { durationInFrames } = useVideoConfig();
   const scale = interpolate(frame, [0, durationInFrames], [from, to]);
   const tx = interpolate(frame, [0, durationInFrames], [0, x]);
+  const lang = getNarrationLang();
+  
+  // Use localized image if available, otherwise fallback to root images/
+  const imageSrc = staticFile(`images/${lang}/${src}`);
+  const fallbackSrc = staticFile(`images/${src}`);
+  
   return (
     <AbsoluteFill>
       <Img
-        src={staticFile(`images/${src}`)}
+        src={imageSrc}
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = fallbackSrc;
+        }}
         style={{
           width: "100%",
           height: "100%",
@@ -509,7 +518,7 @@ const Closing: React.FC = () => {
                   color: CREAM,
                 }}
               >
-                Comece sua trilha hoje
+                {getNarrationLang() === "pt" ? "Comece sua trilha hoje" : getNarrationLang() === "es" ? "Comienza tu ruta hoy" : "Start your trail today"}
               </div>
             </Reveal>
             <Reveal delay={12}>
@@ -559,10 +568,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a3"
           index="01"
           image="trail-saudacoes.jpg"
-          eyebrow="TRILHAS GUIADAS"
-          title="Do primeiro Awê à conversa"
-          desc="Lições curtas e progressivas, com áudio nativo e prática diária."
-          bullets={["Saudações", "Família", "Natureza", "Animais"]}
+          eyebrow={getNarrationLang() === "pt" ? "TRILHAS GUIADAS" : getNarrationLang() === "es" ? "RUTAS GUIADAS" : "GUIDED TRAILS"}
+          title={getNarrationLang() === "pt" ? "Do primeiro Awê à conversa" : getNarrationLang() === "es" ? "Del primer Awê a la charla" : "From the first Awê to conversation"}
+          desc={getNarrationLang() === "pt" ? "Lições curtas e progressivas, com áudio nativo e prática diária." : getNarrationLang() === "es" ? "Lecciones cortas y progresivas, con audio nativo y práctica diaria." : "Short, progressive lessons with native audio and daily practice."}
+          bullets={getNarrationLang() === "pt" ? ["Saudações", "Família", "Natureza", "Animais"] : getNarrationLang() === "es" ? ["Saludos", "Familia", "Naturaleza", "Animales"] : ["Greetings", "Family", "Nature", "Animals"]}
           side="left"
         />
       </TransitionSeries.Sequence>
@@ -572,10 +581,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a4"
           index="02"
           image="trail-natureza.jpg"
-          eyebrow="DICIONÁRIO PATXÔHÃ"
-          title="Milhares de palavras com áudio"
-          desc="Busque, ouça a pronúncia original e salve suas palavras favoritas."
-          bullets={["Busca instantânea", "Pronúncia real", "Favoritos"]}
+          eyebrow={getNarrationLang() === "pt" ? "DICIONÁRIO PATXÔHÃ" : getNarrationLang() === "es" ? "DICCIONARIO PATXÔHÃ" : "PATXÔHÃ DICTIONARY"}
+          title={getNarrationLang() === "pt" ? "Milhares de palavras com áudio" : getNarrationLang() === "es" ? "Miles de palabras con audio" : "Thousands of words with audio"}
+          desc={getNarrationLang() === "pt" ? "Busque, ouça a pronúncia original e salve suas palavras favoritas." : getNarrationLang() === "es" ? "Busca, escucha la pronunciación original y guarda tus palabras favoritas." : "Search, listen to original pronunciation, and save your favorite words."}
+          bullets={getNarrationLang() === "pt" ? ["Busca instantânea", "Pronúncia real", "Favoritos"] : getNarrationLang() === "es" ? ["Búsqueda instantánea", "Pronunciación real", "Favoritos"] : ["Instant search", "Real pronunciation", "Favorites"]}
           side="right"
         />
       </TransitionSeries.Sequence>
@@ -585,10 +594,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a5"
           index="03"
           image="pataxo-danca.jpg"
-          eyebrow="TRADUTOR CULTURAL"
-          title="Traduza e ouça na hora"
-          desc="Frases do dia a dia traduzidas com o contexto cultural da aldeia."
-          bullets={["Texto e voz", "Contexto cultural"]}
+          eyebrow={getNarrationLang() === "pt" ? "TRADUTOR CULTURAL" : getNarrationLang() === "es" ? "TRADUCTOR CULTURAL" : "CULTURAL TRANSLATOR"}
+          title={getNarrationLang() === "pt" ? "Traduza e ouça na hora" : getNarrationLang() === "es" ? "Traduce y escucha al instante" : "Translate and listen instantly"}
+          desc={getNarrationLang() === "pt" ? "Frases do dia a dia traduzidas com o contexto cultural da aldeia." : getNarrationLang() === "es" ? "Frases cotidianas traducidas con el contexto cultural de la aldea." : "Everyday phrases translated with the village's cultural context."}
+          bullets={getNarrationLang() === "pt" ? ["Texto e voz", "Contexto cultural"] : getNarrationLang() === "es" ? ["Texto y voz", "Contexto cultural"] : ["Text and voice", "Cultural context"]}
           side="left"
         />
       </TransitionSeries.Sequence>
@@ -598,10 +607,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a6"
           index="04"
           image="pataxo-aldeia.jpg"
-          eyebrow="ESPAÇO DO PROFESSOR"
-          title="Materiais para a sala de aula"
-          desc="Planos de aula, atividades e recursos prontos para educadores."
-          bullets={["Planos de aula", "Atividades", "Turmas"]}
+          eyebrow={getNarrationLang() === "pt" ? "ESPAÇO DO PROFESSOR" : getNarrationLang() === "es" ? "ESPACIO DEL PROFESOR" : "TEACHER'S SPACE"}
+          title={getNarrationLang() === "pt" ? "Materiais para a sala de aula" : getNarrationLang() === "es" ? "Materiales para el aula" : "Classroom materials"}
+          desc={getNarrationLang() === "pt" ? "Planos de aula, atividades e recursos prontos para educadores." : getNarrationLang() === "es" ? "Planes de clase, actividades y recursos listos para educadores." : "Lesson plans, activities, and resources ready for educators."}
+          bullets={getNarrationLang() === "pt" ? ["Planos de aula", "Atividades", "Turmas"] : getNarrationLang() === "es" ? ["Planes de clase", "Actividades", "Clases"] : ["Lesson plans", "Activities", "Classes"]}
           side="right"
         />
       </TransitionSeries.Sequence>

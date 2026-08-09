@@ -304,7 +304,10 @@ const KidFeature: React.FC<KidFeatureProps> = ({
             }}
           >
             <Img
-              src={staticFile(`images/${img}`)}
+              src={staticFile(`images/${getNarrationLang()}/${img}`)}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = staticFile(`images/${img}`);
+              }}
               style={{
                 width: "100%",
                 height: "100%",
@@ -528,10 +531,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k3"
             img="jogos-infantil-bg.jpg"
             emoji="🎮"
-            title="Jogos coloridos"
-            desc="Descubra os animais, as cores e a natureza brincando!"
+            title={getNarrationLang() === "pt" ? "Jogos coloridos" : getNarrationLang() === "es" ? "Juegos coloridos" : "Colorful games"}
+            desc={getNarrationLang() === "pt" ? "Descubra os animais, as cores e a natureza brincando!" : getNarrationLang() === "es" ? "¡Descubre los animales, los colores y la naturaleza jugando!" : "Discover animals, colors, and nature by playing!"}
             color={CLAY}
-            chips={["Animais", "Cores", "Natureza"]}
+            chips={getNarrationLang() === "pt" ? ["Animais", "Cores", "Natureza"] : getNarrationLang() === "es" ? ["Animales", "Colores", "Naturaleza"] : ["Animals", "Colors", "Nature"]}
           />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
@@ -543,10 +546,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k4"
             img="musicas-infantil-bg.jpg"
             emoji="🎵"
-            title="Cantigas da aldeia"
-            desc="Cante junto com a letra em Patxôhã e em português!"
+            title={getNarrationLang() === "pt" ? "Cantigas da aldeia" : getNarrationLang() === "es" ? "Canciones de la aldea" : "Village songs"}
+            desc={getNarrationLang() === "pt" ? "Cante junto com a letra em Patxôhã e em português!" : getNarrationLang() === "es" ? "¡Canta junto con la letra en Patxôhã y español!" : "Sing along with lyrics in Patxôhã and English!"}
             color={LEAF}
-            chips={["Legendas", "Patxôhã", "Português"]}
+            chips={getNarrationLang() === "pt" ? ["Legendas", "Patxôhã", "Português"] : getNarrationLang() === "es" ? ["Subtítulos", "Patxôhã", "Español"] : ["Subtitles", "Patxôhã", "English"]}
             flip
           />
         </TransitionSeries.Sequence>
@@ -559,10 +562,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k5"
             img="trail-animais.jpg"
             emoji="📖"
-            title="Histórias encantadas"
-            desc="Contadas pelos anciãos, cheias de bichos, florestas e magia."
+            title={getNarrationLang() === "pt" ? "Histórias encantadas" : getNarrationLang() === "es" ? "Historias encantadas" : "Enchanted stories"}
+            desc={getNarrationLang() === "pt" ? "Contadas pelos anciãos, cheias de bichos, florestas e magia." : getNarrationLang() === "es" ? "Contadas por los ancianos, llenas de animales, bosques y magia." : "Told by elders, full of animals, forests, and magic."}
             color="#4EA8E8"
-            chips={["Narração", "Ilustrações", "Anciãos"]}
+            chips={getNarrationLang() === "pt" ? ["Narração", "Ilustrações", "Anciãos"] : getNarrationLang() === "es" ? ["Narración", "Ilustraciones", "Ancianos"] : ["Narration", "Illustrations", "Elders"]}
           />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
@@ -574,10 +577,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k6"
             img="trail-familia.jpg"
             emoji="🌿"
-            title="Trilhas de aventura"
-            desc="Colecione estrelinhas a cada palavra nova que aprender!"
+            title={getNarrationLang() === "pt" ? "Trilhas de aventura" : getNarrationLang() === "es" ? "Rutas de aventura" : "Adventure trails"}
+            desc={getNarrationLang() === "pt" ? "Colecione estrelinhas a cada palavra nova que aprender!" : getNarrationLang() === "es" ? "¡Colecciona estrellas por cada palabra nueva que aprendas!" : "Collect stars for every new word you learn!"}
             color={SUN}
-            chips={["Estrelinhas", "Missões", "Prêmios"]}
+            chips={getNarrationLang() === "pt" ? ["Estrelinhas", "Missões", "Prêmios"] : getNarrationLang() === "es" ? ["Estrellitas", "Misiones", "Premios"] : ["Stars", "Missions", "Prizes"]}
             flip
           />
         </TransitionSeries.Sequence>
