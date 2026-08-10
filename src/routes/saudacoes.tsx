@@ -18,8 +18,12 @@ export const Route = createFileRoute("/saudacoes")({
       {
         name: "description",
         content:
-          "Aprenda todas as saudações em Patxôhã: bom dia, boa tarde, boa noite, agradecimentos e despedidas, com pronúncia e áudio.",
+          "Aprenda saudações em Patxôhã: bom dia, boa tarde, boa noite, agradecimentos e despedidas, com áudio e pronúncia original.",
       },
+      { property: "og:title", content: "Saudações em Patxôhã — AWÃ TECH" },
+      { property: "og:description", content: "Como cumprimentar e agradecer na língua do povo Pataxó." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SaudacoesPage,
