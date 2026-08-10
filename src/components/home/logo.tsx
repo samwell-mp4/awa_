@@ -7,11 +7,9 @@ export function Logo() {
     <div className="flex items-center gap-3">
       <div className="relative shrink-0">
         <div className="absolute -inset-1 rounded-full bg-[var(--gradient-gold)] opacity-30 blur-md" />
-        <img
-          src={logoSrc}
-          alt="AWÃ TECH"
-          className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 object-contain shadow-[var(--shadow-gold)]"
-        />
+        <div className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 flex items-center justify-center shadow-[var(--shadow-gold)]">
+          <span className="font-display text-xl font-black text-forest-deep">A</span>
+        </div>
       </div>
       <div className="leading-none">
         <div className="font-display text-xl font-black tracking-tight text-cream">
