@@ -67,7 +67,7 @@ export function AllowlistAdmin() {
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           <Field label="Email">
-            <Input type="email" placeholder="pessoa@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input type="email" placeholder="contato@exemplo.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </Field>
           <Field label="Celular (com +55)">
             <Input type="tel" placeholder="+5573999999999" value={phone} onChange={(e) => setPhone(e.target.value)} />
