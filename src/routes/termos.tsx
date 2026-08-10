@@ -143,8 +143,8 @@ function TermosPage() {
       <h2 className="mt-6 font-display text-xl font-bold text-gold">13. Contato</h2>
       <p>
         Dúvidas:{" "}
-        <a className="text-gold underline" href="mailto:awa-tech.store@hotmail.com">
-          awa-tech.store@hotmail.com
+        <a className="text-gold underline" href="mailto:contato@awa-tech.store">
+          contato@awa-tech.store
         </a>
         .
       </p>

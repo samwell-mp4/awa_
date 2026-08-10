@@ -40,7 +40,7 @@ function ReembolsoPage() {
           </li>
           <li>
             Enviar e-mail para{" "}
-            <a className="text-gold underline" href="mailto:awa-tech.store@hotmail.com">awa-tech.store@hotmail.com</a> com o
+            <a className="text-gold underline" href="mailto:contato@awa-tech.store">contato@awa-tech.store</a> com o
             assunto <b>“Reembolso”</b>, incluindo o e-mail cadastrado e a data da compra.
           </li>
         </ol>
