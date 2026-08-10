@@ -134,13 +134,13 @@ function AuthPage() {
           </div>
 
           <p className="mt-2 text-sm text-foreground/70">
-            Continue com sua conta Google ou receba um código por SMS no seu celular.
+            Continue com sua conta AWÃ TECH (Google) ou receba um código por SMS no seu celular.
           </p>
 
           {/* Method tabs */}
           <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-background/40 p-1">
             <TabButton active={method === "google"} onClick={() => { setMethod("google"); setStep("phone"); }}>
-              <GoogleG className="h-4 w-4" /> Google
+              <GoogleG className="h-4 w-4" /> AWÃ TECH
             </TabButton>
             <TabButton active={method === "phone"} onClick={() => setMethod("phone")}>
               <Phone className="h-4 w-4" /> Celular
@@ -158,12 +158,12 @@ function AuthPage() {
                 {busy ? (
                   <span className="flex items-center justify-center gap-3">
                     <Loader2 className="h-4 w-4 animate-spin text-neutral-600" />
-                    <span className="text-neutral-700">Conectando com o Google…</span>
+                    <span className="text-neutral-700">Conectando com o AWÃ TECH (Google)…</span>
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-3">
                     <GoogleG className="h-5 w-5" />
-                    <span>Continuar com Google</span>
+                    <span>Continuar com AWÃ TECH</span>
                   </span>
                 )}
               </button>
