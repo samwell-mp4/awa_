@@ -11,9 +11,9 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Entrar ou Cadastrar — AWÃ TECH" },
-      { name: "description", content: "Acesse o AWÃ TECH com Google ou celular. Cadastro rápido e seguro." },
+      { name: "description", content: "Acesse o AWÃ TECH com sua conta ou celular. Cadastro rápido e seguro." },
       { property: "og:title", content: "Entrar ou Cadastrar — AWÃ TECH" },
-      { property: "og:description", content: "Acesse o AWÃ TECH com Google ou celular." },
+      { property: "og:description", content: "Acesse o AWÃ TECH com sua conta ou celular." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -57,7 +57,7 @@ function AuthPage() {
       },
     });
     if (result.error) {
-      toast.error("Não foi possível entrar com o Google. Tente novamente.");
+      toast.error("Não foi possível entrar com o AWÃ TECH. Tente novamente.");
       setBusy(false);
       return;
     }
@@ -134,7 +134,7 @@ function AuthPage() {
           </div>
 
           <p className="mt-2 text-sm text-foreground/70">
-            Continue com sua conta AWÃ TECH (Google) ou receba um código por SMS no seu celular.
+            Continue com sua conta AWÃ TECH ou receba um código por SMS no seu celular.
           </p>
 
           {/* Method tabs */}
@@ -158,7 +158,7 @@ function AuthPage() {
                 {busy ? (
                   <span className="flex items-center justify-center gap-3">
                     <Loader2 className="h-4 w-4 animate-spin text-neutral-600" />
-                    <span className="text-neutral-700">Conectando com o AWÃ TECH (Google)…</span>
+                    <span className="text-neutral-700">Conectando com o AWÃ TECH…</span>
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-3">
