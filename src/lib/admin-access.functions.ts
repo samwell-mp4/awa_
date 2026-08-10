@@ -176,3 +176,14 @@ export const checkMyLoginAllowed = createServerFn({ method: "GET" })
     const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email ?? "", _phone: phone ?? "" });
     return { allowed: !!data };
   });
+
+export const getSiteKeys = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    return {
+      supabase_url: process.env.SUPABASE_URL || "",
+      supabase_anon_key: process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || "",
+      paddle_env: (process.env.PADDLE_SANDBOX_API_KEY ? "sandbox" : "live") as "sandbox" | "live",
+    };
+  });
