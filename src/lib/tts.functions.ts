@@ -42,7 +42,7 @@ export const speakText = createServerFn({ method: "POST" })
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini-tts",
+        model: "openai/tts-1-hd",
         input: text,
         voice: data.voice ?? "alloy",
         response_format: "mp3",

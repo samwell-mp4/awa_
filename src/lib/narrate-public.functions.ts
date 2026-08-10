@@ -98,7 +98,7 @@ export const narratePublic = createServerFn({ method: "POST" })
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini-tts",
+        model: "openai/tts-1-hd",
         input: text,
         voice,
         response_format: "mp3",
