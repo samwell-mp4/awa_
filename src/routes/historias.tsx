@@ -95,7 +95,11 @@ export const Route = createFileRoute("/historias")({
         content:
           "Conheça a história, cultura e resistência do povo Pataxó, guardiões do sul da Bahia e do Monte Pascoal.",
       },
+      { property: "og:type", content: "article" },
       { property: "og:image", content: danca },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Histórias Pataxó — AWÃ TECH" },
+      { name: "twitter:description", content: "Conheça a história e cultura do povo Pataxó." },
       { name: "twitter:image", content: danca },
     ],
   }),

@@ -20,7 +20,11 @@ export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
+      { name: "description", content: "Dicionário Patxôhã completo com pronúncia e exemplos — recurso Premium para preservação linguística." },
+      { property: "og:title", content: "Dicionário Patxôhã — AWÃ TECH" },
+      { property: "og:description", content: "Explore o vocabulário Pataxó com áudio e exemplos culturais." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: DictionaryRoute,

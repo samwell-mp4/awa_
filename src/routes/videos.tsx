@@ -21,8 +21,12 @@ import { useLastArea } from "@/lib/last-area";
 export const Route = createFileRoute("/videos")({
   head: () => ({
     meta: [
-      { title: "Vídeos Pataxó — AWÃ TECH" },
-      { name: "description", content: "Vídeos do povo Pataxó (Premium)." },
+      { title: "Vídeos e Registros Pataxó — AWÃ TECH" },
+      { name: "description", content: "Assista a registros imersivos da vida, rituais e cotidiano nas aldeias Pataxó." },
+      { property: "og:title", content: "Vídeos Pataxó — AWÃ TECH" },
+      { property: "og:description", content: "Galeria de vídeos exclusivos das aldeias Pataxó." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: () => (

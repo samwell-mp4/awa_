@@ -15,8 +15,11 @@ export const Route = createFileRoute("/traduzir")({
   head: () => ({
     meta: [
       { title: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
-      { name: "description", content: "Tradutor Português ⇄ Patxôhã gratuito." },
-      { property: "og:title", content: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },
+      { name: "description", content: "Traduza textos do Português para Patxôhã e vice-versa com inteligência artificial e curadoria linguística." },
+      { property: "og:title", content: "Tradutor Patxôhã — AWÃ TECH" },
+      { property: "og:description", content: "Ferramenta de tradução bilíngue Português ⇄ Patxôhã." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: TraduzirPage,
