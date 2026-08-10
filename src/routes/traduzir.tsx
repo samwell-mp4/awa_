@@ -27,19 +27,7 @@ function TraduzirPage() {
   const backTo = useLastArea();
 
   useEffect(() => {
-    const isKids = typeof backTo === "string" && backTo.includes("infantil");
-    
-    const timer = setTimeout(() => {
-      const welcomeText = i18n.language === "en"
-        ? "Hello! I am the village translator. Type a word and I will help you speak Patxôhã!"
-        : i18n.language === "es"
-        ? "¡Hola! Soy el traductor de la aldea. ¡Escribe una palabra y te ayudaré a hablar Patxôhã!"
-        : "Olá! Eu sou o tradutor da aldeia. Digite uma palavra para eu te ajudar a falar Patxôhã!";
-      
-      speak(welcomeText, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, isKids ? 1.5 : 1.0);
-    }, 1000);
-    return () => clearTimeout(timer);
-
+    // Narração removida a pedido do usuário
   }, [i18n.language, backTo]);
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");

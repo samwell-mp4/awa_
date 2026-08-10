@@ -190,16 +190,7 @@ function JogosInfantilPage() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const text = i18n.language === "en"
-        ? "Let's play! Choose one of our fun games and win many stars."
-        : i18n.language === "es"
-        ? "¡Vamos a jugar! Elige uno de nuestros divertidos juegos y gana muchas estrellas."
-        : "Vamos jogar! Escolha um dos nossos jogos divertidos e ganhe muitas estrelas.";
-      speak(text, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.5);
-
-    }, 1000);
-    return () => clearTimeout(timer);
+    // Narração removida a pedido do usuário
   }, [i18n.language]);
 
   return (

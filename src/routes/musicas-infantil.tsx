@@ -83,16 +83,7 @@ function MusicasInfantilPage() {
   const [playing, setPlaying] = useState<Song | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const text = i18n.language === "en"
-        ? "Let's sing and have fun with our village songs! Choose a song to start."
-        : i18n.language === "es"
-        ? "¡Vamos a cantar y divertirnos con las canciones de nuestra aldea! Elige una canción para comenzar."
-        : "Vamos cantar e nos divertir com as cantigas da nossa aldeia! Escolha uma música para começar.";
-      speak(text, i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : "pt-BR", 0.85, 1.5);
-
-    }, 1000);
-    return () => clearTimeout(timer);
+    // Narração removida a pedido do usuário
   }, [i18n.language]);
 
   return (
