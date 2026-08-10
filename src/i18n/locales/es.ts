@@ -185,5 +185,6 @@ export default {
     empty: "La traducción aparecerá aquí.",
     disclaimer:
       "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
+    speak: "Escuchar traducción",
   },
 };
