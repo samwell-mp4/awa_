@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Volume2 } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
-import { speak } from "@/lib/speak";
+import { speak, stopSpeak } from "@/lib/speak";
 import { useEffect } from "react";
 import { PremiumGate } from "@/components/PremiumGate";
 
@@ -128,9 +128,26 @@ function TraduzirPage() {
             )}
             {m.data && (
               <div className="mt-2 space-y-3">
-                <p className="text-lg text-foreground whitespace-pre-wrap">
-                  {m.data.traducao}
-                </p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-lg text-foreground whitespace-pre-wrap flex-1">
+                    {m.data.traducao}
+                  </p>
+                  <button
+                    onClick={() => {
+                      const isInfantil = backTo?.includes("infantil");
+                      speak(
+                        m.data!.traducao, 
+                        direction === "pt-pat" ? "pt-BR" : "pt-BR", // Patxôhã uses pt-BR voice as approximation
+                        isInfantil ? 0.85 : 0.85, 
+                        isInfantil ? 1.5 : 1.05
+                      );
+                    }}
+                    className="mt-1 p-2 rounded-full bg-gold/10 hover:bg-gold/20 text-gold transition-colors"
+                    title={t("translator.speak")}
+                  >
+                    <Volume2 className="h-5 w-5" />
+                  </button>
+                </div>
 
                 {m.data.literal && (
                   <div className="text-xs text-leaf border-t border-gold/10 pt-2">
