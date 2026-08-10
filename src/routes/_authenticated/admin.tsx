@@ -27,6 +27,7 @@ const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) 
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
 const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").then((m) => ({ default: m.PaymentsAdmin })));
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
+const KeysAdmin = lazy(() => import("@/components/admin/keys-admin").then((m) => ({ default: m.KeysAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
@@ -46,7 +47,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "keys";
 
 type Section = {
   k: Tab;
@@ -67,6 +68,7 @@ const SECTIONS: Section[] = [
   { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
   { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
   { k: "tools", label: "Ferramentas", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
+  { k: "keys", label: "Chaves de API", icon: KeyRound, desc: "Identificadores e chaves do site.", group: "Sistema", accent: "from-gold/20 to-leaf/30" },
 ];
 
 function AdminPage() {
@@ -220,6 +222,7 @@ function AdminPage() {
                   {tab === "access" && <AccessAdmin />}
                   {tab === "allowlist" && <AllowlistAdmin />}
                   {tab === "payments" && <PaymentsAdmin />}
+                  {tab === "keys" && <KeysAdmin />}
                 </Suspense>
               </div>
             </div>
