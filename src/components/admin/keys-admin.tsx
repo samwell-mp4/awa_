@@ -50,6 +50,20 @@ export function KeysAdmin() {
       icon: ShieldCheck,
       desc: "Define se os pagamentos são simulados ou reais.",
     },
+    {
+      id: "company_logo",
+      label: "Logo da Empresa",
+      value: "/og-awa-tech.png",
+      icon: CheckCircle2,
+      desc: "Logo oficial para compartilhamento e metadados.",
+    },
+    {
+      id: "company_name",
+      label: "Nome da Empresa",
+      value: "AWÃ TECH",
+      icon: CheckCircle2,
+      desc: "Nome oficial da plataforma.",
+    },
   ];
 
   return (
