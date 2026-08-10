@@ -126,12 +126,12 @@ export function AccessAdmin() {
           </div>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
-          <Field label="Email do usuário (Gmail ou outro)">
+          <Field label="Email do usuário (E-mail pessoal ou empresarial)">
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="pessoa@gmail.com"
+              placeholder="contato@exemplo.com"
               onKeyDown={(e) => e.key === "Enter" && grant()}
             />
           </Field>
