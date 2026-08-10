@@ -117,7 +117,7 @@ export function PublicFooter() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-gold/15 pt-6 text-[11px] text-foreground/55 md:flex-row">
-          <span>© {year} AWÃ TECH — Adler Magno Santos. {d.rights}</span>
+          <span>© {year} AWÃ TECH. {d.rights}</span>
           <span className="tracking-wider uppercase">{d.motto}</span>
         </div>
       </div>
