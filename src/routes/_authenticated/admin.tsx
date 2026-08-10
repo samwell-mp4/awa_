@@ -222,6 +222,7 @@ function AdminPage() {
                   {tab === "access" && <AccessAdmin />}
                   {tab === "allowlist" && <AllowlistAdmin />}
                   {tab === "payments" && <PaymentsAdmin />}
+                  {tab === "keys" && <KeysAdmin />}
                 </Suspense>
               </div>
             </div>
