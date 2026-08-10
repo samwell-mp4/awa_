@@ -126,7 +126,7 @@ export function AccessAdmin() {
           </div>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
-          <Field label="Email do usuário (E-mail pessoal ou empresarial)">
+          <Field label="Email do usuário (Empresarial awa-tech.store)">
             <Input
               type="email"
               value={email}
