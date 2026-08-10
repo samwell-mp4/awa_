@@ -11,9 +11,9 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Entrar ou Cadastrar — AWÃ TECH" },
-      { name: "description", content: "Acesse o AWÃ TECH com Google ou celular. Cadastro rápido e seguro." },
+      { name: "description", content: "Acesse o AWÃ TECH com sua conta ou celular. Cadastro rápido e seguro." },
       { property: "og:title", content: "Entrar ou Cadastrar — AWÃ TECH" },
-      { property: "og:description", content: "Acesse o AWÃ TECH com Google ou celular." },
+      { property: "og:description", content: "Acesse o AWÃ TECH com sua conta ou celular." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -57,7 +57,7 @@ function AuthPage() {
       },
     });
     if (result.error) {
-      toast.error("Não foi possível entrar com o Google. Tente novamente.");
+      toast.error("Não foi possível entrar com o AWÃ TECH. Tente novamente.");
       setBusy(false);
       return;
     }
@@ -134,13 +134,13 @@ function AuthPage() {
           </div>
 
           <p className="mt-2 text-sm text-foreground/70">
-            Continue com sua conta AWÃ TECH (Google) ou receba um código por SMS no seu celular.
+            Continue com sua conta AWÃ TECH ou receba um código por SMS no seu celular.
           </p>
 
           {/* Method tabs */}
           <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-background/40 p-1">
             <TabButton active={method === "google"} onClick={() => { setMethod("google"); setStep("phone"); }}>
-              <GoogleG className="h-4 w-4" /> AWÃ TECH
+              <div className="h-4 w-4 bg-gold/20 rounded-full flex items-center justify-center text-[8px] font-bold text-gold ring-1 ring-gold/40">A</div> AWÃ TECH
             </TabButton>
             <TabButton active={method === "phone"} onClick={() => setMethod("phone")}>
               <Phone className="h-4 w-4" /> Celular
@@ -158,11 +158,11 @@ function AuthPage() {
                 {busy ? (
                   <span className="flex items-center justify-center gap-3">
                     <Loader2 className="h-4 w-4 animate-spin text-neutral-600" />
-                    <span className="text-neutral-700">Conectando com o AWÃ TECH (Google)…</span>
+                    <span className="text-neutral-700">Conectando com o AWÃ TECH…</span>
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-3">
-                    <GoogleG className="h-5 w-5" />
+                    <div className="h-5 w-5 bg-gold/20 rounded-full flex items-center justify-center text-[10px] font-bold text-gold ring-1 ring-gold/40">A</div>
                     <span>Continuar com AWÃ TECH</span>
                   </span>
                 )}
@@ -282,16 +282,6 @@ function FeatureItem({ children }: { children: React.ReactNode }) {
   );
 }
 
-function GoogleG({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
-      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35.5 24 35.5c-6.4 0-11.5-5.1-11.5-11.5S17.6 12.5 24 12.5c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.6 6.3 29 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5c10.8 0 19.5-8.7 19.5-19.5 0-1.2-.1-2.4-.4-3.5z"/>
-      <path fill="#FF3D00" d="M6.3 14.1l6.6 4.8C14.7 15.1 19 12.5 24 12.5c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.6 6.3 29 4.5 24 4.5 16.3 4.5 9.7 8.9 6.3 14.1z"/>
-      <path fill="#4CAF50" d="M24 43.5c5 0 9.5-1.7 12.9-4.6l-6-4.9C29 35.4 26.6 36 24 36c-5.3 0-9.7-3.1-11.3-7.5l-6.5 5C9.6 39.1 16.3 43.5 24 43.5z"/>
-      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.3l6 4.9C41 34.7 43.5 29.7 43.5 24c0-1.2-.1-2.4-.4-3.5z"/>
-    </svg>
-  );
-}
 
 function normalizePhone(input: string): string {
   const digits = input.replace(/\D/g, "");

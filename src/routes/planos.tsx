@@ -187,7 +187,7 @@ function PlanosPage() {
         </p>
 
         <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-foreground/60">
-        O acesso é liberado para a conta Google usada no login. Para liberar outro e-mail, faça login
+        O acesso é liberado para a conta AWÃ TECH usada no login. Para liberar outro e-mail, faça login
         com essa conta e contrate uma nova assinatura.
         </p>
 
