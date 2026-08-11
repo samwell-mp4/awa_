@@ -231,6 +231,8 @@ function useKidsNarrator(text: string) {
       audioRef.current = a;
       a.src = url;
       a.currentTime = 0;
+      a.load(); // Force load
+
       a.ontimeupdate = () => {
         if (a.duration > 0) setProgress(a.currentTime / a.duration);
       };
@@ -240,7 +242,11 @@ function useKidsNarrator(text: string) {
       };
       currentAudio = a;
       currentSetter = setState;
-      await a.play();
+
+      const playPromise = a.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
       setState("playing");
     } catch {
       setState("idle");
