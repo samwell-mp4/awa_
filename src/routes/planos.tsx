@@ -13,7 +13,7 @@ export const Route = createFileRoute("/planos")({
       {
         name: "description",
         content:
-          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 40,00/mês ou R$ 210,00/semestre).",
+          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 35,00/mês ou R$ 180,00/semestre).",
       },
       { property: "og:title", content: "Planos AWÃ TECH" },
       {
@@ -93,10 +93,10 @@ function PlanosPage() {
 
       <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
         {search.need && (
-          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border-2 border-amber-500 bg-amber-500/10 p-4 text-center text-sm text-cream shadow-[0_0_20px_rgba(245,158,11,0.2)]">
-            <span className="block mb-1 text-lg font-black uppercase text-amber-500">Acesso Restrito</span>
-            Para entrar na área <b>{search.need === "infantil" ? "Infantil" : "Adulto"}</b>, você precisa de uma assinatura ativa.
-            Escolha o plano abaixo para liberar o conteúdo.
+          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border-2 border-gold/60 bg-gold/10 p-4 text-center text-sm text-cream">
+            <b>Assinatura necessária.</b> Para acessar a área{" "}
+            <b>{search.need === "infantil" ? "Infantil" : "Adulto"}</b>, contrate o plano abaixo. Ele libera
+            apenas essa área — a outra requer assinatura separada.
           </div>
         )}
 
@@ -169,11 +169,10 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice="R$ 40,00"
-            semestralPrice="R$ 210,00"
-            semestralEquivalent="Equivale a R$ 35,00/mês. Cobrado a cada 6 meses."
-            savingsBadge="Melhor valor · economize 12%"
-
+            monthlyPrice="R$ 35,00"
+            semestralPrice="R$ 180,00"
+            semestralEquivalent="Equivale a R$ 30,00/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 14%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "adulto"}
@@ -188,7 +187,7 @@ function PlanosPage() {
         </p>
 
         <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-foreground/60">
-        O acesso é liberado para a conta AWÃ TECH usada no login. Para liberar outro e-mail, faça login
+        O acesso é liberado para a conta Google usada no login. Para liberar outro e-mail, faça login
         com essa conta e contrate uma nova assinatura.
         </p>
 

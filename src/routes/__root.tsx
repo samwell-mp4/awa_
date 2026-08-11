@@ -16,8 +16,10 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
+import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
 
+import { toast } from "sonner";
 import "@/i18n";
 
 
@@ -54,10 +56,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Erro ao carregar página
+          This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Ocorreu um erro ao carregar o conteúdo. Você pode tentar recarregar a página ou voltar ao início.
+          Something went wrong on our end. You can try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -67,13 +69,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Tentar novamente
+            Try again
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Ir para o início
+            Go home
           </a>
         </div>
       </div>
@@ -168,9 +170,32 @@ function RootComponent() {
     };
   }, []);
 
-  // Cadastro livre: qualquer cliente pode criar conta e assinar.
-  // O painel admin continua restrito por role (has_role) no roteador e na UI.
-
+  useEffect(() => {
+    let cancelled = false;
+    async function verify() {
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        if (!sess.session) return;
+        const res = await checkMyLoginAllowed();
+        if (cancelled) return;
+        if (!res.allowed) {
+          toast.error("Acesso não liberado. Contate o administrador do AWÃ TECH.");
+          await supabase.auth.signOut();
+          window.location.replace("/acesso-negado");
+        }
+      } catch {
+        // silencioso — se falhar, mantém sessão para não travar por erro de rede
+      }
+    }
+    verify();
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") verify();
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
 
   return (
