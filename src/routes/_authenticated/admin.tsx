@@ -28,6 +28,7 @@ const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m
 const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").then((m) => ({ default: m.PaymentsAdmin })));
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 const KeysAdmin = lazy(() => import("@/components/admin/keys-admin").then((m) => ({ default: m.KeysAdmin })));
+const AmbientVideosAdmin = lazy(() => import("@/components/admin/ambient-videos-admin").then((m) => ({ default: m.AmbientVideosAdmin })));
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
@@ -47,7 +48,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "keys";
+type Tab = "home" | "trails" | "video" | "ambient_videos" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "keys";
 
 type Section = {
   k: Tab;
@@ -63,6 +64,7 @@ const SECTIONS: Section[] = [
   { k: "dictionary", label: "Dicionário", icon: Library, desc: "Termos Patxôhã ↔ Português.", group: "Conteúdo", accent: "from-gold/25 to-earth/20" },
   { k: "songs", label: "Músicas", icon: Music, desc: "Áudios, legendas e vídeos ambiente.", group: "Conteúdo", accent: "from-leaf/25 to-gold/15" },
   { k: "video", label: "Vídeo do dia", icon: Video, desc: "Curadoria do card diário.", group: "Conteúdo", accent: "from-forest/40 to-leaf/20" },
+  { k: "ambient_videos", label: "Vídeos e Registros", icon: Video, desc: "Galeria imersiva das aldeias.", group: "Conteúdo", accent: "from-gold/30 to-forest/20" },
   { k: "mission", label: "Missão", icon: Trophy, desc: "Missão diária e recompensas.", group: "Comunidade", accent: "from-gold/30 to-earth/20" },
   { k: "access", label: "Acesso Premium", icon: Crown, desc: "Liberar / revogar assinantes.", group: "Comunidade", accent: "from-gold/35 to-leaf/15" },
   { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
@@ -215,6 +217,7 @@ function AdminPage() {
                 <Suspense fallback={<div className="py-10 text-center text-foreground/60">Carregando...</div>}>
                   {tab === "trails" && <TrailsAdmin />}
                   {tab === "video" && <VideoAdmin />}
+                  {tab === "ambient_videos" && <AmbientVideosAdmin />}
                   {tab === "mission" && <MissionAdmin />}
                   {tab === "songs" && <SongsAdmin />}
                   {tab === "dictionary" && <DictionaryAdmin />}
