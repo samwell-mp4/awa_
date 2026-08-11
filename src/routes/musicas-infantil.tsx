@@ -241,10 +241,9 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     const box = boxRef.current;
     const el = lineRefs.current[activeIdx];
     if (!box || !el) return;
-    box.scrollTo?.({
-      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
-      behavior: "smooth",
-    });
+    // Auto-scroll removido a pedido: "letras fica para sem te mexe automaticamente"
+    // O usuário pode rolar manualmente se desejar ver o resto.
+
   }, [activeIdx, isMaximized]);
 
   function retryAudio() {
