@@ -276,7 +276,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
       {maxLen > 0 && (
-        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2">
+        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-4 py-3">
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
@@ -285,20 +285,34 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
                 ref={(el) => {
                   lineRefs.current[i] = el;
                 }}
-                className={`py-1 text-center transition-all duration-300 ${
-                  active ? "scale-105" : "opacity-50"
+                className={`flex w-full items-start justify-center gap-4 py-2 transition-all duration-300 ${
+                  active ? "scale-[1.02]" : "opacity-40"
                 }`}
               >
-                <p
-                  className={`font-display text-base font-black leading-tight ${
-                    active ? "text-amber-300" : "text-amber-100"
-                  }`}
-                >
-                  {indLines[i] || "\u00A0"}
-                </p>
-                {transLines[i] && (
-                  <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
-                )}
+                {/* Patxohã (Left Side) */}
+                <div className="w-1/2 text-right">
+                  <p
+                    className={`font-display text-base font-black leading-tight sm:text-lg ${
+                      active ? "text-amber-300" : "text-amber-100"
+                    }`}
+                  >
+                    {indLines[i] || "\u00A0"}
+                  </p>
+                </div>
+
+                {/* Vertical Divider */}
+                <div className={`h-full min-h-[1.5rem] w-0.5 self-stretch ${active ? "bg-amber-300/50" : "bg-emerald-800/50"}`} />
+
+                {/* Português (Right Side) */}
+                <div className="w-1/2 text-left">
+                  <p
+                    className={`text-sm font-bold italic leading-tight sm:text-base ${
+                      active ? "text-emerald-50" : "text-emerald-100/70"
+                    }`}
+                  >
+                    {transLines[i] || "\u00A0"}
+                  </p>
+                </div>
               </div>
             );
           })}
