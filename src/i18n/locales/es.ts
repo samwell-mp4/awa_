@@ -118,6 +118,7 @@ export default {
     kidsStop: "Detener",
     kidsLoading: "Preparando…",
     kidsStoriesIntro: "Historias y narrativas infantiles: haz clic en la imagen para escuchar el audio",
+  },
   infantil: {
     title: "Sendero de la Aldea",
     description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
