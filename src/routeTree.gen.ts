@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosInfantilRouteImport } from './routes/videos-infantil'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
@@ -51,6 +52,11 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksPlanExpiryRouteImport } from './routes/api/public/hooks/plan-expiry'
 
+const VideosInfantilRoute = VideosInfantilRouteImport.update({
+  id: '/videos-infantil',
+  path: '/videos-infantil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -290,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -332,6 +339,7 @@ export interface FileRoutesByTo {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -376,6 +384,7 @@ export interface FileRoutesById {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/videos-infantil': typeof VideosInfantilRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -420,6 +429,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/videos-infantil'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -462,6 +472,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/videos-infantil'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -505,6 +516,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/videos-infantil'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -549,6 +561,7 @@ export interface RootRouteChildren {
   TrilhasInfantilRoute: typeof TrilhasInfantilRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VideosRoute: typeof VideosRoute
+  VideosInfantilRoute: typeof VideosInfantilRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -564,6 +577,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos-infantil': {
+      id: '/videos-infantil'
+      path: '/videos-infantil'
+      fullPath: '/videos-infantil'
+      preLoaderRoute: typeof VideosInfantilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -895,6 +915,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrilhasInfantilRoute: TrilhasInfantilRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VideosRoute: VideosRoute,
+  VideosInfantilRoute: VideosInfantilRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
@@ -910,13 +931,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
