@@ -117,7 +117,7 @@ export default {
     kidsListen: "Ouvir",
     kidsStop: "Parar",
     kidsLoading: "Preparando…",
-    kidsStoriesIntro: "História narrativa ao clicar em cada imagem para ouvir o áudio.",
+    kidsStoriesIntro: "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio",
   },
   infantil: {
     title: "Trilha da Aldeia",

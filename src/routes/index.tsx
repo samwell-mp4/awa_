@@ -46,7 +46,7 @@ const MENU_I18N: Record<string, Dict> = {
     adulto: "Adulto",
     crianca: "Criança",
     adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
-    criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
+    criancaDesc: "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio",
     entrar: "Entrar",
     pagTitle: "Pagamento seguro",
     pagCopy: "Processado por Paddle",
