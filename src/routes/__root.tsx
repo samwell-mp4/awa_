@@ -16,7 +16,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
-import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
 
 import { toast } from "sonner";
