@@ -347,7 +347,7 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
         >
           {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
         </span>
-      </button>
+      </div>
 
       <div className="p-5">
         <div
