@@ -18,7 +18,6 @@ import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
 
-import { toast } from "sonner";
 import "@/i18n";
 
 
