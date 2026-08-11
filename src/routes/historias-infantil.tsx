@@ -323,6 +323,10 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <button
         type="button"
+        onClick={play}
+        aria-label={s.title}
+        className="group relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
+      >
         <img
           src={s.image}
           alt={s.title}
@@ -336,7 +340,7 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
         >
           {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
         </span>
-      </div>
+      </button>
 
       <div className="p-5">
         <div
