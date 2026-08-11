@@ -326,7 +326,7 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
         type="button"
         onClick={play}
         aria-label={s.title}
-        className="relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
+        className="group relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
       >
         <img
           src={s.image}
