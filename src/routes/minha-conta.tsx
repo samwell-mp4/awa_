@@ -450,11 +450,12 @@ function MinhaContaPage() {
               <div className="card-elev rounded-3xl border border-gold/40 p-6 md:p-8">
                 <div className="text-xs font-bold uppercase tracking-wider text-gold">Adulto</div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
+                  <span className="font-display text-4xl font-black text-cream">R$ 40,00</span>
                   <span className="text-sm text-foreground/60">/mês</span>
                 </div>
                 <p className="mt-2 text-sm text-foreground/70">
-                  Dicionário, tradutor, Professor Akuã e conteúdo cultural. Ou semestral R$ 149,90.
+                  Dicionário, tradutor, Professor Akuã e conteúdo cultural. Ou semestral R$ 210,00.
+
                 </p>
                 <div className="mt-5 grid gap-2 sm:grid-cols-2">
                   <button
