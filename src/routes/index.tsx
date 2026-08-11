@@ -295,6 +295,8 @@ function LandingChoice() {
           {!pending && showAdulto && (
             <ExperienceCard
               to="/adulto"
+              hasAccess={hasAdulto}
+              need="adulto"
               image={adultoLogo.url}
               eyebrow="Awã Tech"
               title={dict.adulto}
@@ -306,6 +308,8 @@ function LandingChoice() {
           {!pending && showInfantil && (
             <ExperienceCard
               to="/infantil"
+              hasAccess={hasInfantil}
+              need="infantil"
               image={infantilLogo.url}
               eyebrow="Awã Tech"
               title={dict.crianca}
@@ -356,6 +360,8 @@ function ExperienceCard({
   title,
   description,
   entrar,
+  hasAccess,
+  need,
   priority = false,
 }: {
   to: "/adulto" | "/infantil";
@@ -364,11 +370,14 @@ function ExperienceCard({
   title: string;
   description: string;
   entrar: string;
+  hasAccess: boolean;
+  need: "adulto" | "infantil";
   priority?: boolean;
 }) {
   return (
     <Link
-      to={to}
+      to={hasAccess ? to : "/planos"}
+      search={!hasAccess ? { need } : undefined}
       replace
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
