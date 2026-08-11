@@ -73,7 +73,7 @@ export function AmbientVideosAdmin() {
           <Field label="Nome/Título"><Input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} placeholder="Ex: Rituais na Aldeia Velha" /></Field>
           <Field label="URL do Vídeo (.mp4)"><Input value={draft.video_url} onChange={(e) => setDraft({ ...draft, video_url: e.target.value })} placeholder="https://..." /></Field>
           <Field label="URL da Capa (opcional)"><Input value={draft.poster_url ?? ""} onChange={(e) => setDraft({ ...draft, poster_url: e.target.value })} placeholder="https://..." /></Field>
-          <div className="hidden"><Field label="Ordem de exibição"><Input type="number" value={draft.order_index} onChange={(e) => setDraft({ ...draft, order_index: +e.target.value })} /></Field></div>
+          <Field label="Ordem de exibição"><Input type="number" value={draft.order_index} onChange={(e) => setDraft({ ...draft, order_index: +e.target.value })} /></Field>
         </div>
         <Btn onClick={add} className="mt-6 w-full md:w-auto"><Plus className="h-4 w-4" /> Adicionar</Btn>
       </Card>
@@ -115,7 +115,7 @@ function AmbientVideoRow({ video, onSave, onDelete }: { video: AmbientVideo; onS
           <Field label="Nome/Título"><Input value={v.name} onChange={(e) => setV({ ...v, name: e.target.value })} /></Field>
           <Field label="URL do Vídeo"><Input value={v.video_url} onChange={(e) => setV({ ...v, video_url: e.target.value })} /></Field>
           <Field label="URL da Capa"><Input value={v.poster_url ?? ""} onChange={(e) => setV({ ...v, poster_url: e.target.value })} /></Field>
-          <div className="hidden"><Field label="Ordem"><Input type="number" value={v.order_index} onChange={(e) => setV({ ...v, order_index: +e.target.value })} /></Field></div>
+          <Field label="Ordem"><Input type="number" value={v.order_index} onChange={(e) => setV({ ...v, order_index: +e.target.value })} /></Field>
         </div>
         <div className="flex flex-row md:flex-col gap-2">
           <Btn onClick={() => onSave(v)}><Save className="h-4 w-4" /> Salvar</Btn>

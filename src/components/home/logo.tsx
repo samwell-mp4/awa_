@@ -8,7 +8,7 @@ export function Logo() {
       <div className="relative shrink-0">
         <div className="absolute -inset-1 rounded-full bg-[var(--gradient-gold)] opacity-30 blur-md" />
         <div className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 flex items-center justify-center shadow-[var(--shadow-gold)]">
-          <span className="font-display text-xl font-black text-forest-deep">A</span>
+          <img src={logoSrc} alt="Logo" className="h-8 w-8 object-contain" />
         </div>
       </div>
       <div className="leading-none">
