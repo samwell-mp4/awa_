@@ -335,7 +335,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         </Field>
       </div>
       <div className="mt-3 flex items-center justify-between gap-3 flex-wrap">
-        <label className="hidden items-center gap-2 text-xs text-foreground/70">
+        <label className="inline-flex items-center gap-2 text-xs text-foreground/70">
           <input type="checkbox" checked={s.is_active} onChange={(e) => setS({ ...s, is_active: e.target.checked })} />
           Música ativa (visível ao público)
         </label>
