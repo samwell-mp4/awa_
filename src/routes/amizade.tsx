@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { AreaGate } from "@/components/area-gate";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
 import { speak } from "@/lib/speak";
@@ -8,7 +8,6 @@ import { SiteHeader } from "@/components/home/site-header";
 
 export const Route = createFileRoute("/amizade")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Amizade Awã Tech Infantil — Brincar entre amigos" },
@@ -24,7 +23,7 @@ export const Route = createFileRoute("/amizade")({
       },
     ],
   }),
-  component: AmizadePage,
+  component: GuardedAmizadePage,
 });
 
 type GameId = "cumprimento" | "pares" | "roda";
@@ -354,5 +353,14 @@ function CircleGame({ onScore }: { onScore: () => void }) {
         </div>
       )}
     </div>
+  );
+}
+
+
+function GuardedAmizadePage() {
+  return (
+    <AreaGate plan="infantil">
+      <AmizadePage />
+    </AreaGate>
   );
 }

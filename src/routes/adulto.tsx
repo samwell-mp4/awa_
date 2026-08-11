@@ -1,10 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { speak } from "@/lib/speak";
 
-import { supabase } from "@/integrations/supabase/client";
-import { getPaddleEnvironment } from "@/lib/paddle";
+import { AreaGate } from "@/components/area-gate";
 import { setLastArea } from "@/lib/last-area";
 
 import { ContinueLearningCard } from "@/components/home/continue-learning";
@@ -22,16 +21,7 @@ import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 export const Route = createFileRoute("/adulto")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: data.user.id,
-      _plan: "adulto",
-      _check_env: getPaddleEnvironment(),
-    });
-    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "adulto" } as any });
-  },
+
   head: () => ({
     meta: [
       { title: "Awã Tech Adulto — Trilhas, Dicionário e Cultura" },
@@ -48,7 +38,7 @@ export const Route = createFileRoute("/adulto")({
       },
     ],
   }),
-  component: AdultoHome,
+  component: GuardedAdultoHome,
 });
 
 function AdultoHome() {
@@ -84,5 +74,14 @@ function AdultoHome() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+
+function GuardedAdultoHome() {
+  return (
+    <AreaGate plan="adulto">
+      <AdultoHome />
+    </AreaGate>
   );
 }

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { AreaGate } from "@/components/area-gate";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -13,7 +13,6 @@ import { useEffect } from "react";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Trilhas da Aldeia — Awã Tech Infantil" },
@@ -29,7 +28,7 @@ export const Route = createFileRoute("/trilhas-infantil")({
       },
     ],
   }),
-  component: TrilhaInfantilPage,
+  component: GuardedTrilhaInfantilPage,
 });
 
 type TotemStyle = {
@@ -294,5 +293,14 @@ function TrilhaInfantilPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+
+function GuardedTrilhaInfantilPage() {
+  return (
+    <AreaGate plan="infantil">
+      <TrilhaInfantilPage />
+    </AreaGate>
   );
 }
