@@ -428,7 +428,7 @@ function HistoriasInfantilPage() {
                 </h1>
                 <p className="mt-3 rounded-2xl bg-white/70 p-3 text-sm leading-snug text-slate-700 shadow-inner md:text-base">
                   {t("common.kidsStoriesIntro") ??
-                    "História narrativa ao clicar em cada imagem para ouvir o áudio."}
+                    "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio"}
                 </p>
               </div>
               <div className="shrink-0 text-6xl md:text-7xl" aria-hidden>
