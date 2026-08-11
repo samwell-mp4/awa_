@@ -42,7 +42,7 @@ const MENU_I18N: Record<string, Dict> = {
     badge: "Plataforma oficial AWÃ TECH",
     h1a: "Línguas indígenas,",
     h1b: "culturas vivas.",
-    lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural sob o domínio empresarial awa-tech.store.",
+    lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural sob o domínio awa-tech.store.",
     adulto: "Adulto",
     crianca: "Criança",
     adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
@@ -196,13 +196,13 @@ function PresentationVideo({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { title: "AWÃ TECH — Línguas indígenas, culturas vivas" },
       {
         name: "description",
         content:
           "Plataforma AWÃ TECH: aprenda línguas indígenas brasileiras com trilhas guiadas, dicionário, histórias, jogos e vídeos — para adultos e crianças.",
       },
-      { property: "og:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
+      { property: "og:title", content: "AWÃ TECH — Línguas indígenas, culturas vivas" },
       {
         property: "og:description",
         content:
@@ -210,11 +210,7 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://awa-tech.store" },
-      { property: "og:image", content: "https://awa-tech.store/og-awa-tech.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
-      { name: "twitter:description", content: "Plataforma educativa para preservação das línguas indígenas brasileiras." },
-      { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.png" },
     ],
     links: [{ rel: "canonical", href: "https://awa-tech.store" }],
   }),
@@ -295,8 +291,6 @@ function LandingChoice() {
           {!pending && showAdulto && (
             <ExperienceCard
               to="/adulto"
-              hasAccess={hasAdulto}
-              need="adulto"
               image={adultoLogo.url}
               eyebrow="Awã Tech"
               title={dict.adulto}
@@ -308,8 +302,6 @@ function LandingChoice() {
           {!pending && showInfantil && (
             <ExperienceCard
               to="/infantil"
-              hasAccess={hasInfantil}
-              need="infantil"
               image={infantilLogo.url}
               eyebrow="Awã Tech"
               title={dict.crianca}
@@ -360,8 +352,6 @@ function ExperienceCard({
   title,
   description,
   entrar,
-  hasAccess,
-  need,
   priority = false,
 }: {
   to: "/adulto" | "/infantil";
@@ -370,14 +360,11 @@ function ExperienceCard({
   title: string;
   description: string;
   entrar: string;
-  hasAccess: boolean;
-  need: "adulto" | "infantil";
   priority?: boolean;
 }) {
   return (
     <Link
-      to={hasAccess ? to : "/planos"}
-      search={!hasAccess ? { need } : undefined}
+      to={to}
       replace
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
