@@ -2,12 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AreaGate } from "@/components/area-gate";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Pause, Play, X } from "lucide-react";
+import { ArrowLeft, Pause, Play, X, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
-import { speak } from "@/lib/speak";
 import { useTranslation } from "react-i18next";
 import {
   activeLineIndex,
@@ -45,8 +44,6 @@ type Song = {
   duration_seconds: number | null;
 };
 
-
-// Bright kid palettes + a matching indigenous emoji
 const THEMES = [
   { bg: "from-rose-400 via-pink-400 to-fuchsia-400", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
   { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
@@ -81,10 +78,6 @@ function MusicasInfantilPage() {
 
   const [playing, setPlaying] = useState<Song | null>(null);
 
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
-
   return (
     <div
       className="kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
@@ -115,7 +108,6 @@ function MusicasInfantilPage() {
       </header>
 
       <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
-        {/* Big playful hero */}
         <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-gradient-to-br from-amber-200 via-yellow-100 to-rose-100 p-5 text-center shadow-[0_18px_0_-8px_rgba(180,83,9,0.45),0_25px_50px_-20px_rgba(0,0,0,0.4)]">
           <div className="flex justify-center gap-2 text-5xl">
             <span className="kid-bounce" style={{ animationDelay: "0s" }}>🪶</span>
@@ -153,12 +145,10 @@ function MusicasInfantilPage() {
                   onClick={() => setPlaying(isActive ? null : s)}
                   className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
                 >
-                  {/* Zigzag tribal top */}
                   <svg viewBox="0 0 60 8" className="h-3 w-full text-white/90">
                     <path d="M0 8 L6 0 L12 8 L18 0 L24 8 L30 0 L36 8 L42 0 L48 8 L54 0 L60 8" fill="none" stroke="currentColor" strokeWidth="1.5" />
                   </svg>
 
-                  {/* Big emoji / play */}
                   <div className="relative grid h-20 w-20 place-items-center rounded-full bg-white/95 text-5xl shadow-inner ring-[6px] ring-white/70">
                     {isActive ? (
                       <Pause className="h-9 w-9 fill-emerald-800 text-emerald-800" />
@@ -167,11 +157,9 @@ function MusicasInfantilPage() {
                         {theme.emoji}
                       </span>
                     )}
-                    {/* dotted halo */}
                     <span className="absolute inset-0 rounded-full border-[3px] border-dashed border-white/70 kid-spin-slow" />
                   </div>
 
-                  {/* Title */}
                   <div className="w-full">
                     <div className="line-clamp-2 font-display text-sm font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]">
                       {s.title}
@@ -183,7 +171,6 @@ function MusicasInfantilPage() {
                     )}
                   </div>
 
-                  {/* Play tag */}
                   <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full border-2 border-white bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-[0_4px_0_rgba(0,0,0,0.3)]">
                     {isActive ? "Tocando…" : <>Tocar <Play className="h-3 w-3 fill-current" /></>}
                   </span>
@@ -205,6 +192,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   const [progress, setProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const [audioError, setAudioError] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -218,7 +206,6 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     void a.play()?.catch(() => {});
   }, [song.id]);
 
-  // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
   useEffect(() => {
     let raf = 0;
     const tick = () => {
@@ -237,8 +224,6 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   const transLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang));
   const maxLen = Math.max(indLines.length, transLines.length);
 
-  // Duração real do áudio; se o metadata ainda não carregou, usa a duração
-  // cadastrada para as legendas já começarem sincronizadas.
   const duration = resolveDuration(audioDuration, song.duration_seconds);
 
   const bounds = useMemo(
@@ -256,12 +241,11 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     const box = boxRef.current;
     const el = lineRefs.current[activeIdx];
     if (!box || !el) return;
-    // rola apenas o painel de legendas, não a página
     box.scrollTo?.({
       top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
       behavior: "smooth",
     });
-  }, [activeIdx]);
+  }, [activeIdx, isMaximized]);
 
   function retryAudio() {
     const a = ref.current;
@@ -271,12 +255,51 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
     void a.play()?.catch(() => {});
   }
 
-
-
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
+    <div 
+      className={`fixed inset-x-0 bottom-0 z-50 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 transition-all duration-500 ease-in-out flex flex-col ${
+        isMaximized ? "h-[100dvh]" : "h-auto p-3"
+      }`}
+    >
+      {isMaximized && (
+        <div className="flex items-center justify-between p-4 border-b-4 border-dashed border-white/20">
+           <div className="flex items-center gap-3">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-2xl">
+              🎶
+            </div>
+            <div className="min-w-0">
+              <div className="truncate font-display text-lg font-black text-amber-200">
+                {song.title}
+              </div>
+              <div className="truncate text-xs font-bold text-emerald-100/80">
+                {song.artist}
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsMaximized(false)}
+              className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-amber-500 text-white shadow-md active:translate-y-0.5"
+            >
+              <Minimize2 className="h-5 w-5" />
+            </button>
+            <button
+              onClick={onClose}
+              className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-md active:translate-y-0.5"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {maxLen > 0 && (
-        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-4 py-3">
+        <div 
+          ref={boxRef} 
+          className={`relative mx-auto overflow-y-auto transition-all duration-500 rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-4 py-3 flex-1 w-full max-w-4xl ${
+            isMaximized ? "my-4 text-center" : "mb-2 max-h-40"
+          }`}
+        >
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
@@ -285,30 +308,27 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
                 ref={(el) => {
                   lineRefs.current[i] = el;
                 }}
-                className={`flex w-full items-start justify-center gap-4 py-2 transition-all duration-300 ${
-                  active ? "scale-[1.02]" : "opacity-40"
-                }`}
+                className={`flex w-full items-start justify-center gap-4 py-3 transition-all duration-300 ${
+                  active ? "scale-[1.05]" : "opacity-30 blur-[0.5px]"
+                } ${isMaximized ? "py-6" : "py-2"}`}
               >
-                {/* Patxohã (Left Side) */}
                 <div className="w-1/2 text-right">
                   <p
-                    className={`font-display text-base font-black leading-tight sm:text-lg ${
+                    className={`font-display font-black leading-tight drop-shadow-sm ${
                       active ? "text-amber-300" : "text-amber-100"
-                    }`}
+                    } ${isMaximized ? "text-3xl md:text-5xl" : "text-base sm:text-lg"}`}
                   >
                     {indLines[i] || "\u00A0"}
                   </p>
                 </div>
 
-                {/* Vertical Divider */}
                 <div className={`h-full min-h-[1.5rem] w-0.5 self-stretch ${active ? "bg-amber-300/50" : "bg-emerald-800/50"}`} />
 
-                {/* Português (Right Side) */}
                 <div className="w-1/2 text-left">
                   <p
-                    className={`text-sm font-bold italic leading-tight sm:text-base ${
+                    className={`font-bold italic leading-tight ${
                       active ? "text-emerald-50" : "text-emerald-100/70"
-                    }`}
+                    } ${isMaximized ? "text-2xl md:text-4xl" : "text-sm sm:text-base"}`}
                   >
                     {transLines[i] || "\u00A0"}
                   </p>
@@ -318,19 +338,31 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
           })}
         </div>
       )}
-      <div className="mx-auto flex max-w-4xl items-center gap-3">
-        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce">
-          🎶
-        </div>
+
+      <div className={`mx-auto w-full max-w-4xl flex items-center gap-3 ${isMaximized ? "p-4 bg-black/20 rounded-t-3xl border-t-4 border-white/10" : ""}`}>
+        {!isMaximized && (
+          <button 
+            onClick={() => setIsMaximized(true)}
+            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce"
+          >
+            🎶
+          </button>
+        )}
+        
         <div className="min-w-0 flex-1">
-          <div className="truncate font-display text-base font-black text-amber-200">
-            {song.title}
-          </div>
-          {song.artist && (
-            <div className="truncate text-[11px] font-bold text-emerald-100/80">
-              {song.artist}
-            </div>
+          {!isMaximized && (
+            <>
+              <div className="truncate font-display text-base font-black text-amber-200">
+                {song.title}
+              </div>
+              {song.artist && (
+                <div className="truncate text-[11px] font-bold text-emerald-100/80">
+                  {song.artist}
+                </div>
+              )}
+            </>
           )}
+          
           <audio
             ref={ref}
             src={song.audio_url}
@@ -352,52 +384,28 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
           )}
         </div>
 
-        <button
-          onClick={onClose}
-          aria-label="Fechar"
-          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
-        >
-          <X className="h-5 w-5" />
-        </button>
+        {!isMaximized && (
+          <div className="flex gap-2 shrink-0">
+            <button
+              onClick={() => setIsMaximized(true)}
+              aria-label="Maximizar"
+              className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-amber-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
+            >
+              <Maximize2 className="h-5 w-5" />
+            </button>
+            <button
+              onClick={onClose}
+              aria-label="Fechar"
+              className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-function TribalBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Big sun */}
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[7rem] opacity-40 kid-spin-slow">☀️</div>
-      {/* Floating friends */}
-      <div className="absolute left-2 top-32 text-6xl opacity-70 kid-bounce">🪶</div>
-      <div className="absolute right-3 top-44 text-6xl opacity-70 kid-wiggle">🦜</div>
-      <div className="absolute left-4 bottom-40 text-6xl opacity-70 kid-bounce" style={{ animationDelay: "0.5s" }}>🥁</div>
-      <div className="absolute right-6 bottom-56 text-6xl opacity-70 kid-wiggle" style={{ animationDelay: "0.3s" }}>🐢</div>
-      <div className="absolute left-1/3 bottom-24 text-5xl opacity-60 kid-bounce" style={{ animationDelay: "0.8s" }}>🐸</div>
-      <div className="absolute right-1/4 top-1/2 text-5xl opacity-60 kid-wiggle" style={{ animationDelay: "0.6s" }}>🐟</div>
-
-      {/* Ground grass */}
-      <svg
-        className="absolute inset-x-0 bottom-0 h-24 w-full text-emerald-500/70"
-        viewBox="0 0 400 40"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
-      </svg>
-
-      {/* Top tribal zigzag border */}
-      <svg
-        className="absolute inset-x-0 top-0 h-6 w-full text-amber-600/50"
-        viewBox="0 0 400 20"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
-      </svg>
-    </div>
-  );
-}
-
 
 function GuardedMusicasInfantilPage() {
   return (
