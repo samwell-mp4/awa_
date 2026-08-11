@@ -321,11 +321,18 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
         </h2>
       </header>
 
-      <button
-        type="button"
+      <div
+        className="group relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99] cursor-pointer"
         onClick={play}
+        role="button"
+        tabIndex={0}
         aria-label={s.title}
-        className="group relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            play();
+          }
+        }}
       >
         <img
           src={s.image}
