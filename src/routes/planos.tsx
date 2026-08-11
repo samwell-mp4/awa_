@@ -13,7 +13,7 @@ export const Route = createFileRoute("/planos")({
       {
         name: "description",
         content:
-          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 35,00/mês ou R$ 180,00/semestre).",
+          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 40,00/mês ou R$ 210,00/semestre).",
       },
       { property: "og:title", content: "Planos AWÃ TECH" },
       {
@@ -169,10 +169,11 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice="R$ 35,00"
-            semestralPrice="R$ 180,00"
-            semestralEquivalent="Equivale a R$ 30,00/mês. Cobrado a cada 6 meses."
-            savingsBadge="Melhor valor · economize 14%"
+            monthlyPrice="R$ 40,00"
+            semestralPrice="R$ 210,00"
+            semestralEquivalent="Equivale a R$ 35,00/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 12%"
+
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
             highlight={search.need === "adulto"}
