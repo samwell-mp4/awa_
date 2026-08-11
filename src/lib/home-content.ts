@@ -123,6 +123,7 @@ const CHILD_HREF_MAP: Record<string, string> = {
   "/trilhas": "/trilhas-infantil",
   "/historias": "/historias-infantil",
   "/jogos": "/jogos-infantil",
+  "/videos": "/videos-infantil",
 };
 
 function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[] {
