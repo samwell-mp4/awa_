@@ -117,7 +117,7 @@ export default {
     kidsListen: "Listen",
     kidsStop: "Stop",
     kidsLoading: "Preparing…",
-  },
+    kidsStoriesIntro: "Kids' stories and narratives: click on the image to hear the audio",
   infantil: {
     title: "Village Trail",
     description: "Illustrated menu with trails, chants, stories, games and friendship.",
