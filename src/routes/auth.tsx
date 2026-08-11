@@ -8,6 +8,10 @@ import authBg from "@/assets/awa-auth-bg.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
+  // Client-only: this page depends entirely on the browser auth session, and
+  // being the redirect target of ssr:false routes made SSR emit a Suspense
+  // fallback that mismatched the client render.
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Entrar ou Cadastrar — AWÃ TECH" },

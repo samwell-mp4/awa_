@@ -1,10 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
-import { supabase } from "@/integrations/supabase/client";
-import { getPaddleEnvironment } from "@/lib/paddle";
+import { AreaGate } from "@/components/area-gate";
 import { setLastArea } from "@/lib/last-area";
 import { speak } from "@/lib/speak";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
@@ -16,16 +15,7 @@ import menuVideo from "@/assets/infantil-menu-bg.mp4.asset.json";
 
 export const Route = createFileRoute("/infantil")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: data.user.id,
-      _plan: "infantil",
-      _check_env: getPaddleEnvironment(),
-    });
-    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "infantil" } as any });
-  },
+
   head: () => ({
     meta: [
       { title: "Awã Tech Infantil — Trilha da Aldeia" },
@@ -42,7 +32,7 @@ export const Route = createFileRoute("/infantil")({
       { property: "og:image", content: infantilMenu.url },
     ],
   }),
-  component: InfantilHome,
+  component: GuardedInfantilHome,
 });
 
 type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
@@ -167,5 +157,14 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
       aria-label={label}
       draggable={false}
     />
+  );
+}
+
+
+function GuardedInfantilHome() {
+  return (
+    <AreaGate plan="infantil">
+      <InfantilHome />
+    </AreaGate>
   );
 }

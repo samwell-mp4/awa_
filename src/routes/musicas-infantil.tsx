@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { AreaGate } from "@/components/area-gate";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
@@ -18,7 +18,6 @@ import {
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Cantigas da Aldeia — Awã Tech Infantil" },
@@ -29,7 +28,7 @@ export const Route = createFileRoute("/musicas-infantil")({
       },
     ],
   }),
-  component: MusicasInfantilPage,
+  component: GuardedMusicasInfantilPage,
 });
 
 type Song = {
@@ -382,5 +381,14 @@ function TribalBackdrop() {
         <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
       </svg>
     </div>
+  );
+}
+
+
+function GuardedMusicasInfantilPage() {
+  return (
+    <AreaGate plan="infantil">
+      <MusicasInfantilPage />
+    </AreaGate>
   );
 }

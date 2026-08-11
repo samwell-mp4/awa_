@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { AreaGate } from "@/components/area-gate";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
@@ -37,7 +37,6 @@ function SpeakBtn({
 
 export const Route = createFileRoute("/jogos-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Jogos Awã Tech Infantil — Brincar e Aprender" },
@@ -53,7 +52,7 @@ export const Route = createFileRoute("/jogos-infantil")({
       },
     ],
   }),
-  component: JogosInfantilPage,
+  component: GuardedJogosInfantilPage,
 });
 
 type GameId =
@@ -1112,5 +1111,14 @@ function ColorirCanvas() {
         <T>Pinte o desenho tocando na tela.</T> 🎨
       </p>
     </div>
+  );
+}
+
+
+function GuardedJogosInfantilPage() {
+  return (
+    <AreaGate plan="infantil">
+      <JogosInfantilPage />
+    </AreaGate>
   );
 }

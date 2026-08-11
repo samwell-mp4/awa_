@@ -18,6 +18,7 @@ import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
+import { runAfterHydration } from "@/lib/after-hydration";
 
 import { toast } from "sonner";
 import "@/i18n";
@@ -216,9 +217,9 @@ function LanguageHydrator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Defer language switch to after hydration completes to avoid
-    // hydration mismatches on SSR-rendered translated strings.
-    const timer = window.setTimeout(() => {
+    // Only switch language once hydration is fully finished, otherwise React
+    // re-renders translated strings mid-hydration and throws mismatch errors.
+    return runAfterHydration(() => {
       const valid = ["pt", "en", "es"];
       const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
       const detected = navigator.language?.slice(0, 2).toLowerCase();
@@ -236,11 +237,11 @@ function LanguageHydrator() {
       if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
         void i18n.changeLanguage(target);
       }
-    }, 0);
-    return () => window.clearTimeout(timer);
+    });
   }, [i18n]);
 
   return null;
 }
+
 
 

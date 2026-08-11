@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { AreaGate } from "@/components/area-gate";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -28,7 +28,6 @@ const albumAnciao = { url: joaoImg.url };
 
 export const Route = createFileRoute("/historias-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Histórias e Narrativas — Awã Tech Infantil" },
@@ -47,7 +46,7 @@ export const Route = createFileRoute("/historias-infantil")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: HistoriasInfantilPage,
+  component: GuardedHistoriasInfantilPage,
 });
 
 type Story = {
@@ -485,5 +484,14 @@ function HistoriasInfantilPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+
+function GuardedHistoriasInfantilPage() {
+  return (
+    <AreaGate plan="infantil">
+      <HistoriasInfantilPage />
+    </AreaGate>
   );
 }
