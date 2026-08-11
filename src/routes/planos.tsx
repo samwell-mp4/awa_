@@ -93,10 +93,10 @@ function PlanosPage() {
 
       <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
         {search.need && (
-          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border-2 border-gold/60 bg-gold/10 p-4 text-center text-sm text-cream">
-            <b>Assinatura necessária.</b> Para acessar a área{" "}
-            <b>{search.need === "infantil" ? "Infantil" : "Adulto"}</b>, contrate o plano abaixo. Ele libera
-            apenas essa área — a outra requer assinatura separada.
+          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border-2 border-amber-500 bg-amber-500/10 p-4 text-center text-sm text-cream shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+            <span className="block mb-1 text-lg font-black uppercase text-amber-500">Acesso Restrito</span>
+            Para entrar na área <b>{search.need === "infantil" ? "Infantil" : "Adulto"}</b>, você precisa de uma assinatura ativa.
+            Escolha o plano abaixo para liberar o conteúdo.
           </div>
         )}
 
