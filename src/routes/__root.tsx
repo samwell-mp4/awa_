@@ -10,7 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Toaster } from "sonner";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -183,7 +182,6 @@ function RootComponent() {
 
       <Outlet />
 
-      {process.env.NODE_ENV === 'development' && <TanStackRouterDevtools position="bottom-right" />}
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
