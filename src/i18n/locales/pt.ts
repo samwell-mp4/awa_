@@ -126,6 +126,7 @@ export default {
       cantico: "Cântico",
       historia: "História Infantil",
       jogos: "Jogos",
+      videos: "Vídeos e Registros",
       amizade: "Amizade",
     },
   },

@@ -35,9 +35,9 @@ export const Route = createFileRoute("/infantil")({
   component: GuardedInfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade" | "videos";
 type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
+  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade" | "/videos-infantil";
   key: HotspotKey;
   emoji: string;
   color: string;
@@ -48,6 +48,7 @@ const hotspots: Hotspot[] = [
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
+  { to: "/videos-infantil", key: "videos", emoji: "🎬", color: "#ff9f1c" },
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
