@@ -74,8 +74,8 @@ export function RankingCard() {
               key={u.user_id}
               className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-gold/20 bg-card/60 px-3 py-2.5"
             >
-              <span className={`w-5 text-center text-xs font-bold ${i === 0 ? "hidden" : "text-foreground/60"}`}>
-                {i === 0 ? null : i + 1}
+              <span className="w-5 text-center text-xs font-bold text-foreground/60">
+                {i + 1}
               </span>
               {u.photo_url ? (
                 <img loading="lazy" decoding="async" src={u.photo_url} alt="" className="h-9 w-9 rounded-full object-cover" />
