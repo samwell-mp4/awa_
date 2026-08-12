@@ -436,12 +436,10 @@ function PlayableCard({
   text,
   audioUrl,
   children,
-  prefetch = false,
 }: {
   text: string;
   audioUrl: string | null;
   children: React.ReactNode;
-  prefetch?: boolean;
 }) {
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
