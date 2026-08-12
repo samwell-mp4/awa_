@@ -38,6 +38,23 @@ export function AkuaChatKids() {
   const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
+    const initAudio = () => {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume();
+      }
+    };
+    window.addEventListener("click", initAudio, { once: true });
+    window.addEventListener("touchstart", initAudio, { once: true });
+    return () => {
+      window.removeEventListener("click", initAudio);
+      window.removeEventListener("touchstart", initAudio);
+    };
+  }, []);
+
+  useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
