@@ -71,7 +71,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       if (!url) {
         const lang = i18n.language.slice(0, 2).toLowerCase();
         const text = `${title}. ${description}`;
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "nova" });
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
         if (!url) {
           setState("idle");
           return;
@@ -80,7 +80,10 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       }
       const a = audioRef.current ?? new Audio();
       audioRef.current = a;
-      if (a.src !== url) a.src = url;
+      if (a.src !== url) {
+        a.src = url;
+        a.load();
+      }
 
       a.currentTime = 0;
       a.ontimeupdate = () => {
@@ -139,7 +142,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
               text: `${title}. ${description}`,
               lang,
               mode: "story",
-              voice: "nova",
+              voice: "onyx",
             })
           }
 

@@ -393,11 +393,17 @@ function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        const r = await speakFn({ data: { text, voice: "onyx", environment: getPaddleEnvironment() } });
         if (r.error || !r.audio_base64) {
-          throw new Error(r.message ?? "Não foi possível gerar áudio");
+          // If onyx fails, try fallback voice
+          const r2 = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+          if (r2.error || !r2.audio_base64) {
+            throw new Error(r2.message ?? "Não foi possível gerar áudio");
+          }
+          cacheRef.current = base64ToBlobUrl(r2.audio_base64, r2.mime);
+        } else {
+          cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
         }
-        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }
       await playFast(cacheRef.current);
     } catch (e: any) {
