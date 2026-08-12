@@ -459,15 +459,20 @@ function PlayableCard({
   text,
   audioUrl,
   children,
+  onClick,
 }: {
   text: string;
   audioUrl: string | null;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
+
   const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
 
   async function play() {
+    if (onClick) onClick();
+
     if (busy) return;
     try {
       setBusy(true);
