@@ -260,7 +260,7 @@ function useKidsNarrator(text: string) {
     }
   };
 
-  return { state, progress, play };
+  return { state, progress, play, prefetch };
 }
 
 function KidsNarratorBar({
