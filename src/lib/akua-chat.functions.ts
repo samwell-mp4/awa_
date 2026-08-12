@@ -60,7 +60,7 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
 
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
+  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat"; mode?: "adulto" | "infantil" }) => d)
   .handler(async ({ data, context }) => {
     await assertPremium(context, data.environment ?? "live", "adulto");
     const apiKey = process.env.LOVABLE_API_KEY;
@@ -92,7 +92,19 @@ export const askAkua = createServerFn({ method: "POST" })
         ? "IMPORTANTE: Responda preferencialmente em Patxôhã sempre que possível, com tradução curta em português entre parênteses. Explicações longas podem ficar em português simples."
         : "IMPORTANTE: Responda SEMPRE em português brasileiro claro e acolhedor.";
 
+    const isKids = data.mode === "infantil";
+
+    const kidsInstructions = `
+Você está falando com uma CRIANÇA.
+- Use linguagem muito SIMPLES, LÚDICA e DIVERTIDA.
+- Dê exemplos práticos e imaginativos (ex: "é como o som de um passarinho").
+- Incentive a criança a cada resposta ("Muito bem!", "Que pergunta legal!").
+- Mantenha as respostas CURTAS para não cansar a leitura.
+- Use MUITOS emojis (🌿🐒🏹🔥✨).
+`;
+
     const system = `${langInstruction}
+${isKids ? kidsInstructions : ""}
 
 Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
 
