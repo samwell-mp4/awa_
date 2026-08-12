@@ -333,6 +333,11 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
           loading="lazy"
           className="h-56 w-full object-cover md:h-72"
         />
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 bg-black/20">
+           <div className="rounded-full bg-white/20 p-4 backdrop-blur-md">
+             <span className="text-4xl text-white">🔊</span>
+           </div>
+        </div>
         <span
           aria-hidden
           className="pointer-events-none absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full text-2xl text-white shadow-lg"
@@ -344,8 +349,11 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <div className="p-5">
         <div
-          className="rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base"
-          style={{ background: `${s.color}22` }}
+          className={`rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
+          style={{ 
+            backgroundColor: state === 'playing' ? '#ffffff' : `${s.color}22`,
+            borderColor: s.color
+          }}
         >
           {s.paragraphs.map((p, i) => (
             <p key={i} className={i > 0 ? "mt-2" : ""}>
