@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Save, Loader2, Volume2, User, Globe } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Volume2, User, Globe, Sparkles, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { getUserSettings, updateUserSettings } from "@/lib/user-settings.functions";
 import { Link } from "@tanstack/react-router";
@@ -48,8 +48,11 @@ function SettingsPage() {
       voice_model: formData.get("voice_model"),
       assistant_name: formData.get("assistant_name"),
       language: formData.get("language"),
+      lingua_ancestral: formData.get("lingua_ancestral"),
+      instrucao: formData.get("instrucao"),
       respostas_em_voz: formData.get("respostas_em_voz") === "on",
     };
+
     mutation.mutate(data);
   };
 
@@ -174,7 +177,60 @@ function SettingsPage() {
             </div>
           </section>
 
+          {/* Língua Ancestral Section */}
+          <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gold/20 text-gold">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-cream">
+                  {t("settings.ancestralLanguage", "Língua Ancestral")}
+                </h2>
+                <p className="text-xs text-foreground/60">
+                  {t("settings.ancestralLanguageDesc", "A língua principal que o assistente ensina")}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <input
+                type="text"
+                name="lingua_ancestral"
+                defaultValue={safeSettings.lingua_ancestral || "Patxôhã"}
+                className="w-full rounded-2xl border border-gold/25 bg-forest-deep/30 px-4 py-3 text-sm text-cream focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/20"
+              />
+            </div>
+          </section>
+
+          {/* Instruções Personalizadas Section */}
+          <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gold/20 text-gold">
+                <MessageSquare className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-cream">
+                  {t("settings.instructions", "Instruções do Sistema")}
+                </h2>
+                <p className="text-xs text-foreground/60">
+                  {t("settings.instructionsDesc", "Personalize como o assistente se comporta")}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <textarea
+                name="instrucao"
+                defaultValue={safeSettings.instrucao || "Fale com sabedoria, calma e respeito. Ensine com a voz do povo Pataxó."}
+                rows={3}
+                className="w-full rounded-2xl border border-gold/25 bg-forest-deep/30 px-4 py-3 text-sm text-cream focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/20 resize-none"
+              />
+            </div>
+          </section>
+
           {/* Language Section */}
+
           <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
             <div className="mb-6 flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gold/20 text-gold">
