@@ -98,7 +98,7 @@ export const narratePublic = createServerFn({ method: "POST" })
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2",
+        model: "google/gemini-2.0-flash",
         input: text,
         voice,
         response_format: "mp3",
