@@ -48,6 +48,7 @@ function SettingsPage() {
       voice_model: formData.get("voice_model"),
       assistant_name: formData.get("assistant_name"),
       language: formData.get("language"),
+      respostas_em_voz: formData.get("respostas_em_voz") === "on",
     };
     mutation.mutate(data);
   };
@@ -112,6 +113,34 @@ function SettingsPage() {
                   </div>
                 </label>
               ))}
+            </div>
+          </section>
+
+          {/* Respostas em Voz Switch */}
+          <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gold/20 text-gold">
+                  <Volume2 className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-cream">
+                    {t("settings.voiceResponses", "Respostas em Voz")}
+                  </h2>
+                  <p className="text-xs text-foreground/60">
+                    {t("settings.voiceResponsesDesc", "Ativar narração automática do assistente")}
+                  </p>
+                </div>
+              </div>
+              <label className="relative inline-flex cursor-pointer items-center">
+                <input
+                  type="checkbox"
+                  name="respostas_em_voz"
+                  defaultChecked={safeSettings.respostas_em_voz !== false}
+                  className="peer sr-only"
+                />
+                <div className="peer h-6 w-11 rounded-full bg-forest-deep/50 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gold/20 after:bg-cream after:transition-all after:content-[''] peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white focus:outline-none"></div>
+              </label>
             </div>
           </section>
 

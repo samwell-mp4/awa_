@@ -23,8 +23,10 @@ export const getUserSettings = createServerFn({ method: "GET" })
     return (data as any) ?? {
       voice_model: "google/gemini-2.5-flash",
       assistant_name: "Professor Akuã",
-      language: "pt-BR"
+      language: "pt-BR",
+      respostas_em_voz: true
     };
+
   });
 
 export const updateUserSettings = createServerFn({ method: "POST" })
@@ -32,8 +34,10 @@ export const updateUserSettings = createServerFn({ method: "POST" })
   .inputValidator(z.object({
     voice_model: z.string().optional(),
     assistant_name: z.string().optional(),
-    language: z.string().optional()
+    language: z.string().optional(),
+    respostas_em_voz: z.boolean().optional()
   }).parse)
+
   .handler(async ({ data, context }) => {
     const supabase = createClient(
       process.env.SUPABASE_URL!,

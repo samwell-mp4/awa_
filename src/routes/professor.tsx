@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
@@ -165,7 +167,9 @@ const L10N: Record<Lang, L10n> = {
 const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
+  const queryClient = useQueryClient();
   const backTo = useLastArea();
+
   const ask = useServerFn(askAkua);
   const speakFn = useServerFn(speakText);
   const lang = useLang();
@@ -267,7 +271,13 @@ function ProfessorPage() {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       const assistantMsg: Msg = { role: "assistant", content: reply, at: Date.now() };
       setMessages([...next, assistantMsg]);
-      void autoSpeak(audio, reply);
+      
+      // Only auto-speak if user has it enabled in settings
+      const settings = queryClient.getQueryData(["user-settings"]) as any;
+      if (settings?.respostas_em_voz !== false) {
+        void autoSpeak(audio, reply);
+      }
+
     } catch (e: any) {
       toast.error(e.message ?? t.errorSpeak);
     } finally {
