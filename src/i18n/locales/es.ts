@@ -22,12 +22,12 @@ export default {
     rankingTop: "Más puntos",
     rankingPts: "pts",
     installTitle: "Instala Awã Tech en tu celular",
-    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Traductor con un toque — como una app nativa.",
+    installSubtitle: "Añade la app a tu pantalla de inicio y accede al diccionario, música, historias y Profesor Akuã con un toque — como una app nativa.",
     installAndroid: "En Chrome, toca el menú ⋮ y elige Añadir a la pantalla de inicio o Instalar app.",
     installIos: "En Safari, toca el botón Compartir y luego Añadir a Pantalla de Inicio.",
     installCta: "Ver instrucciones completas",
     wisdomTitle: "Sabiduría del día · Senderos",
-    wisdomCta: "Toca para entrar en los senderos guiados por el Traductor →",
+    wisdomCta: "Toca para entrar en los senderos guiados por el Profesor Akuã →",
     resourcesTitle: "Recursos de la plataforma",
     resourcesSubtitle: "Todo lo que necesitas para sumergirte en las lenguas y culturas de los pueblos originarios.",
     resourceHistoriasLabel: "Historias",
@@ -117,7 +117,6 @@ export default {
     kidsListen: "Escuchar",
     kidsStop: "Detener",
     kidsLoading: "Preparando…",
-    kidsStoriesIntro: "Historias y narrativas infantiles: haz clic en la imagen para escuchar el audio",
   },
   infantil: {
     title: "Sendero de la Aldea",
@@ -127,23 +126,7 @@ export default {
       cantico: "Canto",
       historia: "Historia Infantil",
       jogos: "Juegos",
-      videos: "Videos y Registros",
       amizade: "Amistad",
-      professor: "Maestro Akuã",
-    },
-    akua: {
-      welcome: "¡Hola, pequeño Pariente! Soy el Maestro Akuã. ¿Quieres aprender palabras mágicas em Patxôhã? ¡Pregúntame lo que quieras! 🌿✨",
-      placeholder: "Pregúntale algo al Maestro Akuã...",
-      suggestedQuestions: "Preguntas que puedes hacer:",
-      questions: [
-        "¿Cómo se dice 'hola' en Patxôhã?",
-        "¿Cuál es el nombre del jaguar en Pataxó?",
-        "¿Cómo se dice 'agua'?",
-        "¿Cuéntame algo curioso sobre la aldea?"
-      ],
-      back: "Volver",
-      title: "Clase con el Maestro Akuã",
-      mode: "Modo Infantil",
     },
   },
   premium: {
@@ -202,6 +185,5 @@ export default {
     empty: "La traducción aparecerá aquí.",
     disclaimer:
       "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
-    speak: "Escuchar traducción",
   },
 };

@@ -80,10 +80,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
       }
       const a = audioRef.current ?? new Audio();
       audioRef.current = a;
-      if (a.src !== url) {
-        a.src = url;
-        a.load();
-      }
+      if (a.src !== url) a.src = url;
 
       a.currentTime = 0;
       a.ontimeupdate = () => {

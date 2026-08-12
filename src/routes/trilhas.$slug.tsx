@@ -9,7 +9,6 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
-import { getNarrationUrl } from "@/lib/narration-cache";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -17,7 +16,6 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useLastArea } from "@/lib/last-area";
 import { SiteHeader } from "@/components/home/site-header";
-import { speak as speakChild } from "@/lib/speak";
 
 function useTr(texts: string[]) {
   const translated = useAutoTranslate(texts);
@@ -339,7 +337,7 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
             {w.pronunciation && <div className="text-sm text-emerald-800/80 mt-0.5">🗣️ {w.pronunciation}</div>}
           </div>
           <div className="flex flex-col items-center gap-2">
-            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} isKids={isKids} />
+            <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
             <button
               onClick={onToggle}
               aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
@@ -362,7 +360,7 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
           {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
         </div>
         <div className="flex flex-col items-center gap-2">
-          <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} isKids={isKids} />
+          <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
           <button
             onClick={onToggle}
             aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
@@ -376,8 +374,8 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
   );
 }
 
-function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | null; isKids?: boolean }) {
-  const speakFn = useServerFn(speakText);
+function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
+  const speak = useServerFn(speakText);
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
 
@@ -385,33 +383,18 @@ function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | 
     if (busy) return;
     try {
       setBusy(true);
-      if (isKids && !audioUrl) {
-        // Use AI narration for kids even if audioUrl is missing (fallback to native)
-        const url = await getNarrationUrl({ text, lang: "pt", mode: "word", voice: "nova" });
-        if (url) {
-          await playFast(url);
-        } else {
-          speakChild(text, "pt-BR", 1.1, 1.5);
-        }
-        return;
-      }
       if (audioUrl) {
         await playFast(audioUrl);
         return;
       }
       if (!cacheRef.current) {
-        const url = await getNarrationUrl({ text, lang: "pt", mode: "word", voice: "nova" });
-        if (url) {
-          cacheRef.current = url;
-        } else {
-          // Final fallback to native if AI fails
-          speakChild(text, "pt-BR", 0.85, 1);
-          return;
+        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        if (r.error || !r.audio_base64) {
+          throw new Error(r.message ?? "Não foi possível gerar áudio");
         }
+        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }
-      if (cacheRef.current) {
-        await playFast(cacheRef.current);
-      }
+      await playFast(cacheRef.current);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {

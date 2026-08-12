@@ -5,8 +5,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useTranslation } from "react-i18next";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 import { T } from "@/components/T";
-import { getNarrationUrl } from "@/lib/narration-cache";
 import { toast } from "sonner";
 
 
@@ -96,11 +97,7 @@ export const Route = createFileRoute("/historias")({
         content:
           "Conheça a história, cultura e resistência do povo Pataxó, guardiões do sul da Bahia e do Monte Pascoal.",
       },
-      { property: "og:type", content: "article" },
       { property: "og:image", content: danca },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Histórias Pataxó — AWÃ TECH" },
-      { name: "twitter:description", content: "Conheça a história e cultura do povo Pataxó." },
       { name: "twitter:image", content: danca },
     ],
   }),
@@ -173,6 +170,10 @@ const sections: Section[] = [
   },
 ];
 
+// Module-level browser cache: same text reused across components/re-renders
+const narrationUrlCache = new Map<string, string>();
+const narrationPromiseCache = new Map<string, Promise<string>>();
+
 // Only one narration at a time: starting a new one stops the previous.
 let activeStop: (() => void) | null = null;
 function setActiveNarration(stop: () => void) {
@@ -184,7 +185,6 @@ function setActiveNarration(stop: () => void) {
 function clearActiveNarration(stop: () => void) {
   if (activeStop === stop) activeStop = null;
 }
-
 
 function useNarration(originalText: string) {
   const { i18n } = useTranslation();
@@ -198,10 +198,8 @@ function useNarration(originalText: string) {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const progressTimerRef = useRef<number | null>(null);
   const narrate = useServerFn(narratePublic);
-  // Import cache helpers
-  
 
-  const cacheKey = `${lang}::story::nova::${text}`;
+  const cacheKey = `${lang}::${text}`;
 
   const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
 
@@ -237,7 +235,7 @@ function useNarration(originalText: string) {
     // Native speech starts immediately on the tap/click, without waiting for network TTS.
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = speechLang;
-    utterance.rate = 0.85;
+    utterance.rate = 0.95;
     utterance.pitch = 0.85;
     utterance.onend = () => {
       if (utteranceRef.current === utterance) {
@@ -274,13 +272,30 @@ function useNarration(originalText: string) {
   };
 
   const fetchUrl = (): Promise<string> => {
-    return getNarrationUrl({ text, voice: "nova", lang })
-      .then((url) => {
-        if (!url) throw new Error("Não foi possível gerar a narração.");
+    const hit = narrationUrlCache.get(cacheKey);
+    if (hit) return Promise.resolve(hit);
+    const inflight = narrationPromiseCache.get(cacheKey);
+    if (inflight) return inflight;
+    const p = narrate({ data: { text, voice: "onyx", lang } })
+      .then((res) => {
+        if (res.error || !res.audio_base64) {
+          throw new Error(res.message ?? "Não foi possível gerar a narração.");
+        }
+        const bin = atob(res.audio_base64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([bytes], { type: res.mime }));
+        narrationUrlCache.set(cacheKey, url);
+        narrationPromiseCache.delete(cacheKey);
         return url;
+      })
+      .catch((err) => {
+        narrationPromiseCache.delete(cacheKey);
+        throw err;
       });
+    narrationPromiseCache.set(cacheKey, p);
+    return p;
   };
-
 
   useEffect(() => {
     return () => {
@@ -316,30 +331,37 @@ function useNarration(originalText: string) {
       setProgress(0);
     };
 
-    setLoading(true);
-    getNarrationUrl({ text, voice: "nova", lang })
-      .then((url) => {
-        if (!url || audioRef.current !== audio) return;
-        audio.src = url;
-        audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
-      })
-      .catch((err) => {
-        console.error("Narração falhou:", err);
-        toast.error("Não foi possível gerar a narração.");
-      })
-      .finally(() => setLoading(false));
-
-
-    if (speakImmediately()) {
+    const cached = narrationUrlCache.get(cacheKey);
+    if (cached) {
+      audio.src = cached;
+      audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
       return;
     }
 
+    if (speakImmediately()) {
+      // Warm the higher-quality audio silently for a later tap, but never block this tap.
+      fetchUrl().catch(() => {});
+      return;
+    }
+
+    setLoading(true);
+    fetchUrl()
+      .then((url) => {
+        if (audioRef.current !== audio) return;
+        audio.src = url;
+        return audio.play().then(() => setSpeaking(true));
+      })
+      .catch((err) => {
+        console.error("Narração falhou:", err);
+        toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
+      })
+      .finally(() => setLoading(false));
   };
 
   const prefetch = () => {
-    getNarrationUrl({ text, voice: "nova", lang }).catch(() => {});
+    if (narrationUrlCache.has(cacheKey) || narrationPromiseCache.has(cacheKey)) return;
+    fetchUrl().catch(() => {});
   };
-
 
   return { supported: true, speaking, loading, progress, toggle, prefetch };
 }
@@ -569,7 +591,7 @@ function HistoriasPage() {
   return (
     <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
       {/* Hero */}
-      <header className="relative overflow-hidden">
+      <header className="relative overflow-visible">
         <div className="absolute inset-0">
           <img
             loading="lazy"
@@ -583,14 +605,8 @@ function HistoriasPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_145/0.5)] via-[oklch(0.16_0.04_145/0.75)] to-[oklch(0.16_0.04_145)]" />
         </div>
 
+        <SiteHeader showBackButton />
         <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-black/30 px-3 py-1.5 text-sm text-amber-100 backdrop-blur hover:bg-black/50"
-          >
-            <ArrowLeft className="h-4 w-4" /> <T>Voltar</T>
-          </Link>
-
           <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
             🪶 <T>Histórias do Povo</T>
           </p>
@@ -601,7 +617,6 @@ function HistoriasPage() {
           <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
             <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
-
         </div>
       </header>
 

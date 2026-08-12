@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-import { speak } from "@/lib/speak";
-
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -42,11 +39,11 @@ const MENU_I18N: Record<string, Dict> = {
     badge: "Plataforma oficial AWÃ TECH",
     h1a: "Línguas indígenas,",
     h1b: "culturas vivas.",
-    lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural sob o domínio awa-tech.store.",
+    lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
     adulto: "Adulto",
     crianca: "Criança",
     adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
-    criancaDesc: "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio",
+    criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
     entrar: "Entrar",
     pagTitle: "Pagamento seguro",
     pagCopy: "Processado por Paddle",
@@ -223,14 +220,7 @@ function LandingChoice() {
   const videoSrc = useVideoSources();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
-
   // Depois de assinar, mostramos apenas a área contratada.
-
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
   const showAdulto = !hasAny || hasAdulto;

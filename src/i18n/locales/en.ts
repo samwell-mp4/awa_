@@ -22,12 +22,12 @@ export default {
     rankingTop: "Most points",
     rankingPts: "pts",
     installTitle: "Install Awã Tech on your phone",
-    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Translator with one tap — like a native app.",
+    installSubtitle: "Add the app to your home screen and access the dictionary, music, stories and Professor Akuã with one tap — like a native app.",
     installAndroid: "In Chrome, tap the ⋮ menu and choose Add to home screen or Install app.",
     installIos: "In Safari, tap the Share button then Add to Home Screen.",
     installCta: "See full instructions",
     wisdomTitle: "Wisdom of the day · Trails",
-    wisdomCta: "Tap to enter the trails guided by the Translator →",
+    wisdomCta: "Tap to enter the trails guided by Professor Akuã →",
     resourcesTitle: "Platform resources",
     resourcesSubtitle: "Everything you need to dive into the languages and cultures of Indigenous peoples.",
     resourceHistoriasLabel: "Stories",
@@ -117,7 +117,6 @@ export default {
     kidsListen: "Listen",
     kidsStop: "Stop",
     kidsLoading: "Preparing…",
-    kidsStoriesIntro: "Kids' stories and narratives: click on the image to hear the audio",
   },
   infantil: {
     title: "Village Trail",
@@ -127,23 +126,7 @@ export default {
       cantico: "Chant",
       historia: "Kids' Story",
       jogos: "Games",
-      videos: "Videos & Records",
       amizade: "Friendship",
-      professor: "Teacher Akuã",
-    },
-    akua: {
-      welcome: "Hello, little Relative! I am Teacher Akuã. Want to learn magic words in Patxôhã? Ask me anything! 🌿✨",
-      placeholder: "Ask Teacher Akuã something...",
-      suggestedQuestions: "Questions you can ask:",
-      questions: [
-        "How do you say 'hello' in Patxôhã?",
-        "What is the name for jaguar in Pataxó?",
-        "How do you say 'water'?",
-        "Tell me a fun fact about the village?"
-      ],
-      back: "Back",
-      title: "Class with Teacher Akuã",
-      mode: "Kids Mode",
     },
   },
   premium: {
@@ -202,6 +185,5 @@ export default {
     empty: "The translation will appear here.",
     disclaimer:
       "⚠️ AI-assisted translation — words missing from the dictionary are marked with [?].",
-    speak: "Listen to translation",
   },
 };

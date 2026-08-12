@@ -48,7 +48,7 @@ export const narratePublic = createServerFn({ method: "POST" })
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
     let text = (data.text ?? "").slice(0, 4000);
     if (!text.trim()) throw new Error("Texto vazio");
-    const voice = data.voice ?? "nova";
+    const voice = data.voice ?? "onyx";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
     const mode = data.mode ?? "story";
     const instructions = mode === "word" ? WORD_INSTRUCTIONS : (INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt);
@@ -98,14 +98,12 @@ export const narratePublic = createServerFn({ method: "POST" })
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "openai/gpt-4o-mini-tts",
         input: text,
         voice,
         response_format: "mp3",
         instructions,
-        speed: 0.9,
       }),
-
     });
     if (!res.ok) {
       const message = await readGatewayError(res);

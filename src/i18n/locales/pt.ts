@@ -22,12 +22,12 @@ export default {
     rankingTop: "Mais pontos",
     rankingPts: "pts",
     installTitle: "Instale o Awã Tech no seu celular",
-    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Tradutor com um toque — como um app nativo.",
+    installSubtitle: "Adicione o app à tela inicial e acesse o dicionário, músicas, histórias e Professor Akuã com um toque — como um app nativo.",
     installAndroid: "No Chrome, toque no menu ⋮ e escolha Adicionar à tela inicial ou Instalar app.",
     installIos: "No Safari, toque no botão Compartilhar e depois em Adicionar à Tela de Início.",
     installCta: "Ver instruções completas",
     wisdomTitle: "Sabedoria do dia · Trilhas",
-    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Tradutor →",
+    wisdomCta: "Toque para entrar nas trilhas guiadas pelo Professor Akuã →",
     resourcesTitle: "Recursos da plataforma",
     resourcesSubtitle: "Tudo o que você precisa para mergulhar nas línguas e culturas dos povos originários.",
     resourceHistoriasLabel: "Histórias",
@@ -44,7 +44,7 @@ export default {
     videos: "Vídeos",
     jogos: "Jogos",
     professor: "Espaço do Professor",
-    historiasLong: "Histórias",
+    historiasLong: "Histórias e Narrativas",
     musicasLong: "Músicas e Cantigas",
     videosLong: "Vídeos e Registros",
     jogosLong: "Jogos e Atividades",
@@ -117,7 +117,6 @@ export default {
     kidsListen: "Ouvir",
     kidsStop: "Parar",
     kidsLoading: "Preparando…",
-    kidsStoriesIntro: "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio. Músicas com legendas lado a lado.",
   },
   infantil: {
     title: "Trilha da Aldeia",
@@ -127,23 +126,7 @@ export default {
       cantico: "Cântico",
       historia: "História Infantil",
       jogos: "Jogos",
-      videos: "Vídeos e Registros",
       amizade: "Amizade",
-      professor: "Professor Akuã",
-    },
-    akua: {
-      welcome: "Olá, pequeno Parente! Eu sou o Professor Akuã. Quer aprender palavras mágicas em Patxôhã? Pergunte o que quiser! 🌿✨",
-      placeholder: "Pergunte algo ao Professor Akuã...",
-      suggestedQuestions: "Perguntas que você pode fazer:",
-      questions: [
-        "Como diz 'olá' em Patxôhã?",
-        "Qual é o nome da onça na língua Pataxó?",
-        "Como se diz 'água'?",
-        "Me conta uma curiosidade sobre a aldeia?"
-      ],
-      back: "Volta",
-      title: "Aula com Professor Akuã",
-      mode: "Modo Infantil",
     },
   },
   premium: {
@@ -201,6 +184,5 @@ export default {
     empty: "A tradução aparecerá aqui.",
     disclaimer:
       "⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].",
-    speak: "Ouvir tradução",
   },
 };

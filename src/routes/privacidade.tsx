@@ -23,7 +23,7 @@ function PrivacidadePage() {
         <p className="mt-2 text-xs text-foreground/60">Última atualização: {new Date().toLocaleDateString("pt-BR")}</p>
 
         <h2 className="mt-8 font-display text-xl font-bold text-gold">1. Quem somos (Controlador)</h2>
-        <p>O <b>AWÃ TECH</b> é o Controlador de dados nos termos da LGPD. Contato do encarregado: <a className="text-gold underline" href="mailto:awa-tech.store@hotmail.com">awa-tech.store@hotmail.com</a>.</p>
+        <p>O <b>AWÃ TECH</b> é o Controlador de dados nos termos da LGPD. Contato do encarregado: <a className="text-gold underline" href="mailto:duvidas@awa-tech.store">duvidas@awa-tech.store</a>.</p>
         <p className="mt-2">Compartilhamos dados com os seguintes destinatários: <b>Paddle.com Market Limited</b> (Merchant of Record — processa pagamentos, faturas e impostos); provedores de infraestrutura em nuvem (hospedagem, banco de dados, e-mail transacional); e autoridades quando exigido por lei. Transferências internacionais seguem garantias adequadas conforme a LGPD.</p>
         <p className="mt-2">Retenção: mantemos seus dados enquanto sua conta estiver ativa e pelo prazo legal exigido após o encerramento (tipicamente 5 anos para dados fiscais). Após esse período os dados são excluídos ou anonimizados. Adotamos medidas técnicas e organizacionais adequadas de segurança (criptografia em trânsito e em repouso, controle de acesso).</p>
 

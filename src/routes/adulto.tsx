@@ -1,9 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { speak } from "@/lib/speak";
-
-import { AreaGate } from "@/components/area-gate";
+import { supabase } from "@/integrations/supabase/client";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 
 import { ContinueLearningCard } from "@/components/home/continue-learning";
@@ -21,36 +19,39 @@ import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 export const Route = createFileRoute("/adulto")({
   ssr: false,
-
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/auth" });
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: data.user.id,
+      _plan: "adulto",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "adulto" } as any });
+  },
   head: () => ({
     meta: [
       { title: "Awã Tech Adulto — Trilhas, Dicionário e Cultura" },
       {
         name: "description",
         content:
-          "Área adulta do Awã Tech: trilhas de aprendizado, dicionário, histórias, biografia e Espaço do Professor.",
+          "Área adulta do Awã Tech: trilhas de aprendizado, tradutor, dicionário, histórias, biografia e Espaço do Professor.",
       },
       { property: "og:title", content: "Awã Tech Adulto" },
       {
         property: "og:description",
         content:
-          "Aprofunde-se nas línguas indígenas com trilhas e o Espaço do Professor.",
+          "Aprofunde-se nas línguas indígenas com trilhas, tradutor e o Espaço do Professor.",
       },
     ],
   }),
-  component: GuardedAdultoHome,
+  component: AdultoHome,
 });
 
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
-  const { i18n } = useTranslation();
   useEffect(() => setLastArea("/adulto"), []);
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
-
 
 
   return (
@@ -74,14 +75,5 @@ function AdultoHome() {
 
       <SiteFooter />
     </div>
-  );
-}
-
-
-function GuardedAdultoHome() {
-  return (
-    <AreaGate plan="adulto">
-      <AdultoHome />
-    </AreaGate>
   );
 }

@@ -1,9 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
-import { useEffect } from "react";
-import { speak } from "@/lib/speak";
-import { useTranslation } from "react-i18next";
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -33,20 +30,6 @@ export const Route = createFileRoute("/biografia")({
 
 function BiografiaPage() {
   const backTo = useLastArea();
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    const isKids = typeof backTo === "string" && backTo.includes("infantil");
-    const timer = setTimeout(() => {
-      const bioText = i18n.language === "pt" 
-        ? "AWÃ TECH. Tecnologia que preserva a memória, fortalece as raízes e conecta o futuro à sabedoria ancestral. O Awã Tech nasceu com a missão de unir a tecnologia à sabedoria ancestral dos povos indígenas. Criado para preservar, valorizar e ensinar as línguas e culturas originárias do Brasil, o projeto busca garantir que esses conhecimentos continuem vivos e sejam compartilhados com as futuras gerações. Por meio de um aplicativo moderno e acessível, o Awã Tech oferece aulas de idiomas indígenas, áudios com pronúncia de falantes nativos, histórias tradicionais, músicas, vídeos, jogos educativos e conteúdos culturais. A plataforma conecta tradição e inovação, tornando o aprendizado envolvente para crianças, jovens e adultos."
-        : "AWÃ TECH. Technology that preserves memory, strengthens roots, and connects the future to ancestral wisdom. Awã Tech was born with the mission of bridging technology with the ancestral wisdom of indigenous peoples. Created to preserve, value, and teach the original languages and cultures of Brazil, the project seeks to ensure that this knowledge remains alive and shared with future generations. Through a modern and accessible application, Awã Tech offers indigenous language classes, audio with native speaker pronunciation, traditional stories, music, videos, educational games, and cultural content. The platform connects tradition and innovation, making learning engaging for children, youth, and adults.";
-      
-      speak(bioText, i18n.language === "pt" ? "pt-BR" : "en-US", 0.85, isKids ? 1.5 : 1.0);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [i18n.language, backTo]);
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}

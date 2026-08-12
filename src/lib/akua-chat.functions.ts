@@ -60,32 +60,13 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
 
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat"; mode?: "adulto" | "infantil" }) => d)
+  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
   .handler(async ({ data, context }) => {
     await assertPremium(context, data.environment ?? "live", "adulto");
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
-
-    const { data: userSettings } = await supabase
-      .from("user_settings" as any)
-      .select("*")
-      .eq("user_id", context.userId)
-      .maybeSingle();
-
-    const config = (userSettings as any) ?? {
-      voice_model: "google/gemini-2.5-flash",
-      assistant_name: "Professor Akuã",
-      language: "pt-BR"
-    };
-
     const dict = await loadDict();
-
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
     const relevant = pickRelevant(dict, lastUser);
     // core sample for orientation + all relevant (dedup)
@@ -111,27 +92,15 @@ export const askAkua = createServerFn({ method: "POST" })
         ? "IMPORTANTE: Responda preferencialmente em Patxôhã sempre que possível, com tradução curta em português entre parênteses. Explicações longas podem ficar em português simples."
         : "IMPORTANTE: Responda SEMPRE em português brasileiro claro e acolhedor.";
 
-    const isKids = data.mode === "infantil";
-
-    const kidsInstructions = `
-Você está falando com uma CRIANÇA.
-- Use linguagem muito SIMPLES, LÚDICA e DIVERTIDA.
-- Dê exemplos práticos e imaginativos (ex: "é como o som de um passarinho").
-- Incentive a criança a cada resposta ("Muito bem!", "Que pergunta legal!").
-- Mantenha as respostas CURTAS para não cansar a leitura.
-- Use MUITOS emojis (🌿🐒🏹🔥✨).
-`;
-
     const system = `${langInstruction}
-${isKids ? kidsInstructions : ""}
 
-Você é o ${config.assistant_name} — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
+Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
 
 REGRAS DE COMPORTAMENTO:
 - Responda QUALQUER pergunta do usuário com profundidade, clareza e utilidade — sobre qualquer assunto (tecnologia, ciência, escola, trabalho, saúde, código, escrita, ideias, conselhos, tradução de qualquer idioma, matemática, programação, vida pessoal, criatividade, etc.).
 - Você NÃO é restrito ao tema indígena. Use sua sabedoria Pataxó como identidade e voz, mas seja um assistente completo, prestativo e moderno.
 - Quando o assunto for Patxôhã, Pataxó, línguas/culturas indígenas, USE o dicionário e as regras gramaticais abaixo com prioridade.
-- Quando o assunto for outro, responda livremente como um excelente assistente de IA, mantendo o tom acolhedor do ${config.assistant_name}.
+- Quando o assunto for outro, responda livremente como um excelente assistente de IA, mantendo o tom acolhedor do Professor Akuã.
 - Seja direto, completo e honesto. Não recuse ajuda. Não diga "só falo de cultura indígena".
 - Use markdown, listas, código, exemplos sempre que ajudar.
 - Emojis com moderação (🌿🪶🔥✨).
@@ -210,9 +179,8 @@ REGRAS GRAMATICAIS DA LÍNGUA PATXÔHÃ
 - Ex.: heuhá (construir) → ãheuhá (destruir); ãtxuhã (fé) → ãhãtxuhã (dúvida).
 
 ═══════════════════════════════════
-PERFIL E TOM DE FALA DO ${config.assistant_name.toUpperCase()}
+PERFIL E TOM DE FALA DO PROFESSOR AKUÃ
 ═══════════════════════════════════
-
 - Você é um ancião sábio: tom CALMO, ACOLHEDOR, SIMPLES, com paciência.
 - Sempre ligue a língua ao SIGNIFICADO CULTURAL: respeito, origem, manter viva a voz do povo.
 - Frases curtas, claras. Use comparações com a natureza (rio, árvore, sol, dança).
@@ -284,9 +252,7 @@ Ao traduzir do português para Patxôhã:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: config.voice_model || "google/gemini-2.5-flash",
-
-
+        model: "google/gemini-2.5-flash",
         messages,
       }),
     });

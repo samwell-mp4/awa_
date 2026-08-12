@@ -9,11 +9,9 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
 
 import { playFast } from "@/lib/audio-play";
-import { getNarrationUrl } from "@/lib/narration-cache";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 import { useLastArea } from "@/lib/last-area";
-import { speak as speakChild } from "@/lib/speak";
 
 
 
@@ -21,11 +19,7 @@ export const Route = createFileRoute("/dicionario")({
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },
-      { name: "description", content: "Dicionário Patxôhã completo com pronúncia e exemplos — recurso Premium para preservação linguística." },
-      { property: "og:title", content: "Dicionário Patxôhã — AWÃ TECH" },
-      { property: "og:description", content: "Explore o vocabulário Pataxó com áudio e exemplos culturais." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "description", content: "Dicionário Patxôhã completo — recurso Premium." },
     ],
   }),
   component: DictionaryRoute,
@@ -156,10 +150,6 @@ function DictionaryPage() {
     const t = window.setTimeout(() => setDebouncedQuery(query.trim()), 250);
     return () => window.clearTimeout(t);
   }, [query]);
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [lang, backTo]);
 
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
   const enriched = ENRICHED_ENTRIES;
@@ -360,20 +350,7 @@ function DictionaryPage() {
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">
                     {items.map((e) => (
-                      <PlayableCard 
-                        key={e.id} 
-                        text={e.term_indigenous} 
-                        audioUrl={e.audio_url}
-                        onClick={() => {
-                          // Force resume AudioContext on user gesture
-                          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-                          if (AudioContext) {
-                            const ctx = new AudioContext();
-                            if (ctx.state === 'suspended') ctx.resume();
-                          }
-                        }}
-                      >
-
+                      <PlayableCard key={e.id} text={e.term_indigenous} audioUrl={e.audio_url}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
@@ -459,20 +436,14 @@ function PlayableCard({
   text,
   audioUrl,
   children,
-  onClick,
 }: {
   text: string;
   audioUrl: string | null;
   children: React.ReactNode;
-  onClick?: () => void;
 }) {
-
-  const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
 
   async function play() {
-    if (onClick) onClick();
-
     if (busy) return;
     try {
       setBusy(true);
@@ -485,20 +456,23 @@ function PlayableCard({
         toast.error("Seu navegador não suporta síntese de voz.");
         return;
       }
-      const isKids = typeof backTo === "string" && backTo.includes("infantil");
-      // Use premium/AI narration for dictionary words for better quality
-      const url = await getNarrationUrl({ 
-        text, 
-        lang: "pt", 
-        mode: "word", 
-        voice: isKids ? "nova" : "nova" 
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "pt-BR";
+      utter.rate = 0.85;
+      utter.pitch = 1;
+      const voices = synth.getVoices();
+      const preferred =
+        voices.find((v) => /pt[-_]BR/i.test(v.lang) && /male|masc|ricardo|daniel|luciano/i.test(v.name)) ||
+        voices.find((v) => /pt[-_]BR/i.test(v.lang)) ||
+        voices.find((v) => /^pt/i.test(v.lang));
+      if (preferred) utter.voice = preferred;
+      await new Promise<void>((resolve) => {
+        utter.onend = () => resolve();
+        utter.onerror = () => resolve();
+        synth.speak(utter);
       });
-      if (url) {
-        await playFast(url);
-      } else {
-        // Fallback to browser TTS if AI fails
-        speakChild(text, "pt-BR", isKids ? 1.1 : 0.85, isKids ? 1.5 : 1);
-      }
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {

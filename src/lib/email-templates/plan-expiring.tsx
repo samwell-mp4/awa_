@@ -39,7 +39,7 @@ const Email = ({ name, planName = 'Awã Tech', daysLeft = 7, expiresOn, manageUr
             Se o pagamento não for realizado, o acesso Premium será bloqueado automaticamente na data de vencimento.
           </Text>
           <Text style={{ ...styles.text, fontSize: '13px', color: '#666' }}>
-            Alguma dúvida? Escreva para <a style={styles.link} href="mailto:awa-tech.store@hotmail.com">awa-tech.store@hotmail.com</a>.
+            Alguma dúvida? Escreva para <a style={styles.link} href="mailto:duvidas@awa-tech.store">duvidas@awa-tech.store</a>.
           </Text>
           <BrandFooter />
         </Container>

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AreaGate } from "@/components/area-gate";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
 import { speak } from "@/lib/speak";
@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/home/site-header";
 
 export const Route = createFileRoute("/amizade")({
   ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Amizade Awã Tech Infantil — Brincar entre amigos" },
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/amizade")({
       },
     ],
   }),
-  component: GuardedAmizadePage,
+  component: AmizadePage,
 });
 
 type GameId = "cumprimento" | "pares" | "roda";
@@ -102,7 +103,7 @@ function AmizadePage() {
               <button
                 key={g.id}
                 onClick={() => {
-                  speak(`${g.title}. ${g.desc}`, "pt-BR", 0.85, 1.5);
+                  speak(`${g.title}. ${g.desc}`, "pt-BR");
                   setGame(g.id);
                 }}
                 className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
@@ -353,14 +354,5 @@ function CircleGame({ onScore }: { onScore: () => void }) {
         </div>
       )}
     </div>
-  );
-}
-
-
-function GuardedAmizadePage() {
-  return (
-    <AreaGate plan="infantil">
-      <AmizadePage />
-    </AreaGate>
   );
 }

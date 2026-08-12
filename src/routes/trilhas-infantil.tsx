@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AreaGate } from "@/components/area-gate";
+import { requireArea } from "@/lib/area-guard";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -8,11 +8,10 @@ import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
-import { speak } from "@/lib/speak";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Trilhas da Aldeia — Awã Tech Infantil" },
@@ -28,7 +27,7 @@ export const Route = createFileRoute("/trilhas-infantil")({
       },
     ],
   }),
-  component: GuardedTrilhaInfantilPage,
+  component: TrilhaInfantilPage,
 });
 
 type TotemStyle = {
@@ -112,10 +111,6 @@ function TrilhaInfantilPage() {
 
   const titleTop = t("common.kidsTrailsTitle").replace(/^[^\p{L}]*/u, ""); // strip leading emoji if present
   const subtitle = t("common.kidsTrailsSubtitle");
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen bg-[#fdfcf0] text-foreground">
@@ -293,14 +288,5 @@ function TrilhaInfantilPage() {
 
       <SiteFooter />
     </div>
-  );
-}
-
-
-function GuardedTrilhaInfantilPage() {
-  return (
-    <AreaGate plan="infantil">
-      <TrilhaInfantilPage />
-    </AreaGate>
   );
 }

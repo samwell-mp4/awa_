@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AreaGate } from "@/components/area-gate";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +7,6 @@ import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
 import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
-import { speak } from "@/lib/speak";
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
@@ -28,9 +27,10 @@ const albumAnciao = { url: joaoImg.url };
 
 export const Route = createFileRoute("/historias-infantil")({
   ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
-      { title: "Histórias — Awã Tech Infantil" },
+      { title: "Histórias e Narrativas — Awã Tech Infantil" },
       {
         name: "description",
         content:
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/historias-infantil")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: GuardedHistoriasInfantilPage,
+  component: HistoriasInfantilPage,
 });
 
 type Story = {
@@ -219,7 +219,7 @@ function useKidsNarrator(text: string) {
     try {
       let url = urlRef.current;
       if (!url) {
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "nova" });
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
         if (!url) {
           setState("idle");
           return;
@@ -231,8 +231,6 @@ function useKidsNarrator(text: string) {
       audioRef.current = a;
       a.src = url;
       a.currentTime = 0;
-      a.load(); // Force load
-
       a.ontimeupdate = () => {
         if (a.duration > 0) setProgress(a.currentTime / a.duration);
       };
@@ -242,11 +240,7 @@ function useKidsNarrator(text: string) {
       };
       currentAudio = a;
       currentSetter = setState;
-
-      const playPromise = a.play();
-      if (playPromise !== undefined) {
-        await playPromise;
-      }
+      await a.play();
       setState("playing");
     } catch {
       setState("idle");
@@ -329,12 +323,9 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          play();
-        }}
+        onClick={play}
         aria-label={s.title}
-        className="group relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99] cursor-pointer"
+        className="relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
       >
         <img
           src={s.image}
@@ -400,10 +391,7 @@ function JungleBorder() {
 
 function HistoriasInfantilPage() {
   const { t, i18n } = useTranslation();
-  useEffect(() => {
-    setLastArea("/infantil");
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
+  useEffect(() => setLastArea("/infantil"), []);
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen text-foreground">
@@ -413,7 +401,7 @@ function HistoriasInfantilPage() {
         .story-card { animation: card-pop .5s ease-out both; }
       `}</style>
 
-      <SiteHeader mode="infantil" />
+      <SiteHeader mode="infantil" showBackButton />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
         {/* HERO panel — matches the reference book style */}
@@ -437,7 +425,7 @@ function HistoriasInfantilPage() {
                 </h1>
                 <p className="mt-3 rounded-2xl bg-white/70 p-3 text-sm leading-snug text-slate-700 shadow-inner md:text-base">
                   {t("common.kidsStoriesIntro") ??
-                    "Infantil histórias e narrativas ao clicar na imagem, ouvir áudio"}
+                    "Origem, território, língua, espiritualidade e arte de um povo que faz da cultura sua arma mais bonita."}
                 </p>
               </div>
               <div className="shrink-0 text-6xl md:text-7xl" aria-hidden>
@@ -493,14 +481,5 @@ function HistoriasInfantilPage() {
 
       <SiteFooter />
     </div>
-  );
-}
-
-
-function GuardedHistoriasInfantilPage() {
-  return (
-    <AreaGate plan="infantil">
-      <HistoriasInfantilPage />
-    </AreaGate>
   );
 }

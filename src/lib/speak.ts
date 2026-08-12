@@ -8,8 +8,6 @@ type VoiceMap = Record<string, SpeechSynthesisVoice | undefined>;
 const voiceCache: VoiceMap = {};
 let voicesReady = false;
 let warmed = false;
-let activeUtterance: SpeechSynthesisUtterance | null = null;
-
 
 function synth(): SpeechSynthesis | null {
   if (typeof window === "undefined") return null;
@@ -60,7 +58,7 @@ function warmUp() {
     // Silent utterance primes the engine so the first real speak is instant.
     const u = new SpeechSynthesisUtterance(" ");
     u.volume = 0;
-    u.rate = 0.85;
+    u.rate = 1;
     s.speak(u);
     s.cancel();
   } catch {
@@ -79,52 +77,28 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85, pitch: number = 1.05) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 1) {
   const s = synth();
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    
-    // Safety check for Chrome specifically
-    if (s.speaking || s.pending) {
-      s.cancel();
-      // On some platforms, cancel() is not synchronous, so we wait a bit
-    }
-
-
+    // If something is speaking, cancel first. A microtask delay avoids
+    // Chrome dropping the next utterance right after a cancel().
+    if (s.speaking || s.pending) s.cancel();
     const start = () => {
-      // Re-check voices just in case they loaded during the timeout
-      if (!voicesReady) ensureVoicesLoaded();
-
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
       u.rate = rate;
-      u.pitch = pitch;
+      u.pitch = 1.05;
       u.volume = 1;
-      
       const v = pickVoice(lang);
       if (v) u.voice = v;
-      
-      activeUtterance = u;
-      u.onend = () => {
-        if (activeUtterance === u) activeUtterance = null;
-      };
-      u.onerror = (event) => {
-        console.error("SpeechSynthesis error:", event);
-        if (activeUtterance === u) activeUtterance = null;
-      };
-      
       s.speak(u);
-
-      // Chrome Bug Workaround: keep the utterance from being garbage collected
-      // and ensure the queue stays moving by "poking" the synth
-      if (s.paused) s.resume();
     };
-
-    // 100ms is safer for most browsers to clear the state after cancel()
-    setTimeout(start, 50);
-  } catch (err) {
-    console.error("Speak failed:", err);
+    // 30ms is enough for Chrome/Safari to release the previous utterance.
+    setTimeout(start, 30);
+  } catch {
+    /* ignore */
   }
 }
 
@@ -133,7 +107,6 @@ export function stopSpeak() {
   if (!s) return;
   try {
     s.cancel();
-    if (s.paused) s.resume(); // Ensure it's not stuck in paused state
   } catch {
     /* ignore */
   }

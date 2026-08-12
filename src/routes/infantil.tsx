@@ -1,21 +1,30 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
-import { AreaGate } from "@/components/area-gate";
+import { supabase } from "@/integrations/supabase/client";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
-import { speak } from "@/lib/speak";
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
-import menuVideo from "@/assets/infantil-menu-bg.mp4.asset.json";
+import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 
 
 
 export const Route = createFileRoute("/infantil")({
   ssr: false,
-
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/auth" });
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: data.user.id,
+      _plan: "infantil",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+  },
   head: () => ({
     meta: [
       { title: "Awã Tech Infantil — Trilha da Aldeia" },
@@ -32,12 +41,12 @@ export const Route = createFileRoute("/infantil")({
       { property: "og:image", content: infantilMenu.url },
     ],
   }),
-  component: GuardedInfantilHome,
+  component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade" | "videos" | "professor";
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
 type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade" | "/videos-infantil" | "/professor-infantil";
+  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
   key: HotspotKey;
   emoji: string;
   color: string;
@@ -48,19 +57,13 @@ const hotspots: Hotspot[] = [
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
-  { to: "/videos-infantil", key: "videos", emoji: "🎬", color: "#ff9f1c" },
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
-  { to: "/professor-infantil", key: "professor", emoji: "👨‍🏫", color: "#fb8500" },
 ];
 
 function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
 
   return (
     <div className="kids-theme min-h-screen text-foreground">
@@ -159,14 +162,5 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
       aria-label={label}
       draggable={false}
     />
-  );
-}
-
-
-function GuardedInfantilHome() {
-  return (
-    <AreaGate plan="infantil">
-      <InfantilHome />
-    </AreaGate>
   );
 }

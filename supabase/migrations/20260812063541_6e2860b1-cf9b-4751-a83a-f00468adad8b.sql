@@ -1,1 +1,0 @@
-DELETE FROM public.trails WHERE name = 'História e Narrativa';

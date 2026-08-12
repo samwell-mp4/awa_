@@ -595,39 +595,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_settings: {
-        Row: {
-          assistant_name: string | null
-          instrucao: string | null
-          language: string | null
-          lingua_ancestral: string | null
-          respostas_em_voz: boolean | null
-          updated_at: string | null
-          user_id: string
-          voice_model: string | null
-        }
-        Insert: {
-          assistant_name?: string | null
-          instrucao?: string | null
-          language?: string | null
-          lingua_ancestral?: string | null
-          respostas_em_voz?: boolean | null
-          updated_at?: string | null
-          user_id: string
-          voice_model?: string | null
-        }
-        Update: {
-          assistant_name?: string | null
-          instrucao?: string | null
-          language?: string | null
-          lingua_ancestral?: string | null
-          respostas_em_voz?: boolean | null
-          updated_at?: string | null
-          user_id?: string
-          voice_model?: string | null
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never

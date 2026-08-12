@@ -12,9 +12,8 @@ const PRICE_IDS = [
 const EXPECTED: Record<string, { label: string; amount: number; months: number }> = {
   awa_infantil_monthly: { label: "Infantil Mensal", amount: 2990, months: 1 },
   awa_infantil_semestral: { label: "Infantil Semestral", amount: 14990, months: 6 },
-  awa_adulto_monthly: { label: "Adulto Mensal", amount: 4000, months: 1 },
-  awa_adulto_semestral: { label: "Adulto Semestral", amount: 21000, months: 6 },
-
+  awa_adulto_monthly: { label: "Adulto Mensal", amount: 3500, months: 1 },
+  awa_adulto_semestral: { label: "Adulto Semestral", amount: 18000, months: 6 },
 };
 
 export type PriceCheck = {

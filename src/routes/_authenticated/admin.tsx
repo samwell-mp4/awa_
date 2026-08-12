@@ -66,7 +66,7 @@ const SECTIONS: Section[] = [
   { k: "access", label: "Acesso Premium", icon: Crown, desc: "Liberar / revogar assinantes.", group: "Comunidade", accent: "from-gold/35 to-leaf/15" },
   { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
   { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
-  { k: "tools", label: "Ferramentas", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
+  { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
 ];
 
 function AdminPage() {

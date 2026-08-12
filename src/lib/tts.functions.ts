@@ -1,8 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
-import { createClient } from "@supabase/supabase-js";
-
 
 type TtsPayload = {
   audio_base64: string;
@@ -37,36 +35,18 @@ export const speakText = createServerFn({ method: "POST" })
         fallback: false,
       };
     }
-
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
-
-    const { data: userSettings } = await supabase
-      .from("user_settings" as any)
-      .select("voice_model")
-      .eq("user_id", context.userId)
-      .maybeSingle();
-
-    const voiceModel = (userSettings as any)?.voice_model || "google/gemini-2.5-flash";
-
     const text = (data.text ?? "").slice(0, 2000);
     if (!text.trim()) throw new Error("Texto vazio");
-
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: voiceModel,
+        model: "openai/gpt-4o-mini-tts",
         input: text,
-        voice: data.voice ?? "nova",
+        voice: data.voice ?? "alloy",
         response_format: "mp3",
-        speed: 0.9,
       }),
-
     });
     if (!res.ok) {
       const message = await readGatewayError(res);
@@ -88,7 +68,9 @@ export const speakText = createServerFn({ method: "POST" })
         fallback: res.status >= 500,
       };
     }
-    const buf = Buffer.from(await res.arrayBuffer());
-    const audio_base64 = buf.toString("base64");
+    const buf = new Uint8Array(await res.arrayBuffer());
+    let bin = "";
+    for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+    const audio_base64 = btoa(bin);
     return { audio_base64, mime: "audio/mpeg" };
   });

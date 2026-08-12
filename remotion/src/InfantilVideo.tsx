@@ -14,7 +14,7 @@ import { TransitionSeries, springTiming, linearTiming } from "@remotion/transiti
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
 import { clockWipe } from "@remotion/transitions/clock-wipe";
-import { getNarrationLang } from "./narration-lang";
+import { NARRATION_LANG } from "./narration-lang";
 import { loadFont as loadDisplay } from "@remotion/google-fonts/Fredoka";
 import { loadFont as loadBody } from "@remotion/google-fonts/Baloo2";
 
@@ -111,14 +111,11 @@ const Confetti: React.FC<{ count?: number }> = ({ count = 26 }) => {
 };
 
 /** Narração da cena */
-const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => {
-  const lang = getNarrationLang();
-  return (
-    <Sequence from={from} layout="none">
-      <Audio src={staticFile(`audio/${lang}/${id}.mp3`)} volume={1} />
-    </Sequence>
-  );
-};
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
+  <Sequence from={from} layout="none">
+    <Audio src={staticFile(`audio/${NARRATION_LANG}/${id}.mp3`)} volume={1} />
+  </Sequence>
+);
 
 /* ---------------- 1 — Abertura ---------------- */
 const KidOpening: React.FC = () => {
@@ -220,9 +217,9 @@ const KidStatement: React.FC = () => {
               textShadow: `0 8px 0 rgba(0,0,0,0.25)`,
             }}
           >
-            {getNarrationLang() === "pt" ? "Aprender Patxôhã" : getNarrationLang() === "es" ? "¡Aprender Patxôhã" : "Learn Patxôhã"}
+            Aprender Patxôhã
             <br />
-            <span style={{ color: SUN }}>{getNarrationLang() === "pt" ? "brincando!" : getNarrationLang() === "es" ? "jugando!" : "by playing!"}</span>
+            <span style={{ color: SUN }}>brincando!</span>
           </div>
         </Pop>
         <Pop delay={20}>
@@ -236,11 +233,7 @@ const KidStatement: React.FC = () => {
               textAlign: "center",
             }}
           >
-            {getNarrationLang() === "pt" 
-              ? "Jogos, cantigas e histórias da aldeia para as crianças" 
-              : getNarrationLang() === "es"
-              ? "Juegos, canciones e historias de la aldea para niños"
-              : "Games, songs and village stories for children"}
+            Jogos, cantigas e histórias da aldeia para as crianças
           </div>
         </Pop>
       </AbsoluteFill>
@@ -304,10 +297,7 @@ const KidFeature: React.FC<KidFeatureProps> = ({
             }}
           >
             <Img
-              src={staticFile(`images/${getNarrationLang()}/${img}`)}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = staticFile(`images/${img}`);
-              }}
+              src={staticFile(`images/${img}`)}
               style={{
                 width: "100%",
                 height: "100%",
@@ -379,28 +369,15 @@ const KidFeature: React.FC<KidFeatureProps> = ({
 };
 
 /* ---------------- 4 — Palavras ---------------- */
-const getWords = (lang: string) => {
-  if (lang === "es") return [
-    { label: "Sol", px: "Txãí" },
-    { label: "Agua", px: "Nixí" },
-    { label: "¡Hola!", px: "Awê!" },
-  ];
-  if (lang === "en") return [
-    { label: "Sun", px: "Txãí" },
-    { label: "Water", px: "Nixí" },
-    { label: "Hello!", px: "Awê!" },
-  ];
-  return [
-    { label: "Sol", px: "Txãí" },
-    { label: "Água", px: "Nixí" },
-    { label: "Olá!", px: "Awê!" },
-  ];
-};
+const WORDS = [
+  { pt: "Sol", px: "Txãí" },
+  { pt: "Água", px: "Nixí" },
+  { pt: "Olá!", px: "Awê!" },
+];
 
 const KidWords: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const WORDS = getWords(getNarrationLang());
   return (
     <AbsoluteFill style={{ background: NIGHT }}>
       <Img
@@ -412,7 +389,7 @@ const KidWords: React.FC = () => {
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Pop>
           <div style={{ fontFamily: display, fontWeight: 700, fontSize: 60, color: SUN }}>
-            {getNarrationLang() === "pt" ? "Suas primeiras palavras" : getNarrationLang() === "es" ? "Tus primeras palabras" : "Your first words"}
+            Suas primeiras palavras
           </div>
         </Pop>
         <div style={{ display: "flex", gap: 40, marginTop: 60 }}>
@@ -420,7 +397,7 @@ const KidWords: React.FC = () => {
             const s = spring({ frame: frame - 22 - i * 14, fps, config: { damping: 8 } });
             return (
               <div
-                key={w.label}
+                key={w.pt}
                 style={{
                   background: "rgba(255,246,226,0.96)",
                   borderRadius: 34,
@@ -431,7 +408,7 @@ const KidWords: React.FC = () => {
                   border: `6px solid ${LEAF}`,
                 }}
               >
-                <div style={{ fontFamily: body, fontSize: 34, color: "#3C6152" }}>{w.label}</div>
+                <div style={{ fontFamily: body, fontSize: 34, color: "#3C6152" }}>{w.pt}</div>
                 <div style={{ fontFamily: display, fontWeight: 700, fontSize: 72, color: CLAY }}>
                   {w.px}
                 </div>
@@ -483,7 +460,7 @@ const KidClosing: React.FC = () => {
                   textShadow: `0 7px 0 ${CLAY}`,
                 }}
               >
-                {getNarrationLang() === "pt" ? "Awê! Vamos brincar?" : getNarrationLang() === "es" ? "¡Awê! ¿Vamos a jugar?" : "Awê! Let's play?"}
+                Awê! Vamos brincar?
               </div>
             </Pop>
             <Pop delay={14}>
@@ -531,10 +508,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k3"
             img="jogos-infantil-bg.jpg"
             emoji="🎮"
-            title={getNarrationLang() === "pt" ? "Jogos coloridos" : getNarrationLang() === "es" ? "Juegos coloridos" : "Colorful games"}
-            desc={getNarrationLang() === "pt" ? "Descubra os animais, as cores e a natureza brincando!" : getNarrationLang() === "es" ? "¡Descubre los animales, los colores y la naturaleza jugando!" : "Discover animals, colors, and nature by playing!"}
+            title="Jogos coloridos"
+            desc="Descubra os animais, as cores e a natureza brincando!"
             color={CLAY}
-            chips={getNarrationLang() === "pt" ? ["Animais", "Cores", "Natureza"] : getNarrationLang() === "es" ? ["Animales", "Colores", "Naturaleza"] : ["Animals", "Colors", "Nature"]}
+            chips={["Animais", "Cores", "Natureza"]}
           />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
@@ -546,10 +523,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k4"
             img="musicas-infantil-bg.jpg"
             emoji="🎵"
-            title={getNarrationLang() === "pt" ? "Cantigas da aldeia" : getNarrationLang() === "es" ? "Canciones de la aldea" : "Village songs"}
-            desc={getNarrationLang() === "pt" ? "Cante junto com a letra em Patxôhã e em português!" : getNarrationLang() === "es" ? "¡Canta junto con la letra en Patxôhã y español!" : "Sing along with lyrics in Patxôhã and English!"}
+            title="Cantigas da aldeia"
+            desc="Cante junto com a letra em Patxôhã e em português!"
             color={LEAF}
-            chips={getNarrationLang() === "pt" ? ["Legendas", "Patxôhã", "Português"] : getNarrationLang() === "es" ? ["Subtítulos", "Patxôhã", "Español"] : ["Subtitles", "Patxôhã", "English"]}
+            chips={["Legendas", "Patxôhã", "Português"]}
             flip
           />
         </TransitionSeries.Sequence>
@@ -562,10 +539,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k5"
             img="trail-animais.jpg"
             emoji="📖"
-            title={getNarrationLang() === "pt" ? "Histórias encantadas" : getNarrationLang() === "es" ? "Historias encantadas" : "Enchanted stories"}
-            desc={getNarrationLang() === "pt" ? "Contadas pelos anciãos, cheias de bichos, florestas e magia." : getNarrationLang() === "es" ? "Contadas por los ancianos, llenas de animales, bosques y magia." : "Told by elders, full of animals, forests, and magic."}
+            title="Histórias encantadas"
+            desc="Contadas pelos anciãos, cheias de bichos, florestas e magia."
             color="#4EA8E8"
-            chips={getNarrationLang() === "pt" ? ["Narração", "Ilustrações", "Anciãos"] : getNarrationLang() === "es" ? ["Narración", "Ilustraciones", "Ancianos"] : ["Narration", "Illustrations", "Elders"]}
+            chips={["Narração", "Ilustrações", "Anciãos"]}
           />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
@@ -577,10 +554,10 @@ export const InfantilVideo: React.FC = () => {
             audio="k6"
             img="trail-familia.jpg"
             emoji="🌿"
-            title={getNarrationLang() === "pt" ? "Trilhas de aventura" : getNarrationLang() === "es" ? "Rutas de aventura" : "Adventure trails"}
-            desc={getNarrationLang() === "pt" ? "Colecione estrelinhas a cada palavra nova que aprender!" : getNarrationLang() === "es" ? "¡Colecciona estrellas por cada palabra nueva que aprendas!" : "Collect stars for every new word you learn!"}
+            title="Trilhas de aventura"
+            desc="Colecione estrelinhas a cada palavra nova que aprender!"
             color={SUN}
-            chips={getNarrationLang() === "pt" ? ["Estrelinhas", "Missões", "Prêmios"] : getNarrationLang() === "es" ? ["Estrellitas", "Misiones", "Premios"] : ["Stars", "Missions", "Prizes"]}
+            chips={["Estrelinhas", "Missões", "Prêmios"]}
             flip
           />
         </TransitionSeries.Sequence>

@@ -2,13 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
-import { getNarrationUrl, getPremiumNarrationUrl } from "@/lib/narration-cache";
-import { speak as speakChild } from "@/lib/speak";
 import {
   ArrowLeft,
   Send,
@@ -167,11 +163,9 @@ const L10N: Record<Lang, L10n> = {
 const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
-  const queryClient = useQueryClient();
   const backTo = useLastArea();
-
   const ask = useServerFn(askAkua);
-  const speakFn = useServerFn(speakText);
+  const speak = useServerFn(speakText);
   const lang = useLang();
   const t = L10N[lang];
 
@@ -183,25 +177,6 @@ function ProfessorPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-
-  // Initialize AudioContext on first interaction
-  useEffect(() => {
-    const initAudio = () => {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      if (audioContextRef.current.state === "suspended") {
-        audioContextRef.current.resume();
-      }
-    };
-    window.addEventListener("click", initAudio, { once: true });
-    window.addEventListener("touchstart", initAudio, { once: true });
-    return () => {
-      window.removeEventListener("click", initAudio);
-      window.removeEventListener("touchstart", initAudio);
-    };
-  }, []);
 
   // When the UI language changes and no user message was sent, refresh the welcome.
   useEffect(() => {
@@ -209,8 +184,8 @@ function ProfessorPage() {
       if (prev.length <= 1) return [{ role: "assistant", content: t.welcome, at: Date.now() }];
       return prev;
     });
-    // Narração removida a pedido do usuário
-  }, [lang, backTo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -226,36 +201,15 @@ function ProfessorPage() {
 
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      if (audioContextRef.current.state === "suspended") {
-        await audioContextRef.current.resume();
-      }
-
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await getPremiumNarrationUrl(speakFn, { 
-        text: clean, 
-        voice: "nova", 
-        environment: getPaddleEnvironment() 
-      });
-      
-      if (!r) return;
-      
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-        audioRef.current.load();
-      }
-      
-      audio.src = r;
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) return;
+      audioRef.current?.pause();
+      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
       audioRef.current = audio;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        await playPromise.catch(e => console.error("AutoSpeak play error:", e));
-      }
-    } catch (e) {
-      console.error("AutoSpeak error:", e);
+      await audio.play().catch(() => {});
+    } catch {
+      /* silencioso: mantém apenas o texto */
     }
   }
 
@@ -269,15 +223,8 @@ function ProfessorPage() {
     setLoading(true);
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
-      const assistantMsg: Msg = { role: "assistant", content: reply, at: Date.now() };
-      setMessages([...next, assistantMsg]);
-      
-      // Only auto-speak if user has it enabled in settings
-      const settings = queryClient.getQueryData(["user-settings"]) as any;
-      if (settings?.respostas_em_voz !== false) {
-        void autoSpeak(audio, reply);
-      }
-
+      setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
+      void autoSpeak(audio, reply);
     } catch (e: any) {
       toast.error(e.message ?? t.errorSpeak);
     } finally {
@@ -519,55 +466,24 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const lang = useLang();
   const t = L10N[lang];
   const isUser = msg.role === "user";
-  const speakFn = useServerFn(speakText);
+  const speak = useServerFn(speakText);
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
     if (audioBusy) return;
     try {
       setAudioBusy(key);
-
-      // Mobile Safari / Chrome fix: resume AudioContext on user interaction
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      if (audioContextRef.current.state === "suspended") {
-        await audioContextRef.current.resume();
-      }
-
-      const r = await getPremiumNarrationUrl(speakFn, { 
-        text, 
-        voice: "nova", 
-        environment: getPaddleEnvironment() 
-      });
-      if (!r) throw new Error(t.errorAudio);
-      
-      const blobUrl = r;
-      const audio = new Audio(blobUrl);
+      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
+      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
-      
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-        audioRef.current.load();
-      }
-      
+      audioRef.current?.pause();
       audioRef.current = audio;
-      
-      // Explicit play with interaction promise handling
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        await playPromise.catch(error => {
-          console.error("Audio playback failed:", error);
-          // Retry logic or toast could go here
-        });
-      }
+      await audio.play();
     } catch (e: any) {
-      console.error("Audio error:", e);
       toast.error(e.message ?? t.errorAudio);
     } finally {
       setAudioBusy(null);
@@ -588,8 +504,8 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} chat-bubble-container`}>
-      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"} chat-bubble-content`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
         <div
           className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
             isUser

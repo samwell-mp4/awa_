@@ -20,12 +20,8 @@ export const Route = createFileRoute("/musicas")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Cânticos Sagrados Pataxó — AWÃ TECH" },
-      { name: "description", content: "Ouça cânticos ancestrais em Patxôhã com legendas bilíngues sincronizadas e vídeos imersivos da floresta." },
-      { property: "og:title", content: "Cânticos Sagrados — AWÃ TECH" },
-      { property: "og:description", content: "Música e espiritualidade do povo Pataxó com tradução." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Cânticos Sagrados — AWÃ TECH" },
+      { name: "description", content: "Cânticos em Patxôhã com legendas bilíngues (Premium)." },
     ],
   }),
   component: () => (

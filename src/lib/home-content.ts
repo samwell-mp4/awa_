@@ -62,7 +62,7 @@ export const navGroups: NavGroup[] = [
   {
     title: "Cultura e Expressões",
     items: [
-      { label: "Histórias", href: "/historias", icon: ScrollText },
+      { label: "Histórias e Narrativas", href: "/historias", icon: ScrollText },
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
       { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
@@ -83,6 +83,7 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
+  { label: "Tradutor", href: "/traduzir" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
@@ -94,7 +95,7 @@ export type NavMode = "adulto" | "infantil" | "all";
 
 const ADULT_HREFS = new Set([
   "/dicionario",
-  "/trilhas",
+  "/traduzir",
   "/trilhas",
   "/professor",
   "/historias",
@@ -122,7 +123,6 @@ const CHILD_HREF_MAP: Record<string, string> = {
   "/trilhas": "/trilhas-infantil",
   "/historias": "/historias-infantil",
   "/jogos": "/jogos-infantil",
-  "/videos": "/videos-infantil",
 };
 
 function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[] {
@@ -143,6 +143,7 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
+        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
       ],
     },
@@ -174,6 +175,7 @@ export function useNavContent(mode: NavMode = "all") {
 
   const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
+    { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },

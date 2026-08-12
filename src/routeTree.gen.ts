@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VideosInfantilRouteImport } from './routes/videos-infantil'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
@@ -18,7 +17,6 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReembolsoRouteImport } from './routes/reembolso'
-import { Route as ProfessorInfantilRouteImport } from './routes/professor-infantil'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PlanosRouteImport } from './routes/planos'
@@ -43,7 +41,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -54,11 +51,6 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksPlanExpiryRouteImport } from './routes/api/public/hooks/plan-expiry'
 
-const VideosInfantilRoute = VideosInfantilRouteImport.update({
-  id: '/videos-infantil',
-  path: '/videos-infantil',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -97,11 +89,6 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ReembolsoRoute = ReembolsoRouteImport.update({
   id: '/reembolso',
   path: '/reembolso',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfessorInfantilRoute = ProfessorInfantilRouteImport.update({
-  id: '/professor-infantil',
-  path: '/professor-infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessorRoute = ProfessorRouteImport.update({
@@ -223,11 +210,6 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -300,7 +282,6 @@ export interface FileRoutesByFullPath {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
-  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -309,9 +290,7 @@ export interface FileRoutesByFullPath {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -345,7 +324,6 @@ export interface FileRoutesByTo {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
-  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -354,9 +332,7 @@ export interface FileRoutesByTo {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
@@ -392,7 +368,6 @@ export interface FileRoutesById {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
-  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -401,9 +376,7 @@ export interface FileRoutesById {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/videos-infantil': typeof VideosInfantilRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -439,7 +412,6 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
-    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -448,9 +420,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/videos-infantil'
     | '/admin'
-    | '/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -484,7 +454,6 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
-    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -493,9 +462,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/videos-infantil'
     | '/admin'
-    | '/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas'
@@ -530,7 +497,6 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
-    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -539,9 +505,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/videos-infantil'
     | '/_authenticated/admin'
-    | '/_authenticated/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -577,7 +541,6 @@ export interface RootRouteChildren {
   PlanosRoute: typeof PlanosRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
-  ProfessorInfantilRoute: typeof ProfessorInfantilRoute
   ReembolsoRoute: typeof ReembolsoRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SaudacoesRoute: typeof SaudacoesRoute
@@ -586,7 +549,6 @@ export interface RootRouteChildren {
   TrilhasInfantilRoute: typeof TrilhasInfantilRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VideosRoute: typeof VideosRoute
-  VideosInfantilRoute: typeof VideosInfantilRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -602,13 +564,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/videos-infantil': {
-      id: '/videos-infantil'
-      path: '/videos-infantil'
-      fullPath: '/videos-infantil'
-      preLoaderRoute: typeof VideosInfantilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -663,13 +618,6 @@ declare module '@tanstack/react-router' {
       path: '/reembolso'
       fullPath: '/reembolso'
       preLoaderRoute: typeof ReembolsoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/professor-infantil': {
-      id: '/professor-infantil'
-      path: '/professor-infantil'
-      fullPath: '/professor-infantil'
-      preLoaderRoute: typeof ProfessorInfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/professor': {
@@ -840,13 +788,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -915,12 +856,10 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -948,7 +887,6 @@ const rootRouteChildren: RootRouteChildren = {
   PlanosRoute: PlanosRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
-  ProfessorInfantilRoute: ProfessorInfantilRoute,
   ReembolsoRoute: ReembolsoRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SaudacoesRoute: SaudacoesRoute,
@@ -957,7 +895,6 @@ const rootRouteChildren: RootRouteChildren = {
   TrilhasInfantilRoute: TrilhasInfantilRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VideosRoute: VideosRoute,
-  VideosInfantilRoute: VideosInfantilRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,

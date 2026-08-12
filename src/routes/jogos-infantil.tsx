@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AreaGate } from "@/components/area-gate";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
@@ -25,7 +24,7 @@ function SpeakBtn({
       type="button"
       onClick={(e) => {
         e.stopPropagation();
-        speak(text, lang, 0.85, 1.5);
+        speak(text, lang);
       }}
       aria-label={`${label}: ${text}`}
       className={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow hover:bg-emerald-700 active:scale-95 ${className}`}
@@ -37,6 +36,7 @@ function SpeakBtn({
 
 export const Route = createFileRoute("/jogos-infantil")({
   ssr: false,
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Jogos Awã Tech Infantil — Brincar e Aprender" },
@@ -52,7 +52,7 @@ export const Route = createFileRoute("/jogos-infantil")({
       },
     ],
   }),
-  component: GuardedJogosInfantilPage,
+  component: JogosInfantilPage,
 });
 
 type GameId =
@@ -186,12 +186,6 @@ function JogosInfantilPage() {
   const [game, setGame] = useState<GameId | null>(null);
   const [stars, setStars] = useState(0);
 
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    // Narração removida a pedido do usuário
-  }, [i18n.language]);
-
   return (
     <div
       className="kids-theme min-h-screen bg-cover bg-center bg-no-repeat text-emerald-950"
@@ -233,7 +227,7 @@ function JogosInfantilPage() {
                 <button
                   key={g.id}
                   onClick={() => {
-                    speak(`${g.title}. ${g.desc}`, "pt-BR", 0.85, 1.5);
+                    speak(`${g.title}. ${g.desc}`, "pt-BR");
                     setGame(g.id);
                   }}
                   className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
@@ -264,7 +258,7 @@ function JogosInfantilPage() {
                 <button
                   key={g.id}
                   onClick={() => {
-                    speak(`${g.title}. ${g.desc}`, "en-US", 0.85, 1.5);
+                    speak(`${g.title}. ${g.desc}`, "en-US");
                     setGame(g.id);
                   }}
                   className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
@@ -366,7 +360,7 @@ function MemoryGame({ onWin }: { onWin: () => void }) {
               key={i}
               onClick={() => {
                 if (show || flip.length >= 2) return;
-                speak(MEM_NAMES[c.v] ?? "", "pt-BR", 0.85, 1.5);
+                speak(MEM_NAMES[c.v] ?? "", "pt-BR");
                 setFlip((f) => [...f, i]);
               }}
               className={`aspect-square rounded-2xl text-4xl transition ${
@@ -435,7 +429,7 @@ function PairsGame({ onWin }: { onWin: () => void }) {
                 disabled={done}
                 onClick={() => {
                   setSel(w.px);
-                  speak(w.px, "pt-BR", 0.85, 1.5);
+                  speak(w.px, "pt-BR");
                 }}
                 className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
                   done
@@ -601,7 +595,7 @@ function EnglishPairsGame({
                 disabled={done}
                 onClick={() => {
                   setSel(w.en);
-                  speak(w.en, "en-US", 0.85, 1.5);
+                  speak(w.en, "en-US");
                 }}
                 className={`flex-1 rounded-2xl px-3 py-4 text-left font-black uppercase transition ${
                   done
@@ -694,7 +688,7 @@ function AcertePalavraGame({ onWin }: { onWin: () => void }) {
             <button
               key={o}
               onClick={() => {
-                speak(o, "pt-BR", 0.85, 1.5);
+                speak(o, "pt-BR");
                 choose(o);
               }}
               className={`min-w-[110px] rounded-2xl px-5 py-3 font-black uppercase transition ${
@@ -736,7 +730,7 @@ function OrdenarNumerosGame({ onWin }: { onWin: () => void }) {
     setSeq([]);
   }, [target]);
   const pick = (n: number) => {
-    speak(String(n), "pt-BR", 0.85, 1.5);
+    speak(String(n), "pt-BR");
     setPool((p) => p.filter((x) => x !== n));
     setSeq((s) => [...s, n]);
   };
@@ -822,7 +816,7 @@ function CoresGame({ onWin }: { onWin: () => void }) {
     return [target, ...others].sort(() => Math.random() - 0.5);
   }, [target]);
   useEffect(() => {
-    if (target?.name) speak(target.name, "pt-BR", 0.85, 1.5);
+    if (target?.name) speak(target.name, "pt-BR");
   }, [target?.name]);
   const pick = (hex: string) => {
     if (feedback) return;
@@ -893,7 +887,7 @@ function AdivinheBichoGame({ onWin }: { onWin: () => void }) {
     return [q, ...others].sort(() => Math.random() - 0.5);
   }, [i]);
   useEffect(() => {
-    if (q?.hint) speak(q.hint, "pt-BR", 0.85, 1.5);
+    if (q?.hint) speak(q.hint, "pt-BR");
   }, [i]);
   const choose = (n: string) => {
     if (state) return;
@@ -1111,14 +1105,5 @@ function ColorirCanvas() {
         <T>Pinte o desenho tocando na tela.</T> 🎨
       </p>
     </div>
-  );
-}
-
-
-function GuardedJogosInfantilPage() {
-  return (
-    <AreaGate plan="infantil">
-      <JogosInfantilPage />
-    </AreaGate>
   );
 }

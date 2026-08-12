@@ -15,7 +15,7 @@ vi.mock("@tanstack/react-router", () => ({
   Link: ({ to, children, ...rest }: any) =>
     React.createElement("a", { href: to, ...rest }, children),
 }));
-vi.mock("@/lib/area-guard", () => ({ useAreaGuard: () => true }));
+vi.mock("@/lib/area-guard", () => ({ requireArea: vi.fn() }));
 vi.mock("@/assets/musicas-infantil-bg.jpg.asset.json", () => ({
   default: { src: "/bg.jpg" },
 }));

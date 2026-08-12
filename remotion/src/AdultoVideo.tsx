@@ -13,7 +13,7 @@ import {
 import { TransitionSeries, springTiming, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
-import { getNarrationLang } from "./narration-lang";
+import { NARRATION_LANG } from "./narration-lang";
 import { loadFont as loadDisplay } from "@remotion/google-fonts/PlayfairDisplay";
 import { loadFont as loadBody } from "@remotion/google-fonts/Inter";
 
@@ -25,14 +25,11 @@ const CREAM = "#F4E9D4";
 const DEEP = "#07160F";
 
 /** Narração da cena (inicia logo após a entrada visual). */
-const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => {
-  const lang = getNarrationLang();
-  return (
-    <Sequence from={from} layout="none">
-      <Audio src={staticFile(`audio/${lang}/${id}.mp3`)} volume={1} />
-    </Sequence>
-  );
-};
+const Narration: React.FC<{ id: string; from?: number }> = ({ id, from = 8 }) => (
+  <Sequence from={from} layout="none">
+    <Audio src={staticFile(`audio/${NARRATION_LANG}/${id}.mp3`)} volume={1} />
+  </Sequence>
+);
 
 const Grain: React.FC = () => (
   <AbsoluteFill
@@ -53,19 +50,10 @@ const KenBurns: React.FC<{ src: string; from?: number; to?: number; x?: number }
   const { durationInFrames } = useVideoConfig();
   const scale = interpolate(frame, [0, durationInFrames], [from, to]);
   const tx = interpolate(frame, [0, durationInFrames], [0, x]);
-  const lang = getNarrationLang();
-  
-  // Use localized image if available, otherwise fallback to root images/
-  const imageSrc = staticFile(`images/${lang}/${src}`);
-  const fallbackSrc = staticFile(`images/${src}`);
-  
   return (
     <AbsoluteFill>
       <Img
-        src={imageSrc}
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = fallbackSrc;
-        }}
+        src={staticFile(`images/${src}`)}
         style={{
           width: "100%",
           height: "100%",
@@ -199,9 +187,9 @@ const Statement: React.FC = () => (
             maxWidth: 1050,
           }}
         >
-          {getNarrationLang() === "pt" ? "Línguas indígenas," : getNarrationLang() === "es" ? "Lenguas indígenas," : "Indigenous languages,"}
+          Línguas indígenas,
           <br />
-          <span style={{ color: GOLD }}>{getNarrationLang() === "pt" ? "culturas vivas." : getNarrationLang() === "es" ? "culturas vivas." : "living cultures."}</span>
+          <span style={{ color: GOLD }}>culturas vivas.</span>
         </div>
       </Reveal>
       <Reveal delay={26}>
@@ -215,11 +203,7 @@ const Statement: React.FC = () => (
             lineHeight: 1.45,
           }}
         >
-          {getNarrationLang() === "pt" 
-            ? "Aprenda Patxôhã com curadoria de anciãos e educadores da aldeia." 
-            : getNarrationLang() === "es"
-            ? "Aprende Patxôhã con la curaduría de ancianos y educadores de la aldea."
-            : "Learn Patxôhã with curation from village elders and educators."}
+          Aprenda Patxôhã com curadoria de anciãos e educadores da aldeia.
         </div>
       </Reveal>
     </AbsoluteFill>
@@ -357,8 +341,6 @@ const Languages: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const langs = ["Português", "English", "Español", "Patxôhã"];
-  const title = getNarrationLang() === "pt" ? "Quatro idiomas," : getNarrationLang() === "es" ? "Cuatro idiomas," : "Four languages,";
-  const suffix = getNarrationLang() === "pt" ? "uma raiz." : getNarrationLang() === "es" ? "una raíz." : "one root.";
   return (
     <AbsoluteFill style={{ backgroundColor: DEEP }}>
       <Narration id="a7" />
@@ -375,7 +357,7 @@ const Languages: React.FC = () => {
               textAlign: "center",
             }}
           >
-            {title} <span style={{ color: GOLD }}>{suffix}</span>
+            Quatro idiomas, <span style={{ color: GOLD }}>uma raiz.</span>
           </div>
         </Reveal>
         <div style={{ display: "flex", gap: 22, marginTop: 52 }}>
@@ -439,8 +421,8 @@ const Quote: React.FC = () => {
                 marginTop: 30,
               }}
             >
-              {getNarrationLang() === "pt" ? "Cada palavra aprendida é uma" : getNarrationLang() === "es" ? "Cada palabra aprendida es una" : "Every word learned is a"}
-              <span style={{ color: GOLD }}> {getNarrationLang() === "pt" ? "memória que continua viva." : getNarrationLang() === "es" ? "memoria que continúa viva." : "memory that stays alive."}</span>
+              Cada palavra aprendida é uma{" "}
+              <span style={{ color: GOLD }}>memória que continua viva.</span>
             </div>
           </Reveal>
           <Reveal delay={30}>
@@ -518,7 +500,7 @@ const Closing: React.FC = () => {
                   color: CREAM,
                 }}
               >
-                {getNarrationLang() === "pt" ? "Comece sua trilha hoje" : getNarrationLang() === "es" ? "Comienza tu ruta hoy" : "Start your trail today"}
+                Comece sua trilha hoje
               </div>
             </Reveal>
             <Reveal delay={12}>
@@ -568,10 +550,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a3"
           index="01"
           image="trail-saudacoes.jpg"
-          eyebrow={getNarrationLang() === "pt" ? "TRILHAS GUIADAS" : getNarrationLang() === "es" ? "RUTAS GUIADAS" : "GUIDED TRAILS"}
-          title={getNarrationLang() === "pt" ? "Do primeiro Awê à conversa" : getNarrationLang() === "es" ? "Del primer Awê a la charla" : "From the first Awê to conversation"}
-          desc={getNarrationLang() === "pt" ? "Lições curtas e progressivas, com áudio nativo e prática diária." : getNarrationLang() === "es" ? "Lecciones cortas y progresivas, con audio nativo y práctica diaria." : "Short, progressive lessons with native audio and daily practice."}
-          bullets={getNarrationLang() === "pt" ? ["Saudações", "Família", "Natureza", "Animais"] : getNarrationLang() === "es" ? ["Saludos", "Familia", "Naturaleza", "Animales"] : ["Greetings", "Family", "Nature", "Animals"]}
+          eyebrow="TRILHAS GUIADAS"
+          title="Do primeiro Awê à conversa"
+          desc="Lições curtas e progressivas, com áudio nativo e prática diária."
+          bullets={["Saudações", "Família", "Natureza", "Animais"]}
           side="left"
         />
       </TransitionSeries.Sequence>
@@ -581,10 +563,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a4"
           index="02"
           image="trail-natureza.jpg"
-          eyebrow={getNarrationLang() === "pt" ? "DICIONÁRIO PATXÔHÃ" : getNarrationLang() === "es" ? "DICCIONARIO PATXÔHÃ" : "PATXÔHÃ DICTIONARY"}
-          title={getNarrationLang() === "pt" ? "Milhares de palavras com áudio" : getNarrationLang() === "es" ? "Miles de palabras con audio" : "Thousands of words with audio"}
-          desc={getNarrationLang() === "pt" ? "Busque, ouça a pronúncia original e salve suas palavras favoritas." : getNarrationLang() === "es" ? "Busca, escucha la pronunciación original y guarda tus palabras favoritas." : "Search, listen to original pronunciation, and save your favorite words."}
-          bullets={getNarrationLang() === "pt" ? ["Busca instantânea", "Pronúncia real", "Favoritos"] : getNarrationLang() === "es" ? ["Búsqueda instantánea", "Pronunciación real", "Favoritos"] : ["Instant search", "Real pronunciation", "Favorites"]}
+          eyebrow="DICIONÁRIO PATXÔHÃ"
+          title="Milhares de palavras com áudio"
+          desc="Busque, ouça a pronúncia original e salve suas palavras favoritas."
+          bullets={["Busca instantânea", "Pronúncia real", "Favoritos"]}
           side="right"
         />
       </TransitionSeries.Sequence>
@@ -594,10 +576,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a5"
           index="03"
           image="pataxo-danca.jpg"
-          eyebrow={getNarrationLang() === "pt" ? "TRADUTOR CULTURAL" : getNarrationLang() === "es" ? "TRADUCTOR CULTURAL" : "CULTURAL TRANSLATOR"}
-          title={getNarrationLang() === "pt" ? "Traduza e ouça na hora" : getNarrationLang() === "es" ? "Traduce y escucha al instante" : "Translate and listen instantly"}
-          desc={getNarrationLang() === "pt" ? "Frases do dia a dia traduzidas com o contexto cultural da aldeia." : getNarrationLang() === "es" ? "Frases cotidianas traducidas con el contexto cultural de la aldea." : "Everyday phrases translated with the village's cultural context."}
-          bullets={getNarrationLang() === "pt" ? ["Texto e voz", "Contexto cultural"] : getNarrationLang() === "es" ? ["Texto y voz", "Contexto cultural"] : ["Text and voice", "Cultural context"]}
+          eyebrow="TRADUTOR CULTURAL"
+          title="Traduza e ouça na hora"
+          desc="Frases do dia a dia traduzidas com o contexto cultural da aldeia."
+          bullets={["Texto e voz", "Contexto cultural"]}
           side="left"
         />
       </TransitionSeries.Sequence>
@@ -607,10 +589,10 @@ export const AdultoVideo: React.FC = () => (
           audio="a6"
           index="04"
           image="pataxo-aldeia.jpg"
-          eyebrow={getNarrationLang() === "pt" ? "ESPAÇO DO PROFESSOR" : getNarrationLang() === "es" ? "ESPACIO DEL PROFESOR" : "TEACHER'S SPACE"}
-          title={getNarrationLang() === "pt" ? "Materiais para a sala de aula" : getNarrationLang() === "es" ? "Materiales para el aula" : "Classroom materials"}
-          desc={getNarrationLang() === "pt" ? "Planos de aula, atividades e recursos prontos para educadores." : getNarrationLang() === "es" ? "Planes de clase, actividades y recursos listos para educadores." : "Lesson plans, activities, and resources ready for educators."}
-          bullets={getNarrationLang() === "pt" ? ["Planos de aula", "Atividades", "Turmas"] : getNarrationLang() === "es" ? ["Planes de clase", "Actividades", "Clases"] : ["Lesson plans", "Activities", "Classes"]}
+          eyebrow="ESPAÇO DO PROFESSOR"
+          title="Materiais para a sala de aula"
+          desc="Planos de aula, atividades e recursos prontos para educadores."
+          bullets={["Planos de aula", "Atividades", "Turmas"]}
           side="right"
         />
       </TransitionSeries.Sequence>

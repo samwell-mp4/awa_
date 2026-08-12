@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { translateI18n } from "@/lib/i18n-translate.functions";
-import { runAfterHydration } from "@/lib/after-hydration";
 
 const LS_PREFIX = "awa_i18n_dom_";
 const ORIGINAL_TEXT = new WeakMap<Text, string>();
@@ -303,26 +302,18 @@ export function AppLanguageAutoTranslator() {
       timeoutRef.current = window.setTimeout(translatePage, 120);
     };
 
-    let observer: MutationObserver | null = null;
-
-    // Rewriting text nodes React owns while it is still hydrating produces
-    // hydration mismatch errors and flickering text — wait for hydration.
-    const cancelBootstrap = runAfterHydration(() => {
+    schedule();
+    const observer = new MutationObserver((mutations) => {
+      if (!mutations.some((mutation) => mutation.type === "childList")) return;
       schedule();
-      observer = new MutationObserver((mutations) => {
-        if (!mutations.some((mutation) => mutation.type === "childList")) return;
-        schedule();
-      });
-      observer.observe(root, { childList: true, subtree: true, characterData: true });
     });
+    observer.observe(root, { childList: true, subtree: true, characterData: true });
 
     return () => {
       runId.current += 1;
-      cancelBootstrap();
-      observer?.disconnect();
+      observer.disconnect();
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
     };
-
   }, [lang]);
 
   return null;
