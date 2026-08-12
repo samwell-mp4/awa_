@@ -6,6 +6,7 @@ import { narratePublic } from "@/lib/narrate-public.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useTranslation } from "react-i18next";
 import { T } from "@/components/T";
+import { getNarrationUrl } from "@/lib/narration-cache";
 import { toast } from "sonner";
 
 
@@ -200,6 +201,8 @@ function useNarration(originalText: string) {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const progressTimerRef = useRef<number | null>(null);
   const narrate = useServerFn(narratePublic);
+  // Import cache helpers
+  const { getNarrationUrl } = require("@/lib/narration-cache");
 
   const cacheKey = `${lang}::${text}`;
 
@@ -278,15 +281,11 @@ function useNarration(originalText: string) {
     if (hit) return Promise.resolve(hit);
     const inflight = narrationPromiseCache.get(cacheKey);
     if (inflight) return inflight;
-    const p = narrate({ data: { text, voice: "nova", lang } })
-      .then((res) => {
-        if (res.error || !res.audio_base64) {
-          throw new Error(res.message ?? "Não foi possível gerar a narração.");
+    const p = getNarrationUrl({ text, voice: "nova", lang })
+      .then((url) => {
+        if (!url) {
+          throw new Error("Não foi possível gerar a narração.");
         }
-        const bin = atob(res.audio_base64);
-        const bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-        const url = URL.createObjectURL(new Blob([bytes], { type: res.mime }));
         narrationUrlCache.set(cacheKey, url);
         narrationPromiseCache.delete(cacheKey);
         return url;
