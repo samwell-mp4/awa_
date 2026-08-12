@@ -82,7 +82,9 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    if (s.speaking || s.pending) s.cancel();
+    if (s.speaking || s.pending) {
+      s.cancel();
+    }
     const start = () => {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
@@ -95,7 +97,7 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
       if (onEnd) u.onend = onEnd;
       s.speak(u);
     };
-    setTimeout(start, 30);
+    start();
   } catch {
     /* ignore */
   }
