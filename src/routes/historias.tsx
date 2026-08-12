@@ -173,10 +173,6 @@ const sections: Section[] = [
   },
 ];
 
-// Module-level browser cache: same text reused across components/re-renders
-const narrationUrlCache = new Map<string, string>();
-const narrationPromiseCache = new Map<string, Promise<string>>();
-
 // Only one narration at a time: starting a new one stops the previous.
 let activeStop: (() => void) | null = null;
 function setActiveNarration(stop: () => void) {
@@ -188,6 +184,7 @@ function setActiveNarration(stop: () => void) {
 function clearActiveNarration(stop: () => void) {
   if (activeStop === stop) activeStop = null;
 }
+
 
 function useNarration(originalText: string) {
   const { i18n } = useTranslation();
@@ -204,7 +201,7 @@ function useNarration(originalText: string) {
   // Import cache helpers
   
 
-  const cacheKey = `${lang}::${text}`;
+  const cacheKey = `${lang}::story::nova::${text}`;
 
   const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
 
@@ -277,26 +274,13 @@ function useNarration(originalText: string) {
   };
 
   const fetchUrl = (): Promise<string> => {
-    const hit = narrationUrlCache.get(cacheKey);
-    if (hit) return Promise.resolve(hit);
-    const inflight = narrationPromiseCache.get(cacheKey);
-    if (inflight) return inflight;
-    const p = getNarrationUrl({ text, voice: "nova", lang })
-      .then((url: string | null) => {
-        if (!url) {
-          throw new Error("Não foi possível gerar a narração.");
-        }
-        narrationUrlCache.set(cacheKey, url);
-        narrationPromiseCache.delete(cacheKey);
+    return getNarrationUrl({ text, voice: "nova", lang })
+      .then((url) => {
+        if (!url) throw new Error("Não foi possível gerar a narração.");
         return url;
-      })
-      .catch((err: any) => {
-        narrationPromiseCache.delete(cacheKey);
-        throw err;
       });
-    narrationPromiseCache.set(cacheKey, p);
-    return p;
   };
+
 
   useEffect(() => {
     return () => {
@@ -332,37 +316,30 @@ function useNarration(originalText: string) {
       setProgress(0);
     };
 
-    const cached = narrationUrlCache.get(cacheKey);
-    if (cached) {
-      audio.src = cached;
-      audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
-      return;
-    }
-
-    if (speakImmediately()) {
-      // Warm the higher-quality audio silently for a later tap, but never block this tap.
-      fetchUrl().catch(() => {});
-      return;
-    }
-
     setLoading(true);
-    fetchUrl()
+    getNarrationUrl({ text, voice: "nova", lang })
       .then((url) => {
-        if (audioRef.current !== audio) return;
+        if (!url || audioRef.current !== audio) return;
         audio.src = url;
-        return audio.play().then(() => setSpeaking(true));
+        audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
       })
       .catch((err) => {
         console.error("Narração falhou:", err);
-        toast.error(err instanceof Error ? err.message : "Não foi possível gerar a narração.");
+        toast.error("Não foi possível gerar a narração.");
       })
       .finally(() => setLoading(false));
+
+
+    if (speakImmediately()) {
+      return;
+    }
+
   };
 
   const prefetch = () => {
-    if (narrationUrlCache.has(cacheKey) || narrationPromiseCache.has(cacheKey)) return;
-    fetchUrl().catch(() => {});
+    getNarrationUrl({ text, voice: "nova", lang }).catch(() => {});
   };
+
 
   return { supported: true, speaking, loading, progress, toggle, prefetch };
 }
