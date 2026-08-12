@@ -43,6 +43,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasSlugRouteImport } from './routes/trilhas.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -222,6 +223,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -305,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/videos': typeof VideosRoute
   '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -349,6 +356,7 @@ export interface FileRoutesByTo {
   '/videos': typeof VideosRoute
   '/videos-infantil': typeof VideosInfantilRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas': typeof TrilhasIndexRoute
@@ -395,6 +403,7 @@ export interface FileRoutesById {
   '/videos': typeof VideosRoute
   '/videos-infantil': typeof VideosInfantilRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -441,6 +450,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/videos-infantil'
     | '/admin'
+    | '/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -485,6 +495,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/videos-infantil'
     | '/admin'
+    | '/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas'
@@ -530,6 +541,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/videos-infantil'
     | '/_authenticated/admin'
+    | '/_authenticated/settings'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
     | '/trilhas/'
@@ -828,6 +840,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -896,10 +915,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -952,13 +973,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
