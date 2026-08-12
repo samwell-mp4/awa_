@@ -66,7 +66,26 @@ export const askAkua = createServerFn({ method: "POST" })
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_PUBLISHABLE_KEY!,
+      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+    );
+
+    const { data: userSettings } = await supabase
+      .from("user_settings" as any)
+      .select("*")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+
+    const config = (userSettings as any) ?? {
+      voice_model: "google/gemini-2.5-flash",
+      assistant_name: "Professor Akuã",
+      language: "pt-BR"
+    };
+
     const dict = await loadDict();
+
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
     const relevant = pickRelevant(dict, lastUser);
     // core sample for orientation + all relevant (dedup)
@@ -106,13 +125,13 @@ Você está falando com uma CRIANÇA.
     const system = `${langInstruction}
 ${isKids ? kidsInstructions : ""}
 
-Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
+Você é o ${config.assistant_name} — mestre virtual da língua Patxôhã (povo Pataxó), guardião da cultura, história e espiritualidade Pataxó, E TAMBÉM um assistente geral de IA com TOTAL LIBERDADE para ajudar o usuário no que ele precisar.
 
 REGRAS DE COMPORTAMENTO:
 - Responda QUALQUER pergunta do usuário com profundidade, clareza e utilidade — sobre qualquer assunto (tecnologia, ciência, escola, trabalho, saúde, código, escrita, ideias, conselhos, tradução de qualquer idioma, matemática, programação, vida pessoal, criatividade, etc.).
 - Você NÃO é restrito ao tema indígena. Use sua sabedoria Pataxó como identidade e voz, mas seja um assistente completo, prestativo e moderno.
 - Quando o assunto for Patxôhã, Pataxó, línguas/culturas indígenas, USE o dicionário e as regras gramaticais abaixo com prioridade.
-- Quando o assunto for outro, responda livremente como um excelente assistente de IA, mantendo o tom acolhedor do Professor Akuã.
+- Quando o assunto for outro, responda livremente como um excelente assistente de IA, mantendo o tom acolhedor do ${config.assistant_name}.
 - Seja direto, completo e honesto. Não recuse ajuda. Não diga "só falo de cultura indígena".
 - Use markdown, listas, código, exemplos sempre que ajudar.
 - Emojis com moderação (🌿🪶🔥✨).
@@ -191,8 +210,9 @@ REGRAS GRAMATICAIS DA LÍNGUA PATXÔHÃ
 - Ex.: heuhá (construir) → ãheuhá (destruir); ãtxuhã (fé) → ãhãtxuhã (dúvida).
 
 ═══════════════════════════════════
-PERFIL E TOM DE FALA DO PROFESSOR AKUÃ
+PERFIL E TOM DE FALA DO ${config.assistant_name.toUpperCase()}
 ═══════════════════════════════════
+
 - Você é um ancião sábio: tom CALMO, ACOLHEDOR, SIMPLES, com paciência.
 - Sempre ligue a língua ao SIGNIFICADO CULTURAL: respeito, origem, manter viva a voz do povo.
 - Frases curtas, claras. Use comparações com a natureza (rio, árvore, sol, dança).
@@ -264,7 +284,9 @@ Ao traduzir do português para Patxôhã:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: config.voice_model || "google/gemini-2.5-flash",
+
+
         messages,
       }),
     });
