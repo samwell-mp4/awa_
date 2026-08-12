@@ -529,10 +529,14 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
         await audioContextRef.current.resume();
       }
 
-      const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
+      const r = await getPremiumNarrationUrl(speakFn, { 
+        text, 
+        voice: "nova", 
+        environment: getPaddleEnvironment() 
+      });
+      if (!r) throw new Error(t.errorAudio);
       
-      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const blobUrl = r;
       const audio = new Audio(blobUrl);
       audio.preload = "auto";
       
