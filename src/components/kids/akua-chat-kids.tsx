@@ -6,6 +6,7 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useTranslation } from "react-i18next";
 import { useLang } from "@/lib/pick-lang";
+import { getPremiumNarrationUrl } from "@/lib/narration-cache";
 import { Send, Loader2, Volume2, RefreshCcw, ArrowLeft, MessageSquare, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
