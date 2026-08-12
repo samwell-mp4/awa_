@@ -36,7 +36,7 @@ export function getNarrationUrl(opts: {
   if (!text) return Promise.resolve(null);
   const lang = (opts.lang ?? "pt").slice(0, 2).toLowerCase();
   const mode = opts.mode ?? "story";
-  const voice = opts.voice ?? "onyx";
+  const voice = opts.voice ?? "nova";
   const key = `${lang}::${mode}::${voice}::${text}`;
 
   const hit = urls.get(key);
@@ -66,7 +66,7 @@ export function getPremiumNarrationUrl(
 ): Promise<string | null> {
   const text = (opts.text ?? "").trim();
   if (!text) return Promise.resolve(null);
-  const voice = opts.voice ?? "alloy";
+  const voice = opts.voice ?? "nova";
   const key = `premium::${voice}::${text}`;
 
   const hit = urls.get(key);
