@@ -24,8 +24,11 @@ export const getUserSettings = createServerFn({ method: "GET" })
       voice_model: "google/gemini-2.5-flash",
       assistant_name: "Professor Akuã",
       language: "pt-BR",
+      lingua_ancestral: "Patxôhã",
+      instrucao: "Fale com sabedoria, calma e respeito. Ensine com a voz do povo Pataxó.",
       respostas_em_voz: true
     };
+
 
   });
 
@@ -35,8 +38,11 @@ export const updateUserSettings = createServerFn({ method: "POST" })
     voice_model: z.string().optional(),
     assistant_name: z.string().optional(),
     language: z.string().optional(),
+    lingua_ancestral: z.string().optional(),
+    instrucao: z.string().optional(),
     respostas_em_voz: z.boolean().optional()
   }).parse)
+
 
   .handler(async ({ data, context }) => {
     const supabase = createClient(
