@@ -20,12 +20,13 @@ export function AkuaChatKids() {
   const speakFn = useServerFn(speakText);
   
   const welcomeMessage = t("infantil.akua.welcome", "Olá, pequeno Parente! Eu sou o Professor Akuã. Quer aprender palavras mágicas em Patxôhã? Pergunte o que quiser! 🌿✨");
-  const suggestedQuestions = t("infantil.akua.questions", [
+  const questionsFromT = t("infantil.akua.questions", { returnObjects: true });
+  const suggestedQuestions = Array.isArray(questionsFromT) ? (questionsFromT as string[]) : [
     "Como diz 'olá' em Patxôhã?",
     "Qual é o nome da onça na língua Pataxó?",
     "Como se diz 'água'?",
     "Me conta uma curiosidade sobre a aldeia?"
-  ], { returnObjects: true }) as string[];
+  ];
 
   const [messages, setMessages] = useState<Msg[]>([
     { role: "assistant", content: welcomeMessage, at: Date.now() }
