@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
-import { getNarrationUrl } from "@/lib/narration-cache";
+import { getNarrationUrl, getPremiumNarrationUrl } from "@/lib/narration-cache";
 import { speak as speakChild } from "@/lib/speak";
 import {
   ArrowLeft,
