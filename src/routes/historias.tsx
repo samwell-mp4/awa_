@@ -201,6 +201,10 @@ function useNarration(originalText: string) {
 
   const cacheKey = `${lang}::${text}`;
 
+  useEffect(() => {
+    prefetch();
+  }, [cacheKey]);
+
   const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
 
   const clearProgressTimer = () => {
@@ -311,9 +315,10 @@ function useNarration(originalText: string) {
     // Stop any other narration currently playing on the page.
     setActiveNarration(stopCurrent);
     // Create Audio synchronously inside the user gesture — required for mobile autoplay.
-    const audio = new Audio();
+    const audio = audioRef.current ?? new Audio();
     audio.preload = "auto";
     audioRef.current = audio;
+    audio.currentTime = 0; // Immediate reset to start
     setProgress(0);
     audio.ontimeupdate = () => {
       if (audioRef.current !== audio) return;
@@ -334,6 +339,7 @@ function useNarration(originalText: string) {
     const cached = narrationUrlCache.get(cacheKey);
     if (cached) {
       audio.src = cached;
+      audio.currentTime = 0;
       audio.play().then(() => setSpeaking(true)).catch(() => setSpeaking(false));
       return;
     }

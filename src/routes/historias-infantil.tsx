@@ -185,11 +185,10 @@ function useKidsNarrator(text: string) {
   // Reset cached audio when the UI language changes so narration re-fetches
   // in the newly-selected language instead of replaying the old blob.
   useEffect(() => {
-    audioRef.current?.pause();
+    stop();
     audioRef.current = null;
     urlRef.current = null;
-    setState("idle");
-    setProgress(0);
+    prefetch();
   }, [lang]);
 
   useEffect(() => {
@@ -201,11 +200,25 @@ function useKidsNarrator(text: string) {
   }, []);
 
   const stop = () => {
-    audioRef.current?.pause();
-    if (audioRef.current) audioRef.current.currentTime = 0;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     setState("idle");
     setProgress(0);
   };
+
+  const prefetch = async () => {
+    if (urlRef.current) return;
+    try {
+      const url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+      if (url) urlRef.current = url;
+    } catch {}
+  };
+
+  useEffect(() => {
+    prefetch();
+  }, []);
 
   const play = async () => {
     if (state === "playing") return stop();
@@ -324,6 +337,9 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
       <button
         type="button"
         onClick={play}
+        onPointerEnter={prefetch}
+        onTouchStart={prefetch}
+        onFocus={prefetch}
         aria-label={s.title}
         className="relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
       >
