@@ -436,12 +436,15 @@ function PlayableCard({
   text,
   audioUrl,
   children,
+  prefetch = false,
 }: {
   text: string;
   audioUrl: string | null;
   children: React.ReactNode;
+  prefetch?: boolean;
 }) {
   const [busy, setBusy] = useState(false);
+  const cacheRef = useRef<string | null>(null);
 
   async function play() {
     if (busy) return;
@@ -449,6 +452,10 @@ function PlayableCard({
       setBusy(true);
       if (audioUrl) {
         await playFast(audioUrl);
+        return;
+      }
+      if (cacheRef.current) {
+        await playFast(cacheRef.current);
         return;
       }
       // Uses browser's built-in speech synthesis — no credits required.
