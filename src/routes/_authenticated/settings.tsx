@@ -48,8 +48,10 @@ function SettingsPage() {
       voice_model: formData.get("voice_model"),
       assistant_name: formData.get("assistant_name"),
       language: formData.get("language"),
+      respostas_em_voz: formData.get("respostas_em_voz") === "on",
     };
     mutation.mutate(data);
+
   };
 
   const safeSettings = (settings || {}) as any;
@@ -114,6 +116,35 @@ function SettingsPage() {
               ))}
             </div>
           </section>
+117: 
+118:           {/* Respostas em Voz Switch */}
+119:           <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
+120:             <div className="flex items-center justify-between gap-3">
+121:               <div className="flex items-center gap-3">
+122:                 <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gold/20 text-gold">
+123:                   <Volume2 className="h-5 w-5" />
+124:                 </div>
+125:                 <div>
+126:                   <h2 className="text-base font-bold text-cream">
+127:                     {t("settings.voiceResponses", "Respostas em Voz")}
+128:                   </h2>
+129:                   <p className="text-xs text-foreground/60">
+130:                     {t("settings.voiceResponsesDesc", "Ativar narração automática do assistente")}
+131:                   </p>
+132:                 </div>
+133:               </div>
+134:               <label className="relative inline-flex cursor-pointer items-center">
+135:                 <input
+136:                   type="checkbox"
+137:                   name="respostas_em_voz"
+138:                   defaultChecked={safeSettings.respostas_em_voz !== false}
+139:                   className="peer sr-only"
+140:                 />
+141:                 <div className="peer h-6 w-11 rounded-full bg-forest-deep/50 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gold/20 after:bg-cream after:transition-all after:content-[''] peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white focus:outline-none"></div>
+142:               </label>
+143:             </div>
+144:           </section>
+
 
           {/* Assistant Name Section */}
           <section className="rounded-3xl border border-gold/20 bg-card/40 p-6 backdrop-blur-md">
