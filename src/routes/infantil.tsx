@@ -23,7 +23,10 @@ export const Route = createFileRoute("/infantil")({
       _plan: "infantil",
       _check_env: getPaddleEnvironment(),
     });
-    if (!hasAccess) throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+    if (!hasAccess) {
+      console.warn("[Guard] No access to Infantil for user", data.user.id);
+      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+    }
   },
   head: () => ({
     meta: [
