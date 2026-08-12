@@ -69,10 +69,14 @@ export function AkuaChatKids() {
       }
 
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speakFn({ data: { text: clean, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) return;
+      const r = await getPremiumNarrationUrl(speakFn, {
+        text: clean,
+        voice: "nova",
+        environment: getPaddleEnvironment()
+      });
+      if (!r) return;
       
-      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const blobUrl = r;
       
       if (audioRef.current) {
         audioRef.current.pause();
