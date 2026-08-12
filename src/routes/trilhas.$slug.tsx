@@ -393,7 +393,7 @@ function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speakFn({ data: { text, voice: "onyx", environment: getPaddleEnvironment() } });
+        const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
         if (r.error || !r.audio_base64) {
           // If onyx fails, try fallback voice
           const r2 = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });

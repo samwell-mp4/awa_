@@ -203,7 +203,7 @@ function ProfessorPage() {
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speakFn({ data: { text: clean, environment: getPaddleEnvironment() } });
+      const r = await speakFn({ data: { text: clean, voice: "nova", environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       audioRef.current?.pause();
       audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
@@ -477,7 +477,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
     if (audioBusy) return;
     try {
       setAudioBusy(key);
-      const r = await speakFn({ data: { text, environment: getPaddleEnvironment() } });
+      const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";

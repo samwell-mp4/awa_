@@ -219,7 +219,7 @@ function useKidsNarrator(text: string) {
     try {
       let url = urlRef.current;
       if (!url) {
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+        url = await getNarrationUrl({ text, lang, mode: "story", voice: "nova" });
         if (!url) {
           setState("idle");
           return;

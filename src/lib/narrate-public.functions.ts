@@ -48,7 +48,7 @@ export const narratePublic = createServerFn({ method: "POST" })
     if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
     let text = (data.text ?? "").slice(0, 4000);
     if (!text.trim()) throw new Error("Texto vazio");
-    const voice = data.voice ?? "onyx";
+    const voice = data.voice ?? "nova";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
     const mode = data.mode ?? "story";
     const instructions = mode === "word" ? WORD_INSTRUCTIONS : (INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt);
