@@ -294,10 +294,6 @@ function useNarration(originalText: string) {
         narrationPromiseCache.delete(cacheKey);
         throw err;
       });
-      .catch((err) => {
-        narrationPromiseCache.delete(cacheKey);
-        throw err;
-      });
     narrationPromiseCache.set(cacheKey, p);
     return p;
   };
