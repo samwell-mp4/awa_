@@ -30,7 +30,7 @@ export const Route = createFileRoute("/historias-infantil")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Histórias e Narrativas — Awã Tech Infantil" },
+      { title: "Histórias — Awã Tech Infantil" },
       {
         name: "description",
         content:

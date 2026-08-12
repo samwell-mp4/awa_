@@ -44,7 +44,7 @@ export default {
     videos: "Vídeos",
     jogos: "Jogos",
     professor: "Espaço do Professor",
-    historiasLong: "Histórias e Narrativas",
+    historiasLong: "Histórias",
     musicasLong: "Músicas e Cantigas",
     videosLong: "Vídeos e Registros",
     jogosLong: "Jogos e Atividades",
