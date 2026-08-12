@@ -129,6 +129,21 @@ export default {
       jogos: "Jogos",
       videos: "Vídeos e Registros",
       amizade: "Amizade",
+      professor: "Professor Akuã",
+    },
+    akua: {
+      welcome: "Olá, pequeno Parente! Eu sou o Professor Akuã. Quer aprender palavras mágicas em Patxôhã? Pergunte o que quiser! 🌿✨",
+      placeholder: "Pergunte algo ao Professor Akuã...",
+      suggestedQuestions: "Perguntas que você pode fazer:",
+      questions: [
+        "Como diz 'olá' em Patxôhã?",
+        "Qual é o nome da onça na língua Pataxó?",
+        "Como se diz 'água'?",
+        "Me conta uma curiosidade sobre a aldeia?"
+      ],
+      back: "Volta",
+      title: "Aula com Professor Akuã",
+      mode: "Modo Infantil",
     },
   },
   premium: {

@@ -127,7 +127,23 @@ export default {
       cantico: "Chant",
       historia: "Kids' Story",
       jogos: "Games",
+      videos: "Videos & Records",
       amizade: "Friendship",
+      professor: "Teacher Akuã",
+    },
+    akua: {
+      welcome: "Hello, little Relative! I am Teacher Akuã. Want to learn magic words in Patxôhã? Ask me anything! 🌿✨",
+      placeholder: "Ask Teacher Akuã something...",
+      suggestedQuestions: "Questions you can ask:",
+      questions: [
+        "How do you say 'hello' in Patxôhã?",
+        "What is the name for jaguar in Pataxó?",
+        "How do you say 'water'?",
+        "Tell me a fun fact about the village?"
+      ],
+      back: "Back",
+      title: "Class with Teacher Akuã",
+      mode: "Kids Mode",
     },
   },
   premium: {

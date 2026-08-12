@@ -127,7 +127,23 @@ export default {
       cantico: "Canto",
       historia: "Historia Infantil",
       jogos: "Juegos",
+      videos: "Videos y Registros",
       amizade: "Amistad",
+      professor: "Maestro Akuã",
+    },
+    akua: {
+      welcome: "¡Hola, pequeño Pariente! Soy el Maestro Akuã. ¿Quieres aprender palabras mágicas em Patxôhã? ¡Pregúntame lo que quieras! 🌿✨",
+      placeholder: "Pregúntale algo al Maestro Akuã...",
+      suggestedQuestions: "Preguntas que puedes hacer:",
+      questions: [
+        "¿Cómo se dice 'hola' en Patxôhã?",
+        "¿Cuál es el nombre del jaguar en Pataxó?",
+        "¿Cómo se dice 'agua'?",
+        "¿Cuéntame algo curioso sobre la aldea?"
+      ],
+      back: "Volver",
+      title: "Clase con el Maestro Akuã",
+      mode: "Modo Infantil",
     },
   },
   premium: {
