@@ -467,23 +467,7 @@ function PlayableCard({
         return;
       }
       const isKids = typeof backTo === "string" && backTo.includes("infantil");
-      const synth = window.speechSynthesis;
-      synth.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "pt-BR";
-      utter.rate = isKids ? 1.1 : 0.85;
-      utter.pitch = isKids ? 1.5 : 1;
-      const voices = synth.getVoices();
-      const preferred =
-        voices.find((v) => /pt[-_]BR/i.test(v.lang) && /male|masc|ricardo|daniel|luciano/i.test(v.name)) ||
-        voices.find((v) => /pt[-_]BR/i.test(v.lang)) ||
-        voices.find((v) => /^pt/i.test(v.lang));
-      if (preferred) utter.voice = preferred;
-      await new Promise<void>((resolve) => {
-        utter.onend = () => resolve();
-        utter.onerror = () => resolve();
-        synth.speak(utter);
-      });
+      speakChild(text, "pt-BR", isKids ? 1.1 : 0.85, isKids ? 1.5 : 1);
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
