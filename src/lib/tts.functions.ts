@@ -35,14 +35,30 @@ export const speakText = createServerFn({ method: "POST" })
         fallback: false,
       };
     }
+
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_PUBLISHABLE_KEY!,
+      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+    );
+
+    const { data: userSettings } = await supabase
+      .from("user_settings" as any)
+      .select("voice_model")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+
+    const voiceModel = (userSettings as any)?.voice_model || "google/gemini-2.5-flash";
+
     const text = (data.text ?? "").slice(0, 2000);
     if (!text.trim()) throw new Error("Texto vazio");
+
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: voiceModel,
         input: text,
         voice: data.voice ?? "nova",
         response_format: "mp3",
