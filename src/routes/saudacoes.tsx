@@ -293,7 +293,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
       }
       if (!cacheRef.current) {
         const isKids = typeof backTo === "string" && backTo.includes("infantil");
-        const r = await speakFn({ data: { text, voice: isKids ? "nova" : "onyx" } });
+        const r = await speakFn({ data: { text, voice: "nova" } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar o áudio");
         }

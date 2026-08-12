@@ -278,7 +278,7 @@ function useNarration(originalText: string) {
     if (hit) return Promise.resolve(hit);
     const inflight = narrationPromiseCache.get(cacheKey);
     if (inflight) return inflight;
-    const p = narrate({ data: { text, voice: "onyx", lang } })
+    const p = narrate({ data: { text, voice: "nova", lang } })
       .then((res) => {
         if (res.error || !res.audio_base64) {
           throw new Error(res.message ?? "Não foi possível gerar a narração.");

@@ -44,7 +44,7 @@ export const speakText = createServerFn({ method: "POST" })
       body: JSON.stringify({
         model: "google/gemini-2.0-flash",
         input: text,
-        voice: data.voice ?? "onyx",
+        voice: data.voice ?? "nova",
         response_format: "mp3",
       }),
     });
