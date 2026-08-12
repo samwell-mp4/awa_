@@ -350,7 +350,7 @@ function DictionaryPage() {
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">
                     {items.map((e) => (
-                      <PlayableCard key={e.id} text={e.term_indigenous} audioUrl={e.audio_url}>
+                      <PlayableCard key={e.id} text={e.term_indigenous} audioUrl={e.audio_url} prefetch={true}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">

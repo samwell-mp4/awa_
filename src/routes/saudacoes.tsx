@@ -39,6 +39,17 @@ export async function fetchSaudacoes(): Promise<Saudacao[]> {
     .eq("category", "Saudações")
     .order("term_pt");
   if (error) throw error;
+  
+  // Prefetch first few audios
+  data?.slice(0, 5).forEach(s => {
+    if (s.audio_url) {
+      const img = new Image(); // Fake prefetch for audio? Better use Audio
+      const a = new Audio();
+      a.preload = "auto";
+      a.src = s.audio_url;
+    }
+  });
+
   return (data ?? []) as Saudacao[];
 }
 
@@ -281,10 +292,23 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     }
   }
 
+  // Pre-load on hover/focus
+  async function prefetch() {
+    if (audioUrl || cacheRef.current || busy) return;
+    try {
+      const r = await speak({ data: { text, voice: "onyx" } });
+      if (r.audio_base64) {
+        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+      }
+    } catch {}
+  }
+
 
   return (
     <button
       onClick={play}
+      onPointerEnter={prefetch}
+      onFocus={prefetch}
       disabled={busy}
       aria-label={`Ouvir ${text}`}
       className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
