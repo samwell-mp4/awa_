@@ -202,7 +202,7 @@ function useNarration(originalText: string) {
   const progressTimerRef = useRef<number | null>(null);
   const narrate = useServerFn(narratePublic);
   // Import cache helpers
-  const { getNarrationUrl } = require("@/lib/narration-cache");
+  
 
   const cacheKey = `${lang}::${text}`;
 
@@ -282,7 +282,7 @@ function useNarration(originalText: string) {
     const inflight = narrationPromiseCache.get(cacheKey);
     if (inflight) return inflight;
     const p = getNarrationUrl({ text, voice: "nova", lang })
-      .then((url) => {
+      .then((url: string | null) => {
         if (!url) {
           throw new Error("Não foi possível gerar a narração.");
         }
@@ -290,6 +290,10 @@ function useNarration(originalText: string) {
         narrationPromiseCache.delete(cacheKey);
         return url;
       })
+      .catch((err: any) => {
+        narrationPromiseCache.delete(cacheKey);
+        throw err;
+      });
       .catch((err) => {
         narrationPromiseCache.delete(cacheKey);
         throw err;
