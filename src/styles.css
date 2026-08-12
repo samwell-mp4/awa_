@@ -47,16 +47,16 @@
   --radius: 1rem;
 
   /* Brand palette */
-  --forest-deep: oklch(0.22 0.05 145);     /* very deep amazon */
-  --forest: oklch(0.32 0.07 145);          /* #1B5E20 vibe */
-  --leaf: oklch(0.62 0.16 142);            /* #4CAF50 */
-  --gold: oklch(0.78 0.14 78);             /* #F9A825 */
-  --earth: oklch(0.38 0.06 45);            /* #5D4037 */
+  --forest-deep: oklch(0.18 0.04 145);
+  --forest: oklch(0.25 0.06 145);
+  --leaf: oklch(0.55 0.14 142);
+  --gold: oklch(0.78 0.14 78);
+  --earth: oklch(0.38 0.06 45);
   --cream: oklch(0.96 0.02 90);
 
-  --background: oklch(0.18 0.04 145);
+  --background: oklch(0.12 0.03 145);
   --foreground: oklch(0.96 0.02 90);
-  --card: oklch(0.24 0.05 145);
+  --card: oklch(0.16 0.04 145);
   --card-foreground: oklch(0.96 0.02 90);
   --popover: oklch(0.24 0.05 145);
   --popover-foreground: oklch(0.96 0.02 90);
@@ -84,7 +84,7 @@
       oklch(0.42 0.08 78 / 0.28) 0%,
       transparent 55%
     ),
-    linear-gradient(160deg, oklch(0.16 0.04 145) 0%, oklch(0.22 0.06 145) 55%, oklch(0.14 0.04 145) 100%);
+    linear-gradient(160deg, oklch(0.12 0.03 145) 0%, oklch(0.16 0.04 145) 55%, oklch(0.10 0.03 145) 100%);
   --gradient-gold: linear-gradient(135deg, var(--gold), oklch(0.7 0.18 55));
   --gradient-leaf: linear-gradient(135deg, var(--leaf), oklch(0.42 0.11 145));
   --gradient-hero-glow: radial-gradient(600px 300px at 20% 10%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 70%);
