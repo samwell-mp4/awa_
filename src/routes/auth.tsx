@@ -83,7 +83,7 @@ function AuthPage() {
       return;
     }
     setStep("code");
-    setResendIn(45);
+    setResendIn(60); // Set countdown to 60 seconds
     toast.success("Enviamos um código por SMS.");
   }
 
@@ -243,9 +243,16 @@ function AuthPage() {
                     type="button"
                     disabled={resendIn > 0 || busy}
                     onClick={() => sendCode()}
-                    className="text-xs text-foreground/70 hover:text-cream disabled:opacity-50 transition"
+                    className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-gold/25 bg-background/30 px-4 py-3 text-xs font-semibold text-foreground/70 hover:text-cream hover:bg-background/50 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
-                    {resendIn > 0 ? `Reenviar em ${resendIn}s` : "Reenviar código"}
+                    {resendIn > 0 ? (
+                      <>
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Reenviar em {resendIn}s
+                      </>
+                    ) : (
+                      "Reenviar código por SMS"
+                    )}
                   </button>
                 </form>
               )}
