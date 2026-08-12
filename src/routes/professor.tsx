@@ -472,6 +472,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
