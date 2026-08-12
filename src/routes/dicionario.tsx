@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Search, ArrowLeft, BookOpen, ArrowDownAZ, ArrowUpAZ, Crown, Lock, Volume2, Loader2 } from "lucide-react";
@@ -442,6 +442,7 @@ function PlayableCard({
   children: React.ReactNode;
 }) {
   const [busy, setBusy] = useState(false);
+  const cacheRef = useRef<string | null>(null);
 
   async function play() {
     if (busy) return;
@@ -449,6 +450,10 @@ function PlayableCard({
       setBusy(true);
       if (audioUrl) {
         await playFast(audioUrl);
+        return;
+      }
+      if (cacheRef.current) {
+        await playFast(cacheRef.current);
         return;
       }
       // Uses browser's built-in speech synthesis — no credits required.
