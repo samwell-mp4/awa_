@@ -35,11 +35,11 @@ function ProfessorInfantilPage() {
             to={backTo as "/infantil"} 
             className="inline-flex items-center gap-2 rounded-xl bg-white/90 px-4 py-2 text-sm font-black text-amber-700 shadow-md hover:bg-white transition"
           >
-            <ArrowLeft className="w-5 h-5" /> {t("common.voltar", "Volta")}
+            <ArrowLeft className="w-5 h-5" /> {t("infantil.akua.back", "Volta")}
           </Link>
           <div className="text-center">
             <h1 className="font-display text-2xl font-black text-white drop-shadow-md">
-              Aula com Professor Akuã
+              {t("infantil.akua.title", "Aula com Professor Akuã")}
             </h1>
           </div>
           <div className="w-20" /> {/* Spacer */}

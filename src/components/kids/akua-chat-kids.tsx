@@ -6,7 +6,7 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useTranslation } from "react-i18next";
 import { useLang } from "@/lib/pick-lang";
-import { Send, Loader2, Volume2, RefreshCcw, ArrowLeft, MessageSquare } from "lucide-react";
+import { Send, Loader2, Volume2, RefreshCcw, ArrowLeft, MessageSquare, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import logoSrc from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -20,7 +20,13 @@ export function AkuaChatKids() {
   const speakFn = useServerFn(speakText);
   
   const welcomeMessage = t("infantil.akua.welcome", "Olá, pequeno Parente! Eu sou o Professor Akuã. Quer aprender palavras mágicas em Patxôhã? Pergunte o que quiser! 🌿✨");
-  
+  const suggestedQuestions = t("infantil.akua.questions", [
+    "Como diz 'olá' em Patxôhã?",
+    "Qual é o nome da onça na língua Pataxó?",
+    "Como se diz 'água'?",
+    "Me conta uma curiosidade sobre a aldeia?"
+  ], { returnObjects: true }) as string[];
+
   const [messages, setMessages] = useState<Msg[]>([
     { role: "assistant", content: welcomeMessage, at: Date.now() }
   ]);
@@ -48,8 +54,8 @@ export function AkuaChatKids() {
     }
   }
 
-  async function send() {
-    const content = input.trim();
+  async function send(customContent?: string) {
+    const content = (customContent || input).trim();
     if (!content || loading) return;
 
     const nextMessages = [...messages, { role: "user" as const, content, at: Date.now() }];
@@ -84,7 +90,7 @@ export function AkuaChatKids() {
           <img src={logoSrc.url} alt="Akuã" className="w-12 h-12 rounded-full border-2 border-amber-400 object-cover" />
           <div>
             <h3 className="font-display font-black text-amber-900 text-lg">Professor Akuã</h3>
-            <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">Modo Infantil</span>
+            <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">{t("infantil.akua.mode", "Modo Infantil")}</span>
           </div>
         </div>
         <button 
@@ -126,6 +132,22 @@ export function AkuaChatKids() {
         <div ref={endRef} />
       </div>
 
+      {/* Suggested Questions */}
+      <div className="px-4 pb-2 bg-amber-50 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div className="flex gap-2 py-2">
+          {suggestedQuestions.map((q, i) => (
+            <button
+              key={i}
+              onClick={() => send(q)}
+              disabled={loading}
+              className="px-4 py-2 bg-white border-2 border-amber-200 rounded-full text-sm font-bold text-amber-700 hover:border-amber-400 hover:bg-amber-50 transition shadow-sm flex items-center gap-2"
+            >
+              <Sparkles className="w-3 h-3" /> {q}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Input */}
       <div className="p-4 bg-amber-50 border-t-2 border-amber-100">
         <div className="flex gap-2">
@@ -133,11 +155,11 @@ export function AkuaChatKids() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && send()}
-            placeholder="Pergunte algo ao Professor Akuã..."
+            placeholder={t("infantil.akua.placeholder", "Pergunte algo ao Professor Akuã...")}
             className="flex-1 bg-white border-2 border-amber-200 rounded-xl px-4 py-3 text-emerald-900 focus:outline-none focus:border-amber-400 font-medium"
           />
           <button 
-            onClick={send}
+            onClick={() => send()}
             disabled={loading || !input.trim()}
             className="bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-xl shadow-lg transition disabled:opacity-50"
           >
