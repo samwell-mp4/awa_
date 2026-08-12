@@ -61,7 +61,7 @@ export function getNarrationUrl(opts: {
 
 /** Cached premium narration (authenticated TTS). */
 export function getPremiumNarrationUrl(
-  speak: typeof speakText,
+  speak: any,
   opts: { text: string; voice?: string; environment?: "sandbox" | "live" },
 ): Promise<string | null> {
   const text = (opts.text ?? "").trim();
