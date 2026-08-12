@@ -479,14 +479,40 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
     if (audioBusy) return;
     try {
       setAudioBusy(key);
+
+      // Mobile Safari / Chrome fix: resume AudioContext on user interaction
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        await audioContextRef.current.resume();
+      }
+
       const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
-      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
+      
+      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const audio = new Audio(blobUrl);
       audio.preload = "auto";
-      audioRef.current?.pause();
+      
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current.load();
+      }
+      
       audioRef.current = audio;
-      await audio.play();
+      
+      // Explicit play with interaction promise handling
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise.catch(error => {
+          console.error("Audio playback failed:", error);
+          // Retry logic or toast could go here
+        });
+      }
     } catch (e: any) {
+      console.error("Audio error:", e);
       toast.error(e.message ?? t.errorAudio);
     } finally {
       setAudioBusy(null);
