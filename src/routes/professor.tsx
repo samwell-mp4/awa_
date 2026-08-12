@@ -228,7 +228,10 @@ function ProfessorPage() {
       
       audio.src = r;
       audioRef.current = audio;
-      await audio.play();
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise.catch(e => console.error("AutoSpeak play error:", e));
+      }
     } catch (e) {
       console.error("AutoSpeak error:", e);
     }
