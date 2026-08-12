@@ -84,7 +84,6 @@ export const navGroups: NavGroup[] = [
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
   { label: "Trilhas", href: "/trilhas" },
-  { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
   { label: "Vídeos", href: "/videos" },
@@ -144,7 +143,6 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
-        { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
       ],
     },
@@ -175,7 +173,6 @@ export function useNavContent(mode: NavMode = "all") {
     .filter((g) => g.items.length > 0);
 
   const rawTop = [
-    { label: t("nav.dicionario"), href: "/dicionario" },
     { label: t("nav.dicionario"), href: "/dicionario" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
