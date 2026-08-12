@@ -310,7 +310,7 @@ function KidsNarratorBar({
 
 function StoryCard({ s, idx }: { s: Story; idx: number }) {
   const narrationText = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
-  const { state, progress, play } = useKidsNarrator(narrationText);
+  const { state, progress, play, prefetch } = useKidsNarrator(narrationText);
   return (
     <article
       className="story-card relative overflow-hidden rounded-[1.75rem] border-4 border-white/70 bg-[#fffdf3] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]"
