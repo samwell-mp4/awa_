@@ -103,7 +103,9 @@ export const narratePublic = createServerFn({ method: "POST" })
         voice,
         response_format: "mp3",
         instructions,
+        speed: 0.9,
       }),
+
     });
     if (!res.ok) {
       const message = await readGatewayError(res);

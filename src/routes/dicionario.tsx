@@ -360,7 +360,20 @@ function DictionaryPage() {
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">
                     {items.map((e) => (
-                      <PlayableCard key={e.id} text={e.term_indigenous} audioUrl={e.audio_url}>
+                      <PlayableCard 
+                        key={e.id} 
+                        text={e.term_indigenous} 
+                        audioUrl={e.audio_url}
+                        onClick={() => {
+                          // Force resume AudioContext on user gesture
+                          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+                          if (AudioContext) {
+                            const ctx = new AudioContext();
+                            if (ctx.state === 'suspended') ctx.resume();
+                          }
+                        }}
+                      >
+
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
@@ -446,15 +459,20 @@ function PlayableCard({
   text,
   audioUrl,
   children,
+  onClick,
 }: {
   text: string;
   audioUrl: string | null;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
+
   const backTo = useLastArea();
   const [busy, setBusy] = useState(false);
 
   async function play() {
+    if (onClick) onClick();
+
     if (busy) return;
     try {
       setBusy(true);

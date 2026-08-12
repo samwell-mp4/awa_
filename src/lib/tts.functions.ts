@@ -64,7 +64,9 @@ export const speakText = createServerFn({ method: "POST" })
         input: text,
         voice: data.voice ?? "nova",
         response_format: "mp3",
+        speed: 0.9,
       }),
+
     });
     if (!res.ok) {
       const message = await readGatewayError(res);
