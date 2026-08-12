@@ -179,6 +179,7 @@ function ProfessorPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   // When the UI language changes and no user message was sent, refresh the welcome.
   useEffect(() => {
@@ -203,15 +204,33 @@ function ProfessorPage() {
 
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        await audioContextRef.current.resume();
+      }
+
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await getNarrationUrl({ text: clean, voice: "nova" });
+      const r = await getPremiumNarrationUrl(speakFn, { 
+        text: clean, 
+        voice: "nova", 
+        environment: getPaddleEnvironment() 
+      });
+      
       if (!r) return;
-      audioRef.current?.pause();
+      
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current.load();
+      }
+      
       audio.src = r;
       audioRef.current = audio;
-      await audio.play().catch(() => {});
-    } catch {
-      /* silencioso: mantém apenas o texto */
+      await audio.play();
+    } catch (e) {
+      console.error("AutoSpeak error:", e);
     }
   }
 
