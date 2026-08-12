@@ -247,7 +247,8 @@ function ProfessorPage() {
     setLoading(true);
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
-      setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
+      const assistantMsg: Msg = { role: "assistant", content: reply, at: Date.now() };
+      setMessages([...next, assistantMsg]);
       void autoSpeak(audio, reply);
     } catch (e: any) {
       toast.error(e.message ?? t.errorSpeak);
