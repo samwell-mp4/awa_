@@ -403,20 +403,15 @@ function PlayBtn({ text, audioUrl, isKids }: { text: string; audioUrl: string | 
         const url = await getNarrationUrl({ text, lang: "pt", mode: "word", voice: "nova" });
         if (url) {
           cacheRef.current = url;
-          await playFast(url);
         } else {
           // Final fallback to native if AI fails
           speakChild(text, "pt-BR", 0.85, 1);
-        }
-          if (r2.error || !r2.audio_base64) {
-            throw new Error(r2.message ?? "Não foi possível gerar áudio");
-          }
-          cacheRef.current = base64ToBlobUrl(r2.audio_base64, r2.mime);
-        } else {
-          cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+          return;
         }
       }
-      await playFast(cacheRef.current);
+      if (cacheRef.current) {
+        await playFast(cacheRef.current);
+      }
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
