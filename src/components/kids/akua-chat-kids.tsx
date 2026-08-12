@@ -43,14 +43,33 @@ export function AkuaChatKids() {
 
   async function handleSpeak(text: string) {
     try {
+      // Mobile Safari / Chrome fix: resume AudioContext on user interaction
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        await audioContextRef.current.resume();
+      }
+
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speakFn({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
       
-      if (audioRef.current) audioRef.current.pause();
-      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
+      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current.load();
+      }
+      
+      const audio = new Audio(blobUrl);
       audioRef.current = audio;
-      await audio.play();
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise.catch(e => console.error("Audio play error:", e));
+      }
     } catch (e) {
       console.error("Erro ao falar:", e);
     }
