@@ -506,8 +506,8 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} chat-bubble-container`}>
+      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"} chat-bubble-content`}>
         <div
           className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
             isUser
