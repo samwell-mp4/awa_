@@ -52,6 +52,8 @@ function SettingsPage() {
     mutation.mutate(data);
   };
 
+  const safeSettings = (settings || {}) as any;
+
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] pb-12">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.9)] backdrop-blur-xl">
@@ -101,7 +103,7 @@ function SettingsPage() {
                     type="radio"
                     name="voice_model"
                     value={model.id}
-                    defaultChecked={settings?.voice_model === model.id}
+                    defaultChecked={safeSettings.voice_model === model.id}
                     className="mt-1 h-4 w-4 border-gold/40 bg-transparent text-gold focus:ring-gold/20"
                   />
                   <div className="min-w-0">
@@ -136,7 +138,7 @@ function SettingsPage() {
               <input
                 type="text"
                 name="assistant_name"
-                defaultValue={settings?.assistant_name}
+                defaultValue={safeSettings.assistant_name}
                 placeholder="Ex: Professor Akuã"
                 className="w-full rounded-2xl border border-gold/25 bg-forest-deep/30 px-4 py-3 text-sm text-cream placeholder:text-foreground/30 focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/20"
               />
@@ -161,7 +163,7 @@ function SettingsPage() {
 
             <select
               name="language"
-              defaultValue={settings?.language}
+              defaultValue={safeSettings.language}
               className="w-full rounded-2xl border border-gold/25 bg-forest-deep/30 px-4 py-3 text-sm text-cream focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/20"
             >
               <option value="pt-BR">Português (Brasil)</option>
