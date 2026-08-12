@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
-import { getNarrationUrl } from "@/lib/narration-cache";
+import { getNarrationUrl, getPremiumNarrationUrl } from "@/lib/narration-cache";
 import { speak as speakChild } from "@/lib/speak";
 import {
   ArrowLeft,
@@ -179,6 +179,25 @@ function ProfessorPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  // Initialize AudioContext on first interaction
+  useEffect(() => {
+    const initAudio = () => {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume();
+      }
+    };
+    window.addEventListener("click", initAudio, { once: true });
+    window.addEventListener("touchstart", initAudio, { once: true });
+    return () => {
+      window.removeEventListener("click", initAudio);
+      window.removeEventListener("touchstart", initAudio);
+    };
+  }, []);
 
   // When the UI language changes and no user message was sent, refresh the welcome.
   useEffect(() => {
@@ -203,15 +222,36 @@ function ProfessorPage() {
 
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        await audioContextRef.current.resume();
+      }
+
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await getNarrationUrl({ text: clean, voice: "nova" });
+      const r = await getPremiumNarrationUrl(speakFn, { 
+        text: clean, 
+        voice: "nova", 
+        environment: getPaddleEnvironment() 
+      });
+      
       if (!r) return;
-      audioRef.current?.pause();
+      
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current.load();
+      }
+      
       audio.src = r;
       audioRef.current = audio;
-      await audio.play().catch(() => {});
-    } catch {
-      /* silencioso: mantém apenas o texto */
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise.catch(e => console.error("AutoSpeak play error:", e));
+      }
+    } catch (e) {
+      console.error("AutoSpeak error:", e);
     }
   }
 
@@ -225,7 +265,8 @@ function ProfessorPage() {
     setLoading(true);
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
-      setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
+      const assistantMsg: Msg = { role: "assistant", content: reply, at: Date.now() };
+      setMessages([...next, assistantMsg]);
       void autoSpeak(audio, reply);
     } catch (e: any) {
       toast.error(e.message ?? t.errorSpeak);
@@ -488,10 +529,14 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
         await audioContextRef.current.resume();
       }
 
-      const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
+      const r = await getPremiumNarrationUrl(speakFn, { 
+        text, 
+        voice: "nova", 
+        environment: getPaddleEnvironment() 
+      });
+      if (!r) throw new Error(t.errorAudio);
       
-      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const blobUrl = r;
       const audio = new Audio(blobUrl);
       audio.preload = "auto";
       

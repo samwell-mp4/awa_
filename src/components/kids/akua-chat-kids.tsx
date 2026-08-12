@@ -6,6 +6,7 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useTranslation } from "react-i18next";
 import { useLang } from "@/lib/pick-lang";
+import { getPremiumNarrationUrl } from "@/lib/narration-cache";
 import { Send, Loader2, Volume2, RefreshCcw, ArrowLeft, MessageSquare, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -38,6 +39,23 @@ export function AkuaChatKids() {
   const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
+    const initAudio = () => {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume();
+      }
+    };
+    window.addEventListener("click", initAudio, { once: true });
+    window.addEventListener("touchstart", initAudio, { once: true });
+    return () => {
+      window.removeEventListener("click", initAudio);
+      window.removeEventListener("touchstart", initAudio);
+    };
+  }, []);
+
+  useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
@@ -52,10 +70,14 @@ export function AkuaChatKids() {
       }
 
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speakFn({ data: { text: clean, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) return;
+      const r = await getPremiumNarrationUrl(speakFn, {
+        text: clean,
+        voice: "nova",
+        environment: getPaddleEnvironment()
+      });
+      if (!r) return;
       
-      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const blobUrl = r;
       
       if (audioRef.current) {
         audioRef.current.pause();
