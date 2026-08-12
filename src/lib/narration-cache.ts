@@ -2,10 +2,14 @@
 // - Survives component unmounts and route changes (module scope).
 // - De-duplicates concurrent requests for the same text/lang/voice.
 // - Stores ready-to-play Blob URLs so replays are instant (no base64 decode).
+// - LIKELY ERROR: Some browsers (Chrome) block audio play if not preceded by a user gesture.
+// - FALLBACK: If premium/public narration fails, it falls back to window.speechSynthesis.
 
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
+import { speak as speakFallback } from "@/lib/speak";
+
 
 type Mode = "story" | "word";
 
@@ -56,8 +60,11 @@ export function getNarrationUrl(opts: {
 
         if (res.error || !res.audio_base64) {
           if (res.fallback && i < retries) continue;
+          // Trigger fallback local TTS if public narration fails
+          if (i === retries) speakFallback(text, lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : 'pt-BR');
           return null;
         }
+
         
         const url = base64ToBlobUrl(res.audio_base64, res.mime || "audio/mpeg");
         remember(key, url);
@@ -104,8 +111,11 @@ export function getPremiumNarrationUrl(
 
         if (r?.error || !r?.audio_base64) {
           if (r?.fallback && i < retries) continue;
+          // Trigger fallback local TTS if premium narration fails
+          if (i === retries) speakFallback(text, 'pt-BR'); 
           return null;
         }
+
         
         const url = base64ToBlobUrl(r.audio_base64, r.mime || "audio/mpeg");
         remember(key, url);

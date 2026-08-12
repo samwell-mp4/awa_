@@ -86,10 +86,11 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85,
     ensureVoicesLoaded();
     
     // Safety check for Chrome specifically
-    if (s.speaking) {
+    if (s.speaking || s.pending) {
       s.cancel();
       // On some platforms, cancel() is not synchronous, so we wait a bit
     }
+
 
     const start = () => {
       // Re-check voices just in case they loaded during the timeout
@@ -121,7 +122,7 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 0.85,
     };
 
     // 100ms is safer for most browsers to clear the state after cancel()
-    setTimeout(start, 100);
+    setTimeout(start, 50);
   } catch (err) {
     console.error("Speak failed:", err);
   }
