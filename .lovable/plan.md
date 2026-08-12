@@ -1,34 +1,38 @@
-# Auditoria completa e responsividade total
+# Plano de Implementação: Professor Akuã Infantil
 
-O app tem 30+ rotas (adulto, infantil, jogos, músicas, trilhas, dicionário, admin, auth, etc.). Vou fazer em 3 fases:
+Adicionar o Professor Akuã à área infantil do site, integrando-o com o dicionário Patxôhã completo para responder a perguntas de alunos (crianças) com uma interface lúdica e voz humana.
 
-## Fase 1 — Diagnóstico (sem alterar código)
-1. Rodar build/typecheck e capturar erros reais.
-2. Rodar Playwright headless nas rotas principais (`/`, `/adulto`, `/infantil`, `/jogos`, `/musicas`, `/trilhas`, `/dicionario`, `/auth`, `/planos`, `/minha-conta`) em 3 viewports: **mobile 375px**, **tablet 768px**, **desktop 1280px**.
-3. Coletar: erros de console, requests que falham, elementos que estouram tela horizontalmente, textos cortados, botões inacessíveis.
-4. Rodar security scan do backend.
+## Alterações
 
-## Fase 2 — Correções
-5. Corrigir qualquer erro de runtime/build encontrado.
-6. Corrigir warnings `inputValidator` → `validator` nos server functions.
-7. Ajustar componentes com problemas de responsividade usando o padrão:
-   - Headers com `grid grid-cols-[minmax(0,1fr)_auto]` + `min-w-0` + `truncate`
-   - Grids de cards adaptativos (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`)
-   - Tipografia fluida (`text-base sm:text-lg lg:text-xl`)
-   - Padding responsivo (`px-4 sm:px-6 lg:px-8`)
-   - Menus/navegação com versão mobile (sheet/drawer)
+### 1. Backend & Lógica
+- **`src/lib/akua-chat.functions.ts`**:
+    - Atualizar o `handler` para aceitar um parâmetro `mode: 'adulto' | 'infantil'`.
+    - Ajustar o `system prompt` quando o modo for `infantil`: tom mais simples, lúdico, encorajador e focado em crianças.
+    - Garantir que o dicionário completo seja carregado (como já é feito, mas reforçando a prioridade de busca).
 
-## Fase 3 — Validação
-8. Re-testar as mesmas rotas nos 3 viewports.
-9. Anexar screenshots comparativos.
-10. Publicar a nova versão.
+### 2. Componentes UI (Kids)
+- **`src/components/kids/akua-chat-kids.tsx`** (Novo):
+    - Criar um componente de chat com design "kids-theme" (cores vibrantes, bordas arredondadas, ícones amigáveis).
+    - Integrar com `askAkua` e `speakText` (TTS).
+    - Usar a voz `google/gemini-2.0-flash` (ou equivalente já configurado) com tom acolhedor.
+    - Incluir animação do Professor Akuã (avatar).
 
-## Escopo importante
-- **Não** vou refazer o design (cores, fontes, layout geral) — só ajustar quebras.
-- **Não** vou mexer em lógica de negócio, banco de dados ou pagamentos, a menos que encontre um bug real.
-- Foco em: crashes, links quebrados, layout quebrado em mobile/tablet.
+### 3. Integração na Navegação Infantil
+- **`src/routes/infantil.tsx`**:
+    - Adicionar um novo "hotspot" ou botão flutuante para acessar o Professor Akuã.
+- **`src/routeTree.gen.ts`**: (Gerado automaticamente, mas a nova rota deve ser criada).
+- **`src/routes/professor-infantil.tsx`** (Novo):
+    - Rota dedicada para o chat infantil, protegida por `AreaGate`.
 
-## Tempo estimado
-Isto é uma tarefa grande (30+ rotas × 3 viewports = ~90 checagens). Vou trabalhar em várias mensagens: uma para diagnóstico, uma ou mais para correções priorizadas por gravidade.
+### 4. Dicionário no Chat
+- Garantir que o Professor Akuã no modo infantil explique palavras do dicionário Patxôhã de forma didática, comparando com a natureza e o cotidiano da criança.
 
-Confirma que posso seguir?
+## Detalhes Técnicos
+- O chat usará a `createServerFn` `askAkua` já existente, otimizada com o novo prompt.
+- Design seguirá o padrão de "placas de madeira" e elementos da floresta já presentes na área infantil.
+- Suporte multi-idioma via `i18next`.
+
+## Verificação
+- Testar o chat no modo infantil com perguntas simples ("O que é Awere?").
+- Verificar se a voz é reproduzida automaticamente após a resposta.
+- Validar o layout responsivo em dispositivos móveis.
