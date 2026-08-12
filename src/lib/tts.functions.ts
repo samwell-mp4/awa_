@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
+import { createClient } from "@supabase/supabase-js";
+
 
 type TtsPayload = {
   audio_base64: string;
