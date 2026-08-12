@@ -42,7 +42,7 @@ export const speakText = createServerFn({ method: "POST" })
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite-preview-tts",
+        model: "google/gemini-2",
         input: text,
         voice: data.voice ?? "alloy",
         response_format: "mp3",
