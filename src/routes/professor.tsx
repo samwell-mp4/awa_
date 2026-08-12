@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getNarrationUrl } from "@/lib/narration-cache";
 import { speak as speakChild } from "@/lib/speak";
 import {
   ArrowLeft,
@@ -203,10 +204,10 @@ function ProfessorPage() {
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speakFn({ data: { text: clean, voice: "nova", environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) return;
+      const r = await getNarrationUrl({ text: clean, voice: "nova" });
+      if (!r) return;
       audioRef.current?.pause();
-      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
+      audio.src = r;
       audioRef.current = audio;
       await audio.play().catch(() => {});
     } catch {

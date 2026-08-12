@@ -68,9 +68,7 @@ export const speakText = createServerFn({ method: "POST" })
         fallback: res.status >= 500,
       };
     }
-    const buf = new Uint8Array(await res.arrayBuffer());
-    let bin = "";
-    for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
-    const audio_base64 = btoa(bin);
+    const buf = Buffer.from(await res.arrayBuffer());
+    const audio_base64 = buf.toString("base64");
     return { audio_base64, mime: "audio/mpeg" };
   });

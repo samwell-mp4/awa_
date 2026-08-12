@@ -9,6 +9,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { pickLang, useLang } from "@/lib/pick-lang";
 
 import { playFast } from "@/lib/audio-play";
+import { getNarrationUrl } from "@/lib/narration-cache";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import patxohaDict from "@/data/patxoha-dictionary.json";
 import { useLastArea } from "@/lib/last-area";
@@ -467,7 +468,19 @@ function PlayableCard({
         return;
       }
       const isKids = typeof backTo === "string" && backTo.includes("infantil");
-      speakChild(text, "pt-BR", isKids ? 1.1 : 0.85, isKids ? 1.5 : 1);
+      // Use premium/AI narration for dictionary words for better quality
+      const url = await getNarrationUrl({ 
+        text, 
+        lang: "pt", 
+        mode: "word", 
+        voice: isKids ? "nova" : "nova" 
+      });
+      if (url) {
+        await playFast(url);
+      } else {
+        // Fallback to browser TTS if AI fails
+        speakChild(text, "pt-BR", isKids ? 1.1 : 0.85, isKids ? 1.5 : 1);
+      }
     } catch (e: any) {
       toast.error(e.message ?? "Erro ao tocar áudio");
     } finally {
