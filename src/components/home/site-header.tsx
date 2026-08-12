@@ -76,12 +76,20 @@ export function SiteHeader({ mode = "all" }: { mode?: NavMode } = {}) {
                 >
                   <UserCircle2 className="h-4 w-4" /> {t("nav.minhaConta")}
                 </Link>
+                <Link
+                  to="/settings"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/85 hover:bg-gold/10"
+                  title={t("settings.title", "Configurações")}
+                >
+                  <Settings className="h-4 w-4" />
+                </Link>
                 <button
                   onClick={signOut}
                   className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10"
                 >
                   <LogOut className="h-4 w-4" /> {t("nav.sair")}
                 </button>
+
               </>
             ) : (
               <Link
