@@ -77,13 +77,11 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void) {
   const s = synth();
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    // If something is speaking, cancel first. A microtask delay avoids
-    // Chrome dropping the next utterance right after a cancel().
     if (s.speaking || s.pending) s.cancel();
     const start = () => {
       const u = new SpeechSynthesisUtterance(text);
@@ -93,9 +91,10 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1) {
       u.volume = 1;
       const v = pickVoice(lang);
       if (v) u.voice = v;
+      if (onStart) u.onstart = onStart;
+      if (onEnd) u.onend = onEnd;
       s.speak(u);
     };
-    // 30ms is enough for Chrome/Safari to release the previous utterance.
     setTimeout(start, 30);
   } catch {
     /* ignore */
