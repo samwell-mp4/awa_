@@ -472,20 +472,47 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const [audioBusy, setAudioBusy] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
     if (audioBusy) return;
     try {
       setAudioBusy(key);
+
+      // Mobile Safari / Chrome fix: resume AudioContext on user interaction
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (audioContextRef.current.state === "suspended") {
+        await audioContextRef.current.resume();
+      }
+
       const r = await speakFn({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
-      const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
+      
+      const blobUrl = base64ToBlobUrl(r.audio_base64, r.mime);
+      const audio = new Audio(blobUrl);
       audio.preload = "auto";
-      audioRef.current?.pause();
+      
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current.load();
+      }
+      
       audioRef.current = audio;
-      await audio.play();
+      
+      // Explicit play with interaction promise handling
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise.catch(error => {
+          console.error("Audio playback failed:", error);
+          // Retry logic or toast could go here
+        });
+      }
     } catch (e: any) {
+      console.error("Audio error:", e);
       toast.error(e.message ?? t.errorAudio);
     } finally {
       setAudioBusy(null);
@@ -506,8 +533,8 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} chat-bubble-container`}>
+      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"} chat-bubble-content`}>
         <div
           className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
             isUser
