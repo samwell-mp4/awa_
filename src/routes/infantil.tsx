@@ -49,9 +49,9 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade" | "canticos_infantis";
 type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
+  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade" | "/canticos-infantis";
   key: HotspotKey;
   emoji: string;
   color: string;
@@ -59,6 +59,7 @@ type Hotspot = {
 
 const hotspots: Hotspot[] = [
   { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
+  { to: "/canticos-infantis", key: "canticos_infantis", emoji: "🎵", color: "#FFD700" },
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
