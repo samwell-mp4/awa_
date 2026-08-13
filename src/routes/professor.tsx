@@ -208,6 +208,13 @@ function ProfessorPage() {
       audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
       audioRef.current = audio;
       await audio.play().catch(() => {});
+
+      // Permite parar o áudio do professor ao clicar na tela
+      const stopHandler = () => {
+        audio.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
       /* silencioso: mantém apenas o texto */
     }
@@ -483,6 +490,13 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
       audioRef.current?.pause();
       audioRef.current = audio;
       await audio.play();
+
+      // Permite parar o áudio ao clicar na tela
+      const stopHandler = () => {
+        audio.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch (e: any) {
       toast.error(e.message ?? t.errorAudio);
     } finally {

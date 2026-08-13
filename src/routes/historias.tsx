@@ -225,7 +225,18 @@ function useNarration(originalText: string) {
     setSpeaking(false);
     setProgress(0);
     clearActiveNarration(stopCurrent);
+    window.removeEventListener("pointerdown", stopCurrent);
   };
+
+  // Permite parar a narração ao clicar em qualquer lugar da tela
+  useEffect(() => {
+    if (speaking) {
+      window.addEventListener("pointerdown", stopCurrent, { once: true });
+    } else {
+      window.removeEventListener("pointerdown", stopCurrent);
+    }
+    return () => window.removeEventListener("pointerdown", stopCurrent);
+  }, [speaking]);
 
   const speakImmediately = () => {
     if (

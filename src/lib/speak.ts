@@ -98,6 +98,13 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
       s.speak(u);
     };
     start();
+
+    // Adiciona listener global para parar o áudio ao clicar em qualquer lugar da tela
+    const stopHandler = () => {
+      stopSpeak();
+      window.removeEventListener("pointerdown", stopHandler);
+    };
+    window.addEventListener("pointerdown", stopHandler, { once: true });
   } catch {
     /* ignore */
   }
