@@ -127,7 +127,7 @@ export default {
       historia: "História Infantil",
       jogos: "Jogos",
       amizade: "Amizade",
-      canticos_infantis: "Cânticos Pataxó",
+      
     },
   },
   premium: {
