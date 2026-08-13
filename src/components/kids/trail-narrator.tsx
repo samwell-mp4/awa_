@@ -120,13 +120,19 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
           {emoji}
         </span>
         <div className="min-w-0 flex-1">
-          <h3
-            className="truncate text-lg text-[#118ab2]"
-            style={{ fontFamily: "'Archivo Black', sans-serif" }}
+          <button
+            type="button"
+            onClick={play}
+            className="group/text block w-full text-left transition-opacity hover:opacity-80 active:opacity-60"
           >
-            {title}
-          </h3>
-          <p className="mt-1 text-sm leading-snug text-slate-700">{description}</p>
+            <h3
+              className="truncate text-lg text-[#118ab2] group-hover/text:underline"
+              style={{ fontFamily: "'Archivo Black', sans-serif" }}
+            >
+              {title}
+            </h3>
+            <p className="mt-1 text-sm leading-snug text-slate-700">{description}</p>
+          </button>
         </div>
       </div>
 
