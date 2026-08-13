@@ -90,7 +90,7 @@ export default {
       historia: "Awê Nitxĩ",
       jogos: "Kutxâ",
       amizade: "Aria",
-      canticos_infantis: "Ĩmãyã Pataxó",
+      
     }
   }
 };
