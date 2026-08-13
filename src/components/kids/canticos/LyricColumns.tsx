@@ -49,7 +49,7 @@ export function LyricColumns({ lyrics, currentTime }: LyricColumnsProps) {
           return (
             <div
               key={idx}
-              ref={(el) => (lineRefs.current[idx] = el)}
+              ref={(el) => { lineRefs.current[idx] = el; }}
               className={`grid gap-4 transition-all duration-500 md:grid-cols-2 md:gap-12 ${
                 isActive ? "scale-105 opacity-100" : "opacity-40 grayscale-[0.5]"
               }`}
