@@ -193,11 +193,14 @@ function TrilhaInfantilPage() {
               if (!style) return null;
               const label = translateTrailName(t, trail.name);
               return (
-                <Link
+                <button
                   key={slug}
-                  to="/trilhas/$slug"
-                  params={{ slug }}
-                  aria-label={label}
+                  onClick={(e) => {
+                    // Se estiver no mobile e clicar na bolha, pode ser útil narrar.
+                    // Mas o Link navegaria. Vamos manter o Link para navegação,
+                    // mas podemos adicionar um comportamento de narração se for desejado
+                    // sem quebrar a navegação.
+                  }}
                   className={`kids-totem group absolute ${style.position} transition-transform hover:scale-110 active:scale-95`}
                   style={{
                     animationDelay: `${i * 120}ms`,
@@ -205,36 +208,46 @@ function TrilhaInfantilPage() {
                     "--rot": style.rotate,
                   }}
                 >
-                  <span className="relative block">
-                    {/* Glow */}
-                    <span
-                      aria-hidden
-                      className="absolute -inset-3 rounded-full opacity-70 blur-xl transition group-hover:opacity-100"
-                      style={{ background: style.color }}
-                    />
-
-                    {/* Totem bubble */}
-                    <span
-                      className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 border-white text-white"
-                      style={{
-                        background: style.color,
-                        boxShadow: `0 10px 0 -2px ${style.shadow}, 0 20px 30px -10px ${style.shadow}`,
-                        transform: `rotate(${style.rotate})`,
-                      }}
-                    >
-                      <span className="text-3xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
+                  <Link
+                    to="/trilhas/$slug"
+                    params={{ slug }}
+                    aria-label={label}
+                    className="block"
+                    onClick={(e) => {
+                      // Opcional: tocar um som curto de clique ou algo assim.
+                    }}
+                  >
+                    <span className="relative block">
+                      {/* Glow */}
                       <span
-                        className="mt-0.5 text-[10px] uppercase tracking-widest text-white"
-                        style={{ fontFamily: "'Archivo Black', sans-serif" }}
-                      >
-                        {label}
-                      </span>
-                    </span>
+                        aria-hidden
+                        className="absolute -inset-3 rounded-full opacity-70 blur-xl transition group-hover:opacity-100"
+                        style={{ background: style.color }}
+                      />
 
-                    {/* Floating island shadow beneath */}
-                    <FloatingIsland top={style.islandTop} bottom={style.islandBottom} />
-                  </span>
-                </Link>
+                      {/* Totem bubble */}
+                      <span
+                        className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 border-white text-white"
+                        style={{
+                          background: style.color,
+                          boxShadow: `0 10px 0 -2px ${style.shadow}, 0 20px 30px -10px ${style.shadow}`,
+                          transform: `rotate(${style.rotate})`,
+                        }}
+                      >
+                        <span className="text-3xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
+                        <span
+                          className="mt-0.5 text-[10px] uppercase tracking-widest text-white"
+                          style={{ fontFamily: "'Archivo Black', sans-serif" }}
+                        >
+                          {label}
+                        </span>
+                      </span>
+
+                      {/* Floating island shadow beneath */}
+                      <FloatingIsland top={style.islandTop} bottom={style.islandBottom} />
+                    </span>
+                  </Link>
+                </button>
               );
             })}
           </div>
