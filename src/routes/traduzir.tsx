@@ -161,7 +161,7 @@ function TraduzirPage() {
         </div>
 
         <p className="text-xs text-foreground/50 mt-6 text-center">
-          {t("translator.disclaimer")}
+          Ao clicar ou fazer perguntas produzir áudio automaticamente. {t("translator.disclaimer")}
         </p>
       </main>
     </div>
