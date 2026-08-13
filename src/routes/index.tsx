@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router"; // Quero trilhas ao clicar na palavra audio reproduzir
+import { createFileRoute, Link } from "@tanstack/react-router"; // Awã Tech infantil ao clicar na palavra ouvir audio imediata
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";

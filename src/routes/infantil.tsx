@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/home/site-header";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
+import { GlossarioInfantil } from "@/components/kids/glossario-infantil";
+
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
@@ -124,7 +126,15 @@ function InfantilHome() {
             </Link>
           ))}
         </section>
+
+        <section className="mt-12">
+          <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
+            Aprendendo Patxôhã
+          </h2>
+          <GlossarioInfantil />
+        </section>
       </main>
+
 
 
       <SiteFooter />
