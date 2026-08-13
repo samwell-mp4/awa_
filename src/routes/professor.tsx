@@ -539,19 +539,22 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
               return (
                 <div key={i} className="my-1 rounded-xl border border-gold/30 bg-forest-deep/50 px-3 py-2">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="font-display text-base font-black text-gold">{b.pat}</div>
                     <button
                       onClick={() => playText(b.pat, key)}
                       disabled={audioBusy === key}
-                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition hover:bg-leaf/30 disabled:opacity-50"
+                      className="group flex flex-1 items-center gap-3 text-left transition hover:opacity-80 disabled:opacity-50"
                       aria-label={`Ouvir ${b.pat}`}
-                      title="Ouvir pronúncia"
                     >
-                      {audioBusy === key ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Volume2 className="h-3.5 w-3.5" />
-                      )}
+                      <div className="font-display text-base font-black text-gold group-hover:underline decoration-gold/30 underline-offset-4">
+                        {b.pat}
+                      </div>
+                      <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30">
+                        {audioBusy === key ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Volume2 className="h-3.5 w-3.5" />
+                        )}
+                      </div>
                     </button>
                   </div>
                   <div className="mt-0.5 text-xs text-foreground/70">{b.pt}</div>
