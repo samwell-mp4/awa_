@@ -83,12 +83,18 @@ export function SongPlayer({ audioUrl, onTimeUpdate, onDurationChange, onEnded }
         {/* Main Play Button */}
         <button
           onClick={togglePlay}
-          className="kids-btn group relative h-24 w-24 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 p-0 shadow-[0_8px_0_0_#be123c] transition-all hover:scale-105 active:translate-y-1 active:shadow-[0_4px_0_0_#be123c]"
+          className="kids-btn group relative h-24 w-24 rounded-full bg-gradient-to-br from-rose-400 to-rose-500 p-0 shadow-[0_8px_0_0_#be123c] transition-all hover:scale-105 active:translate-y-1 active:shadow-[0_4px_0_0_#be123c] flex items-center justify-center"
         >
           {isPlaying ? (
-            <Pause className="h-10 w-10 text-white" fill="white" />
+            <div className="flex flex-col items-center">
+              <Pause className="h-8 w-8 text-white" fill="white" />
+              <span className="text-[10px] font-black uppercase text-white mt-1">Pausar</span>
+            </div>
           ) : (
-            <Play className="h-10 w-10 translate-x-1 text-white" fill="white" />
+            <div className="flex flex-col items-center">
+              <Play className="h-8 w-8 translate-x-0.5 text-white" fill="white" />
+              <span className="text-[10px] font-black uppercase text-white mt-1">▶️ Reproduzir</span>
+            </div>
           )}
           <div className="absolute -inset-2 rounded-full border-4 border-dashed border-rose-200/50 animate-spin-slow pointer-events-none" />
         </button>
