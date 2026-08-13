@@ -130,15 +130,17 @@ function TraduzirPage() {
             {m.data && (
               <div className="mt-2 space-y-3">
                 <div className="flex justify-between items-start gap-4">
-                  <p className="text-lg text-foreground whitespace-pre-wrap flex-1">
-                    {m.data.traducao}
-                  </p>
                   <button
                     onClick={() => speak(m.data?.traducao || "", "pt-BR", 0.9)}
-                    className="p-2 rounded-full bg-gold/10 text-gold hover:bg-gold/20 transition-colors"
+                    className="group flex flex-1 items-start gap-3 text-left transition hover:opacity-80"
                     title={t("common.speak")}
                   >
-                    <Volume2 className="h-5 w-5" />
+                    <p className="text-lg text-foreground whitespace-pre-wrap flex-1 group-hover:text-gold transition-colors">
+                      {m.data.traducao}
+                    </p>
+                    <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">
+                      <Volume2 className="h-5 w-5" />
+                    </div>
                   </button>
                 </div>
 
