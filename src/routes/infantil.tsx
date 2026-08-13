@@ -49,9 +49,9 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade" | "canticos_infantis";
 type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
+  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade" | "/canticos-infantis";
   key: HotspotKey;
   emoji: string;
   color: string;
