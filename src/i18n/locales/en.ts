@@ -127,6 +127,7 @@ export default {
       historia: "Kids' Story",
       jogos: "Games",
       amizade: "Friendship",
+      canticos_infantis: "Pataxó Chants",
     },
   },
   premium: {

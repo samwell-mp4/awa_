@@ -83,4 +83,14 @@ export default {
     kidsStop: "Pyrãy",
     kidsLoading: "Ãhõmãy…",
   },
+  infantil: {
+    hotspots: {
+      trilhas: "Auê Pahí",
+      cantico: "Ĩmãyã",
+      historia: "Awê Nitxĩ",
+      jogos: "Kutxâ",
+      amizade: "Aria",
+      canticos_infantis: "Ĩmãyã Pataxó",
+    }
+  }
 };
