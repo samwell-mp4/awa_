@@ -68,7 +68,7 @@ type L10n = {
 const L10N: Record<Lang, L10n> = {
   pt: {
     welcome:
-      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — ao clicar ou fazer perguntas produzir áudio automaticamente.",
+      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — ao clicar ou fazer perguntas produzir áudio automaticamente. Ao final da resposta, você terá a opção de ouvir novamente ou fazer outra pergunta.",
     subtitle: "Mestre de Patxôhã · Online",
     newChat: "Nova conversa",
     suggestionsTitle: "Sugestões para começar",
@@ -91,7 +91,7 @@ const L10N: Record<Lang, L10n> = {
   },
   en: {
     welcome:
-      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — by clicking or asking questions, audio will be produced automatically.",
+      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — by clicking or asking questions, audio will be produced automatically. At the end of the answer, you will have the option to listen again or ask another question.",
     subtitle: "Patxôhã Master · Online",
     newChat: "New chat",
     suggestionsTitle: "Suggestions to get started",
@@ -114,7 +114,7 @@ const L10N: Record<Lang, L10n> = {
   },
   es: {
     welcome:
-      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — al hacer clic o hacer preguntas, el audio se producirá automáticamente.",
+      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — al hacer clic o hacer preguntas, el audio se producirá automáticamente. Al final de la respuesta, tendrás la opción de escuchar de nuevo o hacer otra pregunta.",
     subtitle: "Maestro de Patxôhã · En línea",
     newChat: "Nueva conversación",
     suggestionsTitle: "Sugerencias para empezar",
