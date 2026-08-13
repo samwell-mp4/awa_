@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Volume2 } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
+import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
@@ -32,6 +33,12 @@ function TraduzirPage() {
       translate({ data: { ...vars, environment: getPaddleEnvironment() } }),
   });
 
+  useEffect(() => {
+    if (m.data?.traducao && direction === "pt-pat") {
+      // Quando traduz para Patxôhã, fala o resultado automaticamente
+      speak(m.data.traducao, "pt-BR", 0.9);
+    }
+  }, [m.data, direction]);
 
   const swap = () => {
     setDirection((d) => (d === "pt-pat" ? "pat-pt" : "pt-pat"));
@@ -122,9 +129,18 @@ function TraduzirPage() {
             )}
             {m.data && (
               <div className="mt-2 space-y-3">
-                <p className="text-lg text-foreground whitespace-pre-wrap">
-                  {m.data.traducao}
-                </p>
+                <div className="flex justify-between items-start gap-4">
+                  <p className="text-lg text-foreground whitespace-pre-wrap flex-1">
+                    {m.data.traducao}
+                  </p>
+                  <button
+                    onClick={() => speak(m.data?.traducao || "", "pt-BR", 0.9)}
+                    className="p-2 rounded-full bg-gold/10 text-gold hover:bg-gold/20 transition-colors"
+                    title={t("common.speak")}
+                  >
+                    <Volume2 className="h-5 w-5" />
+                  </button>
+                </div>
 
                 {m.data.literal && (
                   <div className="text-xs text-leaf border-t border-gold/10 pt-2">
