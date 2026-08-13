@@ -63,11 +63,16 @@ export function LyricColumns({ lyrics, currentTime }: LyricColumnsProps) {
                   {line.pataxo}
                 </p>
                 <div className="mt-3 flex gap-2">
-                   <button className="rounded-full bg-emerald-100 p-2 text-emerald-700 shadow-sm hover:bg-emerald-200 active:scale-95 transition-all">
-                     <span className="text-sm font-black">🔊 OUVIR</span>
+                   <button 
+                     onClick={() => {
+                        import("@/lib/speak").then(({ speak }) => speak(line.pataxo));
+                     }}
+                     className="rounded-full bg-emerald-100 p-2 text-emerald-700 shadow-sm hover:bg-emerald-200 active:scale-95 transition-all"
+                   >
+                     <span className="text-sm font-black">🔊 OUVIRE</span>
                    </button>
                    <button className="rounded-full bg-amber-100 p-2 text-amber-700 shadow-sm hover:bg-amber-200 active:scale-95 transition-all">
-                     <span className="text-sm font-black">🎵 CANTAR</span>
+                     <span className="text-sm font-black">🎵 CANTAR JUNTO</span>
                    </button>
                 </div>
               </div>
@@ -81,11 +86,16 @@ export function LyricColumns({ lyrics, currentTime }: LyricColumnsProps) {
                   {line.portugues}
                 </p>
                 <div className="mt-3 flex gap-2">
-                   <button className="rounded-full bg-rose-50 p-2 text-rose-700 shadow-sm hover:bg-rose-100 active:scale-95 transition-all">
-                     <span className="text-sm font-black">🔊 OUVIR</span>
+                   <button 
+                     onClick={() => {
+                        import("@/lib/speak").then(({ speak }) => speak(line.portugues));
+                     }}
+                     className="rounded-full bg-rose-50 p-2 text-rose-700 shadow-sm hover:bg-rose-100 active:scale-95 transition-all"
+                   >
+                     <span className="text-sm font-black">🔊 OUVIRE</span>
                    </button>
                    <button className="rounded-full bg-sky-50 p-2 text-sky-700 shadow-sm hover:bg-sky-100 active:scale-95 transition-all">
-                     <span className="text-sm font-black">🎵 CANTAR</span>
+                     <span className="text-sm font-black">🎵 CANTAR JUNTO</span>
                    </button>
                 </div>
               </div>
