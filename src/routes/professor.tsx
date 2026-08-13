@@ -68,7 +68,7 @@ type L10n = {
 const L10N: Record<Lang, L10n> = {
   pt: {
     welcome:
-      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — quando eu ensinar uma palavra, você pode ouvir a pronúncia clicando no ícone de áudio.",
+      "Kanhgág! Sou o **Professor Akuã**, mestre virtual da língua **Patxôhã**.\n\nEstou aqui para ensinar palavras, expressões, pronúncia e a cultura do povo Pataxó. Pergunte à vontade — ao clicar ou fazer perguntas produzir áudio automaticamente.",
     subtitle: "Mestre de Patxôhã · Online",
     newChat: "Nova conversa",
     suggestionsTitle: "Sugestões para começar",
@@ -91,7 +91,7 @@ const L10N: Record<Lang, L10n> = {
   },
   en: {
     welcome:
-      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — when I teach a word, you can hear it by clicking the audio icon.",
+      "Kanhgág! I am **Professor Akuã**, the virtual master of the **Patxôhã** language.\n\nI am here to teach you words, expressions, pronunciation and the culture of the Pataxó people. Ask freely — by clicking or asking questions, audio will be produced automatically.",
     subtitle: "Patxôhã Master · Online",
     newChat: "New chat",
     suggestionsTitle: "Suggestions to get started",
@@ -114,7 +114,7 @@ const L10N: Record<Lang, L10n> = {
   },
   es: {
     welcome:
-      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — cuando enseñe una palabra, podrás escucharla haciendo clic en el ícono de audio.",
+      "¡Kanhgág! Soy el **Profesor Akuã**, maestro virtual de la lengua **Patxôhã**.\n\nEstoy aquí para enseñarte palabras, expresiones, pronunciación y la cultura del pueblo Pataxó. Pregunta con confianza — al hacer clic o hacer preguntas, el audio se producirá automáticamente.",
     subtitle: "Maestro de Patxôhã · En línea",
     newChat: "Nueva conversación",
     suggestionsTitle: "Sugerencias para empezar",
