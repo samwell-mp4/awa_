@@ -30,6 +30,7 @@ import { Route as InfantilRouteImport } from './routes/infantil'
 import { Route as HistoriasInfantilRouteImport } from './routes/historias-infantil'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
+import { Route as CanticosInfantisRouteImport } from './routes/canticos-infantis'
 import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -156,6 +157,11 @@ const DicionarioRoute = DicionarioRouteImport.update({
   path: '/dicionario',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CanticosInfantisRoute = CanticosInfantisRouteImport.update({
+  id: '/canticos-infantis',
+  path: '/canticos-infantis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BiografiaRoute = BiografiaRouteImport.update({
   id: '/biografia',
   path: '/biografia',
@@ -269,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
+  '/canticos-infantis': typeof CanticosInfantisRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/historias-infantil': typeof HistoriasInfantilRoute
@@ -311,6 +318,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
+  '/canticos-infantis': typeof CanticosInfantisRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/historias-infantil': typeof HistoriasInfantilRoute
@@ -355,6 +363,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
+  '/canticos-infantis': typeof CanticosInfantisRoute
   '/dicionario': typeof DicionarioRoute
   '/historias': typeof HistoriasRoute
   '/historias-infantil': typeof HistoriasInfantilRoute
@@ -399,6 +408,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
+    | '/canticos-infantis'
     | '/dicionario'
     | '/historias'
     | '/historias-infantil'
@@ -441,6 +451,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
+    | '/canticos-infantis'
     | '/dicionario'
     | '/historias'
     | '/historias-infantil'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
+    | '/canticos-infantis'
     | '/dicionario'
     | '/historias'
     | '/historias-infantil'
@@ -528,6 +540,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
+  CanticosInfantisRoute: typeof CanticosInfantisRoute
   DicionarioRoute: typeof DicionarioRoute
   HistoriasRoute: typeof HistoriasRoute
   HistoriasInfantilRoute: typeof HistoriasInfantilRoute
@@ -711,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DicionarioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/canticos-infantis': {
+      id: '/canticos-infantis'
+      path: '/canticos-infantis'
+      fullPath: '/canticos-infantis'
+      preLoaderRoute: typeof CanticosInfantisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/biografia': {
       id: '/biografia'
       path: '/biografia'
@@ -874,6 +894,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,
+  CanticosInfantisRoute: CanticosInfantisRoute,
   DicionarioRoute: DicionarioRoute,
   HistoriasRoute: HistoriasRoute,
   HistoriasInfantilRoute: HistoriasInfantilRoute,
