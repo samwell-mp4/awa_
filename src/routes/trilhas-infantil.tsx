@@ -193,14 +193,8 @@ function TrilhaInfantilPage() {
               if (!style) return null;
               const label = translateTrailName(t, trail.name);
               return (
-                <button
+                <div
                   key={slug}
-                  onClick={(e) => {
-                    // Se estiver no mobile e clicar na bolha, pode ser útil narrar.
-                    // Mas o Link navegaria. Vamos manter o Link para navegação,
-                    // mas podemos adicionar um comportamento de narração se for desejado
-                    // sem quebrar a navegação.
-                  }}
                   className={`kids-totem group absolute ${style.position} transition-transform hover:scale-110 active:scale-95`}
                   style={{
                     animationDelay: `${i * 120}ms`,
@@ -213,9 +207,6 @@ function TrilhaInfantilPage() {
                     params={{ slug }}
                     aria-label={label}
                     className="block"
-                    onClick={(e) => {
-                      // Opcional: tocar um som curto de clique ou algo assim.
-                    }}
                   >
                     <span className="relative block">
                       {/* Glow */}
@@ -247,7 +238,7 @@ function TrilhaInfantilPage() {
                       <FloatingIsland top={style.islandTop} bottom={style.islandBottom} />
                     </span>
                   </Link>
-                </button>
+                </div>
               );
             })}
           </div>
