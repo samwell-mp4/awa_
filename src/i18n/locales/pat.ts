@@ -87,6 +87,7 @@ export default {
     hotspots: {
       trilhas: "Auê Pahí",
       cantico: "Ĩmãyã",
+      canticos_infantis: "Kãyã Pataxó",
       historia: "Awê Nitxĩ",
       jogos: "Kutxâ",
       amizade: "Aria",

@@ -124,6 +124,7 @@ export default {
     hotspots: {
       trilhas: "Senderos",
       cantico: "Canto",
+      canticos_infantis: "Cánticos Pataxó",
       historia: "Historia Infantil",
       jogos: "Juegos",
       amizade: "Amistad",
