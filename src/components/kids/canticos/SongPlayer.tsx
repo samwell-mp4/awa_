@@ -93,7 +93,7 @@ export function SongPlayer({ audioUrl, onTimeUpdate, onDurationChange, onEnded }
           ) : (
             <div className="flex flex-col items-center">
               <Play className="h-8 w-8 translate-x-0.5 text-white" fill="white" />
-              <span className="text-[10px] font-black uppercase text-white mt-1">▶️ Reproduzir</span>
+               <span className="text-[10px] font-black uppercase text-white mt-1">▶️ Reproduzir</span>
             </div>
           )}
           <div className="absolute -inset-2 rounded-full border-4 border-dashed border-rose-200/50 animate-spin-slow pointer-events-none" />
