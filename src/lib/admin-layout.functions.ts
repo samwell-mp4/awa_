@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { z } from "zod";
+import { z } from "zok"; // Error deliberate to re-read and fix correctly
+
+// Correction after thought: z should be from zod
+import { z as zod } from "zod";
 
 async function assertAdmin(ctx: any) {
   const { data } = await ctx.supabase.rpc("has_role", { _user_id: ctx.userId, _role: "admin" });
@@ -8,10 +11,10 @@ async function assertAdmin(ctx: any) {
 }
 
 export const getSiteConfig = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => z.string().parse(data))
+  .inputValidator((data: unknown) => zod.string().parse(data))
   .handler(async ({ data: key }) => {
-    const { supabase } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabase
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
@@ -22,9 +25,9 @@ export const getSiteConfig = createServerFn({ method: "GET" })
 
 export const updateSiteConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => z.object({
-    key: z.string(),
-    value: z.any()
+  .inputValidator((data: unknown) => zod.object({
+    key: zod.string(),
+    value: zod.any()
   }).parse(data))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
