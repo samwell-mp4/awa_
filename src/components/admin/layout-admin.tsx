@@ -89,6 +89,12 @@ export function LayoutAdmin() {
           <Palette className="h-5 w-5 text-gold" /> Menu Infantil (Atalhos)
         </h3>
         <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-gold/80">Atalhos Grid</h4>
+            <Btn variant="outline" size="sm" onClick={() => setHotspotsDraft([...hotspotsDraft, { key: "", to: "", emoji: "✨", color: "#000000" }])}>
+              <Plus className="h-3.5 w-3.5" /> Adicionar Atalho
+            </Btn>
+          </div>
           {hotspotsDraft.map((h, i) => (
             <div key={i} className="grid gap-3 p-4 rounded-2xl border border-gold/10 bg-black/20 md:grid-cols-[1fr_1fr_80px_100px_auto]">
               <Field label="Chave Tradução">
@@ -128,13 +134,38 @@ export function LayoutAdmin() {
               </div>
             </div>
           ))}
-          <Btn variant="outline" onClick={() => setHotspotsDraft([...hotspotsDraft, { key: "", to: "", emoji: "✨", color: "#000000" }])}>
-            <Plus className="h-4 w-4" /> Adicionar Atalho
-          </Btn>
         </div>
         <Btn className="mt-6" onClick={saveHotspots}>
           <Save className="h-4 w-4" /> Salvar Menu
         </Btn>
+      </Card>
+
+      <Card>
+        <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+          <Layout className="h-5 w-5 text-gold" /> Estrutura do Site (Avançado)
+        </h3>
+        <p className="mb-4 text-sm text-foreground/70">
+          Gerencie permissões de edição e acesso total aos recursos do painel.
+        </p>
+        <div className="rounded-2xl border border-gold/20 bg-gold/5 p-4">
+          <p className="flex items-center gap-2 text-sm font-medium text-gold">
+            <Sparkles className="h-4 w-4" /> Acesso total sem restrições liberado para administradores.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+              <span className="text-lg">✅</span> Editar código e layout
+            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+              <span className="text-lg">✅</span> Alterar design e imagens
+            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+              <span className="text-lg">✅</span> Gerenciar páginas e arquivos
+            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+              <span className="text-lg">✅</span> Acesso irrestrito ao sistema
+            </div>
+          </div>
+        </div>
       </Card>
     </div>
   );
