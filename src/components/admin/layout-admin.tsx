@@ -21,6 +21,7 @@ export function LayoutAdmin() {
     queryFn: () => getFn({ data: "branding" }),
   });
 
+
   const [hotspotsDraft, setHotspotsDraft] = useState<any[]>([]);
   const [brandingDraft, setBrandingDraft] = useState<any>({});
 
