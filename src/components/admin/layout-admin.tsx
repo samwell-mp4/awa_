@@ -13,12 +13,12 @@ export function LayoutAdmin() {
 
   const { data: hotspots = [], isLoading: loadingHotspots } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn("infantil_hotspots"),
+    queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
 
   const { data: branding = {}, isLoading: loadingBranding } = useQuery({
     queryKey: ["site_config", "branding"],
-    queryFn: () => getFn("branding"),
+    queryFn: () => getFn({ data: "branding" }),
   });
 
   const [hotspotsDraft, setHotspotsDraft] = useState<any[]>([]);
@@ -34,7 +34,7 @@ export function LayoutAdmin() {
 
   async function saveHotspots() {
     try {
-      await updateFn({ key: "infantil_hotspots", value: hotspotsDraft });
+      await updateFn({ data: { key: "infantil_hotspots", value: hotspotsDraft } });
       toast.success("Menu infantil atualizado!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_hotspots"] });
     } catch (e: any) {
@@ -44,7 +44,7 @@ export function LayoutAdmin() {
 
   async function saveBranding() {
     try {
-      await updateFn({ key: "branding", value: brandingDraft });
+      await updateFn({ data: { key: "branding", value: brandingDraft } });
       toast.success("Identidade visual atualizada!");
       qc.invalidateQueries({ queryKey: ["site_config", "branding"] });
     } catch (e: any) {

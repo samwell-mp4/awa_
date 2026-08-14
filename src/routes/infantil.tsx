@@ -78,13 +78,14 @@ function InfantilHome() {
 
   const { data: hotspots = defaultHotspots } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn("infantil_hotspots"),
+    queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
-    queryFn: () => getFn("branding"),
+    queryFn: () => getFn({ data: "branding" }),
   });
+
 
   const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
   const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
@@ -117,7 +118,7 @@ function InfantilHome() {
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {hotspots.map((h) => (
+          {hotspots.map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}

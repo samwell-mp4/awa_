@@ -8,10 +8,11 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 }
 
 export const getSiteConfig = createServerFn({ method: "GET" })
-  .inputValidator(z.string())
+  .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
+    if (!context.supabase) throw new Error("Supabase client not found");
     const { data, error } = await context.supabase
-      .from("site_config")
+      .from("site_config" as any)
       .select("value")
       .eq("key", key)
       .single();
@@ -21,14 +22,15 @@ export const getSiteConfig = createServerFn({ method: "GET" })
 
 export const updateSiteConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(z.object({
+  .inputValidator((data: unknown) => z.object({
     key: z.string(),
     value: z.any()
-  }))
+  }).parse(data))
   .handler(async ({ data, context }) => {
-    await assertAdmin(context);
+    if (!context.supabase) throw new Error("Supabase client not found");
+    await assertAdmin(context as any);
     const { error } = await context.supabase
-      .from("site_config")
+      .from("site_config" as any)
       .upsert({ key: data.key, value: data.value, updated_at: new Date().toISOString() });
     if (error) throw error;
     return { ok: true };
