@@ -1,5 +1,9 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
+
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -57,7 +61,7 @@ type Hotspot = {
   color: string;
 };
 
-const hotspots: Hotspot[] = [
+const defaultHotspots: Hotspot[] = [
   { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
@@ -65,20 +69,37 @@ const hotspots: Hotspot[] = [
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
+
 function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+  const getFn = useServerFn(getSiteConfig);
+
+  const { data: hotspots = defaultHotspots } = useQuery({
+    queryKey: ["site_config", "infantil_hotspots"],
+    queryFn: () => getFn("infantil_hotspots"),
+  });
+
+  const { data: branding } = useQuery({
+    queryKey: ["site_config", "branding"],
+    queryFn: () => getFn("branding"),
+  });
+
+  const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
+  const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
 
   return (
+
     <div className="kids-theme min-h-screen text-foreground">
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <div className="-mx-3 md:-mx-6 mt-0">
           <img
-            src={infantilLogo.url}
+            src={logoUrl}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
+
             className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
             fetchPriority="high"
             draggable={false}
@@ -90,8 +111,9 @@ function InfantilHome() {
           className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
           style={{ background: "#0b3d2e" }}
         >
-          <VideoMenu src={menuVideo.url} label={t("infantil.title")} />
+          <VideoMenu src={videoUrl} label={t("infantil.title")} />
         </section>
+
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
