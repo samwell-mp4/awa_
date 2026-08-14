@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Type, Plus, Trash2 } from "lucide-react";
+import { Save, Layout, Image as ImageIcon, Palette, Type, Plus, Trash2, Sparkles } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
 
 export function LayoutAdmin() {
@@ -91,7 +91,7 @@ export function LayoutAdmin() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-bold uppercase tracking-wider text-gold/80">Atalhos Grid</h4>
-            <Btn variant="outline" size="sm" onClick={() => setHotspotsDraft([...hotspotsDraft, { key: "", to: "", emoji: "✨", color: "#000000" }])}>
+            <Btn variant="outline" onClick={() => setHotspotsDraft([...hotspotsDraft, { key: "", to: "", emoji: "✨", color: "#000000" }])}>
               <Plus className="h-3.5 w-3.5" /> Adicionar Atalho
             </Btn>
           </div>
