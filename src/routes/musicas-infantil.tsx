@@ -19,8 +19,6 @@ import {
 
 // Reference asset imports
 import referenceAsset from "@/assets/kids-theme/reference.png.asset.json";
-import anciaoJosa from "@/assets/album/anciao-josa.png.asset.json";
-import criancaCocar from "@/assets/album/crianca-cocar.jpg.asset.json";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
@@ -51,7 +49,7 @@ type Song = {
   duration_seconds: number | null;
 };
 
-export function MusicasInfantilPage() {
+function MusicasInfantilPage() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     queryFn: async () => {
@@ -111,6 +109,12 @@ export function MusicasInfantilPage() {
 
           <div className="flex-1 flex justify-center">
              <div className="px-8 py-2 bg-[#8b5a2b] border-4 border-[#5b3a24] rounded-b-3xl shadow-lg relative -top-6">
+                <img 
+                  src="/logo-infantil.png" 
+                  alt="Awã Tech" 
+                  className="h-12 brightness-0 invert opacity-90"
+                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                />
                 <div className="text-amber-200 text-center font-black text-xl uppercase tracking-widest mt-1">
                    Awã Tech
                 </div>
@@ -172,7 +176,7 @@ export function MusicasInfantilPage() {
 }
 
 function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 'sing', onClose: () => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = useLang();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
@@ -229,27 +233,28 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
       </div>
 
       {/* Main Board - Paper/Parchment style */}
-      <div className="wood-board relative overflow-hidden min-h-[600px] flex shadow-2xl">
+      <div className="bg-[#f4d9a8] border-8 border-[#8b5a2b] rounded-[3rem] shadow-[0_30px_0_0_rgba(91,58,36,0.3)] relative overflow-hidden min-h-[500px] flex">
         
         {/* Left Character Area */}
         <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
-           <div className="relative group mb-8">
-              <img 
-                src={anciaoJosa.url} 
-                alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
-              />
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
-                 Vamos cantar! 🎶
+           <div className="relative group">
+              <span className="text-9xl block drop-shadow-xl kid-bounce">👧🏽</span>
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-2 text-sm font-black border-4 border-[#8b5a2b] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                 Vamos cantar!
               </div>
            </div>
         </div>
 
         {/* Lyrics Area - Two Columns */}
-        <div className="flex-1 flex flex-col md:flex-row relative bg-[#fffaf0]/40 backdrop-blur-[2px]">
+        <div className="flex-1 flex flex-col md:flex-row p-6 md:p-10 relative">
           
           {/* Tribal Divider Strip */}
-          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-10 hidden md:block tribal-divider pointer-events-none z-10" />
+          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-8 hidden md:block opacity-80 pointer-events-none" 
+               style={{ 
+                 backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='40'><path d='M0 0 L10 10 L20 0 L20 40 L10 30 L0 40 Z' fill='%23c4632a'/></svg>")`,
+                 backgroundRepeat: 'repeat-y'
+               }}
+          />
 
           {/* Centered Play Icon on the strip */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
@@ -260,75 +265,75 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
                  if (isPlaying) a.pause(); else a.play();
                  setIsPlaying(!isPlaying);
                }}
-               className="w-20 h-20 rounded-full bg-[#8b5a2b] border-4 border-[#5b3a24] flex items-center justify-center shadow-[0_8px_0_0_#5b3a24,0_15px_30px_rgba(0,0,0,0.3)] hover:scale-105 hover:translate-y-[-2px] active:translate-y-[4px] active:shadow-[0_4px_0_0_#5b3a24] transition-all"
+               className="w-16 h-16 rounded-full bg-[#8b5a2b] border-4 border-[#5b3a24] flex items-center justify-center shadow-xl hover:scale-110 transition-transform active:scale-95"
              >
                 {isPlaying ? (
-                   <Pause className="w-10 h-10 text-amber-300 fill-current" />
+                  <Pause className="w-8 h-8 text-amber-300 fill-current" />
                 ) : (
-                   <Play className="w-10 h-10 text-amber-300 fill-current ml-2" />
+                  <Play className="w-8 h-8 text-amber-300 fill-current ml-1" />
                 )}
              </button>
           </div>
 
           {/* Indigenous Column */}
-          <div className="flex-1 md:pr-12 text-center flex flex-col p-6 md:p-10">
-             <h3 className="font-display text-3xl font-black text-[#2f6d3a] mb-8 underline decoration-[6px] decoration-[#7cd88a]/40 underline-offset-[12px] tracking-tight">
+          <div className="flex-1 md:pr-10 text-center flex flex-col">
+             <h3 className="font-display text-2xl font-black text-[#2f6d3a] mb-6 underline decoration-4 decoration-[#7cd88a] underline-offset-8">
                Patxôhã
              </h3>
-             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 scroll-smooth">
+             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-4 px-4 pb-20">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i} 
-                    ref={(el: HTMLDivElement | null) => { lineRefs.current[i] = el; }}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
+                    ref={el => { lineRefs.current[i] = el; }}
+                    className={`transition-all duration-300 ${activeIdx === i ? 'scale-110' : 'opacity-60 grayscale'}`}
                   >
-                     <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
+                     <p className={`font-display text-xl md:text-2xl font-black leading-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
                        {indLines[i] || "..."}
                      </p>
                   </div>
                 ))}
              </div>
              
-             <div className="mt-auto flex justify-center gap-4 pt-8 border-t-4 border-[#8b5a2b]/10">
+             <div className="mt-auto flex justify-center gap-4 pt-6">
                 <button 
-                  onClick={() => { if (audioRef.current) audioRef.current.play(); setIsPlaying(true); }}
-                  className="bg-[#2f6d3a] text-white px-8 py-3 rounded-2xl border-b-[6px] border-[#1e4625] flex items-center gap-2 font-black text-base uppercase shadow-xl hover:brightness-110 active:translate-y-[4px] active:border-b-0 transition-all"
+                  onClick={() => setIsPlaying(true)}
+                  className="bg-[#2f6d3a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
                 >
-                   <span className="text-xl">🔊</span> OUVIR
+                   <span className="text-lg">🔊</span> OUVIR
                 </button>
-                <button className="bg-[#7cd88a] text-[#064e3b] px-8 py-3 rounded-2xl border-b-[6px] border-[#59a365] flex items-center gap-2 font-black text-base uppercase shadow-xl hover:brightness-110 active:translate-y-[4px] active:border-b-0 transition-all">
-                   <span className="text-xl">🎵</span> CANTAR JUNTO
+                <button className="bg-[#7cd88a] text-[#064e3b] px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0">
+                   <span className="text-lg">🎵</span> CANTAR JUNTO
                 </button>
              </div>
           </div>
 
           {/* Portuguese Column */}
-          <div className="flex-1 md:pl-12 text-center flex flex-col p-6 md:p-10 mt-12 md:mt-0">
-             <h3 className="font-display text-3xl font-black text-[#c4632a] mb-8 underline decoration-[6px] decoration-[#ffd76a]/40 underline-offset-[12px] tracking-tight">
+          <div className="flex-1 md:pl-10 text-center flex flex-col mt-12 md:mt-0">
+             <h3 className="font-display text-2xl font-black text-[#c4632a] mb-6 underline decoration-4 decoration-[#ffd76a] underline-offset-8">
                Português
              </h3>
-             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 pointer-events-none scroll-smooth">
+             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-4 px-4 pb-20 pointer-events-none">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 -translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
+                    className={`transition-all duration-300 ${activeIdx === i ? 'scale-110' : 'opacity-60 grayscale'}`}
                   >
-                     <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#c4632a]' : 'text-[#5b3a24]'}`}>
+                     <p className={`font-display text-xl md:text-2xl font-black leading-tight ${activeIdx === i ? 'text-[#c4632a]' : 'text-[#5b3a24]'}`}>
                        {ptLines[i] || "..."}
                      </p>
                   </div>
                 ))}
              </div>
 
-             <div className="mt-auto flex justify-center gap-4 pt-8 border-t-4 border-[#8b5a2b]/10">
+             <div className="mt-auto flex justify-center gap-4 pt-6">
                 <button 
-                   onClick={() => { if (audioRef.current) audioRef.current.play(); setIsPlaying(true); }}
-                   className="bg-[#c4632a] text-white px-8 py-3 rounded-2xl border-b-[6px] border-[#8b451d] flex items-center gap-2 font-black text-base uppercase shadow-xl hover:brightness-110 active:translate-y-[4px] active:border-b-0 transition-all"
+                   onClick={() => setIsPlaying(true)}
+                   className="bg-[#c4632a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
                 >
-                   <span className="text-xl">🔊</span> OUVIR
+                   <span className="text-lg">🔊</span> OUVIR
                 </button>
-                <button className="bg-[#ffd76a] text-[#5b3a24] px-8 py-3 rounded-2xl border-b-[6px] border-[#c9aa54] flex items-center gap-2 font-black text-base uppercase shadow-xl hover:brightness-110 active:translate-y-[4px] active:border-b-0 transition-all">
-                   <span className="text-xl">🎵</span> CANTAR JUNTO
+                <button className="bg-[#ffd76a] text-[#5b3a24] px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0">
+                   <span className="text-lg">🎵</span> CANTAR JUNTO
                 </button>
              </div>
           </div>
@@ -336,21 +341,16 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
 
         {/* Right Character Area */}
         <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
-           <div className="relative group mb-8">
-              <img 
-                src={criancaCocar.url} 
-                alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
-                style={{ animationDelay: '0.3s' }}
-              />
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
-                 Estou pronto! 🥁
+           <div className="relative group">
+              <span className="text-9xl block drop-shadow-xl kid-bounce" style={{ animationDelay: '0.3s' }}>🧒🏽</span>
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-2 text-sm font-black border-4 border-[#8b5a2b] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                 Estou pronto!
               </div>
            </div>
         </div>
 
         {/* Sun Decor */}
-        <div className="absolute top-8 right-8 text-7xl opacity-10 pointer-events-none kid-spin-slow">☀️</div>
+        <div className="absolute top-6 right-6 text-6xl opacity-20 pointer-events-none kid-spin-slow">☀️</div>
       </div>
 
       {/* Close button */}
@@ -373,14 +373,9 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
   );
 }
 
+
 export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <KidsSongPlayer song={song} mode="listen" onClose={onClose} />
-      </div>
-    </div>
-  );
+  return <KidsSongPlayer song={song} mode="listen" onClose={onClose} />;
 }
 
 function TribalBackdrop() {
@@ -403,6 +398,11 @@ function TribalBackdrop() {
         preserveAspectRatio="none"
       >
         <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
       </svg>
     </div>
   );
