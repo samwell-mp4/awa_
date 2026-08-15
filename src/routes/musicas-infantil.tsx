@@ -284,7 +284,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i} 
-                    ref={el => { lineRefs.current[i] = el; }}
+                    ref={(el: HTMLDivElement | null) => { lineRefs.current[i] = el; }}
                     className={`transition-all duration-300 ${activeIdx === i ? 'scale-110' : 'opacity-60 grayscale'}`}
                   >
                      <p className={`font-display text-xl md:text-2xl font-black leading-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
