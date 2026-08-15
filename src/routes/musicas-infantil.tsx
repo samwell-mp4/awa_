@@ -227,7 +227,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
       </div>
 
       {/* Main Board - Paper/Parchment style */}
-      <div className="bg-[#f4d9a8] border-8 border-[#8b5a2b] rounded-[3rem] shadow-[0_30px_0_0_rgba(91,58,36,0.3)] relative overflow-hidden min-h-[500px] flex">
+      <div className="wood-board relative overflow-hidden min-h-[500px] flex">
         
         {/* Left Character Area */}
         <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
@@ -243,12 +243,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
         <div className="flex-1 flex flex-col md:flex-row p-6 md:p-10 relative">
           
           {/* Tribal Divider Strip */}
-          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-8 hidden md:block opacity-80 pointer-events-none" 
-               style={{ 
-                 backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='40'><path d='M0 0 L10 10 L20 0 L20 40 L10 30 L0 40 Z' fill='%23c4632a'/></svg>")`,
-                 backgroundRepeat: 'repeat-y'
-               }}
-          />
+          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-8 hidden md:block tribal-divider pointer-events-none" />
 
           {/* Centered Play Icon on the strip */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
@@ -368,7 +363,13 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
 }
 
 export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
-  return <KidsSongPlayer song={song} mode="listen" onClose={onClose} />;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <KidsSongPlayer song={song} mode="listen" onClose={onClose} />
+      </div>
+    </div>
+  );
 }
 
 function TribalBackdrop() {

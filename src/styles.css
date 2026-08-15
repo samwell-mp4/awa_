@@ -228,6 +228,32 @@ body::before {
 
 
 /* ===== Kids theme — soft 3D, light & vibrant (applied via .kids-theme wrapper) ===== */
+@utility wood-board {
+  background-color: #f4d9a8;
+  background-image: 
+    linear-gradient(rgba(139, 90, 43, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 90, 43, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border: 8px solid #8b5a2b;
+  border-radius: 3rem;
+  box-shadow: 0 30px 0 0 rgba(91, 58, 36, 0.3);
+}
+
+@utility tribal-divider {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='40'><path d='M0 0 L10 10 L20 0 L20 40 L10 30 L0 40 Z' fill='%23c4632a'/></svg>");
+  background-repeat: repeat-y;
+  background-size: 20px 40px;
+  opacity: 0.8;
+}
+
+@utility lyrics-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .kids-theme {
   --kids-sky: #bfe6ff;
   --kids-sky-2: #ffe3f1;
