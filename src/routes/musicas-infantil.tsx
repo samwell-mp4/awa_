@@ -2,14 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Home, Music2, Play, Pause, X } from "lucide-react";
+import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { motion, AnimatePresence } from "framer-motion";
-import { useTranslation } from "react-i18next";
-
+import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
+import { SiteHeader } from "@/components/home/site-header";
 import {
   activeLineIndex,
   computeLyricBounds,
@@ -17,18 +14,16 @@ import {
   splitLyrics,
 } from "@/lib/lyric-sync";
 
-// Reference asset imports
-import referenceAsset from "@/assets/kids-theme/reference.png.asset.json";
-
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
   beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
-      { title: "Cânticos Infantis Pataxó — Awã Tech" },
+      { title: "Cantigas da Aldeia — Awã Tech Infantil" },
       {
         name: "description",
-        content: "Cante junto com a Aldeia! Músicas tradicionais Pataxó com letras sincronizadas em Patxôhã e Português.",
+        content:
+          "Menu infantil de cantigas indígenas do Awã Tech — bem colorido, com bichos, penas e tambor para as crianças cantarem juntas.",
       },
     ],
   }),
@@ -49,333 +44,304 @@ type Song = {
   duration_seconds: number | null;
 };
 
-function MusicasInfantilPage() {
+
+// Bright kid palettes + a matching indigenous emoji
+const THEMES = [
+  { bg: "from-rose-400 via-pink-400 to-fuchsia-400", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
+  { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
+  { bg: "from-sky-400 via-cyan-400 to-teal-300", ring: "ring-sky-100", emoji: "🐟", label: "Peixinho" },
+  { bg: "from-orange-400 via-red-400 to-rose-400", ring: "ring-orange-100", emoji: "🔥", label: "Fogueira" },
+  { bg: "from-violet-400 via-fuchsia-400 to-pink-300", ring: "ring-violet-100", emoji: "🦜", label: "Arara" },
+  { bg: "from-amber-500 via-orange-400 to-rose-300", ring: "ring-amber-100", emoji: "🥁", label: "Tambor" },
+  { bg: "from-teal-400 via-emerald-400 to-lime-300", ring: "ring-teal-100", emoji: "🌳", label: "Árvore" },
+  { bg: "from-yellow-400 via-amber-400 to-orange-400", ring: "ring-yellow-100", emoji: "☀️", label: "Sol" },
+  { bg: "from-indigo-400 via-blue-400 to-sky-300", ring: "ring-indigo-100", emoji: "🌙", label: "Lua" },
+  { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
+];
+
+export function MusicasInfantilPage() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
+    staleTime: 1000 * 60 * 30,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("*")
+        .select(
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds",
+        )
         .eq("is_active", true)
-        .order("order_index");
+        .order("order_index")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data as Song[];
     },
   });
 
   const [playing, setPlaying] = useState<Song | null>(null);
-  const [mode, setMode] = useState<"listen" | "sing">("listen");
 
   return (
-    <div className="kids-theme min-h-screen bg-[#5b3a24] relative overflow-hidden font-['Fredoka',sans-serif]">
-      {/* Background with texture & jungle vibes */}
-      <div 
-        className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none"
-        style={{ 
-          backgroundImage: `url(${referenceAsset.url})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(20px) saturate(0.5)'
-        }}
-      />
-      
-      {/* Decorative Jungle Leaves in corners */}
-      <div className="absolute top-0 left-0 w-48 h-48 opacity-60 pointer-events-none z-0">
-         <span className="text-8xl absolute top-4 left-4 kid-wiggle">🌿</span>
-      </div>
-      <div className="absolute top-0 right-0 w-48 h-48 opacity-60 pointer-events-none z-0">
-         <span className="text-8xl absolute top-4 right-4 kid-wiggle" style={{ animationDelay: '0.5s' }}>🍃</span>
-      </div>
+    <div
+      className="kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
+      style={{
+        backgroundImage: `url(${bgAsset.url})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
 
-      {/* Main Container mirroring the Tablet UI from reference */}
-      <main className="relative z-10 max-w-6xl mx-auto px-4 py-6 min-h-screen flex flex-col">
-        
-        {/* Top Navigation Row */}
-        <header className="flex items-center justify-between mb-8">
-          <div className="flex gap-4">
-            <Link 
-              to="/infantil"
-              className="w-14 h-14 rounded-full bg-[#8b5a2b] border-4 border-[#5b3a24] flex items-center justify-center text-white shadow-lg transition-transform active:scale-90"
-            >
-              <ArrowLeft className="w-8 h-8" strokeWidth={3} />
-            </Link>
-            <Link 
-              to="/infantil"
-              className="w-14 h-14 rounded-full bg-[#8b5a2b] border-4 border-[#5b3a24] flex items-center justify-center text-white shadow-lg transition-transform active:scale-90"
-            >
-              <Home className="w-8 h-8" strokeWidth={3} />
-            </Link>
+      <SiteHeader mode="infantil" />
+
+      <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
+          <Link
+            to="/infantil"
+            className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
+          >
+            <ArrowLeft className="h-4 w-4" /> Aldeia
+          </Link>
+          <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
+            🎶 Cantigas 🎶
           </div>
-
-          <div className="flex-1 flex justify-center">
-             <div className="px-8 py-2 bg-[#8b5a2b] border-4 border-[#5b3a24] rounded-b-3xl shadow-lg relative -top-6">
-                <img 
-                  src="/logo-infantil.png" 
-                  alt="Awã Tech" 
-                  className="h-12 brightness-0 invert opacity-90"
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
-                />
-                <div className="text-amber-200 text-center font-black text-xl uppercase tracking-widest mt-1">
-                   Awã Tech
-                </div>
-             </div>
-          </div>
-
-          <div className="w-32 h-14 bg-[#8b5a2b] border-4 border-[#5b3a24] rounded-2xl flex items-center justify-between px-3 shadow-lg">
-             <span className="text-white font-black text-lg">AWÃ MIRIM</span>
-             <div className="flex items-center gap-1">
-                <span className="text-amber-300 font-black">125</span>
-                <span className="text-yellow-400 text-xl">⭐</span>
-             </div>
-          </div>
-        </header>
-
-        {/* Center Song Board */}
-        <div className="flex-1 flex flex-col items-center justify-center">
-          
-          <AnimatePresence mode="wait">
-            {!playing ? (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-5xl"
-              >
-                {songs.map((song, i) => (
-                  <button
-                    key={song.id}
-                    onClick={() => setPlaying(song)}
-                    className="kids-card aspect-[4/3] flex flex-col items-center justify-center p-4 gap-3 bg-[#fffaf0] hover:scale-105 transition-all group"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center text-4xl shadow-inner group-hover:rotate-12 transition-transform">
-                       {i % 2 === 0 ? "🎵" : "🎸"}
-                    </div>
-                    <span className="font-display text-lg font-black text-[#5b3a24] text-center leading-tight">
-                      {song.title}
-                    </span>
-                  </button>
-                ))}
-              </motion.div>
-            ) : (
-              <KidsSongPlayer 
-                song={playing} 
-                mode={mode}
-                onClose={() => setPlaying(null)} 
-              />
-            )}
-          </AnimatePresence>
-
+          <span className="w-16" />
         </div>
+      </header>
+
+      <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
+        {/* Big playful hero */}
+        <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-gradient-to-br from-amber-200 via-yellow-100 to-rose-100 p-5 text-center shadow-[0_18px_0_-8px_rgba(180,83,9,0.45),0_25px_50px_-20px_rgba(0,0,0,0.4)]">
+          <div className="flex justify-center gap-2 text-5xl">
+            <span className="kid-bounce" style={{ animationDelay: "0s" }}>🪶</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.2s" }}>🥁</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.4s" }}>🦜</span>
+            <span className="kid-bounce" style={{ animationDelay: "0.6s" }}>🌈</span>
+          </div>
+          <h1 className="mt-2 font-display text-4xl font-black leading-none text-emerald-900 md:text-5xl">
+            Canta com a{" "}
+            <span className="inline-block kid-wiggle text-rose-600">Aldeia!</span>
+          </h1>
+          <p className="mt-2 text-base font-black text-emerald-800/80">
+            Toca no bichinho para ouvir a cantiga 🎵
+          </p>
+        </section>
+
+        {isLoading ? (
+          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
+            ))}
+          </div>
+        ) : songs.length === 0 ? (
+          <p className="text-center font-black text-emerald-800/70">
+            Em breve novas cantigas 🌱
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+            {songs.map((s, i) => {
+              const theme = THEMES[i % THEMES.length];
+              const isActive = playing?.id === s.id;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setPlaying(isActive ? null : s)}
+                  className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
+                >
+                  {/* Zigzag tribal top */}
+                  <svg viewBox="0 0 60 8" className="h-3 w-full text-white/90">
+                    <path d="M0 8 L6 0 L12 8 L18 0 L24 8 L30 0 L36 8 L42 0 L48 8 L54 0 L60 8" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
+
+                  {/* Big emoji / play */}
+                  <div className="relative grid h-20 w-20 place-items-center rounded-full bg-white/95 text-5xl shadow-inner ring-[6px] ring-white/70">
+                    {isActive ? (
+                      <Pause className="h-9 w-9 fill-emerald-800 text-emerald-800" />
+                    ) : (
+                      <span aria-hidden className="kid-bounce" style={{ animationDelay: `${(i % 5) * 0.15}s` }}>
+                        {theme.emoji}
+                      </span>
+                    )}
+                    {/* dotted halo */}
+                    <span className="absolute inset-0 rounded-full border-[3px] border-dashed border-white/70 kid-spin-slow" />
+                  </div>
+
+                  {/* Title */}
+                  <div className="w-full">
+                    <div className="line-clamp-2 font-display text-sm font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]">
+                      {s.title}
+                    </div>
+                    {s.artist && (
+                      <div className="mt-0.5 line-clamp-1 text-[10px] font-black text-white/90">
+                        {s.artist}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Play tag */}
+                  <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full border-2 border-white bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-[0_4px_0_rgba(0,0,0,0.3)]">
+                    {isActive ? "Tocando…" : <>Tocar <Play className="h-3 w-3 fill-current" /></>}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </main>
 
-      <style>{`
-        .lyrics-scroll::-webkit-scrollbar { width: 0px; }
-      `}</style>
+      {playing && <MiniPlayer song={playing} onClose={() => setPlaying(null)} />}
     </div>
   );
 }
 
-function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 'sing', onClose: () => void }) {
-  const { t, i18n } = useTranslation();
+export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
+  const ref = useRef<HTMLAudioElement>(null);
   const lang = useLang();
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  
-  const boxRef = useRef<HTMLDivElement>(null);
+  const [audioError, setAudioError] = useState(false);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const boxRef = useRef<HTMLDivElement>(null);
 
-  const indLines = useMemo(() => splitLyrics(song.lyrics_indigenous), [song.lyrics_indigenous]);
-  const ptLines = useMemo(() => splitLyrics(song.lyrics_pt), [song.lyrics_pt]);
-  const maxLen = Math.max(indLines.length, ptLines.length);
+  useEffect(() => {
+    setProgress(0);
+    setAudioDuration(0);
+    setAudioError(false);
+    const a = ref.current;
+    if (!a) return;
+    a.load();
+    void a.play()?.catch(() => {});
+  }, [song.id]);
 
+  // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      const a = ref.current;
+      if (a) {
+        setProgress(a.currentTime);
+        if (a.duration && Number.isFinite(a.duration)) setAudioDuration(a.duration);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [song.id]);
+
+  const indLines = splitLyrics(song.lyrics_indigenous);
+  const transLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang));
+  const maxLen = Math.max(indLines.length, transLines.length);
+
+  // Duração real do áudio; se o metadata ainda não carregou, usa a duração
+  // cadastrada para as legendas já começarem sincronizadas.
   const duration = resolveDuration(audioDuration, song.duration_seconds);
+
   const bounds = useMemo(
-    () => computeLyricBounds(Array.from({ length: maxLen }, (_, i) => indLines[i] || ptLines[i] || ""), duration),
-    [maxLen, duration, song.id]
+    () =>
+      computeLyricBounds(
+        Array.from({ length: maxLen }, (_, i) => indLines[i] || transLines[i] || ""),
+        duration,
+      ),
+    [maxLen, duration, song.id, lang],
   );
-  
+
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 
   useEffect(() => {
-    const v = audioRef.current;
-    if (!v) return;
-    v.play().catch(() => {});
-    setIsPlaying(true);
-  }, [song.id]);
-
-  useEffect(() => {
+    const box = boxRef.current;
     const el = lineRefs.current[activeIdx];
-    if (el && boxRef.current) {
-      boxRef.current.scrollTo({
-        top: el.offsetTop - boxRef.current.clientHeight / 2 + el.clientHeight / 2,
-        behavior: "smooth",
-      });
-    }
+    if (!box || !el) return;
+    // rola apenas o painel de legendas, não a página
+    box.scrollTo?.({
+      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
+      behavior: "smooth",
+    });
   }, [activeIdx]);
 
+  function retryAudio() {
+    const a = ref.current;
+    if (!a) return;
+    setAudioError(false);
+    a.load();
+    void a.play()?.catch(() => {});
+  }
+
+
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="w-full max-w-6xl relative"
-    >
-      {/* Wood header for song title */}
-      <div className="flex justify-center mb-4">
-        <div className="bg-[#8b5a2b] border-4 border-[#5b3a24] rounded-2xl px-12 py-3 shadow-xl relative z-20 flex items-center gap-3">
-           <span className="text-amber-400 text-2xl">🎵</span>
-           <h2 className="font-display text-2xl md:text-3xl font-black text-white uppercase tracking-wide">
-             {song.title}
-           </h2>
-           <span className="text-amber-400 text-2xl">🎵</span>
-        </div>
-      </div>
-
-      {/* Main Board - Paper/Parchment style */}
-      <div className="bg-[#f4d9a8] border-8 border-[#8b5a2b] rounded-[3rem] shadow-[0_30px_0_0_rgba(91,58,36,0.3)] relative overflow-hidden min-h-[500px] flex">
-        
-        {/* Left Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
-           <div className="relative group">
-              <span className="text-9xl block drop-shadow-xl kid-bounce">👧🏽</span>
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-2 text-sm font-black border-4 border-[#8b5a2b] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                 Vamos cantar!
-              </div>
-           </div>
-        </div>
-
-        {/* Lyrics Area - Two Columns */}
-        <div className="flex-1 flex flex-col md:flex-row p-6 md:p-10 relative">
-          
-          {/* Tribal Divider Strip */}
-          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-8 hidden md:block opacity-80 pointer-events-none" 
-               style={{ 
-                 backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='40'><path d='M0 0 L10 10 L20 0 L20 40 L10 30 L0 40 Z' fill='%23c4632a'/></svg>")`,
-                 backgroundRepeat: 'repeat-y'
-               }}
-          />
-
-          {/* Centered Play Icon on the strip */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
-             <button 
-               onClick={() => {
-                 const a = audioRef.current;
-                 if (!a) return;
-                 if (isPlaying) a.pause(); else a.play();
-                 setIsPlaying(!isPlaying);
-               }}
-               className="w-16 h-16 rounded-full bg-[#8b5a2b] border-4 border-[#5b3a24] flex items-center justify-center shadow-xl hover:scale-110 transition-transform active:scale-95"
-             >
-                {isPlaying ? (
-                  <Pause className="w-8 h-8 text-amber-300 fill-current" />
-                ) : (
-                  <Play className="w-8 h-8 text-amber-300 fill-current ml-1" />
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
+      {maxLen > 0 && (
+        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2">
+          {Array.from({ length: maxLen }).map((_, i) => {
+            const active = i === activeIdx;
+            return (
+              <div
+                key={i}
+                ref={(el) => {
+                  lineRefs.current[i] = el;
+                }}
+                className={`py-1 text-center transition-all duration-300 ${
+                  active ? "scale-105" : "opacity-50"
+                }`}
+              >
+                <p
+                  className={`font-display text-base font-black leading-tight ${
+                    active ? "text-amber-300" : "text-amber-100"
+                  }`}
+                >
+                  {indLines[i] || "\u00A0"}
+                </p>
+                {transLines[i] && (
+                  <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
                 )}
-             </button>
-          </div>
-
-          {/* Indigenous Column */}
-          <div className="flex-1 md:pr-10 text-center flex flex-col">
-             <h3 className="font-display text-2xl font-black text-[#2f6d3a] mb-6 underline decoration-4 decoration-[#7cd88a] underline-offset-8">
-               Patxôhã
-             </h3>
-             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-4 px-4 pb-20">
-                {Array.from({ length: maxLen }).map((_, i) => (
-                  <div 
-                    key={i} 
-                    ref={el => { lineRefs.current[i] = el; }}
-                    className={`transition-all duration-300 ${activeIdx === i ? 'scale-110' : 'opacity-60 grayscale'}`}
-                  >
-                     <p className={`font-display text-xl md:text-2xl font-black leading-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
-                       {indLines[i] || "..."}
-                     </p>
-                  </div>
-                ))}
-             </div>
-             
-             <div className="mt-auto flex justify-center gap-4 pt-6">
-                <button 
-                  onClick={() => setIsPlaying(true)}
-                  className="bg-[#2f6d3a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
-                >
-                   <span className="text-lg">🔊</span> OUVIR
-                </button>
-                <button className="bg-[#7cd88a] text-[#064e3b] px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0">
-                   <span className="text-lg">🎵</span> CANTAR JUNTO
-                </button>
-             </div>
-          </div>
-
-          {/* Portuguese Column */}
-          <div className="flex-1 md:pl-10 text-center flex flex-col mt-12 md:mt-0">
-             <h3 className="font-display text-2xl font-black text-[#c4632a] mb-6 underline decoration-4 decoration-[#ffd76a] underline-offset-8">
-               Português
-             </h3>
-             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-4 px-4 pb-20 pointer-events-none">
-                {Array.from({ length: maxLen }).map((_, i) => (
-                  <div 
-                    key={i}
-                    className={`transition-all duration-300 ${activeIdx === i ? 'scale-110' : 'opacity-60 grayscale'}`}
-                  >
-                     <p className={`font-display text-xl md:text-2xl font-black leading-tight ${activeIdx === i ? 'text-[#c4632a]' : 'text-[#5b3a24]'}`}>
-                       {ptLines[i] || "..."}
-                     </p>
-                  </div>
-                ))}
-             </div>
-
-             <div className="mt-auto flex justify-center gap-4 pt-6">
-                <button 
-                   onClick={() => setIsPlaying(true)}
-                   className="bg-[#c4632a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
-                >
-                   <span className="text-lg">🔊</span> OUVIR
-                </button>
-                <button className="bg-[#ffd76a] text-[#5b3a24] px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0">
-                   <span className="text-lg">🎵</span> CANTAR JUNTO
-                </button>
-             </div>
-          </div>
-        </div>
-
-        {/* Right Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
-           <div className="relative group">
-              <span className="text-9xl block drop-shadow-xl kid-bounce" style={{ animationDelay: '0.3s' }}>🧒🏽</span>
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-2 text-sm font-black border-4 border-[#8b5a2b] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                 Estou pronto!
               </div>
-           </div>
+            );
+          })}
+        </div>
+      )}
+      <div className="mx-auto flex max-w-4xl items-center gap-3">
+        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce">
+          🎶
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-display text-base font-black text-amber-200">
+            {song.title}
+          </div>
+          {song.artist && (
+            <div className="truncate text-[11px] font-bold text-emerald-100/80">
+              {song.artist}
+            </div>
+          )}
+          <audio
+            ref={ref}
+            src={song.audio_url}
+            controls
+            className="mt-1 w-full"
+            preload="auto"
+            data-testid="kids-audio"
+            onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
+            onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration || 0)}
+            onError={() => setAudioError(true)}
+          />
+          {audioError && (
+            <button
+              onClick={retryAudio}
+              className="mt-1 rounded-xl border-2 border-white bg-amber-300 px-3 py-1 font-display text-xs font-black text-emerald-950"
+            >
+              Tocar de novo 🔁
+            </button>
+          )}
         </div>
 
-        {/* Sun Decor */}
-        <div className="absolute top-6 right-6 text-6xl opacity-20 pointer-events-none kid-spin-slow">☀️</div>
+        <button
+          onClick={onClose}
+          aria-label="Fechar"
+          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
+        >
+          <X className="h-5 w-5" />
+        </button>
       </div>
-
-      {/* Close button */}
-      <button 
-        onClick={onClose}
-        className="absolute -top-4 -right-4 w-12 h-12 bg-rose-500 text-white rounded-full border-4 border-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all z-30"
-      >
-         <X className="w-8 h-8" strokeWidth={3} />
-      </button>
-
-      <audio 
-        ref={audioRef}
-        src={song.audio_url}
-        onTimeUpdate={e => setProgress(e.currentTarget.currentTime)}
-        onLoadedMetadata={e => setAudioDuration(e.currentTarget.duration)}
-        onEnded={() => setIsPlaying(false)}
-        className="hidden"
-      />
-    </motion.div>
+    </div>
   );
-}
-
-
-export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
-  return <KidsSongPlayer song={song} mode="listen" onClose={onClose} />;
 }
 
 function TribalBackdrop() {
@@ -399,9 +365,13 @@ function TribalBackdrop() {
       >
         <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
       </svg>
-    </div>
-  );
-}
+
+      {/* Top tribal zigzag border */}
+      <svg
+        className="absolute inset-x-0 top-0 h-6 w-full text-amber-600/50"
+        viewBox="0 0 400 20"
+        preserveAspectRatio="none"
+      >
         <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
       </svg>
     </div>
