@@ -232,12 +232,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
       <div className="wood-board relative overflow-hidden min-h-[600px] flex shadow-2xl">
         
         {/* Left Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-72 shrink-0">
-           <div className="relative group mb-4">
+        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
+           <div className="relative group mb-8">
               <img 
                 src={anciaoJosa.url} 
                 alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain"
+                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
               />
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
                  Vamos cantar! 🎶
@@ -275,12 +275,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
              <h3 className="font-display text-3xl font-black text-[#2f6d3a] mb-8 underline decoration-[6px] decoration-[#7cd88a]/40 underline-offset-[12px] tracking-tight">
                Patxôhã
              </h3>
-             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24">
+             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 scroll-smooth">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i} 
                     ref={(el: HTMLDivElement | null) => { lineRefs.current[i] = el; }}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 translate-x-2' : 'opacity-30 blur-[1px]'}`}
+                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
                   >
                      <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
                        {indLines[i] || "..."}
@@ -307,11 +307,11 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
              <h3 className="font-display text-3xl font-black text-[#c4632a] mb-8 underline decoration-[6px] decoration-[#ffd76a]/40 underline-offset-[12px] tracking-tight">
                Português
              </h3>
-             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 pointer-events-none">
+             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 pointer-events-none scroll-smooth">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 -translate-x-2' : 'opacity-30 blur-[1px]'}`}
+                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 -translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
                   >
                      <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#c4632a]' : 'text-[#5b3a24]'}`}>
                        {ptLines[i] || "..."}
@@ -335,12 +335,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
         </div>
 
         {/* Right Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-72 shrink-0">
-           <div className="relative group mb-4">
+        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
+           <div className="relative group mb-8">
               <img 
                 src={criancaCocar.url} 
                 alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain"
+                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
                 style={{ animationDelay: '0.3s' }}
               />
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
