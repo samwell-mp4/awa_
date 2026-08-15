@@ -168,7 +168,7 @@ export default {
   },
   translator: {
     title: "Patxôhã ⇄ Portuguese Translator",
-    subtitle: "AI-assisted translation using the platform's official dictionary.",
+    subtitle: "AI-assisted translation using the platform's official dictionary. Ask freely — by clicking or asking questions, audio will be produced automatically.",
     label: "Translator",
     premiumTitle: "Premium Translator",
     premiumDescription:

@@ -168,7 +168,7 @@ export default {
   },
   translator: {
     title: "Tradutor Patxôhã ⇄ Português",
-    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma.",
+    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma. Pergunte à vontade — ao clicar ou fazer perguntas produzir áudio automaticamente.",
     label: "Tradutor",
     premiumTitle: "Tradutor Premium",
     premiumDescription: "Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.",
