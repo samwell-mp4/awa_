@@ -1,8 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
+interface ServerContext {
+  supabase: SupabaseClient;
+  userId: string;
+}
+
+async function assertAdmin(ctx: ServerContext) {
   const { data } = await ctx.supabase.rpc("has_role", { _user_id: ctx.userId, _role: "admin" });
   if (!data) throw new Error("Acesso negado");
 }
@@ -10,8 +16,9 @@ async function assertAdmin(ctx: { supabase: any; userId: string }) {
 export const getSiteConfig = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
-    if (!context || !context.supabase) throw new Error("Supabase client not found");
-    const { data, error } = await context.supabase
+    const ctx = context as unknown as ServerContext;
+    if (!ctx.supabase) throw new Error("Supabase client not found");
+    const { data, error } = await ctx.supabase
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
@@ -27,9 +34,10 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
     value: z.any()
   }).parse(data))
   .handler(async ({ data, context }) => {
-    if (!context || !context.supabase) throw new Error("Supabase client not found");
-    await assertAdmin(context as any);
-    const { error } = await context.supabase
+    const ctx = context as unknown as ServerContext;
+    if (!ctx.supabase) throw new Error("Supabase client not found");
+    await assertAdmin(ctx);
+    const { error } = await ctx.supabase
       .from("site_config" as any)
       .upsert({ key: data.key, value: data.value, updated_at: new Date().toISOString() });
     if (error) throw error;
@@ -38,14 +46,13 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
 
 export const getSongsWithReference = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
-    if (!context || !context.supabase) throw new Error("Supabase client not found");
-    const { data, error } = await context.supabase
-      .from("songs")
+    const ctx = context as unknown as ServerContext;
+    if (!ctx.supabase) throw new Error("Supabase client not found");
+    const { data, error } = await ctx.supabase
+      .from("songs" as any)
       .select("*")
       .eq("is_active", true)
       .order("order_index");
     if (error) throw error;
-
-    // Se o usuário pedir o layout da imagem, podemos ter uma música "demo" no topo
     return data;
   });
