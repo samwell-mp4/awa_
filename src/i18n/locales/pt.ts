@@ -119,17 +119,16 @@ export default {
     kidsLoading: "Preparando…",
   },
   infantil: {
-    title: "Trilha da Aldeia",
+    title: "Trilhas da Aldeia",
     description: "Menu ilustrado com trilhas, cânticos, histórias, jogos e amizade.",
     hotspots: {
       trilhas: "Trilhas",
-      cantico: "Cântico",
-      
-      historia: "História Infantil",
+      cantico: "Cânticos",
+      historia: "Histórias",
       jogos: "Jogos",
       amizade: "Amizade",
-      
     },
+    learning: "Aprendendo Patxôhã",
   },
   premium: {
     verPlanos: "Ver planos Premium",

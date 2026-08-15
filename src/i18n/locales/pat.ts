@@ -87,11 +87,10 @@ export default {
     hotspots: {
       trilhas: "Auê Pahí",
       cantico: "Ĩmãyã",
-      
       historia: "Awê Nitxĩ",
       jogos: "Kutxâ",
       amizade: "Aria",
-      
-    }
+    },
+    learning: "Kaí Patxôhã",
   }
 };

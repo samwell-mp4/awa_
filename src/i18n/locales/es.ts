@@ -123,13 +123,12 @@ export default {
     description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
     hotspots: {
       trilhas: "Senderos",
-      cantico: "Canto",
-      
-      historia: "Historia Infantil",
+      cantico: "Cantos",
+      historia: "Historias",
       jogos: "Juegos",
       amizade: "Amistad",
-      
     },
+    learning: "Aprendiendo Patxôhã",
   },
   premium: {
     verPlanos: "Ver planes Premium",

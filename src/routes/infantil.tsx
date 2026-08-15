@@ -152,7 +152,7 @@ function InfantilHome() {
 
         <section className="mt-12">
           <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-            {t("Aprendendo Patxôhã")}
+            {t("infantil.learning")}
           </h2>
           <GlossarioInfantil />
         </section>

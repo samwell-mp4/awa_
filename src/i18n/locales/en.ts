@@ -123,13 +123,12 @@ export default {
     description: "Illustrated menu with trails, chants, stories, games and friendship.",
     hotspots: {
       trilhas: "Trails",
-      cantico: "Chant",
-      
-      historia: "Kids' Story",
+      cantico: "Chants",
+      historia: "Stories",
       jogos: "Games",
       amizade: "Friendship",
-      
     },
+    learning: "Learning Patxôhã",
   },
   premium: {
     verPlanos: "View Premium plans",
