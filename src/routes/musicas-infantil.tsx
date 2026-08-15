@@ -109,12 +109,6 @@ export function MusicasInfantilPage() {
 
           <div className="flex-1 flex justify-center">
              <div className="px-8 py-2 bg-[#8b5a2b] border-4 border-[#5b3a24] rounded-b-3xl shadow-lg relative -top-6">
-                <img 
-                  src="/logo-infantil.png" 
-                  alt="Awã Tech" 
-                  className="h-12 brightness-0 invert opacity-90"
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
-                />
                 <div className="text-amber-200 text-center font-black text-xl uppercase tracking-widest mt-1">
                    Awã Tech
                 </div>
@@ -176,7 +170,7 @@ export function MusicasInfantilPage() {
 }
 
 function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 'sing', onClose: () => void }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const lang = useLang();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
@@ -296,7 +290,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
              
              <div className="mt-auto flex justify-center gap-4 pt-6">
                 <button 
-                  onClick={() => setIsPlaying(true)}
+                  onClick={() => { if (audioRef.current) audioRef.current.play(); setIsPlaying(true); }}
                   className="bg-[#2f6d3a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
                 >
                    <span className="text-lg">🔊</span> OUVIR
@@ -327,7 +321,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
 
              <div className="mt-auto flex justify-center gap-4 pt-6">
                 <button 
-                   onClick={() => setIsPlaying(true)}
+                   onClick={() => { if (audioRef.current) audioRef.current.play(); setIsPlaying(true); }}
                    className="bg-[#c4632a] text-white px-6 py-2 rounded-xl border-b-4 border-black/20 flex items-center gap-2 font-black text-sm uppercase shadow-lg active:translate-y-0.5 active:border-b-0"
                 >
                    <span className="text-lg">🔊</span> OUVIR
@@ -372,7 +366,6 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
     </motion.div>
   );
 }
-
 
 export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
   return <KidsSongPlayer song={song} mode="listen" onClose={onClose} />;
