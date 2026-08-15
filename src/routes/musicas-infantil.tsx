@@ -275,12 +275,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
              <h3 className="font-display text-3xl font-black text-[#2f6d3a] mb-8 underline decoration-[6px] decoration-[#7cd88a]/40 underline-offset-[12px] tracking-tight">
                Patxôhã
              </h3>
-             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24">
+             <div ref={boxRef} className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 scroll-smooth">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i} 
                     ref={(el: HTMLDivElement | null) => { lineRefs.current[i] = el; }}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 translate-x-2' : 'opacity-30 blur-[1px]'}`}
+                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
                   >
                      <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#2f6d3a]' : 'text-[#5b3a24]'}`}>
                        {indLines[i] || "..."}
@@ -307,11 +307,11 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
              <h3 className="font-display text-3xl font-black text-[#c4632a] mb-8 underline decoration-[6px] decoration-[#ffd76a]/40 underline-offset-[12px] tracking-tight">
                Português
              </h3>
-             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 pointer-events-none">
+             <div className="flex-1 lyrics-scroll overflow-y-auto space-y-6 px-4 pb-24 pointer-events-none scroll-smooth">
                 {Array.from({ length: maxLen }).map((_, i) => (
                   <div 
                     key={i}
-                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 -translate-x-2' : 'opacity-30 blur-[1px]'}`}
+                    className={`transition-all duration-500 transform ${activeIdx === i ? 'scale-110 -translate-x-2' : 'opacity-30 blur-[0.5px]'}`}
                   >
                      <p className={`font-display text-2xl md:text-3xl font-black leading-tight tracking-tight ${activeIdx === i ? 'text-[#c4632a]' : 'text-[#5b3a24]'}`}>
                        {ptLines[i] || "..."}
