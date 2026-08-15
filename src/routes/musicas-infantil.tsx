@@ -49,7 +49,7 @@ type Song = {
   duration_seconds: number | null;
 };
 
-export function MusicasInfantilPage() {
+function MusicasInfantilPage() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     queryFn: async () => {
@@ -398,6 +398,11 @@ function TribalBackdrop() {
         preserveAspectRatio="none"
       >
         <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
       </svg>
     </div>
   );
