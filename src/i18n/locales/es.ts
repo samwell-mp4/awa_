@@ -119,7 +119,7 @@ export default {
     kidsLoading: "Preparando…",
   },
   infantil: {
-    title: "Sendero de la Aldea",
+    title: "Senderos de la Aldea",
     description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
     hotspots: {
       trilhas: "Senderos",

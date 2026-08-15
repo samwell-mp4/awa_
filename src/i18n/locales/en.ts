@@ -119,7 +119,7 @@ export default {
     kidsLoading: "Preparing…",
   },
   infantil: {
-    title: "Village Trail",
+    title: "Village Trails",
     description: "Illustrated menu with trails, chants, stories, games and friendship.",
     hotspots: {
       trilhas: "Trails",
