@@ -1,4 +1,5 @@
 import { speak } from "@/lib/speak";
+import { useTranslation } from "react-i18next";
 import { Volume2 } from "lucide-react";
 
 interface GlossaryItem {
@@ -9,14 +10,14 @@ interface GlossaryItem {
 
 const GLOSSARY_DATA: { category: string; items: GlossaryItem[] }[] = [
   {
-    category: "📌 SAUDAÇÕES",
+    category: "common.trailSaudacoes",
     items: [
       { patxoha: "AWÃ", portugues: "VIDA", audioId: "awa-vida" },
       { patxoha: "KIRIRI", portugues: "OLÁ / SAUDAÇÃO", audioId: "kiriri" },
     ],
   },
   {
-    category: "🌿 NATUREZA",
+    category: "common.trailNatureza",
     items: [
       { patxoha: "ÉHÉ", portugues: "TERRA", audioId: "ehe-terra" },
       { patxoha: "KÍRIRI", portugues: "SOL", audioId: "kiriri-sol" },
@@ -24,14 +25,14 @@ const GLOSSARY_DATA: { category: string; items: GlossaryItem[] }[] = [
     ],
   },
   {
-    category: "👨‍👩‍👧 FAMILIAR",
+    category: "common.trailFamilia",
     items: [
       { patxoha: "AWÁ", portugues: "PESSOA / GENTE", audioId: "awa-pessoa" },
       { patxoha: "TUPÃ", portugues: "GRANDE ESPÍRITO", audioId: "tupa" },
     ],
   },
   {
-    category: "🐾 ANIMAIS",
+    category: "common.trailAnimais",
     items: [
       { patxoha: "KÃ-KÃ", portugues: "PASSARO", audioId: "ka-ka" },
       { patxoha: "YACÁ", portugues: "CÃO", audioId: "yaca-cao" },
@@ -40,6 +41,7 @@ const GLOSSARY_DATA: { category: string; items: GlossaryItem[] }[] = [
 ];
 
 export function GlossarioInfantil() {
+  const { t } = useTranslation();
   const handlePlay = (item: GlossaryItem) => {
     // Tenta usar a narração TTS imediata do speak.ts
     // Se o usuário tiver arquivos mp3 reais em public/audios, o navegador tentaria carregar,
@@ -52,7 +54,7 @@ export function GlossarioInfantil() {
       {GLOSSARY_DATA.map((group) => (
         <div key={group.category} className="space-y-3">
           <h3 className="px-4 text-xs font-black uppercase tracking-widest text-emerald-800/60">
-            {group.category}
+            {t(group.category)}
           </h3>
           <div className="grid gap-3">
             {group.items.map((item) => (

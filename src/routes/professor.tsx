@@ -58,6 +58,7 @@ type L10n = {
   copied: string;
   listen: string;
   send: string;
+  back: string;
   suggestions: { label: string; prompt: string }[];
   errorSpeak: string;
   errorAudio: string;
@@ -78,6 +79,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Ouvir",
     send: "Enviar",
+    back: "Voltar",
     suggestions: [
       { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
       { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
@@ -101,6 +103,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copied",
     listen: "Listen",
     send: "Send",
+    back: "Back",
     suggestions: [
       { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
       { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
@@ -124,6 +127,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Escuchar",
     send: "Enviar",
+    back: "Volver",
     suggestions: [
       { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
       { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
@@ -147,6 +151,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Ouvir",
     send: "Enviar",
+    back: "Iawê",
     suggestions: [
       { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
       { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
@@ -257,7 +262,7 @@ function ProfessorPage() {
             to={backTo as "/"}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold/90 hover:text-gold transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> {L10N[lang].back}
           </Link>
 
           <div className="flex items-center gap-3">

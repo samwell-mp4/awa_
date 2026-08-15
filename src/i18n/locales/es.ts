@@ -119,17 +119,17 @@ export default {
     kidsLoading: "Preparando…",
   },
   infantil: {
-    title: "Sendero de la Aldea",
+    title: "Senderos de la Aldea",
     description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
+    back: "Volver",
     hotspots: {
       trilhas: "Senderos",
-      cantico: "Canto",
-      
-      historia: "Historia Infantil",
+      cantico: "Cantos",
+      historia: "Historias",
       jogos: "Juegos",
       amizade: "Amistad",
-      
     },
+    learning: "Aprendiendo Patxôhã",
   },
   premium: {
     verPlanos: "Ver planes Premium",
@@ -169,7 +169,7 @@ export default {
   },
   translator: {
     title: "Traductor Patxôhã ⇄ Portugués",
-    subtitle: "Traducción asistida por IA usando el diccionario oficial de la plataforma.",
+    subtitle: "Traducción asistida por IA usando el diccionario oficial de la plataforma. Pregunta con confianza — al hacer clic o hacer preguntas, el audio se producirá automáticamente.",
     label: "Traductor",
     premiumTitle: "Traductor Premium",
     premiumDescription:

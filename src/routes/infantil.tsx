@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
-
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -107,6 +107,14 @@ function InfantilHome() {
           />
         </div>
 
+        <button
+          onClick={() => window.history.back()}
+          className="group relative z-10 -mt-6 mx-auto flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+        >
+          <ArrowLeft className="h-5 w-5 stroke-[3]" />
+          <span>{t("infantil.back")}</span>
+        </button>
+
         <section
           key={languageKey}
           className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
@@ -152,7 +160,7 @@ function InfantilHome() {
 
         <section className="mt-12">
           <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-            Aprendendo Patxôhã
+            {t("infantil.learning")}
           </h2>
           <GlossarioInfantil />
         </section>
