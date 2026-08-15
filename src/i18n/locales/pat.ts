@@ -90,6 +90,7 @@ export default {
     kidsLoading: "Ãhõmãy…",
   },
   infantil: {
+    back: "Iawê",
     hotspots: {
       trilhas: "Auê Pahí",
       cantico: "Ĩmãyã",

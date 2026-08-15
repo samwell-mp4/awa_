@@ -121,6 +121,7 @@ export default {
   infantil: {
     title: "Trilhas da Aldeia",
     description: "Menu ilustrado com trilhas, cânticos, histórias, jogos e amizade.",
+    back: "Voltar",
     hotspots: {
       trilhas: "Trilhas",
       cantico: "Cânticos",

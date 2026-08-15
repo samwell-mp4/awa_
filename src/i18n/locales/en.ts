@@ -121,6 +121,7 @@ export default {
   infantil: {
     title: "Village Trails",
     description: "Illustrated menu with trails, chants, stories, games and friendship.",
+    back: "Back",
     hotspots: {
       trilhas: "Trails",
       cantico: "Chants",

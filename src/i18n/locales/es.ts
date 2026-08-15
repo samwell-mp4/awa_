@@ -121,6 +121,7 @@ export default {
   infantil: {
     title: "Senderos de la Aldea",
     description: "Menú ilustrado con senderos, cantos, historias, juegos y amistad.",
+    back: "Volver",
     hotspots: {
       trilhas: "Senderos",
       cantico: "Cantos",
