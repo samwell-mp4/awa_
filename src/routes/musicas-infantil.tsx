@@ -227,7 +227,7 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
       </div>
 
       {/* Main Board - Paper/Parchment style */}
-      <div className="bg-[#f4d9a8] border-8 border-[#8b5a2b] rounded-[3rem] shadow-[0_30px_0_0_rgba(91,58,36,0.3)] relative overflow-hidden min-h-[500px] flex">
+      <div className="wood-board relative overflow-hidden min-h-[500px] flex">
         
         {/* Left Character Area */}
         <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
