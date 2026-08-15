@@ -232,12 +232,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
       <div className="wood-board relative overflow-hidden min-h-[600px] flex shadow-2xl">
         
         {/* Left Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-72 shrink-0">
-           <div className="relative group mb-4">
+        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
+           <div className="relative group mb-8">
               <img 
                 src={anciaoJosa.url} 
                 alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain"
+                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
               />
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
                  Vamos cantar! 🎶
@@ -335,12 +335,12 @@ function KidsSongPlayer({ song, mode, onClose }: { song: Song; mode: 'listen' | 
         </div>
 
         {/* Right Character Area */}
-        <div className="hidden lg:flex flex-col justify-end p-8 w-72 shrink-0">
-           <div className="relative group mb-4">
+        <div className="hidden lg:flex flex-col justify-end p-8 w-64 shrink-0">
+           <div className="relative group mb-8">
               <img 
                 src={criancaCocar.url} 
                 alt="Personagem" 
-                className="w-full drop-shadow-2xl kid-bounce object-contain"
+                className="w-full drop-shadow-2xl kid-bounce object-contain max-h-[250px]"
                 style={{ animationDelay: '0.3s' }}
               />
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-6 py-2 text-base font-black border-4 border-[#8b5a2b] shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100 whitespace-nowrap z-30">
