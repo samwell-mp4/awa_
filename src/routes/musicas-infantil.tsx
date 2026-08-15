@@ -49,7 +49,7 @@ type Song = {
   duration_seconds: number | null;
 };
 
-function MusicasInfantilPage() {
+export function MusicasInfantilPage() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     queryFn: async () => {
