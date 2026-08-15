@@ -59,7 +59,7 @@ const THEMES = [
   { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
 ];
 
-function MusicasInfantilPage() {
+export function MusicasInfantilPage() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     staleTime: 1000 * 60 * 30,
