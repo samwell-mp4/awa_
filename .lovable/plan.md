@@ -1,37 +1,32 @@
-# Plan: Premium Kids Songs UI Redesign
+# Premium Kids Songs UI Refinement
 
-Redesign the `musicas-infantil.tsx` page to strictly match the user-provided reference image (indigenous Pixar/kids style), replacing the current "animal grid" layout with the high-fidelity lyrics player shown in the screenshot.
+Finalize the "Cânticos Infantis Pataxó" interface according to the high-fidelity mockup, ensuring a 3D-vibrant, wood-textured aesthetic specifically for children.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The "AWÃ MIRIM" star system (125 ⭐) is currently a visual placeholder. Should these stars be earned by finishing songs or is it a static decorative element for now?
+
+- **Visual Fidelity**: Does the wood plaque header and parchment board match your expectations?
+- **Character Selection**: The mockup shows two characters (boy/girl). I've added them as decorative bounces. Would you like them to be selectable avatars?
 
 ## Proposed Changes
 
-### Assets
-- Register the reference image `kids-song-ui-reference.png` as a project asset for inspiration and potential overlay use.
-- Create or reuse existing Pataxó character avatars (boy and girl with maracas) to match the layout.
+### Styling and Assets
+- Add wood texture and tribal pattern utilities to `src/styles.css`.
+- Implement responsive layout for the two-column lyrics (Patxôhã in green, Portuguese in brown).
+- Enhance the "Kids Song Player" with 3D-style buttons and animated character elements.
 
-### UI Components (src/routes/musicas-infantil.tsx)
-- **Background**: Change to a warm, wood-textured parchment background with jungle elements as seen in the photo.
-- **Header**: Implement the wood-panel header with "Cânticos Infantis Pataxó" flanked by musical notes.
-- **Character Avatars**: Add the boy and girl characters on the left and right sides of the lyrics area.
-- **Dual-Column Lyrics**: 
-    - Left column for **Patxôhã** (indigenous language) with green headings.
-    - Right column for **Português** (translation) with orange/brown headings.
-    - Centered tribal divider with a musical note icon.
-- **Action Buttons**:
-    - "OUVIR" (Listen) and "CANTAR JUNTO" (Sing Along) buttons with specific colors (green/orange) and icons.
-- **Top Navigation**: Add the back and home circular buttons (brown/wood style) and the "AWÃ MIRIM" score badge in the top right.
+### Route Refinement
+- Finalize `src/routes/musicas-infantil.tsx` with full layout integration.
+- Ensure smooth scrolling of synced lyrics in both columns simultaneously.
+- Integrate the `MiniPlayer` component for quick previews from the song grid.
 
-### Logic & Functionality
-- Maintain existing `speak.ts` integration for narration.
-- Keep the synchronized lyrics highlighting logic (`lyric-sync.ts`).
-- Update the `Song` type and data fetching to ensure it populates both language columns.
-- Ensure "OUVIR" plays the narration/audio and "CANTAR JUNTO" plays the karaoke version (or highlights lyrics more aggressively).
+### Integration
+- Verify the `requireArea("infantil")` guard allows correct access for users with the Infantil plan.
+- Ensure "OUVIR" and "CANTAR JUNTO" buttons trigger the appropriate audio/narrator behavior.
 
 ## Technical Details
-- Use Tailwind CSS v4 for layout and custom component styling.
-- Create a new `KidsSongPlayer` component to encapsulate this specific UI.
-- Use `framer-motion` for the "Pixar-like" animations (bounce, float) requested previously to make the UI feel "alive".
-- Responsive design: The two-column layout will stack vertically on mobile while maintaining the decorative elements.
-
-## User Review Required
-- Should the "AWÃ MIRIM" score badge (top right) be functional (connected to user points) or just decorative for now?
-- The reference shows specific characters; should we use generic indigenous character assets or try to match the "Pixar" style of the image exactly?
+- **CSS Variables**: Using Tailwind v4 for custom utilities like `wood-board` and `tribal-divider`.
+- **Framer Motion**: Handling the board entry/exit and character bounce animations.
+- **Audio Logic**: Using `lyric-sync.ts` and `audioRef` to manage progress and column highlighting.
