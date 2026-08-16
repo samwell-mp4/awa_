@@ -238,7 +238,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   const bounds = useMemo(
     () =>
       computeLyricBounds(
-        Array.from({ length: maxLen }, (_, i) => indLines[i] || transLines[i] || ""),
+        indLines.length >= transLines.length ? indLines : transLines,
         duration,
       ),
     [maxLen, duration, song.id, lang],
@@ -288,9 +288,9 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
                     active ? "text-amber-300" : "text-amber-100"
                   }`}
                 >
-                  {indLines[i] || "\u00A0"}
+                  {indLines[i] || transLines[i] || "\u00A0"}
                 </p>
-                {transLines[i] && (
+                {indLines[i] && transLines[i] && (
                   <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
                 )}
               </div>
