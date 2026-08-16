@@ -13,6 +13,11 @@ export function LayoutAdmin() {
   const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil">("landing");
 
 
+  const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
+    queryKey: ["site_config", "landing_hero"],
+    queryFn: () => getFn({ data: "landing_hero" }),
+  });
+
   const { data: hotspots = [], isLoading: loadingHotspots } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
     queryFn: () => getFn({ data: "infantil_hotspots" }),
