@@ -2,8 +2,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles } from "lucide-react";
-import { Field, Input, Textarea, Btn, Card } from "./ui";
+import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle } from "lucide-react";
+import { Field, Input, Textarea, Btn, Card, Progress } from "./ui";
 
 type Song = {
   id: string;
