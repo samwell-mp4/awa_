@@ -3,14 +3,15 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video } from "lucide-react";
+import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
+
 
 export function LayoutAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getSiteConfig);
   const updateFn = useServerFn(updateSiteConfig);
-  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil">("landing");
+  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "experiencia">("landing");
 
 
   const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
@@ -69,12 +70,14 @@ export function LayoutAdmin() {
   return (
     <div className="space-y-6">
       {/* Tab Switcher */}
-      <div className="flex gap-2 p-1 bg-black/20 rounded-2xl w-fit">
+      <div className="flex gap-2 p-1 bg-black/20 rounded-2xl w-fit overflow-x-auto max-w-full">
         {[
           { id: "landing", label: "Geral & Landing", icon: Layout },
           { id: "adulto", label: "Área Adulto", icon: Palette },
           { id: "infantil", label: "Área Infantil", icon: Sparkles },
+          { id: "experiencia", label: "Experiências", icon: Globe },
         ].map((t) => (
+
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id as any)}
@@ -305,31 +308,58 @@ export function LayoutAdmin() {
         </div>
       )}
 
-      {/* Advanced Permissions Notice */}
-      <Card>
-        <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-          <Sparkles className="h-5 w-5 text-gold" /> Permissões Avançadas
-        </h3>
-        <div className="rounded-2xl border border-gold/20 bg-gold/5 p-4">
-          <p className="flex items-center gap-2 text-sm font-medium text-gold">
-            <Sparkles className="h-4 w-4" /> Acesso total sem restrições liberado para administradores.
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
-              <span className="text-lg">✅</span> Editar layout adulto e infantil
+      {activeTab === "experiencia" && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Globe className="h-5 w-5 text-gold" /> Módulos & Experiências
+            </h3>
+            <div className="rounded-2xl border border-gold/20 bg-gold/5 p-4 text-center">
+              <p className="text-sm font-medium text-gold mb-4">
+                Configure quais experiências estão disponíveis para os usuários.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="p-4 rounded-2xl bg-black/20 border border-white/5">
+                  <div className="text-2xl mb-2">🧑‍💼</div>
+                  <div className="font-bold text-cream">Módulo Adulto</div>
+                  <div className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider">Ativo por Padrão</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-black/20 border border-white/5">
+                  <div className="text-2xl mb-2">🧒</div>
+                  <div className="font-bold text-cream">Módulo Infantil</div>
+                  <div className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider">Ativo por Padrão</div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
-              <span className="text-lg">✅</span> Alterar hotspots e navegação
+          </Card>
+
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Sparkles className="h-5 w-5 text-gold" /> Permissões Avançadas
+            </h3>
+            <div className="rounded-2xl border border-gold/20 bg-gold/5 p-4">
+              <p className="flex items-center gap-2 text-sm font-medium text-gold">
+                <Sparkles className="h-4 w-4" /> Acesso total sem restrições liberado para administradores.
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+                  <span className="text-lg">✅</span> Editar layout adulto e infantil
+                </div>
+                <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+                  <span className="text-lg">✅</span> Alterar hotspots e navegação
+                </div>
+                <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+                  <span className="text-lg">✅</span> Gerenciar logos e vídeos globais
+                </div>
+                <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
+                  <span className="text-lg">✅</span> Acesso irrestrito ao sistema
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
-              <span className="text-lg">✅</span> Gerenciar logos e vídeos globais
-            </div>
-            <div className="flex items-center gap-3 rounded-xl bg-black/20 p-3 text-xs text-cream">
-              <span className="text-lg">✅</span> Acesso irrestrito ao sistema
-            </div>
-          </div>
+          </Card>
         </div>
-      </Card>
+      )}
+
     </div>
 
   );
