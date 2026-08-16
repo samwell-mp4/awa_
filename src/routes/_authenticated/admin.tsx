@@ -28,6 +28,7 @@ const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m
 const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").then((m) => ({ default: m.PaymentsAdmin })));
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 const LayoutAdmin = lazy(() => import("@/components/admin/layout-admin").then((m) => ({ default: m.LayoutAdmin })));
+const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) => ({ default: m.SiteAdmin })));
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -48,7 +49,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site";
 
 type Section = {
   k: Tab;
@@ -70,6 +71,7 @@ const SECTIONS: Section[] = [
   { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
   { k: "layout", label: "Design & Layout", icon: LayoutGrid, desc: "Cores, logos e menus visuais.", group: "Sistema", accent: "from-gold/25 to-forest/20" },
+  { k: "site", label: "Gerenciar Site", icon: Wand2, desc: "Acesso total a arquivos e sistema.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
 ];
 
 
@@ -225,6 +227,7 @@ function AdminPage() {
                   {tab === "allowlist" && <AllowlistAdmin />}
                   {tab === "payments" && <PaymentsAdmin />}
                   {tab === "layout" && <LayoutAdmin />}
+                  {tab === "site" && <SiteAdmin />}
                 </Suspense>
 
               </div>
