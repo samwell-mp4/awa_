@@ -61,7 +61,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
           </button>
         )}
         <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
-          <Logo />
+          <Logo mode={isKids ? "infantil" : "adulto"} />
         </div>
         {!isKids && (
           <nav className="hidden xl:flex items-center gap-1">
