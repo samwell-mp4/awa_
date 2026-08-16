@@ -257,12 +257,13 @@ export function SongsAdmin() {
 
 function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] }) {
   const [filter, setFilter] = useState<"all" | "missing" | "sync">("missing");
+  const qc = useQueryClient();
 
   const issues = songs.map(s => {
-    const indLines = s.lyrics_indigenous?.split("\n").filter(l => l.trim()).length || 0;
-    const ptLines = s.lyrics_pt?.split("\n").filter(l => l.trim()).length || 0;
+    const indLines = (s.lyrics_indigenous || "").split("\n").filter(l => l.trim());
+    const ptLines = (s.lyrics_pt || "").split("\n").filter(l => l.trim());
     const isMissing = !s.lyrics_indigenous || !s.lyrics_pt;
-    const isDesync = indLines > 0 && ptLines > 0 && indLines !== ptLines;
+    const isDesync = indLines.length > 0 && ptLines.length > 0 && indLines.length !== ptLines.length;
     
     return { ...s, isMissing, isDesync, indLines, ptLines };
   });
@@ -272,6 +273,35 @@ function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] })
     if (filter === "sync") return s.isDesync;
     return true;
   });
+
+  async function applySuggestion(song: Song, type: "pt-to-ind" | "ind-to-pt" | "fill-empty") {
+    let newIndigenous = song.lyrics_indigenous;
+    let newPt = song.lyrics_pt;
+
+    const indLines = (song.lyrics_indigenous || "").split("\n").filter(l => l.trim());
+    const ptLines = (song.lyrics_pt || "").split("\n").filter(l => l.trim());
+
+    if (type === "pt-to-ind") {
+      newIndigenous = song.lyrics_pt;
+    } else if (type === "ind-to-pt") {
+      newPt = song.lyrics_indigenous;
+    } else if (type === "fill-empty") {
+      if (indLines.length > ptLines.length) {
+        newPt = song.lyrics_indigenous;
+      } else {
+        newIndigenous = song.lyrics_pt;
+      }
+    }
+
+    const { error } = await supabase.from("songs").update({
+      lyrics_indigenous: newIndigenous,
+      lyrics_pt: newPt
+    }).eq("id", song.id);
+
+    if (error) return toast.error(error.message);
+    toast.success("Sugestão aplicada!");
+    qc.invalidateQueries({ queryKey: ["songs_admin"] });
+  }
 
   return (
     <div className="space-y-4 animate-in fade-in duration-500">
@@ -303,10 +333,34 @@ function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] })
                   <h3 className="font-display font-black text-cream">{s.title}</h3>
                   <div className="flex gap-2 mt-1">
                     {s.isMissing && <span className="px-2 py-0.5 rounded-full bg-rose-500 text-[10px] font-black uppercase text-white">Letra Ausente</span>}
-                    {s.isDesync && <span className="px-2 py-0.5 rounded-full bg-orange-500 text-[10px] font-black uppercase text-white">Versos Desalinhados ({s.indLines} vs {s.ptLines})</span>}
+                    {s.isDesync && <span className="px-2 py-0.5 rounded-full bg-orange-500 text-[10px] font-black uppercase text-white">Versos Desalinhados ({s.indLines.length} vs {s.ptLines.length})</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                   {s.isDesync && (
+                     <div className="flex gap-2">
+                       <button 
+                         onClick={() => applySuggestion(s, "ind-to-pt")}
+                         className="px-3 py-1.5 rounded-xl bg-white/10 text-[10px] font-bold text-cream hover:bg-white/20 transition border border-white/10"
+                       >
+                         Usar Indígena no PT
+                       </button>
+                       <button 
+                         onClick={() => applySuggestion(s, "pt-to-ind")}
+                         className="px-3 py-1.5 rounded-xl bg-white/10 text-[10px] font-bold text-cream hover:bg-white/20 transition border border-white/10"
+                       >
+                         Usar PT no Indígena
+                       </button>
+                     </div>
+                   )}
+                   {s.isMissing && (
+                     <button 
+                       onClick={() => applySuggestion(s, "fill-empty")}
+                       className="px-3 py-1.5 rounded-xl bg-gold/20 text-[10px] font-bold text-gold hover:bg-gold/30 transition border border-gold/30"
+                     >
+                       Replicar letra disponível
+                     </button>
+                   )}
                    {s.audio_url && (
                      <audio src={s.audio_url} controls className="h-8 w-40 opacity-50 hover:opacity-100 transition" />
                    )}
