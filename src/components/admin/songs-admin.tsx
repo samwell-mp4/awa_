@@ -303,18 +303,65 @@ function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] })
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
   }
 
+  const stats = useMemo(() => {
+    const total = issues.length;
+    const clean = issues.filter(s => !s.isMissing && !s.isDesync).length;
+    const pct = total > 0 ? Math.round((clean / total) * 100) : 100;
+    return { total, clean, pct };
+  }, [issues]);
+
   return (
-    <div className="space-y-4 animate-in fade-in duration-500">
-      <div className="flex gap-2">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Overview Stats */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Card>
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-gold/10 text-gold">
+              <Music className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-black text-cream">{stats.total}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50 text-nowrap">Total de Músicas</div>
+            </div>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-500">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-black text-cream">{stats.clean}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50 text-nowrap">Prontas (100%)</div>
+            </div>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex flex-col justify-center">
+            <div className="flex justify-between items-end mb-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/50">Progresso Geral</span>
+              <span className="text-lg font-black text-gold">{stats.pct}%</span>
+            </div>
+            <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-gold/50 to-gold transition-all duration-1000" 
+                style={{ width: `${stats.pct}%` }}
+              />
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="flex gap-2 p-1 bg-black/20 rounded-xl w-fit">
         {(["missing", "sync", "all"] as const).map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1 rounded-full text-xs font-bold transition ${
-              filter === f ? "bg-white/20 text-cream ring-1 ring-white/40" : "text-foreground/50 hover:text-cream"
+            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${
+              filter === f ? "bg-white/10 text-cream ring-1 ring-white/20" : "text-foreground/50 hover:text-cream"
             }`}
           >
-            {f === "missing" ? "Letras Ausentes" : f === "sync" ? "Fora de Sincronia" : "Todas"}
+            {f === "missing" ? "Letras Ausentes" : f === "sync" ? "Fora de Sincronia" : "Todas as Músicas"}
           </button>
         ))}
       </div>
@@ -326,49 +373,71 @@ function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] })
              <p className="font-bold text-cream">Tudo limpo! Nenhuma música com problemas nesta categoria.</p>
           </div>
         ) : (
-          filtered.map(s => (
-            <div key={s.id} className={`p-1 rounded-[2rem] bg-gradient-to-br ${s.isDesync ? "from-orange-500/20 to-red-500/10" : "from-rose-500/20 to-rose-600/10"} border border-white/5`}>
-              <div className="px-6 py-4 flex items-center justify-between gap-4 border-b border-white/5">
-                <div>
-                  <h3 className="font-display font-black text-cream">{s.title}</h3>
-                  <div className="flex gap-2 mt-1">
-                    {s.isMissing && <span className="px-2 py-0.5 rounded-full bg-rose-500 text-[10px] font-black uppercase text-white">Letra Ausente</span>}
-                    {s.isDesync && <span className="px-2 py-0.5 rounded-full bg-orange-500 text-[10px] font-black uppercase text-white">Versos Desalinhados ({s.indLines.length} vs {s.ptLines.length})</span>}
+          filtered.map(s => {
+            const score = 100 - (s.isMissing ? 50 : 0) - (s.isDesync ? 50 : 0);
+            return (
+              <div key={s.id} className={`group p-1 rounded-[2.5rem] bg-gradient-to-br ${s.isDesync ? "from-orange-500/20 to-red-500/10" : "from-rose-500/20 to-rose-600/10"} border border-white/5 transition hover:border-white/20`}>
+                <div className="px-6 py-4 flex flex-wrap items-center justify-between gap-4 border-b border-white/5">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-lg font-black text-cream truncate">{s.title}</h3>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${s.lyrics_indigenous ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"}`}>
+                        {s.lyrics_indigenous ? <CheckCircle2 className="h-3 w-3" /> : <XCircle className="h-3 w-3" />}
+                        Letra Indígena
+                      </div>
+                      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${s.lyrics_pt ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"}`}>
+                        {s.lyrics_pt ? <CheckCircle2 className="h-3 w-3" /> : <XCircle className="h-3 w-3" />}
+                        Letra Português
+                      </div>
+                      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${!s.isDesync ? "bg-emerald-500/20 text-emerald-400" : "bg-orange-500/20 text-orange-400"}`}>
+                        {!s.isDesync ? <CheckCircle2 className="h-3 w-3" /> : <AlertCircle className="h-3 w-3" />}
+                        Sincronia ({s.indLines.length} vs {s.ptLines.length})
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-6">
+                    <div className="text-center">
+                      <div className={`text-2xl font-black ${score === 100 ? "text-emerald-400" : score >= 50 ? "text-orange-400" : "text-rose-400"}`}>
+                        {score}
+                      </div>
+                      <div className="text-[8px] font-bold uppercase tracking-widest text-foreground/40">Qualidade</div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                       {s.isDesync && (
+                         <div className="flex gap-2">
+                           <button 
+                             onClick={() => applySuggestion(s, "ind-to-pt")}
+                             className="px-3 py-1.5 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-tighter text-cream hover:bg-white/10 transition border border-white/10"
+                           >
+                             Fix: Usar Indígena
+                           </button>
+                           <button 
+                             onClick={() => applySuggestion(s, "pt-to-ind")}
+                             className="px-3 py-1.5 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-tighter text-cream hover:bg-white/10 transition border border-white/10"
+                           >
+                             Fix: Usar PT
+                           </button>
+                         </div>
+                       )}
+                       {s.isMissing && (
+                         <button 
+                           onClick={() => applySuggestion(s, "fill-empty")}
+                           className="px-4 py-2 rounded-xl bg-gold text-[10px] font-black uppercase tracking-wider text-forest-deep hover:scale-105 transition shadow-lg"
+                         >
+                           Autofill: Replicar Letra
+                         </button>
+                       )}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                   {s.isDesync && (
-                     <div className="flex gap-2">
-                       <button 
-                         onClick={() => applySuggestion(s, "ind-to-pt")}
-                         className="px-3 py-1.5 rounded-xl bg-white/10 text-[10px] font-bold text-cream hover:bg-white/20 transition border border-white/10"
-                       >
-                         Usar Indígena no PT
-                       </button>
-                       <button 
-                         onClick={() => applySuggestion(s, "pt-to-ind")}
-                         className="px-3 py-1.5 rounded-xl bg-white/10 text-[10px] font-bold text-cream hover:bg-white/20 transition border border-white/10"
-                       >
-                         Usar PT no Indígena
-                       </button>
-                     </div>
-                   )}
-                   {s.isMissing && (
-                     <button 
-                       onClick={() => applySuggestion(s, "fill-empty")}
-                       className="px-3 py-1.5 rounded-xl bg-gold/20 text-[10px] font-bold text-gold hover:bg-gold/30 transition border border-gold/30"
-                     >
-                       Replicar letra disponível
-                     </button>
-                   )}
-                   {s.audio_url && (
-                     <audio src={s.audio_url} controls className="h-8 w-40 opacity-50 hover:opacity-100 transition" />
-                   )}
+                <div className="overflow-hidden transition-all duration-500">
+                  <SongRow song={s} ambients={ambients} />
                 </div>
               </div>
-              <SongRow song={s} ambients={ambients} />
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
