@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2 } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 
 type Song = {
@@ -60,6 +60,7 @@ export function SongsAdmin() {
   const [draft, setDraft] = useState(defaultDraft);
   const [uploading, setUploading] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [mode, setMode] = useState<"list" | "review">("list");
 
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_admin"],
@@ -121,103 +122,199 @@ export function SongsAdmin() {
 
   return (
     <div className="space-y-4">
-      <Card>
-        <h2 className="font-display text-lg font-black text-cream mb-3 flex items-center gap-2">
-          <Music className="h-5 w-5 text-gold" /> Nova música
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h2 className="font-display text-xl font-black text-cream flex items-center gap-2">
+          <Music className="h-6 w-6 text-gold" /> Gestão de Músicas
         </h2>
-
-        <div className="grid gap-3 md:grid-cols-2">
-          <Field label="Título">
-            <Input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
-          </Field>
-          <Field label="Artista / cantor">
-            <Input value={draft.artist} onChange={(e) => setDraft({ ...draft, artist: e.target.value })} />
-          </Field>
-          <Field label="Língua">
-            <Input value={draft.language} onChange={(e) => setDraft({ ...draft, language: e.target.value })} />
-          </Field>
-          <Field label="Vídeo ambiente (de fundo)">
-            <select
-              value={draft.ambient_video_id}
-              onChange={(e) => setDraft({ ...draft, ambient_video_id: e.target.value })}
-              className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
-            >
-              <option value="">Nenhum (capa estática)</option>
-              {ambients.map((a) => (
-                <option key={a.id} value={a.id}>{a.name}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Aldeia">
-            <select
-              value={draft.aldeia}
-              onChange={(e) => setDraft({ ...draft, aldeia: e.target.value })}
-              className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
-            >
-              <option value="">Nenhuma</option>
-              {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </Field>
+        <div className="flex gap-2 p-1 bg-black/20 rounded-xl">
+          <button
+            onClick={() => setMode("list")}
+            className={`px-4 py-1.5 rounded-lg text-sm font-bold transition ${
+              mode === "list" ? "bg-gold text-forest-deep shadow-lg" : "text-foreground/60 hover:text-cream"
+            }`}
+          >
+            Lista & Cadastro
+          </button>
+          <button
+            onClick={() => setMode("review")}
+            className={`px-4 py-1.5 rounded-lg text-sm font-bold transition flex items-center gap-2 ${
+              mode === "review" ? "bg-rose-500 text-white shadow-lg" : "text-foreground/60 hover:text-rose-400"
+            }`}
+          >
+            <Sparkles className="h-4 w-4" /> Modo Revisão
+          </button>
         </div>
+      </div>
 
-        <div className="mt-3 grid gap-3 md:grid-cols-2">
-          <UploadOrUrl
-            label="Áudio (upload MP3 ou cole URL)"
-            value={draft.audio_url}
-            onChange={(v) => setDraft({ ...draft, audio_url: v })}
-            onFile={(f) => handleUpload("audio_url", f)}
-            accept="audio/*"
-            busy={uploading === "audio_url"}
-          />
-          <UploadOrUrl
-            label="Capa (upload imagem ou cole URL)"
-            value={draft.cover_url}
-            onChange={(v) => setDraft({ ...draft, cover_url: v })}
-            onFile={(f) => handleUpload("cover_url", f)}
-            accept="image/*"
-            busy={uploading === "cover_url"}
-          />
-        </div>
+      {mode === "list" ? (
+        <>
+          <Card>
+            <h2 className="font-display text-lg font-black text-cream mb-3 flex items-center gap-2">
+              <Plus className="h-5 w-5 text-gold" /> Nova música
+            </h2>
 
-        <div className="mt-3 grid gap-3 md:grid-cols-2">
-          <Field label="Letra (idioma indígena) — uma linha por verso">
-            <Textarea
-              rows={8}
-              value={draft.lyrics_indigenous}
-              onChange={(e) => setDraft({ ...draft, lyrics_indigenous: e.target.value })}
-              placeholder="Awere kanaema...&#10;Patxôhã ãhão txuru..."
-            />
-          </Field>
-          <Field label="Tradução (português) — uma linha por verso">
-            <Textarea
-              rows={8}
-              value={draft.lyrics_pt}
-              onChange={(e) => setDraft({ ...draft, lyrics_pt: e.target.value })}
-              placeholder="Bom dia, sol...&#10;A língua Patxôhã vive..."
-            />
-          </Field>
-        </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <Field label="Título">
+                <Input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
+              </Field>
+              <Field label="Artista / cantor">
+                <Input value={draft.artist} onChange={(e) => setDraft({ ...draft, artist: e.target.value })} />
+              </Field>
+              <Field label="Língua">
+                <Input value={draft.language} onChange={(e) => setDraft({ ...draft, language: e.target.value })} />
+              </Field>
+              <Field label="Vídeo ambiente (de fundo)">
+                <select
+                  value={draft.ambient_video_id}
+                  onChange={(e) => setDraft({ ...draft, ambient_video_id: e.target.value })}
+                  className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+                >
+                  <option value="">Nenhum (capa estática)</option>
+                  {ambients.map((a) => (
+                    <option key={a.id} value={a.id}>{a.name}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Aldeia">
+                <select
+                  value={draft.aldeia}
+                  onChange={(e) => setDraft({ ...draft, aldeia: e.target.value })}
+                  className="rounded-xl border border-gold/25 bg-card/60 px-3 py-2.5 text-sm text-cream"
+                >
+                  <option value="">Nenhuma</option>
+                  {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
+                </select>
+              </Field>
+            </div>
 
-        <Field label="Descrição (opcional)">
-          <Textarea
-            rows={2}
-            value={draft.description}
-            onChange={(e) => setDraft({ ...draft, description: e.target.value })}
-          />
-        </Field>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <UploadOrUrl
+                label="Áudio (upload MP3 ou cole URL)"
+                value={draft.audio_url}
+                onChange={(v) => setDraft({ ...draft, audio_url: v })}
+                onFile={(f) => handleUpload("audio_url", f)}
+                accept="audio/*"
+                busy={uploading === "audio_url"}
+              />
+              <UploadOrUrl
+                label="Capa (upload imagem ou cole URL)"
+                value={draft.cover_url}
+                onChange={(v) => setDraft({ ...draft, cover_url: v })}
+                onFile={(f) => handleUpload("cover_url", f)}
+                accept="image/*"
+                busy={uploading === "cover_url"}
+              />
+            </div>
 
-        <Btn className="mt-4" onClick={add} disabled={saving}>
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-          Publicar música
-        </Btn>
-      </Card>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <Field label="Letra (idioma indígena) — uma linha por verso">
+                <Textarea
+                  rows={8}
+                  value={draft.lyrics_indigenous}
+                  onChange={(e) => setDraft({ ...draft, lyrics_indigenous: e.target.value })}
+                  placeholder="Awere kanaema...&#10;Patxôhã ãhão txuru..."
+                />
+              </Field>
+              <Field label="Tradução (português) — uma linha por verso">
+                <Textarea
+                  rows={8}
+                  value={draft.lyrics_pt}
+                  onChange={(e) => setDraft({ ...draft, lyrics_pt: e.target.value })}
+                  placeholder="Bom dia, sol...&#10;A língua Patxôhã vive..."
+                />
+              </Field>
+            </div>
 
-      <div className="grid gap-3">
-        {songs.map((s) => (
-          <SongRow key={s.id} song={s} ambients={ambients} />
+            <Field label="Descrição (opcional)">
+              <Textarea
+                rows={2}
+                value={draft.description}
+                onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              />
+            </Field>
+
+            <Btn className="mt-4" onClick={add} disabled={saving}>
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+              Publicar música
+            </Btn>
+          </Card>
+
+          <div className="grid gap-3">
+            {songs.map((s) => (
+              <SongRow key={s.id} song={s} ambients={ambients} />
+            ))}
+            {songs.length === 0 && (
+              <div className="text-center text-foreground/60 py-8">Nenhuma música cadastrada.</div>
+            )}
+          </div>
+        </>
+      ) : (
+        <ReviewMode songs={songs} ambients={ambients} />
+      )}
+    </div>
+  );
+}
+
+function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] }) {
+  const [filter, setFilter] = useState<"all" | "missing" | "sync">("missing");
+
+  const issues = songs.map(s => {
+    const indLines = s.lyrics_indigenous?.split("\n").filter(l => l.trim()).length || 0;
+    const ptLines = s.lyrics_pt?.split("\n").filter(l => l.trim()).length || 0;
+    const isMissing = !s.lyrics_indigenous || !s.lyrics_pt;
+    const isDesync = indLines > 0 && ptLines > 0 && indLines !== ptLines;
+    
+    return { ...s, isMissing, isDesync, indLines, ptLines };
+  });
+
+  const filtered = issues.filter(s => {
+    if (filter === "missing") return s.isMissing;
+    if (filter === "sync") return s.isDesync;
+    return true;
+  });
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-500">
+      <div className="flex gap-2">
+        {(["missing", "sync", "all"] as const).map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`px-3 py-1 rounded-full text-xs font-bold transition ${
+              filter === f ? "bg-white/20 text-cream ring-1 ring-white/40" : "text-foreground/50 hover:text-cream"
+            }`}
+          >
+            {f === "missing" ? "Letras Ausentes" : f === "sync" ? "Fora de Sincronia" : "Todas"}
+          </button>
         ))}
-        {songs.length === 0 && (
-          <div className="text-center text-foreground/60 py-8">Nenhuma música cadastrada.</div>
+      </div>
+
+      <div className="grid gap-4">
+        {filtered.length === 0 ? (
+          <div className="py-20 text-center space-y-4 rounded-3xl border border-dashed border-white/10">
+             <div className="text-4xl">🎉</div>
+             <p className="font-bold text-cream">Tudo limpo! Nenhuma música com problemas nesta categoria.</p>
+          </div>
+        ) : (
+          filtered.map(s => (
+            <div key={s.id} className={`p-1 rounded-[2rem] bg-gradient-to-br ${s.isDesync ? "from-orange-500/20 to-red-500/10" : "from-rose-500/20 to-rose-600/10"} border border-white/5`}>
+              <div className="px-6 py-4 flex items-center justify-between gap-4 border-b border-white/5">
+                <div>
+                  <h3 className="font-display font-black text-cream">{s.title}</h3>
+                  <div className="flex gap-2 mt-1">
+                    {s.isMissing && <span className="px-2 py-0.5 rounded-full bg-rose-500 text-[10px] font-black uppercase text-white">Letra Ausente</span>}
+                    {s.isDesync && <span className="px-2 py-0.5 rounded-full bg-orange-500 text-[10px] font-black uppercase text-white">Versos Desalinhados ({s.indLines} vs {s.ptLines})</span>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                   {s.audio_url && (
+                     <audio src={s.audio_url} controls className="h-8 w-40 opacity-50 hover:opacity-100 transition" />
+                   )}
+                </div>
+              </div>
+              <SongRow song={s} ambients={ambients} />
+            </div>
+          ))
         )}
       </div>
     </div>
