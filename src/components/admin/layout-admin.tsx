@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Type, Plus, Trash2, Sparkles } from "lucide-react";
+import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
 
 export function LayoutAdmin() {
@@ -21,9 +21,14 @@ export function LayoutAdmin() {
     queryFn: () => getFn({ data: "branding" }),
   });
 
+  const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
+    queryKey: ["site_config", "landing_hero"],
+    queryFn: () => getFn({ data: "landing_hero" }),
+  });
 
   const [hotspotsDraft, setHotspotsDraft] = useState<any[]>([]);
   const [brandingDraft, setBrandingDraft] = useState<any>({});
+  const [heroDraft, setHeroDraft] = useState<any>({});
 
   useEffect(() => {
     if (hotspots) setHotspotsDraft(hotspots);
@@ -33,21 +38,15 @@ export function LayoutAdmin() {
     if (branding) setBrandingDraft(branding);
   }, [branding]);
 
-  async function saveHotspots() {
-    try {
-      await updateFn({ data: { key: "infantil_hotspots", value: hotspotsDraft } });
-      toast.success("Menu infantil atualizado!");
-      qc.invalidateQueries({ queryKey: ["site_config", "infantil_hotspots"] });
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  }
+  useEffect(() => {
+    if (landingHero) setHeroDraft(landingHero);
+  }, [landingHero]);
 
-  async function saveBranding() {
+  async function saveConfig(key: string, value: any, label: string) {
     try {
-      await updateFn({ data: { key: "branding", value: brandingDraft } });
-      toast.success("Identidade visual atualizada!");
-      qc.invalidateQueries({ queryKey: ["site_config", "branding"] });
+      await updateFn({ data: { key, value } });
+      toast.success(`${label} atualizado!`);
+      qc.invalidateQueries({ queryKey: ["site_config", key] });
     } catch (e: any) {
       toast.error(e.message);
     }
@@ -55,9 +54,59 @@ export function LayoutAdmin() {
 
   return (
     <div className="space-y-8">
+      {/* Landing Hero Section */}
       <Card>
         <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-          <ImageIcon className="h-5 w-5 text-gold" /> Identidade Visual
+          <Layout className="h-5 w-5 text-gold" /> Landing Page (Hero)
+        </h3>
+        <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Título Principal (Linha 1)">
+              <Input 
+                value={heroDraft.h1a || ""} 
+                onChange={e => setHeroDraft({...heroDraft, h1a: e.target.value})}
+                placeholder="Ex: Línguas indígenas,"
+              />
+            </Field>
+            <Field label="Título Principal (Destaque Gold)">
+              <Input 
+                value={heroDraft.h1b || ""} 
+                onChange={e => setHeroDraft({...heroDraft, h1b: e.target.value})}
+                placeholder="Ex: culturas vivas."
+              />
+            </Field>
+          </div>
+          <Field label="Texto de Apoio (Lead)">
+            <Input 
+              value={heroDraft.lead || ""} 
+              onChange={e => setHeroDraft({...heroDraft, lead: e.target.value})}
+              placeholder="Descrição curta abaixo do título..."
+            />
+          </Field>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="URL Imagem de Fundo (Desktop)">
+              <Input 
+                value={heroDraft.bg_url || ""} 
+                onChange={e => setHeroDraft({...heroDraft, bg_url: e.target.value})}
+              />
+            </Field>
+            <Field label="Texto Botão Login">
+              <Input 
+                value={heroDraft.entrar_label || ""} 
+                onChange={e => setHeroDraft({...heroDraft, entrar_label: e.target.value})}
+              />
+            </Field>
+          </div>
+        </div>
+        <Btn className="mt-6" onClick={() => saveConfig("landing_hero", heroDraft, "Hero da Landing")}>
+          <Save className="h-4 w-4" /> Salvar Landing Page
+        </Btn>
+      </Card>
+
+      {/* Branding Section */}
+      <Card>
+        <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+          <ImageIcon className="h-5 w-5 text-gold" /> Identidade Visual & Logos
         </h3>
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Logo Infantil (URL)">
@@ -78,12 +127,19 @@ export function LayoutAdmin() {
               onChange={e => setBrandingDraft({...brandingDraft, adulto_logo_url: e.target.value})}
             />
           </Field>
+          <Field label="Vídeo Apresentação Adulto (URL)">
+            <Input 
+              value={brandingDraft.adulto_video_url || ""} 
+              onChange={e => setBrandingDraft({...brandingDraft, adulto_video_url: e.target.value})}
+            />
+          </Field>
         </div>
-        <Btn className="mt-6" onClick={saveBranding}>
-          <Save className="h-4 w-4" /> Salvar Identidade
+        <Btn className="mt-6" onClick={() => saveConfig("branding", brandingDraft, "Identidade Visual")}>
+          <Save className="h-4 w-4" /> Salvar Branding
         </Btn>
       </Card>
 
+      {/* Infantil Hotspots Section */}
       <Card>
         <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
           <Palette className="h-5 w-5 text-gold" /> Menu Infantil (Atalhos)
@@ -135,18 +191,16 @@ export function LayoutAdmin() {
             </div>
           ))}
         </div>
-        <Btn className="mt-6" onClick={saveHotspots}>
-          <Save className="h-4 w-4" /> Salvar Menu
+        <Btn className="mt-6" onClick={() => saveConfig("infantil_hotspots", hotspotsDraft, "Menu Infantil")}>
+          <Save className="h-4 w-4" /> Salvar Menu Infantil
         </Btn>
       </Card>
 
+      {/* Advanced Permissions Notice */}
       <Card>
         <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-          <Layout className="h-5 w-5 text-gold" /> Estrutura do Site (Avançado)
+          <Sparkles className="h-5 w-5 text-gold" /> Permissões Avançadas
         </h3>
-        <p className="mb-4 text-sm text-foreground/70">
-          Gerencie permissões de edição e acesso total aos recursos do painel.
-        </p>
         <div className="rounded-2xl border border-gold/20 bg-gold/5 p-4">
           <p className="flex items-center gap-2 text-sm font-medium text-gold">
             <Sparkles className="h-4 w-4" /> Acesso total sem restrições liberado para administradores.
@@ -170,3 +224,4 @@ export function LayoutAdmin() {
     </div>
   );
 }
+
