@@ -51,6 +51,11 @@ export function LayoutAdmin() {
     if (landingHero) setHeroDraft(landingHero);
   }, [landingHero]);
 
+  useEffect(() => {
+    if (adultHero) setAdultHeroDraft(adultHero);
+  }, [adultHero]);
+
+
   async function saveConfig(key: string, value: any, label: string) {
     try {
       await updateFn({ data: { key, value } });
