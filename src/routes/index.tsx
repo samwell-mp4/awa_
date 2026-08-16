@@ -245,6 +245,8 @@ function LandingChoice() {
   const adultLogoUrl = branding?.adulto_logo_url || adultoLogo.url;
   const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
   const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
+  const childVideoUrl = branding?.infantil_menu_video_url || videoSrc.infantil;
+
 
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
@@ -345,12 +347,13 @@ function LandingChoice() {
             )}
             {!pending && showInfantil && (
               <PresentationVideo
-                key={videoSrc.infantil}
-                src={videoSrc.infantil}
+                key={childVideoUrl}
+                src={childVideoUrl}
                 poster={childLogoUrl}
                 label={vdict.infantil}
               />
             )}
+
           </div>
         </section>
 
