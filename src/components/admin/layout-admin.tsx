@@ -10,6 +10,8 @@ export function LayoutAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getSiteConfig);
   const updateFn = useServerFn(updateSiteConfig);
+  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil">("landing");
+
 
   const { data: hotspots = [], isLoading: loadingHotspots } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
@@ -21,14 +23,16 @@ export function LayoutAdmin() {
     queryFn: () => getFn({ data: "branding" }),
   });
 
-  const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
-    queryKey: ["site_config", "landing_hero"],
-    queryFn: () => getFn({ data: "landing_hero" }),
+  const { data: adultHero = {}, isLoading: loadingAdultHero } = useQuery({
+    queryKey: ["site_config", "adult_hero"],
+    queryFn: () => getFn({ data: "adult_hero" }),
   });
 
   const [hotspotsDraft, setHotspotsDraft] = useState<any[]>([]);
   const [brandingDraft, setBrandingDraft] = useState<any>({});
   const [heroDraft, setHeroDraft] = useState<any>({});
+  const [adultHeroDraft, setAdultHeroDraft] = useState<any>({});
+
 
   useEffect(() => {
     if (hotspots) setHotspotsDraft(hotspots);
