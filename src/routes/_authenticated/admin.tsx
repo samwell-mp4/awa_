@@ -110,7 +110,7 @@ function AdminPage() {
   }, [autoGoogle, loading]);
 
   async function handleGoogleLogin() {
-    setBusy(true);
+    // Note: 'busy' state is already handled by useAuth or local state if we want to show a loader
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -123,8 +123,6 @@ function AdminPage() {
       }
     } catch (err) {
       console.error("Auto Google Login error:", err);
-    } finally {
-      setBusy(false);
     }
   }
 
