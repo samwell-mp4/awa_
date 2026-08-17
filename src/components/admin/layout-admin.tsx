@@ -34,10 +34,16 @@ export function LayoutAdmin() {
     queryFn: () => getFn({ data: "adult_hero" }),
   });
 
+  const { data: menuHamb = {}, isLoading: loadingMenuHamb } = useQuery({
+    queryKey: ["site_config", "menu_hamburguer"],
+    queryFn: () => getFn({ data: "menu_hamburguer" }),
+  });
+
   const [hotspotsDraft, setHotspotsDraft] = useState<any[]>([]);
   const [brandingDraft, setBrandingDraft] = useState<any>({});
   const [heroDraft, setHeroDraft] = useState<any>({});
   const [adultHeroDraft, setAdultHeroDraft] = useState<any>({});
+  const [menuHambDraft, setMenuHambDraft] = useState<any>({});
 
 
   useEffect(() => {
@@ -55,6 +61,10 @@ export function LayoutAdmin() {
   useEffect(() => {
     if (adultHero) setAdultHeroDraft(adultHero);
   }, [adultHero]);
+
+  useEffect(() => {
+    if (menuHamb) setMenuHambDraft(menuHamb);
+  }, [menuHamb]);
 
 
   async function saveConfig(key: string, value: any, label: string) {
@@ -178,6 +188,31 @@ export function LayoutAdmin() {
             </div>
             <Btn className="mt-6" onClick={() => saveConfig("branding", brandingDraft, "Identidade Visual")}>
               <Save className="h-4 w-4" /> Salvar Branding
+            </Btn>
+          </Card>
+          {/* Menu Hamburguer Section */}
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Plus className="h-5 w-5 text-gold" /> Menu Lateral (Hambúrguer)
+            </h3>
+            <div className="space-y-4">
+              <Field label="Título do Menu">
+                <Input 
+                  value={menuHambDraft.title || ""} 
+                  onChange={e => setMenuHambDraft({...menuHambDraft, title: e.target.value})}
+                  placeholder="Ex: Menu Principal"
+                />
+              </Field>
+              <Field label="Rodapé do Menu">
+                <Input 
+                  value={menuHambDraft.footer || ""} 
+                  onChange={e => setMenuHambDraft({...menuHambDraft, footer: e.target.value})}
+                  placeholder="Texto pequeno no fim do menu..."
+                />
+              </Field>
+            </div>
+            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Menu Hamburguer")}>
+              <Save className="h-4 w-4" /> Salvar Menu Lateral
             </Btn>
           </Card>
         </div>
