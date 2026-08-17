@@ -84,6 +84,15 @@ function AdminPage() {
   const [pass, setPass] = useState("");
   const navigate = useNavigate();
 
+  const getFn = useServerFn(getSiteConfig);
+  const { data: menuHamb } = useQuery({
+    queryKey: ["site_config", "menu_hamburguer"],
+    queryFn: () => getFn({ data: "menu_hamburguer" }),
+  });
+
+  const emergencyUser = menuHamb?.emergency_user || "admin";
+  const emergencyPass = menuHamb?.emergency_pass || "awa2026";
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setAdminLogado(localStorage.getItem("adminLogado") === "sim");
@@ -91,8 +100,7 @@ function AdminPage() {
   }, []);
 
   function fazerLogin() {
-    // Credenciais padrão solicitadas
-    if (user === "admin" && pass === "awa2026") {
+    if (user === emergencyUser && pass === emergencyPass) {
       localStorage.setItem("adminLogado", "sim");
       setAdminLogado(true);
       toast.success("Acesso administrativo liberado!");
