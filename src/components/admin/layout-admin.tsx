@@ -432,21 +432,29 @@ export function LayoutAdmin() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-gold/10 bg-black/20 p-5">
+              <div className="space-y-4">
                 <h4 className="flex items-center gap-2 text-sm font-bold text-cream mb-3">
-                  <Shield className="h-4 w-4 text-gold" /> Segurança Supabase
+                  <Plus className="h-4 w-4 text-gold" /> Login Automático
                 </h4>
-                <p className="text-xs text-foreground/70 leading-relaxed">
-                  As permissões reais de banco de dados são geridas via <strong className="text-gold">RLS (Row Level Security)</strong>. 
-                  Mesmo logado no portal rápido, as ações de escrita exigem uma sessão válida do administrador no navegador.
+                <div className="flex items-center gap-3 p-4 rounded-xl bg-black/20 border border-gold/10">
+                  <input 
+                    type="checkbox" 
+                    id="auto-google"
+                    checked={menuHambDraft.auto_google_login || false}
+                    onChange={e => setMenuHambDraft({...menuHambDraft, auto_google_login: e.target.checked})}
+                    className="h-5 w-5 accent-gold cursor-pointer"
+                  />
+                  <label htmlFor="auto-google" className="text-xs font-bold text-cream cursor-pointer">
+                    Entrar automaticamente com Google (OAuth)
+                  </label>
+                </div>
+                <p className="text-[10px] text-foreground/50 leading-relaxed">
+                  Ao ativar esta opção, o painel tentará fazer login automático usando sua sessão do Google caso já esteja autenticado no navegador.
                 </p>
-                <Btn variant="outline" className="mt-4 w-full text-xs" onClick={() => window.open('/auth', '_blank')}>
-                  Verificar Sessão Principal
-                </Btn>
               </div>
             </div>
-            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Credenciais de Acesso")}>
-              <Save className="h-4 w-4" /> Salvar Credenciais
+            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Acesso & Segurança")}>
+              <Save className="h-4 w-4" /> Salvar Configurações
             </Btn>
           </Card>
         </div>
