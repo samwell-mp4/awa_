@@ -402,7 +402,7 @@ export function LayoutAdmin() {
               <div>
                 <h2 className="font-display text-xl font-black text-cream">Acesso Administrativo Externo</h2>
                 <p className="mt-1 text-sm text-foreground/70">
-                  Configure credenciais para acesso rápido via painel de login simplificado.
+                  Configure o login via Google (Gmail) ou credenciais de emergência para acesso rápido.
                 </p>
               </div>
             </div>
