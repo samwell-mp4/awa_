@@ -1,5 +1,6 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { lazy, Suspense, useState } from "react";
+import { toast } from "sonner";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -78,7 +79,27 @@ const SECTIONS: Section[] = [
 function AdminPage() {
   const { loading } = useAuth();
   const [tab, setTab] = useState<Tab>("home");
+  const [adminLogado, setAdminLogado] = useState(false);
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setAdminLogado(localStorage.getItem("adminLogado") === "sim");
+    }
+  }, []);
+
+  function fazerLogin() {
+    // Credenciais padrão solicitadas
+    if (user === "admin" && pass === "awa2026") {
+      localStorage.setItem("adminLogado", "sim");
+      setAdminLogado(true);
+      toast.success("Acesso administrativo liberado!");
+    } else {
+      toast.error("Usuário ou senha incorretos!");
+    }
+  }
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -93,6 +114,49 @@ function AdminPage() {
 
   const active = SECTIONS.find((s) => s.k === tab);
   const groups: Array<Section["group"]> = ["Conteúdo", "Comunidade", "Sistema"];
+
+  if (!adminLogado) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#1a4d2e] to-[#0d2818] font-sans p-4">
+        <div className="w-full max-w-md animate-in fade-in zoom-in duration-300 rounded-3xl bg-white p-8 text-center shadow-2xl">
+          <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-forest/10 text-forest">
+            <KeyRound className="h-8 w-8" />
+          </div>
+          <h1 className="font-display text-2xl font-black text-[#1a4d2e]">🔐 Admin Awã Tech</h1>
+          <p className="mt-1 text-sm font-semibold tracking-wide text-neutral-500">ACESSO RESTRITO</p>
+          
+          <div className="mt-8 space-y-3">
+            <input
+              type="text"
+              placeholder="Usuário"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              className="w-full rounded-xl border-2 border-neutral-100 bg-neutral-50 px-5 py-4 text-neutral-900 transition focus:border-[#1a4d2e] focus:outline-none"
+            />
+            <input
+              type="password"
+              placeholder="Senha"
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && fazerLogin()}
+              className="w-full rounded-xl border-2 border-neutral-100 bg-neutral-50 px-5 py-4 text-neutral-900 transition focus:border-[#1a4d2e] focus:outline-none"
+            />
+          </div>
+
+          <button
+            onClick={fazerLogin}
+            className="mt-6 w-full rounded-xl bg-[#1a4d2e] py-4 text-lg font-bold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98]"
+          >
+            Entrar no Painel
+          </button>
+          
+          <Link to="/" className="mt-6 inline-block text-sm font-medium text-neutral-400 hover:text-neutral-600 transition">
+            Voltar para o site
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-16">
@@ -109,7 +173,10 @@ function AdminPage() {
             <span className="hidden text-lg sm:inline">Painel AWÃ</span>
           </div>
           <button
-            onClick={signOut}
+            onClick={async () => {
+              localStorage.removeItem("adminLogado");
+              await signOut();
+            }}
             className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-3 py-1.5 text-xs font-semibold text-foreground/80 hover:border-gold/60 hover:text-gold"
           >
             <LogOut className="h-3.5 w-3.5" /> Sair
