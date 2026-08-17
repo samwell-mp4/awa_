@@ -410,30 +410,43 @@ export function LayoutAdmin() {
           </Card>
 
           <Card>
-            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-              <Shield className="h-5 w-5 text-gold" /> Credenciais de Emergência
-            </h3>
-            <div className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Usuário Admin">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <h3 className="flex items-center gap-2 font-display text-base font-black text-cream">
+                  <KeyRound className="h-4 w-4 text-gold" /> Portal de Emergência
+                </h3>
+                <Field label="Usuário de Acesso Rápido">
                   <Input 
-                    value={menuHambDraft.admin_user || "admin"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, admin_user: e.target.value})}
+                    value={menuHambDraft.emergency_user || "admin"} 
+                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_user: e.target.value})}
                   />
                 </Field>
-                <Field label="Senha Admin">
+                <Field label="Senha de Acesso Rápido">
                   <Input 
-                    type="password"
-                    value={menuHambDraft.admin_pass || "awa2026"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, admin_pass: e.target.value})}
+                    type="text"
+                    value={menuHambDraft.emergency_pass || "awa2026"} 
+                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_pass: e.target.value})}
                   />
                 </Field>
+                <p className="text-[10px] text-foreground/50 italic">
+                  * Este portal é exibido apenas para usuários com permissão técnica no banco de dados, servindo como uma camada extra de interface.
+                </p>
               </div>
-              <p className="text-[10px] text-foreground/50 bg-black/20 p-3 rounded-lg border border-white/5">
-                Nota: Estas credenciais são usadas no portal de acesso rápido. Para segurança máxima, utilize sempre o login via Google Admin verificado.
-              </p>
+
+              <div className="rounded-2xl border border-gold/10 bg-black/20 p-5">
+                <h4 className="flex items-center gap-2 text-sm font-bold text-cream mb-3">
+                  <Shield className="h-4 w-4 text-gold" /> Segurança Supabase
+                </h4>
+                <p className="text-xs text-foreground/70 leading-relaxed">
+                  As permissões reais de banco de dados são geridas via <strong className="text-gold">RLS (Row Level Security)</strong>. 
+                  Mesmo logado no portal rápido, as ações de escrita exigem uma sessão válida do administrador no navegador.
+                </p>
+                <Btn variant="outline" className="mt-4 w-full text-xs" onClick={() => window.open('/auth', '_blank')}>
+                  Verificar Sessão Principal
+                </Btn>
+              </div>
             </div>
-            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Acesso Admin")}>
+            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Credenciais de Acesso")}>
               <Save className="h-4 w-4" /> Salvar Credenciais
             </Btn>
           </Card>
