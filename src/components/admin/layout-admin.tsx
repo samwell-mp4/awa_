@@ -457,56 +457,6 @@ export function LayoutAdmin() {
           </Card>
         </div>
       )}
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="space-y-4">
-                <h3 className="flex items-center gap-2 font-display text-base font-black text-cream">
-                  <KeyRound className="h-4 w-4 text-gold" /> Portal de Emergência
-                </h3>
-                <Field label="Usuário de Acesso Rápido">
-                  <Input 
-                    value={menuHambDraft.emergency_user || "admin"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_user: e.target.value})}
-                  />
-                </Field>
-                <Field label="Senha de Acesso Rápido">
-                  <Input 
-                    type="text"
-                    value={menuHambDraft.emergency_pass || "awa2026"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_pass: e.target.value})}
-                  />
-                </Field>
-                <p className="text-[10px] text-foreground/50 italic">
-                  * Este portal é exibido apenas para usuários com permissão técnica no banco de dados, servindo como uma camada extra de interface.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h4 className="flex items-center gap-2 text-sm font-bold text-cream mb-3">
-                  <Plus className="h-4 w-4 text-gold" /> Login Automático
-                </h4>
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-black/20 border border-gold/10">
-                  <input 
-                    type="checkbox" 
-                    id="auto-google"
-                    checked={menuHambDraft.auto_google_login || false}
-                    onChange={e => setMenuHambDraft({...menuHambDraft, auto_google_login: e.target.checked})}
-                    className="h-5 w-5 accent-gold cursor-pointer"
-                  />
-                  <label htmlFor="auto-google" className="text-xs font-bold text-cream cursor-pointer">
-                    Entrar automaticamente com Google (OAuth)
-                  </label>
-                </div>
-                <p className="text-[10px] text-foreground/50 leading-relaxed">
-                  Ao ativar esta opção, o painel tentará fazer login automático usando sua sessão do Google caso já esteja autenticado no navegador.
-                </p>
-              </div>
-            </div>
-            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Acesso & Segurança")}>
-              <Save className="h-4 w-4" /> Salvar Configurações
-            </Btn>
-          </Card>
-        </div>
-      )}
 
       {activeTab === "experiencia" && (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
