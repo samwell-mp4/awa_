@@ -53,6 +53,6 @@ export function Btn({
   );
 }
 
-export function Card({ children }: { children: React.ReactNode }) {
-  return <div className="card-elev rounded-2xl p-4 md:p-5">{children}</div>;
+export function Card({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={`card-elev rounded-2xl p-4 md:p-5 ${className ?? ""}`}>{children}</div>;
 }
