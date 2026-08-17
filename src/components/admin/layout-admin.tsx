@@ -409,6 +409,54 @@ export function LayoutAdmin() {
           </Card>
 
           <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Shield className="h-5 w-5 text-gold" /> Configurações de Segurança
+            </h3>
+            
+            <div className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Field label="Usuário de Emergência">
+                  <Input 
+                    value={menuHambDraft.emergency_user || ""} 
+                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_user: e.target.value})}
+                    placeholder="Padrão: admin"
+                  />
+                </Field>
+                <Field label="Senha de Emergência">
+                  <Input 
+                    type="password"
+                    value={menuHambDraft.emergency_pass || ""} 
+                    onChange={e => setMenuHambDraft({...menuHambDraft, emergency_pass: e.target.value})}
+                    placeholder="Padrão: awa2026"
+                  />
+                </Field>
+              </div>
+
+              <div className="flex items-center justify-between p-4 rounded-2xl bg-forest-deep/40 border border-gold/20">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg ${menuHambDraft.auto_google_login ? 'bg-gold/20 text-gold' : 'bg-neutral-500/20 text-neutral-400'}`}>
+                    <Globe className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-cream">Entrar automaticamente com Google (OAuth)</div>
+                    <div className="text-xs text-foreground/60">Pula a tela de login se você já estiver logado no Google e for admin.</div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMenuHambDraft({...menuHambDraft, auto_google_login: !menuHambDraft.auto_google_login})}
+                  className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 focus:outline-none ${menuHambDraft.auto_google_login ? 'bg-gold' : 'bg-neutral-600'}`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out ${menuHambDraft.auto_google_login ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+            </div>
+
+            <Btn className="mt-8" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Segurança & Acesso")}>
+              <Save className="h-4 w-4" /> Salvar Configurações
+            </Btn>
+          </Card>
+        </div>
+      )}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <h3 className="flex items-center gap-2 font-display text-base font-black text-cream">
