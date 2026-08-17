@@ -89,7 +89,6 @@ export function LayoutAdmin() {
           { id: "experiencia", label: "Experiências", icon: Globe },
           { id: "acesso", label: "Acesso & Login", icon: KeyRound },
         ].map((t) => (
-
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id as any)}
