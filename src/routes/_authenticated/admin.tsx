@@ -32,7 +32,7 @@ const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) =>
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Painel de Controle — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async () => {
     // O layout _authenticated já garante que há sessão. Aqui validamos a role
     // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles).
