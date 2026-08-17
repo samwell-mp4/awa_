@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe } from "lucide-react";
-import { Field, Input, Btn, Card } from "./ui";
+import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages } from "lucide-react";
+import { Field, Input, Btn, Card, Textarea } from "./ui";
 
 
 export function LayoutAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getSiteConfig);
   const updateFn = useServerFn(updateSiteConfig);
-  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "experiencia">("landing");
+  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "experiencia" | "conteudo">("landing");
 
 
   const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
@@ -75,6 +75,7 @@ export function LayoutAdmin() {
           { id: "landing", label: "Geral & Landing", icon: Layout },
           { id: "adulto", label: "Área Adulto", icon: Palette },
           { id: "infantil", label: "Área Infantil", icon: Sparkles },
+          { id: "conteudo", label: "Textos & Letras", icon: Type },
           { id: "experiencia", label: "Experiências", icon: Globe },
         ].map((t) => (
 
@@ -304,6 +305,54 @@ export function LayoutAdmin() {
             <Btn className="mt-6" onClick={() => saveConfig("infantil_hotspots", hotspotsDraft, "Menu Infantil")}>
               <Save className="h-4 w-4" /> Salvar Atalhos Infantil
             </Btn>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === "conteudo" && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <FileText className="h-5 w-5 text-gold" /> Textos Globais (Landing)
+            </h3>
+            <p className="text-xs text-foreground/60 mb-6">
+              Edite as mensagens principais exibidas para todos os visitantes.
+            </p>
+            <div className="space-y-4">
+              <Field label="Título (Linha 1)">
+                <Input 
+                  value={heroDraft.h1a || ""} 
+                  onChange={e => setHeroDraft({...heroDraft, h1a: e.target.value})}
+                />
+              </Field>
+              <Field label="Título (Destaque)">
+                <Input 
+                  value={heroDraft.h1b || ""} 
+                  onChange={e => setHeroDraft({...heroDraft, h1b: e.target.value})}
+                />
+              </Field>
+              <Field label="Descrição da Landing">
+                <Textarea 
+                  rows={3}
+                  value={heroDraft.lead || ""} 
+                  onChange={e => setHeroDraft({...heroDraft, lead: e.target.value})}
+                />
+              </Field>
+            </div>
+            <Btn className="mt-6" onClick={() => saveConfig("landing_hero", heroDraft, "Textos da Landing")}>
+              <Save className="h-4 w-4" /> Atualizar Textos
+            </Btn>
+          </Card>
+
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Languages className="h-5 w-5 text-gold" /> Mapeamento de Idiomas
+            </h3>
+            <div className="p-4 rounded-xl bg-black/30 border border-white/5">
+              <p className="text-xs text-foreground/50">
+                O suporte a idiomas (PT, EN, ES, Patxôhã) é gerido automaticamente pelo sistema para garantir a consistência das traduções culturais.
+              </p>
+            </div>
           </Card>
         </div>
       )}
