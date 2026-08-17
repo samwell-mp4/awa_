@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages } from "lucide-react";
+import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages, KeyRound, Shield } from "lucide-react";
 import { Field, Input, Btn, Card, Textarea } from "./ui";
 
 
