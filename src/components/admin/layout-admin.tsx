@@ -455,35 +455,6 @@ export function LayoutAdmin() {
     </div>
   );
 }
-            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-              <Shield className="h-5 w-5 text-gold" /> Credenciais de Emergência
-            </h3>
-            <div className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Usuário Admin">
-                  <Input 
-                    value={menuHambDraft.admin_user || "admin"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, admin_user: e.target.value})}
-                  />
-                </Field>
-                <Field label="Senha Admin">
-                  <Input 
-                    type="password"
-                    value={menuHambDraft.admin_pass || "awa2026"} 
-                    onChange={e => setMenuHambDraft({...menuHambDraft, admin_pass: e.target.value})}
-                  />
-                </Field>
-              </div>
-              <p className="text-[10px] text-foreground/50 bg-black/20 p-3 rounded-lg border border-white/5">
-                Nota: Estas credenciais são usadas no portal de acesso rápido. Para segurança máxima, utilize sempre o login via Google Admin verificado.
-              </p>
-            </div>
-            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Acesso Admin")}>
-              <Save className="h-4 w-4" /> Salvar Credenciais
-            </Btn>
-          </Card>
-        </div>
-      )}
 
       {activeTab === "experiencia" && (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
