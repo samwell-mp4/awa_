@@ -110,13 +110,20 @@ function AdminPage() {
   }, [autoGoogle, loading]);
 
   async function handleGoogleLogin() {
-    // Note: 'busy' state is already handled by useAuth or local state if we want to show a loader
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        localStorage.setItem("adminLogado", "sim");
-        setAdminLogado(true);
-        toast.success("Acesso administrativo via Google liberado!");
+        // Double check admin role
+        const { data: isAdmin } = await supabase.rpc("has_role", {
+          _user_id: session.user.id,
+          _role: "admin",
+        });
+        
+        if (isAdmin) {
+          localStorage.setItem("adminLogado", "sim");
+          setAdminLogado(true);
+          toast.success("Acesso administrativo via Google liberado!");
+        }
       } else {
         // Not session? Redirect to auth with return path
         navigate({ to: "/auth", search: { redirect: "/admin" } as any });
