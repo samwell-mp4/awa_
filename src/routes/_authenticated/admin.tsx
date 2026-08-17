@@ -95,12 +95,36 @@ function AdminPage() {
 
   const emergencyUser = menuHamb?.emergency_user || "admin";
   const emergencyPass = menuHamb?.emergency_pass || "awa2026";
+  const autoGoogle = menuHamb?.auto_google_login || false;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setAdminLogado(localStorage.getItem("adminLogado") === "sim");
+      const isLogged = localStorage.getItem("adminLogado") === "sim";
+      setAdminLogado(isLogged);
+      
+      // Auto Google login if enabled and not already logged via emergency
+      if (!isLogged && autoGoogle && !loading) {
+        handleGoogleLogin();
+      }
     }
-  }, []);
+  }, [autoGoogle, loading]);
+
+  async function handleGoogleLogin() {
+    // Note: 'busy' state is already handled by useAuth or local state if we want to show a loader
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        localStorage.setItem("adminLogado", "sim");
+        setAdminLogado(true);
+        toast.success("Acesso administrativo via Google liberado!");
+      } else {
+        // Not session? Redirect to auth with return path
+        navigate({ to: "/auth", search: { redirect: "/admin" } as any });
+      }
+    } catch (err) {
+      console.error("Auto Google Login error:", err);
+    }
+  }
 
   function fazerLogin() {
     if (user === emergencyUser && pass === emergencyPass) {
