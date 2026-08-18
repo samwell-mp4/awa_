@@ -179,49 +179,9 @@ export function LayoutAdmin() {
           </Card>
         </div>
       )}
-            <div className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Título Principal (Linha 1)">
-                  <Input 
-                    value={heroDraft.h1a || ""} 
-                    onChange={e => setHeroDraft({...heroDraft, h1a: e.target.value})}
-                    placeholder="Ex: Línguas indígenas,"
-                  />
-                </Field>
-                <Field label="Título Principal (Destaque Gold)">
-                  <Input 
-                    value={heroDraft.h1b || ""} 
-                    onChange={e => setHeroDraft({...heroDraft, h1b: e.target.value})}
-                    placeholder="Ex: culturas vivas."
-                  />
-                </Field>
-              </div>
-              <Field label="Texto de Apoio (Lead)">
-                <Input 
-                  value={heroDraft.lead || ""} 
-                  onChange={e => setHeroDraft({...heroDraft, lead: e.target.value})}
-                  placeholder="Descrição curta abaixo do título..."
-                />
-              </Field>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="URL Imagem de Fundo (Desktop)">
-                  <Input 
-                    value={heroDraft.bg_url || ""} 
-                    onChange={e => setHeroDraft({...heroDraft, bg_url: e.target.value})}
-                  />
-                </Field>
-                <Field label="Texto Botão Login">
-                  <Input 
-                    value={heroDraft.entrar_label || ""} 
-                    onChange={e => setHeroDraft({...heroDraft, entrar_label: e.target.value})}
-                  />
-                </Field>
-              </div>
-            </div>
-            <Btn className="mt-6" onClick={() => saveConfig("landing_hero", heroDraft, "Hero da Landing")}>
-              <Save className="h-4 w-4" /> Salvar Landing Page
-            </Btn>
-          </Card>
+
+      {activeTab === "acesso" && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
           {/* Menu Hamburguer Section */}
           <Card>
