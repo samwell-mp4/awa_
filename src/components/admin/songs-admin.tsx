@@ -557,7 +557,41 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
           <Textarea rows={6} value={s.lyrics_pt} onChange={(e) => setS({ ...s, lyrics_pt: e.target.value })} />
         </Field>
       </div>
-      <div className="mt-3 flex items-center justify-between gap-3 flex-wrap">
+
+      {/* Manual Sync Calibration */}
+      <div className="mt-6 border-t border-white/10 pt-4">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gold mb-3 flex items-center gap-2">
+          <Sparkles className="h-3 w-3" /> Calibração de Sincronia
+        </h4>
+        <div className="grid gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+          {s.lyrics_indigenous.split('\n').filter(l => l.trim()).map((line, idx) => (
+            <div key={idx} className="flex items-center gap-3 p-2 rounded-xl bg-black/20 group">
+              <span className="w-6 text-[10px] font-bold text-foreground/40">{idx + 1}</span>
+              <span className="flex-1 text-xs text-cream truncate">{line}</span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  step="0.1"
+                  value={s.sync_offsets?.[idx] || 0}
+                  onChange={(e) => {
+                    const newOffsets = [...(s.sync_offsets || [])];
+                    newOffsets[idx] = parseFloat(e.target.value) || 0;
+                    setS({ ...s, sync_offsets: newOffsets });
+                  }}
+                  className="w-16 rounded-lg border border-gold/20 bg-forest-deep/50 px-2 py-1 text-[10px] text-gold focus:border-gold outline-none"
+                  placeholder="0.0s"
+                />
+                <span className="text-[9px] font-bold text-foreground/30">s</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-[9px] text-foreground/50 italic">
+          * Aumente o valor para atrasar a legenda, diminua para adiantar.
+        </p>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between gap-3 flex-wrap">
         <label className="inline-flex items-center gap-2 text-xs text-foreground/70">
           <input type="checkbox" checked={s.is_active} onChange={(e) => setS({ ...s, is_active: e.target.checked })} />
           Música ativa (visível ao público)
