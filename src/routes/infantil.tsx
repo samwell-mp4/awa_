@@ -81,7 +81,7 @@ function InfantilHome() {
     queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
 
-  const hotspots = (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [];
+  const hotspots = useMemo(() => (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [], [hotspotsData]);
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
@@ -128,7 +128,7 @@ function InfantilHome() {
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {Array.isArray(hotspots || defaultHotspots) && (hotspots || defaultHotspots).map((h: Hotspot) => (
+          {hotspots.map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
@@ -140,27 +140,24 @@ function InfantilHome() {
               <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`)}</span>
             </Link>
           ))}
-          {(() => {
-            const staticTrails = [
-              { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
-              { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
-              { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
-              { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
-            ];
-            return staticTrails.map((c) => (
-              <Link
-                key={`${languageKey}-${c.slug}`}
-                to="/trilhas/$slug"
-                params={{ slug: c.slug }}
-                aria-label={t(`common.${c.key}`)}
-                className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
-                style={{ borderColor: c.color }}
-              >
-                <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
-                <span className="text-center leading-tight">{t(`common.${c.key}`)}</span>
-              </Link>
-            ));
-          })()}
+          {[
+            { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
+            { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
+            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
+            { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
+          ].map((c) => (
+            <Link
+              key={`${languageKey}-${c.slug}`}
+              to="/trilhas/$slug"
+              params={{ slug: c.slug }}
+              aria-label={t(`common.${c.key}`)}
+              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
+              style={{ borderColor: c.color }}
+            >
+              <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
+              <span className="text-center leading-tight">{t(`common.${c.key}`)}</span>
+            </Link>
+          ))}
         </section>
 
         {t("infantil.learning") && (
