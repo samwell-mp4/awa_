@@ -10,6 +10,7 @@ import {
   Send,
   Loader2,
   Volume2,
+  VolumeX,
   Copy,
   Check,
   RefreshCcw,
@@ -500,6 +501,12 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
+    if (audioBusy === key) {
+      currentAudioRef.current?.pause();
+      setActiveAssistantAudio(null);
+      setAudioBusy(null);
+      return;
+    }
     if (audioBusy) return;
     try {
       setAudioBusy(key);
@@ -507,9 +514,11 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
-      audioRef.current?.pause();
-      audioRef.current = audio;
+      currentAudioRef.current?.pause();
+      currentAudioRef.current = audio;
+      setActiveAssistantAudio(audio);
       await audio.play();
+
 
       // Permite parar o áudio ao clicar na tela
       const stopHandler = () => {
@@ -596,10 +605,11 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
                       </div>
                       <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30">
                         {audioBusy === key ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <VolumeX className="h-3.5 w-3.5 animate-pulse" />
                         ) : (
                           <Volume2 className="h-3.5 w-3.5" />
                         )}
+
                       </div>
                     </button>
                   </div>
@@ -639,10 +649,11 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
                     title={t.listen}
                   >
                     {audioBusy === "full" ? (
-                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <VolumeX className="h-3 w-3 animate-pulse" />
                     ) : (
                       <Volume2 className="h-3 w-3" />
                     )}
+
                     {t.listen}
                   </button>
                 </>

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home, Volume2 } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Volume2, VolumeX } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -153,7 +153,7 @@ function TraduzirPage() {
                       <TTSSubtitles text={m.data.traducao} charIndex={activeCharIndex} />
                     </div>
                     <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">
-                      <Volume2 className="h-5 w-5" />
+                      {activeCharIndex >= 0 ? <VolumeX className="h-5 w-5 animate-pulse" /> : <Volume2 className="h-5 w-5" />}
                     </div>
                   </button>
                 </div>
