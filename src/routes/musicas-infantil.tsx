@@ -43,6 +43,7 @@ type Song = {
   lyrics_pt_en: string | null;
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
+  sync_offsets: number[] | null;
 };
 
 
