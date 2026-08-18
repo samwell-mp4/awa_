@@ -79,6 +79,7 @@ export function MusicasInfantilPage() {
   });
 
   const [playing, setPlaying] = useState<Song | null>(null);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   return (
     <div
@@ -192,12 +193,32 @@ export function MusicasInfantilPage() {
         )}
       </main>
 
-      {playing && <MiniPlayer song={playing} onClose={() => setPlaying(null)} />}
+      {playing && (
+        <MiniPlayer
+          song={playing}
+          onClose={() => {
+            setPlaying(null);
+            setIsMaximized(false);
+          }}
+          isMaximized={isMaximized}
+          onToggleMaximize={() => setIsMaximized(!isMaximized)}
+        />
+      )}
     </div>
   );
 }
 
-export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
+export function MiniPlayer({
+  song,
+  onClose,
+  isMaximized,
+  onToggleMaximize,
+}: {
+  song: Song;
+  onClose: () => void;
+  isMaximized: boolean;
+  onToggleMaximize: () => void;
+}) {
   const ref = useRef<HTMLAudioElement>(null);
   const lang = useLang();
   const [progress, setProgress] = useState(0);
@@ -268,9 +289,21 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
 
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
+    <div
+      className={`fixed inset-x-0 bottom-0 z-40 transition-all duration-500 ease-in-out ${
+        isMaximized
+          ? "top-0 h-screen flex flex-col bg-emerald-950 p-6"
+          : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
+      }`}
+    >
       {maxLen > 0 && (
-        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2">
+        <div
+          ref={boxRef}
+          onClick={onToggleMaximize}
+          className={`relative mx-auto mb-2 w-full max-w-4xl overflow-y-auto cursor-pointer rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 transition-all ${
+            isMaximized ? "flex-1 my-8 max-h-none text-2xl" : "max-h-40"
+          }`}
+        >
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
@@ -279,19 +312,25 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
                 ref={(el) => {
                   lineRefs.current[i] = el;
                 }}
-                className={`py-1 text-center transition-all duration-300 ${
-                  active ? "scale-105" : "opacity-50"
+                className={`py-4 text-center transition-all duration-300 ${
+                  active ? (isMaximized ? "scale-110" : "scale-105") : "opacity-50"
                 }`}
               >
                 <p
-                  className={`font-display text-base font-black leading-tight ${
-                    active ? "text-amber-300" : "text-amber-100"
-                  }`}
+                  className={`font-display font-black leading-tight transition-all ${
+                    isMaximized ? "text-3xl md:text-5xl" : "text-base"
+                  } ${active ? "text-amber-300" : "text-amber-100"}`}
                 >
                   {indLines[i] || transLines[i] || "\u00A0"}
                 </p>
                 {indLines[i] && transLines[i] && (
-                  <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
+                  <p
+                    className={`font-bold italic transition-all ${
+                      isMaximized ? "text-xl md:text-3xl mt-4" : "text-xs mt-1"
+                    } text-emerald-100/85`}
+                  >
+                    {transLines[i]}
+                  </p>
                 )}
               </div>
             );
