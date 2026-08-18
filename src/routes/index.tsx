@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
