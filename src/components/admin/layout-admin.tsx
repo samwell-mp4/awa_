@@ -155,41 +155,6 @@ export function LayoutAdmin() {
             </Btn>
           </Card>
 
-          {/* Branding Section */}
-          <Card>
-            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-              <ImageIcon className="h-5 w-5 text-gold" /> Identidade Visual & Logos
-            </h3>
-            <div className="grid gap-4 md:grid-cols-2">
-              <Field label="Logo Infantil (URL)">
-                <Input 
-                  value={brandingDraft.infantil_logo_url || ""} 
-                  onChange={e => setBrandingDraft({...brandingDraft, infantil_logo_url: e.target.value})}
-                />
-              </Field>
-              <Field label="Vídeo Menu Infantil (URL)">
-                <Input 
-                  value={brandingDraft.infantil_menu_video_url || ""} 
-                  onChange={e => setBrandingDraft({...brandingDraft, infantil_menu_video_url: e.target.value})}
-                />
-              </Field>
-              <Field label="Logo Adulto (URL)">
-                <Input 
-                  value={brandingDraft.adulto_logo_url || ""} 
-                  onChange={e => setBrandingDraft({...brandingDraft, adulto_logo_url: e.target.value})}
-                />
-              </Field>
-              <Field label="Vídeo Apresentação Adulto (URL)">
-                <Input 
-                  value={brandingDraft.adulto_video_url || ""} 
-                  onChange={e => setBrandingDraft({...brandingDraft, adulto_video_url: e.target.value})}
-                />
-              </Field>
-            </div>
-            <Btn className="mt-6" onClick={() => saveConfig("branding", brandingDraft, "Identidade Visual")}>
-              <Save className="h-4 w-4" /> Salvar Branding
-            </Btn>
-          </Card>
           {/* Menu Hamburguer Section */}
           <Card>
             <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
