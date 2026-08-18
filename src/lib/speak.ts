@@ -82,9 +82,10 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    if (s.speaking || s.pending) {
-      s.cancel();
-    }
+    
+    // Cancela qualquer áudio em execução antes de iniciar o novo
+    s.cancel();
+
     const start = () => {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
