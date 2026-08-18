@@ -504,8 +504,9 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
         is_active: s.is_active,
         order_index: s.order_index,
         aldeia: s.aldeia || null,
-        sync_offsets: s.sync_offsets,
-      })
+        // @ts-ignore - Added sync_offsets to DB but not yet in generated types
+        sync_offsets: s.sync_offsets || [],
+      } as any)
       .eq("id", s.id);
     if (error) return toast.error(error.message);
     toast.success("Salvo");
