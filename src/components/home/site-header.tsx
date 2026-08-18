@@ -74,7 +74,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
                 {n.label}
               </Link>
             ))}
-            {isAdmin && (
+            {(isAdmin || (typeof window !== "undefined" && localStorage.getItem("adminLogado") === "sim")) && (
               <Link
                 to="/admin"
                 className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30"
@@ -197,7 +197,7 @@ function MobileDrawer({
           })}
 
           <div className="mt-2 flex flex-col gap-2">
-            {isAdmin && (
+            {(isAdmin || (typeof window !== "undefined" && localStorage.getItem("adminLogado") === "sim")) && (
               <Link
                 to="/admin"
                 onClick={onClose}
@@ -287,7 +287,7 @@ function MobileDrawer({
         })}
 
         <div className="border-t border-gold/15 pt-3 flex flex-col gap-1">
-          {isAdmin && (
+          {(isAdmin || (typeof window !== "undefined" && localStorage.getItem("adminLogado") === "sim")) && (
             <Link
               to="/admin"
               onClick={onClose}
