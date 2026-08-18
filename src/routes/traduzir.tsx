@@ -151,9 +151,6 @@ function TraduzirPage() {
                       </p>
                       <TTSSubtitles text={m.data.traducao} charIndex={activeCharIndex} />
                     </div>
-
-                      {m.data.traducao}
-                    </p>
                     <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">
                       <Volume2 className="h-5 w-5" />
                     </div>
