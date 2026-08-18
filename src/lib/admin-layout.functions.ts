@@ -22,8 +22,8 @@ export const getSiteConfig = createServerFn({ method: "GET" })
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
-      .single();
-    if (error) return null;
+      .maybeSingle();
+    if (error || !data) return null;
     return data.value;
   });
 
