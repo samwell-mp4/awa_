@@ -654,7 +654,7 @@ function Bubble({
                   <div className="flex items-start justify-between gap-2">
                     <button
                       onClick={() => playText(b.pat, key)}
-                      disabled={audioBusy === key}
+                      disabled={audioBusy === key && !onToggleAudio}
                       className="group flex flex-1 items-center gap-3 text-left transition hover:opacity-80 disabled:opacity-50"
                       aria-label={`Ouvir ${b.pat}`}
                     >
