@@ -81,7 +81,7 @@ function InfantilHome() {
     queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
 
-  const hotspots = Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots;
+  const hotspots = (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [];
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
