@@ -40,7 +40,7 @@ export function CaptionPlayer({
 
   const lines = useMemo(() => splitLyrics(text), [text]);
   const duration = useMemo(() => resolveDuration(audioDuration, durationSeconds), [audioDuration, durationSeconds]);
-  const bounds = useMemo(() => computeLyricBounds(lines, duration), [lines, duration]);
+  const bounds = useMemo(() => computeLyricBounds(lines, [], duration), [lines, duration]);
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [bounds, progress]);
 
   useEffect(() => {

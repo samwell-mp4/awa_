@@ -52,7 +52,7 @@ describe("sincronização de legendas (lyric-sync)", () => {
   });
 
   it("gera um limite de tempo por verso, crescente e terminando na duração", () => {
-    const bounds = computeLyricBounds(["curto", "um verso bem mais longo", "meio"], 30);
+    const bounds = computeLyricBounds(["curto", "um verso bem mais longo", "meio"], [], 30);
     expect(bounds).toHaveLength(3);
     expect(bounds[0]).toBeLessThan(bounds[1]);
     expect(bounds[1]).toBeLessThan(bounds[2]);
@@ -60,12 +60,12 @@ describe("sincronização de legendas (lyric-sync)", () => {
   });
 
   it("dá mais tempo para versos longos que para versos curtos", () => {
-    const [b0, b1] = computeLyricBounds(["oi", "verso muito muito mais comprido"], 60);
+    const [b0, b1] = computeLyricBounds(["oi", "verso muito muito mais comprido"], [], 60);
     expect(b0).toBeLessThan(b1 - b0);
   });
 
   it("avança o verso ativo junto com o tempo do áudio (sem atraso)", () => {
-    const bounds = computeLyricBounds(["aaa", "aaa", "aaa"], 30); // 10s por verso
+    const bounds = computeLyricBounds(["aaa", "aaa", "aaa"], [], 30); // 10s por verso
     expect(activeLineIndex(bounds, 0)).toBe(0);
     expect(activeLineIndex(bounds, 9)).toBe(0);
     expect(activeLineIndex(bounds, 11)).toBe(1);
@@ -76,12 +76,12 @@ describe("sincronização de legendas (lyric-sync)", () => {
 
   it("antecipa a legenda em relação à voz (lead > 0)", () => {
     expect(LYRIC_LEAD).toBeGreaterThan(0);
-    const bounds = computeLyricBounds(["aaa", "aaa"], 20); // troca em 10s
+    const bounds = computeLyricBounds(["aaa", "aaa"], [], 20); // troca em 10s
     expect(activeLineIndex(bounds, 10 - LYRIC_LEAD / 2)).toBe(1);
   });
 
   it("sem duração conhecida não destaca verso errado", () => {
-    expect(computeLyricBounds(["a", "b"], 0)).toEqual([]);
+    expect(computeLyricBounds(["a", "b"], [], 0)).toEqual([]);
     expect(activeLineIndex([], 5)).toBe(-1);
   });
 
