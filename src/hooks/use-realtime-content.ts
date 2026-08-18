@@ -20,6 +20,7 @@ const TABLE_QUERIES: Record<string, string[][]> = {
   daily_mission: [["daily_mission"], ["missions_all"]],
   daily_video: [["daily_video"], ["daily_video_all"], ["daily-word-video-pool"]],
   ambient_videos: [["ambient_videos"]],
+  site_config: [["site_config"]],
 };
 
 /**
