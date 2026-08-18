@@ -23,7 +23,7 @@ describe("lyric-sync (Sincronização de Legendas)", () => {
     it("deve calcular limites de tempo proporcionais ao tamanho do verso", () => {
       const lines = ["Curta", "Esta linha é bem mais longa"];
       const duration = 10;
-      const bounds = computeLyricBounds(lines, duration);
+      const bounds = computeLyricBounds(lines, [], duration);
 
       expect(bounds.length).toBe(2);
       expect(bounds[1]).toBe(10); // O último limite deve ser a duração total
@@ -31,8 +31,8 @@ describe("lyric-sync (Sincronização de Legendas)", () => {
     });
 
     it("deve retornar vazio para duração inválida ou zero", () => {
-      expect(computeLyricBounds(["A"], 0)).toEqual([]);
-      expect(computeLyricBounds(["A"], -1)).toEqual([]);
+      expect(computeLyricBounds(["A"], [], 0)).toEqual([]);
+      expect(computeLyricBounds(["A"], [], -1)).toEqual([]);
     });
   });
 
