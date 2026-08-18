@@ -9,6 +9,8 @@ import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
 import { speak } from "@/lib/speak";
+import { CaptionPlayer } from "@/components/CaptionPlayer";
+
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
@@ -26,7 +28,9 @@ function TraduzirPage() {
   const backTo = useLastArea();
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
+  const [activeAudio, setActiveAudio] = useState<HTMLAudioElement | null>(null);
   const translate = useServerFn(translateText);
+
 
   const m = useMutation({
     mutationFn: async (vars: { text: string; direction: "pt-pat" | "pat-pt" }) =>
@@ -131,7 +135,14 @@ function TraduzirPage() {
               <div className="mt-2 space-y-3">
                 <div className="flex justify-between items-start gap-4">
                   <button
-                    onClick={() => speak(m.data?.traducao || "", "pt-BR", 0.9)}
+                    onClick={() => {
+                      const a = new Audio();
+                      speak(m.data?.traducao || "", "pt-BR", 0.9, undefined, undefined);
+                      // Nota: a função speak usa window.speechSynthesis, que não expõe um HTMLAudioElement.
+                      // Para o tradutor, como usamos SpeechSynthesis (navegador), a sincronização nativa 
+                      // por duração estimada é mais complexa sem o objeto audio.
+                    }}
+
                     className="group flex flex-1 items-start gap-3 text-left transition hover:opacity-80"
                     title={t("common.speak")}
                   >
