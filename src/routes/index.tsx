@@ -9,6 +9,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
+import { useRouter } from "@tanstack/react-router";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
@@ -224,6 +225,13 @@ function LandingChoice() {
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   const getFn = useServerFn(getSiteConfig);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handler = () => router.invalidate();
+    window.addEventListener("awa:content-updated", handler);
+    return () => window.removeEventListener("awa:content-updated", handler);
+  }, [router]);
 
   const { data: landingHero } = useQuery({
     queryKey: ["site_config", "landing_hero"],
