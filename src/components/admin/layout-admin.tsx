@@ -11,7 +11,7 @@ export function LayoutAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getSiteConfig);
   const updateFn = useServerFn(updateSiteConfig);
-  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "experiencia" | "conteudo" | "acesso">("landing");
+  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "legendas" | "experiencia" | "conteudo" | "acesso">("landing");
 
 
   const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
@@ -85,6 +85,7 @@ export function LayoutAdmin() {
           { id: "landing", label: "Aparência", icon: Palette },
           { id: "adulto", label: "Área Adulto", icon: Palette },
           { id: "infantil", label: "Área Infantil", icon: Sparkles },
+          { id: "legendas", label: "Legendas", icon: Type },
           { id: "conteudo", label: "Conteúdo", icon: FileText },
           { id: "acesso", label: "Segurança", icon: KeyRound },
         ].map((t) => (
@@ -351,6 +352,71 @@ export function LayoutAdmin() {
             <Btn className="mt-6" onClick={() => saveConfig("infantil_hotspots", hotspotsDraft, "Menu Infantil")}>
               <Save className="h-4 w-4" /> Salvar Atalhos Infantil
             </Btn>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === "legendas" && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Type className="h-5 w-5 text-gold" /> Tamanho das Legendas (Cantigas)
+            </h3>
+            <p className="text-xs text-foreground/60 mb-6">
+              Ajuste o tamanho das fontes das legendas para o modo normal e maximizado (tela cheia).
+            </p>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-gold/80">Modo Normal</h4>
+                <Field label="Texto Principal (Tamanho)">
+                  <Input 
+                    placeholder="Ex: text-base, text-lg, text-xl"
+                    value={brandingDraft.caption_normal_size || ""} 
+                    onChange={e => setBrandingDraft({...brandingDraft, caption_normal_size: e.target.value})}
+                  />
+                </Field>
+                <Field label="Tradução (Tamanho)">
+                  <Input 
+                    placeholder="Ex: text-xs, text-sm"
+                    value={brandingDraft.caption_normal_subsize || ""} 
+                    onChange={e => setBrandingDraft({...brandingDraft, caption_normal_subsize: e.target.value})}
+                  />
+                </Field>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-gold/80">Modo Maximizado</h4>
+                <Field label="Texto Principal (Tamanho)">
+                  <Input 
+                    placeholder="Ex: text-3xl md:text-5xl"
+                    value={brandingDraft.caption_max_size || ""} 
+                    onChange={e => setBrandingDraft({...brandingDraft, caption_max_size: e.target.value})}
+                  />
+                </Field>
+                <Field label="Tradução (Tamanho)">
+                  <Input 
+                    placeholder="Ex: text-xl md:text-3xl"
+                    value={brandingDraft.caption_max_subsize || ""} 
+                    onChange={e => setBrandingDraft({...brandingDraft, caption_max_subsize: e.target.value})}
+                  />
+                </Field>
+              </div>
+            </div>
+
+            <Btn className="mt-8" onClick={() => saveConfig("branding", brandingDraft, "Tamanho das Legendas")}>
+              <Save className="h-4 w-4" /> Salvar Tamanhos
+            </Btn>
+          </Card>
+
+          <Card className="bg-emerald-950/40 border-emerald-500/20">
+            <h4 className="font-display font-bold text-emerald-400 mb-2 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" /> Dica de Estilo
+            </h4>
+            <p className="text-xs text-emerald-100/70 leading-relaxed">
+              Use classes do Tailwind como <code className="text-gold">text-2xl</code> ou variantes responsivas como <code className="text-gold">text-2xl md:text-4xl</code>. 
+              As alterações serão aplicadas instantaneamente no player de cantigas infantis.
+            </p>
           </Card>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +15,8 @@ import {
   resolveDuration,
   splitLyrics,
 } from "@/lib/lyric-sync";
+
+import { getSiteConfig } from "@/lib/admin-layout.functions";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
@@ -61,6 +64,12 @@ const THEMES = [
 ];
 
 export function MusicasInfantilPage() {
+  const getFn = useServerFn(getSiteConfig);
+  const { data: branding } = useQuery({
+    queryKey: ["site_config", "branding"],
+    queryFn: () => getFn({ data: "branding" }),
+  });
+
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     staleTime: 1000 * 60 * 30,
@@ -196,6 +205,7 @@ export function MusicasInfantilPage() {
       {playing && (
         <MiniPlayer
           song={playing}
+          branding={branding}
           onClose={() => {
             setPlaying(null);
             setIsMaximized(false);
@@ -210,11 +220,13 @@ export function MusicasInfantilPage() {
 
 export function MiniPlayer({
   song,
+  branding,
   onClose,
   isMaximized,
   onToggleMaximize,
 }: {
   song: Song;
+  branding?: any;
   onClose: () => void;
   isMaximized: boolean;
   onToggleMaximize: () => void;
@@ -330,7 +342,9 @@ export function MiniPlayer({
               >
                 <p
                   className={`font-display font-black leading-tight transition-all ${
-                    isMaximized ? "text-3xl md:text-5xl" : "text-base"
+                    isMaximized 
+                      ? (branding?.caption_max_size || "text-3xl md:text-5xl") 
+                      : (branding?.caption_normal_size || "text-base")
                   } ${active ? "text-amber-300" : "text-amber-100"}`}
                 >
                   {indLines[i] || transLines[i] || "\u00A0"}
@@ -338,7 +352,9 @@ export function MiniPlayer({
                 {indLines[i] && transLines[i] && (
                   <p
                     className={`font-bold italic transition-all ${
-                      isMaximized ? "text-xl md:text-3xl mt-4" : "text-xs mt-1"
+                      isMaximized 
+                        ? (branding?.caption_max_subsize || "text-xl md:text-3xl mt-4") 
+                        : (branding?.caption_normal_subsize || "text-xs mt-1")
                     } text-emerald-100/85`}
                   >
                     {transLines[i]}
