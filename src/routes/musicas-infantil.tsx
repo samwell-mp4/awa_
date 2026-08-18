@@ -75,7 +75,7 @@ export function MusicasInfantilPage() {
         .order("order_index")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Song[];
+      return data as any as Song[];
     },
   });
 
