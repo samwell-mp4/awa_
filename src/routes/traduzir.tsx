@@ -135,7 +135,13 @@ function TraduzirPage() {
                     className="group flex flex-1 items-start gap-3 text-left transition hover:opacity-80"
                     title={t("common.speak")}
                   >
-                    <p className="text-lg text-foreground whitespace-pre-wrap flex-1 group-hover:text-gold transition-colors">
+                    <p 
+                      className="text-lg text-foreground whitespace-pre-wrap flex-1 group-hover:text-gold transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        speak(m.data?.traducao || "", "pt-BR", 0.9);
+                      }}
+                    >
                       {m.data.traducao}
                     </p>
                     <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">

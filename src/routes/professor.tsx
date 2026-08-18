@@ -534,13 +534,15 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
         >
           <div className="space-y-2.5">
             {blocks.map((b, i) => {
-              if (b.type === "paragraph") {
                 return (
-                  <p key={i} className="whitespace-pre-wrap">
+                  <p 
+                    key={i} 
+                    className="whitespace-pre-wrap cursor-pointer hover:text-gold transition-colors"
+                    onClick={() => playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
+                  >
                     {renderInline(b.text, `p${i}`)}
                   </p>
                 );
-              }
               if (b.type === "bullets") {
                 return (
                   <ul key={i} className="ml-1 space-y-1">
