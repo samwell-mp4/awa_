@@ -20,6 +20,7 @@ type Song = {
   aldeia: string | null;
   is_active: boolean;
   order_index: number;
+  sync_offsets?: number[];
 };
 
 const ALDEIAS = ["Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"];
