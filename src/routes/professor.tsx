@@ -701,7 +701,7 @@ function Bubble({
                   <span aria-hidden>·</span>
                   <button
                     onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
-                    disabled={audioBusy === "full"}
+                    disabled={audioBusy === "full" && !onToggleAudio}
                     className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
                     aria-label={t.listen}
                     title={t.listen}
