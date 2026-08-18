@@ -180,36 +180,6 @@ export function LayoutAdmin() {
         </div>
       )}
 
-      {activeTab === "acesso" && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
-
-          {/* Menu Hamburguer Section */}
-          <Card>
-            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-              <Plus className="h-5 w-5 text-gold" /> Menu Lateral (Hambúrguer)
-            </h3>
-            <div className="space-y-4">
-              <Field label="Título do Menu">
-                <Input 
-                  value={menuHambDraft.title || ""} 
-                  onChange={e => setMenuHambDraft({...menuHambDraft, title: e.target.value})}
-                  placeholder="Ex: Menu Principal"
-                />
-              </Field>
-              <Field label="Rodapé do Menu">
-                <Input 
-                  value={menuHambDraft.footer || ""} 
-                  onChange={e => setMenuHambDraft({...menuHambDraft, footer: e.target.value})}
-                  placeholder="Texto pequeno no fim do menu..."
-                />
-              </Field>
-            </div>
-            <Btn className="mt-6" onClick={() => saveConfig("menu_hamburguer", menuHambDraft, "Menu Hamburguer")}>
-              <Save className="h-4 w-4" /> Salvar Menu Lateral
-            </Btn>
-          </Card>
-        </div>
-      )}
 
       {activeTab === "adulto" && (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
