@@ -20,14 +20,14 @@ export function computeLyricBounds(
   indLines: string[],
   ptLines: string[],
   duration: number,
+  offsets?: number[] // Offsets manuais para ajuste fino
 ): number[] {
   if ((!indLines.length && !ptLines.length) || !Number.isFinite(duration) || duration <= 0) return [];
   
-  // Use a maior contagem de linhas para garantir que todas apareçam
   const maxLines = Math.max(indLines.length, ptLines.length);
   const out: number[] = [];
   
-  // Calcula pesos baseados no comprimento do texto (preferindo a linha mais longa entre as duas)
+  // Calcula pesos baseados no comprimento do texto
   const weights: number[] = [];
   for (let i = 0; i < maxLines; i++) {
     const indLen = (indLines[i] ?? "").length;
@@ -37,9 +37,16 @@ export function computeLyricBounds(
   
   const total = weights.reduce((a, b) => a + b, 0);
   let acc = 0;
-  for (const w of weights) {
-    acc += w;
-    out.push((acc / total) * duration);
+  for (let i = 0; i < weights.length; i++) {
+    acc += weights[i];
+    let time = (acc / total) * duration;
+    
+    // Aplica offset manual se existir
+    if (offsets && offsets[i] !== undefined) {
+      time += offsets[i];
+    }
+    
+    out.push(time);
   }
   return out;
 }
