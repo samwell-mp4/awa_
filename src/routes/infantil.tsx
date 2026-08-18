@@ -140,12 +140,12 @@ function InfantilHome() {
               <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`)}</span>
             </Link>
           ))}
-          {[
+          {([
             { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
             { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
-          ].map((c) => (
+          ] || []).map((c) => (
             <Link
               key={`${languageKey}-${c.slug}`}
               to="/trilhas/$slug"
