@@ -81,7 +81,7 @@ function InfantilHome() {
     queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
 
-  const hotspots = hotspotsData || defaultHotspots;
+  const hotspots = Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots;
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
@@ -128,7 +128,7 @@ function InfantilHome() {
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {(Array.isArray(hotspots) ? hotspots : defaultHotspots).map((h: Hotspot) => (
+          {hotspots.map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
