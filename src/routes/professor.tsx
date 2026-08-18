@@ -215,9 +215,11 @@ function ProfessorPage() {
       if (r.error || !r.audio_base64) return;
       
       const url = base64ToBlobUrl(r.audio_base64, r.mime);
-      audioRef.current?.pause();
+      currentAudioRef.current?.pause();
       audio.src = url;
-      audioRef.current = audio;
+      currentAudioRef.current = audio;
+      setActiveAssistantAudio(audio);
+
 
       // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
