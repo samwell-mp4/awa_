@@ -183,9 +183,11 @@ function ProfessorPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeAssistantAudio, setActiveAssistantAudio] = useState<HTMLAudioElement | null>(null);
+  const [audioBusyKey, setAudioBusyKey] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
 
 
   // When the UI language changes and no user message was sent, refresh the welcome.
@@ -208,6 +210,48 @@ function ProfessorPage() {
     el.style.height = "auto";
     el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
   }, [input]);
+
+  async function toggleAudio(text: string, key: string) {
+    if (audioBusyKey === key) {
+      currentAudioRef.current?.pause();
+      setActiveAssistantAudio(null);
+      setAudioBusyKey(null);
+      return;
+    }
+    
+    try {
+      setAudioBusyKey(key);
+      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        setAudioBusyKey(null);
+        return;
+      }
+      
+      const url = base64ToBlobUrl(r.audio_base64, r.mime);
+      currentAudioRef.current?.pause();
+      const audio = new Audio(url);
+      currentAudioRef.current = audio;
+      setActiveAssistantAudio(audio);
+
+      await audio.play().catch(() => {});
+      
+      audio.onended = () => {
+        if (audioBusyKey === key) {
+          setAudioBusyKey(null);
+          setActiveAssistantAudio(null);
+        }
+      };
+
+      const stopHandler = () => {
+        audio.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler, { once: true });
+    } catch {
+      setAudioBusyKey(null);
+    }
+  }
 
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
@@ -320,6 +364,7 @@ function ProfessorPage() {
               msg={m} 
               isLast={i === messages.length - 1} 
               activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
+              onToggleAudio={toggleAudio}
             />
           ))}
           {loading && <TypingIndicator />}
@@ -490,7 +535,17 @@ function parseBlocks(content: string): Block[] {
   return blocks;
 }
 
-function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activeAudio?: HTMLAudioElement | null }) {
+function Bubble({ 
+  msg, 
+  isLast, 
+  activeAudio, 
+  onToggleAudio 
+}: { 
+  msg: Msg; 
+  isLast: boolean; 
+  activeAudio?: HTMLAudioElement | null;
+  onToggleAudio?: (text: string, key: string) => void;
+}) {
   const lang = useLang();
   const t = L10N[lang];
   const isUser = msg.role === "user";
@@ -501,9 +556,13 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
+    if (onToggleAudio) {
+      onToggleAudio(text, key);
+      return;
+    }
+    // Fallback for single bubble usage if ever needed
     if (audioBusy === key) {
-      currentAudioRef.current?.pause();
-      setActiveAssistantAudio(null);
+      audioRef.current?.pause();
       setAudioBusy(null);
       return;
     }
@@ -514,9 +573,8 @@ function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activ
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";
-      currentAudioRef.current?.pause();
-      currentAudioRef.current = audio;
-      setActiveAssistantAudio(audio);
+      audioRef.current?.pause();
+      audioRef.current = audio;
       await audio.play();
 
 
