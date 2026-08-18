@@ -43,7 +43,6 @@ type Song = {
   lyrics_pt_en: string | null;
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
-  sync_offsets: number[] | null;
 };
 
 
@@ -69,7 +68,7 @@ export function MusicasInfantilPage() {
       const { data, error } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets",
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds",
         )
         .eq("is_active", true)
         .order("order_index")
@@ -241,8 +240,8 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   const duration = resolveDuration(audioDuration, song.duration_seconds);
 
   const bounds = useMemo(
-    () => computeLyricBounds(indLines, transLines, duration, song.sync_offsets || []),
-    [indLines, transLines, duration, song.id, lang, song.sync_offsets],
+    () => computeLyricBounds(indLines, transLines, duration, []),
+    [indLines, transLines, duration, song.id, lang],
   );
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
