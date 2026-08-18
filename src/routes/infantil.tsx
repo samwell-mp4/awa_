@@ -160,12 +160,14 @@ function InfantilHome() {
           ))}
         </section>
 
-        <section className="mt-12">
-          <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-            {t("infantil.learning")}
-          </h2>
-          <GlossarioInfantil />
-        </section>
+        {t("infantil.learning") && (
+          <section className="mt-12">
+            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
+              {t("infantil.learning")}
+            </h2>
+            <GlossarioInfantil />
+          </section>
+        )}
       </main>
 
 
