@@ -63,8 +63,8 @@ export const askAkua = createServerFn({ method: "POST" })
   .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
   .handler(async ({ data, context }) => {
     await assertPremium(context, data.environment ?? "live", "adulto");
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
+    const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
+    if (!apiKey) throw new Error("LOVABLE_API_KEY ou AI_GATEWAY_TOKEN ausente");
 
     const dict = await loadDict();
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
