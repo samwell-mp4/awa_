@@ -115,6 +115,7 @@ function TraduzirPage() {
               <button
                 onClick={() => m.mutate({ text, direction })}
                 disabled={!text.trim() || m.isPending}
+                id="btn-translate"
                 className="px-4 py-2 rounded-full bg-gold text-forest-deep font-bold disabled:opacity-50 flex items-center gap-2"
               >
                 {m.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
