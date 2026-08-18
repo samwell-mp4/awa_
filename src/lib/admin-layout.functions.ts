@@ -17,7 +17,6 @@ export const getSiteConfig = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
     const ctx = context as unknown as ServerContext;
-    if (!ctx.supabase) throw new Error("Supabase client not found");
     const { data, error } = await ctx.supabase
       .from("site_config" as any)
       .select("value")
@@ -35,7 +34,6 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
   }).parse(data))
   .handler(async ({ data, context }) => {
     const ctx = context as unknown as ServerContext;
-    if (!ctx.supabase) throw new Error("Supabase client not found");
     await assertAdmin(ctx);
     const { error } = await ctx.supabase
       .from("site_config" as any)
@@ -47,7 +45,6 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
 export const getSongsWithReference = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const ctx = context as unknown as ServerContext;
-    if (!ctx.supabase) throw new Error("Supabase client not found");
     const { data, error } = await ctx.supabase
       .from("songs" as any)
       .select("*")
