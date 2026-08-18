@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { speak, stopSpeak } from '@/lib/speak';
+import * as speakModule from '@/lib/speak';
 
 describe('Speech System (speak.ts)', () => {
   let mockSynth: any;
@@ -7,6 +7,18 @@ describe('Speech System (speak.ts)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     
+    // Mock global do SpeechSynthesisUtterance
+    (global as any).SpeechSynthesisUtterance = vi.fn().mockImplementation((text) => ({
+      text,
+      lang: '',
+      rate: 1,
+      pitch: 1,
+      volume: 1,
+      voice: null,
+      onstart: null,
+      onend: null,
+    }));
+
     // Mock robusto do SpeechSynthesis
     mockSynth = {
       speak: vi.fn(),
@@ -24,30 +36,28 @@ describe('Speech System (speak.ts)', () => {
       configurable: true,
       writable: true
     });
-
-    // Resetar o estado interno do modulo speak.ts se necessário 
-    // (o modulo usa closure, mas o synth() sempre pega o window.speechSynthesis atual)
   });
 
   it('stopSpeak deve chamar cancel no sintetizador', () => {
-    stopSpeak();
+    speakModule.stopSpeak();
     expect(mockSynth.cancel).toHaveBeenCalled();
   });
 
   it('deve cancelar áudio anterior antes de começar um novo', () => {
-    speak('Primeira frase');
+    // Nota: O speak do modulo usa window.speechSynthesis internamente
+    speakModule.speak('Primeira frase');
     expect(mockSynth.cancel).toHaveBeenCalled();
     expect(mockSynth.speak).toHaveBeenCalled();
   });
 
   it('deve parar áudio ao clicar na tela (global interrupter)', () => {
-    speak('Frase teste');
+    speakModule.speak('Frase teste');
     
-    // Simula clique no window (onde o listener é adicionado)
+    // Simula clique no window (onde o listener é adicionado em src/lib/speak.ts)
     const event = new PointerEvent('pointerdown', { bubbles: true });
     window.dispatchEvent(event);
     
-    // 1 call no speak() + 1 call no stopHandler
+    // 1 call no início do speak() + 1 call no stopHandler disparado pelo clique
     expect(mockSynth.cancel).toHaveBeenCalledTimes(2);
   });
 });
