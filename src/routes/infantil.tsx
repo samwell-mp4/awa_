@@ -128,7 +128,7 @@ function InfantilHome() {
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {(hotspots as Hotspot[]).map((h: Hotspot) => (
+          {((hotspots as Hotspot[]) || []).map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
