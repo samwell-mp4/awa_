@@ -304,6 +304,18 @@ export function MiniPlayer({
             isMaximized ? "flex-1 my-8 max-h-none text-2xl" : "max-h-40"
           }`}
         >
+          {isMaximized && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleMaximize();
+              }}
+              className="sticky float-right right-0 top-0 z-50 rounded-full bg-white/10 p-2 text-white/50 hover:bg-white/20 hover:text-white"
+              title="Sair da tela cheia"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          )}
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
