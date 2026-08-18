@@ -53,11 +53,14 @@ describe('Speech System (speak.ts)', () => {
   it('deve parar áudio ao clicar na tela (global interrupter)', () => {
     speakModule.speak('Frase teste');
     
-    // Simula clique no window (onde o listener é adicionado em src/lib/speak.ts)
+    // Reseta o contador para ignorar o cancel() do início do speak
+    mockSynth.cancel.mockClear();
+
+    // Simula clique no window (onde o listener é adicionado)
     const event = new PointerEvent('pointerdown', { bubbles: true });
     window.dispatchEvent(event);
     
-    // 1 call no início do speak() + 1 call no stopHandler disparado pelo clique
-    expect(mockSynth.cancel).toHaveBeenCalledTimes(2);
+    // Deve ter sido chamado exatamente uma vez pelo stopHandler
+    expect(mockSynth.cancel).toHaveBeenCalledTimes(1);
   });
 });
