@@ -536,7 +536,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
             {blocks.map((b, i) => {
               if (b.type === "paragraph") {
                 return (
-                  <p key={i} className="whitespace-pre-wrap">
+                  <p 
+                    key={i} 
+                    className="whitespace-pre-wrap cursor-pointer hover:text-gold transition-colors"
+                    onClick={() => playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
+                  >
                     {renderInline(b.text, `p${i}`)}
                   </p>
                 );
@@ -544,7 +548,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
               if (b.type === "bullets") {
                 return (
                   <ul key={i} className="ml-1 space-y-1">
-                    {b.items.map((item, j) => (
+                    {b.items.map((item: string, j: number) => (
                       <li key={j} className="flex gap-2">
                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
                         <span>{renderInline(item, `b${i}-${j}`)}</span>

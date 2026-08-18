@@ -330,11 +330,13 @@ function AdminPage() {
                           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-forest-deep/50 text-gold ring-1 ring-gold/30">
                             <s.icon className="h-5 w-5" />
                           </span>
-                          <div className="min-w-0">
-                            <div className="font-display text-lg font-black text-cream">{s.label}</div>
-                            <div className="truncate text-xs text-foreground/70">{s.desc}</div>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-display text-lg font-black text-cream flex items-center justify-between">
+                              {s.label}
+                              <ChevronRight className="h-4 w-4 text-gold/70 transition group-hover:translate-x-0.5" />
+                            </div>
+                            <div className="mt-1 text-xs text-foreground/70 line-clamp-2">{s.desc}</div>
                           </div>
-                          <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-gold/70 transition group-hover:translate-x-0.5" />
                         </div>
                       </button>
                     ))}
