@@ -76,10 +76,12 @@ function InfantilHome() {
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
   const getFn = useServerFn(getSiteConfig);
 
-  const { data: hotspots = defaultHotspots } = useQuery({
+  const { data: hotspotsData } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
     queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
+
+  const hotspots = useMemo(() => (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [], [hotspotsData]);
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
@@ -126,7 +128,7 @@ function InfantilHome() {
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {(hotspots as Hotspot[]).map((h: Hotspot) => (
+          {Array.isArray(hotspots) && hotspots.map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
@@ -158,12 +160,14 @@ function InfantilHome() {
           ))}
         </section>
 
-        <section className="mt-12">
-          <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-            {t("infantil.learning")}
-          </h2>
-          <GlossarioInfantil />
-        </section>
+        {t("infantil.learning") && (
+          <section className="mt-12">
+            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
+              {t("infantil.learning")}
+            </h2>
+            <GlossarioInfantil />
+          </section>
+        )}
       </main>
 
 
