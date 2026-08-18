@@ -11,6 +11,7 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
     queryFn: () => getFn({ data: "branding" }),
+    retry: false,
   });
 
   const currentLogo = mode === "infantil" 
