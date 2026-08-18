@@ -76,10 +76,12 @@ function InfantilHome() {
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
   const getFn = useServerFn(getSiteConfig);
 
-  const { data: hotspots = defaultHotspots } = useQuery({
+  const { data: hotspotsData } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
     queryFn: () => getFn({ data: "infantil_hotspots" }),
   });
+
+  const hotspots = hotspotsData || defaultHotspots;
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
