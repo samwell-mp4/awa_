@@ -181,9 +181,11 @@ function ProfessorPage() {
   const [messages, setMessages] = useState<Msg[]>(() => [makeWelcome()]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeAssistantAudio, setActiveAssistantAudio] = useState<HTMLAudioElement | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
 
   // When the UI language changes and no user message was sent, refresh the welcome.
   useEffect(() => {
@@ -251,7 +253,8 @@ function ProfessorPage() {
   }
 
   function resetConversation() {
-    audioRef.current?.pause();
+    currentAudioRef.current?.pause();
+    setActiveAssistantAudio(null);
     setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
@@ -309,7 +312,12 @@ function ProfessorPage() {
       <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
         <div className="space-y-5">
           {messages.map((m, i) => (
-            <Bubble key={i} msg={m} isLast={i === messages.length - 1} />
+            <Bubble 
+              key={i} 
+              msg={m} 
+              isLast={i === messages.length - 1} 
+              activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
+            />
           ))}
           {loading && <TypingIndicator />}
           <div ref={endRef} />
@@ -479,7 +487,7 @@ function parseBlocks(content: string): Block[] {
   return blocks;
 }
 
-function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
+function Bubble({ msg, isLast, activeAudio }: { msg: Msg; isLast: boolean; activeAudio?: HTMLAudioElement | null }) {
   const lang = useLang();
   const t = L10N[lang];
   const isUser = msg.role === "user";
@@ -538,6 +546,14 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
           }`}
         >
           <div className="space-y-2.5">
+            {isLast && !isUser && (
+              <CaptionPlayer 
+                text={msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "")} 
+                audio={activeAudio || null}
+                className="mb-2"
+              />
+            )}
+
             {blocks.map((b, i) => {
               if (b.type === "paragraph") {
                 return (
