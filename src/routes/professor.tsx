@@ -23,6 +23,8 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
 import { useLang, type Lang } from "@/lib/pick-lang";
 import logoSrc from "@/assets/awa-tech-logo.png";
+import { CaptionPlayer } from "@/components/CaptionPlayer";
+
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
@@ -209,19 +211,22 @@ function ProfessorPage() {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
+      
+      const url = base64ToBlobUrl(r.audio_base64, r.mime);
       audioRef.current?.pause();
-      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
+      audio.src = url;
       audioRef.current = audio;
+
+      // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
 
-      // Permite parar o áudio do professor ao clicar na tela
       const stopHandler = () => {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
       };
       window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
-      /* silencioso: mantém apenas o texto */
+      /* silencioso */
     }
   }
 
