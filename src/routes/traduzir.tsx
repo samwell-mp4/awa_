@@ -9,6 +9,8 @@ import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
 import { speak } from "@/lib/speak";
+import { TTSSubtitles } from "@/components/TTSSubtitles";
+
 import { CaptionPlayer } from "@/components/CaptionPlayer";
 
 
@@ -28,8 +30,9 @@ function TraduzirPage() {
   const backTo = useLastArea();
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
-  const [activeAudio, setActiveAudio] = useState<HTMLAudioElement | null>(null);
+  const [activeCharIndex, setActiveCharIndex] = useState(-1);
   const translate = useServerFn(translateText);
+
 
 
   const m = useMutation({
@@ -40,9 +43,10 @@ function TraduzirPage() {
   useEffect(() => {
     if (m.data?.traducao && direction === "pt-pat") {
       // Quando traduz para Patxôhã, fala o resultado automaticamente
-      speak(m.data.traducao, "pt-BR", 0.9);
+      speak(m.data.traducao, "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
     }
   }, [m.data, direction]);
+
 
   const swap = () => {
     setDirection((d) => (d === "pt-pat" ? "pat-pt" : "pt-pat"));
