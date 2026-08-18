@@ -1,7 +1,6 @@
 /**
  * Sincronização de legendas do player infantil.
- * Lógica pura (sem React) para poder ser verificada por testes automáticos —
- * garante que áudio e legendas nunca voltem a ficar dessincronizados.
+ * Lógica pura para garantir alinhamento entre áudio e texto em diferentes formatos.
  */
 
 /** Quebra a letra em versos, ignorando linhas vazias. */
