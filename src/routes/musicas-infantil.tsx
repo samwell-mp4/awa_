@@ -240,12 +240,8 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
   const duration = resolveDuration(audioDuration, song.duration_seconds);
 
   const bounds = useMemo(
-    () =>
-      computeLyricBounds(
-        indLines.length >= transLines.length ? indLines : transLines,
-        duration,
-      ),
-    [maxLen, duration, song.id, lang],
+    () => computeLyricBounds(indLines, transLines, duration),
+    [indLines, transLines, duration, song.id, lang],
   );
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);

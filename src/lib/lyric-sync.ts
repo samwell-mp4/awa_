@@ -17,13 +17,25 @@ export function splitLyrics(value: string | null | undefined): string[] {
  * Versos longos duram mais que versos curtos.
  */
 export function computeLyricBounds(
-  lines: Array<string | undefined>,
+  indLines: string[],
+  ptLines: string[],
   duration: number,
 ): number[] {
-  if (!lines.length || !Number.isFinite(duration) || duration <= 0) return [];
-  const weights = lines.map((l) => Math.max(8, (l ?? "").length));
-  const total = weights.reduce((a, b) => a + b, 0);
+  if ((!indLines.length && !ptLines.length) || !Number.isFinite(duration) || duration <= 0) return [];
+  
+  // Use a maior contagem de linhas para garantir que todas apareçam
+  const maxLines = Math.max(indLines.length, ptLines.length);
   const out: number[] = [];
+  
+  // Calcula pesos baseados no comprimento do texto (preferindo a linha mais longa entre as duas)
+  const weights: number[] = [];
+  for (let i = 0; i < maxLines; i++) {
+    const indLen = (indLines[i] ?? "").length;
+    const ptLen = (ptLines[i] ?? "").length;
+    weights.push(Math.max(8, indLen, ptLen));
+  }
+  
+  const total = weights.reduce((a, b) => a + b, 0);
   let acc = 0;
   for (const w of weights) {
     acc += w;
