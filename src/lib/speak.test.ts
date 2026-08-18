@@ -7,7 +7,6 @@ describe('Speech System (speak.ts)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     
-    // Mock global do SpeechSynthesisUtterance
     (global as any).SpeechSynthesisUtterance = vi.fn().mockImplementation((text) => ({
       text,
       lang: '',
@@ -19,7 +18,6 @@ describe('Speech System (speak.ts)', () => {
       onend: null,
     }));
 
-    // Mock robusto do SpeechSynthesis
     mockSynth = {
       speak: vi.fn(),
       cancel: vi.fn(),
@@ -30,7 +28,6 @@ describe('Speech System (speak.ts)', () => {
       removeEventListener: vi.fn(),
     };
     
-    // Injetar no window
     Object.defineProperty(window, 'speechSynthesis', {
       value: mockSynth,
       configurable: true,
@@ -44,21 +41,15 @@ describe('Speech System (speak.ts)', () => {
   });
 
   it('deve cancelar áudio anterior antes de começar um novo', () => {
-    // Nota: O speak do modulo usa window.speechSynthesis internamente
-    speakModule.speak('Primeira frase');
+    speakModule.speak('Teste');
     expect(mockSynth.cancel).toHaveBeenCalled();
     expect(mockSynth.speak).toHaveBeenCalled();
   });
 
-  it('deve parar áudio ao clicar na tela (global interrupter)', () => {
-    // Nota: O speak do modulo usa window.speechSynthesis internamente
-    speakModule.speak('Frase teste');
-    
-    // Simula clique no window
-    const event = new PointerEvent('pointerdown', { bubbles: true });
-    window.dispatchEvent(event);
-    
-    // Apenas verificamos que cancel foi chamado (a contagem pode variar devido ao setup do modulo)
-    expect(mockSynth.cancel).toHaveBeenCalled();
+  it('deve registrar listener para parar áudio ao clicar na tela', () => {
+    const addSpy = vi.spyOn(window, 'addEventListener');
+    speakModule.speak('Teste');
+    expect(addSpy).toHaveBeenCalledWith('pointerdown', expect.any(Function), { once: true });
+    addSpy.mockRestore();
   });
 });
