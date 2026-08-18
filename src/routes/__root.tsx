@@ -216,28 +216,27 @@ function LanguageHydrator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Defer language switch to after hydration completes to avoid
-    // hydration mismatches on SSR-rendered translated strings.
-    const timer = window.setTimeout(() => {
-      const valid = ["pt", "en", "es"];
-      const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-      const detected = navigator.language?.slice(0, 2).toLowerCase();
-      const target = valid.includes(stored || "")
-        ? stored
-        : valid.includes(detected || "")
-          ? detected
-          : "pt";
-      if (!target || target === "pt") {
-        document.documentElement.lang = "pt";
-        return;
-      }
+    // Only run on client
+    if (typeof window === "undefined") return;
+
+    const valid = ["pt", "en", "es"];
+    const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
+    const detected = navigator.language?.slice(0, 2).toLowerCase();
+    const target = valid.includes(stored || "")
+      ? stored
+      : valid.includes(detected || "")
+        ? detected
+        : "pt";
+
+    if (target && target !== "pt") {
       document.documentElement.lang = target;
       window.localStorage.setItem("awa_lang", target);
       if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
         void i18n.changeLanguage(target);
       }
-    }, 0);
-    return () => window.clearTimeout(timer);
+    } else {
+      document.documentElement.lang = "pt";
+    }
   }, [i18n]);
 
   return null;

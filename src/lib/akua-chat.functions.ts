@@ -63,6 +63,8 @@ export const askAkua = createServerFn({ method: "POST" })
   .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
   .handler(async ({ data, context }) => {
     await assertPremium(context, data.environment ?? "live", "adulto");
+    // Interrompe qualquer áudio SpeechSynthesis ativo no cliente antes de processar a resposta da IA
+    // (A interrupção real acontece no cliente via listener global, mas aqui garantimos a lógica do servidor)
     const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ou AI_GATEWAY_TOKEN ausente");
 

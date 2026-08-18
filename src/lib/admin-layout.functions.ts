@@ -16,13 +16,14 @@ async function assertAdmin(ctx: ServerContext) {
 export const getSiteConfig = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
-    const ctx = context as unknown as ServerContext;
+    const ctx = context as any;
+    if (!ctx?.supabase) return null;
     const { data, error } = await ctx.supabase
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
-      .single();
-    if (error) return null;
+      .maybeSingle();
+    if (error || !data) return null;
     return data.value;
   });
 
@@ -33,7 +34,8 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
     value: z.any()
   }).parse(data))
   .handler(async ({ data, context }) => {
-    const ctx = context as unknown as ServerContext;
+    const ctx = context as any;
+    if (!ctx?.supabase) throw new Error("Supabase client not found");
     await assertAdmin(ctx);
     const { error } = await ctx.supabase
       .from("site_config" as any)
@@ -44,7 +46,8 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
 
 export const getSongsWithReference = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
-    const ctx = context as unknown as ServerContext;
+    const ctx = context as any;
+    if (!ctx?.supabase) return [];
     const { data, error } = await ctx.supabase
       .from("songs" as any)
       .select("*")
