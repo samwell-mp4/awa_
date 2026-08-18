@@ -140,23 +140,18 @@ function TraduzirPage() {
                 <div className="flex justify-between items-start gap-4">
                   <button
                     onClick={() => {
-                      const a = new Audio();
-                      speak(m.data?.traducao || "", "pt-BR", 0.9, undefined, undefined);
-                      // Nota: a função speak usa window.speechSynthesis, que não expõe um HTMLAudioElement.
-                      // Para o tradutor, como usamos SpeechSynthesis (navegador), a sincronização nativa 
-                      // por duração estimada é mais complexa sem o objeto audio.
+                      speak(m.data?.traducao || "", "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
                     }}
-
                     className="group flex flex-1 items-start gap-3 text-left transition hover:opacity-80"
                     title={t("common.speak")}
                   >
-                    <p 
-                      className="text-lg text-foreground whitespace-pre-wrap flex-1 group-hover:text-gold transition-colors cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        speak(m.data?.traducao || "", "pt-BR", 0.9);
-                      }}
-                    >
+                    <div className="flex-1 space-y-2">
+                      <p className="text-lg text-foreground whitespace-pre-wrap group-hover:text-gold transition-colors cursor-pointer">
+                        {m.data.traducao}
+                      </p>
+                      <TTSSubtitles text={m.data.traducao} charIndex={activeCharIndex} />
+                    </div>
+
                       {m.data.traducao}
                     </p>
                     <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">
