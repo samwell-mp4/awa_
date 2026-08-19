@@ -2,20 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Pause, Play, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
-import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
-import {
-  activeLineIndex,
-  computeLyricBounds,
-  resolveDuration,
-  splitLyrics,
-} from "@/lib/lyric-sync";
-
+import { MiniPlayer, type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
 
 export const Route = createFileRoute("/musicas-infantil")({
