@@ -85,7 +85,7 @@ export function LayoutAdmin() {
           { id: "landing", label: "Aparência", icon: Palette },
           { id: "adulto", label: "Área Adulto", icon: Palette },
           { id: "infantil", label: "Área Infantil", icon: Sparkles },
-          { id: "legendas", label: "Legendas", icon: Type },
+          { id: "legendas", label: "Música & Design", icon: Type },
           { id: "conteudo", label: "Conteúdo", icon: FileText },
           { id: "acesso", label: "Segurança", icon: KeyRound },
         ].map((t) => (
@@ -360,7 +360,7 @@ export function LayoutAdmin() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <Card>
             <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
-              <Type className="h-5 w-5 text-gold" /> Tamanho das Legendas (Cantigas)
+              <Type className="h-5 w-5 text-gold" /> Música & Design (Legendas)
             </h3>
             <p className="text-xs text-foreground/60 mb-6">
               Ajuste o tamanho das fontes das legendas para o modo normal e maximizado (tela cheia).

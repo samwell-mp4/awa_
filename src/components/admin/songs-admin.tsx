@@ -125,7 +125,7 @@ export function SongsAdmin() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="font-display text-xl font-black text-cream flex items-center gap-2">
-          <Music className="h-6 w-6 text-gold" /> Gestão de Músicas
+          <Music className="h-6 w-6 text-gold" /> Música & Design
         </h2>
         <div className="flex gap-2 p-1 bg-black/20 rounded-xl">
           <button
