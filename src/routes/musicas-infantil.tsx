@@ -3,7 +3,7 @@ import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, Pause, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
