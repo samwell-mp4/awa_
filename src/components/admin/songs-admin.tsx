@@ -75,7 +75,7 @@ export function SongsAdmin() {
   useEffect(() => {
     const perms = ["edit_covers", "edit_lyrics", "edit_layout"];
     perms.forEach(async (p) => {
-      const has = await checkPerm({ permission: p });
+      const has = await checkPerm({ data: { permission: p } });
       setPermissions(prev => ({ ...prev, [p]: has }));
     });
   }, []);
@@ -133,7 +133,7 @@ export function SongsAdmin() {
       description: draft.description || null,
       aldeia: draft.aldeia || null,
     };
-    const { error } = await supabase.from("songs").insert(payload);
+    const { error } = await supabase.from("songs").insert(payload as any);
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Música adicionada");
@@ -264,7 +264,13 @@ export function SongsAdmin() {
 
           <div className="grid gap-3">
             {songs.map((s) => (
-              <SongRow key={s.id} song={s} ambients={ambients} />
+              <SongRow 
+                key={s.id} 
+                song={s} 
+                ambients={ambients} 
+                permissions={permissions}
+                onPreview={() => setPreviewing(s)}
+              />
             ))}
             {songs.length === 0 && (
               <div className="text-center text-foreground/60 py-8">Nenhuma música cadastrada.</div>
@@ -274,9 +280,19 @@ export function SongsAdmin() {
       ) : (
         <ReviewMode songs={songs} ambients={ambients} />
       )}
+
+      {previewing && (
+        <MiniPlayer
+          song={previewing}
+          onClose={() => setPreviewing(null)}
+          isMaximized={isMaximized}
+          onToggleMaximize={() => setIsMaximized(!isMaximized)}
+        />
+      )}
     </div>
   );
 }
+
 
 function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] }) {
   const [filter, setFilter] = useState<"all" | "missing" | "sync">("missing");
@@ -505,7 +521,17 @@ function UploadOrUrl({
   );
 }
 
-function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
+function SongRow({ 
+  song, 
+  ambients, 
+  permissions,
+  onPreview 
+}: { 
+  song: Song; 
+  ambients: Ambient[]; 
+  permissions: Record<string, boolean>;
+  onPreview: () => void;
+}) {
   const qc = useQueryClient();
   const [s, setS] = useState(song);
   const [uploading, setUploading] = useState<string | null>(null);
@@ -513,6 +539,10 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
   useEffect(() => setS(song), [song]);
 
   async function handleUploadRow(songId: string, field: "cover_url", file: File) {
+    if (field === "cover_url" && !permissions.edit_covers) {
+      toast.error("Você não tem permissão para editar capas.");
+      return;
+    }
     const key = `row_${songId}_${field}`;
     setUploading(key);
     try {
@@ -525,6 +555,7 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
       setUploading(null);
     }
   }
+
 
   async function save() {
     const { error } = await supabase
@@ -642,9 +673,11 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
           Música ativa (visível ao público)
         </label>
         <div className="flex gap-2">
+          <Btn onClick={onPreview} variant="secondary"><Eye className="h-4 w-4" /> Prévia</Btn>
           <Btn onClick={save}><Save className="h-4 w-4" /> Salvar</Btn>
           <Btn variant="danger" onClick={remove}><Trash2 className="h-4 w-4" /></Btn>
         </div>
+
       </div>
     </Card>
   );
