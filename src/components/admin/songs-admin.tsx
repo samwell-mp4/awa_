@@ -283,7 +283,7 @@ export function SongsAdmin() {
 
       {previewing && (
         <MiniPlayer
-          song={previewing}
+          song={previewing as any}
           onClose={() => setPreviewing(null)}
           isMaximized={isMaximized}
           onToggleMaximize={() => setIsMaximized(!isMaximized)}
@@ -472,7 +472,12 @@ function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] })
                   </div>
                 </div>
                 <div className="overflow-hidden transition-all duration-500">
-                  <SongRow song={s} ambients={ambients} />
+                  <SongRow 
+                    song={s} 
+                    ambients={ambients} 
+                    permissions={permissions}
+                    onPreview={() => setPreviewing(s)}
+                  />
                 </div>
               </div>
             );
@@ -673,7 +678,7 @@ function SongRow({
           Música ativa (visível ao público)
         </label>
         <div className="flex gap-2">
-          <Btn onClick={onPreview} variant="secondary"><Eye className="h-4 w-4" /> Prévia</Btn>
+          <Btn onClick={onPreview} variant="outline"><Eye className="h-4 w-4" /> Prévia</Btn>
           <Btn onClick={save}><Save className="h-4 w-4" /> Salvar</Btn>
           <Btn variant="danger" onClick={remove}><Trash2 className="h-4 w-4" /></Btn>
         </div>
