@@ -75,6 +75,7 @@ const SECTIONS: Section[] = [
   { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
   { k: "layout", label: "Design & Layout", icon: LayoutGrid, desc: "Cores, logos e menus visuais.", group: "Sistema", accent: "from-gold/25 to-forest/20" },
+  { k: "songs", label: "Música & Design", icon: Music, desc: "Gerenciar letras, áudios e visual das cantigas.", group: "Sistema", accent: "from-leaf/25 to-gold/15" },
   { k: "site", label: "IA & Sistema", icon: Wand2, desc: "Akuã, Tradutor e acesso irrestrito.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
 ];
 
