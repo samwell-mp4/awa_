@@ -1,9 +1,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle, Eye, EyeOff } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
+import { MiniPlayer } from "../kids/mini-player-wrapper"; // We'll move MiniPlayer to a wrapper for reuse
+import { checkPermission } from "@/lib/permissions.functions";
+import { useServerFn } from "@tanstack/react-start";
 
 type Song = {
   id: string;
