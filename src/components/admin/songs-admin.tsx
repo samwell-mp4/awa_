@@ -278,7 +278,12 @@ export function SongsAdmin() {
           </div>
         </>
       ) : (
-        <ReviewMode songs={songs} ambients={ambients} />
+        <ReviewMode 
+          songs={songs} 
+          ambients={ambients} 
+          permissions={permissions}
+          setPreviewing={setPreviewing}
+        />
       )}
 
       {previewing && (
@@ -294,7 +299,17 @@ export function SongsAdmin() {
 }
 
 
-function ReviewMode({ songs, ambients }: { songs: Song[]; ambients: Ambient[] }) {
+function ReviewMode({ 
+  songs, 
+  ambients,
+  permissions,
+  setPreviewing
+}: { 
+  songs: Song[]; 
+  ambients: Ambient[];
+  permissions: Record<string, boolean>;
+  setPreviewing: (s: Song | null) => void;
+}) {
   const [filter, setFilter] = useState<"all" | "missing" | "sync">("missing");
   const qc = useQueryClient();
 
