@@ -1,8 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
 
 export const checkPermission = createServerFn({ method: "GET" })
-  .input((data: { permission: string }) => data)
+  .validator((data: { permission: string }) => z.object({ permission: z.string() }).parse(data))
   .handler(async ({ data }) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
@@ -18,3 +19,4 @@ export const checkPermission = createServerFn({ method: "GET" })
     }
     return !!hasPerm;
   });
+
