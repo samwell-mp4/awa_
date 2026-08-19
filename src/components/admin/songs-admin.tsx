@@ -198,7 +198,7 @@ export function SongsAdmin() {
                 busy={uploading === "audio_url"}
               />
               <UploadOrUrl
-                label="Capa (upload imagem ou cole URL)"
+                label="Capa da Música (Imagem)"
                 value={draft.cover_url}
                 onChange={(v) => setDraft({ ...draft, cover_url: v })}
                 onFile={(f) => handleUpload("cover_url", f)}
@@ -486,7 +486,23 @@ function UploadOrUrl({
 function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
   const qc = useQueryClient();
   const [s, setS] = useState(song);
+  const [uploading, setUploading] = useState<string | null>(null);
+  
   useEffect(() => setS(song), [song]);
+
+  async function handleUploadRow(songId: string, field: "cover_url", file: File) {
+    const key = `row_${songId}_${field}`;
+    setUploading(key);
+    try {
+      const url = await uploadToSongs(file, "covers");
+      setS(prev => ({ ...prev, [field]: url }));
+      toast.success("Imagem carregada!");
+    } catch (e: any) {
+      toast.error("Erro no upload: " + e.message);
+    } finally {
+      setUploading(null);
+    }
+  }
 
   async function save() {
     const { error } = await supabase
@@ -548,12 +564,19 @@ function SongRow({ song, ambients }: { song: Song; ambients: Ambient[] }) {
             {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </Field>
-        <Field label="URL áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
-        <Field label="URL capa"><Input value={s.cover_url ?? ""} onChange={(e) => setS({ ...s, cover_url: e.target.value })} /></Field>
-        <Field label="Letra indígena">
-          <Textarea rows={6} value={s.lyrics_indigenous} onChange={(e) => setS({ ...s, lyrics_indigenous: e.target.value })} />
+        <Field label="URL do Áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
+        <UploadOrUrl
+          label="Capa da Música (Imagem)"
+          value={s.cover_url ?? ""}
+          onChange={(v) => setS({ ...s, cover_url: v })}
+          onFile={(f) => handleUploadRow(s.id, "cover_url", f)}
+          accept="image/*"
+          busy={uploading === `row_${s.id}_cover_url`}
+        />
+        <Field label="Letra Indígena (Posicionamento)">
+          <Textarea rows={6} value={s.lyrics_indigenous} onChange={(e) => setS({ ...s, lyrics_indigenous: e.target.value })} placeholder="Uma linha por verso - controla onde a letra aparece" />
         </Field>
-        <Field label="Letra português">
+        <Field label="Tradução Português">
           <Textarea rows={6} value={s.lyrics_pt} onChange={(e) => setS({ ...s, lyrics_pt: e.target.value })} />
         </Field>
       </div>
