@@ -57,6 +57,7 @@ const defaultDraft = {
   lyrics_pt: "",
   description: "",
   is_active: true,
+  sync_offsets: [] as number[],
 };
 
 export function SongsAdmin() {
@@ -65,6 +66,19 @@ export function SongsAdmin() {
   const [uploading, setUploading] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [mode, setMode] = useState<"list" | "review">("list");
+  const [previewing, setPreviewing] = useState<Song | null>(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [permissions, setPermissions] = useState<Record<string, boolean>>({});
+  
+  const checkPerm = useServerFn(checkPermission);
+
+  useEffect(() => {
+    const perms = ["edit_covers", "edit_lyrics", "edit_layout"];
+    perms.forEach(async (p) => {
+      const has = await checkPerm({ permission: p });
+      setPermissions(prev => ({ ...prev, [p]: has }));
+    });
+  }, []);
 
   const { data: songs = [] } = useQuery({
     queryKey: ["songs_admin"],
@@ -89,6 +103,10 @@ export function SongsAdmin() {
   });
 
   async function handleUpload(field: "audio_url" | "cover_url", file: File) {
+    if (field === "cover_url" && !permissions.edit_covers) {
+      toast.error("Você não tem permissão para editar capas.");
+      return;
+    }
     setUploading(field);
     try {
       const url = await uploadToSongs(file, field === "audio_url" ? "audio" : "covers");
@@ -123,6 +141,7 @@ export function SongsAdmin() {
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
     qc.invalidateQueries({ queryKey: ["songs_public"] });
   }
+
 
   return (
     <div className="space-y-4">
