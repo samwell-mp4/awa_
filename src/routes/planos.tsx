@@ -74,6 +74,14 @@ function PlanosPage() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
+  const [tipoLocal, setTipoLocal] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTipoLocal(localStorage.getItem("awã_tipo") || localStorage.getItem("awã_tipo_conteudo"));
+    }
+  }, []);
+
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
