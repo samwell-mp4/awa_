@@ -1,5 +1,11 @@
 // Patxôhã — interface localizada com termos disponíveis no dicionário Pataxó.
 // Termos sem tradução confirmada mantêm o português entre parênteses para respeito à língua original.
+const pt = {
+  translator: {
+    disclaimer: "⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].",
+  },
+};
+
 export default {
   nav: {
     dicionario: "Ãhõmãy Patxôhã",
@@ -84,13 +90,25 @@ export default {
     kidsLoading: "Ãhõmãy…",
   },
   infantil: {
+    back: "Iawê",
     hotspots: {
       trilhas: "Auê Pahí",
       cantico: "Ĩmãyã",
       historia: "Awê Nitxĩ",
       jogos: "Kutxâ",
       amizade: "Aria",
-      canticos_infantis: "Ĩmãyã Pataxó",
-    }
-  }
+    },
+    learning: "Kaí Patxôhã",
+  },
+  translator: {
+    title: "Tuxauá Nakão ⇄ Nakão",
+    subtitle: "Tuxauá Nakão assistida por IA. Ãhõmãy aria — auê nakão pahí!",
+    label: "Tuxauá",
+    portugues: "Nakão (Português)",
+    patxoha: "Patxôhã",
+    translate: "Ãhy",
+    translating: "Awê...",
+    empty: "Awê aria...",
+    disclaimer: pt.translator.disclaimer,
+  },
 };

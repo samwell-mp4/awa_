@@ -1,4 +1,5 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useTranslation } from "react-i18next";
 
 import { SiteFooter } from "@/components/home/site-footer";
@@ -7,32 +8,10 @@ import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
 import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
-import { supabase } from "@/integrations/supabase/client";
-import { getPaddleEnvironment } from "@/lib/paddle";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) throw redirect({ to: "/auth" });
-    
-    // Bypass check for admins
-    const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: userData.user.id,
-      _role: "admin",
-    });
-
-    if (isAdmin) return;
-
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: userData.user.id,
-      _plan: "infantil",
-      _check_env: getPaddleEnvironment(),
-    });
-    if (!hasAccess) {
-      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
-    }
-  },
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Trilhas da Aldeia — Awã Tech Infantil" },

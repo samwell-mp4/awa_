@@ -1,7 +1,6 @@
 /**
  * Sincronização de legendas do player infantil.
- * Lógica pura (sem React) para poder ser verificada por testes automáticos —
- * garante que áudio e legendas nunca voltem a ficar dessincronizados.
+ * Lógica pura para garantir alinhamento entre áudio e texto em diferentes formatos.
  */
 
 /** Quebra a letra em versos, ignorando linhas vazias. */
@@ -17,17 +16,36 @@ export function splitLyrics(value: string | null | undefined): string[] {
  * Versos longos duram mais que versos curtos.
  */
 export function computeLyricBounds(
-  lines: Array<string | undefined>,
+  indLines: string[],
+  ptLines: string[],
   duration: number,
+  offsets?: number[] // Offsets manuais para ajuste fino (em segundos)
 ): number[] {
-  if (!lines.length || !Number.isFinite(duration) || duration <= 0) return [];
-  const weights = lines.map((l) => Math.max(8, (l ?? "").length));
-  const total = weights.reduce((a, b) => a + b, 0);
+  if ((!indLines.length && !ptLines.length) || !Number.isFinite(duration) || duration <= 0) return [];
+  
+  const maxLines = Math.max(indLines.length, ptLines.length);
   const out: number[] = [];
+  
+  // Calcula pesos baseados no comprimento do texto
+  const weights: number[] = [];
+  for (let i = 0; i < maxLines; i++) {
+    const indLen = (indLines[i] ?? "").length;
+    const ptLen = (ptLines[i] ?? "").length;
+    weights.push(Math.max(8, indLen, ptLen));
+  }
+  
+  const total = weights.reduce((a, b) => a + b, 0);
   let acc = 0;
-  for (const w of weights) {
-    acc += w;
-    out.push((acc / total) * duration);
+  for (let i = 0; i < weights.length; i++) {
+    acc += weights[i];
+    let time = (acc / total) * duration;
+    
+    // Aplica offset manual se existir
+    if (offsets && offsets[i] !== undefined) {
+      time += offsets[i];
+    }
+    
+    out.push(time);
   }
   return out;
 }

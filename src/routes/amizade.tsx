@@ -1,35 +1,14 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Heart, RefreshCw, Sparkles, Star } from "lucide-react";
 import { speak } from "@/lib/speak";
 import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
-import { supabase } from "@/integrations/supabase/client";
-import { getPaddleEnvironment } from "@/lib/paddle";
 
 export const Route = createFileRoute("/amizade")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) throw redirect({ to: "/auth" });
-    
-    // Bypass check for admins
-    const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: userData.user.id,
-      _role: "admin",
-    });
-
-    if (isAdmin) return;
-
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: userData.user.id,
-      _plan: "infantil",
-      _check_env: getPaddleEnvironment(),
-    });
-    if (!hasAccess) {
-      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
-    }
-  },
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Amizade Awã Tech Infantil — Brincar entre amigos" },

@@ -1,42 +1,20 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Pause, Play, X } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Pause, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { pickLang, useLang } from "@/lib/pick-lang";
+import { stopSpeak } from "@/lib/speak";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
-import { getPaddleEnvironment } from "@/lib/paddle";
-import {
-  activeLineIndex,
-  computeLyricBounds,
-  resolveDuration,
-  splitLyrics,
-} from "@/lib/lyric-sync";
+import { MiniPlayer, type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
+import { useActiveTemplate } from "@/hooks/use-active-template";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) throw redirect({ to: "/auth" });
-    
-    // Bypass check for admins
-    const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: userData.user.id,
-      _role: "admin",
-    });
-
-    if (isAdmin) return;
-
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: userData.user.id,
-      _plan: "infantil",
-      _check_env: getPaddleEnvironment(),
-    });
-    if (!hasAccess) {
-      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
-    }
-  },
+  beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
       { title: "Cantigas da Aldeia — Awã Tech Infantil" },
@@ -50,19 +28,6 @@ export const Route = createFileRoute("/musicas-infantil")({
   component: MusicasInfantilPage,
 });
 
-type Song = {
-  id: string;
-  title: string;
-  artist: string | null;
-  audio_url: string;
-  cover_url: string | null;
-  language: string;
-  lyrics_indigenous: string | null;
-  lyrics_pt: string | null;
-  lyrics_pt_en: string | null;
-  lyrics_pt_es: string | null;
-  duration_seconds: number | null;
-};
 
 
 // Bright kid palettes + a matching indigenous emoji
@@ -79,7 +44,14 @@ const THEMES = [
   { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
 ];
 
-function MusicasInfantilPage() {
+export function MusicasInfantilPage() {
+  const getFn = useServerFn(getSiteConfig);
+  const { data: branding } = useQuery({
+    queryKey: ["site_config", "branding"],
+    queryFn: () => getFn({ data: "branding" }),
+  });
+  const { template, config } = useActiveTemplate("musicas");
+
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
     staleTime: 1000 * 60 * 30,
@@ -87,22 +59,22 @@ function MusicasInfantilPage() {
       const { data, error } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds",
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets",
         )
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
-
       if (error) throw error;
-      return (data || []) as Song[];
+      return data as any as Song[];
     },
   });
 
   const [playing, setPlaying] = useState<Song | null>(null);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   return (
     <div
-      className="kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
+      className={`kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100 player-mode-${config.player_mode || 'default'}`}
       style={{
         backgroundImage: `url(${bgAsset.url})`,
         backgroundSize: "cover",
@@ -148,25 +120,27 @@ function MusicasInfantilPage() {
         </section>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square animate-pulse rounded-[2rem] bg-white/60" />
+              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
             ))}
           </div>
+        ) : songs.length === 0 ? (
+          <p className="text-center font-black text-emerald-800/70">
+            Em breve novas cantigas 🌱
+          </p>
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-            {songs.length === 0 && (
-              <p className="col-span-full py-12 text-center font-black text-emerald-800/70">
-                Nenhum cântico encontrado no momento 🌱
-              </p>
-            )}
             {songs.map((s, i) => {
               const theme = THEMES[i % THEMES.length];
               const isActive = playing?.id === s.id;
               return (
                 <button
                   key={s.id}
-                  onClick={() => setPlaying(isActive ? null : s)}
+                  onClick={() => {
+                    stopSpeak();
+                    setPlaying(isActive ? null : s);
+                  }}
                   className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
                 >
                   {/* Zigzag tribal top */}
@@ -210,168 +184,22 @@ function MusicasInfantilPage() {
         )}
       </main>
 
-      {playing && <MiniPlayer song={playing} onClose={() => setPlaying(null)} />}
-    </div>
-  );
-}
-
-export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void }) {
-  const ref = useRef<HTMLAudioElement>(null);
-  const lang = useLang();
-  const [progress, setProgress] = useState(0);
-  const [audioDuration, setAudioDuration] = useState(0);
-  const [audioError, setAudioError] = useState(false);
-  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const boxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setProgress(0);
-    setAudioDuration(0);
-    setAudioError(false);
-    const a = ref.current;
-    if (!a) return;
-    a.load();
-    void a.play()?.catch(() => {});
-
-    // Permite parar a música ao clicar em qualquer lugar da tela
-    const stopHandler = () => {
-      a.pause();
-      window.removeEventListener("pointerdown", stopHandler);
-    };
-    window.addEventListener("pointerdown", stopHandler);
-  }, [song.id]);
-
-  // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
-  useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      const a = ref.current;
-      if (a) {
-        setProgress(a.currentTime);
-        if (a.duration && Number.isFinite(a.duration)) setAudioDuration(a.duration);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [song.id]);
-
-  const indLines = splitLyrics(song.lyrics_indigenous);
-  const transLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang));
-  const maxLen = Math.max(indLines.length, transLines.length);
-
-  // Duração real do áudio; se o metadata ainda não carregou, usa a duração
-  // cadastrada para as legendas já começarem sincronizadas.
-  const duration = resolveDuration(audioDuration, song.duration_seconds);
-
-  const bounds = useMemo(
-    () =>
-      computeLyricBounds(
-        Array.from({ length: maxLen }, (_, i) => indLines[i] || transLines[i] || ""),
-        duration,
-      ),
-    [maxLen, duration, song.id, lang],
-  );
-
-  const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
-
-  useEffect(() => {
-    const box = boxRef.current;
-    const el = lineRefs.current[activeIdx];
-    if (!box || !el) return;
-    // rola apenas o painel de legendas, não a página
-    box.scrollTo?.({
-      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
-      behavior: "smooth",
-    });
-  }, [activeIdx]);
-
-  function retryAudio() {
-    const a = ref.current;
-    if (!a) return;
-    setAudioError(false);
-    a.load();
-    void a.play()?.catch(() => {});
-  }
-
-
-
-  return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl">
-      {maxLen > 0 && (
-        <div ref={boxRef} className="relative mx-auto mb-2 max-h-40 max-w-4xl overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2">
-          {Array.from({ length: maxLen }).map((_, i) => {
-            const active = i === activeIdx;
-            return (
-              <div
-                key={i}
-                ref={(el) => {
-                  lineRefs.current[i] = el;
-                }}
-                className={`py-1 text-center transition-all duration-300 ${
-                  active ? "scale-105" : "opacity-50"
-                }`}
-              >
-                <p
-                  className={`font-display text-base font-black leading-tight ${
-                    active ? "text-amber-300" : "text-amber-100"
-                  }`}
-                >
-                  {indLines[i] || "\u00A0"}
-                </p>
-                {transLines[i] && (
-                  <p className="text-xs font-bold italic text-emerald-100/85">{transLines[i]}</p>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      {playing && (
+        <MiniPlayer
+          song={playing}
+          branding={branding}
+          onClose={() => {
+            setPlaying(null);
+            setIsMaximized(false);
+          }}
+          isMaximized={isMaximized}
+          onToggleMaximize={() => setIsMaximized(!isMaximized)}
+        />
       )}
-      <div className="mx-auto flex max-w-4xl items-center gap-3">
-        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl kid-bounce">
-          🎶
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-display text-base font-black text-amber-200">
-            {song.title}
-          </div>
-          {song.artist && (
-            <div className="truncate text-[11px] font-bold text-emerald-100/80">
-              {song.artist}
-            </div>
-          )}
-          <audio
-            ref={ref}
-            src={song.audio_url}
-            controls
-            className="mt-1 w-full"
-            preload="auto"
-            data-testid="kids-audio"
-            onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
-            onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration || 0)}
-            onError={() => setAudioError(true)}
-          />
-          {audioError && (
-            <button
-              onClick={retryAudio}
-              className="mt-1 rounded-xl border-2 border-white bg-amber-300 px-3 py-1 font-display text-xs font-black text-emerald-950"
-            >
-              Tocar de novo 🔁
-            </button>
-          )}
-        </div>
-
-        <button
-          onClick={onClose}
-          aria-label="Fechar"
-          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-[0_4px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-none"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
     </div>
   );
 }
+
 
 function TribalBackdrop() {
   return (

@@ -1,12 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
+import { useRouter } from "@tanstack/react-router";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
@@ -173,31 +177,9 @@ function PresentationVideo({
   label: string;
   poster?: string;
 }) {
-  const ref = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-
-    const onPlay = () => {
-      // Quando um vídeo começa, o clique global para ele na próxima vez
-      const stopHandler = () => {
-        video.pause();
-        window.removeEventListener("pointerdown", stopHandler);
-      };
-      window.addEventListener("pointerdown", stopHandler);
-    };
-
-    video.addEventListener("play", onPlay);
-    return () => {
-      video.removeEventListener("play", onPlay);
-    };
-  }, []);
-
   return (
     <figure className="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl backdrop-blur-sm">
       <video
-        ref={ref}
         className="aspect-video w-full"
         src={src}
         poster={poster}
@@ -243,7 +225,38 @@ function LandingChoice() {
   const videoSrc = useVideoSources();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
-  // Depois de assinar, mostramos apenas a área contratada.
+  const getFn = useServerFn(getSiteConfig);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handler = () => router.invalidate();
+    window.addEventListener("awa:content-updated", handler);
+    return () => window.removeEventListener("awa:content-updated", handler);
+  }, [router]);
+
+  const { data: landingHero } = useQuery({
+    queryKey: ["site_config", "landing_hero"],
+    queryFn: () => getFn({ data: "landing_hero" }),
+  });
+
+  const { data: branding } = useQuery({
+    queryKey: ["site_config", "branding"],
+    queryFn: () => getFn({ data: "branding" }),
+  });
+
+  // Fallbacks from static dict/assets
+  const h1a = landingHero?.h1a || dict.h1a;
+  const h1b = landingHero?.h1b || dict.h1b;
+  const lead = landingHero?.lead || dict.lead;
+  const entrarLabel = landingHero?.entrar_label || dict.entrar;
+  const bgUrl = landingHero?.bg_url || landingBg.url;
+
+  const adultLogoUrl = branding?.adulto_logo_url || adultoLogo.url;
+  const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
+  const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
+  const childVideoUrl = branding?.infantil_menu_video_url || videoSrc.infantil;
+
+
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
   const showAdulto = !hasAny || hasAdulto;
@@ -254,7 +267,7 @@ function LandingChoice() {
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${landingBg.url})`,
+        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${bgUrl})`,
       }}
     >
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
@@ -276,7 +289,7 @@ function LandingChoice() {
                 className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-forest-deep shadow-md hover:brightness-110 md:px-4 md:py-2 md:text-xs"
               >
                 <LogIn className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                {dict.entrar}
+                {entrarLabel}
               </Link>
             )
           )}
@@ -291,11 +304,11 @@ function LandingChoice() {
         </span>
 
         <h1 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl">
-          {dict.h1a}{" "}
-          <span className="text-gradient-gold">{dict.h1b}</span>
+          {h1a}{" "}
+          <span className="text-gradient-gold">{h1b}</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm text-foreground/80 md:text-base">
-          {dict.lead}
+          {lead}
         </p>
 
         <div
@@ -304,22 +317,22 @@ function LandingChoice() {
           {!pending && showAdulto && (
             <ExperienceCard
               to="/adulto"
-              image={adultoLogo.url}
+              image={adultLogoUrl}
               eyebrow="Awã Tech"
               title={dict.adulto}
               description={dict.adultoDesc}
-              entrar={dict.entrar}
+              entrar={entrarLabel}
               priority
             />
           )}
           {!pending && showInfantil && (
             <ExperienceCard
               to="/infantil"
-              image={infantilLogo.url}
+              image={childLogoUrl}
               eyebrow="Awã Tech"
               title={dict.crianca}
               description={dict.criancaDesc}
-              entrar={dict.entrar}
+              entrar={entrarLabel}
               priority={!showAdulto}
             />
           )}
@@ -335,20 +348,21 @@ function LandingChoice() {
           >
             {!pending && showAdulto && (
               <PresentationVideo
-                key={videoSrc.adulto}
-                src={videoSrc.adulto}
-                poster={adultoLogo.url}
+                key={adultVideoUrl}
+                src={adultVideoUrl}
+                poster={adultLogoUrl}
                 label={vdict.adulto}
               />
             )}
             {!pending && showInfantil && (
               <PresentationVideo
-                key={videoSrc.infantil}
-                src={videoSrc.infantil}
-                poster={infantilLogo.url}
+                key={childVideoUrl}
+                src={childVideoUrl}
+                poster={childLogoUrl}
                 label={vdict.infantil}
               />
             )}
+
           </div>
         </section>
 
@@ -357,6 +371,7 @@ function LandingChoice() {
     </div>
   );
 }
+
 
 function ExperienceCard({
   to,

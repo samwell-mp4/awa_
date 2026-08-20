@@ -10,6 +10,7 @@ import {
   Send,
   Loader2,
   Volume2,
+  VolumeX,
   Copy,
   Check,
   RefreshCcw,
@@ -23,6 +24,8 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
 import { useLang, type Lang } from "@/lib/pick-lang";
 import logoSrc from "@/assets/awa-tech-logo.png";
+import { CaptionPlayer } from "@/components/CaptionPlayer";
+
 
 export const Route = createFileRoute("/professor")({
   head: () => ({
@@ -58,6 +61,7 @@ type L10n = {
   copied: string;
   listen: string;
   send: string;
+  back: string;
   suggestions: { label: string; prompt: string }[];
   errorSpeak: string;
   errorAudio: string;
@@ -78,6 +82,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Ouvir",
     send: "Enviar",
+    back: "Voltar",
     suggestions: [
       { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
       { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
@@ -101,6 +106,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copied",
     listen: "Listen",
     send: "Send",
+    back: "Back",
     suggestions: [
       { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
       { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
@@ -124,6 +130,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Escuchar",
     send: "Enviar",
+    back: "Volver",
     suggestions: [
       { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
       { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
@@ -147,6 +154,7 @@ const L10N: Record<Lang, L10n> = {
     copied: "Copiado",
     listen: "Ouvir",
     send: "Enviar",
+    back: "Iawê",
     suggestions: [
       { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
       { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
@@ -174,9 +182,13 @@ function ProfessorPage() {
   const [messages, setMessages] = useState<Msg[]>(() => [makeWelcome()]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeAssistantAudio, setActiveAssistantAudio] = useState<HTMLAudioElement | null>(null);
+  const [audioBusyKey, setAudioBusyKey] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+
 
   // When the UI language changes and no user message was sent, refresh the welcome.
   useEffect(() => {
@@ -199,27 +211,71 @@ function ProfessorPage() {
     el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
   }, [input]);
 
+  async function toggleAudio(text: string, key: string) {
+    if (audioBusyKey === key) {
+      currentAudioRef.current?.pause();
+      setActiveAssistantAudio(null);
+      setAudioBusyKey(null);
+      return;
+    }
+    
+    try {
+      setAudioBusyKey(key);
+      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      if (r.error || !r.audio_base64) {
+        setAudioBusyKey(null);
+        return;
+      }
+      
+      const url = base64ToBlobUrl(r.audio_base64, r.mime);
+      currentAudioRef.current?.pause();
+      const audio = new Audio(url);
+      currentAudioRef.current = audio;
+      setActiveAssistantAudio(audio);
+
+      await audio.play().catch(() => {});
+      
+      audio.onended = () => {
+        if (audioBusyKey === key) {
+          setAudioBusyKey(null);
+          setActiveAssistantAudio(null);
+        }
+      };
+
+      const stopHandler = () => {
+        audio.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler, { once: true });
+    } catch {
+      setAudioBusyKey(null);
+    }
+  }
+
   async function autoSpeak(audio: HTMLAudioElement, text: string) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
       if (r.error || !r.audio_base64) return;
-      audioRef.current?.pause();
-      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
-      audioRef.current = audio;
+      
+      const url = base64ToBlobUrl(r.audio_base64, r.mime);
+      currentAudioRef.current?.pause();
+      audio.src = url;
+      currentAudioRef.current = audio;
+      setActiveAssistantAudio(audio);
+
+
+      // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
 
-      // Permite parar o áudio do professor ao clicar na tela
       const stopHandler = () => {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
       };
-      window.addEventListener("pointerdown", stopHandler);
-      // O listener acima será ativado pelo próximo clique em qualquer lugar da tela
-      // inclusive botões de play de outros componentes se não usarem stopPropagation.
-
+      window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
-      /* silencioso: mantém apenas o texto */
+      /* silencioso */
     }
   }
 
@@ -244,7 +300,8 @@ function ProfessorPage() {
   }
 
   function resetConversation() {
-    audioRef.current?.pause();
+    currentAudioRef.current?.pause();
+    setActiveAssistantAudio(null);
     setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
@@ -260,7 +317,7 @@ function ProfessorPage() {
             to={backTo as "/"}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold/90 hover:text-gold transition"
           >
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> {L10N[lang].back}
           </Link>
 
           <div className="flex items-center gap-3">
@@ -302,7 +359,13 @@ function ProfessorPage() {
       <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
         <div className="space-y-5">
           {messages.map((m, i) => (
-            <Bubble key={i} msg={m} isLast={i === messages.length - 1} />
+            <Bubble 
+              key={i} 
+              msg={m} 
+              isLast={i === messages.length - 1} 
+              activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
+              onToggleAudio={toggleAudio}
+            />
           ))}
           {loading && <TypingIndicator />}
           <div ref={endRef} />
@@ -472,7 +535,17 @@ function parseBlocks(content: string): Block[] {
   return blocks;
 }
 
-function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
+function Bubble({ 
+  msg, 
+  isLast, 
+  activeAudio, 
+  onToggleAudio 
+}: { 
+  msg: Msg; 
+  isLast: boolean; 
+  activeAudio?: HTMLAudioElement | null;
+  onToggleAudio?: (text: string, key: string) => void;
+}) {
   const lang = useLang();
   const t = L10N[lang];
   const isUser = msg.role === "user";
@@ -483,6 +556,16 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
   const blocks = useMemo(() => parseBlocks(msg.content), [msg.content]);
 
   async function playText(text: string, key: string) {
+    if (onToggleAudio) {
+      onToggleAudio(text, key);
+      return;
+    }
+    // Fallback for single bubble usage if ever needed
+    if (audioBusy === key) {
+      audioRef.current?.pause();
+      setAudioBusy(null);
+      return;
+    }
     if (audioBusy) return;
     try {
       setAudioBusy(key);
@@ -493,6 +576,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
       audioRef.current?.pause();
       audioRef.current = audio;
       await audio.play();
+
 
       // Permite parar o áudio ao clicar na tela
       const stopHandler = () => {
@@ -531,10 +615,22 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
           }`}
         >
           <div className="space-y-2.5">
+            {isLast && !isUser && (
+              <CaptionPlayer 
+                text={msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "")} 
+                audio={activeAudio || null}
+                className="mb-2"
+              />
+            )}
+
             {blocks.map((b, i) => {
               if (b.type === "paragraph") {
                 return (
-                  <p key={i} className="whitespace-pre-wrap">
+                  <p 
+                    key={i} 
+                    className="whitespace-pre-wrap cursor-pointer hover:text-gold transition-colors"
+                    onClick={() => playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
+                  >
                     {renderInline(b.text, `p${i}`)}
                   </p>
                 );
@@ -542,7 +638,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
               if (b.type === "bullets") {
                 return (
                   <ul key={i} className="ml-1 space-y-1">
-                    {b.items.map((item, j) => (
+                    {b.items.map((item: string, j: number) => (
                       <li key={j} className="flex gap-2">
                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
                         <span>{renderInline(item, `b${i}-${j}`)}</span>
@@ -558,7 +654,7 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
                   <div className="flex items-start justify-between gap-2">
                     <button
                       onClick={() => playText(b.pat, key)}
-                      disabled={audioBusy === key}
+                      disabled={audioBusy === key && !onToggleAudio}
                       className="group flex flex-1 items-center gap-3 text-left transition hover:opacity-80 disabled:opacity-50"
                       aria-label={`Ouvir ${b.pat}`}
                     >
@@ -567,10 +663,11 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
                       </div>
                       <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30">
                         {audioBusy === key ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <VolumeX className="h-3.5 w-3.5 animate-pulse" />
                         ) : (
                           <Volume2 className="h-3.5 w-3.5" />
                         )}
+
                       </div>
                     </button>
                   </div>
@@ -604,16 +701,17 @@ function Bubble({ msg, isLast }: { msg: Msg; isLast: boolean }) {
                   <span aria-hidden>·</span>
                   <button
                     onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
-                    disabled={audioBusy === "full"}
+                    disabled={audioBusy === "full" && !onToggleAudio}
                     className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
                     aria-label={t.listen}
                     title={t.listen}
                   >
                     {audioBusy === "full" ? (
-                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <VolumeX className="h-3 w-3 animate-pulse" />
                     ) : (
                       <Volume2 className="h-3 w-3" />
                     )}
+
                     {t.listen}
                   </button>
                 </>

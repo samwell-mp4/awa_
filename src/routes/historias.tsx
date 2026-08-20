@@ -231,7 +231,7 @@ function useNarration(originalText: string) {
   // Permite parar a narração ao clicar em qualquer lugar da tela
   useEffect(() => {
     if (speaking) {
-      window.addEventListener("pointerdown", stopCurrent);
+      window.addEventListener("pointerdown", stopCurrent, { once: true });
     } else {
       window.removeEventListener("pointerdown", stopCurrent);
     }

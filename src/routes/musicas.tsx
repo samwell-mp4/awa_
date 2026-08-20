@@ -92,10 +92,10 @@ function MusicasPage() {
   const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
   const [aldeia, setAldeia] = useState<(typeof ALDEIAS)[number]>("Todas");
-  const filteredSongs = useMemo(() => {
-    if (aldeia === "Todas") return songs;
-    return songs.filter((s) => s.aldeia === aldeia);
-  }, [songs, aldeia]);
+  const filteredSongs = useMemo(
+    () => (aldeia === "Todas" ? songs : songs.filter((s) => s.aldeia === aldeia)),
+    [songs, aldeia],
+  );
   const soundCloudWidgetsRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
@@ -469,15 +469,7 @@ function Player({
         readyTimer = window.setTimeout(() => {
           widget.play();
         }, 0);
-        
-        // Permite parar a música do SoundCloud ao clicar na tela
-        const stopHandler = () => {
-          widget.pause();
-          window.removeEventListener("pointerdown", stopHandler);
-        };
-        window.addEventListener("pointerdown", stopHandler);
       });
-
       widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
         setLoadingAudio(false);
         setProgress(e.currentPosition / 1000);
@@ -781,22 +773,11 @@ function Player({
           onPlay={() => {
             setLoadingAudio(false);
             setPlaying(true);
-            
-            // Permite parar o áudio local ao clicar na tela
-            const stopHandler = () => {
-              if (audioRef.current) {
-                audioRef.current.pause();
-                setPlaying(false);
-              }
-              window.removeEventListener("pointerdown", stopHandler);
-            };
-            window.addEventListener("pointerdown", stopHandler);
           }}
           onPause={() => {
             setLoadingAudio(false);
             setPlaying(false);
           }}
-          autoPlay
         />
       )}
 

@@ -23,7 +23,12 @@ export async function initializePaddle() {
     const onReady = () => {
       const paddleJsEnvironment = getPaddleEnvironment() === "sandbox" ? "sandbox" : "production";
       window.Paddle.Environment.set(paddleJsEnvironment);
-      window.Paddle.Initialize({ token: clientToken });
+      window.Paddle.Initialize({ 
+        token: clientToken,
+        pwCustomer: window.localStorage.getItem('paddle_customer_id') 
+          ? { id: window.localStorage.getItem('paddle_customer_id') } 
+          : undefined
+      });
       paddleInitialized = true;
       resolve();
     };

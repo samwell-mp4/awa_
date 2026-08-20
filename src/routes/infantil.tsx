@@ -1,5 +1,9 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -7,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { GlossarioInfantil } from "@/components/kids/glossario-infantil";
+import { useActiveTemplate } from "@/hooks/use-active-template";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -57,46 +62,75 @@ type Hotspot = {
   color: string;
 };
 
-const hotspots: Hotspot[] = [
+const defaultHotspots: Hotspot[] = [
   { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎵", color: "#ef476f" },
-  
+  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
+
 function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+  const getFn = useServerFn(getSiteConfig);
+  const { template, config } = useActiveTemplate("infantil");
+
+  const { data: hotspotsData } = useQuery({
+    queryKey: ["site_config", "infantil_hotspots"],
+    queryFn: () => getFn({ data: "infantil_hotspots" }),
+  });
+
+  const hotspots = useMemo(() => (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [], [hotspotsData]);
+
+  const { data: branding } = useQuery({
+    queryKey: ["site_config", "branding"],
+    queryFn: () => getFn({ data: "branding" }),
+  });
+
+
+  const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
+  const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
 
   return (
-    <div className="kids-theme min-h-screen text-foreground">
+
+    <div className={`kids-theme min-h-screen text-foreground template-${config.theme || 'default'}`}>
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <div className="-mx-3 md:-mx-6 mt-0">
           <img
-            src={infantilLogo.url}
+            src={logoUrl}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
+
             className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
             fetchPriority="high"
             draggable={false}
           />
         </div>
 
+        <button
+          onClick={() => window.history.back()}
+          className="group relative z-10 -mt-6 mx-auto flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+        >
+          <ArrowLeft className="h-5 w-5 stroke-[3]" />
+          <span>{t("infantil.back")}</span>
+        </button>
+
         <section
           key={languageKey}
           className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
           style={{ background: "#0b3d2e" }}
         >
-          <VideoMenu src={menuVideo.url} label={t("infantil.title")} />
+          <VideoMenu src={videoUrl} label={t("infantil.title")} />
         </section>
+
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {hotspots.map((h) => (
+          {Array.isArray(hotspots) && hotspots.map((h: Hotspot) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
@@ -128,12 +162,14 @@ function InfantilHome() {
           ))}
         </section>
 
-        <section className="mt-12">
-          <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-            Aprendendo Patxôhã
-          </h2>
-          <GlossarioInfantil />
-        </section>
+        {t("infantil.learning") && (
+          <section className="mt-12">
+            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
+              {t("infantil.learning")}
+            </h2>
+            <GlossarioInfantil />
+          </section>
+        )}
       </main>
 
 
@@ -156,13 +192,6 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
     v.addEventListener("playing", onReady);
     // Try to kickstart playback (some browsers stall autoplay silently)
     v.play().catch(() => {});
-
-    // Permite parar o vídeo ao clicar em qualquer lugar da tela
-    const stopHandler = () => {
-      v.pause();
-      window.removeEventListener("pointerdown", stopHandler);
-    };
-    window.addEventListener("pointerdown", stopHandler);
     return () => {
       v.removeEventListener("loadeddata", onReady);
       v.removeEventListener("playing", onReady);
