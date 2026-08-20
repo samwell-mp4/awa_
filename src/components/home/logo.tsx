@@ -19,8 +19,8 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
     ? (branding?.infantil_logo_url || logoSrc)
     : (branding?.adulto_logo_url || logoSrc);
 
-  // Use i18n.isInitialized to ensure we don't render empty text during hydration
-  const tagline = i18n.isInitialized ? t("common.tagline") : "";
+  // Use a stable fallback during hydration to avoid mismatches
+  const tagline = t("common.tagline");
 
   return (
     <div className="flex items-center gap-3">
