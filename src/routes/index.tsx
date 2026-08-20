@@ -1,8 +1,6 @@
 // =============================================
-// CONTROLE DE ENTRADA — Awã Tech
-// Admin → só seu Gmail | Usuários → Pagamentos → Site
+// PROTEÇÃO DO ADMIN — NINGUÉM MAIS ENTRA
 // =============================================
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -10,77 +8,29 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-// ✅ SEU GMAIL — SÓ VOCÊ ENTRA NO ADMIN
-const ADMIN_EMAIL = "adlermagno8@gmail.com"; // ← COLOQUE SEU GMAIL AQUI!
+const ADMIN_EMAIL = "adlermagno8@gmail.com"; // ← SEU GMAIL AQUI!
 
-// 🚀 FUNÇÃO PRINCIPAL — RODA QUANDO ALGUÉM ENTRA NO SITE
-export async function verificarRotaUsuario() {
-  // 1️⃣ Pegar usuário logado
-  const { data: { user }, error } = await supabase.auth.getUser();
-
-  // ❌ Ninguém logado → vai para página inicial / login
-  if (!user) {
-    window.location.href = "/login";
-    return;
-  }
-
-  // 2️⃣ ✅ É VOCÊ — ADMIN → VAI DIRETO PARA PAINEL ADMIN
-  if (user.email === ADMIN_EMAIL) {
-    console.log("👑 Admin detectado — abrindo painel...");
-    window.location.href = "/admin";
-    return;
-  }
-
-  // 3️⃣ É USUÁRIO COMUM → Verificar se JÁ PAGOU
-  if (!user.email) {
-    window.location.href = "/auth";
-    return;
-  }
-  const temAcesso = await verificarPagamento(user.email);
-
-  if (temAcesso) {
-    // ✅ PAGOU → Acessa o site normalmente
-    console.log("✅ Acesso liberado — abrindo site...");
-    window.location.href = "/home";
-  } else {
-    // 💰 NÃO PAGOU → Vai para página de preços/pagamento
-    console.log("💰 Aguardando pagamento — indo para preços...");
-    window.location.href = "/precos";
+async function protegerAdmin() {
+  if (typeof window === "undefined") return;
+  
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  // ❌ Se não for você → volta para página inicial
+  if (!user || user.email !== ADMIN_EMAIL) {
+    // Apenas redireciona se não estivermos já na Home para evitar loop infinito
+    if (window.location.pathname !== "/") {
+      alert("🔒 Área restrita — redirecionando...");
+      window.location.href = "/";
+    }
   }
 }
 
-// 🔍 Verificar se usuário tem assinatura ativa
-async function verificarPagamento(emailUsuario: string) {
-  // Buscar cliente no banco
-  const { data: cliente } = await supabase
-    .from("customers")
-    .select("customer_id")
-    .eq("email", emailUsuario)
-    .maybeSingle();
-
-  if (!cliente) return false;
-
-  // Verificar status da assinatura
-  const { data: assinatura } = await supabase
-    .from("subscriptions")
-    .select("status")
-    .eq("customer_id", cliente.customer_id)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (!assinatura) return false;
-
-  // ✅ Acesso se ativa OU em teste
-  const statusLiberado = ["active", "trialing"];
-  return statusLiberado.includes(assinatura.status);
+// Rodar ao abrir a página de Admin
+// Nota: Se estiver na Home ("/"), esta proteção não deve travar o acesso público
+if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
+  protegerAdmin();
 }
 
-// 🚀 Rodar automaticamente ao carregar o site se estivermos no navegador
-if (typeof window !== "undefined") {
-  // Opcional: descomente para ativar o redirecionamento automático
-  // verificarRotaUsuario();
-}
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
