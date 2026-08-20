@@ -3,6 +3,7 @@
 // =============================================
 
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
@@ -73,6 +74,14 @@ function PlanosPage() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
+  const [tipoLocal, setTipoLocal] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTipoLocal(localStorage.getItem("awã_tipo") || localStorage.getItem("awã_tipo_conteudo"));
+    }
+  }, []);
+
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
@@ -125,7 +134,7 @@ function PlanosPage() {
         </section>
 
         {/* INFANTIL */}
-        {(search.need === "infantil" || (!search.need && (localStorage.getItem("awã_tipo") === "infantil" || localStorage.getItem("awã_tipo_conteudo") === "infantil"))) && (
+        {(search.need === "infantil" || (!search.need && tipoLocal === "infantil")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
@@ -158,7 +167,7 @@ function PlanosPage() {
         )}
 
         {/* ADULTO */}
-        {(search.need === "adulto" || (!search.need && (localStorage.getItem("awã_tipo") === "adulto" || localStorage.getItem("awã_tipo_conteudo") === "adulto"))) && (
+        {(search.need === "adulto" || (!search.need && tipoLocal === "adulto")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">

@@ -1,14 +1,28 @@
-// =============================================
-// ESCOLHA DE CONTEÚDO — ANTES DO PAGAMENTO
-// 🔞 Adulto  |  👶 Infantil
-// =============================================
-import { createClient } from '@supabase/supabase-js';
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
+import { Logo } from "@/components/home/logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { PublicFooter } from "@/components/PublicFooter";
+import { useAuth } from "@/hooks/use-auth";
+import { useSubscription } from "@/hooks/use-subscription";
+import { useRouter } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import adultoLogo from "@/assets/adulto-logo.png.asset.json";
+import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
+import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
+import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
+import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
+import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
+import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
+import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
+// ✅ Seu Gmail — Admin
 const ADMIN_EMAIL = "adlermagno8@gmail.com";
 
 // 🚀 Verificar se já tem acesso → pular direto pro menu!
@@ -26,16 +40,13 @@ async function verificarAcessoExistente() {
   }
 
   // Verificar se já pagou → vai direto pro menu correspondente
-  // Usamos a lógica de verificação de assinatura do app
   const { data: hasInfantil } = await supabase.rpc("has_plan_access", {
     _user_id: user.id,
-    _plan: "infantil",
-    _check_env: "production" // Ou pegar dinamicamente se necessário
+    _plan: "infantil"
   });
   const { data: hasAdulto } = await supabase.rpc("has_plan_access", {
     _user_id: user.id,
-    _plan: "adulto",
-    _check_env: "production"
+    _plan: "adulto"
   });
 
   if (hasAdulto && window.location.pathname === "/") {
@@ -49,49 +60,6 @@ async function verificarAcessoExistente() {
   return false;
 }
 
-// 🔞 Escolher Adulto
-(window as any).irParaAdulto = () => {
-  localStorage.setItem("awã_tipo", "adulto");
-  localStorage.setItem("awã_tipo_conteudo", "adulto"); // Mantendo compatibilidade
-  window.location.href = "/planos?tipo=adulto";
-};
-
-// 👶 Escolher Infantil
-(window as any).irParaInfantil = () => {
-  localStorage.setItem("awã_tipo", "infantil");
-  localStorage.setItem("awã_tipo_conteudo", "infantil"); // Mantendo compatibilidade
-  window.location.href = "/planos?tipo=infantil";
-};
-
-// Iniciar
-verificarAcessoExistente();
-
-
-
-
-
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { Logo } from "@/components/home/logo";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { PublicFooter } from "@/components/PublicFooter";
-import { useAuth } from "@/hooks/use-auth";
-import { useSubscription } from "@/hooks/use-subscription";
-import { useRouter } from "@tanstack/react-router";
-import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
-import adultoLogo from "@/assets/adulto-logo.png.asset.json";
-import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
-import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
-import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
-import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
-import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
-import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
-import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
 type Dict = {
   badge: string;
@@ -155,7 +123,7 @@ const MENU_I18N: Record<string, Dict> = {
     crianca: "Niños",
     adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.",
     criancaDesc: "Juegos, canciones e historias para aprender jugando.",
-    entrar: "Entrar",
+    entrar: "Enter",
     pagTitle: "Pago seguro",
     pagCopy: "Procesado por Paddle",
     multiTitle: "Multi-idioma",
@@ -266,7 +234,6 @@ function PresentationVideo({
   );
 }
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -306,17 +273,22 @@ function LandingChoice() {
     return () => window.removeEventListener("awa:content-updated", handler);
   }, [router]);
 
+  useEffect(() => {
+    verificarAcessoExistente();
+  }, []);
+
   const { data: landingHero } = useQuery({
     queryKey: ["site_config", "landing_hero"],
     queryFn: () => getFn({ data: "landing_hero" }),
   });
+
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
     queryFn: () => getFn({ data: "branding" }),
   });
 
-  // Fallbacks from static dict/assets
+
   const h1a = landingHero?.h1a || dict.h1a;
   const h1b = landingHero?.h1b || dict.h1b;
   const lead = landingHero?.lead || dict.lead;
@@ -327,7 +299,6 @@ function LandingChoice() {
   const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
   const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
   const childVideoUrl = branding?.infantil_menu_video_url || videoSrc.infantil;
-
 
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
@@ -368,7 +339,6 @@ function LandingChoice() {
         </div>
       </header>
 
-
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5" />
@@ -388,7 +358,11 @@ function LandingChoice() {
         >
           {!pending && showAdulto && (
             <div 
-              onClick={() => (window as any).irParaAdulto()}
+              onClick={() => {
+                localStorage.setItem("awã_tipo", "adulto");
+                localStorage.setItem("awã_tipo_conteudo", "adulto");
+                window.location.href = "/planos?tipo=adulto";
+              }}
               className="cursor-pointer"
             >
               <ExperienceCard
@@ -404,7 +378,11 @@ function LandingChoice() {
           )}
           {!pending && showInfantil && (
             <div 
-              onClick={() => (window as any).irParaInfantil()}
+              onClick={() => {
+                localStorage.setItem("awã_tipo", "infantil");
+                localStorage.setItem("awã_tipo_conteudo", "infantil");
+                window.location.href = "/planos?tipo=infantil";
+              }}
               className="cursor-pointer"
             >
               <ExperienceCard
@@ -420,6 +398,7 @@ function LandingChoice() {
           )}
         </div>
 
+
         <section className="mt-16 w-full">
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
             {vdict.title}
@@ -430,7 +409,11 @@ function LandingChoice() {
           >
             {!pending && showAdulto && (
               <div 
-                onClick={() => (window as any).irParaAdulto()}
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "adulto");
+                  localStorage.setItem("awã_tipo_conteudo", "adulto");
+                  window.location.href = "/planos?tipo=adulto";
+                }}
                 className="cursor-pointer"
               >
                 <PresentationVideo
@@ -443,7 +426,11 @@ function LandingChoice() {
             )}
             {!pending && showInfantil && (
               <div 
-                onClick={() => (window as any).irParaInfantil()}
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "infantil");
+                  localStorage.setItem("awã_tipo_conteudo", "infantil");
+                  window.location.href = "/planos?tipo=infantil";
+                }}
                 className="cursor-pointer"
               >
                 <PresentationVideo
@@ -457,13 +444,11 @@ function LandingChoice() {
 
           </div>
         </section>
-
       </main>
       <PublicFooter />
     </div>
   );
 }
-
 
 function ExperienceCard({
   to,
@@ -484,10 +469,6 @@ function ExperienceCard({
 }) {
   return (
     <div
-      onClick={(e) => {
-        // Prevents default navigation as we handle it manually in the parent div
-        e.preventDefault();
-      }}
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden">
@@ -496,32 +477,28 @@ function ExperienceCard({
           alt={`Awã Tech ${title}`}
           width={800}
           height={800}
-          fetchPriority={priority ? "high" : undefined}
-          loading={priority ? undefined : "lazy"}
-          decoding="async"
-          className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-          draggable={false}
+          loading={priority ? "eager" : "lazy"}
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
-          {eyebrow}
-        </span>
+        <div className="absolute inset-0 bg-gradient-to-t from-forest-deep via-forest-deep/10 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
       </div>
 
-      <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
-        <div className="min-w-0 text-left">
-          <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
-            {title}
-          </div>
-          <p className="mt-1 text-xs text-foreground/70 md:text-sm">
-            {description}
-          </p>
-        </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          {entrar} <ArrowRight className="h-4 w-4" />
+      <div className="relative flex flex-col p-6 text-left md:p-8">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold/80">
+          {eyebrow}
         </span>
+        <h3 className="mt-2 font-display text-2xl font-black text-cream md:text-3xl">
+          {title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-foreground/75 line-clamp-2 md:text-base">
+          {description}
+        </p>
+
+        <div className="mt-8 flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-gold group-hover:gap-5 transition-all">
+          {entrar}
+          <ArrowRight className="h-4 w-4" />
+        </div>
       </div>
     </div>
   );
 }
-
