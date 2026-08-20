@@ -50,7 +50,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             <ArrowLeft className={isKids ? "h-7 w-7" : "h-5 w-5"} strokeWidth={isKids ? 3 : 2} />
           </button>
         ) : (
-          (isPremium || isAdmin) && mode !== "all" && (
+          (isPremium || isAdmin || mode === "all") && (
             <button
               onClick={() => setOpen((v) => !v)}
               className={
