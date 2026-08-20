@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
@@ -7,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
+import { getPaddleEnvironment } from "@/lib/paddle";
+import { redirect } from "@tanstack/react-router";
 import {
   activeLineIndex,
   computeLyricBounds,
@@ -16,7 +17,18 @@ import {
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/auth" });
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: data.user.id,
+      _plan: "infantil",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) {
+      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Cantigas da Aldeia — Awã Tech Infantil" },
