@@ -215,34 +215,24 @@ function RootComponent() {
 function LanguageHydrator() {
   const { i18n } = useTranslation();
 
-  // Pre-load from localStorage BEFORE first render to match SSR language if possible
-  // However, since SSR is always 'pt', we must use 'pt' for first render.
-  
   useEffect(() => {
-    // Only run on client
     if (typeof window === "undefined") return;
 
     const valid = ["pt", "en", "es"];
     const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-    const detected = navigator.language?.slice(0, 2).toLowerCase();
-    const target = valid.includes(stored || "")
-      ? stored
-      : valid.includes(detected || "")
-        ? detected
-        : "pt";
-
-    if (target && target !== "pt") {
-      document.documentElement.lang = target;
-      window.localStorage.setItem("awa_lang", target);
-      if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
-        void i18n.changeLanguage(target);
-      }
-    } else {
-      document.documentElement.lang = "pt";
+    
+    // Check if we already have a language set in i18n that matches stored preference
+    // If not, we trigger the change.
+    const currentLang = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
+    
+    if (stored && valid.includes(stored) && stored !== currentLang) {
+      void i18n.changeLanguage(stored);
+      document.documentElement.lang = stored;
     }
   }, [i18n]);
 
   return null;
 }
+
 
 
