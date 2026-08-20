@@ -1,13 +1,6 @@
 // =============================================
-// REGRAS DE ACESSO — Awã Tech
-// ---------------------------------------------
-// Página            | Endereço  | Função
-// ---------------------------------------------
-// Escolha de Público| /         | Usuário escolhe: 🔞 Adulto / 👶 Infantil
-// Planos            | /planos   | Só mostra o plano do tipo escolhido
-// Conteúdo Adulto   | /adulto   | Vídeos + áudios — só quem comprou Adulto
-// Conteúdo Infantil | /infantil | Vídeos + áudios — só quem comprou Infantil
-// Admin             | /admin    | Só você acessa
+// ESCOLHA DE CONTEÚDO — Awã Tech
+// 🔞 Adulto  |  👶 Infantil
 // =============================================
 
 import { createClient } from '@supabase/supabase-js';
@@ -17,26 +10,38 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-const ADMIN_EMAIL = "adlermagno8@gmail.com"; // ← SEU GMAIL AQUI!
+// ✅ Seu Gmail — Admin
+const ADMIN_EMAIL = "adlermagno8@gmail.com";
 
-async function protegerAdmin() {
+// 🚀 Verificar se é Admin primeiro
+async function verificarAdmin() {
   if (typeof window === "undefined") return;
-  
   const { data: { user } } = await supabase.auth.getUser();
-  
-  // ❌ Se não for você → volta para página inicial
-  if (!user || user.email !== ADMIN_EMAIL) {
-    if (window.location.pathname.startsWith("/admin")) {
-      alert("🔒 Área restrita — redirecionando...");
-      window.location.href = "/";
+  if (user && user.email === ADMIN_EMAIL) {
+    if (!window.location.pathname.startsWith("/admin")) {
+      // Opcional: só redireciona se você quiser que o admin vá direto para o painel
+      // window.location.href = "/admin";
     }
+    return true;
   }
+  return false;
 }
 
-// Rodar proteção de admin
-if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
-  protegerAdmin();
-}
+// 🔞 Escolher Adulto
+(window as any).irParaAdulto = function() {
+  localStorage.setItem("awã_tipo_conteudo", "adulto");
+  window.location.href = "/planos?tipo=adulto";
+};
+
+// 👶 Escolher Infantil
+(window as any).irParaInfantil = function() {
+  localStorage.setItem("awã_tipo_conteudo", "infantil");
+  window.location.href = "/planos?tipo=infantil";
+};
+
+// Iniciar
+verificarAdmin();
+
 
 
 
