@@ -405,7 +405,7 @@ function LandingChoice() {
             className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
           >
             {!pending && showAdulto && (
-              <div 
+              <div
                 onClick={() => {
                   localStorage.setItem("awã_tipo", "adulto");
                   localStorage.setItem("awã_tipo_conteudo", "adulto");
@@ -422,7 +422,7 @@ function LandingChoice() {
               </div>
             )}
             {!pending && showInfantil && (
-              <div 
+              <div
                 onClick={() => {
                   localStorage.setItem("awã_tipo", "infantil");
                   localStorage.setItem("awã_tipo_conteudo", "infantil");
@@ -438,7 +438,55 @@ function LandingChoice() {
                 />
               </div>
             )}
+          </div>
+        </section>
 
+        <section className="mt-16 w-full rounded-[2rem] border border-gold/20 bg-forest-deep/30 px-4 py-5 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-6 md:py-6">
+          <div className="flex flex-col items-start gap-2 text-left md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
+                Músicas e cantigas
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm text-foreground/75">
+                Ouça as músicas da aldeia e entre direto na experiência infantil ou adulta.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-black/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold/85">
+              <Sparkles className="h-3.5 w-3.5" />
+              Cantigas vivas
+            </span>
+          </div>
+          <div className={`mt-5 grid w-full gap-5 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}>
+            {!pending && showAdulto && (
+              <Link
+                to="/musicas"
+                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
+              >
+                <ExperienceCard
+                  to="/musicas"
+                  image={adultLogoUrl}
+                  eyebrow="Cânticos completos"
+                  title="Músicas"
+                  description="Acesse letras, áudio e vídeos dos cânticos em um só lugar."
+                  entrar="Abrir"
+                />
+              </Link>
+            )}
+            {!pending && showInfantil && (
+              <Link
+                to="/musicas-infantil"
+                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
+              >
+                <ExperienceCard
+                  to="/musicas-infantil"
+                  image={childLogoUrl}
+                  eyebrow="Cantigas infantis"
+                  title="Músicas infantis"
+                  description="Toque nos bichinhos, veja a letra e ouça com o player infantil."
+                  entrar="Abrir"
+                />
+              </Link>
+            )}
           </div>
         </section>
       </main>
