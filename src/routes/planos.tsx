@@ -134,7 +134,7 @@ function PlanosPage() {
         </section>
 
         {/* INFANTIL */}
-        {(search.need === "infantil" || (!search.need && (localStorage.getItem("awã_tipo") === "infantil" || localStorage.getItem("awã_tipo_conteudo") === "infantil"))) && (
+        {(search.need === "infantil" || (!search.need && tipoLocal === "infantil")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
