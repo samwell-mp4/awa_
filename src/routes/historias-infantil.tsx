@@ -356,8 +356,11 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <header className="px-5 pt-3 text-center">
         <h2
-          className="text-2xl leading-tight text-[#3a2412] md:text-3xl"
+          className="cursor-pointer text-2xl leading-tight text-[#3a2412] md:text-3xl"
           style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
+          onClick={() => {
+            speak(`${s.title}. ${s.highlight}.`);
+          }}
         >
           {s.title} <span style={{ color: s.color }}>— {s.highlight}</span>
         </h2>
