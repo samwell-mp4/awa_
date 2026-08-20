@@ -673,17 +673,63 @@ function SongRow({
         </Field>
       </div>
 
-      {/* Manual Sync Calibration */}
+      {/* Manual Sync Calibration & Realtime Adjuster */}
       <div className="mt-6 border-t border-white/10 pt-4">
         <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gold mb-3 flex items-center gap-2">
-          <Sparkles className="h-3 w-3" /> Calibração de Sincronia
+          <Sparkles className="h-3 w-3" /> Ajuste de Sincronia em Tempo Real
         </h4>
-        <div className="grid gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+        
+        <div className="mb-4 flex items-center gap-4 p-3 rounded-2xl bg-gold/5 border border-gold/10">
+          <div className="flex-1 text-[10px] text-foreground/70">
+            <strong>Instruções:</strong> Dê o play na música e, quando a voz começar cada frase, clique no botão ⏱️ da linha correspondente para marcar o tempo exato automaticamente.
+          </div>
+          <Btn onClick={onPreview} variant="outline" className="text-[10px] py-1 h-auto">
+            <Eye className="h-3 w-3 mr-1" /> Abrir Player para Ajustar
+          </Btn>
+        </div>
+
+        <div className="grid gap-2 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
           {s.lyrics_indigenous.split('\n').filter(l => l.trim()).map((line, idx) => (
-            <div key={idx} className="flex items-center gap-3 p-2 rounded-xl bg-black/20 group">
+            <div key={idx} className="flex items-center gap-3 p-2 rounded-xl bg-black/20 group hover:bg-black/30 transition-colors">
               <span className="w-6 text-[10px] font-bold text-foreground/40">{idx + 1}</span>
               <span className="flex-1 text-xs text-cream truncate">{line}</span>
+              
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const audio = document.querySelector('audio');
+                    if (audio) {
+                      const newOffsets = [...(s.sync_offsets || [])];
+                      // Calcula o tempo proporcional que esta linha deveria terminar
+                      // Para simplificar, o offset é a diferença entre o tempo atual e o tempo proporcional calculado
+                      const indLines = s.lyrics_indigenous.split('\n').filter(l => l.trim());
+                      const ptLines = s.lyrics_pt.split('\n').filter(l => l.trim());
+                      const maxLines = Math.max(indLines.length, ptLines.length);
+                      
+                      const weights: number[] = [];
+                      for (let i = 0; i < maxLines; i++) {
+                        weights.push(Math.max(8, (indLines[i] ?? "").length, (ptLines[i] ?? "").length));
+                      }
+                      const totalWeight = weights.reduce((a, b) => a + b, 0);
+                      let accWeight = 0;
+                      for (let i = 0; i <= idx; i++) accWeight += weights[i];
+                      
+                      const targetTime = (accWeight / totalWeight) * audio.duration;
+                      const offset = audio.currentTime - targetTime;
+                      
+                      newOffsets[idx] = parseFloat(offset.toFixed(2));
+                      setS({ ...s, sync_offsets: newOffsets });
+                      toast.success(`Linha ${idx + 1} marcada: ${audio.currentTime.toFixed(1)}s`);
+                    } else {
+                      toast.error("Dê o play na música primeiro!");
+                    }
+                  }}
+                  title="Marcar tempo atual"
+                  className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20"
+                >
+                  <Sparkles className="h-3 w-3" />
+                </button>
+
                 <input
                   type="number"
                   step="0.1"
@@ -701,8 +747,8 @@ function SongRow({
             </div>
           ))}
         </div>
-        <p className="mt-2 text-[9px] text-foreground/50 italic">
-          * Aumente o valor para atrasar a legenda, diminua para adiantar.
+        <p className="mt-3 text-[9px] text-foreground/50 italic leading-relaxed">
+          * Dica: O botão de faísca (⏱️) calcula automaticamente o atraso/adiantamento necessário baseado no tempo atual do áudio.
         </p>
       </div>
 

@@ -15,6 +15,7 @@ export type MiniPlayerSong = {
   lyrics_pt_en: string | null;
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
+  sync_offsets?: number[];
 };
 
 export function MiniPlayer({
@@ -68,8 +69,8 @@ export function MiniPlayer({
   const duration = resolveDuration(audioDuration, song.duration_seconds);
   
   const bounds = useMemo(
-    () => computeLyricBounds(indLines, transLines, duration, []),
-    [indLines, transLines, duration, song.id, lang]
+    () => computeLyricBounds(indLines, transLines, duration, song.sync_offsets || []),
+    [indLines, transLines, duration, song.id, lang, song.sync_offsets]
   );
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
