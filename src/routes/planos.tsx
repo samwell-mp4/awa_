@@ -1,10 +1,21 @@
+// =============================================
+// PÁGINA DE PLANOS — SÓ MOSTRA O PLANO ESCOLHIDO
+// =============================================
+
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { createClient } from '@supabase/supabase-js';
 import logoSrc from "@/assets/awa-tech-logo.png";
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
 
 export const Route = createFileRoute("/planos")({
   head: () => ({
