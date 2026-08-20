@@ -57,6 +57,9 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
     },
     { onConflict: "paddle_subscription_id" },
   );
+
+  // Store Paddle Customer ID in a way the client can potentially use it for Retain
+  // In a real app, you might want to sync this to the profiles table too.
 }
 
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {

@@ -54,7 +54,16 @@ export function useSubscription() {
 
       const activeSubs = (subs ?? []).filter(isSubActive);
       const tiers = new Set<PlanTier>();
-      for (const s of activeSubs) tiers.add(tierFromIds(s.product_id, s.price_id));
+      let paddleCustomerId: string | null = null;
+      for (const s of activeSubs) {
+        tiers.add(tierFromIds(s.product_id, s.price_id));
+        if (s.paddle_customer_id) paddleCustomerId = s.paddle_customer_id;
+      }
+      
+      // Save for Retain
+      if (paddleCustomerId && typeof window !== 'undefined') {
+        window.localStorage.setItem('paddle_customer_id', paddleCustomerId);
+      }
 
       const hasInfantil = tiers.has("infantil") || tiers.has("premium");
       const hasAdulto = tiers.has("adulto") || tiers.has("premium");
