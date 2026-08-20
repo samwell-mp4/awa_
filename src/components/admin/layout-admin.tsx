@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages, KeyRound, Shield } from "lucide-react";
+import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages, KeyRound, Shield, Layers } from "lucide-react";
 import { Field, Input, Btn, Card, Textarea } from "./ui";
+import { TemplatesAdmin } from "./templates-admin";
 
 
 export function LayoutAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getSiteConfig);
   const updateFn = useServerFn(updateSiteConfig);
-  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "legendas" | "experiencia" | "conteudo" | "acesso">("landing");
+  const [activeTab, setActiveTab] = useState<"landing" | "adulto" | "infantil" | "legendas" | "experiencia" | "conteudo" | "acesso" | "templates">("landing");
 
 
   const { data: landingHero = {}, isLoading: loadingHero } = useQuery({
@@ -87,6 +88,7 @@ export function LayoutAdmin() {
           { id: "infantil", label: "Área Infantil", icon: Sparkles },
           { id: "legendas", label: "Música & Design", icon: Type },
           { id: "conteudo", label: "Conteúdo", icon: FileText },
+          { id: "templates", label: "Modelos de Telas", icon: Layers },
           { id: "acesso", label: "Segurança", icon: KeyRound },
         ].map((t) => (
           <button
@@ -352,6 +354,36 @@ export function LayoutAdmin() {
             <Btn className="mt-6" onClick={() => saveConfig("infantil_hotspots", hotspotsDraft, "Menu Infantil")}>
               <Save className="h-4 w-4" /> Salvar Atalhos Infantil
             </Btn>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === "templates" && (
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <Card>
+            <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+              <Layers className="h-5 w-5 text-gold" /> Modelos de Telas (Layouts)
+            </h3>
+            <p className="text-xs text-foreground/60 mb-6">
+              Escolha entre diferentes estilos visuais para as áreas do aplicativo. Cada modelo altera a estrutura e o design da página.
+            </p>
+            
+            <div className="space-y-12">
+              <section>
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-gold/80 mb-4 border-b border-gold/10 pb-2">Área Adulto</h4>
+                <TemplatesAdmin category="adulto" />
+              </section>
+
+              <section>
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-gold/80 mb-4 border-b border-gold/10 pb-2">Área Infantil</h4>
+                <TemplatesAdmin category="infantil" />
+              </section>
+
+              <section>
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-gold/80 mb-4 border-b border-gold/10 pb-2">Música & Design</h4>
+                <TemplatesAdmin category="musicas" />
+              </section>
+            </div>
           </Card>
         </div>
       )}

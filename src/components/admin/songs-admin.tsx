@@ -2,9 +2,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle, Eye, EyeOff } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle, Eye, EyeOff, Layers } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 import { MiniPlayer } from "../kids/MiniPlayer";
+import { TemplatesAdmin } from "./templates-admin";
 import { checkPermission } from "@/lib/permissions.functions";
 import { useServerFn } from "@tanstack/react-start";
 
@@ -65,7 +66,7 @@ export function SongsAdmin() {
   const [draft, setDraft] = useState(defaultDraft);
   const [uploading, setUploading] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [mode, setMode] = useState<"list" | "review">("list");
+  const [mode, setMode] = useState<"list" | "review" | "templates">("list");
   const [previewing, setPreviewing] = useState<Song | null>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [permissions, setPermissions] = useState<Record<string, boolean>>({});
@@ -165,6 +166,14 @@ export function SongsAdmin() {
             }`}
           >
             <Sparkles className="h-4 w-4" /> Modo Revisão
+          </button>
+          <button
+            onClick={() => setMode("templates")}
+            className={`px-4 py-1.5 rounded-lg text-sm font-bold transition flex items-center gap-2 ${
+              mode === "templates" ? "bg-indigo-500 text-white shadow-lg" : "text-foreground/60 hover:text-indigo-400"
+            }`}
+          >
+            <Layers className="h-4 w-4" /> Modelos de Player
           </button>
         </div>
       </div>
@@ -277,13 +286,23 @@ export function SongsAdmin() {
             )}
           </div>
         </>
-      ) : (
+      ) : mode === "review" ? (
         <ReviewMode 
           songs={songs} 
           ambients={ambients} 
           permissions={permissions}
           setPreviewing={setPreviewing}
         />
+      ) : (
+        <Card>
+          <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-4">
+            <Layers className="h-5 w-5 text-gold" /> Modelos do Player de Música
+          </h3>
+          <p className="text-xs text-foreground/60 mb-6">
+            Escolha como as músicas serão exibidas para as crianças.
+          </p>
+          <TemplatesAdmin category="musicas" />
+        </Card>
       )}
 
       {previewing && (

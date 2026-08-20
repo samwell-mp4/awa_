@@ -589,6 +589,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ui_templates: {
+        Row: {
+          category: string
+          config: Json | null
+          created_at: string | null
+          id: string
+          name: string
+          preview_url: string | null
+        }
+        Insert: {
+          category: string
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          name: string
+          preview_url?: string | null
+        }
+        Update: {
+          category?: string
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          preview_url?: string | null
+        }
+        Relationships: []
+      }
       user_permissions: {
         Row: {
           created_at: string | null

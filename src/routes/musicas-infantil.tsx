@@ -10,6 +10,7 @@ import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
 import { MiniPlayer, type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
+import { useActiveTemplate } from "@/hooks/use-active-template";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
@@ -49,6 +50,7 @@ export function MusicasInfantilPage() {
     queryKey: ["site_config", "branding"],
     queryFn: () => getFn({ data: "branding" }),
   });
+  const { template, config } = useActiveTemplate("musicas");
 
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
@@ -72,7 +74,7 @@ export function MusicasInfantilPage() {
 
   return (
     <div
-      className="kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100"
+      className={`kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100 player-mode-${config.player_mode || 'default'}`}
       style={{
         backgroundImage: `url(${bgAsset.url})`,
         backgroundSize: "cover",

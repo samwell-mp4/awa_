@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { GlossarioInfantil } from "@/components/kids/glossario-infantil";
+import { useActiveTemplate } from "@/hooks/use-active-template";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -75,6 +76,7 @@ function InfantilHome() {
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
   const getFn = useServerFn(getSiteConfig);
+  const { template, config } = useActiveTemplate("infantil");
 
   const { data: hotspotsData } = useQuery({
     queryKey: ["site_config", "infantil_hotspots"],
@@ -94,7 +96,7 @@ function InfantilHome() {
 
   return (
 
-    <div className="kids-theme min-h-screen text-foreground">
+    <div className={`kids-theme min-h-screen text-foreground template-${config.theme || 'default'}`}>
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
