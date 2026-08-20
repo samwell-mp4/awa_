@@ -1,3 +1,5 @@
+// COLOQUE SEU GMAIL AQUI — SÓ ESSE GANHA ACESSO AO ADMIN
+const ADMIN_EMAIL = "adlermagno8@gmail.com";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
