@@ -338,6 +338,64 @@ function LandingChoice() {
           {lead}
         </p>
 
+        <section className="mt-14 w-full rounded-[2rem] border border-gold/20 bg-forest-deep/30 px-4 py-5 shadow-[var(--shadow-card)] backdrop-blur-sm md:mt-16 md:px-6 md:py-6">
+          <div className="flex flex-col items-start gap-2 text-left md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
+                {dict.adulto} {dict.crianca ? `e ${dict.crianca}` : ""}
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm text-foreground/75">
+                Escolha uma entrada dedicada para continuar no caminho certo sem perder a experiência principal.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-black/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold/85">
+              <Sparkles className="h-3.5 w-3.5" />
+              Seleção principal
+            </span>
+          </div>
+          <div className={`mt-5 grid w-full gap-5 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}>
+            {!pending && showAdulto && (
+              <Link
+                to="/adulto"
+                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "adulto");
+                  localStorage.setItem("awã_tipo_conteudo", "adulto");
+                }}
+              >
+                <ExperienceCard
+                  to="/adulto"
+                  image={adultLogoUrl}
+                  eyebrow={dict.multiTitle}
+                  title={dict.adulto}
+                  description={dict.adultoDesc}
+                  entrar={dict.entrar}
+                  priority
+                />
+              </Link>
+            )}
+            {!pending && showInfantil && (
+              <Link
+                to="/infantil"
+                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "infantil");
+                  localStorage.setItem("awã_tipo_conteudo", "infantil");
+                }}
+              >
+                <ExperienceCard
+                  to="/infantil"
+                  image={childLogoUrl}
+                  eyebrow={dict.multiCopy}
+                  title={dict.crianca}
+                  description={dict.criancaDesc}
+                  entrar={dict.entrar}
+                />
+              </Link>
+            )}
+          </div>
+        </section>
+
         <section className="mt-16 w-full">
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
             {vdict.title}
