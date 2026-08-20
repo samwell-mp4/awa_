@@ -781,11 +781,22 @@ function Player({
           onPlay={() => {
             setLoadingAudio(false);
             setPlaying(true);
+            
+            // Permite parar o áudio local ao clicar na tela
+            const stopHandler = () => {
+              if (audioRef.current) {
+                audioRef.current.pause();
+                setPlaying(false);
+              }
+              window.removeEventListener("pointerdown", stopHandler);
+            };
+            window.addEventListener("pointerdown", stopHandler);
           }}
           onPause={() => {
             setLoadingAudio(false);
             setPlaying(false);
           }}
+          autoPlay
         />
       )}
 
