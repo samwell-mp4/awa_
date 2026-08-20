@@ -42,8 +42,8 @@ type Dict = {
 const MENU_I18N: Record<string, Dict> = {
   pt: {
     badge: "Plataforma oficial AWÃ TECH",
-    h1a: "Línguas indígenas,",
-    h1b: "culturas vivas.",
+    h1a: "Meus dois domínios",
+    h1b: "",
     lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
     adulto: "Adulto",
     crianca: "Criança",
