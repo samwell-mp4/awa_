@@ -1,14 +1,28 @@
-// =============================================
-// ESCOLHA DE CONTEÚDO — ANTES DO PAGAMENTO
-// 🔞 Adulto  |  👶 Infantil
-// =============================================
-import { createClient } from '@supabase/supabase-js';
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
+import { Logo } from "@/components/home/logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { PublicFooter } from "@/components/PublicFooter";
+import { useAuth } from "@/hooks/use-auth";
+import { useSubscription } from "@/hooks/use-subscription";
+import { useRouter } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import adultoLogo from "@/assets/adulto-logo.png.asset.json";
+import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
+import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
+import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
+import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
+import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
+import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
+import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
+// ✅ Seu Gmail — Admin
 const ADMIN_EMAIL = "adlermagno8@gmail.com";
 
 // 🚀 Verificar se já tem acesso → pular direto pro menu!
@@ -26,16 +40,13 @@ async function verificarAcessoExistente() {
   }
 
   // Verificar se já pagou → vai direto pro menu correspondente
-  // Usamos a lógica de verificação de assinatura do app
   const { data: hasInfantil } = await supabase.rpc("has_plan_access", {
     _user_id: user.id,
-    _plan: "infantil",
-    _check_env: "production" // Ou pegar dinamicamente se necessário
+    _plan: "infantil"
   });
   const { data: hasAdulto } = await supabase.rpc("has_plan_access", {
     _user_id: user.id,
-    _plan: "adulto",
-    _check_env: "production"
+    _plan: "adulto"
   });
 
   if (hasAdulto && window.location.pathname === "/") {
@@ -49,22 +60,6 @@ async function verificarAcessoExistente() {
   return false;
 }
 
-// 🔞 Escolher Adulto
-(window as any).irParaAdulto = () => {
-  localStorage.setItem("awã_tipo", "adulto");
-  localStorage.setItem("awã_tipo_conteudo", "adulto"); // Mantendo compatibilidade
-  window.location.href = "/planos?tipo=adulto";
-};
-
-// 👶 Escolher Infantil
-(window as any).irParaInfantil = () => {
-  localStorage.setItem("awã_tipo", "infantil");
-  localStorage.setItem("awã_tipo_conteudo", "infantil"); // Mantendo compatibilidade
-  window.location.href = "/planos?tipo=infantil";
-};
-
-// Iniciar
-verificarAcessoExistente();
 
 
 
