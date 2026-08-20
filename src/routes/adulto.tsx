@@ -13,7 +13,7 @@ import { RankingCard } from "@/components/home/ranking-card";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
-
+import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 
