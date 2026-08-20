@@ -470,6 +470,14 @@ function Player({
           widget.play();
         }, 0);
       });
+      
+      // Global click handler for SoundCloud is not possible via speak.ts, but we can try to hook here
+      const stopHandler = () => {
+        widget.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler);
+
       widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
         setLoadingAudio(false);
         setProgress(e.currentPosition / 1000);

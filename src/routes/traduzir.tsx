@@ -37,6 +37,8 @@ function TraduzirPage() {
     if (m.data?.traducao && direction === "pt-pat") {
       // Quando traduz para Patxôhã, fala o resultado automaticamente
       speak(m.data.traducao, "pt-BR", 0.9);
+      
+      // A função speak em lib/speak.ts já adiciona um stopHandler global no window.
     }
   }, [m.data, direction]);
 
