@@ -177,10 +177,10 @@ export function useNavContent(mode: NavMode = "all") {
     { label: t("nav.dicionario"), href: "/dicionario" },
     { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
-    { label: t("nav.historias"), href: "/historias" },
-    { label: t("nav.musicas"), href: "/musicas" },
-    { label: t("nav.videos"), href: "/videos" },
-    { label: t("nav.jogos"), href: "/jogos" },
+    { label: t("nav.historiasLong"), href: "/historias" },
+    { label: t("nav.musicasLong"), href: "/musicas" },
+    { label: t("nav.videosLong"), href: "/videos" },
+    { label: t("nav.jogosLong"), href: "/jogos" },
   ];
   const top = filterByMode(rawTop, mode);
   return { groups, top };
