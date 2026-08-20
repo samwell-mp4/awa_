@@ -60,6 +60,7 @@ async function verificarAcessoExistente() {
   return false;
 }
 
+
 // 🔞 Escolher Adulto
 if (typeof window !== "undefined") {
   (window as any).irParaAdulto = () => {
@@ -291,6 +292,22 @@ function LandingChoice() {
     return () => window.removeEventListener("awa:content-updated", handler);
   }, [router]);
 
+  useEffect(() => {
+    verificarAcessoExistente();
+
+    (window as any).irParaAdulto = () => {
+      localStorage.setItem("awã_tipo", "adulto");
+      localStorage.setItem("awã_tipo_conteudo", "adulto");
+      window.location.href = "/planos?tipo=adulto";
+    };
+
+    (window as any).irParaInfantil = () => {
+      localStorage.setItem("awã_tipo", "infantil");
+      localStorage.setItem("awã_tipo_conteudo", "infantil");
+      window.location.href = "/planos?tipo=infantil";
+    };
+  }, []);
+
   const { data: landingHero } = useQuery({
     queryKey: ["site_config", "landing_hero"],
     queryFn: () => getFn({ data: "landing_hero" }),
@@ -300,6 +317,7 @@ function LandingChoice() {
     queryKey: ["site_config", "branding"],
     queryFn: () => getFn({ data: "branding" }),
   });
+
 
   const h1a = landingHero?.h1a || dict.h1a;
   const h1b = landingHero?.h1b || dict.h1b;
