@@ -214,7 +214,10 @@ function ProfessorPage() {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
       };
-      window.addEventListener("pointerdown", stopHandler, { once: true });
+      window.addEventListener("pointerdown", stopHandler);
+      // O listener acima será ativado pelo próximo clique em qualquer lugar da tela
+      // inclusive botões de play de outros componentes se não usarem stopPropagation.
+
     } catch {
       /* silencioso: mantém apenas o texto */
     }

@@ -29,6 +29,15 @@ export function SongPlayer({ audioUrl, onTimeUpdate, onDurationChange, onEnded }
       audioRef.current.pause();
     } else {
       audioRef.current.play().catch(console.error);
+      // Permite parar o cântico ao clicar na tela
+      const stopHandler = () => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler);
     }
     setIsPlaying(!isPlaying);
   };

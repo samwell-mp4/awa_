@@ -59,7 +59,7 @@ type Hotspot = {
 
 const hotspots: Hotspot[] = [
   { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
+  { to: "/musicas-infantil", key: "cantico", emoji: "🎵", color: "#ef476f" },
   { to: "/canticos-infantis", key: "canticos_infantis", emoji: "🎸", color: "#f77f00" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
@@ -156,6 +156,13 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
     v.addEventListener("playing", onReady);
     // Try to kickstart playback (some browsers stall autoplay silently)
     v.play().catch(() => {});
+
+    // Permite parar o vídeo ao clicar em qualquer lugar da tela
+    const stopHandler = () => {
+      v.pause();
+      window.removeEventListener("pointerdown", stopHandler);
+    };
+    window.addEventListener("pointerdown", stopHandler);
     return () => {
       v.removeEventListener("loadeddata", onReady);
       v.removeEventListener("playing", onReady);

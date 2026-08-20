@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
 import { Logo } from "@/components/home/logo";
@@ -172,9 +173,31 @@ function PresentationVideo({
   label: string;
   poster?: string;
 }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    const onPlay = () => {
+      // Quando um vídeo começa, o clique global para ele na próxima vez
+      const stopHandler = () => {
+        video.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler);
+    };
+
+    video.addEventListener("play", onPlay);
+    return () => {
+      video.removeEventListener("play", onPlay);
+    };
+  }, []);
+
   return (
     <figure className="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl backdrop-blur-sm">
       <video
+        ref={ref}
         className="aspect-video w-full"
         src={src}
         poster={poster}
