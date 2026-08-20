@@ -167,7 +167,7 @@ function PlanosPage() {
         )}
 
         {/* ADULTO */}
-        {(search.need === "adulto" || (!search.need && (localStorage.getItem("awã_tipo") === "adulto" || localStorage.getItem("awã_tipo_conteudo") === "adulto"))) && (
+        {(search.need === "adulto" || (!search.need && tipoLocal === "adulto")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">
