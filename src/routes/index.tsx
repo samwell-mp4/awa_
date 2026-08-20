@@ -1,8 +1,7 @@
 // =============================================
-// ESCOLHA DE CONTEÚDO — Awã Tech
+// ESCOLHA DE CONTEÚDO — ANTES DO PAGAMENTO
 // 🔞 Adulto  |  👶 Infantil
 // =============================================
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -10,37 +9,63 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-// ✅ Seu Gmail — Admin
 const ADMIN_EMAIL = "adlermagno8@gmail.com";
 
-// 🚀 Verificar se é Admin primeiro
-async function verificarAdmin() {
+// 🚀 Verificar se já tem acesso → pular direto pro menu!
+async function verificarAcessoExistente() {
   if (typeof window === "undefined") return;
   const { data: { user } } = await supabase.auth.getUser();
-  if (user && user.email === ADMIN_EMAIL) {
+  if (!user) return;
+
+  // Admin vai direto pro painel
+  if (user.email === ADMIN_EMAIL) {
     if (!window.location.pathname.startsWith("/admin")) {
-      // Opcional: só redireciona se você quiser que o admin vá direto para o painel
-      // window.location.href = "/admin";
+       window.location.href = "/admin";
     }
+    return true;
+  }
+
+  // Verificar se já pagou → vai direto pro menu correspondente
+  // Usamos a lógica de verificação de assinatura do app
+  const { data: hasInfantil } = await supabase.rpc("has_plan_access", {
+    _user_id: user.id,
+    _plan: "infantil",
+    _check_env: "production" // Ou pegar dinamicamente se necessário
+  });
+  const { data: hasAdulto } = await supabase.rpc("has_plan_access", {
+    _user_id: user.id,
+    _plan: "adulto",
+    _check_env: "production"
+  });
+
+  if (hasAdulto && window.location.pathname === "/") {
+    window.location.href = "/adulto";
+    return true;
+  }
+  if (hasInfantil && window.location.pathname === "/") {
+    window.location.href = "/infantil";
     return true;
   }
   return false;
 }
 
 // 🔞 Escolher Adulto
-(window as any).irParaAdulto = function() {
-  localStorage.setItem("awã_tipo_conteudo", "adulto");
+(window as any).irParaAdulto = () => {
+  localStorage.setItem("awã_tipo", "adulto");
+  localStorage.setItem("awã_tipo_conteudo", "adulto"); // Mantendo compatibilidade
   window.location.href = "/planos?tipo=adulto";
 };
 
 // 👶 Escolher Infantil
-(window as any).irParaInfantil = function() {
-  localStorage.setItem("awã_tipo_conteudo", "infantil");
+(window as any).irParaInfantil = () => {
+  localStorage.setItem("awã_tipo", "infantil");
+  localStorage.setItem("awã_tipo_conteudo", "infantil"); // Mantendo compatibilidade
   window.location.href = "/planos?tipo=infantil";
 };
 
 // Iniciar
-verificarAdmin();
+verificarAcessoExistente();
+
 
 
 
