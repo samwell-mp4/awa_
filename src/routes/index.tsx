@@ -473,9 +473,11 @@ function ExperienceCard({
   priority?: boolean;
 }) {
   return (
-    <Link
-      to={to}
-      replace
+    <div
+      onClick={(e) => {
+        // Prevents default navigation as we handle it manually in the parent div
+        e.preventDefault();
+      }}
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden">
