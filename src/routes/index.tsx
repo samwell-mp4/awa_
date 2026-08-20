@@ -429,12 +429,17 @@ function LandingChoice() {
             className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
           >
             {!pending && showAdulto && (
-              <PresentationVideo
-                key={adultVideoUrl}
-                src={adultVideoUrl}
-                poster={adultLogoUrl}
-                label={vdict.adulto}
-              />
+              <div 
+                onClick={() => (window as any).irParaAdulto()}
+                className="cursor-pointer"
+              >
+                <PresentationVideo
+                  key={adultVideoUrl}
+                  src={adultVideoUrl}
+                  poster={adultLogoUrl}
+                  label={vdict.adulto}
+                />
+              </div>
             )}
             {!pending && showInfantil && (
               <PresentationVideo
