@@ -338,52 +338,6 @@ function LandingChoice() {
           {lead}
         </p>
 
-        <div
-          className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
-        >
-          {!pending && showAdulto && (
-            <div 
-              onClick={() => {
-                localStorage.setItem("awã_tipo", "adulto");
-                localStorage.setItem("awã_tipo_conteudo", "adulto");
-                window.location.href = "/planos?tipo=adulto";
-              }}
-              className="cursor-pointer"
-            >
-              <ExperienceCard
-                to="/adulto"
-                image={adultLogoUrl}
-                eyebrow="Awã Tech"
-                title={dict.adulto}
-                description={dict.adultoDesc}
-                entrar={entrarLabel}
-                priority
-              />
-            </div>
-          )}
-          {!pending && showInfantil && (
-            <div 
-              onClick={() => {
-                localStorage.setItem("awã_tipo", "infantil");
-                localStorage.setItem("awã_tipo_conteudo", "infantil");
-                window.location.href = "/planos?tipo=infantil";
-              }}
-              className="cursor-pointer"
-            >
-              <ExperienceCard
-                to="/infantil"
-                image={childLogoUrl}
-                eyebrow="Awã Tech"
-                title={dict.crianca}
-                description={dict.criancaDesc}
-                entrar={entrarLabel}
-                priority={!showAdulto}
-              />
-            </div>
-          )}
-        </div>
-
-
         <section className="mt-16 w-full">
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
             {vdict.title}
