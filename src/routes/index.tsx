@@ -504,7 +504,7 @@ function ExperienceCard({
   entrar,
   priority = false,
 }: {
-  to: "/adulto" | "/infantil";
+  to: "/adulto" | "/infantil" | "/musicas" | "/musicas-infantil";
   image: string;
   eyebrow: string;
   title: string;
