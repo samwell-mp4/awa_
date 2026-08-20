@@ -1,10 +1,21 @@
+// =============================================
+// PÁGINA DE PLANOS — SÓ MOSTRA O PLANO ESCOLHIDO
+// =============================================
+
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { createClient } from '@supabase/supabase-js';
 import logoSrc from "@/assets/awa-tech-logo.png";
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
 
 export const Route = createFileRoute("/planos")({
   head: () => ({
@@ -114,15 +125,15 @@ function PlanosPage() {
         </section>
 
         {/* INFANTIL */}
-        {search.need !== "adulto" && (
+        {(search.need === "infantil" || (!search.need && localStorage.getItem("awã_tipo_conteudo") === "infantil")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
               <Baby className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-display text-2xl font-black text-cream">Assinatura Infantil</h2>
-              <p className="text-sm text-foreground/70">Trilhas, cânticos, jogos e histórias para crianças.</p>
+              <h2 className="font-display text-2xl font-black text-cream">👶 Assinatura Infantil</h2>
+              <p className="text-sm text-foreground/70">Acesso completo ao conteúdo infantil — músicas, histórias e jogos</p>
             </div>
             {hasInfantil && (
               <span className="ml-auto rounded-full border border-leaf/40 bg-leaf/15 px-3 py-1 text-xs font-bold text-leaf">
@@ -140,23 +151,23 @@ function PlanosPage() {
             savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
-            highlight={search.need === "infantil"}
+            highlight={true}
             owned={hasInfantil}
           />
         </section>
         )}
 
         {/* ADULTO */}
-        {search.need !== "infantil" && (
+        {(search.need === "adulto" || (!search.need && localStorage.getItem("awã_tipo_conteudo") === "adulto")) && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">
               <User className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-display text-2xl font-black text-cream">Assinatura Adulto</h2>
+              <h2 className="font-display text-2xl font-black text-cream">🔞 Assinatura Adulto</h2>
               <p className="text-sm text-foreground/70">
-                Dicionário completo, tradutor, Professor Akuã e todo o conteúdo cultural.
+                Acesso completo ao conteúdo adulto — vídeos, áudios e história
               </p>
             </div>
             {hasAdulto && (
@@ -175,7 +186,7 @@ function PlanosPage() {
             savingsBadge="Melhor valor · economize 16%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
-            highlight={search.need === "adulto"}
+            highlight={true}
             owned={hasAdulto}
           />
         </section>
