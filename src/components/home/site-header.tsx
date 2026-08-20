@@ -53,7 +53,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             className={
               isKids
                 ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
-                : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
+                : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold"
             }
             aria-label={t("nav.menu")}
           >
