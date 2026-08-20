@@ -387,15 +387,20 @@ function LandingChoice() {
           className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
         >
           {!pending && showAdulto && (
-            <ExperienceCard
-              to="/adulto"
-              image={adultLogoUrl}
-              eyebrow="Awã Tech"
-              title={dict.adulto}
-              description={dict.adultoDesc}
-              entrar={entrarLabel}
-              priority
-            />
+            <div 
+              onClick={() => (window as any).irParaAdulto()}
+              className="cursor-pointer"
+            >
+              <ExperienceCard
+                to="/adulto"
+                image={adultLogoUrl}
+                eyebrow="Awã Tech"
+                title={dict.adulto}
+                description={dict.adultoDesc}
+                entrar={entrarLabel}
+                priority
+              />
+            </div>
           )}
           {!pending && showInfantil && (
             <ExperienceCard
