@@ -1,8 +1,7 @@
 // =============================================
-// ESCOLHA DE CONTEÚDO — Awã Tech
+// ESCOLHA DE CONTEÚDO — ANTES DO PAGAMENTO
 // 🔞 Adulto  |  👶 Infantil
 // =============================================
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -10,37 +9,63 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-// ✅ Seu Gmail — Admin
 const ADMIN_EMAIL = "adlermagno8@gmail.com";
 
-// 🚀 Verificar se é Admin primeiro
-async function verificarAdmin() {
+// 🚀 Verificar se já tem acesso → pular direto pro menu!
+async function verificarAcessoExistente() {
   if (typeof window === "undefined") return;
   const { data: { user } } = await supabase.auth.getUser();
-  if (user && user.email === ADMIN_EMAIL) {
+  if (!user) return;
+
+  // Admin vai direto pro painel
+  if (user.email === ADMIN_EMAIL) {
     if (!window.location.pathname.startsWith("/admin")) {
-      // Opcional: só redireciona se você quiser que o admin vá direto para o painel
-      // window.location.href = "/admin";
+       window.location.href = "/admin";
     }
+    return true;
+  }
+
+  // Verificar se já pagou → vai direto pro menu correspondente
+  // Usamos a lógica de verificação de assinatura do app
+  const { data: hasInfantil } = await supabase.rpc("has_plan_access", {
+    _user_id: user.id,
+    _plan: "infantil",
+    _check_env: "production" // Ou pegar dinamicamente se necessário
+  });
+  const { data: hasAdulto } = await supabase.rpc("has_plan_access", {
+    _user_id: user.id,
+    _plan: "adulto",
+    _check_env: "production"
+  });
+
+  if (hasAdulto && window.location.pathname === "/") {
+    window.location.href = "/adulto";
+    return true;
+  }
+  if (hasInfantil && window.location.pathname === "/") {
+    window.location.href = "/infantil";
     return true;
   }
   return false;
 }
 
 // 🔞 Escolher Adulto
-(window as any).irParaAdulto = function() {
-  localStorage.setItem("awã_tipo_conteudo", "adulto");
+(window as any).irParaAdulto = () => {
+  localStorage.setItem("awã_tipo", "adulto");
+  localStorage.setItem("awã_tipo_conteudo", "adulto"); // Mantendo compatibilidade
   window.location.href = "/planos?tipo=adulto";
 };
 
 // 👶 Escolher Infantil
-(window as any).irParaInfantil = function() {
-  localStorage.setItem("awã_tipo_conteudo", "infantil");
+(window as any).irParaInfantil = () => {
+  localStorage.setItem("awã_tipo", "infantil");
+  localStorage.setItem("awã_tipo_conteudo", "infantil"); // Mantendo compatibilidade
   window.location.href = "/planos?tipo=infantil";
 };
 
 // Iniciar
-verificarAdmin();
+verificarAcessoExistente();
+
 
 
 
@@ -362,26 +387,36 @@ function LandingChoice() {
           className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
         >
           {!pending && showAdulto && (
-            <ExperienceCard
-              to="/adulto"
-              image={adultLogoUrl}
-              eyebrow="Awã Tech"
-              title={dict.adulto}
-              description={dict.adultoDesc}
-              entrar={entrarLabel}
-              priority
-            />
+            <div 
+              onClick={() => (window as any).irParaAdulto()}
+              className="cursor-pointer"
+            >
+              <ExperienceCard
+                to="/adulto"
+                image={adultLogoUrl}
+                eyebrow="Awã Tech"
+                title={dict.adulto}
+                description={dict.adultoDesc}
+                entrar={entrarLabel}
+                priority
+              />
+            </div>
           )}
           {!pending && showInfantil && (
-            <ExperienceCard
-              to="/infantil"
-              image={childLogoUrl}
-              eyebrow="Awã Tech"
-              title={dict.crianca}
-              description={dict.criancaDesc}
-              entrar={entrarLabel}
-              priority={!showAdulto}
-            />
+            <div 
+              onClick={() => (window as any).irParaInfantil()}
+              className="cursor-pointer"
+            >
+              <ExperienceCard
+                to="/infantil"
+                image={childLogoUrl}
+                eyebrow="Awã Tech"
+                title={dict.crianca}
+                description={dict.criancaDesc}
+                entrar={entrarLabel}
+                priority={!showAdulto}
+              />
+            </div>
           )}
         </div>
 
@@ -394,20 +429,30 @@ function LandingChoice() {
             className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
           >
             {!pending && showAdulto && (
-              <PresentationVideo
-                key={adultVideoUrl}
-                src={adultVideoUrl}
-                poster={adultLogoUrl}
-                label={vdict.adulto}
-              />
+              <div 
+                onClick={() => (window as any).irParaAdulto()}
+                className="cursor-pointer"
+              >
+                <PresentationVideo
+                  key={adultVideoUrl}
+                  src={adultVideoUrl}
+                  poster={adultLogoUrl}
+                  label={vdict.adulto}
+                />
+              </div>
             )}
             {!pending && showInfantil && (
-              <PresentationVideo
-                key={childVideoUrl}
-                src={childVideoUrl}
-                poster={childLogoUrl}
-                label={vdict.infantil}
-              />
+              <div 
+                onClick={() => (window as any).irParaInfantil()}
+                className="cursor-pointer"
+              >
+                <PresentationVideo
+                  key={childVideoUrl}
+                  src={childVideoUrl}
+                  poster={childLogoUrl}
+                  label={vdict.infantil}
+                />
+              </div>
             )}
 
           </div>
@@ -438,9 +483,11 @@ function ExperienceCard({
   priority?: boolean;
 }) {
   return (
-    <Link
-      to={to}
-      replace
+    <div
+      onClick={(e) => {
+        // Prevents default navigation as we handle it manually in the parent div
+        e.preventDefault();
+      }}
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden">
@@ -474,7 +521,7 @@ function ExperienceCard({
           {entrar} <ArrowRight className="h-4 w-4" />
         </span>
       </div>
-    </Link>
+    </div>
   );
 }
 
