@@ -430,6 +430,7 @@ export type Database = {
           lyrics_pt_en: string | null
           lyrics_pt_es: string | null
           order_index: number
+          sync_offsets: number[] | null
           title: string
           title_en: string | null
           title_es: string | null
@@ -458,6 +459,7 @@ export type Database = {
           lyrics_pt_en?: string | null
           lyrics_pt_es?: string | null
           order_index?: number
+          sync_offsets?: number[] | null
           title: string
           title_en?: string | null
           title_es?: string | null
@@ -486,6 +488,7 @@ export type Database = {
           lyrics_pt_en?: string | null
           lyrics_pt_es?: string | null
           order_index?: number
+          sync_offsets?: number[] | null
           title?: string
           title_en?: string | null
           title_es?: string | null
