@@ -32,6 +32,10 @@ export async function verificarRotaUsuario() {
   }
 
   // 3️⃣ É USUÁRIO COMUM → Verificar se JÁ PAGOU
+  if (!user.email) {
+    window.location.href = "/auth";
+    return;
+  }
   const temAcesso = await verificarPagamento(user.email);
 
   if (temAcesso) {
