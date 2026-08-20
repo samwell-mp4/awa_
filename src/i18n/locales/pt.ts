@@ -108,7 +108,7 @@ export default {
     trailFamilia: "Família",
     trailNatureza: "Natureza",
     trailAnimais: "Animais",
-    kidsTrailsTitle: "Trilhas da Aldeia",
+    kidsTrailsTitle: "🗺️ Trilhas da Aldeia",
     kidsTrailsSubtitle: "Toque num totem e siga o caminho mágico!",
     trailDescSaudacoes: "Aprenda a cumprimentar como os povos indígenas, com palavras de respeito e alegria para começar o dia.",
     trailDescFamilia: "Descubra os nomes da sua família na aldeia: pai, mãe, irmão, irmã e os anciãos que guardam a sabedoria.",

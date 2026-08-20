@@ -37,7 +37,7 @@ export const Route = createFileRoute("/infantil")({
   },
   head: () => ({
     meta: [
-      { title: "Awã Tech Infantil — Trilha da Aldeia" },
+      { title: "Awã Tech Infantil — 🗺️ Trilha da Aldeia" },
       {
         name: "description",
         content:
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/infantil")({
       { property: "og:title", content: "Awã Tech Infantil" },
       {
         property: "og:description",
-        content: "Trilha da Aldeia — menu ilustrado para crianças no Awã Tech.",
+        content: "🗺️ Trilha da Aldeia — menu ilustrado para crianças no Awã Tech.",
       },
       { property: "og:image", content: infantilMenu.url },
     ],
