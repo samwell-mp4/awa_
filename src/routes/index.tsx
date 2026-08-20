@@ -511,7 +511,7 @@ function ExperienceCard({
           {entrar} <ArrowRight className="h-4 w-4" />
         </span>
       </div>
-    </Link>
+    </div>
   );
 }
 
