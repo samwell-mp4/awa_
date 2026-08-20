@@ -397,10 +397,13 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <div className="p-5">
         <div
-          className={`rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
+          className={`cursor-pointer rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
           style={{ 
             backgroundColor: state === 'playing' ? '#ffffff' : `${s.color}22`,
             borderColor: s.color
+          }}
+          onClick={() => {
+            speak(s.paragraphs.join(" "));
           }}
         >
           {s.paragraphs.map((p, i) => (
