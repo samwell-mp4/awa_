@@ -49,6 +49,8 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
       status,
       current_period_start: currentBillingPeriod?.startsAt,
       current_period_end: currentBillingPeriod?.endsAt,
+      scheduled_change_action: null,
+      scheduled_change_at: null,
       cancel_at_period_end: false,
       environment: env,
       updated_at: new Date().toISOString(),
@@ -59,13 +61,13 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
 
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
   const { id, status, items, currentBillingPeriod, scheduledChange } = data;
-  // Plan changes (upgrade/downgrade in the customer portal) must move the tier
-  // too, otherwise the user keeps the entitlement of the old plan forever.
   const { priceId, productId } = externalIds(items);
   const patch: Database["public"]["Tables"]["subscriptions"]["Update"] = {
     status,
     current_period_start: currentBillingPeriod?.startsAt,
     current_period_end: currentBillingPeriod?.endsAt,
+    scheduled_change_action: scheduledChange?.action || null,
+    scheduled_change_at: scheduledChange?.effectiveAt || null,
     cancel_at_period_end: scheduledChange?.action === "cancel",
     updated_at: new Date().toISOString(),
   };
