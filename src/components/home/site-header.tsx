@@ -64,7 +64,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
           <Logo mode={isKids ? "infantil" : "adulto"} />
         </div>
         {!isKids && (
-          <nav className="hidden xl:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1" suppressHydrationWarning>
             {topNavLinks.map((n) => (
               <Link
                 key={n.href}
