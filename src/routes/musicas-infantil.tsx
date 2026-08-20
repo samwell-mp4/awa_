@@ -59,7 +59,7 @@ export function MusicasInfantilPage() {
       const { data, error } = await supabase
         .from("songs")
         .select(
-          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds",
+          "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets",
         )
         .eq("is_active", true)
         .order("order_index")
