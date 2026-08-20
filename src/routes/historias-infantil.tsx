@@ -8,6 +8,7 @@ import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
+import { speak } from "@/lib/speak"; // Adicionado import para speak
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
