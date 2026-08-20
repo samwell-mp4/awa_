@@ -469,14 +469,14 @@ function Player({
         readyTimer = window.setTimeout(() => {
           widget.play();
         }, 0);
+        
+        // Permite parar a música do SoundCloud ao clicar na tela
+        const stopHandler = () => {
+          widget.pause();
+          window.removeEventListener("pointerdown", stopHandler);
+        };
+        window.addEventListener("pointerdown", stopHandler);
       });
-      
-      // Global click handler for SoundCloud is not possible via speak.ts, but we can try to hook here
-      const stopHandler = () => {
-        widget.pause();
-        window.removeEventListener("pointerdown", stopHandler);
-      };
-      window.addEventListener("pointerdown", stopHandler);
 
       widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
         setLoadingAudio(false);
