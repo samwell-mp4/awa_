@@ -275,24 +275,13 @@ function LandingChoice() {
 
   useEffect(() => {
     verificarAcessoExistente();
-
-    (window as any).irParaAdulto = () => {
-      localStorage.setItem("awã_tipo", "adulto");
-      localStorage.setItem("awã_tipo_conteudo", "adulto");
-      window.location.href = "/planos?tipo=adulto";
-    };
-
-    (window as any).irParaInfantil = () => {
-      localStorage.setItem("awã_tipo", "infantil");
-      localStorage.setItem("awã_tipo_conteudo", "infantil");
-      window.location.href = "/planos?tipo=infantil";
-    };
   }, []);
 
   const { data: landingHero } = useQuery({
     queryKey: ["site_config", "landing_hero"],
     queryFn: () => getFn({ data: "landing_hero" }),
   });
+
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
