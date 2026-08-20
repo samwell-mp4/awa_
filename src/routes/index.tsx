@@ -403,15 +403,20 @@ function LandingChoice() {
             </div>
           )}
           {!pending && showInfantil && (
-            <ExperienceCard
-              to="/infantil"
-              image={childLogoUrl}
-              eyebrow="Awã Tech"
-              title={dict.crianca}
-              description={dict.criancaDesc}
-              entrar={entrarLabel}
-              priority={!showAdulto}
-            />
+            <div 
+              onClick={() => (window as any).irParaInfantil()}
+              className="cursor-pointer"
+            >
+              <ExperienceCard
+                to="/infantil"
+                image={childLogoUrl}
+                eyebrow="Awã Tech"
+                title={dict.crianca}
+                description={dict.criancaDesc}
+                entrar={entrarLabel}
+                priority={!showAdulto}
+              />
+            </div>
           )}
         </div>
 
