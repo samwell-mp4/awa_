@@ -54,11 +54,12 @@ export const Route = createFileRoute("/adulto")({
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
+  const { template, config } = useActiveTemplate("adulto");
   useEffect(() => setLastArea("/adulto"), []);
 
 
   return (
-    <div className="min-h-screen text-foreground">
+    <div className={`min-h-screen text-foreground template-adulto-${config.style || 'default'}`}>
       <SiteHeader mode="adulto" />
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
