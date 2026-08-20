@@ -20,6 +20,15 @@ export const Route = createFileRoute("/musicas-infantil")({
   beforeLoad: async () => {
     const { data } = await supabase.auth.getUser();
     if (!data.user) throw redirect({ to: "/auth" });
+    
+    // Bypass check for admins
+    const { data: isAdmin } = await supabase.rpc("has_role", {
+      _user_id: data.user.id,
+      _role: "admin",
+    });
+
+    if (isAdmin) return;
+
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {
       _user_id: data.user.id,
       _plan: "infantil",
