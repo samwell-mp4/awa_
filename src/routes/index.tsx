@@ -369,7 +369,11 @@ function LandingChoice() {
         >
           {!pending && showAdulto && (
             <div 
-              onClick={() => (window as any).irParaAdulto()}
+              onClick={() => {
+                localStorage.setItem("awã_tipo", "adulto");
+                localStorage.setItem("awã_tipo_conteudo", "adulto");
+                window.location.href = "/planos?tipo=adulto";
+              }}
               className="cursor-pointer"
             >
               <ExperienceCard
@@ -385,7 +389,11 @@ function LandingChoice() {
           )}
           {!pending && showInfantil && (
             <div 
-              onClick={() => (window as any).irParaInfantil()}
+              onClick={() => {
+                localStorage.setItem("awã_tipo", "infantil");
+                localStorage.setItem("awã_tipo_conteudo", "infantil");
+                window.location.href = "/planos?tipo=infantil";
+              }}
               className="cursor-pointer"
             >
               <ExperienceCard
@@ -401,6 +409,7 @@ function LandingChoice() {
           )}
         </div>
 
+
         <section className="mt-16 w-full">
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
             {vdict.title}
@@ -411,7 +420,11 @@ function LandingChoice() {
           >
             {!pending && showAdulto && (
               <div 
-                onClick={() => (window as any).irParaAdulto()}
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "adulto");
+                  localStorage.setItem("awã_tipo_conteudo", "adulto");
+                  window.location.href = "/planos?tipo=adulto";
+                }}
                 className="cursor-pointer"
               >
                 <PresentationVideo
@@ -424,7 +437,11 @@ function LandingChoice() {
             )}
             {!pending && showInfantil && (
               <div 
-                onClick={() => (window as any).irParaInfantil()}
+                onClick={() => {
+                  localStorage.setItem("awã_tipo", "infantil");
+                  localStorage.setItem("awã_tipo_conteudo", "infantil");
+                  window.location.href = "/planos?tipo=infantil";
+                }}
                 className="cursor-pointer"
               >
                 <PresentationVideo
@@ -435,6 +452,7 @@ function LandingChoice() {
                 />
               </div>
             )}
+
           </div>
         </section>
       </main>
