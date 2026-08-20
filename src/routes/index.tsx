@@ -324,7 +324,10 @@ function LandingChoice() {
           {dict.badge}
         </span>
 
-        <h1 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl">
+        <h1 
+          className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl"
+          suppressHydrationWarning
+        >
           {h1a}{" "}
           <span className="text-gradient-gold">{h1b}</span>
         </h1>
