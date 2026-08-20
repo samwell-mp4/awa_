@@ -72,11 +72,9 @@ function MusicasInfantilPage() {
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
-      
-      console.log("DEBUG: Songs from DB:", data);
+
       if (error) throw error;
-      // Certifique-se de que os dados estão sendo retornados
-      console.log("Songs fetched:", data?.length);
+      return (data || []) as Song[];
       return (data || []) as Song[];
     },
   });
