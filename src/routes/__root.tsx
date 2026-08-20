@@ -215,6 +215,9 @@ function RootComponent() {
 function LanguageHydrator() {
   const { i18n } = useTranslation();
 
+  // Pre-load from localStorage BEFORE first render to match SSR language if possible
+  // However, since SSR is always 'pt', we must use 'pt' for first render.
+  
   useEffect(() => {
     // Only run on client
     if (typeof window === "undefined") return;
