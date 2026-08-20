@@ -73,7 +73,9 @@ function MusicasInfantilPage() {
         .order("order_index")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Song[];
+      // Certifique-se de que os dados estão sendo retornados
+      console.log("Songs fetched:", data?.length);
+      return (data || []) as Song[];
     },
   });
 
