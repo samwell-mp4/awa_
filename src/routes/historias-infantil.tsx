@@ -255,6 +255,13 @@ function useKidsNarrator(text: string) {
       currentSetter = setState;
       await a.play();
       setState("playing");
+      
+      // Permite parar o áudio da história ao clicar na tela
+      const stopHandler = () => {
+        a.pause();
+        window.removeEventListener("pointerdown", stopHandler);
+      };
+      window.addEventListener("pointerdown", stopHandler);
     } catch {
       setState("idle");
     }
