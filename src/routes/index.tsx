@@ -61,25 +61,6 @@ async function verificarAcessoExistente() {
 }
 
 
-// 🔞 Escolher Adulto
-if (typeof window !== "undefined") {
-  (window as any).irParaAdulto = () => {
-    localStorage.setItem("awã_tipo", "adulto");
-    localStorage.setItem("awã_tipo_conteudo", "adulto");
-    window.location.href = "/planos?tipo=adulto";
-  };
-
-  // 👶 Escolher Infantil
-  (window as any).irParaInfantil = () => {
-    localStorage.setItem("awã_tipo", "infantil");
-    localStorage.setItem("awã_tipo_conteudo", "infantil");
-    window.location.href = "/planos?tipo=infantil";
-  };
-
-  // Iniciar
-  verificarAcessoExistente();
-}
-
 type Dict = {
   badge: string;
   h1a: string;
