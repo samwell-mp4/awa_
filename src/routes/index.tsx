@@ -307,7 +307,6 @@ function LandingChoice() {
   const showAdulto = !hasAny || hasAdulto;
   const showInfantil = !hasAny || hasInfantil;
   const onlyOne = showAdulto !== showInfantil;
-  const sectionAdulto = MENU_I18N[useLangKey()]?.adulto ?? dict.adulto;
 
   return (
     <div
