@@ -156,6 +156,13 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
     v.addEventListener("playing", onReady);
     // Try to kickstart playback (some browsers stall autoplay silently)
     v.play().catch(() => {});
+
+    // Permite parar o vídeo ao clicar em qualquer lugar da tela
+    const stopHandler = () => {
+      v.pause();
+      window.removeEventListener("pointerdown", stopHandler);
+    };
+    window.addEventListener("pointerdown", stopHandler);
     return () => {
       v.removeEventListener("loadeddata", onReady);
       v.removeEventListener("playing", onReady);
