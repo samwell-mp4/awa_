@@ -73,7 +73,9 @@ function MusicasInfantilPage() {
         .order("order_index")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Song[];
+      // Certifique-se de que os dados estão sendo retornados
+      console.log("Songs fetched:", data?.length);
+      return (data || []) as Song[];
     },
   });
 
@@ -127,17 +129,18 @@ function MusicasInfantilPage() {
         </section>
 
         {isLoading ? (
-          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
+              <div key={i} className="aspect-square animate-pulse rounded-[2rem] bg-white/60" />
             ))}
           </div>
-        ) : songs.length === 0 ? (
-          <p className="text-center font-black text-emerald-800/70">
-            Em breve novas cantigas 🌱
-          </p>
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+            {songs.length === 0 && (
+              <p className="col-span-full text-center font-black text-emerald-800/70">
+                Em breve novas cantigas 🌱
+              </p>
+            )}
             {songs.map((s, i) => {
               const theme = THEMES[i % THEMES.length];
               const isActive = playing?.id === s.id;
