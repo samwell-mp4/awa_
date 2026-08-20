@@ -216,23 +216,31 @@ function LanguageHydrator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const valid = ["pt", "en", "es"];
-    const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
-    
-    // Check if we already have a language set in i18n that matches stored preference
-    // If not, we trigger the change.
-    const currentLang = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
-    
-    if (stored && valid.includes(stored) && stored !== currentLang) {
-      void i18n.changeLanguage(stored);
-      document.documentElement.lang = stored;
-    }
+    // Defer language switch to after hydration completes to avoid
+    // hydration mismatches on SSR-rendered translated strings.
+    const timer = window.setTimeout(() => {
+      const valid = ["pt", "en", "es"];
+      const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
+      const detected = navigator.language?.slice(0, 2).toLowerCase();
+      const target = valid.includes(stored || "")
+        ? stored
+        : valid.includes(detected || "")
+          ? detected
+          : "pt";
+      if (!target || target === "pt") {
+        document.documentElement.lang = "pt";
+        return;
+      }
+      document.documentElement.lang = target;
+      window.localStorage.setItem("awa_lang", target);
+      if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
+        void i18n.changeLanguage(target);
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [i18n]);
 
   return null;
 }
-
 
 

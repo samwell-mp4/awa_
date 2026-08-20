@@ -119,17 +119,16 @@ export default {
     kidsLoading: "Preparando…",
   },
   infantil: {
-    title: "Trilhas da Aldeia",
+    title: "Trilha da Aldeia",
     description: "Menu ilustrado com trilhas, cânticos, histórias, jogos e amizade.",
-    back: "Voltar",
     hotspots: {
       trilhas: "Trilhas",
-      cantico: "Cânticos",
-      historia: "Histórias",
+      cantico: "Cântico",
+      historia: "História Infantil",
       jogos: "Jogos",
       amizade: "Amizade",
+      canticos_infantis: "Cânticos Pataxó",
     },
-    learning: "Aprendendo Patxôhã",
   },
   premium: {
     verPlanos: "Ver planos Premium",
@@ -169,7 +168,7 @@ export default {
   },
   translator: {
     title: "Tradutor Patxôhã ⇄ Português",
-    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma. Pergunte à vontade — ao clicar ou fazer perguntas produzir áudio automaticamente.",
+    subtitle: "Tradução assistida por IA usando o dicionário oficial da plataforma.",
     label: "Tradutor",
     premiumTitle: "Tradutor Premium",
     premiumDescription: "Assine o AWÃ TECH Premium para usar o tradutor Patxôhã ⇄ Português.",

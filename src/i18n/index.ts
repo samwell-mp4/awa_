@@ -45,8 +45,6 @@ if (!i18n.isInitialized) {
 
 // Persist language changes to localStorage (browser only, post-init).
 if (isBrowser) {
-  // Try to sync with stored language before React takes over,
-  // but TanStack Start SSR always ships 'pt'.
   i18n.on("languageChanged", (lng) => {
     const code = (lng || "pt").slice(0, 2).toLowerCase();
     if (["pt", "en", "es"].includes(code)) {

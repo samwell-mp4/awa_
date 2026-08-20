@@ -4,15 +4,11 @@ import { useTranslation } from "react-i18next";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeftRight, Loader2, Languages, Home, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeftRight, Loader2, Languages, Home, Volume2 } from "lucide-react";
 import { translateText } from "@/lib/translate.functions";
 import { useLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
 import { speak } from "@/lib/speak";
-import { TTSSubtitles } from "@/components/TTSSubtitles";
-
-import { CaptionPlayer } from "@/components/CaptionPlayer";
-
 
 export const Route = createFileRoute("/traduzir")({
   head: () => ({
@@ -30,10 +26,7 @@ function TraduzirPage() {
   const backTo = useLastArea();
   const [direction, setDirection] = useState<"pt-pat" | "pat-pt">("pt-pat");
   const [text, setText] = useState("");
-  const [activeCharIndex, setActiveCharIndex] = useState(-1);
   const translate = useServerFn(translateText);
-
-
 
   const m = useMutation({
     mutationFn: async (vars: { text: string; direction: "pt-pat" | "pat-pt" }) =>
@@ -43,10 +36,9 @@ function TraduzirPage() {
   useEffect(() => {
     if (m.data?.traducao && direction === "pt-pat") {
       // Quando traduz para Patxôhã, fala o resultado automaticamente
-      speak(m.data.traducao, "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
+      speak(m.data.traducao, "pt-BR", 0.9);
     }
   }, [m.data, direction]);
-
 
   const swap = () => {
     setDirection((d) => (d === "pt-pat" ? "pat-pt" : "pt-pat"));
@@ -115,7 +107,6 @@ function TraduzirPage() {
               <button
                 onClick={() => m.mutate({ text, direction })}
                 disabled={!text.trim() || m.isPending}
-                id="btn-translate"
                 className="px-4 py-2 rounded-full bg-gold text-forest-deep font-bold disabled:opacity-50 flex items-center gap-2"
               >
                 {m.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -140,20 +131,15 @@ function TraduzirPage() {
               <div className="mt-2 space-y-3">
                 <div className="flex justify-between items-start gap-4">
                   <button
-                    onClick={() => {
-                      speak(m.data?.traducao || "", "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
-                    }}
+                    onClick={() => speak(m.data?.traducao || "", "pt-BR", 0.9)}
                     className="group flex flex-1 items-start gap-3 text-left transition hover:opacity-80"
                     title={t("common.speak")}
                   >
-                    <div className="flex-1 space-y-2">
-                      <p className="text-lg text-foreground whitespace-pre-wrap group-hover:text-gold transition-colors cursor-pointer">
-                        {m.data.traducao}
-                      </p>
-                      <TTSSubtitles text={m.data.traducao} charIndex={activeCharIndex} />
-                    </div>
+                    <p className="text-lg text-foreground whitespace-pre-wrap flex-1 group-hover:text-gold transition-colors">
+                      {m.data.traducao}
+                    </p>
                     <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold/20 transition-colors">
-                      {activeCharIndex >= 0 ? <VolumeX className="h-5 w-5 animate-pulse" /> : <Volume2 className="h-5 w-5" />}
+                      <Volume2 className="h-5 w-5" />
                     </div>
                   </button>
                 </div>
@@ -175,7 +161,7 @@ function TraduzirPage() {
         </div>
 
         <p className="text-xs text-foreground/50 mt-6 text-center">
-          {t("translator.disclaimer")}
+          Ao clicar ou fazer perguntas produzir áudio automaticamente. Ao final, você pode ouvir de novo ou fazer outra pergunta. {t("translator.disclaimer")}
         </p>
       </main>
     </div>

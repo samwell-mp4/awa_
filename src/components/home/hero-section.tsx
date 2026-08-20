@@ -8,23 +8,11 @@ import { useUserStats } from "@/hooks/use-user-stats";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
 
-const heroWomanFallback = heroAsset.url;
-
+const heroWoman = heroAsset.url;
 
 export function HeroSection() {
   const { t } = useTranslation();
-  const getFn = useServerFn(getSiteConfig);
-
-  const { data: adultHero } = useQuery({
-    queryKey: ["site_config", "adult_hero"],
-    queryFn: () => getFn({ data: "adult_hero" }),
-  });
-
-  const heroWoman = adultHero?.hero_img_url || heroWomanFallback;
-
   const { points, level, streak } = useUserStats();
   const { user } = useAuth();
   const [liveName, setLiveName] = useState<string | null>(null);
@@ -94,15 +82,13 @@ export function HeroSection() {
             <Sparkles className="h-3.5 w-3.5" /> {t("hero.badge")}
           </span>
           <h1 className="mt-5 font-display text-[2rem] font-black leading-[1.05] text-cream sm:text-4xl md:text-4xl lg:text-6xl">
-            {adultHero?.title1 || t("hero.title1")}{" "}
-            <span className="text-leaf">{adultHero?.title2 || t("hero.title2")}</span>
-            {adultHero?.title3 || t("hero.title3")}{" "}
-            <span className="text-gradient-gold">{adultHero?.title4 || t("hero.title4")}</span>.
+            {t("hero.title1")} <span className="text-leaf">{t("hero.title2")}</span>
+            {t("hero.title3")}{" "}
+            <span className="text-gradient-gold">{t("hero.title4")}</span>.
           </h1>
-
           <div className="divider-gold my-5 w-24" />
           <p className="max-w-md text-[15px] leading-relaxed text-foreground/80">
-            {adultHero?.subtitle || t("hero.subtitle")}
+            {t("hero.subtitle")}
           </p>
 
 

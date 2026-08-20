@@ -1,19 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { Logo } from "@/components/home/logo";
-import { SiteHeader } from "@/components/home/site-header";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PublicFooter } from "@/components/PublicFooter";
-
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
-import { useRouter } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
@@ -23,45 +15,6 @@ import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
 import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
 import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
-
-// ✅ Seu Gmail — Admin
-const ADMIN_EMAIL = "adlermagno8@gmail.com";
-
-// 🚀 Verificar se já tem acesso → pular direto pro menu!
-async function verificarAcessoExistente() {
-  if (typeof window === "undefined") return;
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
-
-  // Admin vai direto pro painel
-  if (user.email === ADMIN_EMAIL) {
-    if (!window.location.pathname.startsWith("/admin")) {
-       window.location.href = "/admin";
-    }
-    return true;
-  }
-
-  // Verificar se já pagou → vai direto pro menu correspondente
-  const { data: hasInfantil } = await supabase.rpc("has_plan_access", {
-    _user_id: user.id,
-    _plan: "infantil"
-  });
-  const { data: hasAdulto } = await supabase.rpc("has_plan_access", {
-    _user_id: user.id,
-    _plan: "adulto"
-  });
-
-  if (hasAdulto && window.location.pathname === "/") {
-    window.location.href = "/adulto";
-    return true;
-  }
-  if (hasInfantil && window.location.pathname === "/") {
-    window.location.href = "/infantil";
-    return true;
-  }
-  return false;
-}
-
 
 type Dict = {
   badge: string;
@@ -84,8 +37,8 @@ type Dict = {
 const MENU_I18N: Record<string, Dict> = {
   pt: {
     badge: "Plataforma oficial AWÃ TECH",
-    h1a: "Meus dois domínios",
-    h1b: "",
+    h1a: "Línguas indígenas,",
+    h1b: "culturas vivas.",
     lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
     adulto: "Adulto",
     crianca: "Criança",
@@ -125,7 +78,7 @@ const MENU_I18N: Record<string, Dict> = {
     crianca: "Niños",
     adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.",
     criancaDesc: "Juegos, canciones e historias para aprender jugando.",
-    entrar: "Enter",
+    entrar: "Entrar",
     pagTitle: "Pago seguro",
     pagCopy: "Procesado por Paddle",
     multiTitle: "Multi-idioma",
@@ -236,6 +189,7 @@ function PresentationVideo({
   );
 }
 
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -266,42 +220,7 @@ function LandingChoice() {
   const videoSrc = useVideoSources();
   const { user, loading } = useAuth();
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
-  const getFn = useServerFn(getSiteConfig);
-  const router = useRouter();
-
-  useEffect(() => {
-    const handler = () => router.invalidate();
-    window.addEventListener("awa:content-updated", handler);
-    return () => window.removeEventListener("awa:content-updated", handler);
-  }, [router]);
-
-  useEffect(() => {
-    verificarAcessoExistente();
-  }, []);
-
-  const { data: landingHero } = useQuery({
-    queryKey: ["site_config", "landing_hero"],
-    queryFn: () => getFn({ data: "landing_hero" }),
-  });
-
-
-  const { data: branding } = useQuery({
-    queryKey: ["site_config", "branding"],
-    queryFn: () => getFn({ data: "branding" }),
-  });
-
-
-  const h1a = landingHero?.h1a || dict.h1a;
-  const h1b = landingHero?.h1b || dict.h1b;
-  const lead = landingHero?.lead || dict.lead;
-  const entrarLabel = landingHero?.entrar_label || dict.entrar;
-  const bgUrl = landingHero?.bg_url || landingBg.url;
-
-  const adultLogoUrl = branding?.adulto_logo_url || adultoLogo.url;
-  const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
-  const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
-  const childVideoUrl = branding?.infantil_menu_video_url || videoSrc.infantil;
-
+  // Depois de assinar, mostramos apenas a área contratada.
   const pending = !!user && subLoading;
   const hasAny = hasInfantil || hasAdulto;
   const showAdulto = !hasAny || hasAdulto;
@@ -312,89 +231,76 @@ function LandingChoice() {
     <div
       className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${bgUrl})`,
+        backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${landingBg.url})`,
       }}
     >
-      <SiteHeader />
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
+        <Logo />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageSwitcher />
+          {!loading && (
+            user ? (
+              <Link
+                to="/minha-conta"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gold/90 backdrop-blur-sm hover:bg-forest-deep/90 md:px-4 md:py-2 md:text-xs"
+              >
+                <UserRound className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                <span className="hidden sm:inline">{dict.entrar === "Enter" ? "My account" : dict.entrar === "Awê" ? "Kua konã" : "Minha conta"}</span>
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-forest-deep shadow-md hover:brightness-110 md:px-4 md:py-2 md:text-xs"
+              >
+                <LogIn className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                {dict.entrar}
+              </Link>
+            )
+          )}
+        </div>
+      </header>
 
 
-      <main 
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10"
-        suppressHydrationWarning
-      >
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5" />
           {dict.badge}
         </span>
 
-        <h1 
-          className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl"
-          suppressHydrationWarning
-        >
-          {h1a}{" "}
-          <span className="text-gradient-gold">{h1b}</span>
+        <h1 className="mt-6 max-w-3xl font-display text-4xl font-black leading-[1.05] text-cream md:text-6xl">
+          {dict.h1a}{" "}
+          <span className="text-gradient-gold">{dict.h1b}</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm text-foreground/80 md:text-base">
-          {lead}
+          {dict.lead}
         </p>
 
-        <section className="mt-14 w-full rounded-[2rem] border border-gold/20 bg-forest-deep/30 px-4 py-5 shadow-[var(--shadow-card)] backdrop-blur-sm md:mt-16 md:px-6 md:py-6">
-          <div className="flex flex-col items-start gap-2 text-left md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
-                {dict.adulto} {dict.crianca ? `e ${dict.crianca}` : ""}
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm text-foreground/75">
-                Escolha uma entrada dedicada para continuar no caminho certo sem perder a experiência principal.
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-black/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold/85">
-              <Sparkles className="h-3.5 w-3.5" />
-              Seleção principal
-            </span>
-          </div>
-          <div className={`mt-5 grid w-full gap-5 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}>
-            {!pending && showAdulto && (
-              <Link
-                to="/adulto"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
-                onClick={() => {
-                  localStorage.setItem("awã_tipo", "adulto");
-                  localStorage.setItem("awã_tipo_conteudo", "adulto");
-                }}
-              >
-                <ExperienceCard
-                  to="/adulto"
-                  image={adultLogoUrl}
-                  eyebrow={dict.multiTitle}
-                  title={dict.adulto}
-                  description={dict.adultoDesc}
-                  entrar={dict.entrar}
-                  priority
-                />
-              </Link>
-            )}
-            {!pending && showInfantil && (
-              <Link
-                to="/infantil"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
-                onClick={() => {
-                  localStorage.setItem("awã_tipo", "infantil");
-                  localStorage.setItem("awã_tipo_conteudo", "infantil");
-                }}
-              >
-                <ExperienceCard
-                  to="/infantil"
-                  image={childLogoUrl}
-                  eyebrow={dict.multiCopy}
-                  title={dict.crianca}
-                  description={dict.criancaDesc}
-                  entrar={dict.entrar}
-                />
-              </Link>
-            )}
-          </div>
-        </section>
+        <div
+          className={`mt-12 grid w-full gap-6 md:gap-8 ${onlyOne ? "max-w-md" : "md:grid-cols-2"}`}
+        >
+          {!pending && showAdulto && (
+            <ExperienceCard
+              to="/adulto"
+              image={adultoLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.adulto}
+              description={dict.adultoDesc}
+              entrar={dict.entrar}
+              priority
+            />
+          )}
+          {!pending && showInfantil && (
+            <ExperienceCard
+              to="/infantil"
+              image={infantilLogo.url}
+              eyebrow="Awã Tech"
+              title={dict.crianca}
+              description={dict.criancaDesc}
+              entrar={dict.entrar}
+              priority={!showAdulto}
+            />
+          )}
+        </div>
 
         <section className="mt-16 w-full">
           <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
@@ -405,90 +311,24 @@ function LandingChoice() {
             className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
           >
             {!pending && showAdulto && (
-              <div
-                onClick={() => {
-                  localStorage.setItem("awã_tipo", "adulto");
-                  localStorage.setItem("awã_tipo_conteudo", "adulto");
-                  window.location.href = "/planos?tipo=adulto";
-                }}
-                className="cursor-pointer"
-              >
-                <PresentationVideo
-                  key={adultVideoUrl}
-                  src={adultVideoUrl}
-                  poster={adultLogoUrl}
-                  label={vdict.adulto}
-                />
-              </div>
+              <PresentationVideo
+                key={videoSrc.adulto}
+                src={videoSrc.adulto}
+                poster={adultoLogo.url}
+                label={vdict.adulto}
+              />
             )}
             {!pending && showInfantil && (
-              <div
-                onClick={() => {
-                  localStorage.setItem("awã_tipo", "infantil");
-                  localStorage.setItem("awã_tipo_conteudo", "infantil");
-                  window.location.href = "/planos?tipo=infantil";
-                }}
-                className="cursor-pointer"
-              >
-                <PresentationVideo
-                  key={childVideoUrl}
-                  src={childVideoUrl}
-                  poster={childLogoUrl}
-                  label={vdict.infantil}
-                />
-              </div>
+              <PresentationVideo
+                key={videoSrc.infantil}
+                src={videoSrc.infantil}
+                poster={infantilLogo.url}
+                label={vdict.infantil}
+              />
             )}
           </div>
         </section>
 
-        <section className="mt-16 w-full rounded-[2rem] border border-gold/20 bg-forest-deep/30 px-4 py-5 shadow-[var(--shadow-card)] backdrop-blur-sm md:px-6 md:py-6">
-          <div className="flex flex-col items-start gap-2 text-left md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
-                Músicas e cantigas
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm text-foreground/75">
-                Ouça as músicas da aldeia e entre direto na experiência infantil ou adulta.
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-black/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold/85">
-              <Sparkles className="h-3.5 w-3.5" />
-              Cantigas vivas
-            </span>
-          </div>
-          <div className={`mt-5 grid w-full gap-5 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}>
-            {!pending && showAdulto && (
-              <Link
-                to="/musicas"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
-              >
-                <ExperienceCard
-                  to="/musicas"
-                  image={adultLogoUrl}
-                  eyebrow="Cânticos completos"
-                  title="Músicas"
-                  description="Acesse letras, áudio e vídeos dos cânticos em um só lugar."
-                  entrar="Abrir"
-                />
-              </Link>
-            )}
-            {!pending && showInfantil && (
-              <Link
-                to="/musicas-infantil"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-0"
-              >
-                <ExperienceCard
-                  to="/musicas-infantil"
-                  image={childLogoUrl}
-                  eyebrow="Cantigas infantis"
-                  title="Músicas infantis"
-                  description="Toque nos bichinhos, veja a letra e ouça com o player infantil."
-                  entrar="Abrir"
-                />
-              </Link>
-            )}
-          </div>
-        </section>
       </main>
       <PublicFooter />
     </div>
@@ -504,7 +344,7 @@ function ExperienceCard({
   entrar,
   priority = false,
 }: {
-  to: "/adulto" | "/infantil" | "/musicas" | "/musicas-infantil";
+  to: "/adulto" | "/infantil";
   image: string;
   eyebrow: string;
   title: string;
@@ -513,7 +353,9 @@ function ExperienceCard({
   priority?: boolean;
 }) {
   return (
-    <div
+    <Link
+      to={to}
+      replace
       className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden">
@@ -522,28 +364,32 @@ function ExperienceCard({
           alt={`Awã Tech ${title}`}
           width={800}
           height={800}
-          loading={priority ? "eager" : "lazy"}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+          fetchPriority={priority ? "high" : undefined}
+          loading={priority ? undefined : "lazy"}
+          decoding="async"
+          className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+          draggable={false}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-forest-deep via-forest-deep/10 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-      </div>
-
-      <div className="relative flex flex-col p-6 text-left md:p-8">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold/80">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
+        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
           {eyebrow}
         </span>
-        <h3 className="mt-2 font-display text-2xl font-black text-cream md:text-3xl">
-          {title}
-        </h3>
-        <p className="mt-3 text-sm leading-relaxed text-foreground/75 line-clamp-2 md:text-base">
-          {description}
-        </p>
-
-        <div className="mt-8 flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-gold group-hover:gap-5 transition-all">
-          {entrar}
-          <ArrowRight className="h-4 w-4" />
-        </div>
       </div>
-    </div>
+
+      <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
+        <div className="min-w-0 text-left">
+          <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
+            {title}
+          </div>
+          <p className="mt-1 text-xs text-foreground/70 md:text-sm">
+            {description}
+          </p>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
+          {entrar} <ArrowRight className="h-4 w-4" />
+        </span>
+      </div>
+    </Link>
   );
 }
+

@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { Mail } from "lucide-react";
+import { Facebook, Instagram, Mail, Youtube } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Logo } from "./logo";
 
 const socialIcons = [
-  { Icon: () => <span>📸</span>, label: "Instagram" },
-  { Icon: () => <span>📺</span>, label: "YouTube" },
-  { Icon: () => <span>👥</span>, label: "Facebook" },
+  { Icon: Instagram, label: "Instagram" },
+  { Icon: Youtube, label: "YouTube" },
+  { Icon: Facebook, label: "Facebook" },
   { Icon: Mail, label: "E-mail" },
 ];
 

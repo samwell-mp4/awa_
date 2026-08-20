@@ -77,15 +77,14 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void, onBoundary?: (charIndex: number) => void) {
+export function speak(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void) {
   const s = synth();
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    
-    // Cancela qualquer áudio em execução antes de iniciar o novo
-    s.cancel();
-
+    if (s.speaking || s.pending) {
+      s.cancel();
+    }
     const start = () => {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
@@ -96,13 +95,6 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
       if (v) u.voice = v;
       if (onStart) u.onstart = onStart;
       if (onEnd) u.onend = onEnd;
-      if (onBoundary) {
-        u.onboundary = (event) => {
-          if (event.name === "word") {
-            onBoundary(event.charIndex);
-          }
-        };
-      }
       s.speak(u);
     };
     start();

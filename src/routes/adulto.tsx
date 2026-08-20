@@ -13,7 +13,7 @@ import { RankingCard } from "@/components/home/ranking-card";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
-import { useActiveTemplate } from "@/hooks/use-active-template";
+
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 
@@ -54,12 +54,11 @@ export const Route = createFileRoute("/adulto")({
 function AdultoHome() {
   const trails = useHomeTrails();
   const { data: mission } = useDailyMission();
-  const { template, config } = useActiveTemplate("adulto");
   useEffect(() => setLastArea("/adulto"), []);
 
 
   return (
-    <div className={`min-h-screen text-foreground template-adulto-${config.style || 'default'}`}>
+    <div className="min-h-screen text-foreground">
       <SiteHeader mode="adulto" />
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">

@@ -332,36 +332,6 @@ export type Database = {
         }
         Relationships: []
       }
-      paddle_customers: {
-        Row: {
-          created_at: string
-          email: string
-          environment: string
-          id: string
-          paddle_customer_id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          environment?: string
-          id?: string
-          paddle_customer_id: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          environment?: string
-          id?: string
-          paddle_customer_id?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string
@@ -386,24 +356,6 @@ export type Database = {
           photo_url?: string | null
           points?: number
           updated_at?: string
-        }
-        Relationships: []
-      }
-      site_config: {
-        Row: {
-          key: string
-          updated_at: string | null
-          value: Json
-        }
-        Insert: {
-          key: string
-          updated_at?: string | null
-          value: Json
-        }
-        Update: {
-          key?: string
-          updated_at?: string | null
-          value?: Json
         }
         Relationships: []
       }
@@ -514,8 +466,6 @@ export type Database = {
           paddle_subscription_id: string
           price_id: string
           product_id: string
-          scheduled_change_action: string | null
-          scheduled_change_at: string | null
           status: string
           updated_at: string | null
           user_id: string
@@ -531,8 +481,6 @@ export type Database = {
           paddle_subscription_id: string
           price_id: string
           product_id: string
-          scheduled_change_action?: string | null
-          scheduled_change_at?: string | null
           status?: string
           updated_at?: string | null
           user_id: string
@@ -548,8 +496,6 @@ export type Database = {
           paddle_subscription_id?: string
           price_id?: string
           product_id?: string
-          scheduled_change_action?: string | null
-          scheduled_change_at?: string | null
           status?: string
           updated_at?: string | null
           user_id?: string
@@ -622,54 +568,6 @@ export type Database = {
           name_es?: string | null
           order_index?: number
           updated_at?: string
-        }
-        Relationships: []
-      }
-      ui_templates: {
-        Row: {
-          category: string
-          config: Json | null
-          created_at: string | null
-          id: string
-          name: string
-          preview_url: string | null
-        }
-        Insert: {
-          category: string
-          config?: Json | null
-          created_at?: string | null
-          id?: string
-          name: string
-          preview_url?: string | null
-        }
-        Update: {
-          category?: string
-          config?: Json | null
-          created_at?: string | null
-          id?: string
-          name?: string
-          preview_url?: string | null
-        }
-        Relationships: []
-      }
-      user_permissions: {
-        Row: {
-          created_at: string | null
-          id: string
-          permission: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          permission: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          permission?: string
-          user_id?: string
         }
         Relationships: []
       }
@@ -746,10 +644,6 @@ export type Database = {
       }
       has_active_subscription: {
         Args: { _check_env?: string; _user_id: string }
-        Returns: boolean
-      }
-      has_permission: {
-        Args: { _permission: string; _user_id: string }
         Returns: boolean
       }
       has_plan_access: {

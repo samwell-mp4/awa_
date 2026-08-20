@@ -1,22 +1,10 @@
-// =============================================
-// PÁGINA DE PLANOS — SÓ MOSTRA O PLANO ESCOLHIDO
-// =============================================
-
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
 import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
-import { createClient } from '@supabase/supabase-js';
 import logoSrc from "@/assets/awa-tech-logo.png";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
 
 export const Route = createFileRoute("/planos")({
   head: () => ({
@@ -25,7 +13,7 @@ export const Route = createFileRoute("/planos")({
       {
         name: "description",
         content:
-          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 39,90/mês ou R$ 199,90/semestre).",
+          "Escolha sua assinatura AWÃ TECH: Infantil (R$ 29,90/mês ou R$ 149,90/semestre) ou Adulto (R$ 35,00/mês ou R$ 180,00/semestre).",
       },
       { property: "og:title", content: "Planos AWÃ TECH" },
       {
@@ -74,14 +62,6 @@ function PlanosPage() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
-  const [tipoLocal, setTipoLocal] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setTipoLocal(localStorage.getItem("awã_tipo") || localStorage.getItem("awã_tipo_conteudo"));
-    }
-  }, []);
-
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
@@ -134,15 +114,15 @@ function PlanosPage() {
         </section>
 
         {/* INFANTIL */}
-        {(search.need === "infantil" || (!search.need && tipoLocal === "infantil")) && (
+        {search.need !== "adulto" && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-leaf/20 text-leaf">
               <Baby className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-display text-2xl font-black text-cream">👶 Assinatura Infantil</h2>
-              <p className="text-sm text-foreground/70">Acesso completo ao conteúdo infantil — músicas, histórias e jogos</p>
+              <h2 className="font-display text-2xl font-black text-cream">Assinatura Infantil</h2>
+              <p className="text-sm text-foreground/70">Trilhas, cânticos, jogos e histórias para crianças.</p>
             </div>
             {hasInfantil && (
               <span className="ml-auto rounded-full border border-leaf/40 bg-leaf/15 px-3 py-1 text-xs font-bold text-leaf">
@@ -160,23 +140,23 @@ function PlanosPage() {
             savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
-            highlight={true}
+            highlight={search.need === "infantil"}
             owned={hasInfantil}
           />
         </section>
         )}
 
         {/* ADULTO */}
-        {(search.need === "adulto" || (!search.need && tipoLocal === "adulto")) && (
+        {search.need !== "infantil" && (
         <section className="mt-12">
           <div className="mb-5 flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/20 text-gold">
               <User className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-display text-2xl font-black text-cream">🔞 Assinatura Adulto</h2>
+              <h2 className="font-display text-2xl font-black text-cream">Assinatura Adulto</h2>
               <p className="text-sm text-foreground/70">
-                Acesso completo ao conteúdo adulto — vídeos, áudios e história
+                Dicionário completo, tradutor, Professor Akuã e todo o conteúdo cultural.
               </p>
             </div>
             {hasAdulto && (
@@ -189,13 +169,13 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice="R$ 39,90"
-            semestralPrice="R$ 199,90"
-            semestralEquivalent="Equivale a R$ 33,31/mês. Cobrado a cada 6 meses."
-            savingsBadge="Melhor valor · economize 16%"
+            monthlyPrice="R$ 35,00"
+            semestralPrice="R$ 180,00"
+            semestralEquivalent="Equivale a R$ 30,00/mês. Cobrado a cada 6 meses."
+            savingsBadge="Melhor valor · economize 14%"
             onAssinar={handleAssinar}
             checkoutLoading={checkoutLoading || authLoading}
-            highlight={true}
+            highlight={search.need === "adulto"}
             owned={hasAdulto}
           />
         </section>

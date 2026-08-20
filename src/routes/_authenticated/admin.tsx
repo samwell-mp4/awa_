@@ -1,11 +1,7 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
 import {
   ArrowLeft,
   BookOpen,
@@ -31,12 +27,9 @@ const ToolsAdmin = lazy(() => import("@/components/admin/tools-admin").then((m) 
 const AccessAdmin = lazy(() => import("@/components/admin/access-admin").then((m) => ({ default: m.AccessAdmin })));
 const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").then((m) => ({ default: m.PaymentsAdmin })));
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
-const LayoutAdmin = lazy(() => import("@/components/admin/layout-admin").then((m) => ({ default: m.LayoutAdmin })));
-const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) => ({ default: m.SiteAdmin })));
-
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Painel de Controle — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Painel — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async () => {
     // O layout _authenticated já garante que há sessão. Aqui validamos a role
     // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles).
@@ -53,7 +46,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments";
 
 type Section = {
   k: Tab;
@@ -74,75 +67,12 @@ const SECTIONS: Section[] = [
   { k: "allowlist", label: "Liberação de Login", icon: KeyRound, desc: "Emails e celulares permitidos a entrar.", group: "Comunidade", accent: "from-leaf/30 to-gold/20" },
   { k: "payments", label: "Pagamentos", icon: CreditCard, desc: "Testar checkout e conferir planos.", group: "Sistema", accent: "from-gold/30 to-leaf/20" },
   { k: "tools", label: "Ferramentas IA", icon: Wand2, desc: "Tradução, TTS e transcrição.", group: "Sistema", accent: "from-leaf/25 to-forest/25" },
-  { k: "layout", label: "Design & Layout", icon: LayoutGrid, desc: "Cores, logos e menus visuais.", group: "Sistema", accent: "from-gold/25 to-forest/20" },
-  { k: "songs", label: "Música & Design", icon: Music, desc: "Gerenciar letras, áudios e visual das cantigas.", group: "Sistema", accent: "from-leaf/25 to-gold/15" },
-  { k: "site", label: "IA & Sistema", icon: Wand2, desc: "Akuã, Tradutor e acesso irrestrito.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
 ];
-
 
 function AdminPage() {
   const { loading } = useAuth();
   const [tab, setTab] = useState<Tab>("home");
-  const [adminLogado, setAdminLogado] = useState(false);
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
   const navigate = useNavigate();
-
-  const getFn = useServerFn(getSiteConfig);
-  const { data: menuHamb } = useQuery({
-    queryKey: ["site_config", "menu_hamburguer"],
-    queryFn: () => getFn({ data: "menu_hamburguer" }),
-  });
-
-  const emergencyUser = menuHamb?.emergency_user || "admin";
-  const emergencyPass = menuHamb?.emergency_pass || "awa2026";
-  const autoGoogle = menuHamb?.auto_google_login || false;
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isLogged = localStorage.getItem("adminLogado") === "sim";
-      setAdminLogado(isLogged);
-      
-      // Auto Google login if enabled and not already logged via emergency
-      if (!isLogged && autoGoogle && !loading) {
-        handleGoogleLogin();
-      }
-    }
-  }, [autoGoogle, loading]);
-
-  async function handleGoogleLogin() {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        // Double check admin role
-        const { data: isAdmin } = await supabase.rpc("has_role", {
-          _user_id: session.user.id,
-          _role: "admin",
-        });
-        
-        if (isAdmin) {
-          localStorage.setItem("adminLogado", "sim");
-          setAdminLogado(true);
-          toast.success("Acesso administrativo via Google liberado!");
-        }
-      } else {
-        // Not session? Redirect to auth with return path
-        navigate({ to: "/auth", search: { redirect: "/admin" } as any });
-      }
-    } catch (err) {
-      console.error("Auto Google Login error:", err);
-    }
-  }
-
-  function fazerLogin() {
-    if (user === emergencyUser && pass === emergencyPass) {
-      localStorage.setItem("adminLogado", "sim");
-      setAdminLogado(true);
-      toast.success("Acesso administrativo liberado!");
-    } else {
-      toast.error("Usuário ou senha incorretos!");
-    }
-  }
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -157,82 +87,6 @@ function AdminPage() {
 
   const active = SECTIONS.find((s) => s.k === tab);
   const groups: Array<Section["group"]> = ["Conteúdo", "Comunidade", "Sistema"];
-
-  if (!adminLogado) {
-    return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#1a4d2e] to-[#0d2818] font-sans p-4">
-        <div className="w-full max-w-md animate-in fade-in zoom-in duration-300 rounded-3xl bg-white p-8 text-center shadow-2xl">
-          <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-forest/10 text-forest">
-            <KeyRound className="h-8 w-8" />
-          </div>
-          <h1 className="font-display text-2xl font-black text-[#1a4d2e]">🔐 Admin Awã Tech</h1>
-          <p className="mt-1 text-sm font-semibold tracking-wide text-neutral-500">ACESSO RESTRITO</p>
-          
-          <div className="mt-6 flex flex-col gap-3">
-            <button
-              onClick={handleGoogleLogin}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border-2 border-neutral-100 bg-white py-3.5 text-sm font-bold text-neutral-700 shadow-sm transition hover:bg-neutral-50 active:scale-[0.98]"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  fill="#4285F4"
-                />
-                <path
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-                  fill="#FBBC05"
-                />
-                <path
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  fill="#EA4335"
-                />
-              </svg>
-              Entrar com Google
-            </button>
-
-            <div className="flex items-center gap-3 py-2">
-              <div className="h-px flex-1 bg-neutral-100" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-300">ou emergência</span>
-              <div className="h-px flex-1 bg-neutral-100" />
-            </div>
-          </div>
-          
-          <div className="mt-4 space-y-3">
-            <input
-              type="text"
-              placeholder="Usuário"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
-              className="w-full rounded-xl border-2 border-neutral-100 bg-neutral-50 px-5 py-4 text-neutral-900 transition focus:border-[#1a4d2e] focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Senha"
-              value={pass}
-              onChange={(e) => setPass(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && fazerLogin()}
-              className="w-full rounded-xl border-2 border-neutral-100 bg-neutral-50 px-5 py-4 text-neutral-900 transition focus:border-[#1a4d2e] focus:outline-none"
-            />
-          </div>
-
-          <button
-            onClick={fazerLogin}
-            className="mt-4 w-full rounded-xl bg-[#1a4d2e] py-4 text-lg font-bold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98]"
-          >
-            Entrar no Painel
-          </button>
-          
-          <Link to="/" className="mt-4 inline-block text-sm font-medium text-neutral-400 hover:text-neutral-600 transition">
-            Voltar para o site
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen pb-16">
@@ -249,10 +103,7 @@ function AdminPage() {
             <span className="hidden text-lg sm:inline">Painel AWÃ</span>
           </div>
           <button
-            onClick={async () => {
-              localStorage.removeItem("adminLogado");
-              await signOut();
-            }}
+            onClick={signOut}
             className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-3 py-1.5 text-xs font-semibold text-foreground/80 hover:border-gold/60 hover:text-gold"
           >
             <LogOut className="h-3.5 w-3.5" /> Sair
@@ -331,13 +182,11 @@ function AdminPage() {
                           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-forest-deep/50 text-gold ring-1 ring-gold/30">
                             <s.icon className="h-5 w-5" />
                           </span>
-                          <div className="min-w-0 flex-1">
-                            <div className="font-display text-lg font-black text-cream flex items-center justify-between">
-                              {s.label}
-                              <ChevronRight className="h-4 w-4 text-gold/70 transition group-hover:translate-x-0.5" />
-                            </div>
-                            <div className="mt-1 text-xs text-foreground/70 line-clamp-2">{s.desc}</div>
+                          <div className="min-w-0">
+                            <div className="font-display text-lg font-black text-cream">{s.label}</div>
+                            <div className="truncate text-xs text-foreground/70">{s.desc}</div>
                           </div>
+                          <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-gold/70 transition group-hover:translate-x-0.5" />
                         </div>
                       </button>
                     ))}
@@ -371,10 +220,7 @@ function AdminPage() {
                   {tab === "access" && <AccessAdmin />}
                   {tab === "allowlist" && <AllowlistAdmin />}
                   {tab === "payments" && <PaymentsAdmin />}
-                  {tab === "layout" && <LayoutAdmin />}
-                  {tab === "site" && <SiteAdmin />}
                 </Suspense>
-
               </div>
             </div>
           )}

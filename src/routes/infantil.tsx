@@ -1,9 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { ArrowLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -11,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { GlossarioInfantil } from "@/components/kids/glossario-infantil";
-import { useActiveTemplate } from "@/hooks/use-active-template";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -37,7 +32,7 @@ export const Route = createFileRoute("/infantil")({
   },
   head: () => ({
     meta: [
-      { title: "Awã Tech Infantil — 🗺️ Trilha da Aldeia" },
+      { title: "Awã Tech Infantil — Trilha da Aldeia" },
       {
         name: "description",
         content:
@@ -46,7 +41,7 @@ export const Route = createFileRoute("/infantil")({
       { property: "og:title", content: "Awã Tech Infantil" },
       {
         property: "og:description",
-        content: "🗺️ Trilha da Aldeia — menu ilustrado para crianças no Awã Tech.",
+        content: "Trilha da Aldeia — menu ilustrado para crianças no Awã Tech.",
       },
       { property: "og:image", content: infantilMenu.url },
     ],
@@ -54,83 +49,54 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
+type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade" | "canticos_infantis";
 type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
+  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade" | "/canticos-infantis";
   key: HotspotKey;
   emoji: string;
   color: string;
 };
 
-const defaultHotspots: Hotspot[] = [
+const hotspots: Hotspot[] = [
   { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
   { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
+  { to: "/canticos-infantis", key: "canticos_infantis", emoji: "🎸", color: "#f77f00" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
   { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
-
 function InfantilHome() {
   const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/infantil"), []);
   const languageKey = (i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase();
-  const getFn = useServerFn(getSiteConfig);
-  const { template, config } = useActiveTemplate("infantil");
-
-  const { data: hotspotsData } = useQuery({
-    queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn({ data: "infantil_hotspots" }),
-  });
-
-  const hotspots = useMemo(() => (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [], [hotspotsData]);
-
-  const { data: branding } = useQuery({
-    queryKey: ["site_config", "branding"],
-    queryFn: () => getFn({ data: "branding" }),
-  });
-
-
-  const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
-  const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
 
   return (
-
-    <div className={`kids-theme min-h-screen text-foreground template-${config.theme || 'default'}`}>
+    <div className="kids-theme min-h-screen text-foreground">
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
         <div className="-mx-3 md:-mx-6 mt-0">
           <img
-            src={logoUrl}
+            src={infantilLogo.url}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-
             className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
             fetchPriority="high"
             draggable={false}
           />
         </div>
 
-        <button
-          onClick={() => window.history.back()}
-          className="group relative z-10 -mt-6 mx-auto flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
-        >
-          <ArrowLeft className="h-5 w-5 stroke-[3]" />
-          <span>{t("infantil.back")}</span>
-        </button>
-
         <section
           key={languageKey}
           className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
           style={{ background: "#0b3d2e" }}
         >
-          <VideoMenu src={videoUrl} label={t("infantil.title")} />
+          <VideoMenu src={menuVideo.url} label={t("infantil.title")} />
         </section>
-
 
         {/* Menu labels below the video — todos juntos */}
         <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {Array.isArray(hotspots) && hotspots.map((h: Hotspot) => (
+          {hotspots.map((h) => (
             <Link
               key={`${languageKey}-${h.to}-${h.key}`}
               to={h.to}
@@ -162,14 +128,12 @@ function InfantilHome() {
           ))}
         </section>
 
-        {t("infantil.learning") && (
-          <section className="mt-12">
-            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-              {t("infantil.learning")}
-            </h2>
-            <GlossarioInfantil />
-          </section>
-        )}
+        <section className="mt-12">
+          <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
+            Aprendendo Patxôhã
+          </h2>
+          <GlossarioInfantil />
+        </section>
       </main>
 
 

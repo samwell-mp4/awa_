@@ -119,17 +119,16 @@ export default {
     kidsLoading: "Preparing…",
   },
   infantil: {
-    title: "Village Trails",
+    title: "Village Trail",
     description: "Illustrated menu with trails, chants, stories, games and friendship.",
-    back: "Back",
     hotspots: {
       trilhas: "Trails",
-      cantico: "Chants",
-      historia: "Stories",
+      cantico: "Chant",
+      historia: "Kids' Story",
       jogos: "Games",
       amizade: "Friendship",
+      canticos_infantis: "Pataxó Chants",
     },
-    learning: "Learning Patxôhã",
   },
   premium: {
     verPlanos: "View Premium plans",
@@ -169,7 +168,7 @@ export default {
   },
   translator: {
     title: "Patxôhã ⇄ Portuguese Translator",
-    subtitle: "AI-assisted translation using the platform's official dictionary. Ask freely — by clicking or asking questions, audio will be produced automatically.",
+    subtitle: "AI-assisted translation using the platform's official dictionary.",
     label: "Translator",
     premiumTitle: "Premium Translator",
     premiumDescription:
