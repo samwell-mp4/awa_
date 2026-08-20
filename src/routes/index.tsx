@@ -1,6 +1,14 @@
 // =============================================
-// PROTEÇÃO DO ADMIN — NINGUÉM MAIS ENTRA
+// REGRAS DE ACESSO — Awã Tech
+// ---------------------------------------------
+// Página               | Quem vê             | O que faz
+// ---------------------------------------------
+// Login                | Todos               | Entrar com e-mail/senha ou Google
+// Planos               | Usuários sem pag.   | Escolher plano → pagar no Paddle
+// Home/Conteúdo        | Usuários que pag.   | Site normal — conteúdo completo
+// Admin                | Só você (Seu Gmail) | Painel de controle completo
 // =============================================
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -17,19 +25,18 @@ async function protegerAdmin() {
   
   // ❌ Se não for você → volta para página inicial
   if (!user || user.email !== ADMIN_EMAIL) {
-    // Apenas redireciona se não estivermos já na Home para evitar loop infinito
-    if (window.location.pathname !== "/") {
+    if (window.location.pathname.startsWith("/admin")) {
       alert("🔒 Área restrita — redirecionando...");
       window.location.href = "/";
     }
   }
 }
 
-// Rodar ao abrir a página de Admin
-// Nota: Se estiver na Home ("/"), esta proteção não deve travar o acesso público
+// Rodar proteção de admin
 if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
   protegerAdmin();
 }
+
 
 
 import { createFileRoute, Link } from "@tanstack/react-router";
