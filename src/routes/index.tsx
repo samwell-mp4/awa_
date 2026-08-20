@@ -442,6 +442,10 @@ function LandingChoice() {
               </div>
             )}
             {!pending && showInfantil && (
+              <div 
+                onClick={() => (window as any).irParaInfantil()}
+                className="cursor-pointer"
+              >
                 <PresentationVideo
                   key={childVideoUrl}
                   src={childVideoUrl}
