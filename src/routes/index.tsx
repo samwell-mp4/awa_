@@ -442,12 +442,13 @@ function LandingChoice() {
               </div>
             )}
             {!pending && showInfantil && (
-              <PresentationVideo
-                key={childVideoUrl}
-                src={childVideoUrl}
-                poster={childLogoUrl}
-                label={vdict.infantil}
-              />
+                <PresentationVideo
+                  key={childVideoUrl}
+                  src={childVideoUrl}
+                  poster={childLogoUrl}
+                  label={vdict.infantil}
+                />
+              </div>
             )}
 
           </div>
