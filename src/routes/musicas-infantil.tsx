@@ -137,8 +137,8 @@ function MusicasInfantilPage() {
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
             {songs.length === 0 && (
-              <p className="col-span-full text-center font-black text-emerald-800/70">
-                Em breve novas cantigas 🌱
+              <p className="col-span-full py-12 text-center font-black text-emerald-800/70">
+                Nenhum cântico encontrado no momento 🌱
               </p>
             )}
             {songs.map((s, i) => {
