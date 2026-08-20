@@ -208,6 +208,32 @@ export function PaymentsAdmin() {
           </p>
         )}
       </Card>
+
+      <Card>
+        <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream mb-2">
+          <RefreshCw className="h-5 w-5 text-gold" /> Configuração do Webhook
+        </h3>
+        <p className="text-sm text-foreground/70 mb-4">
+          Para que as assinaturas sejam ativadas automaticamente após o pagamento, você deve configurar a URL abaixo no painel do Paddle em <strong>Developer {">"} Webhooks</strong>:
+        </p>
+        <div className="rounded-xl border border-gold/20 bg-black/40 p-4">
+          <Field label="URL do endpoint (Ambiente Real)">
+            <div className="flex gap-2">
+              <Input
+                readOnly
+                value={`https://awa-tech.store/api/public/payments/webhook?env=live`}
+                className="font-mono text-xs"
+              />
+              <Btn variant="outline" onClick={() => void copy(`https://awa-tech.store/api/public/payments/webhook?env=live`)}>
+                {copied === `https://awa-tech.store/api/public/payments/webhook?env=live` ? "Copiado!" : "Copiar"}
+              </Btn>
+            </div>
+          </Field>
+          <p className="mt-3 text-[10px] text-foreground/50 italic">
+            * Para o ambiente de teste (Sandbox), use: https://awa-tech.store/api/public/payments/webhook?env=sandbox
+          </p>
+        </div>
+      </Card>
     </div>
   );
 }
