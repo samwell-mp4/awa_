@@ -19,7 +19,7 @@ export function computeLyricBounds(
   indLines: string[],
   ptLines: string[],
   duration: number,
-  offsets?: number[] // Offsets manuais para ajuste fino
+  offsets?: number[] // Offsets manuais para ajuste fino (em segundos)
 ): number[] {
   if ((!indLines.length && !ptLines.length) || !Number.isFinite(duration) || duration <= 0) return [];
   
