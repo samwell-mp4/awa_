@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +6,9 @@ import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
 import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
+import { supabase } from "@/integrations/supabase/client";
+import { getPaddleEnvironment } from "@/lib/paddle";
+import { speak } from "@/lib/speak"; // Adicionado import para speak
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
@@ -27,7 +29,27 @@ const albumAnciao = { url: joaoImg.url };
 
 export const Route = createFileRoute("/historias-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
+  beforeLoad: async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user) throw redirect({ to: "/auth" });
+    
+    // Bypass check for admins
+    const { data: isAdmin } = await supabase.rpc("has_role", {
+      _user_id: userData.user.id,
+      _role: "admin",
+    });
+
+    if (isAdmin) return;
+
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: userData.user.id,
+      _plan: "infantil",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) {
+      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Histórias e Narrativas — Awã Tech Infantil" },
@@ -334,8 +356,11 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <header className="px-5 pt-3 text-center">
         <h2
-          className="text-2xl leading-tight text-[#3a2412] md:text-3xl"
+          className="cursor-pointer text-2xl leading-tight text-[#3a2412] md:text-3xl"
           style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
+          onClick={() => {
+            speak(`${s.title}. ${s.highlight}.`);
+          }}
         >
           {s.title} <span style={{ color: s.color }}>— {s.highlight}</span>
         </h2>
@@ -372,10 +397,13 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
 
       <div className="p-5">
         <div
-          className={`rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
+          className={`cursor-pointer rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
           style={{ 
             backgroundColor: state === 'playing' ? '#ffffff' : `${s.color}22`,
             borderColor: s.color
+          }}
+          onClick={() => {
+            speak(s.paragraphs.join(" "));
           }}
         >
           {s.paragraphs.map((p, i) => (

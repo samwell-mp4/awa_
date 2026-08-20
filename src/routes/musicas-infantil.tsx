@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
@@ -7,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
+import { getPaddleEnvironment } from "@/lib/paddle";
 import {
   activeLineIndex,
   computeLyricBounds,
@@ -16,7 +16,27 @@ import {
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
-  beforeLoad: () => requireArea("infantil"),
+  beforeLoad: async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user) throw redirect({ to: "/auth" });
+    
+    // Bypass check for admins
+    const { data: isAdmin } = await supabase.rpc("has_role", {
+      _user_id: userData.user.id,
+      _role: "admin",
+    });
+
+    if (isAdmin) return;
+
+    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
+      _user_id: userData.user.id,
+      _plan: "infantil",
+      _check_env: getPaddleEnvironment(),
+    });
+    if (!hasAccess) {
+      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Cantigas da Aldeia — Awã Tech Infantil" },
@@ -72,9 +92,8 @@ function MusicasInfantilPage() {
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
+
       if (error) throw error;
-      // Certifique-se de que os dados estão sendo retornados
-      console.log("Songs fetched:", data?.length);
       return (data || []) as Song[];
     },
   });
@@ -137,8 +156,8 @@ function MusicasInfantilPage() {
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
             {songs.length === 0 && (
-              <p className="col-span-full text-center font-black text-emerald-800/70">
-                Em breve novas cantigas 🌱
+              <p className="col-span-full py-12 text-center font-black text-emerald-800/70">
+                Nenhum cântico encontrado no momento 🌱
               </p>
             )}
             {songs.map((s, i) => {
