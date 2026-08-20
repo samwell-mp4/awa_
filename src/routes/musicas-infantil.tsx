@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Pause, Play, X } from "lucide-react";
@@ -7,7 +7,6 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
 import { getPaddleEnvironment } from "@/lib/paddle";
-import { redirect } from "@tanstack/react-router";
 import {
   activeLineIndex,
   computeLyricBounds,
@@ -18,19 +17,19 @@ import {
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user) throw redirect({ to: "/auth" });
     
     // Bypass check for admins
     const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: data.user.id,
+      _user_id: userData.user.id,
       _role: "admin",
     });
 
     if (isAdmin) return;
 
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: data.user.id,
+      _user_id: userData.user.id,
       _plan: "infantil",
       _check_env: getPaddleEnvironment(),
     });
