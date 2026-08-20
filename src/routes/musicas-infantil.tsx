@@ -94,15 +94,7 @@ function MusicasInfantilPage() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      
-      const allSongs = (data || []) as Song[];
-      const kidsSongs = allSongs.filter(s => 
-        s.language?.toLowerCase().includes("infantil") || 
-        s.language?.toLowerCase().includes("kids") ||
-        s.language === "Patxôhã"
-      );
-      
-      return kidsSongs.length > 0 ? kidsSongs : allSongs;
+      return (data || []) as Song[];
     },
   });
 
