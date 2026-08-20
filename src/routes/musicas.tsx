@@ -92,10 +92,10 @@ function MusicasPage() {
   const ambientMap = useMemo(() => Object.fromEntries(ambients.map((a) => [a.id, a])), [ambients]);
   const [playing, setPlaying] = useState<Song | null>(null);
   const [aldeia, setAldeia] = useState<(typeof ALDEIAS)[number]>("Todas");
-  const filteredSongs = useMemo(
-    () => (aldeia === "Todas" ? songs : songs.filter((s) => s.aldeia === aldeia)),
-    [songs, aldeia],
-  );
+  const filteredSongs = useMemo(() => {
+    if (aldeia === "Todas") return songs;
+    return songs.filter((s) => s.aldeia === aldeia);
+  }, [songs, aldeia]);
   const soundCloudWidgetsRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
