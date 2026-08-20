@@ -318,7 +318,10 @@ function LandingChoice() {
       <SiteHeader />
 
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10">
+      <main 
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pb-16 pt-6 text-center md:px-8 md:pt-10"
+        suppressHydrationWarning
+      >
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-forest-deep/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold/90 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5" />
           {dict.badge}
