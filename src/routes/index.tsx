@@ -1,12 +1,13 @@
 // =============================================
 // REGRAS DE ACESSO — Awã Tech
 // ---------------------------------------------
-// Página               | Quem vê             | O que faz
+// Página            | Endereço  | Função
 // ---------------------------------------------
-// Login                | Todos               | Entrar com e-mail/senha ou Google
-// Planos               | Usuários sem pag.   | Escolher plano → pagar no Paddle
-// Home/Conteúdo        | Usuários que pag.   | Site normal — conteúdo completo
-// Admin                | Só você (Seu Gmail) | Painel de controle completo
+// Escolha de Público| /         | Usuário escolhe: 🔞 Adulto / 👶 Infantil
+// Planos            | /planos   | Só mostra o plano do tipo escolhido
+// Conteúdo Adulto   | /adulto   | Vídeos + áudios — só quem comprou Adulto
+// Conteúdo Infantil | /infantil | Vídeos + áudios — só quem comprou Infantil
+// Admin             | /admin    | Só você acessa
 // =============================================
 
 import { createClient } from '@supabase/supabase-js';
