@@ -216,7 +216,7 @@ export function MiniPlayer({ song, onClose }: { song: Song; onClose: () => void 
       a.pause();
       window.removeEventListener("pointerdown", stopHandler);
     };
-    window.addEventListener("pointerdown", stopHandler, { once: true });
+    window.addEventListener("pointerdown", stopHandler);
   }, [song.id]);
 
   // Smooth, frame-accurate clock (onTimeUpdate only fires ~4x/s => legendas atrasadas)
