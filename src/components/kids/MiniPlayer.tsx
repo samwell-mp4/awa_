@@ -159,10 +159,17 @@ export function MiniPlayer({
       )}
       <div className="mx-auto flex max-w-4xl items-center gap-3">
         {song.cover_url ? (
-          <img src={song.cover_url} className="h-14 w-14 shrink-0 rounded-2xl border-4 border-white object-cover shadow-lg" alt="" />
+          <img
+            src={song.cover_url}
+            width={56}
+            height={56}
+            className="h-14 w-14 shrink-0 rounded-2xl border-4 border-white object-cover shadow-lg"
+            alt=""
+          />
         ) : (
           <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border-4 border-white bg-amber-300 text-3xl">🎶</div>
         )}
+
         <div className="min-w-0 flex-1">
           <div className="truncate font-display text-base font-black text-amber-200">{song.title}</div>
           {song.artist && <div className="truncate text-[11px] font-bold text-emerald-100/80">{song.artist}</div>}
