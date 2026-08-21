@@ -100,16 +100,19 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="-mx-3 md:-mx-6 mt-0">
+        <div className="-mx-3 md:-mx-6 mt-0 min-h-[300px] bg-[#0b3d2e]">
           <img
             src={logoUrl}
             alt="Awã Tech — Línguas indígenas, culturas vivas"
-
+            width={1200}
+            height={600}
             className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
             fetchPriority="high"
+            decoding="async"
             draggable={false}
           />
         </div>
+
 
         <button
           onClick={() => window.history.back()}
@@ -208,7 +211,7 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
       loop
       muted
       playsInline
-      preload="auto"
+      preload="metadata"
       aria-label={label}
       draggable={false}
     />

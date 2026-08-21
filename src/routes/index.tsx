@@ -186,6 +186,7 @@ function PresentationVideo({
         controls
         playsInline
         preload="none"
+
       />
       <figcaption className="px-4 py-3 text-sm font-medium text-white/80">
         {label}
@@ -265,10 +266,11 @@ function LandingChoice() {
 
   return (
     <div
-      className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat"
+      className="min-h-screen text-foreground flex flex-col bg-cover bg-center bg-no-repeat bg-[#08100c]"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(8,16,12,0.72) 0%, rgba(8,16,12,0.55) 40%, rgba(8,16,12,0.88) 100%), url(${bgUrl})`,
       }}
+
     >
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-5 md:px-8">
         <Logo />
@@ -400,9 +402,10 @@ function ExperienceCard({
         <img
           src={image}
           alt={`Awã Tech ${title}`}
-          width={800}
-          height={800}
+          width={400}
+          height={400}
           fetchPriority={priority ? "high" : undefined}
+
           loading={priority ? undefined : "lazy"}
           decoding="async"
           className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"

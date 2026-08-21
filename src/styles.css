@@ -205,12 +205,15 @@ body::before {
 }
 @utility trilhas-alive {
   transform-style: preserve-3d;
+  will-change: transform, filter;
   animation: trilhas-alive 4.5s ease-in-out infinite;
   filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
 }
 @utility trilhas-glow {
+  will-change: opacity, transform;
   animation: trilhas-glow 2.8s ease-in-out infinite;
 }
+
 
 
 @keyframes kid-wiggle {

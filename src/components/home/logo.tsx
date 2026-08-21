@@ -24,14 +24,17 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="relative shrink-0">
+      <div className="relative shrink-0 w-12 h-12">
         <div className="absolute -inset-1 rounded-full bg-[var(--gradient-gold)] opacity-30 blur-md" />
         <img
           src={currentLogo}
           alt="AWÃ TECH"
+          width={48}
+          height={48}
           className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 object-contain shadow-[var(--shadow-gold)]"
         />
       </div>
+
       <div className="leading-none">
         <div className="font-display text-xl font-black tracking-tight text-cream">
           AWÃ <span className="text-gradient-gold">TECH</span>
