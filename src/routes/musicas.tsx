@@ -316,8 +316,11 @@ function SongCard({
             alt={tTitle || song.title}
             loading="lazy"
             decoding="async"
+            width={400}
+            height={500}
             className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
           />
+
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-forest-deep via-bark to-leaf/40" />
         )}
