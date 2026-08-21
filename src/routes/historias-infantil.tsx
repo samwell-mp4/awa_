@@ -218,7 +218,13 @@ function useKidsNarrator(text: string) {
 
   useEffect(() => {
     prefetch();
+    // Pre-warm narration for all stories if it's the first time
+    STORIES.forEach(s => {
+      const text = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
+      void getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
+    });
   }, []);
+
 
   const play = async () => {
     if (state === "playing") return stop();
@@ -347,8 +353,11 @@ function StoryCard({ s, idx }: { s: Story; idx: number }) {
           src={s.image}
           alt={s.title}
           loading="lazy"
+          width={600}
+          height={400}
           className="h-56 w-full object-cover md:h-72"
         />
+
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 bg-black/20">
            <div className="rounded-full bg-white/20 p-4 backdrop-blur-md">
              <span className="text-4xl text-white">🔊</span>
