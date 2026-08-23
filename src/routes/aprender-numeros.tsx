@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig } from "@/lib/numbers.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
+import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/aprender-numeros")({
   component: AprenderNumeros,
@@ -55,10 +56,13 @@ function AprenderNumeros() {
     }));
   }, [NUMEROS, translatedPt]);
 
-  const playAudio = (url: string) => {
-    if (!url) return;
+  const playAudio = (url: string, ptText: string) => {
+    if (!url) {
+      speak(ptText, "pt-BR");
+      return;
+    }
     const audio = new Audio(url);
-    audio.play().catch(console.error);
+    audio.play().catch(() => speak(ptText, "pt-BR"));
   };
 
   return (
@@ -85,7 +89,7 @@ function AprenderNumeros() {
           {displayNumeros.map((num, i) => (
             <button
               key={i}
-              onClick={() => playAudio(num.audio)}
+              onClick={() => playAudio(num.audio, num.pt)}
               className="group flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
             >
               <span className="font-display text-5xl font-black text-emerald-900">
