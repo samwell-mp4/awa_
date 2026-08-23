@@ -8,6 +8,7 @@ import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig } from "@/lib/numbers.functions";
+import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { speak } from "@/lib/speak";
 
@@ -36,6 +37,12 @@ function AprenderNumeros() {
   const { data: config } = useQuery({
     queryKey: ["aprender_numeros_content"],
     queryFn: () => getFn(),
+  });
+
+  const getSiteConfigFn = useServerFn(getSiteConfig);
+  const { data: pageConfig } = useQuery({
+    queryKey: ["site_config", "numbers_page_config"],
+    queryFn: () => getSiteConfigFn({ data: "numbers_page_config" }),
   });
 
   const NUMEROS = useMemo(() => {
@@ -79,10 +86,10 @@ function AprenderNumeros() {
         </button>
 
         <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
-          {t("numbers.title") || "Números em Patxôhã"}
+          {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
         <p className="mb-12 text-lg text-cream/80">
-          {t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
+          {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
