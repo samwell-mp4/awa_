@@ -90,7 +90,7 @@ function AprenderNumeros() {
             className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
           >
             <ArrowLeft className="h-5 w-5 stroke-[3]" />
-            <span>{t("common.back") || "Voltar"}</span>
+            <span>{t("common.voltar")}</span>
           </button>
         </div>
 
