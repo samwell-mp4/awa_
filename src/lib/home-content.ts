@@ -116,6 +116,10 @@ const CHILD_HREFS = new Set([
   "/instalar",
   "/minha-conta",
   "/aprender-numeros",
+  "/trilhas-infantil",
+  "/musicas-infantil",
+  "/historias-infantil",
+  "/jogos-infantil",
 ]);
 
 // Kids must land on the child-themed versions of these sections
