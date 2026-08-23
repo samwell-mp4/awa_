@@ -456,7 +456,7 @@ function HistoriasInfantilPage() {
         .story-card { animation: card-pop .5s ease-out both; }
       `}</style>
 
-      <SiteHeader mode="infantil" showBackButton />
+      <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
         {/* HERO panel — matches the reference book style */}
