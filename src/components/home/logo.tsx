@@ -32,6 +32,8 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
           width={48}
           height={48}
           className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 object-contain shadow-[var(--shadow-gold)]"
+          fetchPriority="high"
+          loading="eager"
         />
       </div>
 

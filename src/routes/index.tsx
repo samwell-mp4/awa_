@@ -228,6 +228,20 @@ function LandingChoice() {
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   const getFn = useServerFn(getSiteConfig);
   const router = useRouter();
+  const qc = useQueryClient();
+
+  // Prefetch rotas principais para navegação instantânea
+  useEffect(() => {
+    const prefetch = async () => {
+      // Prefetch data for branding
+      await qc.prefetchQuery({
+        queryKey: ["site_config", "branding"],
+        queryFn: () => getFn({ data: "branding" }),
+        staleTime: 1000 * 60 * 5,
+      });
+    };
+    prefetch();
+  }, [qc, getFn]);
 
   useEffect(() => {
     const handler = () => router.invalidate();
