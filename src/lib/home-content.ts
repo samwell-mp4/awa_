@@ -159,7 +159,7 @@ export function useNavContent(mode: NavMode = "all") {
       ],
     },
     {
-      title: "Educação",
+      title: t("nav.groups.educacao"),
       items: [
         { label: "Aprender Números", href: "/aprender-numeros", icon: Award },
       ],

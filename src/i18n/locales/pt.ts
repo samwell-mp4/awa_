@@ -60,6 +60,7 @@ export default {
     groups: {
       lingua: "Língua e Conhecimento",
       cultura: "Cultura e Expressões",
+      educacao: "Educação",
       quemSomos: "Quem Somos e Ajuda",
       usuario: "Área do Usuário",
     },
