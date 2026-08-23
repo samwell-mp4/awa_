@@ -4,8 +4,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig, updateNumbersConfig } from "@/lib/numbers.functions";
 import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Hash, Volume2, Type, Layout } from "lucide-react";
+import { Save, Plus, Trash2, Hash, Volume2, Type, Layout, Upload, Loader2 } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
+import { supabase } from "@/integrations/supabase/client";
 
 export function NumbersAdmin() {
   const qc = useQueryClient();
@@ -113,47 +114,65 @@ export function NumbersAdmin() {
         <div className="space-y-4">
           {draft.map((n, i) => (
             <div key={i} className="grid gap-3 p-4 rounded-2xl border border-gold/10 bg-black/20 md:grid-cols-[1fr_1fr_2fr_auto]">
-              <Field label="Português">
-                <Input 
-                  value={n.pt} 
-                  onChange={e => {
-                    const copy = [...draft];
-                    copy[i].pt = e.target.value;
-                    setDraft(copy);
-                  }} 
-                />
-              </Field>
-              <Field label="Patxôhã">
-                <Input 
-                  value={n.pat} 
-                  onChange={e => {
-                    const copy = [...draft];
-                    copy[i].pat = e.target.value;
-                    setDraft(copy);
-                  }} 
-                />
-              </Field>
-              <Field label="URL do Áudio">
-                <div className="flex gap-2">
+              <div className="flex flex-col gap-3">
+                <Field label="Português">
                   <Input 
-                    value={n.audio} 
+                    value={n.pt} 
                     onChange={e => {
                       const copy = [...draft];
-                      copy[i].audio = e.target.value;
+                      copy[i].pt = e.target.value;
                       setDraft(copy);
                     }} 
-                    className="flex-1"
                   />
-                  {n.audio && (
-                    <button 
-                      onClick={() => new Audio(n.audio).play()}
-                      className="p-2.5 rounded-xl bg-gold/20 text-gold hover:bg-gold/30"
-                    >
-                      <Volume2 className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
-              </Field>
+                </Field>
+                <Field label="Patxôhã">
+                  <Input 
+                    value={n.pat} 
+                    onChange={e => {
+                      const copy = [...draft];
+                      copy[i].pat = e.target.value;
+                      setDraft(copy);
+                    }} 
+                  />
+                </Field>
+              </div>
+              <div className="flex flex-col gap-3">
+                <UploadOrUrl
+                  label="Áudio (Upload ou URL)"
+                  value={n.audio || ""}
+                  onChange={v => {
+                    const copy = [...draft];
+                    copy[i].audio = v;
+                    setDraft(copy);
+                  }}
+                  onFile={async (file) => {
+                    const prefix = `numbers/audio`;
+                    const ext = file.name.split(".").pop() || "mp3";
+                    const path = `${prefix}/${crypto.randomUUID()}.${ext}`;
+                    try {
+                      toast.loading("Enviando áudio...");
+                      const { error } = await supabase.storage.from("songs").upload(path, file);
+                      if (error) throw error;
+                      const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
+                      const copy = [...draft];
+                      copy[i].audio = data?.signedUrl || "";
+                      setDraft(copy);
+                      toast.dismiss();
+                      toast.success("Áudio enviado!");
+                    } catch (err: any) {
+                      toast.dismiss();
+                      toast.error("Erro no upload: " + err.message);
+                    }
+                  }}
+                  accept="audio/*"
+                  busy={false}
+                />
+                {n.audio && (
+                  <Btn variant="outline" className="py-1 text-xs" onClick={() => new Audio(n.audio).play()}>
+                    <Volume2 className="h-3 w-3 mr-1" /> Testar Áudio
+                  </Btn>
+                )}
+              </div>
               <div className="flex items-end pb-1">
                 <Btn variant="danger" onClick={() => setDraft(draft.filter((_, idx) => idx !== i))}>
                   <Trash2 className="h-4 w-4" />
@@ -168,5 +187,48 @@ export function NumbersAdmin() {
         </Btn>
       </Card>
     </div>
+  );
+}
+
+function UploadOrUrl({
+  label,
+  value,
+  onChange,
+  onFile,
+  accept,
+  busy,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  onFile: (f: File) => void;
+  accept: string;
+  busy: boolean;
+}) {
+  return (
+    <Field label={label}>
+      <div className="flex flex-col gap-2">
+        <Input 
+          value={value} 
+          onChange={(e) => onChange(e.target.value)} 
+          placeholder="https://..." 
+          className="w-full"
+        />
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10">
+          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+          {busy ? "Enviando..." : "Gravar/Enviar Áudio"}
+          <input
+            type="file"
+            accept={accept}
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) onFile(f);
+              e.currentTarget.value = "";
+            }}
+          />
+        </label>
+      </div>
+    </Field>
   );
 }
