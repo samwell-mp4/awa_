@@ -60,6 +60,7 @@ export default {
     groups: {
       lingua: "Lengua y Conocimiento",
       cultura: "Cultura y Expresiones",
+      educacao: "Educación",
       quemSomos: "Sobre nosotros y Ayuda",
       usuario: "Área del Usuario",
     },
@@ -187,5 +188,9 @@ export default {
     empty: "La traducción aparecerá aquí.",
     disclaimer:
       "⚠️ Traducción asistida por IA — las palabras ausentes del diccionario se marcan con [?].",
+  },
+  numbers: {
+    title: "Números en Patxôhã",
+    subtitle: "Aprenda a contar en la lengua del pueblo Pataxó",
   },
 };

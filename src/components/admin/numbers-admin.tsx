@@ -2,14 +2,32 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig, updateNumbersConfig } from "@/lib/numbers.functions";
+import { getSiteConfig, updateSiteConfig } from "@/lib/admin-layout.functions";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Hash, Volume2, Type } from "lucide-react";
+import { Save, Plus, Trash2, Hash, Volume2, Type, Layout } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
 
 export function NumbersAdmin() {
   const qc = useQueryClient();
   const getFn = useServerFn(getNumbersConfig);
   const updateFn = useServerFn(updateNumbersConfig);
+  const getSiteConfigFn = useServerFn(getSiteConfig);
+  const updateSiteConfigFn = useServerFn(updateSiteConfig);
+
+  const { data: pageConfig } = useQuery({
+    queryKey: ["site_config", "numbers_page_config"],
+    queryFn: () => getSiteConfigFn({ data: "numbers_page_config" }),
+  });
+
+  const [title, setTitle] = useState("Números em Patxôhã");
+  const [subtitle, setSubtitle] = useState("Aprenda a contar na língua do povo Pataxó");
+
+  useEffect(() => {
+    if (pageConfig) {
+      setTitle(pageConfig.title || "Números em Patxôhã");
+      setSubtitle(pageConfig.subtitle || "Aprenda a contar na língua do povo Pataxó");
+    }
+  }, [pageConfig]);
 
   const { data: config, isLoading } = useQuery({
     queryKey: ["site_config", "aprender_numeros"],
@@ -41,8 +59,15 @@ export function NumbersAdmin() {
   async function save() {
     try {
       await updateFn({ data: draft });
+      await updateSiteConfigFn({ 
+        data: { 
+          key: "numbers_page_config", 
+          value: { title, subtitle } 
+        } 
+      });
       toast.success("Configuração de números salva!");
       qc.invalidateQueries({ queryKey: ["site_config", "aprender_numeros"] });
+      qc.invalidateQueries({ queryKey: ["site_config", "numbers_page_config"] });
       qc.invalidateQueries({ queryKey: ["aprender_numeros_content"] });
     } catch (e: any) {
       toast.error(e.message);
@@ -54,6 +79,28 @@ export function NumbersAdmin() {
   return (
     <div className="space-y-6">
       <Card>
+        <div className="mb-8 p-4 rounded-2xl border border-gold/10 bg-black/20 space-y-4">
+          <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream">
+            <Layout className="h-5 w-5 text-gold" /> Títulos da Página
+          </h3>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Título Principal">
+              <Input 
+                value={title} 
+                onChange={e => setTitle(e.target.value)} 
+                placeholder="Ex: Números em Patxôhã"
+              />
+            </Field>
+            <Field label="Subtítulo">
+              <Input 
+                value={subtitle} 
+                onChange={e => setSubtitle(e.target.value)} 
+                placeholder="Ex: Aprenda a contar..."
+              />
+            </Field>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between mb-6">
           <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream">
             <Hash className="h-5 w-5 text-gold" /> Editar Números e Áudios

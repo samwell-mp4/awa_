@@ -6,6 +6,18 @@
 type Entry = { en: string; es: string };
 
 export const STATIC_GLOSSARY: Record<string, Entry> = {
+  // Números
+  "Um": { en: "One", es: "Uno" },
+  "Dois": { en: "Two", es: "Dos" },
+  "Três": { en: "Three", es: "Tres" },
+  "Quatro": { en: "Four", es: "Cuatro" },
+  "Cinco": { en: "Five", es: "Cinco" },
+  "Seis": { en: "Six", es: "Seis" },
+  "Sete": { en: "Seven", es: "Siete" },
+  "Oito": { en: "Eight", es: "Ocho" },
+  "Nove": { en: "Nine", es: "Nueve" },
+  "Dez": { en: "Ten", es: "Diez" },
+
   // Navegação / ações
   "Aldeia": { en: "Village", es: "Aldea" },
   "Menu": { en: "Menu", es: "Menú" },
@@ -112,10 +124,6 @@ export const STATIC_GLOSSARY: Record<string, Entry> = {
   "Gato": { en: "Cat", es: "Gato" },
   "Pássaro": { en: "Bird", es: "Pájaro" },
   "Peixe": { en: "Fish", es: "Pez" },
-  "Um": { en: "One", es: "Uno" },
-  "Dois": { en: "Two", es: "Dos" },
-  "Três": { en: "Three", es: "Tres" },
-  "Quatro": { en: "Four", es: "Cuatro" },
 };
 
 /** Retorna a tradução estática (en/es) ou undefined. */

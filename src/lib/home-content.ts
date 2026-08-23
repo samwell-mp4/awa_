@@ -115,6 +115,11 @@ const CHILD_HREFS = new Set([
   "/videos",
   "/instalar",
   "/minha-conta",
+  "/aprender-numeros",
+  "/trilhas-infantil",
+  "/musicas-infantil",
+  "/historias-infantil",
+  "/jogos-infantil",
 ]);
 
 // Kids must land on the child-themed versions of these sections
@@ -158,6 +163,12 @@ export function useNavContent(mode: NavMode = "all") {
       ],
     },
     {
+      title: t("nav.groups.educacao"),
+      items: [
+        { label: "Aprender Números", href: "/aprender-numeros", icon: Award },
+      ],
+    },
+    {
       title: t("nav.groups.quemSomos"),
       items: [
         { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
@@ -181,6 +192,7 @@ export function useNavContent(mode: NavMode = "all") {
     { label: t("nav.musicas"), href: "/musicas" },
     { label: t("nav.videos"), href: "/videos" },
     { label: t("nav.jogos"), href: "/jogos" },
+    { label: "Números", href: "/aprender-numeros" },
   ];
   const top = filterByMode(rawTop, mode);
   return { groups, top };
