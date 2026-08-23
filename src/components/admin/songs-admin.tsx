@@ -766,6 +766,8 @@ function SongRow({
       </div>
     </Card>
   );
+}
+
 function UploadOrUrl({
   label,
   value,
