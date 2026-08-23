@@ -40,9 +40,8 @@ export function NumbersAdmin() {
 
   useEffect(() => {
     if (config && Array.isArray(config)) {
-      setDraft(config);
-    } else if (config === null || (Array.isArray(config) && config.length === 0)) {
-      // Default seed if empty
+      setDraft(JSON.parse(JSON.stringify(config))); // Deep copy to avoid reference issues
+    } else if (config === null) {
       setDraft([
         { pt: "Um", pat: "Kutkuxú", audio: "/__l5e/assets-v1/08f75264-6b72-4498-bef9-7a75bc90bcb2/numero-01.mp3" },
         { pt: "Dois", pat: "Mokoi", audio: "/__l5e/assets-v1/f4507219-b0ff-4fd9-9ffe-01c9e5379c9a/numero-02.mp3" },
