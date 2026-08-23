@@ -768,48 +768,6 @@ function SongRow({
   );
 }
 
-function UploadOrUrl({
-  label,
-  value,
-  onChange,
-  onFile,
-  accept,
-  busy,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  onFile: (f: File) => void;
-  accept: string;
-  busy: boolean;
-}) {
-  return (
-    <Field label={label}>
-      <div className="flex flex-col gap-2">
-        <Input 
-          value={value} 
-          onChange={(e) => onChange(e.target.value)} 
-          placeholder="https://..." 
-          className="w-full text-xs"
-        />
-        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition">
-          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Gravar/Enviar Arquivo"}
-          <input
-            type="file"
-            accept={accept}
-            className="hidden"
-            onChange={async (e) => {
-              const f = e.target.files?.[0];
-              if (f) await onFile(f);
-              e.currentTarget.value = "";
-            }}
-          />
-        </label>
-      </div>
-    </Field>
-  );
-}
 
 
 
