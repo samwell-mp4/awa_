@@ -4,13 +4,16 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
 import { setLastArea } from "@/lib/last-area";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getNumbersConfig } from "@/lib/numbers.functions";
 
 export const Route = createFileRoute("/aprender-numeros")({
   component: AprenderNumeros,
 });
 
-const NUMEROS = [
+const DEFAULT_NUMEROS = [
   { pt: "Um", pat: "Kutkuxú", audio: "/audios/numero-01.wav" },
   { pt: "Dois", pat: "Mokoi", audio: "/audios/numero-02.wav" },
   { pt: "Três", pat: "Kaikui", audio: "/audios/numero-03.wav" },
@@ -26,8 +29,20 @@ const NUMEROS = [
 function AprenderNumeros() {
   const { t } = useTranslation();
   useEffect(() => setLastArea("/aprender-numeros"), []);
+  const getFn = useServerFn(getNumbersConfig);
+
+  const { data: config } = useQuery({
+    queryKey: ["aprender_numeros_content"],
+    queryFn: () => getFn(),
+  });
+
+  const NUMEROS = useMemo(() => {
+    if (config && Array.isArray(config) && config.length > 0) return config;
+    return DEFAULT_NUMEROS;
+  }, [config]);
 
   const playAudio = (url: string) => {
+    if (!url) return;
     const audio = new Audio(url);
     audio.play().catch(console.error);
   };

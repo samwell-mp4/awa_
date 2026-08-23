@@ -20,6 +20,7 @@ import {
   ChevronRight,
   KeyRound,
   CreditCard,
+  Hash,
 } from "lucide-react";
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
@@ -33,6 +34,7 @@ const PaymentsAdmin = lazy(() => import("@/components/admin/payments-admin").the
 const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").then((m) => ({ default: m.AllowlistAdmin })));
 const LayoutAdmin = lazy(() => import("@/components/admin/layout-admin").then((m) => ({ default: m.LayoutAdmin })));
 const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) => ({ default: m.SiteAdmin })));
+const NumbersAdmin = lazy(() => import("@/components/admin/numbers-admin").then((m) => ({ default: m.NumbersAdmin })));
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -53,7 +55,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site" | "numbers";
 
 type Section = {
   k: Tab;
@@ -77,6 +79,7 @@ const SECTIONS: Section[] = [
   { k: "layout", label: "Design & Layout", icon: LayoutGrid, desc: "Cores, logos e menus visuais.", group: "Sistema", accent: "from-gold/25 to-forest/20" },
   { k: "songs", label: "Música & Design", icon: Music, desc: "Gerenciar letras, áudios e visual das cantigas.", group: "Sistema", accent: "from-leaf/25 to-gold/15" },
   { k: "site", label: "IA & Sistema", icon: Wand2, desc: "Akuã, Tradutor e acesso irrestrito.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
+  { k: "numbers", label: "Números", icon: Hash, desc: "Editar números e áudios educativos.", group: "Conteúdo", accent: "from-rose-500/30 to-rose-600/20" },
 ];
 
 
@@ -373,6 +376,7 @@ function AdminPage() {
                   {tab === "payments" && <PaymentsAdmin />}
                   {tab === "layout" && <LayoutAdmin />}
                   {tab === "site" && <SiteAdmin />}
+                  {tab === "numbers" && <NumbersAdmin />}
                 </Suspense>
 
               </div>
