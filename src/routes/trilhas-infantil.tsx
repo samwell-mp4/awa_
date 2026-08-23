@@ -1,6 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getTrailsTotemsConfig } from "@/lib/infantil-content.functions";
+import { useMemo } from "react";
+
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -40,7 +45,7 @@ type TotemStyle = {
   rotate: string;
 };
 
-const totemStyles: Record<string, TotemStyle> = {
+const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
   saudacoes: {
     emoji: "🤝",
     color: "#ffd166",
@@ -108,6 +113,20 @@ function FloatingIsland({ top, bottom, size = 140 }: { top: string; bottom: stri
 function TrilhaInfantilPage() {
   const { t, i18n } = useTranslation();
   const trails = useHomeTrails();
+  const getFn = useServerFn(getTrailsTotemsConfig);
+
+  const { data: configTotems } = useQuery({
+    queryKey: ["site_config", "infantil_trails_totems"],
+    queryFn: () => getFn(),
+  });
+
+  const totemStyles = useMemo(() => {
+    if (configTotems && typeof configTotems === "object") {
+      return configTotems as Record<string, TotemStyle>;
+    }
+    return STATIC_TOTEM_STYLES;
+  }, [configTotems]);
+
 
   const titleTop = t("common.kidsTrailsTitle").replace(/^[^\p{L}]*/u, ""); // strip leading emoji if present
   const subtitle = t("common.kidsTrailsSubtitle");
