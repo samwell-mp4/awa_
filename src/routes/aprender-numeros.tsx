@@ -78,7 +78,7 @@ function AprenderNumeros() {
           {t("numbers.title") || "Números em Patxôhã"}
         </h1>
         <p className="mb-12 text-lg text-cream/80">
-          Aprenda a contar na língua do povo Pataxó
+          {t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
