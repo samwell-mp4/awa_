@@ -187,4 +187,8 @@ export default {
     disclaimer:
       "⚠️ Tradução assistida por IA — palavras ausentes do dicionário são marcadas com [?].",
   },
+  numbers: {
+    title: "Números em Patxôhã",
+    subtitle: "Aprenda a contar na língua do povo Pataxó",
+  },
 };
