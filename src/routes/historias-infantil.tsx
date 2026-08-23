@@ -66,7 +66,7 @@ type Story = {
   accent: string;
 };
 
-const STORIES: Story[] = [
+const STATIC_STORIES: Story[] = [
   {
     id: "josa",
     chip: "Guardião da memória",
@@ -174,6 +174,7 @@ const STORIES: Story[] = [
 ];
 
 // ---------- Narrator (click-to-play on the photo) ----------
+
 let currentAudio: HTMLAudioElement | null = null;
 let currentSetter: ((s: "idle") => void) | null = null;
 
