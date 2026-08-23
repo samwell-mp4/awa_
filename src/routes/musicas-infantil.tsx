@@ -45,6 +45,7 @@ const THEMES = [
 ];
 
 export function MusicasInfantilPage() {
+  const { t } = useTranslation();
   const getFn = useServerFn(getSiteConfig);
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
