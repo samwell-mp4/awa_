@@ -543,7 +543,7 @@ function UploadOrUrl({
         <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder="https://..." />
         <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10">
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Enviar arquivo"}
+          {busy ? "Enviando..." : "Gravar/Enviar arquivo"}
           <input
             type="file"
             accept={accept}
@@ -767,3 +767,5 @@ function SongRow({
     </Card>
   );
 }
+
+

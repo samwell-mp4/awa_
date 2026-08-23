@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getGamesConfig } from "@/lib/infantil-content.functions";
+
 import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
@@ -68,13 +72,14 @@ type GameId =
   | "en-colors"
   | "en-numbers";
 
-const GAMES: {
+const STATIC_GAMES: {
   id: GameId;
   emoji: string;
   title: string;
   desc: string;
   color: string;
 }[] = [
+
   {
     id: "memoria",
     emoji: "🧠",
@@ -185,6 +190,20 @@ const EN_GAMES: {
 function JogosInfantilPage() {
   const [game, setGame] = useState<GameId | null>(null);
   const [stars, setStars] = useState(0);
+  const getFn = useServerFn(getGamesConfig);
+  
+  const { data: configGames } = useQuery({
+    queryKey: ["site_config", "infantil_games"],
+    queryFn: () => getFn(),
+  });
+
+  const games = useMemo(() => {
+    if (configGames && Array.isArray(configGames) && configGames.length > 0) {
+      return configGames;
+    }
+    return STATIC_GAMES;
+  }, [configGames]);
+
 
   return (
     <div
@@ -223,7 +242,8 @@ function JogosInfantilPage() {
         {!game && (
           <>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {GAMES.map((g) => (
+              {games.map((g: any) => (
+
                 <button
                   key={g.id}
                   onClick={() => {
@@ -288,8 +308,9 @@ function JogosInfantilPage() {
                 {(() => {
                   const en = EN_GAMES.find((g) => g.id === game);
                   if (en) return en.title;
-                  const pt = GAMES.find((g) => g.id === game)?.title ?? "";
+                  const pt = games.find((g: any) => g.id === game)?.title ?? "";
                   return <T>{pt}</T>;
+
                 })()}
               </span>
             </div>
