@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export type AreaPath = "/adulto" | "/infantil" | "/";
+export type AreaPath = "/adulto" | "/infantil" | "/aprender-numeros" | "/";
 const KEY = "awa:lastArea";
 
-export function setLastArea(path: "/adulto" | "/infantil") {
+export function setLastArea(path: "/adulto" | "/infantil" | "/aprender-numeros") {
   try {
     sessionStorage.setItem(KEY, path);
   } catch {
@@ -14,7 +14,7 @@ export function setLastArea(path: "/adulto" | "/infantil") {
 export function getLastArea(): AreaPath {
   try {
     const v = sessionStorage.getItem(KEY);
-    if (v === "/adulto" || v === "/infantil") return v;
+    if (v === "/adulto" || v === "/infantil" || v === "/aprender-numeros") return v;
   } catch {
     // ignore
   }

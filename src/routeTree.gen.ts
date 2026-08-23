@@ -33,6 +33,7 @@ import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as BiografiaRouteImport } from './routes/biografia'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AprenderNumerosRouteImport } from './routes/aprender-numeros'
 import { Route as AmizadeRouteImport } from './routes/amizade'
 import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AcessoNegadoRouteImport } from './routes/acesso-negado'
@@ -171,6 +172,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AprenderNumerosRoute = AprenderNumerosRouteImport.update({
+  id: '/aprender-numeros',
+  path: '/aprender-numeros',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AmizadeRoute = AmizadeRouteImport.update({
   id: '/amizade',
   path: '/amizade',
@@ -266,6 +272,7 @@ export interface FileRoutesByFullPath {
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
+  '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -308,6 +315,7 @@ export interface FileRoutesByTo {
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
+  '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -352,6 +360,7 @@ export interface FileRoutesById {
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
   '/amizade': typeof AmizadeRoute
+  '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof BemVindoRoute
   '/biografia': typeof BiografiaRoute
@@ -396,6 +405,7 @@ export interface FileRouteTypes {
     | '/acesso-negado'
     | '/adulto'
     | '/amizade'
+    | '/aprender-numeros'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -438,6 +448,7 @@ export interface FileRouteTypes {
     | '/acesso-negado'
     | '/adulto'
     | '/amizade'
+    | '/aprender-numeros'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -481,6 +492,7 @@ export interface FileRouteTypes {
     | '/acesso-negado'
     | '/adulto'
     | '/amizade'
+    | '/aprender-numeros'
     | '/auth'
     | '/bem-vindo'
     | '/biografia'
@@ -525,6 +537,7 @@ export interface RootRouteChildren {
   AcessoNegadoRoute: typeof AcessoNegadoRoute
   AdultoRoute: typeof AdultoRoute
   AmizadeRoute: typeof AmizadeRoute
+  AprenderNumerosRoute: typeof AprenderNumerosRoute
   AuthRoute: typeof AuthRoute
   BemVindoRoute: typeof BemVindoRoute
   BiografiaRoute: typeof BiografiaRoute
@@ -732,6 +745,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aprender-numeros': {
+      id: '/aprender-numeros'
+      path: '/aprender-numeros'
+      fullPath: '/aprender-numeros'
+      preLoaderRoute: typeof AprenderNumerosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/amizade': {
       id: '/amizade'
       path: '/amizade'
@@ -871,6 +891,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcessoNegadoRoute: AcessoNegadoRoute,
   AdultoRoute: AdultoRoute,
   AmizadeRoute: AmizadeRoute,
+  AprenderNumerosRoute: AprenderNumerosRoute,
   AuthRoute: AuthRoute,
   BemVindoRoute: BemVindoRoute,
   BiografiaRoute: BiografiaRoute,

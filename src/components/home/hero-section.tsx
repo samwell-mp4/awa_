@@ -1,4 +1,5 @@
 import { Award, Flame, Sparkles, Star, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -110,6 +111,14 @@ export function HeroSection() {
             <Stat icon={<Flame className="h-4 w-4 text-gold" />} label={t("hero.sequencia")} value={String(streak)} sub={t("hero.dias")} />
             <Stat icon={<Star className="h-4 w-4 text-gold" />} label={t("hero.pontos")} value={String(points)} sub={t("hero.pontosSub")} />
             <Stat icon={<Award className="h-4 w-4 text-gold" />} label={t("hero.nivel")} value={String(level)} sub={t("hero.nivelSub")} />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link
+              to="/aprender-numeros"
+              className="inline-flex items-center gap-2 rounded-xl border border-gold/30 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold backdrop-blur-sm transition hover:bg-gold/20"
+            >
+              <span className="text-lg">🔢</span> Aprender Números
+            </Link>
           </div>
         </div>
 
