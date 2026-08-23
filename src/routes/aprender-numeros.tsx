@@ -77,13 +77,15 @@ function AprenderNumeros() {
       <SiteHeader mode="infantil" />
       
       <main className="mx-auto max-w-4xl px-4 py-12 text-center">
-        <button
-          onClick={() => window.history.back()}
-          className="mb-8 flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
-        >
-          <ArrowLeft className="h-5 w-5 stroke-[3]" />
-          <span>{t("common.back") || "Voltar"}</span>
-        </button>
+        <div className="mb-8 flex justify-between items-center">
+          <button
+            onClick={() => window.history.back()}
+            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+          >
+            <ArrowLeft className="h-5 w-5 stroke-[3]" />
+            <span>{t("common.back") || "Voltar"}</span>
+          </button>
+        </div>
 
         <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
