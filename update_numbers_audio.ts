@@ -1,4 +1,4 @@
-import { supabase } from "./src/integrations/supabase/client.server";
+import { supabaseAdmin } from "./src/integrations/supabase/client.server";
 
 const NUMBERS_JSON = [
   { "pt": "Um", "pat": "Kutkuxú", "audio": "/__l5e/assets-v1/0a50107c-35c2-459b-9fc1-399a0d2aa745/numero-01.mp3" },
@@ -14,7 +14,7 @@ const NUMBERS_JSON = [
 ];
 
 async function updateConfig() {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('site_config')
     .upsert({ 
       key: 'aprender_numeros', 
