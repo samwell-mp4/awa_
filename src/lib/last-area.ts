@@ -14,7 +14,7 @@ export function setLastArea(path: "/adulto" | "/infantil" | "/aprender-numeros")
 export function getLastArea(): AreaPath {
   try {
     const v = sessionStorage.getItem(KEY);
-    if (v === "/adulto" || v === "/infantil") return v;
+    if (v === "/adulto" || v === "/infantil" || v === "/aprender-numeros") return v;
   } catch {
     // ignore
   }
