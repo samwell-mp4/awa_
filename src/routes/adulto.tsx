@@ -67,14 +67,18 @@ function AdultoHome() {
         <GreetingOfMoment />
         <ContinueLearningCard />
 
-        <TrailsGrid trails={trails} />
-
-        <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="content-visibility-auto">
+          <TrailsGrid trails={trails} />
+        </div>
+        
+        <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2 content-visibility-auto">
           <DailyMissionCard mission={mission} />
           <RankingCard />
         </section>
 
-        <InstallCTA />
+        <div className="content-visibility-auto">
+          <InstallCTA />
+        </div>
       </main>
 
       <SiteFooter />
