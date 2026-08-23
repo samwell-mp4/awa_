@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export type AreaPath = "/adulto" | "/infantil" | "/";
+export type AreaPath = "/adulto" | "/infantil" | "/aprender-numeros" | "/";
 const KEY = "awa:lastArea";
 
-export function setLastArea(path: "/adulto" | "/infantil") {
+export function setLastArea(path: "/adulto" | "/infantil" | "/aprender-numeros") {
   try {
     sessionStorage.setItem(KEY, path);
   } catch {
