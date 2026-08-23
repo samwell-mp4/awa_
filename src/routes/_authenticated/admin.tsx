@@ -21,7 +21,9 @@ import {
   KeyRound,
   CreditCard,
   Hash,
+  Sparkles,
 } from "lucide-react";
+
 
 const TrailsAdmin = lazy(() => import("@/components/admin/trails-admin").then((m) => ({ default: m.TrailsAdmin })));
 const VideoAdmin = lazy(() => import("@/components/admin/video-admin").then((m) => ({ default: m.VideoAdmin })));
@@ -380,7 +382,9 @@ function AdminPage() {
                   {tab === "payments" && <PaymentsAdmin />}
                   {tab === "layout" && <LayoutAdmin />}
                   {tab === "site" && <SiteAdmin />}
+                  {tab === "infantil_content" && <InfantilContentAdmin />}
                   {tab === "numbers" && <NumbersAdmin />}
+
                 </Suspense>
 
               </div>
