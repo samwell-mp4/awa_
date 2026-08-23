@@ -46,6 +46,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             aria-label={t("common.voltar")}
           >
             <ArrowLeft className={isKids ? "h-7 w-7" : "h-5 w-5"} strokeWidth={isKids ? 3 : 2} />
+            <span className="sr-only">{t("common.voltar")}</span>
           </button>
         ) : (
           <button
