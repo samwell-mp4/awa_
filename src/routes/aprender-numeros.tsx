@@ -30,38 +30,41 @@ const DEFAULT_NUMEROS = [
 ];
 
 function AprenderNumeros() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   useEffect(() => setLastArea("/aprender-numeros"), []);
   const getFn = useServerFn(getNumbersConfig);
 
   const { data: config } = useQuery({
     queryKey: ["aprender_numeros_content"],
     queryFn: () => getFn(),
+    staleTime: 0, // Ensure we always check for fresh data
   });
 
   const getSiteConfigFn = useServerFn(getSiteConfig);
   const { data: pageConfig } = useQuery({
     queryKey: ["site_config", "numbers_page_config"],
     queryFn: () => getSiteConfigFn({ data: "numbers_page_config" }),
+    staleTime: 0,
   });
 
   const NUMEROS = useMemo(() => {
-    let base = DEFAULT_NUMEROS;
     if (config && Array.isArray(config) && config.length > 0) {
-      base = config;
+      return config;
     }
-    return base;
+    return DEFAULT_NUMEROS;
   }, [config]);
 
   const rawPtValues = useMemo(() => NUMEROS.map(n => n.pt), [NUMEROS]);
   const translatedPt = useAutoTranslate(rawPtValues);
 
+  const currentLang = (i18n.language || "pt").slice(0, 2).toLowerCase();
+
   const displayNumeros = useMemo(() => {
     return NUMEROS.map((n, i) => ({
       ...n,
-      pt: translatedPt[i]
+      pt: currentLang === "pt" || currentLang === "pat" ? n.pt : translatedPt[i]
     }));
-  }, [NUMEROS, translatedPt]);
+  }, [NUMEROS, translatedPt, currentLang]);
 
   const playAudio = (url: string, ptText: string) => {
     if (!url) {
@@ -69,7 +72,10 @@ function AprenderNumeros() {
       return;
     }
     const audio = new Audio(url);
-    audio.play().catch(() => speak(ptText, "pt-BR"));
+    audio.play().catch((e) => {
+      console.warn("Audio play failed, falling back to TTS:", e);
+      speak(ptText, "pt-BR");
+    });
   };
 
   return (

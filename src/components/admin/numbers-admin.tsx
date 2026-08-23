@@ -120,7 +120,7 @@ export function NumbersAdmin() {
                     value={n.pt} 
                     onChange={e => {
                       const copy = [...draft];
-                      copy[i].pt = e.target.value;
+                      copy[i] = { ...copy[i], pt: e.target.value };
                       setDraft(copy);
                     }} 
                   />
@@ -130,45 +130,28 @@ export function NumbersAdmin() {
                     value={n.pat} 
                     onChange={e => {
                       const copy = [...draft];
-                      copy[i].pat = e.target.value;
+                      copy[i] = { ...copy[i], pat: e.target.value };
                       setDraft(copy);
                     }} 
                   />
                 </Field>
               </div>
               <div className="flex flex-col gap-3">
-                <UploadOrUrl
+                <NumberAudioUpload
                   label="Áudio (Upload ou URL)"
                   value={n.audio || ""}
                   onChange={v => {
                     const copy = [...draft];
-                    copy[i].audio = v;
+                    copy[i] = { ...copy[i], audio: v };
                     setDraft(copy);
                   }}
-                  onFile={async (file) => {
-                    const prefix = `numbers/audio`;
-                    const ext = file.name.split(".").pop() || "mp3";
-                    const path = `${prefix}/${crypto.randomUUID()}.${ext}`;
-                    try {
-                      toast.loading("Enviando áudio...");
-                      const { error } = await supabase.storage.from("songs").upload(path, file);
-                      if (error) throw error;
-                      const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
-                      const copy = [...draft];
-                      copy[i].audio = data?.signedUrl || "";
-                      setDraft(copy);
-                      toast.dismiss();
-                      toast.success("Áudio enviado!");
-                    } catch (err: any) {
-                      toast.dismiss();
-                      toast.error("Erro no upload: " + err.message);
-                    }
-                  }}
                   accept="audio/*"
-                  busy={false}
                 />
                 {n.audio && (
-                  <Btn variant="outline" className="py-1 text-xs" onClick={() => new Audio(n.audio).play()}>
+                  <Btn variant="outline" className="py-1 text-xs" onClick={() => {
+                    const a = new Audio(n.audio);
+                    a.play().catch(e => toast.error("Erro ao tocar: " + e.message));
+                  }}>
                     <Volume2 className="h-3 w-3 mr-1" /> Testar Áudio
                   </Btn>
                 )}
@@ -190,21 +173,41 @@ export function NumbersAdmin() {
   );
 }
 
-function UploadOrUrl({
+function NumberAudioUpload({
   label,
   value,
   onChange,
-  onFile,
   accept,
-  busy,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
-  onFile: (f: File) => void;
   accept: string;
-  busy: boolean;
 }) {
+  const [busy, setBusy] = useState(false);
+  
+  const onFile = async (file: File) => {
+    const prefix = `numbers/audio`;
+    const ext = file.name.split(".").pop() || "mp3";
+    const path = `${prefix}/${crypto.randomUUID()}.${ext}`;
+    
+    setBusy(true);
+    const tid = toast.loading("Enviando áudio...");
+    
+    try {
+      const { error } = await supabase.storage.from("songs").upload(path, file);
+      if (error) throw error;
+      
+      const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
+      onChange(data?.signedUrl || "");
+      toast.success("Áudio enviado!", { id: tid });
+    } catch (err: any) {
+      toast.error("Erro no upload: " + err.message, { id: tid });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <Field label={label}>
       <div className="flex flex-col gap-2">
@@ -221,6 +224,7 @@ function UploadOrUrl({
             type="file"
             accept={accept}
             className="hidden"
+            disabled={busy}
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) onFile(f);
