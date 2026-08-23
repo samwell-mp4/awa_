@@ -178,7 +178,7 @@ const STATIC_STORIES: Story[] = [
 let currentAudio: HTMLAudioElement | null = null;
 let currentSetter: ((s: "idle") => void) | null = null;
 
-function useKidsNarrator(text: string) {
+function useKidsNarrator(text: string, currentStories: Story[]) {
   const { i18n } = useTranslation();
   const [state, setState] = useState<"idle" | "loading" | "playing">("idle");
   const [progress, setProgress] = useState(0);
@@ -224,11 +224,12 @@ function useKidsNarrator(text: string) {
   useEffect(() => {
     prefetch();
     // Pre-warm narration for all stories if it's the first time
-    STORIES.forEach(s => {
+    currentStories.forEach(s => {
       const text = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
       void getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
     });
-  }, []);
+  }, [currentStories]);
+
 
 
   const play = async () => {
@@ -319,9 +320,10 @@ function KidsNarratorBar({
   );
 }
 
-function StoryCard({ s, idx }: { s: Story; idx: number }) {
+function StoryCard({ s, idx, currentStories }: { s: Story; idx: number; currentStories: Story[] }) {
   const narrationText = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
-  const { state, progress, play, prefetch } = useKidsNarrator(narrationText);
+  const { state, progress, play, prefetch } = useKidsNarrator(narrationText, currentStories);
+
   return (
     <article
       className="story-card relative overflow-hidden rounded-[1.75rem] border-4 border-white/70 bg-[#fffdf3] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]"
@@ -429,7 +431,22 @@ function JungleBorder() {
 
 function HistoriasInfantilPage() {
   const { t, i18n } = useTranslation();
+  const getFn = useServerFn(getStoriesConfig);
+  
+  const { data: configStories } = useQuery({
+    queryKey: ["site_config", "infantil_stories"],
+    queryFn: () => getFn(),
+  });
+
+  const stories = useMemo(() => {
+    if (configStories && Array.isArray(configStories) && configStories.length > 0) {
+      return configStories as Story[];
+    }
+    return STATIC_STORIES;
+  }, [configStories]);
+
   useEffect(() => setLastArea("/infantil"), []);
+
 
   return (
     <div key={i18n.language} className="kids-theme min-h-screen text-foreground">
@@ -475,10 +492,11 @@ function HistoriasInfantilPage() {
 
         {/* STORY CARDS */}
         <section className="mt-6 space-y-6" aria-label="Histórias infantis Pataxó">
-          {STORIES.map((s, idx) => (
-            <StoryCard key={s.id} s={s} idx={idx} />
+          {stories.map((s, idx) => (
+            <StoryCard key={s.id || idx} s={s} idx={idx} currentStories={stories} />
           ))}
         </section>
+
 
         {/* Closing CTA */}
         <section className="mt-8 rounded-[1.75rem] border-4 border-white/70 bg-[#fdfcf0] p-6 text-center shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]">
