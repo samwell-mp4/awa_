@@ -41,7 +41,7 @@ type Dict = {
 
 const MENU_I18N: Record<string, Dict> = {
   pt: {
-    badge: "Plataforma oficial AWÃ TECH",
+    badge: "Painel admin . Colocar adita numero",
     h1a: "Línguas indígenas,",
     h1b: "culturas vivas.",
     lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
