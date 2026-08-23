@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles, LogIn, UserRound } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { Logo } from "@/components/home/logo";
@@ -228,6 +228,20 @@ function LandingChoice() {
   const { hasInfantil, hasAdulto, loading: subLoading } = useSubscription();
   const getFn = useServerFn(getSiteConfig);
   const router = useRouter();
+  const qc = useQueryClient();
+
+  // Prefetch rotas principais para navegação instantânea
+  useEffect(() => {
+    const prefetch = async () => {
+      // Prefetch data for branding
+      await qc.prefetchQuery({
+        queryKey: ["site_config", "branding"],
+        queryFn: () => getFn({ data: "branding" }),
+        staleTime: 1000 * 60 * 5,
+      });
+    };
+    prefetch();
+  }, [qc, getFn]);
 
   useEffect(() => {
     const handler = () => router.invalidate();
