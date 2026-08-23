@@ -8,6 +8,7 @@ import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig } from "@/lib/numbers.functions";
+import { useAutoTranslate } from "@/hooks/use-auto-translate";
 
 export const Route = createFileRoute("/aprender-numeros")({
   component: AprenderNumeros,
@@ -37,9 +38,22 @@ function AprenderNumeros() {
   });
 
   const NUMEROS = useMemo(() => {
-    if (config && Array.isArray(config) && config.length > 0) return config;
-    return DEFAULT_NUMEROS;
+    let base = DEFAULT_NUMEROS;
+    if (config && Array.isArray(config) && config.length > 0) {
+      base = config;
+    }
+    return base;
   }, [config]);
+
+  const rawPtValues = useMemo(() => NUMEROS.map(n => n.pt), [NUMEROS]);
+  const translatedPt = useAutoTranslate(rawPtValues);
+
+  const displayNumeros = useMemo(() => {
+    return NUMEROS.map((n, i) => ({
+      ...n,
+      pt: translatedPt[i]
+    }));
+  }, [NUMEROS, translatedPt]);
 
   const playAudio = (url: string) => {
     if (!url) return;
@@ -68,7 +82,7 @@ function AprenderNumeros() {
         </p>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
-          {NUMEROS.map((num, i) => (
+          {displayNumeros.map((num, i) => (
             <button
               key={i}
               onClick={() => playAudio(num.audio)}
