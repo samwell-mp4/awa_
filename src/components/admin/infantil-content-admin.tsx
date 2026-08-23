@@ -122,12 +122,13 @@ function StoriesAdmin() {
                 <UploadOrUrl
                   label="Imagem da Capa"
                   value={s.image}
-                  onChange={v => {
+                  onChange={(v: string) => {
                     const copy = [...draft];
                     copy[i].image = v;
                     setDraft(copy);
                   }}
-                  onFile={async (file) => {
+                  onFile={async (file: File) => {
+
                     const path = `stories/covers/${crypto.randomUUID()}-${file.name}`;
                     const { error } = await supabase.storage.from("songs").upload(path, file);
                     if (error) return toast.error(error.message);

@@ -35,6 +35,8 @@ const AllowlistAdmin = lazy(() => import("@/components/admin/allowlist-admin").t
 const LayoutAdmin = lazy(() => import("@/components/admin/layout-admin").then((m) => ({ default: m.LayoutAdmin })));
 const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) => ({ default: m.SiteAdmin })));
 const NumbersAdmin = lazy(() => import("@/components/admin/numbers-admin").then((m) => ({ default: m.NumbersAdmin })));
+const InfantilContentAdmin = lazy(() => import("@/components/admin/infantil-content-admin").then((m) => ({ default: m.InfantilContentAdmin })));
+
 
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -55,7 +57,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site" | "numbers";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site" | "numbers" | "infantil_content";
 
 type Section = {
   k: Tab;
@@ -80,7 +82,9 @@ const SECTIONS: Section[] = [
   
   { k: "site", label: "IA & Sistema", icon: Wand2, desc: "Akuã, Tradutor e acesso irrestrito.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
   { k: "numbers", label: "Números", icon: Hash, desc: "Editar números e áudios educativos.", group: "Conteúdo", accent: "from-rose-500/30 to-rose-600/20" },
+  { k: "infantil_content", label: "Infantil+", icon: Sparkles, desc: "Gerenciar Histórias, Jogos e Trilhas.", group: "Conteúdo", accent: "from-amber-400/30 to-orange-500/20" },
 ];
+
 
 
 function AdminPage() {
