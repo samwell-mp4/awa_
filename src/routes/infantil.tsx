@@ -115,13 +115,13 @@ function InfantilHome() {
         </div>
 
 
-        <button
-          onClick={() => window.history.back()}
+        <Link
+          to="/"
           className="group relative z-10 -mt-6 mx-auto flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
         >
           <ArrowLeft className="h-5 w-5 stroke-[3]" />
           <span>{t("common.voltar")}</span>
-        </button>
+        </Link>
 
         <section
           key={languageKey}
