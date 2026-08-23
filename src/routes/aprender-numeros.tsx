@@ -46,7 +46,7 @@ function AprenderNumeros() {
         </button>
 
         <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
-          Números em Patxôhã
+          Painel admin . Colocar adita numero
         </h1>
         <p className="mb-12 text-lg text-cream/80">
           Aprenda a contar na língua do povo Pataxó
