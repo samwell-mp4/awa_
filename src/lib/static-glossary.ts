@@ -124,10 +124,6 @@ export const STATIC_GLOSSARY: Record<string, Entry> = {
   "Gato": { en: "Cat", es: "Gato" },
   "Pássaro": { en: "Bird", es: "Pájaro" },
   "Peixe": { en: "Fish", es: "Pez" },
-  "Um": { en: "One", es: "Uno" },
-  "Dois": { en: "Two", es: "Dos" },
-  "Três": { en: "Three", es: "Tres" },
-  "Quatro": { en: "Four", es: "Cuatro" },
 };
 
 /** Retorna a tradução estática (en/es) ou undefined. */
