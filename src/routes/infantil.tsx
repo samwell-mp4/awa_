@@ -155,8 +155,9 @@ function InfantilHome() {
           ].map((c: any) => (
             <Link
               key={c.to || `trail-${c.slug}`}
-              to={c.to || "/trilhas/$slug"}
-              params={c.slug ? { slug: c.slug } : undefined}
+              to={(c.to || "/trilhas/$slug") as any}
+              params={(c.slug ? { slug: c.slug } : {}) as any}
+
 
               aria-label={c.key === "numbers" ? "Aprender Números" : t(`common.${c.key}`)}
               className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
