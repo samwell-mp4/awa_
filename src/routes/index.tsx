@@ -41,7 +41,7 @@ type Dict = {
 
 const MENU_I18N: Record<string, Dict> = {
   pt: {
-    badge: "Painel admin . Colocar adita numero",
+    badge: "Implemente um painel admin para gerenciar conteúdos de \"Aprender Números\", incluindo faixas infantil e adulto, e editar títulos, áudios e legendas.",
     h1a: "Línguas indígenas,",
     h1b: "culturas vivas.",
     lead: "Escolha a experiência que combina com você. Trilhas guiadas, dicionário, histórias e jogos — desenvolvidos com respeito e curadoria cultural.",
