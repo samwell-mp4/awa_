@@ -6,6 +6,18 @@
 type Entry = { en: string; es: string };
 
 export const STATIC_GLOSSARY: Record<string, Entry> = {
+  // Números
+  "Um": { en: "One", es: "Uno" },
+  "Dois": { en: "Two", es: "Dos" },
+  "Três": { en: "Three", es: "Tres" },
+  "Quatro": { en: "Four", es: "Cuatro" },
+  "Cinco": { en: "Five", es: "Cinco" },
+  "Seis": { en: "Six", es: "Seis" },
+  "Sete": { en: "Seven", es: "Siete" },
+  "Oito": { en: "Eight", es: "Ocho" },
+  "Nove": { en: "Nine", es: "Nueve" },
+  "Dez": { en: "Ten", es: "Diez" },
+
   // Navegação / ações
   "Aldeia": { en: "Village", es: "Aldea" },
   "Menu": { en: "Menu", es: "Menú" },
