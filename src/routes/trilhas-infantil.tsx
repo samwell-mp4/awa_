@@ -159,9 +159,9 @@ function TrilhaInfantilPage() {
             <Link
               to="/infantil"
               className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-black text-[#118ab2] shadow ring-2 ring-[#ffd166]/60 hover:scale-105 active:scale-95"
-              aria-label={t("Voltar")}
+              aria-label={t("common.voltar")}
             >
-              <span aria-hidden>←</span> {t("Voltar")}
+              <span aria-hidden>←</span> {t("common.voltar")}
             </Link>
             <h1
               className="text-4xl uppercase leading-none tracking-tight text-[#118ab2]"

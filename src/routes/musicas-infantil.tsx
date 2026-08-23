@@ -3,6 +3,7 @@ import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Pause, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
@@ -45,6 +46,7 @@ const THEMES = [
 ];
 
 export function MusicasInfantilPage() {
+  const { t } = useTranslation();
   const getFn = useServerFn(getSiteConfig);
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
@@ -92,7 +94,7 @@ export function MusicasInfantilPage() {
             to="/infantil"
             className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
           >
-            <ArrowLeft className="h-4 w-4" /> Aldeia
+            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
           </Link>
           <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
             🎶 Cantigas 🎶
