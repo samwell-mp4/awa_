@@ -109,7 +109,20 @@ export function DictionaryAdmin() {
           <Field label="Língua"><Input value={draft.language} onChange={(e) => setDraft({ ...draft, language: e.target.value })} /></Field>
           <Field label="Categoria"><Input value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })} placeholder="Saudações / Família / ..." /></Field>
           <Field label="Pronúncia"><Input value={draft.pronunciation} onChange={(e) => setDraft({ ...draft, pronunciation: e.target.value })} /></Field>
-          <Field label="URL de áudio (opcional)"><Input value={draft.audio_url} onChange={(e) => setDraft({ ...draft, audio_url: e.target.value })} /></Field>
+          <UploadOrUrl
+            label="Áudio (Upload ou URL)"
+            value={draft.audio_url || ""}
+            onChange={(v: string) => setDraft({ ...draft, audio_url: v })}
+            onFile={async (file: File) => {
+              const path = `dictionary/audio/${crypto.randomUUID()}-${file.name}`;
+              const { error } = await supabase.storage.from("songs").upload(path, file);
+              if (error) return toast.error(error.message);
+              const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
+              setDraft({ ...draft, audio_url: data?.signedUrl || "" });
+              toast.success("Áudio enviado!");
+            }}
+            accept="audio/*"
+          />
           <div className="md:col-span-2">
             <Field label="Exemplo"><Textarea rows={2} value={draft.example} onChange={(e) => setDraft({ ...draft, example: e.target.value })} /></Field>
           </div>
@@ -187,19 +200,42 @@ function EntryRow({ entry }: { entry: Entry }) {
   );
 }
 
-function UploadOrUrl({ label, value, onChange, onFile, accept }: any) {
+function UploadOrUrl({
+  label,
+  value,
+  onChange,
+  onFile,
+  accept,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  onFile: (f: File) => void;
+  accept: string;
+}) {
   const [busy, setBusy] = useState(false);
   return (
     <Field label={label}>
-      <div className="flex gap-2">
-        <Input className="flex-1 text-xs" value={value} onChange={e => onChange(e.target.value)} placeholder="https://..." />
-        <label className="flex items-center justify-center w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold cursor-pointer hover:bg-gold/20 transition shrink-0">
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+      <div className="flex flex-col gap-2">
+        <Input 
+          className="w-full text-xs" 
+          value={value} 
+          onChange={e => onChange(e.target.value)} 
+          placeholder="https://..." 
+        />
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition">
+          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+          {busy ? "Enviando..." : "Gravar/Enviar Arquivo"}
           <input type="file" accept={accept} className="hidden" onChange={async e => {
             const f = e.target.files?.[0];
             if (!f) return;
             setBusy(true);
-            try { await onFile(f); } finally { setBusy(false); }
+            try { 
+              await onFile(f); 
+            } finally { 
+              setBusy(false); 
+              e.currentTarget.value = "";
+            }
           }} />
         </label>
       </div>
