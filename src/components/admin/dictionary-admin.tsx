@@ -162,8 +162,9 @@ function EntryRow({ entry }: { entry: Entry }) {
         <UploadOrUrl
           label="Áudio (Upload ou URL)"
           value={e.audio_url ?? ""}
-          onChange={(v) => setE({ ...e, audio_url: v })}
-          onFile={async (file) => {
+          onChange={(v: string) => setE({ ...e, audio_url: v })}
+          onFile={async (file: File) => {
+
             const path = `dictionary/audio/${crypto.randomUUID()}-${file.name}`;
             const { error } = await supabase.storage.from("songs").upload(path, file);
             if (error) return toast.error(error.message);
