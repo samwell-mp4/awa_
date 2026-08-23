@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Search, Download } from "lucide-react";
+import { Save, Plus, Trash2, Search, Download, Upload, Loader2 } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
+
 import patxohaDict from "@/data/patxoha-dictionary.json";
 
 type Entry = {
@@ -158,7 +159,21 @@ function EntryRow({ entry }: { entry: Entry }) {
         <Field label="Língua"><Input value={e.language} onChange={(ev) => setE({ ...e, language: ev.target.value })} /></Field>
         <Field label="Categoria"><Input value={e.category} onChange={(ev) => setE({ ...e, category: ev.target.value })} /></Field>
         <Field label="Pronúncia"><Input value={e.pronunciation ?? ""} onChange={(ev) => setE({ ...e, pronunciation: ev.target.value })} /></Field>
-        <Field label="Áudio (URL)"><Input value={e.audio_url ?? ""} onChange={(ev) => setE({ ...e, audio_url: ev.target.value })} /></Field>
+        <UploadOrUrl
+          label="Áudio (Upload ou URL)"
+          value={e.audio_url ?? ""}
+          onChange={(v) => setE({ ...e, audio_url: v })}
+          onFile={async (file) => {
+            const path = `dictionary/audio/${crypto.randomUUID()}-${file.name}`;
+            const { error } = await supabase.storage.from("songs").upload(path, file);
+            if (error) return toast.error(error.message);
+            const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
+            setE({ ...e, audio_url: data?.signedUrl || "" });
+            toast.success("Áudio enviado!");
+          }}
+          accept="audio/*"
+        />
+
         <div className="md:col-span-3">
           <Field label="Exemplo"><Textarea rows={2} value={e.example ?? ""} onChange={(ev) => setE({ ...e, example: ev.target.value })} /></Field>
         </div>
@@ -170,3 +185,24 @@ function EntryRow({ entry }: { entry: Entry }) {
     </Card>
   );
 }
+
+function UploadOrUrl({ label, value, onChange, onFile, accept }: any) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <Field label={label}>
+      <div className="flex gap-2">
+        <Input className="flex-1" value={value} onChange={e => onChange(e.target.value)} placeholder="https://..." />
+        <label className="flex items-center justify-center w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold cursor-pointer hover:bg-gold/20 transition">
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+          <input type="file" accept={accept} className="hidden" onChange={async e => {
+            const f = e.target.files?.[0];
+            if (!f) return;
+            setBusy(true);
+            try { await onFile(f); } finally { setBusy(false); }
+          }} />
+        </label>
+      </div>
+    </Field>
+  );
+}
+
