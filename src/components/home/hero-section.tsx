@@ -1,4 +1,5 @@
 import { Award, Flame, Sparkles, Star, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
