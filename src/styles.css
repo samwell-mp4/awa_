@@ -116,8 +116,20 @@
   h1 { line-height: 1.02; }
   ::selection { background: color-mix(in oklab, var(--gold) 45%, transparent); color: var(--cream); }
   :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--background), 0 0 0 4px color-mix(in oklab, var(--gold) 70%, transparent); border-radius: 12px; }
-  a, button { transition: color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-  img { -webkit-user-drag: none; }
+  a, button { transition: color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease, border-color .2s ease; will-change: transform, opacity; }
+  img { -webkit-user-drag: none; content-visibility: auto; }
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
 }
 
 /* Ambient decorative overlay — subtle grain + leaf silhouettes */
