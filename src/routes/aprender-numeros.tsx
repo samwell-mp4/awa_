@@ -54,7 +54,7 @@ function AprenderNumeros() {
   }, [config]);
 
   const rawPtValues = useMemo(() => NUMEROS.map(n => n.pt), [NUMEROS]);
-  const translatedPt = useAutoTranslate(rawPtValues);
+  const translatedPt = useAutoTranslate(rawPtValues, "pt-BR");
 
   const displayNumeros = useMemo(() => {
     return NUMEROS.map((n, i) => ({
