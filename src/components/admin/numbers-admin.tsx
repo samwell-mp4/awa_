@@ -30,9 +30,10 @@ export function NumbersAdmin() {
     }
   }, [pageConfig]);
 
-  const { data: config, isLoading } = useQuery({
+  const { data: config, isLoading, refetch } = useQuery({
     queryKey: ["site_config", "aprender_numeros"],
     queryFn: () => getFn(),
+    staleTime: 0,
   });
 
   const [draft, setDraft] = useState<any[]>([]);
@@ -58,20 +59,27 @@ export function NumbersAdmin() {
   }, [config]);
 
   async function save() {
+    const tid = toast.loading("Salvando alterações...");
     try {
-      await updateFn({ data: draft });
+      // Ensure we are sending the most up-to-date draft
+      await updateFn({ data: [...draft] });
       await updateSiteConfigFn({ 
         data: { 
           key: "numbers_page_config", 
           value: { title, subtitle } 
         } 
       });
-      toast.success("Configuração de números salva!");
-      qc.invalidateQueries({ queryKey: ["site_config", "aprender_numeros"] });
-      qc.invalidateQueries({ queryKey: ["site_config", "numbers_page_config"] });
-      qc.invalidateQueries({ queryKey: ["aprender_numeros_content"] });
+      
+      // Invalidate all related queries
+      await qc.invalidateQueries({ queryKey: ["site_config"] });
+      await qc.invalidateQueries({ queryKey: ["aprender_numeros_content"] });
+      
+      // Force a refetch to ensure local state is in sync with DB
+      await refetch();
+      
+      toast.success("Configuração de números salva!", { id: tid });
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e.message || "Erro ao salvar", { id: tid });
     }
   }
 

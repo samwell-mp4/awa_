@@ -35,9 +35,10 @@ function AprenderNumeros() {
   const getFn = useServerFn(getNumbersConfig);
 
   const { data: config } = useQuery({
-    queryKey: ["aprender_numeros_content"],
+    queryKey: ["site_config", "aprender_numeros"], // Match the key used in admin
     queryFn: () => getFn(),
-    staleTime: 0, // Ensure we always check for fresh data
+    staleTime: 0,
+    gcTime: 0, // Don't keep old data in cache
   });
 
   const getSiteConfigFn = useServerFn(getSiteConfig);
