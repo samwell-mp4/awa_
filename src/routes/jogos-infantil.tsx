@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getGamesConfig } from "@/lib/infantil-content.functions";
@@ -188,6 +189,7 @@ const EN_GAMES: {
 ];
 
 function JogosInfantilPage() {
+  const { t } = useTranslation();
   const [game, setGame] = useState<GameId | null>(null);
   const [stars, setStars] = useState(0);
   const getFn = useServerFn(getGamesConfig);
@@ -219,7 +221,7 @@ function JogosInfantilPage() {
           to="/infantil"
           className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"
         >
-          <ArrowLeft className="h-4 w-4" /> <T>Aldeia</T>
+          <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
         </Link>
         <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-2 text-sm font-black text-emerald-900 shadow">
           <Star className="h-4 w-4" /> {stars}
