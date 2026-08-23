@@ -192,8 +192,8 @@ function UploadOrUrl({ label, value, onChange, onFile, accept }: any) {
   return (
     <Field label={label}>
       <div className="flex gap-2">
-        <Input className="flex-1" value={value} onChange={e => onChange(e.target.value)} placeholder="https://..." />
-        <label className="flex items-center justify-center w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold cursor-pointer hover:bg-gold/20 transition">
+        <Input className="flex-1 text-xs" value={value} onChange={e => onChange(e.target.value)} placeholder="https://..." />
+        <label className="flex items-center justify-center w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold cursor-pointer hover:bg-gold/20 transition shrink-0">
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
           <input type="file" accept={accept} className="hidden" onChange={async e => {
             const f = e.target.files?.[0];
@@ -206,4 +206,5 @@ function UploadOrUrl({ label, value, onChange, onFile, accept }: any) {
     </Field>
   );
 }
+
 
