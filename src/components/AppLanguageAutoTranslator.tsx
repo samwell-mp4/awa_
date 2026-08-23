@@ -125,6 +125,16 @@ const COMMON_PORTUGUESE_WORDS = new Set([
   "verificando",
   "vídeos",
   "voltar",
+  "um",
+  "dois",
+  "três",
+  "quatro",
+  "cinco",
+  "seis",
+  "sete",
+  "oito",
+  "nove",
+  "dez",
 ]);
 
 function cacheKey(lang: string) {
