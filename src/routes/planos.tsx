@@ -217,7 +217,62 @@ function PlanosPage() {
           </Link>
         </section>
       </main>
+
+      <Dialog open={!!pending} onOpenChange={(o) => !o && setPending(null)}>
+        <DialogContent className="border-gold/30 bg-[oklch(0.18_0.04_145)] text-cream sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl font-black text-cream">
+              Forma de pagamento
+            </DialogTitle>
+            <DialogDescription className="text-foreground/70">
+              Escolha como você quer pagar. Pagamento seguro via Paddle.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-2 grid gap-3">
+            <button
+              onClick={() => pagarCom(["card", "apple_pay", "google_pay"])}
+              disabled={checkoutLoading}
+              className="flex items-center gap-3 rounded-2xl border-2 border-gold/50 bg-gold/10 p-4 text-left transition hover:bg-gold/20 disabled:opacity-50"
+            >
+              <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-gold/20 text-gold">
+                <CreditCard className="h-5 w-5" />
+              </span>
+              <span>
+                <span className="block font-display text-base font-black text-cream">
+                  Cartão de crédito ou débito
+                </span>
+                <span className="block text-xs text-foreground/70">
+                  Visa, Mastercard, Elo, Amex · renovação automática
+                </span>
+              </span>
+            </button>
+
+            <button
+              onClick={() => pagarCom(["pix"])}
+              disabled={checkoutLoading}
+              className="flex items-center gap-3 rounded-2xl border-2 border-leaf/50 bg-leaf/10 p-4 text-left transition hover:bg-leaf/20 disabled:opacity-50"
+            >
+              <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-leaf/20 text-leaf">
+                <QrCode className="h-5 w-5" />
+              </span>
+              <span>
+                <span className="block font-display text-base font-black text-cream">Pix</span>
+                <span className="block text-xs text-foreground/70">
+                  QR Code na hora · aprovação imediata
+                </span>
+              </span>
+            </button>
+          </div>
+
+          <p className="mt-1 flex items-center gap-2 text-[11px] text-foreground/60">
+            <Shield className="h-3.5 w-3.5 text-gold" />
+            Seus dados são processados pela Paddle. Não guardamos seu cartão.
+          </p>
+        </DialogContent>
+      </Dialog>
     </div>
+
   );
 }
 
