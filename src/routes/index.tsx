@@ -31,6 +31,7 @@ type Dict = {
   adultoDesc: string;
   criancaDesc: string;
   entrar: string;
+  assinar: string;
   pagTitle: string;
   pagCopy: string;
   multiTitle: string;
@@ -50,6 +51,7 @@ const MENU_I18N: Record<string, Dict> = {
     adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
     criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
     entrar: "Entrar",
+    assinar: "Assinar",
     pagTitle: "Pagamento seguro",
     pagCopy: "Processado por Paddle",
     multiTitle: "Multi-idioma",
@@ -67,6 +69,7 @@ const MENU_I18N: Record<string, Dict> = {
     adultoDesc: "Trails, translator, dictionary and Teacher's Space.",
     criancaDesc: "Games, songs and stories to learn while playing.",
     entrar: "Enter",
+    assinar: "Subscribe",
     pagTitle: "Secure payment",
     pagCopy: "Processed by Paddle",
     multiTitle: "Multi-language",
@@ -84,6 +87,7 @@ const MENU_I18N: Record<string, Dict> = {
     adultoDesc: "Rutas, traductor, diccionario y Espacio del Profesor.",
     criancaDesc: "Juegos, canciones e historias para aprender jugando.",
     entrar: "Entrar",
+    assinar: "Suscribirse",
     pagTitle: "Pago seguro",
     pagCopy: "Procesado por Paddle",
     multiTitle: "Multi-idioma",
@@ -101,6 +105,7 @@ const MENU_I18N: Record<string, Dict> = {
     adultoDesc: "Trilhas, tradutor, dicionário e Espaço do Professor.",
     criancaDesc: "Jogos, músicas e histórias para aprender brincando.",
     entrar: "Awê",
+    assinar: "Assinar",
     pagTitle: "Pagamento seguro",
     pagCopy: "Processado por Paddle",
     multiTitle: "Multi-idioma",
@@ -309,10 +314,12 @@ function LandingChoice() {
               eyebrow="Awã Tech"
               title={dict.adulto}
               description={dict.adultoDesc}
-              entrar={entrarLabel}
               price="R$ 39,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              subscribed={hasAdulto}
+              entrarLabel={dict.entrar}
+              assinarLabel={dict.assinar}
               priority
               videoSrc={adultVideoUrl}
               videoLabel={vdict.adulto}
@@ -325,10 +332,12 @@ function LandingChoice() {
               eyebrow="Awã Tech"
               title={dict.crianca}
               description={dict.criancaDesc}
-              entrar={entrarLabel}
               price="R$ 29,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              subscribed={hasInfantil}
+              entrarLabel={dict.entrar}
+              assinarLabel={dict.assinar}
               priority={!showAdulto}
               videoSrc={childVideoUrl}
               videoLabel={vdict.infantil}
@@ -352,10 +361,12 @@ function ExperienceCard({
   eyebrow,
   title,
   description,
-  entrar,
   price,
   pricePeriod,
   planosTo,
+  subscribed = false,
+  entrarLabel,
+  assinarLabel,
   priority = false,
   videoSrc,
   videoLabel,
@@ -365,10 +376,12 @@ function ExperienceCard({
   eyebrow: string;
   title: string;
   description: string;
-  entrar: string;
   price?: string;
   pricePeriod?: string;
   planosTo?: "/planos";
+  subscribed?: boolean;
+  entrarLabel: string;
+  assinarLabel: string;
   priority?: boolean;
   videoSrc?: string;
   videoLabel?: string;
@@ -403,28 +416,34 @@ function ExperienceCard({
               {description}
             </p>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-            {entrar} <ArrowRight className="h-4 w-4" />
-          </span>
         </div>
       </Link>
 
-      {price && (
-        <div className="flex items-center justify-between gap-3 px-5 pt-4 md:px-6">
-          <div className="flex items-baseline gap-1">
-            <span className="font-display text-2xl font-black text-gold">{price}</span>
-            {pricePeriod && <span className="text-xs text-foreground/60">{pricePeriod}</span>}
-          </div>
-          {planosTo && (
-            <Link
-              to={planosTo}
-              className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold transition hover:bg-gold/20"
-            >
-              Assinar <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          )}
-        </div>
-      )}
+      <div className="flex items-center justify-between gap-3 px-5 pt-4 md:px-6">
+        {subscribed ? (
+          <Link
+            to={to}
+            className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition hover:brightness-110 md:text-sm"
+          >
+            {entrarLabel} <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        ) : (
+          <>
+            <div className="flex items-baseline gap-1">
+              <span className="font-display text-2xl font-black text-gold">{price}</span>
+              {pricePeriod && <span className="text-xs text-foreground/60">{pricePeriod}</span>}
+            </div>
+            {planosTo && (
+              <Link
+                to={planosTo}
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold transition hover:bg-gold/20"
+              >
+                {assinarLabel} <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </>
+        )}
+      </div>
 
       {videoSrc && (
         <div className="px-5 pt-4 pb-5 md:px-6 md:pb-6">
