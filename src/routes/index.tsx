@@ -310,6 +310,9 @@ function LandingChoice() {
               title={dict.adulto}
               description={dict.adultoDesc}
               entrar={entrarLabel}
+              price="R$ 39,90"
+              pricePeriod="/mês"
+              planosTo="/planos"
               priority
               videoSrc={adultVideoUrl}
               videoLabel={vdict.adulto}
@@ -323,6 +326,9 @@ function LandingChoice() {
               title={dict.crianca}
               description={dict.criancaDesc}
               entrar={entrarLabel}
+              price="R$ 29,90"
+              pricePeriod="/mês"
+              planosTo="/planos"
               priority={!showAdulto}
               videoSrc={childVideoUrl}
               videoLabel={vdict.infantil}
@@ -347,6 +353,9 @@ function ExperienceCard({
   title,
   description,
   entrar,
+  price,
+  pricePeriod,
+  planosTo,
   priority = false,
   videoSrc,
   videoLabel,
@@ -357,6 +366,9 @@ function ExperienceCard({
   title: string;
   description: string;
   entrar: string;
+  price?: string;
+  pricePeriod?: string;
+  planosTo?: "/planos";
   priority?: boolean;
   videoSrc?: string;
   videoLabel?: string;
@@ -396,6 +408,23 @@ function ExperienceCard({
           </span>
         </div>
       </Link>
+
+      {price && (
+        <div className="flex items-center justify-between gap-3 px-5 pt-4 md:px-6">
+          <div className="flex items-baseline gap-1">
+            <span className="font-display text-2xl font-black text-gold">{price}</span>
+            {pricePeriod && <span className="text-xs text-foreground/60">{pricePeriod}</span>}
+          </div>
+          {planosTo && (
+            <Link
+              to={planosTo}
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold transition hover:bg-gold/20"
+            >
+              Assinar <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+        </div>
+      )}
 
       {videoSrc && (
         <div className="px-5 pt-4 pb-5 md:px-6 md:pb-6">
