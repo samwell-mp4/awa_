@@ -19,16 +19,20 @@ export const getTemplates = createServerFn({ method: "GET" })
   .handler(async ({ data: category, context }) => {
     const ctx = context as any;
     if (!ctx?.supabase) return [];
-    
-    let query = ctx.supabase.from("ui_templates").select("*");
+
+    // Table reads are admin-only at the database level; templates only drive
+    // presentation, so expose them to signed-in users through a server read.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    let query = supabaseAdmin.from("ui_templates").select("id,name,category,preview_url,config");
     if (category) {
       query = query.eq("category", category);
     }
-    
+
     const { data, error } = await query;
     if (error) throw error;
     return data;
   });
+
 
 export const setActiveTemplate = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

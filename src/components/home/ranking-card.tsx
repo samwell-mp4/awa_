@@ -18,14 +18,17 @@ function initials(name: string) {
 export function RankingCard() {
   const { t } = useTranslation();
   const qc = useQueryClient();
+  const { session } = useAuth();
   const fetchTopLearners = useServerFn(getWeeklyTopLearners);
   const { data = [] as TopLearner[], isLoading, isError } = useQuery<TopLearner[]>({
     queryKey: ["weekly-top-learners"],
     queryFn: () => fetchTopLearners({ data: { limit: 10 } }),
+    enabled: !!session,
     refetchInterval: 5_000,
     refetchOnWindowFocus: true,
     staleTime: 3_000,
   });
+
 
   useEffect(() => {
     const channel = supabase
