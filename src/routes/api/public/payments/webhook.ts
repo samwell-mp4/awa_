@@ -163,7 +163,13 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
     case EventName.SubscriptionCreated:
       await handleSubscriptionCreated(event.data, env);
       break;
+    // All of these carry the full subscription object with its new status.
     case EventName.SubscriptionUpdated:
+    case EventName.SubscriptionActivated:
+    case EventName.SubscriptionTrialing:
+    case EventName.SubscriptionPaused:
+    case EventName.SubscriptionResumed:
+    case EventName.SubscriptionPastDue:
       await handleSubscriptionUpdated(event.data, env);
       break;
     case EventName.SubscriptionCanceled:
@@ -179,6 +185,7 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
       console.log("Unhandled event:", event.eventType);
   }
 }
+
 
 
 export const Route = createFileRoute("/api/public/payments/webhook")({
