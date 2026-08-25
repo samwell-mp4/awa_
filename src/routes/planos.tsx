@@ -1,10 +1,13 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User, CreditCard, QrCode } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import logoSrc from "@/assets/awa-tech-logo.png";
+
 
 export const Route = createFileRoute("/planos")({
   head: () => ({
