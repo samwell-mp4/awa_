@@ -317,6 +317,7 @@ function LandingChoice() {
               price="R$ 39,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              planType="adulto"
               subscribed={hasAdulto}
               entrarLabel={dict.entrar}
               assinarLabel={dict.assinar}
@@ -335,6 +336,7 @@ function LandingChoice() {
               price="R$ 29,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              planType="infantil"
               subscribed={hasInfantil}
               entrarLabel={dict.entrar}
               assinarLabel={dict.assinar}
@@ -364,6 +366,7 @@ function ExperienceCard({
   price,
   pricePeriod,
   planosTo,
+  planType,
   subscribed = false,
   entrarLabel,
   assinarLabel,
@@ -379,6 +382,7 @@ function ExperienceCard({
   price?: string;
   pricePeriod?: string;
   planosTo?: "/planos";
+  planType?: "adulto" | "infantil";
   subscribed?: boolean;
   entrarLabel: string;
   assinarLabel: string;
@@ -436,6 +440,7 @@ function ExperienceCard({
             {planosTo && (
               <Link
                 to={planosTo}
+                search={planType ? { need: planType } : undefined}
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold transition hover:bg-gold/20"
               >
                 {assinarLabel} <ArrowRight className="h-3.5 w-3.5" />
