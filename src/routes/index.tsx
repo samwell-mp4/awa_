@@ -240,6 +240,7 @@ function LandingChoice() {
   const h1a = landingHero?.h1a || dict.h1a;
   const h1b = landingHero?.h1b || dict.h1b;
   const lead = landingHero?.lead || dict.lead;
+  const entrarLabel = landingHero?.entrar_label || dict.entrar;
   const bgUrl = landingHero?.bg_url || landingBg.url;
 
   const adultLogoUrl = branding?.adulto_logo_url || adultoLogo.url;
