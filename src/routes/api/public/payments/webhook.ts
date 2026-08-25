@@ -85,6 +85,11 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
 }
 
 
+/**
+ * Handles every subscription lifecycle event that carries a status:
+ * updated, activated, trialing, paused, resumed and past_due. If the row does
+ * not exist yet (event arrived out of order), it falls back to an insert.
+ */
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
   const { id, status, items, currentBillingPeriod, scheduledChange } = data;
   const { priceId, productId } = externalIds(items);
@@ -101,12 +106,19 @@ async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
     patch.price_id = priceId;
     patch.product_id = productId;
   }
-  await getSupabase()
+  const { data: rows } = await getSupabase()
     .from("subscriptions")
     .update(patch)
     .eq("paddle_subscription_id", id)
-    .eq("environment", env);
+    .eq("environment", env)
+    .select("id");
+
+  if (!rows?.length) {
+    // Out-of-order delivery (activated before created) — create the row.
+    await handleSubscriptionCreated(data, env);
+  }
 }
+
 
 async function handleSubscriptionCanceled(data: any, env: PaddleEnv) {
   await getSupabase()
