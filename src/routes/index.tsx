@@ -31,6 +31,7 @@ type Dict = {
   adultoDesc: string;
   criancaDesc: string;
   entrar: string;
+  assinar: string;
   pagTitle: string;
   pagCopy: string;
   multiTitle: string;
