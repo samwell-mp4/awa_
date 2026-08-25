@@ -69,6 +69,8 @@ function AuthPage() {
 
   async function handleGoogle() {
     setBusy(true);
+    // O OAuth volta na origem do site, então guardamos o destino desejado.
+    if (redirect) sessionStorage.setItem(REDIRECT_KEY, safePath(redirect));
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
       extraParams: {
@@ -81,8 +83,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/" });
+    goNext();
   }
+
 
   async function sendCode(e?: React.FormEvent) {
     e?.preventDefault();
