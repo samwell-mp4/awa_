@@ -70,11 +70,15 @@ function PlanosPage() {
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
-      navigate({ to: "/auth", search: { redirect: "/planos" } as any });
+      // Mantém o plano escolhido (?need=adulto|infantil) após o login.
+      const need = (search as { need?: string }).need;
+      const back = need ? `/planos?need=${encodeURIComponent(need)}` : "/planos";
+      navigate({ to: "/auth", search: { redirect: back } as any });
       return;
     }
     setPending(priceId);
   }
+
 
   function pagarCom(methods: string[]) {
     if (!user || !pending) return;
