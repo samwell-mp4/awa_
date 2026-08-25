@@ -339,6 +339,8 @@ function LandingChoice() {
               description={dict.adultoDesc}
               entrar={entrarLabel}
               priority
+              videoSrc={adultVideoUrl}
+              videoLabel={vdict.adulto}
             />
           )}
           {!pending && showInfantil && (
@@ -350,37 +352,14 @@ function LandingChoice() {
               description={dict.criancaDesc}
               entrar={entrarLabel}
               priority={!showAdulto}
+              videoSrc={childVideoUrl}
+              videoLabel={vdict.infantil}
             />
           )}
         </div>
 
-        <section className="mt-16 w-full">
-          <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
-            {vdict.title}
-          </h2>
-          <p className="mt-2 text-sm text-foreground/75">{vdict.lead}</p>
-          <div
-            className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
-          >
-            {!pending && showAdulto && (
-              <PresentationVideo
-                key={adultVideoUrl}
-                src={adultVideoUrl}
-                poster={adultLogoUrl}
-                label={vdict.adulto}
-              />
-            )}
-            {!pending && showInfantil && (
-              <PresentationVideo
-                key={childVideoUrl}
-                src={childVideoUrl}
-                poster={childLogoUrl}
-                label={vdict.infantil}
-              />
-            )}
+        <p className="mt-6 max-w-2xl text-sm text-foreground/75">{vdict.lead}</p>
 
-          </div>
-        </section>
 
       </main>
       <PublicFooter />
