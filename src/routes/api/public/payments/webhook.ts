@@ -19,6 +19,29 @@ function externalIds(items: any[] | undefined) {
   };
 }
 
+/**
+ * Keeps a user ↔ Paddle customer mapping so the customer portal works even
+ * before/after a subscription row exists (e.g. cancellation history).
+ */
+async function linkPaddleCustomer(userId: string, customerId: string, env: PaddleEnv) {
+  if (!userId || !customerId) return;
+  const db = getSupabase();
+  const { data: userRes } = await db.auth.admin.getUserById(userId);
+  const email = userRes?.user?.email ?? "";
+  await db
+    .from("paddle_customers")
+    .upsert(
+      {
+        user_id: userId,
+        paddle_customer_id: customerId,
+        email,
+        environment: env,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "paddle_customer_id" },
+    );
+}
+
 async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
   const { id, customerId, items, status, currentBillingPeriod, customData } = data;
   const userId = customData?.userId;
@@ -58,9 +81,9 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
     { onConflict: "paddle_subscription_id" },
   );
 
-  // Store Paddle Customer ID in a way the client can potentially use it for Retain
-  // In a real app, you might want to sync this to the profiles table too.
+  await linkPaddleCustomer(userId, customerId, env);
 }
+
 
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
   const { id, status, items, currentBillingPeriod, scheduledChange } = data;
