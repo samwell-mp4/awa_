@@ -397,6 +397,8 @@ function ExperienceCard({
   description,
   entrar,
   priority = false,
+  videoSrc,
+  videoLabel,
 }: {
   to: "/adulto" | "/infantil";
   image: string;
@@ -405,46 +407,67 @@ function ExperienceCard({
   description: string;
   entrar: string;
   priority?: boolean;
+  videoSrc?: string;
+  videoLabel?: string;
 }) {
   return (
-    <Link
-      to={to}
-      replace
-      className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
-    >
-      <div className="relative aspect-square overflow-hidden">
-        <img
-          src={image}
-          alt={`Awã Tech ${title}`}
-          width={400}
-          height={400}
-          fetchPriority={priority ? "high" : undefined}
-
-          loading={priority ? undefined : "lazy"}
-          decoding="async"
-          className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-          draggable={false}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
-          {eyebrow}
-        </span>
-      </div>
-
-      <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
-        <div className="min-w-0 text-left">
-          <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
-            {title}
-          </div>
-          <p className="mt-1 text-xs text-foreground/70 md:text-sm">
-            {description}
-          </p>
+    <div className="group relative overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:border-gold/60 hover:shadow-[var(--shadow-gold)]">
+      <Link to={to} replace className="block">
+        <div className="relative aspect-square overflow-hidden">
+          <img
+            src={image}
+            alt={`Awã Tech ${title}`}
+            width={400}
+            height={400}
+            fetchPriority={priority ? "high" : undefined}
+            loading={priority ? undefined : "lazy"}
+            decoding="async"
+            className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            draggable={false}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
+          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
+            {eyebrow}
+          </span>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          {entrar} <ArrowRight className="h-4 w-4" />
-        </span>
-      </div>
-    </Link>
+
+        <div className="relative flex items-end justify-between gap-4 px-5 pt-5 md:px-6 md:pt-6">
+          <div className="min-w-0 text-left">
+            <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
+              {title}
+            </div>
+            <p className="mt-1 text-xs text-foreground/70 md:text-sm">
+              {description}
+            </p>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
+            {entrar} <ArrowRight className="h-4 w-4" />
+          </span>
+        </div>
+      </Link>
+
+      {videoSrc && (
+        <div className="px-5 pt-4 pb-5 md:px-6 md:pb-6">
+          <div className="overflow-hidden rounded-2xl border border-gold/20 bg-black/50">
+            <video
+              key={videoSrc}
+              className="aspect-video w-full"
+              src={videoSrc}
+              poster={image}
+              controls
+              playsInline
+              preload="none"
+            />
+          </div>
+          {videoLabel && (
+            <p className="mt-2 text-left text-[11px] font-medium uppercase tracking-[0.14em] text-gold/80">
+              {videoLabel}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
+
 
