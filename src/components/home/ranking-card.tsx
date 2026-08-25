@@ -4,7 +4,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { getWeeklyTopLearners, type TopLearner } from "@/lib/leaderboard.functions";
+
 
 function initials(name: string) {
   return name
@@ -18,14 +20,17 @@ function initials(name: string) {
 export function RankingCard() {
   const { t } = useTranslation();
   const qc = useQueryClient();
+  const { session } = useAuth();
   const fetchTopLearners = useServerFn(getWeeklyTopLearners);
   const { data = [] as TopLearner[], isLoading, isError } = useQuery<TopLearner[]>({
     queryKey: ["weekly-top-learners"],
     queryFn: () => fetchTopLearners({ data: { limit: 10 } }),
+    enabled: !!session,
     refetchInterval: 5_000,
     refetchOnWindowFocus: true,
     staleTime: 3_000,
   });
+
 
   useEffect(() => {
     const channel = supabase
