@@ -210,6 +210,8 @@ function RootComponent() {
       <RealtimeContentSync />
       <AppLanguageAutoTranslator />
       <PlanExpiryBanner />
+      <PostLoginRedirect />
+
 
       <Outlet />
 
