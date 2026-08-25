@@ -168,34 +168,6 @@ function useVideoDict() {
   return VIDEO_I18N[key] ?? VIDEO_I18N.pt;
 }
 
-function PresentationVideo({
-  src,
-  label,
-  poster,
-}: {
-  src: string;
-  label: string;
-  poster?: string;
-}) {
-  return (
-    <figure className="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl backdrop-blur-sm">
-      <video
-        className="aspect-video w-full"
-        src={src}
-        poster={poster}
-        controls
-        playsInline
-        preload="none"
-
-      />
-      <figcaption className="px-4 py-3 text-sm font-medium text-white/80">
-        {label}
-      </figcaption>
-    </figure>
-  );
-}
-
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
