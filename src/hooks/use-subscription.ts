@@ -15,6 +15,9 @@ function tierFromIds(productId?: string | null, priceId?: string | null): PlanTi
   return null;
 }
 
+/** Dias de tolerância após uma cobrança recusada (o Paddle segue tentando). */
+const PAST_DUE_GRACE_DAYS = 3;
+
 function isSubActive(sub: {
   status: string | null;
   current_period_end: string | null;
@@ -24,15 +27,18 @@ function isSubActive(sub: {
   if (sub.status === "active" || sub.status === "trialing") {
     return end === null || end > now;
   }
-  // Pagamento recusado corta o acesso imediatamente (o Paddle segue tentando
-  // cobrar; ao voltar para "active" o acesso é restaurado pelo webhook).
-  if (sub.status === "past_due") return false;
-
+  // Cobrança recusada: mantém o acesso por alguns dias enquanto o Paddle tenta
+  // novamente. O banner de aviso pede a atualização do cartão nesse período.
+  if (sub.status === "past_due") {
+    return end === null || end > now - PAST_DUE_GRACE_DAYS * 24 * 3600 * 1000;
+  }
+  // "paused" não libera acesso.
   if (sub.status === "canceled") {
     return end !== null && end > now;
   }
   return false;
 }
+
 
 export function useSubscription() {
   const { user, isAdmin } = useAuth();

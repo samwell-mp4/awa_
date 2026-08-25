@@ -8,6 +8,9 @@ import authBg from "@/assets/awa-auth-bg.jpg.asset.json";
 import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search.redirect === "string" ? { redirect: search.redirect } : {},
+
   head: () => ({
     meta: [
       { title: "Entrar ou Cadastrar — AWÃ TECH" },
@@ -23,8 +26,17 @@ export const Route = createFileRoute("/auth")({
 
 type Method = "google" | "phone";
 
+const REDIRECT_KEY = "awa_post_login_redirect";
+
+/** Só aceita caminhos internos, para evitar redirecionamento externo. */
+function safePath(path?: string | null) {
+  if (!path || !path.startsWith("/") || path.startsWith("//")) return "/";
+  return path;
+}
+
 function AuthPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
   const [method, setMethod] = useState<Method>("google");
   const [busy, setBusy] = useState(false);
 
@@ -34,11 +46,17 @@ function AuthPage() {
   const [step, setStep] = useState<"phone" | "code">("phone");
   const [resendIn, setResendIn] = useState(0);
 
+  const goNext = () => {
+    const stored = sessionStorage.getItem(REDIRECT_KEY);
+    sessionStorage.removeItem(REDIRECT_KEY);
+    navigate({ to: safePath(redirect ?? stored), replace: true });
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/" });
+      if (data.session) goNext();
     });
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -48,8 +66,11 @@ function AuthPage() {
 
   const e164 = useMemo(() => normalizePhone(phone), [phone]);
 
+
   async function handleGoogle() {
     setBusy(true);
+    // O OAuth volta na origem do site, então guardamos o destino desejado.
+    if (redirect) sessionStorage.setItem(REDIRECT_KEY, safePath(redirect));
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
       extraParams: {
@@ -62,8 +83,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/" });
+    goNext();
   }
+
 
   async function sendCode(e?: React.FormEvent) {
     e?.preventDefault();
@@ -101,8 +123,9 @@ function AuthPage() {
       return;
     }
     toast.success("Bem-vindo!");
-    navigate({ to: "/" });
+    goNext();
   }
+
 
   return (
     <div className="relative min-h-screen grid place-items-center px-4 py-10 overflow-hidden">

@@ -16,18 +16,22 @@ export function PlanExpiryBanner() {
   if (!user || isAdmin) return null;
   if (!subscription || !isPremium) return null;
 
+  const isPastDue = subscription.status === "past_due";
   const days = daysUntil(subscription.current_period_end);
-  if (days === null) return null;
-  if (days > 7 || days < 0) return null;
+  // Cobrança recusada avisa sempre (mesmo já dentro da tolerância).
+  if (!isPastDue) {
+    if (days === null) return null;
+    if (days > 7 || days < 0) return null;
+  }
 
   const isCanceled = subscription.status === "canceled" || subscription.cancel_at_period_end;
-  const isPastDue = subscription.status === "past_due";
 
   const message = isPastDue
-    ? `Pagamento pendente. Regularize para não perder o acesso.`
+    ? "Pagamento recusado. Atualize seu cartão em até 3 dias para não perder o acesso."
     : isCanceled
       ? `Sua assinatura foi cancelada e será encerrada em ${days} ${days === 1 ? "dia" : "dias"}.`
       : `Seu plano vence em ${days} ${days === 1 ? "dia" : "dias"}. Renove para não perder o acesso.`;
+
 
   return (
     <div className="w-full border-b border-orange-400/50 bg-orange-500/15 px-4 py-2 text-center text-xs md:text-sm">

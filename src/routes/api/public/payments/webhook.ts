@@ -19,6 +19,29 @@ function externalIds(items: any[] | undefined) {
   };
 }
 
+/**
+ * Keeps a user ↔ Paddle customer mapping so the customer portal works even
+ * before/after a subscription row exists (e.g. cancellation history).
+ */
+async function linkPaddleCustomer(userId: string, customerId: string, env: PaddleEnv) {
+  if (!userId || !customerId) return;
+  const db = getSupabase();
+  const { data: userRes } = await db.auth.admin.getUserById(userId);
+  const email = userRes?.user?.email ?? "";
+  await db
+    .from("paddle_customers")
+    .upsert(
+      {
+        user_id: userId,
+        paddle_customer_id: customerId,
+        email,
+        environment: env,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id" },
+    );
+}
+
 async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
   const { id, customerId, items, status, currentBillingPeriod, customData } = data;
   const userId = customData?.userId;
@@ -58,10 +81,15 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
     { onConflict: "paddle_subscription_id" },
   );
 
-  // Store Paddle Customer ID in a way the client can potentially use it for Retain
-  // In a real app, you might want to sync this to the profiles table too.
+  await linkPaddleCustomer(userId, customerId, env);
 }
 
+
+/**
+ * Handles every subscription lifecycle event that carries a status:
+ * updated, activated, trialing, paused, resumed and past_due. If the row does
+ * not exist yet (event arrived out of order), it falls back to an insert.
+ */
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
   const { id, status, items, currentBillingPeriod, scheduledChange } = data;
   const { priceId, productId } = externalIds(items);
@@ -78,12 +106,19 @@ async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
     patch.price_id = priceId;
     patch.product_id = productId;
   }
-  await getSupabase()
+  const { data: rows } = await getSupabase()
     .from("subscriptions")
     .update(patch)
     .eq("paddle_subscription_id", id)
-    .eq("environment", env);
+    .eq("environment", env)
+    .select("id");
+
+  if (!rows?.length) {
+    // Out-of-order delivery (activated before created) — create the row.
+    await handleSubscriptionCreated(data, env);
+  }
 }
+
 
 async function handleSubscriptionCanceled(data: any, env: PaddleEnv) {
   await getSupabase()
@@ -128,7 +163,13 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
     case EventName.SubscriptionCreated:
       await handleSubscriptionCreated(event.data, env);
       break;
+    // All of these carry the full subscription object with its new status.
     case EventName.SubscriptionUpdated:
+    case EventName.SubscriptionActivated:
+    case EventName.SubscriptionTrialing:
+    case EventName.SubscriptionPaused:
+    case EventName.SubscriptionResumed:
+    case EventName.SubscriptionPastDue:
       await handleSubscriptionUpdated(event.data, env);
       break;
     case EventName.SubscriptionCanceled:
@@ -144,6 +185,7 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
       console.log("Unhandled event:", event.eventType);
   }
 }
+
 
 
 export const Route = createFileRoute("/api/public/payments/webhook")({

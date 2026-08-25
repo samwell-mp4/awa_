@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
+import { PostLoginRedirect } from "@/components/PostLoginRedirect";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
@@ -210,6 +211,8 @@ function RootComponent() {
       <RealtimeContentSync />
       <AppLanguageAutoTranslator />
       <PlanExpiryBanner />
+      <PostLoginRedirect />
+
 
       <Outlet />
 
