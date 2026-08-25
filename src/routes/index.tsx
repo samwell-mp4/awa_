@@ -168,34 +168,6 @@ function useVideoDict() {
   return VIDEO_I18N[key] ?? VIDEO_I18N.pt;
 }
 
-function PresentationVideo({
-  src,
-  label,
-  poster,
-}: {
-  src: string;
-  label: string;
-  poster?: string;
-}) {
-  return (
-    <figure className="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl backdrop-blur-sm">
-      <video
-        className="aspect-video w-full"
-        src={src}
-        poster={poster}
-        controls
-        playsInline
-        preload="none"
-
-      />
-      <figcaption className="px-4 py-3 text-sm font-medium text-white/80">
-        {label}
-      </figcaption>
-    </figure>
-  );
-}
-
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -339,6 +311,8 @@ function LandingChoice() {
               description={dict.adultoDesc}
               entrar={entrarLabel}
               priority
+              videoSrc={adultVideoUrl}
+              videoLabel={vdict.adulto}
             />
           )}
           {!pending && showInfantil && (
@@ -350,37 +324,14 @@ function LandingChoice() {
               description={dict.criancaDesc}
               entrar={entrarLabel}
               priority={!showAdulto}
+              videoSrc={childVideoUrl}
+              videoLabel={vdict.infantil}
             />
           )}
         </div>
 
-        <section className="mt-16 w-full">
-          <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
-            {vdict.title}
-          </h2>
-          <p className="mt-2 text-sm text-foreground/75">{vdict.lead}</p>
-          <div
-            className={`mt-6 grid w-full gap-6 ${onlyOne ? "max-w-2xl" : "md:grid-cols-2"}`}
-          >
-            {!pending && showAdulto && (
-              <PresentationVideo
-                key={adultVideoUrl}
-                src={adultVideoUrl}
-                poster={adultLogoUrl}
-                label={vdict.adulto}
-              />
-            )}
-            {!pending && showInfantil && (
-              <PresentationVideo
-                key={childVideoUrl}
-                src={childVideoUrl}
-                poster={childLogoUrl}
-                label={vdict.infantil}
-              />
-            )}
+        <p className="mt-6 max-w-2xl text-sm text-foreground/75">{vdict.lead}</p>
 
-          </div>
-        </section>
 
       </main>
       <PublicFooter />
@@ -397,6 +348,8 @@ function ExperienceCard({
   description,
   entrar,
   priority = false,
+  videoSrc,
+  videoLabel,
 }: {
   to: "/adulto" | "/infantil";
   image: string;
@@ -405,46 +358,67 @@ function ExperienceCard({
   description: string;
   entrar: string;
   priority?: boolean;
+  videoSrc?: string;
+  videoLabel?: string;
 }) {
   return (
-    <Link
-      to={to}
-      replace
-      className="group relative block overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-gold)] focus-visible:-translate-y-1"
-    >
-      <div className="relative aspect-square overflow-hidden">
-        <img
-          src={image}
-          alt={`Awã Tech ${title}`}
-          width={400}
-          height={400}
-          fetchPriority={priority ? "high" : undefined}
-
-          loading={priority ? undefined : "lazy"}
-          decoding="async"
-          className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-          draggable={false}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
-          {eyebrow}
-        </span>
-      </div>
-
-      <div className="relative flex items-end justify-between gap-4 px-5 py-5 md:px-6 md:py-6">
-        <div className="min-w-0 text-left">
-          <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
-            {title}
-          </div>
-          <p className="mt-1 text-xs text-foreground/70 md:text-sm">
-            {description}
-          </p>
+    <div className="group relative overflow-hidden rounded-3xl border border-gold/25 bg-forest-deep/40 shadow-[var(--shadow-card)] backdrop-blur-sm transition duration-300 hover:border-gold/60 hover:shadow-[var(--shadow-gold)]">
+      <Link to={to} replace className="block">
+        <div className="relative aspect-square overflow-hidden">
+          <img
+            src={image}
+            alt={`Awã Tech ${title}`}
+            width={400}
+            height={400}
+            fetchPriority={priority ? "high" : undefined}
+            loading={priority ? undefined : "lazy"}
+            decoding="async"
+            className="block h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            draggable={false}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/10 to-transparent" />
+          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-forest-deep/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90 backdrop-blur-sm">
+            {eyebrow}
+          </span>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
-          {entrar} <ArrowRight className="h-4 w-4" />
-        </span>
-      </div>
-    </Link>
+
+        <div className="relative flex items-end justify-between gap-4 px-5 pt-5 md:px-6 md:pt-6">
+          <div className="min-w-0 text-left">
+            <div className="font-display text-2xl font-black uppercase tracking-tight text-cream md:text-3xl">
+              {title}
+            </div>
+            <p className="mt-1 text-xs text-foreground/70 md:text-sm">
+              {description}
+            </p>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-deep shadow-md transition group-hover:brightness-110 md:text-sm">
+            {entrar} <ArrowRight className="h-4 w-4" />
+          </span>
+        </div>
+      </Link>
+
+      {videoSrc && (
+        <div className="px-5 pt-4 pb-5 md:px-6 md:pb-6">
+          <div className="overflow-hidden rounded-2xl border border-gold/20 bg-black/50">
+            <video
+              key={videoSrc}
+              className="aspect-video w-full"
+              src={videoSrc}
+              poster={image}
+              controls
+              playsInline
+              preload="none"
+            />
+          </div>
+          {videoLabel && (
+            <p className="mt-2 text-left text-[11px] font-medium uppercase tracking-[0.14em] text-gold/80">
+              {videoLabel}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
+
 
