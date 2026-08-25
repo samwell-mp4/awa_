@@ -314,10 +314,12 @@ function LandingChoice() {
               eyebrow="Awã Tech"
               title={dict.adulto}
               description={dict.adultoDesc}
-              entrar={entrarLabel}
               price="R$ 39,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              subscribed={hasAdulto}
+              entrarLabel={dict.entrar}
+              assinarLabel={dict.assinar}
               priority
               videoSrc={adultVideoUrl}
               videoLabel={vdict.adulto}
@@ -330,10 +332,12 @@ function LandingChoice() {
               eyebrow="Awã Tech"
               title={dict.crianca}
               description={dict.criancaDesc}
-              entrar={entrarLabel}
               price="R$ 29,90"
               pricePeriod="/mês"
               planosTo="/planos"
+              subscribed={hasInfantil}
+              entrarLabel={dict.entrar}
+              assinarLabel={dict.assinar}
               priority={!showAdulto}
               videoSrc={childVideoUrl}
               videoLabel={vdict.infantil}
