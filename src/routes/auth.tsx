@@ -123,8 +123,9 @@ function AuthPage() {
       return;
     }
     toast.success("Bem-vindo!");
-    navigate({ to: "/" });
+    goNext();
   }
+
 
   return (
     <div className="relative min-h-screen grid place-items-center px-4 py-10 overflow-hidden">
