@@ -66,18 +66,29 @@ function PlanosPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
 
+  const [pending, setPending] = useState<PriceId | null>(null);
+
   function handleAssinar(priceId: PriceId) {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/planos" } as any });
       return;
     }
+    setPending(priceId);
+  }
+
+  function pagarCom(methods: string[]) {
+    if (!user || !pending) return;
+    const priceId = pending;
+    setPending(null);
     openCheckout({
       priceId,
       userId: user.id,
       email: user.email,
+      allowedPaymentMethods: methods,
       successUrl: `${window.location.origin}/minha-conta?checkout=success`,
     });
   }
+
 
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
