@@ -82,45 +82,45 @@ function AprenderNumeros() {
   return (
     <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
       <SiteHeader mode="infantil" />
-      
-      <main className="w-full px-3 py-8 text-center sm:px-4 md:py-12">
-        <div className="mb-6 flex justify-start items-center px-1 sm:px-4">
+
+      <main className="w-full px-2 py-6 text-center sm:px-3 md:px-4 md:py-10">
+        <div className="mb-8 flex justify-start items-center px-1">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-3 font-display text-xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-8"
+            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-7 py-4 font-display text-2xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-10 sm:py-5 sm:text-3xl"
           >
-            <ArrowLeft className="h-6 w-6 stroke-[3]" />
+            <ArrowLeft className="h-8 w-8 stroke-[3] sm:h-10 sm:w-10" />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-3 font-display text-5xl font-black text-amber-300 sm:text-6xl md:text-7xl lg:text-8xl">
+        <h1 className="mb-3 font-display text-6xl font-black leading-tight text-amber-300 sm:text-7xl md:text-8xl lg:text-9xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-10 text-xl text-cream/80 sm:text-2xl md:text-3xl">
+        <p className="mb-12 px-2 text-2xl text-cream/80 sm:text-3xl md:text-4xl">
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
-        <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 md:grid-cols-5 lg:gap-6">
+        <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5 md:gap-5 lg:gap-6">
           {displayNumeros.map((num, i) => (
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex w-full flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-5 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-7 md:p-8"
+              className="group flex w-full flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-8 md:p-10"
             >
-              <span className="font-display text-6xl font-black text-emerald-900 sm:text-7xl md:text-8xl lg:text-9xl">
+              <span className="font-display text-7xl font-black leading-none text-emerald-900 sm:text-8xl md:text-9xl lg:text-[10rem]">
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className="font-display text-xl font-black uppercase text-emerald-700 sm:text-2xl md:text-3xl">
+                <span className="font-display text-2xl font-black uppercase text-emerald-700 sm:text-3xl md:text-4xl">
                   {num.pat}
                 </span>
-                <span className="text-base font-bold text-emerald-900/60 sm:text-lg md:text-xl">
+                <span className="text-xl font-bold text-emerald-900/60 sm:text-2xl md:text-3xl">
                   {num.pt}
                 </span>
               </div>
-              <div className="mt-1 rounded-full bg-emerald-100 p-3 text-emerald-700 group-hover:bg-emerald-200">
-                <span className="text-2xl sm:text-3xl">🔊</span>
+              <div className="mt-1 rounded-full bg-emerald-100 p-4 text-emerald-700 group-hover:bg-emerald-200 sm:p-5">
+                <span className="text-3xl sm:text-4xl md:text-5xl">🔊</span>
               </div>
             </button>
           ))}
