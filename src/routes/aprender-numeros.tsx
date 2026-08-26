@@ -84,8 +84,8 @@ function AprenderNumeros() {
   };
 
   return (
-    <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
-      <SiteHeader mode="infantil" />
+    <div className={isKids ? "kids-theme min-h-screen bg-[#0b3d2e] text-cream" : "min-h-screen bg-background text-foreground"}>
+      <SiteHeader mode={isKids ? "infantil" : "adulto"} />
 
       <main className="w-full px-2 py-6 text-center sm:px-3 md:px-4 md:py-10">
         <div className="mb-8 flex justify-start items-center px-1">
