@@ -1,10 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
-import { getLastArea, setLastArea } from "@/lib/last-area";
-import { useEffect, useMemo, useState } from "react";
+import { setLastArea } from "@/lib/last-area";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig } from "@/lib/numbers.functions";
@@ -31,9 +31,7 @@ const DEFAULT_NUMEROS = [
 
 function AprenderNumeros() {
   const { t, i18n } = useTranslation();
-  const [isKids, setIsKids] = useState(false);
   useEffect(() => {
-    setIsKids(getLastArea() !== "/adulto");
     setLastArea("/aprender-numeros");
   }, []);
   const getFn = useServerFn(getNumbersConfig);
@@ -84,28 +82,24 @@ function AprenderNumeros() {
   };
 
   return (
-    <div className={isKids ? "kids-theme min-h-screen bg-[#0b3d2e] text-cream" : "min-h-screen bg-background text-foreground"}>
-      <SiteHeader mode={isKids ? "infantil" : "adulto"} />
+    <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader mode="adulto" />
 
       <main className="w-full px-2 py-6 text-center sm:px-3 md:px-4 md:py-10">
         <div className="mb-8 flex justify-start items-center px-1">
           <button
             onClick={() => window.history.back()}
-            className={
-              isKids
-                ? "flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-7 py-4 font-display text-2xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-10 sm:py-5 sm:text-3xl"
-                : "flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2.5 font-display text-base font-bold uppercase tracking-widest text-gold transition hover:bg-card"
-            }
+            className="flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2.5 font-display text-base font-bold uppercase tracking-widest text-gold transition hover:bg-card"
           >
-            <ArrowLeft className={isKids ? "h-8 w-8 stroke-[3] sm:h-10 sm:w-10" : "h-5 w-5"} />
+            <ArrowLeft className="h-5 w-5" />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className={`mb-3 font-display font-black leading-tight ${isKids ? "text-6xl text-amber-300 sm:text-7xl md:text-8xl lg:text-9xl" : "text-4xl text-gold sm:text-5xl md:text-6xl"}`}>
+        <h1 className="mb-3 font-display font-black leading-tight text-4xl text-gold sm:text-5xl md:text-6xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className={`mb-12 px-2 ${isKids ? "text-2xl text-cream/80 sm:text-3xl md:text-4xl" : "text-base text-muted-foreground sm:text-lg"}`}>
+        <p className="mb-12 px-2 text-base text-muted-foreground sm:text-lg">
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
@@ -114,25 +108,21 @@ function AprenderNumeros() {
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className={
-                isKids
-                  ? "group flex w-full flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-8 md:p-10"
-                  : "group flex w-full flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-card/60 p-5 shadow-lg transition hover:-translate-y-1 hover:border-gold/50 sm:p-6"
-              }
+              className="group flex w-full flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-card/60 p-5 shadow-lg transition hover:-translate-y-1 hover:border-gold/50 sm:p-6"
             >
-              <span className={`font-display font-black leading-none ${isKids ? "text-7xl text-emerald-900 sm:text-8xl md:text-9xl lg:text-[10rem]" : "text-5xl text-gold sm:text-6xl"}`}>
+              <span className="font-display font-black leading-none text-5xl text-gold sm:text-6xl">
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className={`font-display font-black uppercase ${isKids ? "text-2xl text-emerald-700 sm:text-3xl md:text-4xl" : "text-xl text-foreground sm:text-2xl"}`}>
+                <span className="font-display font-black uppercase text-xl text-foreground sm:text-2xl">
                   {num.pat}
                 </span>
-                <span className={`font-bold ${isKids ? "text-xl text-emerald-900/60 sm:text-2xl md:text-3xl" : "text-sm text-muted-foreground sm:text-base"}`}>
+                <span className="font-bold text-sm text-muted-foreground sm:text-base">
                   {num.pt}
                 </span>
               </div>
-              <div className={isKids ? "mt-1 rounded-full bg-emerald-100 p-4 text-emerald-700 group-hover:bg-emerald-200 sm:p-5" : "mt-1 rounded-full border border-gold/30 bg-background/60 p-2.5"}>
-                <span className={isKids ? "text-3xl sm:text-4xl md:text-5xl" : "text-xl"}>🔊</span>
+              <div className="mt-1 rounded-full border border-gold/30 bg-background/60 p-2.5">
+                <span className="text-xl">🔊</span>
               </div>
             </button>
           ))}
