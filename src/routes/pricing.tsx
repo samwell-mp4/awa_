@@ -163,7 +163,7 @@ function PricingPage() {
                     </span>
                   ) : preview ? (
                     <p className="flex items-baseline gap-2">
-                      <span className="font-display text-3xl font-black">{preview.subtotal}</span>
+                      <span className="font-display text-3xl font-black">{preview.total}</span>
                       <span className="text-sm text-foreground/70">
                         /{cycle === "month" ? "mês" : "ano"}
                       </span>
