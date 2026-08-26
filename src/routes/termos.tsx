@@ -36,9 +36,11 @@ function TermosPage() {
 
       <h2 className="mt-8 font-display text-xl font-bold text-gold">1. Quem somos</h2>
       <p>
-        O <b>AWÃ TECH</b> é uma plataforma sediada no Brasil ("nós", "nosso"). Ao criar uma conta ou
-        assinar, você ("usuário") celebra um contrato conosco nos termos deste documento. Se não
-        concordar, não use a plataforma.
+        O <b>AWÃ TECH</b> é a plataforma operada por <b>Awatech</b>, vendedor sediado no Brasil ("nós",
+        "nosso"), com contato em{" "}
+        <a className="text-gold underline" href="mailto:adlermagno8@gmail.com">adlermagno8@gmail.com</a>.
+        Ao criar uma conta ou assinar, você ("usuário") celebra um contrato com a Awatech nos termos
+        deste documento. Se não concordar, não use a plataforma.
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">2. Serviço</h2>
@@ -52,8 +54,10 @@ function TermosPage() {
       <h2 className="mt-6 font-display text-xl font-bold text-gold">3. Planos e cobrança</h2>
       <ul className="mt-2 list-disc space-y-1 pl-6">
         <li><b>Básico</b> (grátis): saudações, home, planos e biografia.</li>
-        <li><b>Premium Mensal</b>: R$ 29,90/mês, renovação automática mensal.</li>
-        <li><b>Premium Semestral</b>: R$ 149,90 a cada 6 meses, renovação automática.</li>
+        <li><b>Infantil Mensal</b>: R$ 29,90/mês, renovação automática mensal.</li>
+        <li><b>Infantil Semestral</b>: R$ 149,90 a cada 6 meses, renovação automática.</li>
+        <li><b>Adulto Mensal</b>: R$ 39,90/mês, renovação automática mensal.</li>
+        <li><b>Adulto Semestral</b>: R$ 199,90 a cada 6 meses, renovação automática.</li>
       </ul>
       <p className="mt-2">
         A cobrança, faturamento, impostos e emissão de recibos são processados por <b>Paddle.com Market Limited</b>,
