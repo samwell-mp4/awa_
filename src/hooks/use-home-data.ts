@@ -55,6 +55,7 @@ export function useDailyVideo() {
 }
 
 export type DailyMission = {
+  id: string;
   question: string;
   options: string[];
   correct_index: number;
@@ -68,7 +69,7 @@ export function useDailyMission() {
     queryFn: async () => {
       const { data } = await supabase
         .from("daily_mission")
-        .select("question,options,correct_index,points")
+        .select("id,question,options,correct_index,points")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
         .limit(1)
