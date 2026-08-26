@@ -114,21 +114,25 @@ function AprenderNumeros() {
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex w-full flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-8 md:p-10"
+              className={
+                isKids
+                  ? "group flex w-full flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-8 md:p-10"
+                  : "group flex w-full flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-card/60 p-5 shadow-lg transition hover:-translate-y-1 hover:border-gold/50 sm:p-6"
+              }
             >
-              <span className="font-display text-7xl font-black leading-none text-emerald-900 sm:text-8xl md:text-9xl lg:text-[10rem]">
+              <span className={`font-display font-black leading-none ${isKids ? "text-7xl text-emerald-900 sm:text-8xl md:text-9xl lg:text-[10rem]" : "text-5xl text-gold sm:text-6xl"}`}>
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className="font-display text-2xl font-black uppercase text-emerald-700 sm:text-3xl md:text-4xl">
+                <span className={`font-display font-black uppercase ${isKids ? "text-2xl text-emerald-700 sm:text-3xl md:text-4xl" : "text-xl text-foreground sm:text-2xl"}`}>
                   {num.pat}
                 </span>
-                <span className="text-xl font-bold text-emerald-900/60 sm:text-2xl md:text-3xl">
+                <span className={`font-bold ${isKids ? "text-xl text-emerald-900/60 sm:text-2xl md:text-3xl" : "text-sm text-muted-foreground sm:text-base"}`}>
                   {num.pt}
                 </span>
               </div>
-              <div className="mt-1 rounded-full bg-emerald-100 p-4 text-emerald-700 group-hover:bg-emerald-200 sm:p-5">
-                <span className="text-3xl sm:text-4xl md:text-5xl">🔊</span>
+              <div className={isKids ? "mt-1 rounded-full bg-emerald-100 p-4 text-emerald-700 group-hover:bg-emerald-200 sm:p-5" : "mt-1 rounded-full border border-gold/30 bg-background/60 p-2.5"}>
+                <span className={isKids ? "text-3xl sm:text-4xl md:text-5xl" : "text-xl"}>🔊</span>
               </div>
             </button>
           ))}
