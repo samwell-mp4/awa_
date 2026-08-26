@@ -31,7 +31,11 @@ const DEFAULT_NUMEROS = [
 
 function AprenderNumeros() {
   const { t, i18n } = useTranslation();
-  useEffect(() => setLastArea("/aprender-numeros"), []);
+  const [isKids, setIsKids] = useState(false);
+  useEffect(() => {
+    setIsKids(getLastArea() !== "/adulto");
+    setLastArea("/aprender-numeros");
+  }, []);
   const getFn = useServerFn(getNumbersConfig);
 
   const { data: config } = useQuery({
