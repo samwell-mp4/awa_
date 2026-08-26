@@ -143,6 +143,12 @@ export default {
     premiumDescription:
       "The complete dictionary, lessons, audio, games and cultural materials are available only to subscribers.",
     searchPlaceholder: "Search in English, Portuguese or Patxôhã...",
+    searchPlaceholderPt: "Search a word in Portuguese...",
+    searchPlaceholderPat: "Search a word in Patxôhã...",
+    directionPtToPat: "Portuguese → Patxôhã",
+    directionPatToPt: "Patxôhã → Portuguese",
+    clear: "Clear",
+    source: "Source: Patxôhã Dictionary 2015",
     showing: "Showing {{count}}{{plus}} {{words}}",
     allLetters: "ALL",
     wordSingular: "word",

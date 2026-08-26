@@ -10,7 +10,8 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 
 import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
-import patxohaDict from "@/data/patxoha-dictionary.json";
+import ptToPatxohaDict from "@/data/patxoha-pt-to-patxoha.json";
+import patxohaToPtDict from "@/data/patxoha-patxoha-to-pt.json";
 import { useLastArea } from "@/lib/last-area";
 
 
@@ -99,38 +100,63 @@ type EnrichedEntry = Entry & {
   _ptLower: string;
 };
 
-const ENRICHED_ENTRIES: EnrichedEntry[] = (patxohaDict as Array<Omit<Entry, "id">>).map(
-  (entry, index) => {
+// Duas bases independentes, importadas separadamente das duas seções do
+// Dicionário Patxôhã 2015. Nenhuma direção é gerada invertendo a outra.
+export type Direction = "pt_to_patxoha" | "patxoha_to_pt";
+
+type DirectionData = {
+  entries: EnrichedEntry[];
+  categoryCounts: ReadonlyMap<string, number>;
+  letterCounts: ReadonlyMap<string, number>;
+};
+
+function buildDirection(
+  rows: Array<Omit<Entry, "id">>,
+  direction: Direction,
+): DirectionData {
+  const entries = rows.map((entry, index) => {
     const base: Entry = {
-      id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
+      id: `${direction}-${index}-${entry.term_indigenous}-${entry.term_pt}`,
       ...entry,
       pronunciation: entry.pronunciation ?? null,
       example: entry.example ?? null,
       audio_url: entry.audio_url ?? null,
     };
+    // A letra de navegação segue sempre a palavra pesquisada na direção atual.
+    const head =
+      direction === "pt_to_patxoha" ? entry.term_pt : entry.term_indigenous;
     return {
       ...base,
       _cat: categorize(entry),
-      _letter: firstLetter(entry.term_indigenous),
+      _letter: firstLetter(head),
       _indLower: (entry.term_indigenous || "").toLowerCase(),
       _ptLower: (entry.term_pt || "").toLowerCase(),
     };
-  },
-);
+  });
+  const categoryCounts = new Map<string, number>();
+  const letterCounts = new Map<string, number>();
+  for (const e of entries) {
+    categoryCounts.set(e._cat, (categoryCounts.get(e._cat) ?? 0) + 1);
+    letterCounts.set(e._letter, (letterCounts.get(e._letter) ?? 0) + 1);
+  }
+  return { entries, categoryCounts, letterCounts };
+}
 
-const CATEGORY_COUNTS: ReadonlyMap<string, number> = (() => {
-  const m = new Map<string, number>();
-  for (const e of ENRICHED_ENTRIES) m.set(e._cat, (m.get(e._cat) ?? 0) + 1);
-  return m;
-})();
+const DIRECTION_CACHE = new Map<Direction, DirectionData>();
 
-const LETTER_COUNTS: ReadonlyMap<string, number> = (() => {
-  const m = new Map<string, number>();
-  for (const e of ENRICHED_ENTRIES) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
-  return m;
-})();
-
-const TOTAL_ENTRIES = ENRICHED_ENTRIES.length;
+function getDirectionData(direction: Direction): DirectionData {
+  let data = DIRECTION_CACHE.get(direction);
+  if (!data) {
+    data = buildDirection(
+      (direction === "pt_to_patxoha"
+        ? ptToPatxohaDict
+        : patxohaToPtDict) as Array<Omit<Entry, "id">>,
+      direction,
+    );
+    DIRECTION_CACHE.set(direction, data);
+  }
+  return data;
+}
 
 function DictionaryPage() {
   const backTo = useLastArea();
@@ -138,6 +164,7 @@ function DictionaryPage() {
   const { isPremium } = useSubscription();
   const lang = useLang();
 
+  const [direction, setDirection] = useState<Direction>("pt_to_patxoha");
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
@@ -151,10 +178,11 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
-  const enriched = ENRICHED_ENTRIES;
-  const counts = CATEGORY_COUNTS;
-  const letterCounts = LETTER_COUNTS;
+  // Cada direção usa sua própria base original do PDF.
+  const data = useMemo(() => getDirectionData(direction), [direction]);
+  const enriched = data.entries;
+  const counts = data.categoryCounts;
+  const letterCounts = data.letterCounts;
 
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
@@ -165,16 +193,18 @@ function DictionaryPage() {
       const matchL = letter === "Todas" || e._letter === letter;
       return matchQ && matchC && matchL;
     });
+    const head = (e: EnrichedEntry) =>
+      direction === "pt_to_patxoha" ? e.term_pt : e.term_indigenous;
     list.sort((a, b) => {
-      const cmp = a.term_indigenous.localeCompare(b.term_indigenous, "pt", { sensitivity: "base" });
+      const cmp = head(a).localeCompare(head(b), "pt", { sensitivity: "base" });
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, debouncedQuery, cat, letter, sort]);
+  }, [enriched, debouncedQuery, cat, letter, sort, direction]);
 
   useEffect(() => {
     setVisibleCount(120);
-  }, [query, cat, letter, sort]);
+  }, [query, cat, letter, sort, direction]);
 
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
@@ -236,15 +266,54 @@ function DictionaryPage() {
 
       <main className="mx-auto max-w-5xl px-4 md:px-8">
         <section className="mt-6 card-elev rounded-2xl p-4 space-y-3">
+          <div className="flex gap-2">
+            {([
+              ["pt_to_patxoha", "dictionary.directionPtToPat"],
+              ["patxoha_to_pt", "dictionary.directionPatToPt"],
+            ] as const).map(([dir, key]) => {
+              const active = direction === dir;
+              return (
+                <button
+                  key={dir}
+                  onClick={() => {
+                    setDirection(dir);
+                    setLetter("Todas");
+                    setCat("Todas");
+                  }}
+                  className={`flex-1 rounded-xl border px-3 py-2 text-xs font-bold transition ${
+                    active
+                      ? "border-gold bg-gold text-forest-deep shadow-lg shadow-gold/25"
+                      : "border-gold/20 bg-card/60 text-foreground/75 hover:border-gold/40 hover:text-cream"
+                  }`}
+                >
+                  {t(key)}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/50" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("dictionary.searchPlaceholder")}
-              className="w-full rounded-xl border border-gold/25 bg-card/60 pl-10 pr-3 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60"
+              placeholder={t(
+                direction === "pt_to_patxoha"
+                  ? "dictionary.searchPlaceholderPt"
+                  : "dictionary.searchPlaceholderPat",
+              )}
+              className="w-full rounded-xl border border-gold/25 bg-card/60 pl-10 pr-16 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60"
             />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-bold text-foreground/60 hover:text-cream"
+              >
+                {t("dictionary.clear")}
+              </button>
+            )}
           </div>
+
 
           <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
             {FIXED_CATEGORIES.map((c) => {
@@ -276,6 +345,7 @@ function DictionaryPage() {
                 plus: hasMore ? "+" : "",
                 words: t(visibleFiltered.length === 1 ? "dictionary.wordSingular" : "dictionary.wordPlural"),
               })}
+              <span className="ml-2 font-normal opacity-60">· {t("dictionary.source")}</span>
             </div>
             <div className="flex gap-1">
               <button
@@ -354,12 +424,16 @@ function DictionaryPage() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">{e.term_indigenous}</h3>
+                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">
+                                {direction === "pt_to_patxoha" ? localize(e, "term_pt") : e.term_indigenous}
+                              </h3>
                               <PlayIndicator />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {localize(e, "term_pt")}
+                              <span className="text-gold">→</span>{" "}
+                              {direction === "pt_to_patxoha" ? e.term_indigenous : localize(e, "term_pt")}
                             </div>
+
 
                           </div>
                           <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">

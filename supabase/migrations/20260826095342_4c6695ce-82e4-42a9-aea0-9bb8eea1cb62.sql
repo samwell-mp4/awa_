@@ -1,0 +1,1 @@
+DELETE FROM public.dictionary_entries WHERE source = 'Dicionário Patxôhã 2015';
