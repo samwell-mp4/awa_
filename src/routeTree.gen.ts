@@ -20,6 +20,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReembolsoRouteImport } from './routes/reembolso'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasInfantilRouteImport } from './routes/musicas-infantil'
 import { Route as MusicasRouteImport } from './routes/musicas'
@@ -106,6 +107,11 @@ const ProfessorRoute = ProfessorRouteImport.update({
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosRoute = PlanosRouteImport.update({
@@ -293,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
+  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -337,6 +344,7 @@ export interface FileRoutesByTo {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
+  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -383,6 +391,7 @@ export interface FileRoutesById {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
+  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -429,6 +438,7 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
+    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -473,6 +483,7 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
+    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -518,6 +529,7 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
+    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -564,6 +576,7 @@ export interface RootRouteChildren {
   MusicasRoute: typeof MusicasRoute
   MusicasInfantilRoute: typeof MusicasInfantilRoute
   PlanosRoute: typeof PlanosRoute
+  PricingRoute: typeof PricingRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
   ReembolsoRoute: typeof ReembolsoRoute
@@ -665,6 +678,13 @@ declare module '@tanstack/react-router' {
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planos': {
@@ -926,6 +946,7 @@ const rootRouteChildren: RootRouteChildren = {
   MusicasRoute: MusicasRoute,
   MusicasInfantilRoute: MusicasInfantilRoute,
   PlanosRoute: PlanosRoute,
+  PricingRoute: PricingRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
   ReembolsoRoute: ReembolsoRoute,
