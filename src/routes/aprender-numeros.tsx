@@ -83,44 +83,44 @@ function AprenderNumeros() {
     <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
       <SiteHeader mode="infantil" />
       
-      <main className="mx-auto max-w-4xl px-4 py-12 text-center">
+      <main className="mx-auto max-w-6xl px-4 py-12 text-center md:py-16">
         <div className="mb-8 flex justify-between items-center">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-8 py-3 font-display text-xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
           >
-            <ArrowLeft className="h-5 w-5 stroke-[3]" />
+            <ArrowLeft className="h-6 w-6 stroke-[3]" />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
+        <h1 className="mb-4 font-display text-5xl font-black text-amber-300 md:text-6xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-12 text-lg text-cream/80">
+        <p className="mb-12 text-xl text-cream/80 md:text-2xl">
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 md:gap-8">
           {displayNumeros.map((num, i) => (
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
+              className="group flex flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-8 shadow-2xl transition hover:-translate-y-2 hover:bg-white md:p-10"
             >
-              <span className="font-display text-5xl font-black text-emerald-900">
+              <span className="font-display text-6xl font-black text-emerald-900 md:text-7xl">
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className="font-display text-lg font-black uppercase text-emerald-700">
+                <span className="font-display text-xl font-black uppercase text-emerald-700 md:text-2xl">
                   {num.pat}
                 </span>
-                <span className="text-sm font-bold text-emerald-900/60">
+                <span className="text-base font-bold text-emerald-900/60 md:text-lg">
                   {num.pt}
                 </span>
               </div>
-              <div className="mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200">
-                <span className="text-xl">🔊</span>
+              <div className="mt-2 rounded-full bg-emerald-100 p-3 text-emerald-700 group-hover:bg-emerald-200">
+                <span className="text-2xl">🔊</span>
               </div>
             </button>
           ))}
