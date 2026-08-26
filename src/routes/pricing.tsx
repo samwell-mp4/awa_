@@ -107,7 +107,7 @@ function PricingPage() {
         <div className="text-center">
           <h1 className="font-display text-3xl font-black md:text-5xl">Escolha seu plano</h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-foreground/80 md:text-base">
-            Preços exibidos na moeda do seu país. Impostos calculados no checkout. Cancele quando
+            Preços exibidos na moeda do seu país. Valores já com impostos, calculados pelo provedor de pagamento. Cancele quando
             quiser.
           </p>
 
@@ -163,7 +163,7 @@ function PricingPage() {
                     </span>
                   ) : preview ? (
                     <p className="flex items-baseline gap-2">
-                      <span className="font-display text-3xl font-black">{preview.subtotal}</span>
+                      <span className="font-display text-3xl font-black">{preview.total}</span>
                       <span className="text-sm text-foreground/70">
                         /{cycle === "month" ? "mês" : "ano"}
                       </span>
