@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { verifyWebhook, EventName, type PaddleEnv } from "@/lib/paddle.server";
+import { isPaddleRequest } from "@/lib/paddle-ips.server";
 import type { Database } from "@/integrations/supabase/types";
 
 let _supabase: SupabaseClient<Database> | null = null;
@@ -194,6 +195,10 @@ export const Route = createFileRoute("/api/public/payments/webhook")({
       POST: async ({ request }) => {
         const url = new URL(request.url);
         const env = (url.searchParams.get("env") || "sandbox") as PaddleEnv;
+        if (!(await isPaddleRequest(request, env))) {
+          console.warn("payments-webhook: rejected delivery from non-Paddle IP");
+          return new Response("Forbidden", { status: 403 });
+        }
         try {
           await handleWebhook(request, env);
           return Response.json({ received: true });
