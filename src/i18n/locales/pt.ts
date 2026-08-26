@@ -143,6 +143,12 @@ export default {
     premiumDescription:
       "Todo o dicionário completo, lições, áudios, jogos e materiais culturais estão disponíveis apenas para assinantes.",
     searchPlaceholder: "Buscar em português ou patxôhã...",
+    searchPlaceholderPt: "Buscar palavra em português...",
+    searchPlaceholderPat: "Buscar palavra em patxôhã...",
+    directionPtToPat: "Português → Patxôhã",
+    directionPatToPt: "Patxôhã → Português",
+    clear: "Limpar",
+    source: "Fonte: Dicionário Patxôhã 2015",
     showing: "Mostrando {{count}}{{plus}} {{words}}",
     allLetters: "TODAS",
     wordSingular: "palavra",

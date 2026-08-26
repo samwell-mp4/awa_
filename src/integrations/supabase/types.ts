@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -188,6 +188,60 @@ export type Database = {
           term_pt_en?: string | null
           term_pt_es?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      dictionary_entries: {
+        Row: {
+          audio_url: string | null
+          category: string
+          created_at: string
+          direction: string
+          example: string | null
+          id: string
+          image_url: string | null
+          note: string | null
+          source: string
+          subcategory: string | null
+          term_patxoha: string
+          term_pt: string
+          updated_at: string
+          variant: string | null
+          word_type: string | null
+        }
+        Insert: {
+          audio_url?: string | null
+          category?: string
+          created_at?: string
+          direction: string
+          example?: string | null
+          id?: string
+          image_url?: string | null
+          note?: string | null
+          source?: string
+          subcategory?: string | null
+          term_patxoha: string
+          term_pt: string
+          updated_at?: string
+          variant?: string | null
+          word_type?: string | null
+        }
+        Update: {
+          audio_url?: string | null
+          category?: string
+          created_at?: string
+          direction?: string
+          example?: string | null
+          id?: string
+          image_url?: string | null
+          note?: string | null
+          source?: string
+          subcategory?: string | null
+          term_patxoha?: string
+          term_pt?: string
+          updated_at?: string
+          variant?: string | null
+          word_type?: string | null
         }
         Relationships: []
       }
