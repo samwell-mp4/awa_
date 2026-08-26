@@ -91,17 +91,21 @@ function AprenderNumeros() {
         <div className="mb-8 flex justify-start items-center px-1">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-7 py-4 font-display text-2xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-10 sm:py-5 sm:text-3xl"
+            className={
+              isKids
+                ? "flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-7 py-4 font-display text-2xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-10 sm:py-5 sm:text-3xl"
+                : "flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2.5 font-display text-base font-bold uppercase tracking-widest text-gold transition hover:bg-card"
+            }
           >
-            <ArrowLeft className="h-8 w-8 stroke-[3] sm:h-10 sm:w-10" />
+            <ArrowLeft className={isKids ? "h-8 w-8 stroke-[3] sm:h-10 sm:w-10" : "h-5 w-5"} />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-3 font-display text-6xl font-black leading-tight text-amber-300 sm:text-7xl md:text-8xl lg:text-9xl">
+        <h1 className={`mb-3 font-display font-black leading-tight ${isKids ? "text-6xl text-amber-300 sm:text-7xl md:text-8xl lg:text-9xl" : "text-4xl text-gold sm:text-5xl md:text-6xl"}`}>
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-12 px-2 text-2xl text-cream/80 sm:text-3xl md:text-4xl">
+        <p className={`mb-12 px-2 ${isKids ? "text-2xl text-cream/80 sm:text-3xl md:text-4xl" : "text-base text-muted-foreground sm:text-lg"}`}>
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
