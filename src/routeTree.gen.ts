@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
@@ -52,6 +53,11 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksPlanExpiryRouteImport } from './routes/api/public/hooks/plan-expiry'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -297,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/welcome': typeof WelcomeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -340,6 +347,7 @@ export interface FileRoutesByTo {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/welcome': typeof WelcomeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -385,6 +393,7 @@ export interface FileRoutesById {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
+  '/welcome': typeof WelcomeRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -430,6 +439,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/welcome'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -473,6 +483,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/welcome'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -517,6 +528,7 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
+    | '/welcome'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -562,6 +574,7 @@ export interface RootRouteChildren {
   TrilhasInfantilRoute: typeof TrilhasInfantilRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VideosRoute: typeof VideosRoute
+  WelcomeRoute: typeof WelcomeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -577,6 +590,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -916,6 +936,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrilhasInfantilRoute: TrilhasInfantilRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VideosRoute: VideosRoute,
+  WelcomeRoute: WelcomeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
