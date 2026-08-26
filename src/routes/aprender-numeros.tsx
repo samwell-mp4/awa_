@@ -83,44 +83,44 @@ function AprenderNumeros() {
     <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
       <SiteHeader mode="infantil" />
       
-      <main className="mx-auto max-w-6xl px-4 py-12 text-center md:py-16">
-        <div className="mb-8 flex justify-between items-center">
+      <main className="w-full px-3 py-8 text-center sm:px-4 md:py-12">
+        <div className="mb-6 flex justify-start items-center px-1 sm:px-4">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-8 py-3 font-display text-xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-3 font-display text-xl font-black text-white shadow-xl transition hover:scale-105 active:scale-95 sm:px-8"
           >
             <ArrowLeft className="h-6 w-6 stroke-[3]" />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-4 font-display text-5xl font-black text-amber-300 md:text-6xl">
+        <h1 className="mb-3 font-display text-5xl font-black text-amber-300 sm:text-6xl md:text-7xl lg:text-8xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-12 text-xl text-cream/80 md:text-2xl">
+        <p className="mb-10 text-xl text-cream/80 sm:text-2xl md:text-3xl">
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 md:gap-8">
+        <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 md:grid-cols-5 lg:gap-6">
           {displayNumeros.map((num, i) => (
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex flex-col items-center gap-4 rounded-3xl border-4 border-amber-300 bg-white/95 p-8 shadow-2xl transition hover:-translate-y-2 hover:bg-white md:p-10"
+              className="group flex w-full flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-5 shadow-2xl transition hover:-translate-y-2 hover:bg-white sm:p-7 md:p-8"
             >
-              <span className="font-display text-6xl font-black text-emerald-900 md:text-7xl">
+              <span className="font-display text-6xl font-black text-emerald-900 sm:text-7xl md:text-8xl lg:text-9xl">
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className="font-display text-xl font-black uppercase text-emerald-700 md:text-2xl">
+                <span className="font-display text-xl font-black uppercase text-emerald-700 sm:text-2xl md:text-3xl">
                   {num.pat}
                 </span>
-                <span className="text-base font-bold text-emerald-900/60 md:text-lg">
+                <span className="text-base font-bold text-emerald-900/60 sm:text-lg md:text-xl">
                   {num.pt}
                 </span>
               </div>
-              <div className="mt-2 rounded-full bg-emerald-100 p-3 text-emerald-700 group-hover:bg-emerald-200">
-                <span className="text-2xl">🔊</span>
+              <div className="mt-1 rounded-full bg-emerald-100 p-3 text-emerald-700 group-hover:bg-emerald-200">
+                <span className="text-2xl sm:text-3xl">🔊</span>
               </div>
             </button>
           ))}
