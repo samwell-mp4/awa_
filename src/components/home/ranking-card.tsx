@@ -24,12 +24,20 @@ export function RankingCard() {
   const fetchTopLearners = useServerFn(getWeeklyTopLearners);
   const { data = [] as TopLearner[], isLoading, isError } = useQuery<TopLearner[]>({
     queryKey: ["weekly-top-learners"],
-    queryFn: () => fetchTopLearners({ data: { limit: 10 } }),
-    enabled: !!session,
+    queryFn: async () => {
+      try {
+        return await fetchTopLearners({ data: { limit: 10 } });
+      } catch {
+        return [] as TopLearner[];
+      }
+    },
+    enabled: !!session?.access_token,
+    retry: false,
     refetchInterval: 5_000,
     refetchOnWindowFocus: true,
     staleTime: 3_000,
   });
+
 
 
   useEffect(() => {
