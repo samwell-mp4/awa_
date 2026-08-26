@@ -194,6 +194,10 @@ export const Route = createFileRoute("/api/public/payments/webhook")({
       POST: async ({ request }) => {
         const url = new URL(request.url);
         const env = (url.searchParams.get("env") || "sandbox") as PaddleEnv;
+        if (!(await isPaddleRequest(request, env))) {
+          console.warn("payments-webhook: rejected delivery from non-Paddle IP");
+          return new Response("Forbidden", { status: 403 });
+        }
         try {
           await handleWebhook(request, env);
           return Response.json({ received: true });
