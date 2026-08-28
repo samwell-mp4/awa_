@@ -161,12 +161,12 @@ function MobileDrawer({
         <div className="flex flex-col gap-3">
           {groups.map((group: NavGroup, gi) => {
             const isOpen = openGroup === group.title;
-            const palette = ["#f4a261", "#2a9d8f", "#2d6a4f", "#e9c46a", "#f4a261", "#c77dff"];
+            const palette = ["#2d6a4f", "#f4a261", "#2a9d8f", "#40916c", "#d17d3e", "#248277"];
             const color = palette[gi % palette.length];
             return (
               <div
                 key={group.title}
-                className="rounded-2xl border-4 border-white bg-white shadow-[0_6px_0_rgba(0,0,0,0.1)] overflow-hidden"
+                className="rounded-2xl border-2 border-[#2d6a4f] bg-white shadow-[4px_4px_0_0_rgba(45,106,79,0.25)] overflow-hidden"
               >
                 <button
                   type="button"
@@ -194,7 +194,7 @@ function MobileDrawer({
                           key={n.href}
                           to={n.href}
                           onClick={onClose}
-                          className="flex flex-col items-center gap-1 rounded-xl border-2 border-black/5 bg-[#fffdf3] px-2 py-3 text-center text-sm font-bold text-[#3a2412] shadow-[0_3px_0_rgba(0,0,0,0.08)] transition-transform active:translate-y-0.5 active:shadow-none"
+                          className="flex flex-col items-center gap-1 rounded-xl border-2 border-[#2d6a4f]/25 bg-[#fdfcf0] px-2 py-3 text-center text-sm font-semibold text-[#22412f] shadow-[3px_3px_0_0_rgba(45,106,79,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
                         >
                           <n.icon className="h-6 w-6" style={{ color }} strokeWidth={2.5} />
                           <span className="leading-tight">{n.label}</span>
@@ -212,7 +212,7 @@ function MobileDrawer({
               <Link
                 to="/admin"
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#e9c46a] px-4 py-3 text-base font-black uppercase text-[#3a2412] shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
+                className="flex items-center justify-center gap-2 rounded-2xl border-2 border-[#2d6a4f] bg-[#e9c46a] px-4 py-3 text-base font-bold uppercase text-[#22412f] shadow-[4px_4px_0_0_rgba(45,106,79,0.3)] active:translate-y-0.5 active:shadow-none"
               >
                 <Settings className="h-5 w-5" strokeWidth={2.5} /> {t("nav.painel")}
               </Link>
