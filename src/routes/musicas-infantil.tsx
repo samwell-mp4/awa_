@@ -35,11 +35,11 @@ export const Route = createFileRoute("/musicas-infantil")({
 const THEMES = [
   { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🪶", label: "Pena" },
   { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐢", label: "Tartaruga" },
-  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-white", emoji: "🐟", label: "Peixinho" },
+  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🐟", label: "Peixinho" },
   { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "🔥", label: "Fogueira" },
   { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🦜", label: "Arara" },
   { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🥁", label: "Tambor" },
-  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-white", emoji: "🌳", label: "Árvore" },
+  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🌳", label: "Árvore" },
   { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "☀️", label: "Sol" },
   { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🌙", label: "Lua" },
   { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐸", label: "Sapinho" },

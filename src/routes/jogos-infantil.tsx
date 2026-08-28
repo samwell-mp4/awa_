@@ -100,7 +100,7 @@ const STATIC_GAMES: {
     emoji: "🎯",
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
-    color: "from-[#E9C46A] to-[#B8984C]",
+    color: "from-[#40916C] to-[#2D6A4F]",
   },
   {
     id: "acerte",
@@ -128,7 +128,7 @@ const STATIC_GAMES: {
     emoji: "🦜",
     title: "Adivinhe o Bicho",
     desc: "Ouça a dica e escolha o bichinho!",
-    color: "from-[#E9C46A] to-[#B8984C]",
+    color: "from-[#40916C] to-[#2D6A4F]",
   },
   {
     id: "colorir",
@@ -178,7 +178,7 @@ const EN_GAMES: {
     emoji: "🔢",
     title: "Numbers in English",
     desc: "Match the number to its English word.",
-    color: "from-[#E9C46A] to-[#B8984C]",
+    color: "from-[#40916C] to-[#2D6A4F]",
     pairs: [
       { en: "One", emoji: "1️⃣", pt: "Um" },
       { en: "Two", emoji: "2️⃣", pt: "Dois" },
