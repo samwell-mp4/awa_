@@ -151,9 +151,9 @@ function MobileDrawer({
 
   if (isKids) {
     return (
-      <div className="border-t-4 border-white/70 bg-gradient-to-b from-[#fffdf3] to-[#fef3c7] px-4 py-5 max-h-[80vh] overflow-y-auto font-['Fredoka','Baloo_2',sans-serif]">
-        <div className="mb-4 flex items-center justify-between rounded-2xl border-4 border-white bg-white/80 px-4 py-3 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
-          <span className="text-sm font-black uppercase tracking-wider text-[#f4a261]">
+      <div className="border-t-4 border-[#2d6a4f] bg-[#fdfcf0] px-4 py-5 max-h-[80vh] overflow-y-auto font-['Fira_Sans',sans-serif]">
+        <div className="mb-4 flex items-center justify-between rounded-2xl border-2 border-[#2d6a4f] bg-white px-4 py-3 shadow-[4px_4px_0_0_rgba(45,106,79,0.25)]">
+          <span className="text-sm font-bold uppercase tracking-wider text-[#2d6a4f]">
             🌈 {t("common.idioma")}
           </span>
           <LanguageSwitcher compact />
