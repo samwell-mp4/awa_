@@ -41,7 +41,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
               onClick={() => window.history.back()}
               className={
                 isKids
-                  ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#f4a261] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                  ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-2 border-[#2d6a4f] bg-[#e9c46a] text-[#2d6a4f] shadow-[4px_4px_0_0_rgba(45,106,79,0.35)] transition-transform active:translate-y-0.5 active:shadow-none"
                   : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold"
               }
               aria-label={t("common.voltar")}
@@ -51,7 +51,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             <span
               className={
                 isKids
-                  ? "font-display text-lg font-black uppercase text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.2)]"
+                  ? "font-display text-lg font-bold uppercase text-[#2d6a4f]"
                   : "font-display text-sm font-bold uppercase tracking-widest text-gold"
               }
             >
@@ -63,7 +63,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             onClick={() => setOpen((v) => !v)}
             className={
               isKids
-                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#f4a261] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-2 border-[#2d6a4f] bg-[#e9c46a] text-[#2d6a4f] shadow-[4px_4px_0_0_rgba(45,106,79,0.35)] transition-transform active:translate-y-0.5 active:shadow-none"
                 : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
             }
             aria-label={t("nav.menu")}
