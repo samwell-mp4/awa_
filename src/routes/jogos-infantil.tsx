@@ -252,7 +252,7 @@ function JogosInfantilPage() {
                     speak(`${g.title}. ${g.desc}`, "pt-BR");
                     setGame(g.id);
                   }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                  className={`group relative overflow-hidden rounded-3xl border-4 border-[#2d6a4f] bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-[8px_8px_0_0_#2d6a4f] transition hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#2d6a4f]`}
                 >
                   <div className="text-5xl drop-shadow">{g.emoji}</div>
                   <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
@@ -283,7 +283,7 @@ function JogosInfantilPage() {
                     speak(`${g.title}. ${g.desc}`, "en-US");
                     setGame(g.id);
                   }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                  className={`group relative overflow-hidden rounded-3xl border-4 border-[#2d6a4f] bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-[8px_8px_0_0_#2d6a4f] transition hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#2d6a4f]`}
                 >
                   <div className="text-5xl drop-shadow">{g.emoji}</div>
                   <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">

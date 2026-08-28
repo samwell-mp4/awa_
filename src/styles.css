@@ -387,3 +387,9 @@ header, main, footer, section { position: relative; z-index: 1; }
 #lovable-badge {
   display: none !important;
 }
+
+/* Kids-theme: cabeçalho e logo legíveis sobre o branco da aldeia */
+.kids-theme .text-gradient-gold,
+.kids-theme .text-gold\/80,
+.kids-theme .text-gold\/70 { background: none !important; -webkit-text-fill-color: currentColor !important; color: #f4a261 !important; }
+.kids-theme header .text-cream { color: #2d6a4f !important; }
