@@ -82,7 +82,7 @@ const STATIC_STORIES: Story[] = [
     quote:
       "Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade.",
     color: "#f4a261",
-    accent: "#2f6d3a",
+    accent: "#2d6a4f",
   },
   {
     id: "joao",
@@ -466,17 +466,17 @@ function HistoriasInfantilPage() {
           <div className="relative z-10">
             <div className="flex items-start gap-3">
               <div className="flex-1">
-                <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-[#2f6d3a] px-3 py-1 text-[10px] uppercase tracking-widest text-white">
+                <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-[#2d6a4f] px-3 py-1 text-[10px] uppercase tracking-widest text-white">
                   🪶 {t("common.kidsStoriesChip") ?? "Histórias do Povo"}
                 </p>
                 <h1
-                  className="text-3xl leading-[1.05] tracking-tight text-[#4b2e1f] md:text-5xl"
+                  className="text-3xl leading-[1.05] tracking-tight text-[#1b4332] md:text-5xl"
                   style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
                 >
                   Pataxó{" "}
-                  <span className="text-[#e08e2b]">guardiões</span>
+                  <span className="text-[#d17d3e]">guardiões</span>
                   <br />
-                  <span className="text-[#2f6d3a]">da Mata Atlântica</span>
+                  <span className="text-[#2d6a4f]">da Mata Atlântica</span>
                 </h1>
                 <p className="mt-3 rounded-2xl bg-white/70 p-3 text-sm leading-snug text-slate-700 shadow-inner md:text-base">
                   {t("common.kidsStoriesIntro") ??
@@ -501,7 +501,7 @@ function HistoriasInfantilPage() {
         {/* Closing CTA */}
         <section className="mt-8 rounded-[1.75rem] border-4 border-white/70 bg-[#fdfcf0] p-6 text-center shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]">
           <p
-            className="text-2xl text-[#2f6d3a]"
+            className="text-2xl text-[#2d6a4f]"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             Ahuanã! 🌿

@@ -109,6 +109,8 @@ export default {
     trailFamilia: "Família",
     trailNatureza: "Natureza",
     trailAnimais: "Animais",
+    kidsStoriesChip: "Histórias do Povo",
+    kidsStoriesIntro: "Origem, território, língua, espiritualidade e arte de um povo que faz da cultura sua arma mais bonita.",
     kidsTrailsTitle: "Trilhas da Aldeia",
     kidsTrailsSubtitle: "Toque num totem e siga o caminho mágico!",
     trailDescSaudacoes: "Aprenda a cumprimentar como os povos indígenas, com palavras de respeito e alegria para começar o dia.",

@@ -109,6 +109,8 @@ export default {
     trailFamilia: "Family",
     trailNatureza: "Nature",
     trailAnimais: "Animals",
+    kidsStoriesChip: "Stories of the People",
+    kidsStoriesIntro: "Origin, land, language, spirituality and art of a people who make culture their most beautiful weapon.",
     kidsTrailsTitle: "🗺️ Village Trails",
     kidsTrailsSubtitle: "Tap a totem and follow the magic path!",
     trailDescSaudacoes: "Learn to greet like the indigenous peoples, with words of respect and joy to start the day.",
