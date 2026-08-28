@@ -48,8 +48,8 @@ type TotemStyle = {
 const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
   saudacoes: {
     emoji: "🤝",
-    color: "#ffd166",
-    shadow: "rgba(255,209,102,0.45)",
+    color: "#e9c46a",
+    shadow: "rgba(233,196,106,0.45)",
     islandTop: "#a7f3d0",
     islandBottom: "#6bbf8a",
     position: "top-2 right-8",
@@ -57,8 +57,8 @@ const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
   },
   familia: {
     emoji: "🏠",
-    color: "#ef476f",
-    shadow: "rgba(239,71,111,0.45)",
+    color: "#f4a261",
+    shadow: "rgba(244,162,97,0.45)",
     islandTop: "#c4b5fd",
     islandBottom: "#8b7ad1",
     position: "top-36 left-4",
@@ -66,8 +66,8 @@ const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
   },
   natureza: {
     emoji: "🌳",
-    color: "#06d6a0",
-    shadow: "rgba(6,214,160,0.45)",
+    color: "#2a9d8f",
+    shadow: "rgba(42,157,143,0.45)",
     islandTop: "#fde68a",
     islandBottom: "#e0b04a",
     position: "top-[280px] right-4",
@@ -75,8 +75,8 @@ const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
   },
   animais: {
     emoji: "🐢",
-    color: "#118ab2",
-    shadow: "rgba(17,138,178,0.45)",
+    color: "#2d6a4f",
+    shadow: "rgba(45,106,79,0.45)",
     islandTop: "#fca5a5",
     islandBottom: "#c96b6b",
     position: "bottom-4 left-8",
@@ -146,7 +146,7 @@ function TrilhaInfantilPage() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif]">
-        <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#ffd166]/40 bg-[#fdfcf0] shadow-inner">
+        <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#e9c46a]/40 bg-[#fdfcf0] shadow-inner">
           {/* Decorative clouds */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70">
             <div className="absolute left-4 top-6 text-4xl" style={{ animation: "kids-cloud 12s ease-in-out infinite" }}>☁️</div>
@@ -158,22 +158,22 @@ function TrilhaInfantilPage() {
           <header className="relative z-10 px-6 pt-10 text-center">
             <Link
               to="/infantil"
-              className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-black text-[#118ab2] shadow ring-2 ring-[#ffd166]/60 hover:scale-105 active:scale-95"
+              className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-black text-[#2d6a4f] shadow ring-2 ring-[#e9c46a]/60 hover:scale-105 active:scale-95"
               aria-label={t("common.voltar")}
             >
               <span aria-hidden>←</span> {t("common.voltar")}
             </Link>
             <h1
-              className="text-4xl uppercase leading-none tracking-tight text-[#118ab2]"
+              className="text-4xl uppercase leading-none tracking-tight text-[#2d6a4f]"
               style={{ fontFamily: "'Archivo Black', 'Archivo', system-ui, sans-serif" }}
             >
               {titleTop.split(" ").slice(0, -1).join(" ") || "Trilhas da"}
               <br />
-              <span className="text-[#ef476f]">
+              <span className="text-[#f4a261]">
                 {titleTop.split(" ").slice(-1)[0] || "Aldeia"}
               </span>
             </h1>
-            <p className="mt-3 text-lg font-bold text-[#06d6a0]">{subtitle}</p>
+            <p className="mt-3 text-lg font-bold text-[#2a9d8f]">{subtitle}</p>
           </header>
 
           {/* Adventure map area */}
@@ -188,7 +188,7 @@ function TrilhaInfantilPage() {
             >
               <path
                 d="M230 70 C 230 150, 70 150, 70 220 C 70 300, 230 300, 230 380 C 230 460, 70 460, 70 500"
-                stroke="#ffd166"
+                stroke="#e9c46a"
                 strokeWidth="5"
                 strokeLinecap="round"
                 strokeDasharray="10 14"
@@ -285,7 +285,7 @@ function TrilhaInfantilPage() {
           </section>
 
           {/* Quick nav footer */}
-          <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
+          <div className="grid grid-cols-4 gap-2 border-t-2 border-[#e9c46a]/40 bg-white/60 p-4 backdrop-blur-sm">
             {trails.slice(0, 4).map((trail) => {
               const slug = trailSlugMap[trail.name];
               if (!slug) return null;

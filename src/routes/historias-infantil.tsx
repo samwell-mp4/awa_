@@ -98,8 +98,8 @@ const STATIC_STORIES: Story[] = [
     ],
     quote:
       "Enquanto houver respeito e união, nosso povo seguirá forte.",
-    color: "#ef476f",
-    accent: "#118ab2",
+    color: "#f4a261",
+    accent: "#2d6a4f",
   },
   {
     id: "origem",
@@ -112,7 +112,7 @@ const STATIC_STORIES: Story[] = [
       "Os Pataxó vivem no sul da Bahia há muitos e muitos luares, guardando as praias, as matas e o sagrado Monte Pascoal.",
       "São quase 50 aldeias espalhadas pela Bahia e Minas Gerais — cada uma com sua história, seu cacique e seu jeito de cuidar da terra.",
     ],
-    color: "#06d6a0",
+    color: "#2a9d8f",
     accent: "#264653",
   },
   {
@@ -126,7 +126,7 @@ const STATIC_STORIES: Story[] = [
       "O Patxôhã quase foi silenciado pelo tempo, mas os anciãos e os professores estão trazendo cada palavra de volta.",
       "Cada nova palavra aprendida é um ancestral que volta a falar — e é assim que a língua fica viva no coração das crianças.",
     ],
-    color: "#ffd166",
+    color: "#e9c46a",
     accent: "#8b5a2b",
   },
   {
@@ -312,7 +312,7 @@ function KidsNarratorBar({
           className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-150"
           style={{
             width: `${Math.round(progress * 100)}%`,
-            background: `linear-gradient(90deg, ${color}, #ffd166)`,
+            background: `linear-gradient(90deg, ${color}, #e9c46a)`,
           }}
         />
       </div>
@@ -512,21 +512,21 @@ function HistoriasInfantilPage() {
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <Link
               to="/musicas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#ef476f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
+              className="rounded-full border-b-4 border-black/15 bg-[#f4a261] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               🎶 Cantigas
             </Link>
             <Link
               to="/trilhas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#06d6a0] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
+              className="rounded-full border-b-4 border-black/15 bg-[#2a9d8f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               🗺️ Trilhas
             </Link>
             <Link
               to="/infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#118ab2] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
+              className="rounded-full border-b-4 border-black/15 bg-[#2d6a4f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               🏠 Menu

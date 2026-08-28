@@ -30,7 +30,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
     <header
       className={
         isKids
-          ? "sticky top-0 z-40 backdrop-blur-xl bg-gradient-to-r from-[#ffd166] via-[#ef476f] to-[#06d6a0] border-b-4 border-white/70 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
+          ? "sticky top-0 z-40 backdrop-blur-xl bg-gradient-to-r from-[#e9c46a] via-[#f4a261] to-[#2a9d8f] border-b-4 border-white/70 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
           : "sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.14_0.04_145/0.75)] border-b border-gold/25 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.6)]"
       }
     >
@@ -41,7 +41,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
               onClick={() => window.history.back()}
               className={
                 isKids
-                  ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                  ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#f4a261] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
                   : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold"
               }
               aria-label={t("common.voltar")}
@@ -63,7 +63,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             onClick={() => setOpen((v) => !v)}
             className={
               isKids
-                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#f4a261] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
                 : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
             }
             aria-label={t("nav.menu")}
@@ -153,7 +153,7 @@ function MobileDrawer({
     return (
       <div className="border-t-4 border-white/70 bg-gradient-to-b from-[#fffdf3] to-[#fef3c7] px-4 py-5 max-h-[80vh] overflow-y-auto font-['Fredoka','Baloo_2',sans-serif]">
         <div className="mb-4 flex items-center justify-between rounded-2xl border-4 border-white bg-white/80 px-4 py-3 shadow-[0_6px_0_rgba(0,0,0,0.08)]">
-          <span className="text-sm font-black uppercase tracking-wider text-[#ef476f]">
+          <span className="text-sm font-black uppercase tracking-wider text-[#f4a261]">
             🌈 {t("common.idioma")}
           </span>
           <LanguageSwitcher compact />
@@ -161,7 +161,7 @@ function MobileDrawer({
         <div className="flex flex-col gap-3">
           {groups.map((group: NavGroup, gi) => {
             const isOpen = openGroup === group.title;
-            const palette = ["#ef476f", "#06d6a0", "#118ab2", "#ffd166", "#f4a261", "#c77dff"];
+            const palette = ["#f4a261", "#2a9d8f", "#2d6a4f", "#e9c46a", "#f4a261", "#c77dff"];
             const color = palette[gi % palette.length];
             return (
               <div
@@ -212,7 +212,7 @@ function MobileDrawer({
               <Link
                 to="/admin"
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#ffd166] px-4 py-3 text-base font-black uppercase text-[#3a2412] shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
+                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#e9c46a] px-4 py-3 text-base font-black uppercase text-[#3a2412] shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
               >
                 <Settings className="h-5 w-5" strokeWidth={2.5} /> {t("nav.painel")}
               </Link>
@@ -223,7 +223,7 @@ function MobileDrawer({
                   onClose();
                   onSignOut();
                 }}
-                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#ef476f] px-4 py-3 text-base font-black uppercase text-white shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
+                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#f4a261] px-4 py-3 text-base font-black uppercase text-white shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
               >
                 <LogOut className="h-5 w-5" strokeWidth={2.5} /> {t("nav.sair")}
               </button>
@@ -231,7 +231,7 @@ function MobileDrawer({
               <Link
                 to="/auth"
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#06d6a0] px-4 py-3 text-base font-black uppercase text-white shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
+                className="flex items-center justify-center gap-2 rounded-2xl border-4 border-white bg-[#2a9d8f] px-4 py-3 text-base font-black uppercase text-white shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
               >
                 <LogIn className="h-5 w-5" strokeWidth={2.5} /> {t("nav.entrar")}
               </Link>
