@@ -33,16 +33,16 @@ export const Route = createFileRoute("/musicas-infantil")({
 
 // Bright kid palettes + a matching indigenous emoji
 const THEMES = [
-  { bg: "from-rose-400 via-pink-400 to-fuchsia-400", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
-  { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
-  { bg: "from-sky-400 via-cyan-400 to-teal-300", ring: "ring-sky-100", emoji: "🐟", label: "Peixinho" },
-  { bg: "from-orange-400 via-red-400 to-rose-400", ring: "ring-orange-100", emoji: "🔥", label: "Fogueira" },
-  { bg: "from-violet-400 via-fuchsia-400 to-pink-300", ring: "ring-violet-100", emoji: "🦜", label: "Arara" },
-  { bg: "from-amber-500 via-orange-400 to-rose-300", ring: "ring-amber-100", emoji: "🥁", label: "Tambor" },
-  { bg: "from-teal-400 via-emerald-400 to-lime-300", ring: "ring-teal-100", emoji: "🌳", label: "Árvore" },
-  { bg: "from-yellow-400 via-amber-400 to-orange-400", ring: "ring-yellow-100", emoji: "☀️", label: "Sol" },
-  { bg: "from-indigo-400 via-blue-400 to-sky-300", ring: "ring-indigo-100", emoji: "🌙", label: "Lua" },
-  { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🪶", label: "Pena" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐢", label: "Tartaruga" },
+  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🐟", label: "Peixinho" },
+  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "🔥", label: "Fogueira" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🦜", label: "Arara" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🥁", label: "Tambor" },
+  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🌳", label: "Árvore" },
+  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "☀️", label: "Sol" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🌙", label: "Lua" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐸", label: "Sapinho" },
 ];
 
 export function MusicasInfantilPage() {

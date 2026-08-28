@@ -109,6 +109,8 @@ export default {
     trailFamilia: "Familia",
     trailNatureza: "Naturaleza",
     trailAnimais: "Animales",
+    kidsStoriesChip: "Historias del Pueblo",
+    kidsStoriesIntro: "Origen, territorio, lengua, espiritualidad y arte de un pueblo que hace de la cultura su arma más bella.",
     kidsTrailsTitle: "🗺️ Senderos de la Aldea",
     kidsTrailsSubtitle: "¡Toca un tótem y sigue el camino mágico!",
     trailDescSaudacoes: "Aprende a saludar como los pueblos indígenas, con palabras de respeto y alegría para comenzar el día.",

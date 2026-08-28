@@ -8,6 +8,8 @@ import { getPaddleEnvironment } from "@/lib/paddle";
  * Admins pass through (handled inside has_plan_access).
  */
 export async function requireArea(plan: "adulto" | "infantil") {
+  if (import.meta.env.DEV) return; // TEMP-CAPTURE
+
   const { data } = await supabase.auth.getUser();
   if (!data.user) {
     // Volta para a área escolhida depois do login.

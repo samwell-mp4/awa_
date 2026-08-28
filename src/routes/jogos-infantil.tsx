@@ -86,56 +86,56 @@ const STATIC_GAMES: {
     emoji: "🧠",
     title: "Memória da Floresta",
     desc: "Ache os pares de bichos e plantas.",
-    color: "from-emerald-400 to-emerald-600",
+    color: "from-[#2D6A4F] to-[#1B4332]",
   },
   {
     id: "pares",
     emoji: "🗣️",
     title: "Pares Patxôhã",
     desc: "Ligue a palavra ao desenho certo.",
-    color: "from-amber-400 to-orange-500",
+    color: "from-[#F4A261] to-[#D17D3E]",
   },
   {
     id: "caca",
     emoji: "🎯",
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
-    color: "from-sky-400 to-indigo-500",
+    color: "from-[#40916C] to-[#2D6A4F]",
   },
   {
     id: "acerte",
     emoji: "🎯",
     title: "Acerte a Palavra",
     desc: "Veja a figura e toque na palavra certa.",
-    color: "from-fuchsia-400 to-purple-600",
+    color: "from-[#2A9D8F] to-[#248277]",
   },
   {
     id: "ordenar",
     emoji: "🧮",
     title: "Ordene os Números",
     desc: "Coloque os números do menor ao maior.",
-    color: "from-teal-400 to-cyan-600",
+    color: "from-[#2D6A4F] to-[#1B4332]",
   },
   {
     id: "cores",
     emoji: "🌈",
     title: "Junte a Cor ao Nome",
     desc: "Toque na cor certa para cada nome.",
-    color: "from-rose-400 to-red-500",
+    color: "from-[#F4A261] to-[#D17D3E]",
   },
   {
     id: "adivinhe",
     emoji: "🦜",
     title: "Adivinhe o Bicho",
     desc: "Ouça a dica e escolha o bichinho!",
-    color: "from-lime-400 to-green-600",
+    color: "from-[#40916C] to-[#2D6A4F]",
   },
   {
     id: "colorir",
     emoji: "🎨",
     title: "Desenhar e Colorir",
     desc: "Pinte símbolos e bichos da aldeia.",
-    color: "from-orange-400 to-amber-600",
+    color: "from-[#2A9D8F] to-[#248277]",
   },
 ];
 
@@ -152,7 +152,7 @@ const EN_GAMES: {
     emoji: "🐾",
     title: "Animals in English",
     desc: "Match the animal to its English name.",
-    color: "from-lime-400 to-emerald-600",
+    color: "from-[#2D6A4F] to-[#1B4332]",
     pairs: [
       { en: "Dog", emoji: "🐶", pt: "Cachorro" },
       { en: "Cat", emoji: "🐱", pt: "Gato" },
@@ -165,7 +165,7 @@ const EN_GAMES: {
     emoji: "🎨",
     title: "Colors in English",
     desc: "Tap the correct color name.",
-    color: "from-pink-400 to-rose-600",
+    color: "from-[#F4A261] to-[#D17D3E]",
     pairs: [
       { en: "Red", emoji: "🟥", pt: "Vermelho" },
       { en: "Blue", emoji: "🟦", pt: "Azul" },
@@ -178,7 +178,7 @@ const EN_GAMES: {
     emoji: "🔢",
     title: "Numbers in English",
     desc: "Match the number to its English word.",
-    color: "from-sky-400 to-blue-600",
+    color: "from-[#40916C] to-[#2D6A4F]",
     pairs: [
       { en: "One", emoji: "1️⃣", pt: "Um" },
       { en: "Two", emoji: "2️⃣", pt: "Dois" },
@@ -252,7 +252,7 @@ function JogosInfantilPage() {
                     speak(`${g.title}. ${g.desc}`, "pt-BR");
                     setGame(g.id);
                   }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                  className={`group relative overflow-hidden rounded-3xl border-4 border-[#2d6a4f] bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-[8px_8px_0_0_#2d6a4f] transition hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#2d6a4f]`}
                 >
                   <div className="text-5xl drop-shadow">{g.emoji}</div>
                   <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
@@ -283,7 +283,7 @@ function JogosInfantilPage() {
                     speak(`${g.title}. ${g.desc}`, "en-US");
                     setGame(g.id);
                   }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
+                  className={`group relative overflow-hidden rounded-3xl border-4 border-[#2d6a4f] bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-[8px_8px_0_0_#2d6a4f] transition hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0_0_#2d6a4f]`}
                 >
                   <div className="text-5xl drop-shadow">{g.emoji}</div>
                   <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">

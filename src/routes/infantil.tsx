@@ -64,10 +64,10 @@ type Hotspot = {
 };
 
 const defaultHotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
+  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#2a9d8f" },
+  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#f4a261" },
   { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
-  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
+  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#2d6a4f" },
   { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
@@ -149,7 +149,7 @@ function InfantilHome() {
           {/* Adicionais fixos (ou que podem ser movidos para site_config depois se o user quiser) */}
           {[
             { to: "/aprender-numeros", key: "numbers", emoji: "🔢", color: "#f94144" },
-            { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#ffd166" },
+            { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#e9c46a" },
             { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
             { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
             { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },

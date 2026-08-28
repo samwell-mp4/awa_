@@ -79,6 +79,8 @@ export default {
     trailFamilia: "Djohó Awã",
     trailNatureza: "Awê Mãtxioá",
     trailAnimais: "Txaywã",
+    kidsStoriesChip: "Histórias do Povo",
+    kidsStoriesIntro: "Origem, território, língua, espiritualidade e arte de um povo que faz da cultura sua arma mais bonita.",
     kidsTrailsTitle: "🗺️ Auê Pahí kaí Aldeia",
     kidsTrailsSubtitle: "Ãhõmãy pahí — auê nakão!",
     trailDescSaudacoes: "Ãhõmãy aria kaí Pataxó — auê pekutê djã kanuã.",

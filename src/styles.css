@@ -242,158 +242,154 @@ body::before {
 @utility kid-spin-slow { animation: kid-spin-slow 18s linear infinite; }
 
 
-/* ===== Kids theme — soft 3D, light & vibrant (applied via .kids-theme wrapper) ===== */
+/* ===== Kids theme — vibrant jungle village (applied via .kids-theme wrapper) =====
+   Locked palette: jungle #2D6A4F · orange #F4A261 · gold #E9C46A · river #2A9D8F
+   Type: DM Serif Display (títulos) + Fira Sans (corpo) */
 .kids-theme {
-  --kids-sky: #bfe6ff;
-  --kids-sky-2: #ffe3f1;
-  --kids-sun: #ffd76a;
-  --kids-pink: #ff89b5;
-  --kids-leaf: #7cd88a;
-  --kids-berry: #b06cd9;
-  --kids-earth: #7a4a2b;
-  --kids-cream: #fffaf0;
-  --kids-outline: #5b3a24;
-  font-family: "Baloo 2", "Hind", ui-rounded, ui-sans-serif, system-ui, sans-serif;
-  color: #3a2418;
+  --kids-jungle: #2d6a4f;
+  --kids-jungle-deep: #1b4332;
+  --kids-orange: #f4a261;
+  --kids-orange-deep: #d17d3e;
+  --kids-gold: #e9c46a;
+  --kids-gold-deep: #b8984c;
+  --kids-river: #2a9d8f;
+  --kids-river-deep: #248277;
+  --kids-cream: #fdfcf0;
+  --kids-outline: #2d6a4f;
+  font-family: "Fira Sans", "Hind", ui-sans-serif, system-ui, sans-serif;
+  color: #22412f;
   background:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><g opacity='0.35'><path d='M30 40 q10 -18 25 -6 q-8 18 -25 6z' fill='%237cd88a'/><path d='M120 100 q10 -18 25 -6 q-8 18 -25 6z' fill='%237cd88a'/><path d='M80 20 l3 8 l8 1 l-6 6 l2 8 l-7 -4 l-7 4 l2 -8 l-6 -6 l8 -1z' fill='%23ffd76a'/><path d='M20 120 l2 5 l5 1 l-4 4 l1 5 l-4 -2 l-4 2 l1 -5 l-4 -4 l5 -1z' fill='%23ff89b5'/><circle cx='140' cy='40' r='3' fill='%23b06cd9'/><circle cx='60' cy='140' r='3' fill='%233fb7d4'/></g></svg>"),
-    linear-gradient(180deg, #cfefff 0%, #ffe4f2 45%, #fff6c9 100%);
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><g opacity='0.14'><path d='M30 46 q12 -22 30 -8 q-10 22 -30 8z' fill='%232d6a4f'/><path d='M132 116 q12 -22 30 -8 q-10 22 -30 8z' fill='%232a9d8f'/><path d='M90 24 l4 9 l9 1 l-7 7 l2 9 l-8 -5 l-8 5 l2 -9 l-7 -7 l9 -1z' fill='%23e9c46a'/><path d='M24 134 l3 6 l6 1 l-5 5 l1 6 l-5 -3 l-5 3 l1 -6 l-5 -5 l6 -1z' fill='%23f4a261'/></g></svg>"),
+    linear-gradient(180deg, #fdfcf0 0%, #f6f4e4 60%, #eef3ea 100%);
   background-size: 220px 220px, cover;
   background-attachment: fixed;
 }
-/* Pataxó grafismo strips — top & bottom on every kids screen */
+/* Faixa trançada Pataxó — discreta, topo e base de cada tela infantil */
 .kids-theme::before,
 .kids-theme::after {
   content: "";
   position: fixed;
   left: 0;
   right: 0;
-  height: 22px;
+  height: 14px;
   z-index: 40;
   pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='22' viewBox='0 0 80 22'><rect width='80' height='22' fill='%23f4d9a8'/><path d='M0 22 L10 4 L20 22 Z' fill='%23c4632a'/><path d='M20 22 L30 4 L40 22 Z' fill='%232f6d3a'/><path d='M40 22 L50 4 L60 22 Z' fill='%23e08e2b'/><path d='M60 22 L70 4 L80 22 Z' fill='%23884321'/><path d='M0 0 h80 v3 h-80z' fill='%23884321'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='14' viewBox='0 0 72 14'><rect width='72' height='14' fill='%232d6a4f'/><path d='M0 14 L12 3 L24 14 Z' fill='%23e9c46a'/><path d='M24 14 L36 3 L48 14 Z' fill='%232a9d8f'/><path d='M48 14 L60 3 L72 14 Z' fill='%23f4a261'/></svg>");
   background-repeat: repeat-x;
-  background-size: 80px 22px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  background-size: 72px 14px;
 }
 .kids-theme::before { top: 0; }
 .kids-theme::after { bottom: 0; transform: scaleY(-1); }
-/* Give content room so strips don't overlap headers/footers */
-.kids-theme { padding-top: 22px; padding-bottom: 22px; }
+/* Espaço para as faixas não cobrirem cabeçalho/rodapé */
+.kids-theme { padding-top: 14px; padding-bottom: 14px; }
 .kids-theme h1, .kids-theme h2, .kids-theme h3, .kids-theme h4 {
-  font-family: "Fredoka", "Baloo 2", "Archivo Black", ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0;
 }
-.kids-theme .font-display { font-family: "Fredoka", "Baloo 2", "Archivo Black", sans-serif !important; font-weight: 700; }
+.kids-theme .font-display { font-family: "DM Serif Display", Georgia, serif !important; font-weight: 400; }
 
 @utility kids-title {
-  font-family: "Fredoka", "Archivo Black", sans-serif;
-  color: #ff6aa4;
-  text-shadow:
-    -2px 2px 0 #fff,
-    2px 3px 0 #ffd76a,
-    4px 5px 0 rgba(122,74,43,0.20);
-  letter-spacing: 0.01em;
-  line-height: 0.98;
+  font-family: "DM Serif Display", Georgia, serif;
+  color: #2d6a4f;
+  letter-spacing: 0;
+  line-height: 1.02;
 }
 @utility kids-card {
-  background: #fffaf0;
-  border: 4px solid #ffffff;
-  outline: 3px solid #ffd76a;
-  outline-offset: -7px;
+  background: #ffffff;
+  border: 4px solid #2d6a4f;
   border-radius: 2rem;
-  box-shadow:
-    0 6px 0 0 rgba(255,137,181,0.55),
-    0 18px 34px -14px rgba(122,74,43,0.35);
+  box-shadow: 8px 8px 0 0 #2d6a4f;
   transition: transform .18s ease, box-shadow .18s ease;
 }
 .kids-theme a:hover > .kids-card,
 .kids-theme button:hover > .kids-card,
 .kids-theme .kids-card:hover {
-  transform: translateY(-3px) rotate(-0.5deg);
-  box-shadow: 0 9px 0 0 rgba(255,137,181,0.6), 0 22px 40px -12px rgba(122,74,43,0.4);
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 0 #2d6a4f;
 }
 @utility kids-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: linear-gradient(180deg, #ffd76a, #ff89b5);
-  color: #5b3a24;
-  border: 3px solid #ffffff;
+  background: #e9c46a;
+  color: #2d6a4f;
+  border: 2px solid #2d6a4f;
   border-radius: 999px;
-  padding: 0.35rem 0.9rem;
-  font-family: "Fredoka", sans-serif;
+  padding: 0.3rem 0.85rem;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 3px 0 0 rgba(255,137,181,0.7);
 }
 @utility kids-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: linear-gradient(180deg, #ffe08a, #ff9ec2);
-  color: #5b3a24;
-  border: 4px solid #ffffff;
-  border-radius: 999px;
-  padding: 0.75rem 1.4rem;
-  font-family: "Fredoka", sans-serif;
+  background: #2a9d8f;
+  color: #ffffff;
+  border: none;
+  border-bottom: 5px solid #248277;
+  border-radius: 1rem;
+  padding: 0.8rem 1.5rem;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  box-shadow: 0 6px 0 0 rgba(255,137,181,0.65), 0 10px 20px -8px rgba(122,74,43,0.35);
-  transition: transform .12s ease, box-shadow .12s ease;
+  letter-spacing: 0.05em;
+  transition: transform .12s ease, border-width .12s ease;
 }
-.kids-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 0 rgba(255,137,181,0.7); }
-.kids-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 0 rgba(255,137,181,0.7); }
+.kids-btn:hover { filter: brightness(1.06); }
+.kids-btn:active { transform: translateY(4px); border-bottom-width: 1px; }
 
 @utility kids-panel {
-  background: rgba(255, 250, 240, 0.94);
-  border: 4px solid #ffffff;
-  outline: 3px solid #bfe6ff;
-  outline-offset: -7px;
+  background: #ffffff;
+  border: 4px solid #2d6a4f;
   border-radius: 2rem;
-  box-shadow: 0 10px 0 0 rgba(191,230,255,0.7), 0 24px 50px -18px rgba(122,74,43,0.25);
-  backdrop-filter: blur(4px);
+  box-shadow: 8px 8px 0 0 rgba(45, 106, 79, 0.28);
 }
 
-@keyframes kids-float { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
-@utility kids-float { animation: kids-float 3.6s ease-in-out infinite; }
+@keyframes kids-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@utility kids-float { animation: kids-float 4s ease-in-out infinite; }
 
 /* Keep content above the ambient overlay */
 header, main, footer, section { position: relative; z-index: 1; }
 
-/* Kids-theme: brighten cards, text, and modals used by shared trail pages */
+/* Kids-theme: normaliza cartões, textos e modais usados nas páginas de trilhas */
 .kids-theme .card-elev {
-  background: #fffaf0 !important;
-  border-color: #ffd76a !important;
-  color: #3a2418 !important;
-  box-shadow: 0 6px 0 0 rgba(255,137,181,0.45), 0 18px 34px -14px rgba(122,74,43,0.3) !important;
+  background: #ffffff !important;
+  border-color: #2d6a4f !important;
+  color: #22412f !important;
+  box-shadow: 6px 6px 0 0 rgba(45, 106, 79, 0.25) !important;
 }
-.kids-theme .text-cream { color: #3a2418 !important; }
-.kids-theme .text-cream\/90 { color: #4a2f1e !important; }
+.kids-theme .text-cream { color: #22412f !important; }
+.kids-theme .text-cream\/90 { color: #2d4a39 !important; }
 .kids-theme .text-foreground\/85,
 .kids-theme .text-foreground\/75,
 .kids-theme .text-foreground\/70,
-.kids-theme .text-foreground\/60 { color: #6b4a2e !important; }
-.kids-theme .text-gold { color: #d97706 !important; }
-.kids-theme .text-leaf { color: #16a34a !important; }
+.kids-theme .text-foreground\/60 { color: rgba(45, 106, 79, 0.8) !important; }
+.kids-theme .text-gold { color: #b8984c !important; }
+.kids-theme .text-leaf { color: #2a9d8f !important; }
 .kids-theme .bg-forest-deep\/60,
 .kids-theme .bg-forest-deep\/40,
-.kids-theme .bg-forest-deep\/30 { background-color: rgba(255, 231, 175, 0.7) !important; }
-.kids-theme .bg-gold\/20 { background-color: rgba(255, 215, 106, 0.55) !important; }
-.kids-theme .bg-gold\/10 { background-color: rgba(255, 215, 106, 0.35) !important; }
+.kids-theme .bg-forest-deep\/30 { background-color: rgba(233, 196, 106, 0.35) !important; }
+.kids-theme .bg-gold\/20 { background-color: rgba(233, 196, 106, 0.4) !important; }
+.kids-theme .bg-gold\/10 { background-color: rgba(233, 196, 106, 0.22) !important; }
 .kids-theme .bg-leaf\/20,
-.kids-theme .bg-leaf\/15 { background-color: rgba(124, 216, 138, 0.35) !important; }
+.kids-theme .bg-leaf\/15 { background-color: rgba(42, 157, 143, 0.18) !important; }
 .kids-theme .border-gold\/15,
 .kids-theme .border-gold\/20,
 .kids-theme .border-gold\/25,
-.kids-theme .border-gold\/30 { border-color: rgba(255, 176, 60, 0.6) !important; }
+.kids-theme .border-gold\/30 { border-color: rgba(45, 106, 79, 0.45) !important; }
 
 
 #lovable-badge {
   display: none !important;
 }
+
+/* Kids-theme: cabeçalho e logo legíveis sobre o branco da aldeia */
+.kids-theme .text-gradient-gold,
+.kids-theme .text-gold\/80,
+.kids-theme .text-gold\/70 { background: none !important; -webkit-text-fill-color: currentColor !important; color: #f4a261 !important; }
+.kids-theme header .text-cream { color: #2d6a4f !important; }
