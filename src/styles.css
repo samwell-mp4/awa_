@@ -393,3 +393,48 @@ header, main, footer, section { position: relative; z-index: 1; }
 .kids-theme .text-gold\/80,
 .kids-theme .text-gold\/70 { background: none !important; -webkit-text-fill-color: currentColor !important; color: #f4a261 !important; }
 .kids-theme header .text-cream { color: #2d6a4f !important; }
+
+/* Kids-theme: rodapé da aldeia — claro, tipografia coerente e espaçamentos generosos */
+.kids-theme footer {
+  margin-top: 4rem;
+  background: #fbf7ec !important;
+  border-top: 4px solid #2d6a4f !important;
+  font-family: "Fira Sans", system-ui, sans-serif;
+}
+.kids-theme footer > div:nth-child(2) { gap: 2.5rem; padding-top: 3rem; padding-bottom: 3rem; }
+.kids-theme footer p { color: rgba(27, 67, 50, 0.8) !important; line-height: 1.65; }
+/* Títulos das colunas */
+.kids-theme footer .text-\[11px\] {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  color: #2d6a4f !important;
+}
+/* Links */
+.kids-theme footer a[href^="/"],
+.kids-theme footer ul a {
+  color: #1b4332 !important;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+.kids-theme footer ul a:hover { color: #d17d3e !important; text-decoration: underline !important; text-underline-offset: 4px; }
+.kids-theme footer ul { gap: 0.625rem !important; }
+/* Botões sociais em pastilhas tácteis */
+.kids-theme footer a[href="#"] {
+  background: #e9c46a !important;
+  border: 2px solid #2d6a4f !important;
+  color: #2d6a4f !important;
+  box-shadow: 3px 3px 0 0 rgba(45, 106, 79, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.kids-theme footer a[href="#"]:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 0 rgba(45, 106, 79, 0.35) !important;
+  background: #f4a261 !important;
+}
+/* Barra inferior */
+.kids-theme footer > div:last-child { border-top: 2px dashed rgba(45, 106, 79, 0.35) !important; background: rgba(45, 106, 79, 0.06); }
+.kids-theme footer > div:last-child > div { padding-top: 1.25rem; padding-bottom: 1.25rem; color: rgba(27, 67, 50, 0.75) !important; }
+.kids-theme footer > div:last-child .text-gold\/70 { color: #2a9d8f !important; }
