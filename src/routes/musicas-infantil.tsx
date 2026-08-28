@@ -33,16 +33,16 @@ export const Route = createFileRoute("/musicas-infantil")({
 
 // Bright kid palettes + a matching indigenous emoji
 const THEMES = [
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
-  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-sky-100", emoji: "🐟", label: "Peixinho" },
-  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-orange-100", emoji: "🔥", label: "Fogueira" },
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-violet-100", emoji: "🦜", label: "Arara" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-amber-100", emoji: "🥁", label: "Tambor" },
-  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-teal-100", emoji: "🌳", label: "Árvore" },
-  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-yellow-100", emoji: "☀️", label: "Sol" },
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-indigo-100", emoji: "🌙", label: "Lua" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🪶", label: "Pena" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐢", label: "Tartaruga" },
+  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-white", emoji: "🐟", label: "Peixinho" },
+  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "🔥", label: "Fogueira" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🦜", label: "Arara" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🥁", label: "Tambor" },
+  { bg: "from-[#E9C46A] to-[#B8984C]", ring: "ring-white", emoji: "🌳", label: "Árvore" },
+  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "☀️", label: "Sol" },
+  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🌙", label: "Lua" },
+  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐸", label: "Sapinho" },
 ];
 
 export function MusicasInfantilPage() {
