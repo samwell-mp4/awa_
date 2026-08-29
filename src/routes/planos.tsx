@@ -65,14 +65,58 @@ type PriceId =
   | "awa_adulto_monthly"
   | "awa_adulto_semestral";
 
+const PLANOS_PRICE_IDS: PriceId[] = [
+  "awa_infantil_monthly",
+  "awa_infantil_semestral",
+  "awa_adulto_monthly",
+  "awa_adulto_semestral",
+];
+
+/**
+ * Preços exibidos vêm sempre do Paddle (`formattedTotals`), na moeda do
+ * visitante. Nenhum cálculo de preço acontece no frontend.
+ */
+function useLocalizedPrices(country: string | null) {
+  const environment = getPaddleEnvironment();
+  return useQuery({
+    queryKey: ["planos_preview", environment, country ?? "auto"],
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    queryFn: async (): Promise<Record<string, string>> => {
+      await initializePaddle();
+      const { map } = await resolvePaddlePrices({
+        data: { priceIds: PLANOS_PRICE_IDS, environment },
+      });
+      const items = Object.values(map).map((priceId) => ({ priceId, quantity: 1 }));
+      if (!items.length) return {};
+      const result = await window.Paddle.PricePreview({
+        items,
+        ...(country ? { address: { countryCode: country } } : {}),
+      });
+      const byPaddleId: Record<string, string> = {};
+      for (const line of result?.data?.details?.lineItems ?? []) {
+        byPaddleId[line.price.id] = line.formattedTotals.total;
+      }
+      const out: Record<string, string> = {};
+      for (const [externalId, paddleId] of Object.entries(map)) {
+        if (byPaddleId[paddleId]) out[externalId] = byPaddleId[paddleId];
+      }
+      return out;
+    },
+  });
+}
+
 function PlanosPage() {
+  const { country } = Route.useLoaderData();
   const { user, loading: authLoading } = useAuth();
   const { hasInfantil, hasAdulto } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
+  const { data: prices } = useLocalizedPrices(country);
 
   const [pending, setPending] = useState<PriceId | null>(null);
+
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
