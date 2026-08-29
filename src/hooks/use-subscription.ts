@@ -83,8 +83,8 @@ export function useSubscription() {
         window.localStorage.setItem('paddle_customer_id', paddleCustomerId);
       }
 
-      const hasInfantil = tiers.has("infantil") || tiers.has("premium");
-      const hasAdulto = tiers.has("adulto") || tiers.has("premium");
+      const hasInfantil = INFANTIL_TIERS.some((t) => tiers.has(t));
+      const hasAdulto = ADULTO_TIERS.some((t) => tiers.has(t));
       return { subs: subs ?? [], hasInfantil, hasAdulto };
     },
     refetchOnWindowFocus: true,
