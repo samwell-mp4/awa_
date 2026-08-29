@@ -866,6 +866,37 @@ function HistoriasPage() {
         </section>
 
 
+        {/* Histórias e Narrativas — Aldeia Velha (relatório da comunidade) */}
+        <section className="mb-16 md:mb-24">
+          <div className="mb-10 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-gold">
+              🪶 <T>Comunidade Indígena Pataxó Aldeia Velha · C.I.P.A.V.</T>
+            </p>
+            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
+              <T>Histórias e</T> <span className="text-gold"><T>Narrativas</T></span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl font-serif text-lg italic text-amber-100/85">
+              <T>“A nossa voz não se apaga. A nossa memória não tem fim.”</T>
+            </p>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-amber-100/75">
+              <T>Cada história segue exatamente o texto original do relatório da comunidade. Toque no botão de áudio para ouvir a narrativa — palavra por palavra, cada relato, cada verdade.</T>
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-[0.25em] text-gold/70">
+              <T>Território Ancestral · Porto Seguro, Bahia · Junho de 2026</T>
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {relatorioStories.map((story, i) => (
+              <RelatorioStoryCard key={story.id} story={story} index={i} />
+            ))}
+          </div>
+
+          <p className="mt-8 text-center text-xs text-amber-100/60">
+            <T>Comunidade Indígena Pataxó Aldeia Velha — C.I.P.A.V. Relatório produzido a partir da vivência, entrevistas e memória de nosso povo.</T>
+          </p>
+        </section>
+
         <div className="space-y-16 md:space-y-24">
           {translatedSections.map((s, i) => {
             const Icon = s.icon;
