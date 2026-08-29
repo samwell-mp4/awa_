@@ -4,16 +4,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useAuth } from "@/hooks/use-auth";
 
-export type PlanTier = "infantil" | "adulto" | "premium" | null;
+export type PlanTier = "infantil" | "adulto" | "premium" | "starter" | "pro" | "advanced" | null;
 
 function tierFromIds(productId?: string | null, priceId?: string | null): PlanTier {
   const p = productId ?? "";
   const r = priceId ?? "";
-  if (p === "awa_infantil" || r.startsWith("awa_infantil_")) return "infantil";
-  if (p === "awa_adulto" || r.startsWith("awa_adulto_")) return "adulto";
-  if (p === "awa_premium" || r.startsWith("awa_premium_")) return "premium";
+  const is = (slug: string) => p === `awa_${slug}` || r.startsWith(`awa_${slug}_`);
+  if (is("infantil")) return "infantil";
+  if (is("adulto")) return "adulto";
+  if (is("premium")) return "premium";
+  if (is("starter")) return "starter";
+  if (is("pro")) return "pro";
+  if (is("advanced")) return "advanced";
   return null;
 }
+
+/**
+ * Quais áreas cada plano libera. Mantido em sincronia com a função
+ * `has_plan_access` do banco (que é a trava real, server-side).
+ * Starter = Adulto. Pro/Advanced/Premium = Adulto + Infantil.
+ */
+const ADULTO_TIERS: PlanTier[] = ["adulto", "premium", "starter", "pro", "advanced"];
+const INFANTIL_TIERS: PlanTier[] = ["infantil", "premium", "pro", "advanced"];
 
 /** Dias de tolerância após uma cobrança recusada (o Paddle segue tentando). */
 const PAST_DUE_GRACE_DAYS = 3;
