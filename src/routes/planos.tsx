@@ -38,8 +38,10 @@ export const Route = createFileRoute("/planos")({
     if (s.need === "infantil" || s.need === "adulto") out.need = s.need;
     return out;
   },
+  loader: async () => await getVisitorCountry(),
   component: PlanosPage,
 });
+
 
 const infantilBenefits = [
   "Trilha da Aldeia com jogos e cânticos",
