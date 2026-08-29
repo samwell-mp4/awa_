@@ -63,6 +63,7 @@ export const navGroups: NavGroup[] = [
     title: "Cultura e Expressões",
     items: [
       { label: "Histórias e Narrativas", href: "/historias", icon: ScrollText },
+      { label: "Somos Todos Aldeia Velha", href: "/aldeia-velha", icon: ScrollText },
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
       { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
@@ -99,6 +100,7 @@ const ADULT_HREFS = new Set([
   "/trilhas",
   "/professor",
   "/historias",
+  "/aldeia-velha",
   "/musicas",
   "/videos",
   "/biografia",
