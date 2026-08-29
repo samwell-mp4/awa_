@@ -1,12 +1,16 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User, CreditCard, QrCode } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { initializePaddle, getPaddleEnvironment } from "@/lib/paddle";
+import { getVisitorCountry, resolvePaddlePrices } from "@/lib/pricing.functions";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import logoSrc from "@/assets/awa-tech-logo.png";
+
 
 
 export const Route = createFileRoute("/planos")({
@@ -34,8 +38,10 @@ export const Route = createFileRoute("/planos")({
     if (s.need === "infantil" || s.need === "adulto") out.need = s.need;
     return out;
   },
+  loader: async () => await getVisitorCountry(),
   component: PlanosPage,
 });
+
 
 const infantilBenefits = [
   "Trilha da Aldeia com jogos e cânticos",
@@ -59,14 +65,58 @@ type PriceId =
   | "awa_adulto_monthly"
   | "awa_adulto_semestral";
 
+const PLANOS_PRICE_IDS: PriceId[] = [
+  "awa_infantil_monthly",
+  "awa_infantil_semestral",
+  "awa_adulto_monthly",
+  "awa_adulto_semestral",
+];
+
+/**
+ * Preços exibidos vêm sempre do Paddle (`formattedTotals`), na moeda do
+ * visitante. Nenhum cálculo de preço acontece no frontend.
+ */
+function useLocalizedPrices(country: string | null) {
+  const environment = getPaddleEnvironment();
+  return useQuery({
+    queryKey: ["planos_preview", environment, country ?? "auto"],
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+    queryFn: async (): Promise<Record<string, string>> => {
+      await initializePaddle();
+      const { map } = await resolvePaddlePrices({
+        data: { priceIds: PLANOS_PRICE_IDS, environment },
+      });
+      const items = Object.values(map).map((priceId) => ({ priceId, quantity: 1 }));
+      if (!items.length) return {};
+      const result = await window.Paddle.PricePreview({
+        items,
+        ...(country ? { address: { countryCode: country } } : {}),
+      });
+      const byPaddleId: Record<string, string> = {};
+      for (const line of result?.data?.details?.lineItems ?? []) {
+        byPaddleId[line.price.id] = line.formattedTotals.total;
+      }
+      const out: Record<string, string> = {};
+      for (const [externalId, paddleId] of Object.entries(map)) {
+        if (byPaddleId[paddleId]) out[externalId] = byPaddleId[paddleId];
+      }
+      return out;
+    },
+  });
+}
+
 function PlanosPage() {
+  const { country } = Route.useLoaderData();
   const { user, loading: authLoading } = useAuth();
   const { hasInfantil, hasAdulto } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
+  const { data: prices } = useLocalizedPrices(country);
 
   const [pending, setPending] = useState<PriceId | null>(null);
+
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
@@ -152,8 +202,9 @@ function PlanosPage() {
             benefits={infantilBenefits}
             monthlyId="awa_infantil_monthly"
             semestralId="awa_infantil_semestral"
-            monthlyPrice="R$ 29,90"
-            semestralPrice="R$ 149,90"
+            monthlyPrice={prices?.awa_infantil_monthly ?? "R$ 29,90"}
+            semestralPrice={prices?.awa_infantil_semestral ?? "R$ 149,90"}
+
             semestralEquivalent="Equivale a R$ 24,98/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
@@ -187,8 +238,9 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice="R$ 39,90"
-            semestralPrice="R$ 199,90"
+            monthlyPrice={prices?.awa_adulto_monthly ?? "R$ 39,90"}
+            semestralPrice={prices?.awa_adulto_semestral ?? "R$ 199,90"}
+
             semestralEquivalent="Equivale a R$ 33,31/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 16%"
             onAssinar={handleAssinar}
