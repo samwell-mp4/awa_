@@ -202,8 +202,9 @@ function PlanosPage() {
             benefits={infantilBenefits}
             monthlyId="awa_infantil_monthly"
             semestralId="awa_infantil_semestral"
-            monthlyPrice="R$ 29,90"
-            semestralPrice="R$ 149,90"
+            monthlyPrice={prices?.awa_infantil_monthly ?? "R$ 29,90"}
+            semestralPrice={prices?.awa_infantil_semestral ?? "R$ 149,90"}
+
             semestralEquivalent="Equivale a R$ 24,98/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
@@ -237,8 +238,9 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice="R$ 39,90"
-            semestralPrice="R$ 199,90"
+            monthlyPrice={prices?.awa_adulto_monthly ?? "R$ 39,90"}
+            semestralPrice={prices?.awa_adulto_semestral ?? "R$ 199,90"}
+
             semestralEquivalent="Equivale a R$ 33,31/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 16%"
             onAssinar={handleAssinar}
