@@ -1,3 +1,4 @@
+import { requireArea } from "@/lib/area-guard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -17,6 +18,7 @@ import { useLastArea } from "@/lib/last-area";
 
 
 export const Route = createFileRoute("/dicionario")({
+  beforeLoad: () => requireArea("adulto"),
   head: () => ({
     meta: [
       { title: "Dicionário Patxôhã — AWÃ TECH" },

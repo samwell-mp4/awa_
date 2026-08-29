@@ -8,12 +8,14 @@ import { getPaddleEnvironment } from "@/lib/paddle";
  * Admins pass through (handled inside has_plan_access).
  */
 export async function requireArea(plan: "adulto" | "infantil") {
-  if (import.meta.env.DEV) return; // TEMP-CAPTURE
-
   const { data } = await supabase.auth.getUser();
   if (!data.user) {
-    // Volta para a área escolhida depois do login.
-    throw redirect({ to: "/auth", search: { redirect: `/${plan}` } });
+    // Depois do login volta para a página pedida (ou para a área do plano).
+    const here =
+      typeof window !== "undefined" && window.location?.pathname
+        ? window.location.pathname + (window.location.search ?? "")
+        : `/${plan}`;
+    throw redirect({ to: "/auth", search: { redirect: here } });
   }
   const { data: hasAccess } = await supabase.rpc("has_plan_access", {
     _user_id: data.user.id,

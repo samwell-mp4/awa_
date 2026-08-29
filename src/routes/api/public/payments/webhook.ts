@@ -39,7 +39,7 @@ async function linkPaddleCustomer(userId: string, customerId: string, env: Paddl
         environment: env,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: "user_id" },
+      { onConflict: "user_id,environment" },
     );
 }
 
