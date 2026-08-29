@@ -449,6 +449,84 @@ function useNarration(originalText: string) {
   return { supported: true, speaking, loading, progress, toggle, prefetch };
 }
 
+function RelatorioStoryCard({ story, index }: { story: RelatorioStory; index: number }) {
+  const fullText = `${story.title}. ${story.blocks.map((b) => (b.author ? `${b.author} disse: ${b.text}` : b.text)).join(" ")}`;
+  const { speaking, loading, progress, toggle, prefetch } = useNarration(fullText);
+
+  return (
+    <article
+      id={story.id}
+      className="rounded-3xl border border-gold/25 bg-black/30 p-6 shadow-xl shadow-black/40 backdrop-blur md:p-8"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
+          <Volume2 className="h-3.5 w-3.5" /> <T>Narrativa</T> {index + 1}
+        </div>
+        <button
+          type="button"
+          onClick={toggle}
+          onPointerEnter={prefetch}
+          onTouchStart={prefetch}
+          onFocus={prefetch}
+          disabled={loading}
+          className={`relative inline-flex items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 ${
+            speaking
+              ? "bg-amber-100 text-emerald-950"
+              : "bg-gold text-emerald-950 hover:brightness-110"
+          }`}
+          aria-label={speaking ? "Parar narração" : `Ouvir: ${story.title}`}
+        >
+          {speaking && (
+            <span
+              className="absolute inset-y-0 left-0 bg-emerald-900/20"
+              style={{ width: `${Math.round(progress * 100)}%` }}
+            />
+          )}
+          <span className="relative flex items-center gap-2">
+            {loading ? (
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-900/40 border-t-emerald-950" />
+            ) : speaking ? (
+              <Square className="h-4 w-4" />
+            ) : (
+              <Volume2 className="h-4 w-4" />
+            )}
+            {speaking ? <T>Ouvindo… toque para parar</T> : loading ? <T>Preparando…</T> : <T>Clique para ouvir</T>}
+          </span>
+        </button>
+      </div>
+
+      <h3 className="mt-4 font-serif text-2xl text-amber-50 md:text-3xl">
+        {index + 1}. <T>{story.title}</T>
+      </h3>
+
+      <div className="mt-4 space-y-4 leading-relaxed text-amber-100/90">
+        {story.blocks.map((b, i) =>
+          b.quote ? (
+            <blockquote
+              key={i}
+              className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif italic text-amber-50"
+            >
+              {b.author && (
+                <p className="mb-2 not-italic font-sans text-sm font-semibold text-gold">
+                  <T>{b.author}</T>
+                </p>
+              )}
+              <T>“{b.text}”</T>
+            </blockquote>
+          ) : (
+            <div key={i}>
+              {b.author && (
+                <p className="mb-1 text-sm font-semibold text-gold"><T>{b.author}:</T></p>
+              )}
+              <p><T>{b.text}</T></p>
+            </div>
+          ),
+        )}
+      </div>
+    </article>
+  );
+}
+
 
 function NarratablePhoto({
   src,
