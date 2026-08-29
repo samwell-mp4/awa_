@@ -511,12 +511,12 @@ function RelatorioStoryCard({ story, index }: { story: RelatorioStory; index: nu
                   <T>{b.author}</T>
                 </p>
               )}
-              <T>“{b.text}”</T>
+              <T>{`“${b.text}”`}</T>
             </blockquote>
           ) : (
             <div key={i}>
               {b.author && (
-                <p className="mb-1 text-sm font-semibold text-gold"><T>{b.author}:</T></p>
+                <p className="mb-1 text-sm font-semibold text-gold"><T>{`${b.author}:`}</T></p>
               )}
               <p><T>{b.text}</T></p>
             </div>
