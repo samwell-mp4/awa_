@@ -1,3 +1,4 @@
+import { requireArea } from "@/lib/area-guard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowLeft, MapPin } from "lucide-react";
@@ -19,6 +20,7 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/videos")({
+  beforeLoad: () => requireArea("adulto"),
   head: () => ({
     meta: [
       { title: "Vídeos Pataxó — AWÃ TECH" },
