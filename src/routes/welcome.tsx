@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2 } from "lucide-react";
+import { useEffect } from "react";
+import { CheckCircle2, Loader2 } from "lucide-react";
+import { useSubscription } from "@/hooks/use-subscription";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({
