@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Volume2, Square, MapPin, Users, GraduationCap, HeartPulse, Leaf, Landmark, Home as HomeIcon, BookOpen, Link2 } from "lucide-react";
+import { ArrowLeft, Volume2, Square, MapPin, Users, GraduationCap, HeartPulse, Leaf, Landmark, Home as HomeIcon, BookOpen, Link2, Maximize2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
