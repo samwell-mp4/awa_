@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Volume2, Square, MapPin, Users, GraduationCap, HeartPulse, Leaf, Landmark, Home as HomeIcon, BookOpen, Link2 } from "lucide-react";
+import { ArrowLeft, Volume2, Square, MapPin, Users, GraduationCap, HeartPulse, Leaf, Landmark, Home as HomeIcon, BookOpen, Link2, Maximize2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
@@ -517,26 +517,89 @@ function ListenButton({ text }: { text: string }) {
 }
 
 function PhotoGrid({ items }: { items: Photo[] }) {
+  const [active, setActive] = useState<Photo | null>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActive(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active]);
+
   return (
-    <div className="my-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((p) => (
-        <figure
-          key={p.src}
-          className="overflow-hidden rounded-2xl border border-border/60 bg-card/50 shadow-sm"
+    <>
+      <div
+        className={`my-8 grid gap-4 ${
+          items.length === 1
+            ? "mx-auto max-w-2xl grid-cols-1"
+            : items.length === 2
+              ? "sm:grid-cols-2"
+              : "sm:grid-cols-2 lg:grid-cols-3"
+        }`}
+      >
+        {items.map((p, i) => (
+          <figure
+            key={p.src}
+            className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card/50 shadow-md"
+          >
+            <button
+              type="button"
+              onClick={() => setActive(p)}
+              className="block w-full cursor-zoom-in"
+              aria-label={`Ampliar foto: ${p.caption}`}
+            >
+              <img
+                src={p.src}
+                alt={p.caption}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+              <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
+                <Maximize2 className="h-4 w-4" />
+              </span>
+            </button>
+            <figcaption className="flex items-start gap-2.5 border-t border-border/40 px-4 py-3">
+              <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-[10px] font-bold text-primary">
+                {i + 1}
+              </span>
+              <span className="text-xs font-medium leading-snug text-muted-foreground">
+                <T>{p.caption}</T>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      {active && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label={active.caption}
+          onClick={() => setActive(null)}
         >
-          <img
-            src={p.src}
-            alt={p.caption}
-            loading="lazy"
-            decoding="async"
-            className="h-52 w-full object-cover transition duration-500 hover:scale-105"
-          />
-          <figcaption className="px-4 py-3 text-xs leading-snug text-muted-foreground">
-            <T>{p.caption}</T>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+          <button
+            type="button"
+            onClick={() => setActive(null)}
+            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+            aria-label="Fechar foto ampliada"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <figure className="max-h-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={active.src}
+              alt={active.caption}
+              className="max-h-[80vh] w-full rounded-2xl object-contain shadow-2xl"
+            />
+            <figcaption className="mt-3 text-center text-sm text-white/85">
+              <T>{active.caption}</T>
+            </figcaption>
+          </figure>
+        </div>
+      )}
+    </>
   );
 }
 
