@@ -1002,13 +1002,13 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
           </button>
         ))}
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-2">
         {filtered.map((item) => (
           <figure
             key={item.title}
-            className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
+            className="group flex flex-col overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur sm:flex-row"
           >
-            <div className="aspect-[4/5] overflow-hidden">
+            <div className="aspect-[4/3] w-full shrink-0 overflow-hidden sm:aspect-auto sm:w-2/5">
               <img
                 src={item.src}
                 alt={item.title}
@@ -1016,7 +1016,7 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
-            <figcaption className="p-5">
+            <figcaption className="flex flex-1 flex-col justify-center p-5">
               <div className="mb-1 inline-flex items-center gap-1 text-xs text-gold/80">
                 <MapPin className="h-3 w-3" /> {item.aldeia}
               </div>
