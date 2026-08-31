@@ -149,8 +149,12 @@ export function KidsSongPlayer({
 
 
         {/* Hide the illustrative “Ouvir / Cantar junto” labels baked into the video. */}
-        <div aria-hidden className="absolute left-[17%] top-[72%] z-20 h-[11%] w-[27%] bg-emerald-50" />
-        <div aria-hidden className="absolute right-[17%] top-[72%] z-20 h-[11%] w-[28%] bg-amber-50" />
+        <div className="absolute left-[17%] top-[72%] z-20 grid h-[11%] w-[27%] place-items-center bg-emerald-50 px-[1%] text-center font-display font-bold text-emerald-900" style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}>
+          🔊 Clique para ouvir
+        </div>
+        <div className="absolute right-[17%] top-[72%] z-20 grid h-[11%] w-[28%] place-items-center bg-amber-50 px-[1%] text-center font-display font-bold text-amber-900" style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}>
+          🔊 Clique para ouvir
+        </div>
 
         <button
           type="button"
