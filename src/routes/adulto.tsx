@@ -52,35 +52,13 @@ export const Route = createFileRoute("/adulto")({
 });
 
 function AdultoHome() {
-  const trails = useHomeTrails();
-  const { data: mission } = useDailyMission();
-  const { template, config } = useActiveTemplate("adulto");
+  const { config } = useActiveTemplate("adulto");
   useEffect(() => setLastArea("/adulto"), []);
-
 
   return (
     <div className={`min-h-screen text-foreground template-adulto-${config.style || 'default'}`}>
       <SiteHeader mode="adulto" />
-
-      <main className="mx-auto max-w-6xl px-4 md:px-8">
-        <HeroSection />
-        <GreetingOfMoment />
-        <ContinueLearningCard />
-
-        <div className="content-visibility-auto">
-          <TrailsGrid trails={trails} />
-        </div>
-        
-        <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2 content-visibility-auto">
-          <DailyMissionCard mission={mission} />
-          <RankingCard />
-        </section>
-
-        <div className="content-visibility-auto">
-          <InstallCTA />
-        </div>
-      </main>
-
+      <MainMenu />
       <SiteFooter />
     </div>
   );
