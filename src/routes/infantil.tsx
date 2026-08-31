@@ -78,12 +78,6 @@ function InfantilHome() {
   const getFn = useServerFn(getSiteConfig);
   const { template, config } = useActiveTemplate("infantil");
 
-  const { data: hotspotsData } = useQuery({
-    queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn({ data: "infantil_hotspots" }),
-  });
-
-  const hotspots = useMemo(() => (Array.isArray(hotspotsData) ? hotspotsData : defaultHotspots) || [], [hotspotsData]);
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
