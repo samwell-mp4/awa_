@@ -1,9 +1,9 @@
-import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState, useMemo, lazy, Suspense } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
@@ -11,8 +11,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
-
-const GlossarioInfantil = lazy(() => import("@/components/kids/glossario-infantil").then(m => ({ default: m.GlossarioInfantil })));
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -173,16 +171,6 @@ function InfantilHome() {
 
         </section>
 
-        {t("infantil.learning") && (
-          <section className="mt-12 content-visibility-auto">
-            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-              {t("infantil.learning")}
-            </h2>
-            <Suspense fallback={<div className="h-40 flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
-              <GlossarioInfantil />
-            </Suspense>
-          </section>
-        )}
       </main>
 
 
