@@ -128,43 +128,41 @@ export function KidsSongPlayer({
           aria-hidden
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/25" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/10" />
 
         {/* Title plaque */}
-        <div className="relative z-10 flex justify-center pt-3">
-          <div className="rounded-2xl border-[3px] border-[#3a2110] bg-gradient-to-b from-[#8a5a2c] to-[#6b3f1d] px-5 py-1.5 font-display text-base font-black text-[#f7e7c8] shadow-[0_6px_0_#3a2110] sm:text-xl">
+        <div className="relative z-10 flex justify-center pt-2">
+          <div className="rounded-full border-2 border-[#3a2110] bg-gradient-to-b from-[#8a5a2c] to-[#6b3f1d] px-3 py-1 font-display text-[11px] font-black text-[#f7e7c8] shadow-[0_3px_0_#3a2110] sm:text-sm">
             🎵 Cânticos Infantis Pataxó 🎵
           </div>
         </div>
 
-        {/* Two columns */}
-        <div className="relative z-10 mx-auto grid h-[calc(100%-9.5rem)] max-w-5xl grid-cols-2 gap-0 px-2 pt-3">
-          <div className="overflow-y-auto rounded-l-2xl bg-[#e6f2e2]/85 px-2 py-2 backdrop-blur-sm sm:px-6">
-            <h2 className="mb-1 text-center font-display text-lg font-black text-[#2f6d3a] sm:text-2xl">
+        {/* Two columns (compact, over the lower part so the video stays visible) */}
+        <div className="absolute inset-x-0 bottom-14 z-10 mx-auto grid max-h-[42%] max-w-3xl grid-cols-2 gap-1 overflow-hidden px-2">
+          <div className="overflow-y-auto rounded-xl bg-[#e6f2e2]/70 px-2 py-1 backdrop-blur-sm">
+            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#2f6d3a] sm:text-sm">
               Patxôhã
             </h2>
-            <div className="mx-auto mb-2 h-[3px] w-3/4 rounded bg-[#2f6d3a]/40" />
             {Array.from({ length: maxLen }).map((_, i) => (
               <p
                 key={i}
-                className={`py-1 text-center font-bold leading-snug transition-colors ${lineSize} ${
-                  i === activeIdx ? "text-[#1f5128]" : "text-[#2f6d3a]/55"
+                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
+                  i === activeIdx ? "text-[#1f5128]" : "text-[#2f6d3a]/60"
                 }`}
               >
                 {indLines[i] || "\u00A0"}
               </p>
             ))}
           </div>
-          <div className="overflow-y-auto rounded-r-2xl bg-[#fbf3dc]/90 px-2 py-2 backdrop-blur-sm sm:px-6">
-            <h2 className="mb-1 text-center font-display text-lg font-black text-[#a04a1e] sm:text-2xl">
+          <div className="overflow-y-auto rounded-xl bg-[#fbf3dc]/70 px-2 py-1 backdrop-blur-sm">
+            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#a04a1e] sm:text-sm">
               Português
             </h2>
-            <div className="mx-auto mb-2 h-[3px] w-3/4 rounded bg-[#a04a1e]/40" />
             {Array.from({ length: maxLen }).map((_, i) => (
               <p
                 key={i}
-                className={`py-1 text-center font-bold leading-snug transition-colors ${subSize} ${
-                  i === activeIdx ? "text-[#7b3411]" : "text-[#a04a1e]/55"
+                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
+                  i === activeIdx ? "text-[#7b3411]" : "text-[#a04a1e]/60"
                 }`}
               >
                 {transLines[i] || "\u00A0"}
@@ -172,6 +170,7 @@ export function KidsSongPlayer({
             ))}
           </div>
         </div>
+
 
         {/* Center divider + play knob */}
         <div
