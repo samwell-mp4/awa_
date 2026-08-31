@@ -14,14 +14,9 @@ export function KidsSongPlayer({
   onClose: () => void;
 }) {
   const ref = useRef<HTMLAudioElement>(null);
-  const lang = useLang();
-  const [progress, setProgress] = useState(0);
-  const [audioDuration, setAudioDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setProgress(0);
-    setAudioDuration(0);
     const a = ref.current;
     if (!a) return;
     a.load();
