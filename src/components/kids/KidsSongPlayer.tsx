@@ -51,6 +51,18 @@ export function KidsSongPlayer({
 
   const currentRow = lyricRows[Math.min(lineIndex, lyricRows.length - 1)];
 
+  /** Ajusta o tamanho da fonte para o verso caber dentro do quadrado. */
+  function fitSize(text: string) {
+    const len = text.trim().length;
+    const longest = text
+      .trim()
+      .split(/\s+/)
+      .reduce((m, w) => Math.max(m, w.length), 0);
+    const score = Math.max(len / 3, longest);
+    const size = Math.max(1.1, Math.min(3.2, 26 / Math.max(8, score)));
+    return { fontSize: `clamp(0.7rem, ${size}cqw, 2rem)` };
+  }
+
   useEffect(() => {
     const a = ref.current;
     if (!a) return;
