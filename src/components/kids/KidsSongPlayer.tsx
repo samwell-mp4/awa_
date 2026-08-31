@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Home, Music2, Pause, Play, Volume2 } from "lucide-react";
+import { ArrowLeft, Home, Music2, Pause } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
