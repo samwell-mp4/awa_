@@ -9,7 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
 import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
 import { SiteHeader } from "@/components/home/site-header";
-import { MiniPlayer, type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
+import { type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
+import { KidsSongPlayer } from "@/components/kids/KidsSongPlayer";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 
@@ -187,15 +188,13 @@ export function MusicasInfantilPage() {
       </main>
 
       {playing && (
-        <MiniPlayer
+        <KidsSongPlayer
           song={playing}
           branding={branding}
           onClose={() => {
             setPlaying(null);
             setIsMaximized(false);
           }}
-          isMaximized={isMaximized}
-          onToggleMaximize={() => setIsMaximized(!isMaximized)}
         />
       )}
     </div>
