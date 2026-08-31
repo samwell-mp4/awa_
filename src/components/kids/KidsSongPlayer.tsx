@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
+import { speak } from "@/lib/speak";
 import {
   activeLineIndex,
   computeLyricBounds,
