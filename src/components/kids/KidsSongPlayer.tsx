@@ -44,20 +44,6 @@ export function KidsSongPlayer({
     return () => cancelAnimationFrame(raf);
   }, [song.id]);
 
-  const indLines = useMemo(() => splitLyrics(song.lyrics_indigenous || ""), [song.lyrics_indigenous]);
-  const transLines = useMemo(
-    () => splitLyrics(pickLang(song as any, "lyrics_pt", lang) || ""),
-    [song, lang],
-  );
-  const maxLen = Math.max(indLines.length, transLines.length);
-  const duration = resolveDuration(audioDuration, song.duration_seconds);
-
-  const bounds = useMemo(
-    () => computeLyricBounds(indLines, transLines, duration, song.sync_offsets || []),
-    [indLines, transLines, duration, song.id, lang, song.sync_offsets],
-  );
-  const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
-
   function toggle() {
     const a = ref.current;
     if (!a) return;
