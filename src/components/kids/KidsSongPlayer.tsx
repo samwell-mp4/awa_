@@ -172,22 +172,15 @@ export function KidsSongPlayer({
         </div>
 
 
-        {/* Center divider + play knob */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-16 left-1/2 w-6 -translate-x-1/2"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg,#c1873f 0 8px,#efe0be 8px 16px)",
-          }}
-        />
+        {/* Play knob */}
         <button
           onClick={toggle}
           aria-label={isPlaying ? "Pausar" : "Tocar"}
-          className="absolute left-1/2 top-1/2 z-20 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[5px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_6px_0_#3a2110] active:translate-y-[calc(-50%+3px)] active:shadow-none"
+          className="absolute left-1/2 top-[26%] z-20 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
         >
-          {isPlaying ? <Pause className="h-7 w-7 fill-current" /> : <Music2 className="h-7 w-7" />}
+          {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Music2 className="h-5 w-5" />}
         </button>
+
 
         {/* Buttons */}
         <div className="absolute inset-x-0 bottom-2 z-20 mx-auto grid max-w-5xl grid-cols-2 gap-2 px-3">
