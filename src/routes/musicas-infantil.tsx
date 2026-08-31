@@ -188,15 +188,13 @@ export function MusicasInfantilPage() {
       </main>
 
       {playing && (
-        <MiniPlayer
+        <KidsSongPlayer
           song={playing}
           branding={branding}
           onClose={() => {
             setPlaying(null);
             setIsMaximized(false);
           }}
-          isMaximized={isMaximized}
-          onToggleMaximize={() => setIsMaximized(!isMaximized)}
         />
       )}
     </div>
