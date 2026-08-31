@@ -52,7 +52,6 @@ export const Route = createFileRoute("/infantil")({
   }),
   component: InfantilHome,
 });
-];
 
 
 function InfantilHome() {
