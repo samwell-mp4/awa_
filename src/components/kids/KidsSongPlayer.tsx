@@ -108,15 +108,23 @@ export function KidsSongPlayer({
 
         {/* Duas colunas fixas: apenas o texto da linha atual é trocado, sem acumular. */}
         <section className="absolute inset-x-[14.8%] top-[25.5%] z-20 grid h-[47%] grid-cols-2 gap-[5%] overflow-hidden" aria-label={`Letra de ${song.title}`}>
-          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950">
-            <h2 className="font-display text-xs font-black sm:text-lg md:text-2xl">Patxôhã</h2>
-            <p aria-live="polite" className="grid place-items-center overflow-hidden font-display text-[11px] font-black leading-snug sm:text-lg md:text-2xl">
+          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950 [container-type:inline-size]">
+            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>Patxôhã</h2>
+            <p
+              aria-live="polite"
+              className="grid place-items-center overflow-hidden break-words font-display font-black leading-tight [hyphens:auto]"
+              style={fitSize(currentRow?.indigenous ?? "")}
+            >
               {currentRow?.indigenous ?? ""}
             </p>
           </div>
-          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950">
-            <h2 className="font-display text-xs font-black sm:text-lg md:text-2xl">Português</h2>
-            <p aria-live="polite" className="grid place-items-center overflow-hidden font-display text-[11px] font-black leading-snug sm:text-lg md:text-2xl">
+          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950 [container-type:inline-size]">
+            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>Português</h2>
+            <p
+              aria-live="polite"
+              className="grid place-items-center overflow-hidden break-words font-display font-black leading-tight [hyphens:auto]"
+              style={fitSize(currentRow?.portuguese ?? "")}
+            >
               {currentRow?.portuguese ?? ""}
             </p>
           </div>
