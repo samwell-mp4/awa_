@@ -15,7 +15,6 @@ import { KidsMainMenu } from "@/components/kids/kids-main-menu";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
-import categoriasBg from "@/assets/infantil-categorias-bg.jpg.asset.json";
 import menuVideo from "@/assets/infantil-menu-video-rio.mp4.asset.json";
 
 
@@ -53,21 +52,6 @@ export const Route = createFileRoute("/infantil")({
   }),
   component: InfantilHome,
 });
-
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
-type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
-  key: HotspotKey;
-  emoji: string;
-  color: string;
-};
-
-const defaultHotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#2a9d8f" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#f4a261" },
-  { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
-  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#2d6a4f" },
-  { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
 ];
 
 
