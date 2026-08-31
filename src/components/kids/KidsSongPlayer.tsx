@@ -148,35 +148,19 @@ export function KidsSongPlayer({
 
 
         {/* Buttons */}
-        <div className="absolute inset-x-0 bottom-2 z-20 mx-auto grid max-w-5xl grid-cols-2 gap-2 px-3">
-          <div className="flex justify-center gap-2">
-            <button
-              onClick={restart}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Volume2 className="h-4 w-4" /> Ouvir
-            </button>
-            <button
-              onClick={toggle}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Play className="h-4 w-4 fill-current" /> Cantar Junto
-            </button>
-          </div>
-          <div className="flex justify-center gap-2">
-            <button
-              onClick={restart}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Volume2 className="h-4 w-4" /> Ouvir
-            </button>
-            <button
-              onClick={toggle}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Play className="h-4 w-4 fill-current" /> Cantar Junto
-            </button>
-          </div>
+        <div className="absolute inset-x-0 bottom-2 z-20 flex justify-center gap-2 px-3">
+          <button
+            onClick={restart}
+            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
+          >
+            <Volume2 className="h-4 w-4" /> Ouvir
+          </button>
+          <button
+            onClick={toggle}
+            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
+          >
+            <Play className="h-4 w-4 fill-current" /> Cantar Junto
+          </button>
         </div>
       </div>
 
