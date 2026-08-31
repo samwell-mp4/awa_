@@ -25,8 +25,10 @@ import { ProgressBar } from "@/components/home/progress-bar";
 import { trailSlugMap } from "@/lib/home-content";
 import { translateTrailName } from "@/components/home/trails-grid";
 
+import kidsMenuBg from "@/assets/kids-menu-bg.png.asset.json";
+
 const panel =
-  "rounded-[1.75rem] border-4 border-amber-300 bg-emerald-900/85 backdrop-blur-md shadow-[0_18px_45px_-22px_rgba(0,0,0,0.85)]";
+  "rounded-[1.75rem] border-4 border-amber-300 bg-emerald-900/70 backdrop-blur-md shadow-[0_18px_45px_-22px_rgba(0,0,0,0.85)]";
 
 function tap(text?: string) {
   if (text) speak(text, "pt-BR", 1.05);
@@ -63,7 +65,14 @@ export function KidsMainMenu() {
   const levelPct = points % 100;
 
   return (
-    <div className="space-y-4 pb-24">
+    <div className="relative space-y-4 pb-24">
+      {/* Tela fixa oficial Awã Tech Infantil */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-top bg-no-repeat"
+        style={{ backgroundImage: `url(${kidsMenuBg.url})` }}
+      />
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-emerald-950/35" />
       {/* Saudação + estatísticas */}
       <section className={`${panel} p-4`}>
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
