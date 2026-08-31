@@ -137,41 +137,6 @@ export function KidsSongPlayer({
           </div>
         </div>
 
-        {/* Two columns (compact, over the lower part so the video stays visible) */}
-        <div className="absolute inset-x-0 bottom-14 z-10 mx-auto grid max-h-[42%] max-w-3xl grid-cols-2 gap-1 overflow-hidden px-2">
-          <div className="overflow-y-auto rounded-xl bg-[#e6f2e2]/70 px-2 py-1 backdrop-blur-sm">
-            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#2f6d3a] sm:text-sm">
-              Patxôhã
-            </h2>
-            {Array.from({ length: maxLen }).map((_, i) => (
-              <p
-                key={i}
-                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
-                  i === activeIdx ? "text-[#1f5128]" : "text-[#2f6d3a]/60"
-                }`}
-              >
-                {indLines[i] || "\u00A0"}
-              </p>
-            ))}
-          </div>
-          <div className="overflow-y-auto rounded-xl bg-[#fbf3dc]/70 px-2 py-1 backdrop-blur-sm">
-            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#a04a1e] sm:text-sm">
-              Português
-            </h2>
-            {Array.from({ length: maxLen }).map((_, i) => (
-              <p
-                key={i}
-                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
-                  i === activeIdx ? "text-[#7b3411]" : "text-[#a04a1e]/60"
-                }`}
-              >
-                {transLines[i] || "\u00A0"}
-              </p>
-            ))}
-          </div>
-        </div>
-
-
         {/* Play knob */}
         <button
           onClick={toggle}
