@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Home, Music2, Pause } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
+import { splitLyrics } from "@/lib/lyric-sync";
 
 export function KidsSongPlayer({
   song,
-  branding,
   onClose,
 }: {
   song: Song;
@@ -15,6 +14,15 @@ export function KidsSongPlayer({
 }) {
   const ref = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const indigenousLines = splitLyrics(song.lyrics_indigenous);
+  const portugueseLines = splitLyrics(song.lyrics_pt);
+  const lineCount = Math.max(indigenousLines.length, portugueseLines.length);
+  const lyricSize =
+    lineCount > 16
+      ? "text-[8px] sm:text-xs md:text-sm"
+      : lineCount > 11
+        ? "text-[9px] sm:text-sm md:text-base"
+        : "text-[10px] sm:text-base md:text-xl";
 
   useEffect(() => {
     const a = ref.current;
@@ -31,49 +39,8 @@ export function KidsSongPlayer({
   }
 
   return (
-    <div className="fixed inset-0 z-[70] flex flex-col bg-[#4a2c17]">
-      {/* Top wood bar */}
-      <header className="flex items-center justify-between gap-2 border-b-4 border-[#2f1a0d] bg-gradient-to-b from-[#7a4a24] to-[#5a3318] px-3 py-2 shadow-lg">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onClose}
-            aria-label="Voltar"
-            className="grid h-11 w-11 place-items-center rounded-full border-[3px] border-[#f2d7a8] bg-[#8a5a2c] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <Link
-            to="/infantil"
-            aria-label="Início"
-            className="grid h-11 w-11 place-items-center rounded-full border-[3px] border-[#f2d7a8] bg-[#8a5a2c] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
-          >
-            <Home className="h-5 w-5" />
-          </Link>
-        </div>
-        <div className="min-w-0 text-center">
-          <div className="truncate font-display text-lg font-black uppercase tracking-wide text-[#f7e7c8] drop-shadow sm:text-2xl">
-            {song.title}
-          </div>
-          {song.artist && (
-            <div className="truncate text-[11px] font-bold text-[#e7c99a]">{song.artist}</div>
-          )}
-        </div>
-        <span className="w-11 sm:w-24" />
-      </header>
-
-      {/* Tribal strip */}
-      <div
-        aria-hidden
-        className="h-3 w-full"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg,#c1873f 0 10px,#7a4a24 10px 20px)",
-        }}
-      />
-
-      {/* Board */}
-      <div className="relative flex-1 overflow-hidden bg-[#4a2c17]">
-        {/* Original video filling the screen */}
+    <div className="fixed inset-0 z-[70] grid place-items-center overflow-hidden bg-amber-950">
+      <div className="relative aspect-[35/26] w-full max-w-[calc(100vh*35/26)] overflow-hidden">
         <video
           src={bgVideo.url}
           autoPlay
@@ -81,36 +48,53 @@ export function KidsSongPlayer({
           muted
           playsInline
           aria-hidden
-          className="pointer-events-none absolute inset-0 h-full w-full object-contain"
+          className="pointer-events-none absolute inset-0 h-full w-full object-fill"
         />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/0" />
 
-        {/* Title plaque */}
-        <div className="relative z-10 flex justify-center pt-2">
-          <div className="rounded-full border-2 border-[#3a2110] bg-gradient-to-b from-[#8a5a2c] to-[#6b3f1d] px-3 py-1 font-display text-[11px] font-black text-[#f7e7c8] shadow-[0_3px_0_#3a2110] sm:text-sm">
-            🎵 Cânticos Infantis Pataxó 🎵
-          </div>
-        </div>
-
-        {/* Play knob */}
+        {/* The controls drawn into the original video remain the only visible controls. */}
         <button
+          type="button"
+          onClick={onClose}
+          aria-label="Voltar"
+          className="absolute left-[0.5%] top-[4.5%] z-30 h-[10%] w-[6%] rounded-full bg-transparent"
+        />
+        <Link
+          to="/infantil"
+          aria-label="Início"
+          className="absolute left-[7.2%] top-[4.5%] z-30 h-[10%] w-[6%] rounded-full"
+        />
+
+        {/* Replace the video's illustrative copy with the selected song's real lyrics. */}
+        <section className="absolute inset-x-[14.8%] top-[25.5%] z-20 grid h-[47%] grid-cols-2 gap-[5%] overflow-hidden" aria-label={`Letra de ${song.title}`}>
+          <div className="overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950">
+            <h2 className="mb-[2%] font-display text-xs font-black sm:text-lg md:text-2xl">Patxôhã</h2>
+            <div className={`${lyricSize} font-display font-black leading-snug`}>
+              {indigenousLines.map((line, index) => (
+                <p key={`${index}-${line}`}>{line}</p>
+              ))}
+            </div>
+          </div>
+          <div className="overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950">
+            <h2 className="mb-[2%] font-display text-xs font-black sm:text-lg md:text-2xl">Português</h2>
+            <div className={`${lyricSize} font-display font-black leading-snug`}>
+              {portugueseLines.map((line, index) => (
+                <p key={`${index}-${line}`}>{line}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Hide the illustrative “Ouvir / Cantar junto” labels baked into the video. */}
+        <div aria-hidden className="absolute left-[17%] top-[72%] z-20 h-[11%] w-[27%] bg-emerald-50" />
+        <div aria-hidden className="absolute right-[17%] top-[72%] z-20 h-[11%] w-[28%] bg-amber-50" />
+
+        <button
+          type="button"
           onClick={toggle}
           aria-label={isPlaying ? "Pausar" : "Tocar"}
-          className="absolute right-3 top-3 z-20 grid h-12 w-12 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
-        >
-          {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Music2 className="h-5 w-5" />}
-        </button>
+          className="absolute left-[46.2%] top-[52%] z-30 h-[14%] w-[8%] rounded-full bg-transparent"
+        />
       </div>
-
-      {/* Bottom tribal strip */}
-      <div
-        aria-hidden
-        className="h-3 w-full"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg,#c1873f 0 10px,#7a4a24 10px 20px)",
-        }}
-      />
 
       <audio
         ref={ref}
