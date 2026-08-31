@@ -75,16 +75,6 @@ export function MiniPlayer({
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 
-  useEffect(() => {
-    const box = boxRef.current;
-    const el = lineRefs.current[activeIdx];
-    if (!box || !el) return;
-    box.scrollTo?.({
-      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
-      behavior: "smooth",
-    });
-  }, [activeIdx]);
-
   function retryAudio() {
     const a = ref.current;
     if (!a) return;
