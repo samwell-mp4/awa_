@@ -23,20 +23,6 @@ export function KidsSongPlayer({
     void a.play()?.catch(() => {});
   }, [song.id, song.audio_url]);
 
-  useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      const a = ref.current;
-      if (a) {
-        setProgress(a.currentTime);
-        if (a.duration && Number.isFinite(a.duration)) setAudioDuration(a.duration);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [song.id]);
-
   function toggle() {
     const a = ref.current;
     if (!a) return;
