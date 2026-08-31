@@ -99,26 +99,13 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        {/* Logo + vídeo unidos: vídeo de fundo com a logo sobreposta */}
+        {/* Logo em cima e vídeo logo abaixo — empilhados, sem sobreposição */}
         <section
           key={languageKey}
-          className="relative mt-0 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
+          className="mt-0 flex flex-col gap-0 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
           style={{ background: "#0b3d2e" }}
         >
-          <VideoMenu src={videoUrl} label={t("infantil.title")} />
-
-          {/* Camada escura suave para dar contraste à logo */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(4,32,22,0.55) 0%, rgba(4,32,22,0.15) 45%, rgba(4,32,22,0.45) 100%)",
-            }}
-            aria-hidden
-          />
-
-          {/* Logo sobreposta */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
+          <div className="flex items-center justify-center bg-[#0b3d2e] p-4">
             <img
               src={logoUrl}
               alt="Awã Tech — Línguas indígenas, culturas vivas"
@@ -128,9 +115,9 @@ function InfantilHome() {
               fetchPriority="high"
               decoding="async"
               draggable={false}
-              style={{ mixBlendMode: "screen" }}
             />
           </div>
+          <VideoMenu src={videoUrl} label={t("infantil.title")} />
         </section>
 
         <Link
