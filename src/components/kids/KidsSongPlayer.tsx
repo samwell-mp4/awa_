@@ -6,6 +6,7 @@ import { speak } from "@/lib/speak";
 import {
   activeLineIndex,
   computeLyricBounds,
+  LYRIC_LEAD,
   resolveDuration,
   splitLyrics,
 } from "@/lib/lyric-sync";
