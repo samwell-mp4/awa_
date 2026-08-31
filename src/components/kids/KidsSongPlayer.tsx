@@ -108,8 +108,16 @@ export function KidsSongPlayer({
 
         {/* Duas colunas fixas: apenas o texto da linha atual é trocado, sem acumular. */}
         <section className="absolute inset-x-[14.8%] top-[25.5%] z-20 grid h-[47%] grid-cols-2 gap-[5%] overflow-hidden" aria-label={`Letra de ${song.title}`}>
-          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950 [container-type:inline-size]">
-            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>Patxôhã</h2>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              speak(currentRow?.indigenous ?? "", "pt-BR");
+            }}
+            aria-label="Ouvir pronúncia em Patxôhã"
+            className="grid grid-rows-[auto_1fr] overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950 transition active:scale-[0.98] [container-type:inline-size]"
+          >
+            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>🗣️ Patxôhã</h2>
             <p
               aria-live="polite"
               className="grid place-items-center overflow-hidden break-words font-display font-black leading-tight [hyphens:auto]"
@@ -117,9 +125,17 @@ export function KidsSongPlayer({
             >
               {currentRow?.indigenous ?? ""}
             </p>
-          </div>
-          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950 [container-type:inline-size]">
-            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>Português</h2>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              speak(currentRow?.portuguese ?? "", "pt-BR");
+            }}
+            aria-label="Ouvir pronúncia em Português"
+            className="grid grid-rows-[auto_1fr] overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950 transition active:scale-[0.98] [container-type:inline-size]"
+          >
+            <h2 className="font-display font-black" style={{ fontSize: "clamp(0.6rem, 7cqw, 1.5rem)" }}>📝 Português</h2>
             <p
               aria-live="polite"
               className="grid place-items-center overflow-hidden break-words font-display font-black leading-tight [hyphens:auto]"
@@ -127,7 +143,7 @@ export function KidsSongPlayer({
             >
               {currentRow?.portuguese ?? ""}
             </p>
-          </div>
+          </button>
         </section>
 
 
