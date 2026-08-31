@@ -48,8 +48,8 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
 export const getSongsWithReference = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const ctx = context as any;
-    if (!ctx?.supabase) return [];
-    const { data, error } = await ctx.supabase
+    const { publicServerClient } = await import("./site-config.server");
+    const { data, error } = await (ctx?.supabase ?? publicServerClient())
       .from("songs" as any)
       .select("*")
       .eq("is_active", true)
