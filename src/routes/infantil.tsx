@@ -130,46 +130,11 @@ function InfantilHome() {
 
 
 
-        {/* Menu labels below the video — todos juntos */}
-        <section key={`labels-${languageKey}`} className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {Array.isArray(hotspots) && hotspots.map((h: any) => (
-            <Link
-              key={`${languageKey}-${h.to}-${h.key}`}
-              to={h.to}
-              aria-label={t(`infantil.hotspots.${h.key}`) || h.key}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
-              style={{ borderColor: h.color }}
-            >
-              <span className="text-2xl md:text-3xl" aria-hidden>{h.emoji}</span>
-              <span className="text-center leading-tight">{t(`infantil.hotspots.${h.key}`) || h.key}</span>
-            </Link>
-          ))}
-          {/* Adicionais fixos (ou que podem ser movidos para site_config depois se o user quiser) */}
-          {[
-            { to: "/aprender-numeros", key: "numbers", emoji: "🔢", color: "#f94144" },
-            { slug: "saudacoes", key: "trailSaudacoes", emoji: "👋", color: "#e9c46a" },
-            { slug: "familia", key: "trailFamilia", emoji: "👨‍👩‍👧", color: "#8ecae6" },
-            { slug: "natureza", key: "trailNatureza", emoji: "🌳", color: "#2f6d3a" },
-            { slug: "animais", key: "trailAnimais", emoji: "🦜", color: "#e76f51" },
-          ].map((c: any) => (
-            <Link
-              key={c.to || `trail-${c.slug}`}
-              to={(c.to || "/trilhas/$slug") as any}
-              params={(c.slug ? { slug: c.slug } : {}) as any}
+        {/* Menu principal infantil */}
+        <div className="mt-4">
+          <KidsMainMenu />
+        </div>
 
-
-              aria-label={c.key === "numbers" ? "Aprender Números" : t(`common.${c.key}`)}
-              className="flex flex-col items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white md:text-base"
-              style={{ borderColor: c.color }}
-            >
-              <span className="text-2xl md:text-3xl" aria-hidden>{c.emoji}</span>
-              <span className="text-center leading-tight">
-                {c.key === "numbers" ? "Números" : t(`common.${c.key}`)}
-              </span>
-            </Link>
-          ))}
-
-        </section>
 
       </main>
 
