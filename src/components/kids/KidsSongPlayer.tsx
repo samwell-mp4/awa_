@@ -94,25 +94,22 @@ export function KidsSongPlayer({
           className="absolute left-[7.2%] top-[4.5%] z-30 h-[10%] w-[6%] rounded-full"
         />
 
-        {/* Replace the video's illustrative copy with the selected song's real lyrics. */}
+        {/* Duas colunas fixas: apenas o texto da linha atual é trocado, sem acumular. */}
         <section className="absolute inset-x-[14.8%] top-[25.5%] z-20 grid h-[47%] grid-cols-2 gap-[5%] overflow-hidden" aria-label={`Letra de ${song.title}`}>
-          <div className="overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950">
-            <h2 className="mb-[2%] font-display text-xs font-black sm:text-lg md:text-2xl">Patxôhã</h2>
-            <div className={`${lyricSize} font-display font-black leading-snug`}>
-              {indigenousLines.map((line, index) => (
-                <p key={`${index}-${line}`}>{line}</p>
-              ))}
-            </div>
+          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-emerald-50 px-[4%] py-[2%] text-center text-emerald-950">
+            <h2 className="font-display text-xs font-black sm:text-lg md:text-2xl">Patxôhã</h2>
+            <p aria-live="polite" className="grid place-items-center overflow-hidden font-display text-[11px] font-black leading-snug sm:text-lg md:text-2xl">
+              {currentRow?.indigenous ?? ""}
+            </p>
           </div>
-          <div className="overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950">
-            <h2 className="mb-[2%] font-display text-xs font-black sm:text-lg md:text-2xl">Português</h2>
-            <div className={`${lyricSize} font-display font-black leading-snug`}>
-              {portugueseLines.map((line, index) => (
-                <p key={`${index}-${line}`}>{line}</p>
-              ))}
-            </div>
+          <div className="grid grid-rows-[auto_1fr] overflow-hidden bg-amber-50 px-[4%] py-[2%] text-center text-amber-950">
+            <h2 className="font-display text-xs font-black sm:text-lg md:text-2xl">Português</h2>
+            <p aria-live="polite" className="grid place-items-center overflow-hidden font-display text-[11px] font-black leading-snug sm:text-lg md:text-2xl">
+              {currentRow?.portuguese ?? ""}
+            </p>
           </div>
         </section>
+
 
         {/* Hide the illustrative “Ouvir / Cantar junto” labels baked into the video. */}
         <div aria-hidden className="absolute left-[17%] top-[72%] z-20 h-[11%] w-[27%] bg-emerald-50" />
