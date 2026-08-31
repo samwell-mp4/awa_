@@ -62,6 +62,14 @@ export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
         {trails.map((trail) => {
           const slug = trailSlugMap[trail.name];
           const label = translateTrailName(t, trail.name);
+          const isNumeros = (trail.name ?? "").trim().toLowerCase().replace("ú", "u") === "numeros";
+          if (isNumeros) {
+            return (
+              <Link key={trail.name} to="/aprender-numeros" className={cardClass}>
+                <TrailCardInner trail={trail} label={label} />
+              </Link>
+            );
+          }
           return slug ? (
             <Link key={trail.name} to="/trilhas/$slug" params={{ slug }} className={cardClass}>
               <TrailCardInner trail={trail} label={label} />
