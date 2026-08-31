@@ -88,9 +88,9 @@ export function KidsSongPlayer({
           muted
           playsInline
           aria-hidden
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          className="pointer-events-none absolute inset-0 h-full w-full object-contain"
         />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/10" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/0" />
 
         {/* Title plaque */}
         <div className="relative z-10 flex justify-center pt-2">
@@ -103,7 +103,7 @@ export function KidsSongPlayer({
         <button
           onClick={toggle}
           aria-label={isPlaying ? "Pausar" : "Tocar"}
-          className="absolute left-1/2 top-[26%] z-20 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
+          className="absolute right-3 top-3 z-20 grid h-12 w-12 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
         >
           {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Music2 className="h-5 w-5" />}
         </button>
