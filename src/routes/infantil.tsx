@@ -105,13 +105,13 @@ function InfantilHome() {
           className="mt-0 flex flex-col gap-0 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
           style={{ background: "#0b3d2e" }}
         >
-          <div className="flex items-center justify-center bg-[#0b3d2e] p-4">
+          <div className="bg-[#0b3d2e]">
             <img
               src={logoUrl}
               alt="Awã Tech — Línguas indígenas, culturas vivas"
               width={1200}
               height={600}
-              className="w-[86%] max-w-[560px] h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
+              className="block w-full h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
               fetchPriority="high"
               decoding="async"
               draggable={false}
