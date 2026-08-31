@@ -36,8 +36,6 @@ export function MiniPlayer({
   const [progress, setProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const [audioError, setAudioError] = useState(false);
-  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setProgress(0);
