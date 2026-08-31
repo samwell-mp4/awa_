@@ -4,17 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 
-import { ContinueLearningCard } from "@/components/home/continue-learning";
-import { DailyMissionCard } from "@/components/home/daily-mission-card";
-import { GreetingOfMoment } from "@/components/home/greeting-of-moment";
-import { HeroSection } from "@/components/home/hero-section";
-import { InstallCTA } from "@/components/home/install-cta";
-import { RankingCard } from "@/components/home/ranking-card";
+import { MainMenu } from "@/components/home/main-menu";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
-import { TrailsGrid } from "@/components/home/trails-grid";
 import { useActiveTemplate } from "@/hooks/use-active-template";
-import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 
 export const Route = createFileRoute("/adulto")({
