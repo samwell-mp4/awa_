@@ -4,8 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useLang, pickLang } from "@/lib/pick-lang";
 import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
-import leftKid from "@/assets/kids-player/left.png.asset.json";
-import rightKid from "@/assets/kids-player/right.png.asset.json";
+import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
 
 export function KidsSongPlayer({
   song,
