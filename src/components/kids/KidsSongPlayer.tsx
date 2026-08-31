@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Home, Music2, Pause, Play, Volume2 } from "lucide-react";
+import { ArrowLeft, Home, Music2, Pause } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
@@ -28,13 +28,6 @@ export function KidsSongPlayer({
     if (!a) return;
     if (a.paused) void a.play()?.catch(() => {});
     else a.pause();
-  }
-
-  function restart() {
-    const a = ref.current;
-    if (!a) return;
-    a.currentTime = 0;
-    void a.play()?.catch(() => {});
   }
 
   return (
@@ -107,23 +100,6 @@ export function KidsSongPlayer({
         >
           {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Music2 className="h-5 w-5" />}
         </button>
-
-
-        {/* Buttons */}
-        <div className="absolute inset-x-0 bottom-2 z-20 flex justify-center gap-2 px-3">
-          <button
-            onClick={restart}
-            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
-          >
-            <Volume2 className="h-4 w-4" /> Ouvir
-          </button>
-          <button
-            onClick={toggle}
-            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
-          >
-            <Play className="h-4 w-4 fill-current" /> Cantar Junto
-          </button>
-        </div>
       </div>
 
       {/* Bottom tribal strip */}
