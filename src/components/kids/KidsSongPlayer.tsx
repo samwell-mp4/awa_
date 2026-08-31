@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
-import { splitLyrics } from "@/lib/lyric-sync";
+import {
+  activeLineIndex,
+  computeLyricBounds,
+  resolveDuration,
+  splitLyrics,
+} from "@/lib/lyric-sync";
 
 export function KidsSongPlayer({
   song,
@@ -14,33 +19,43 @@ export function KidsSongPlayer({
 }) {
   const ref = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const rawIndigenousLines = splitLyrics(song.lyrics_indigenous);
-  const rawPortugueseLines = splitLyrics(song.lyrics_pt);
-  const lyricRows = Array.from(
-    { length: Math.max(rawIndigenousLines.length, rawPortugueseLines.length) },
-    (_, index) => ({
-      indigenous: rawIndigenousLines[index] ?? "",
-      portuguese: rawPortugueseLines[index] ?? "",
-    }),
-  ).filter(
-    (row, index, rows) =>
-      index === 0 ||
-      row.indigenous !== rows[index - 1]?.indigenous ||
-      row.portuguese !== rows[index - 1]?.portuguese,
+  const [duration, setDuration] = useState<number | null>(null);
+  const [lineIndex, setLineIndex] = useState(0);
+
+  const lyricRows = useMemo(() => {
+    const rawIndigenousLines = splitLyrics(song.lyrics_indigenous);
+    const rawPortugueseLines = splitLyrics(song.lyrics_pt);
+    return Array.from(
+      { length: Math.max(rawIndigenousLines.length, rawPortugueseLines.length) },
+      (_, index) => ({
+        indigenous: rawIndigenousLines[index] ?? "",
+        portuguese: rawPortugueseLines[index] ?? "",
+      }),
+    ).filter(
+      (row, index, rows) =>
+        index === 0 ||
+        row.indigenous !== rows[index - 1]?.indigenous ||
+        row.portuguese !== rows[index - 1]?.portuguese,
+    );
+  }, [song.lyrics_indigenous, song.lyrics_pt]);
+
+  const bounds = useMemo(
+    () =>
+      computeLyricBounds(
+        lyricRows.map((r) => r.indigenous),
+        lyricRows.map((r) => r.portuguese),
+        resolveDuration(duration, (song as any).duration_seconds),
+      ),
+    [lyricRows, duration, song],
   );
-  const indigenousLines = lyricRows.map((row) => row.indigenous);
-  const portugueseLines = lyricRows.map((row) => row.portuguese);
-  const lineCount = Math.max(indigenousLines.length, portugueseLines.length);
-  const lyricSize =
-    lineCount > 16
-      ? "text-[8px] sm:text-xs md:text-sm"
-      : lineCount > 11
-        ? "text-[9px] sm:text-sm md:text-base"
-        : "text-[10px] sm:text-base md:text-xl";
+
+  const currentRow = lyricRows[Math.min(lineIndex, lyricRows.length - 1)];
 
   useEffect(() => {
     const a = ref.current;
     if (!a) return;
+    setLineIndex(0);
+    setDuration(null);
     a.load();
     void a.play()?.catch(() => {});
   }, [song.id, song.audio_url]);
@@ -51,6 +66,7 @@ export function KidsSongPlayer({
     if (a.paused) void a.play()?.catch(() => {});
     else a.pause();
   }
+
 
   return (
     <div className="fixed inset-0 z-[70] grid place-items-center overflow-hidden bg-amber-950">
