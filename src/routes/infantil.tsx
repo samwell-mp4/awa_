@@ -1,5 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
@@ -171,16 +171,6 @@ function InfantilHome() {
 
         </section>
 
-        {t("infantil.learning") && (
-          <section className="mt-12 content-visibility-auto">
-            <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
-              {t("infantil.learning")}
-            </h2>
-            <Suspense fallback={<div className="h-40 flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
-              <GlossarioInfantil />
-            </Suspense>
-          </section>
-        )}
       </main>
 
 
