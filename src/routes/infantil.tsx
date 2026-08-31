@@ -99,35 +99,48 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        <div className="-mx-3 md:-mx-6 mt-0 min-h-[300px] bg-[#0b3d2e]">
-          <img
-            src={logoUrl}
-            alt="Awã Tech — Línguas indígenas, culturas vivas"
-            width={1200}
-            height={600}
-            className="block w-screen max-w-none h-auto relative left-1/2 -translate-x-1/2"
-            fetchPriority="high"
-            decoding="async"
-            draggable={false}
-          />
-        </div>
+        {/* Logo + vídeo unidos: vídeo de fundo com a logo sobreposta */}
+        <section
+          key={languageKey}
+          className="relative mt-0 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
+          style={{ background: "#0b3d2e" }}
+        >
+          <VideoMenu src={videoUrl} label={t("infantil.title")} />
 
+          {/* Camada escura suave para dar contraste à logo */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(4,32,22,0.55) 0%, rgba(4,32,22,0.15) 45%, rgba(4,32,22,0.45) 100%)",
+            }}
+            aria-hidden
+          />
+
+          {/* Logo sobreposta */}
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={logoUrl}
+              alt="Awã Tech — Línguas indígenas, culturas vivas"
+              width={1200}
+              height={600}
+              className="w-[86%] max-w-[560px] h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
+              fetchPriority="high"
+              decoding="async"
+              draggable={false}
+              style={{ mixBlendMode: "screen" }}
+            />
+          </div>
+        </section>
 
         <Link
           to="/"
-          className="group relative z-10 -mt-6 mx-auto flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
+          className="group relative z-10 -mt-6 mx-auto flex w-fit items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
         >
           <ArrowLeft className="h-5 w-5 stroke-[3]" />
           <span>{t("common.voltar")}</span>
         </Link>
 
-        <section
-          key={languageKey}
-          className="relative mt-4 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
-          style={{ background: "#0b3d2e" }}
-        >
-          <VideoMenu src={videoUrl} label={t("infantil.title")} />
-        </section>
 
 
         {/* Menu labels below the video — todos juntos */}
