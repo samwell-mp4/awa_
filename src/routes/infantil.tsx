@@ -77,44 +77,12 @@ function InfantilHome() {
       <SiteHeader mode="infantil" />
 
       <main className="mx-auto max-w-3xl px-3 pb-16 md:px-6">
-        {/* Logo em cima e vídeo logo abaixo — empilhados, sem sobreposição */}
-        <section
-          key={languageKey}
-          className="mt-0 flex flex-col gap-0 overflow-hidden rounded-[2rem] border-4 border-amber-300 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.45)]"
-          style={{ background: "#0b3d2e" }}
-        >
-          <div className="bg-[#0b3d2e]">
-            <img
-              src={logoUrl}
-              alt="Awã Tech — Línguas indígenas, culturas vivas"
-              width={1200}
-              height={600}
-              className="block w-full h-auto drop-shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
-              fetchPriority="high"
-              decoding="async"
-              draggable={false}
-            />
-          </div>
-          <VideoMenu src={videoUrl} label={t("infantil.title")} />
-        </section>
-
-        <Link
-          to="/"
-          className="group relative z-10 -mt-6 mx-auto flex w-fit items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
-        >
-          <ArrowLeft className="h-5 w-5 stroke-[3]" />
-          <span>{t("common.voltar")}</span>
-        </Link>
-
-
-
         {/* Menu principal infantil */}
-        <div className="mt-4">
+        <div key={languageKey} className="mt-4">
           <KidsMainMenu />
         </div>
-
-
       </main>
+
 
 
 
