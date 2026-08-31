@@ -15,6 +15,8 @@ const trailNameKey: Record<string, string> = {
   "família": "common.trailFamilia",
   natureza: "common.trailNatureza",
   animais: "common.trailAnimais",
+  numeros: "numbers.title",
+  "números": "numbers.title",
 };
 
 export function translateTrailName(t: (k: string) => string, name: string) {
