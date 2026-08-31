@@ -17,14 +17,15 @@ export const getSiteConfig = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
     const ctx = context as any;
-    if (!ctx?.supabase) return null;
-    const { data, error } = await ctx.supabase
+    const { publicServerClient } = await import("./site-config.server");
+    const client = ctx?.supabase ?? publicServerClient();
+    const { data, error } = await client
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
       .maybeSingle();
     if (error || !data) return null;
-    return data.value;
+    return (data as any).value;
   });
 
 export const updateSiteConfig = createServerFn({ method: "POST" })
@@ -47,8 +48,8 @@ export const updateSiteConfig = createServerFn({ method: "POST" })
 export const getSongsWithReference = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const ctx = context as any;
-    if (!ctx?.supabase) return [];
-    const { data, error } = await ctx.supabase
+    const { publicServerClient } = await import("./site-config.server");
+    const { data, error } = await (ctx?.supabase ?? publicServerClient())
       .from("songs" as any)
       .select("*")
       .eq("is_active", true)
