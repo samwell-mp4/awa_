@@ -80,6 +80,33 @@ export function KidsSongPlayer({
     else a.pause();
   }
 
+  /** Tempo de início de um verso: o final do verso anterior (ou 0). */
+  function lineStart(i: number) {
+    return i <= 0 ? 0 : Math.max(0, (bounds[i - 1] ?? 0) - LYRIC_LEAD);
+  }
+
+  /** Vai para o verso anterior e posiciona o áudio nele. */
+  function goPrevLine() {
+    setLineIndex((prev) => {
+      const next = Math.max(0, prev - 1);
+      const a = ref.current;
+      if (a) a.currentTime = lineStart(next);
+      return next;
+    });
+  }
+
+  /** Vai para o próximo verso e posiciona o áudio nele. */
+  function goNextLine() {
+    setLineIndex((prev) => {
+      const next = Math.min(lyricRows.length - 1, prev + 1);
+      const a = ref.current;
+      if (a) a.currentTime = lineStart(next);
+      return next;
+    });
+  }
+
+
+
 
   return (
     <div className="fixed inset-0 z-[70] grid place-items-center overflow-hidden bg-amber-950">
