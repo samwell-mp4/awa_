@@ -127,11 +127,17 @@ export function KidsSongPlayer({
         ref={ref}
         src={song.audio_url}
         preload="auto"
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onTimeUpdate={(e) => {
+          const next = activeLineIndex(bounds, e.currentTarget.currentTime);
+          if (next >= 0) setLineIndex((prev) => (prev === next ? prev : next));
+        }}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
         className="hidden"
       />
+
     </div>
   );
 }
