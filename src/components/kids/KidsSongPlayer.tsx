@@ -37,9 +37,6 @@ export function KidsSongPlayer({
     void a.play()?.catch(() => {});
   }
 
-  const lineSize = branding?.caption_max_size || "text-lg sm:text-2xl md:text-3xl";
-  const subSize = branding?.caption_max_subsize || "text-base sm:text-xl md:text-2xl";
-
   return (
     <div className="fixed inset-0 z-[70] flex flex-col bg-[#4a2c17]">
       {/* Top wood bar */}
