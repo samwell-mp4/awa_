@@ -6,6 +6,7 @@ import { speak } from "@/lib/speak";
 import {
   activeLineIndex,
   computeLyricBounds,
+  LYRIC_LEAD,
   resolveDuration,
   splitLyrics,
 } from "@/lib/lyric-sync";
@@ -80,6 +81,33 @@ export function KidsSongPlayer({
     else a.pause();
   }
 
+  /** Tempo de início de um verso: o final do verso anterior (ou 0). */
+  function lineStart(i: number) {
+    return i <= 0 ? 0 : Math.max(0, (bounds[i - 1] ?? 0) - LYRIC_LEAD);
+  }
+
+  /** Vai para o verso anterior e posiciona o áudio nele. */
+  function goPrevLine() {
+    setLineIndex((prev) => {
+      const next = Math.max(0, prev - 1);
+      const a = ref.current;
+      if (a) a.currentTime = lineStart(next);
+      return next;
+    });
+  }
+
+  /** Vai para o próximo verso e posiciona o áudio nele. */
+  function goNextLine() {
+    setLineIndex((prev) => {
+      const next = Math.min(lyricRows.length - 1, prev + 1);
+      const a = ref.current;
+      if (a) a.currentTime = lineStart(next);
+      return next;
+    });
+  }
+
+
+
 
   return (
     <div className="fixed inset-0 z-[70] grid place-items-center overflow-hidden bg-amber-950">
@@ -148,12 +176,12 @@ export function KidsSongPlayer({
         </section>
 
 
-        {/* Hide the illustrative “Ouvir / Cantar junto” labels baked into the video. */}
-        <div className="absolute left-[17%] top-[72%] z-20 grid h-[11%] w-[27%] place-items-center bg-emerald-50 px-[1%] text-center font-display font-bold text-emerald-900" style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}>
-          🔊 Clique para ouvir
-        </div>
-        <div className="absolute right-[17%] top-[72%] z-20 grid h-[11%] w-[28%] place-items-center bg-amber-50 px-[1%] text-center font-display font-bold text-amber-900" style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}>
-          🔊 Clique para ouvir
+        {/* Aviso único e centralizado — nenhum texto é desenhado sobre o fundo. */}
+        <div
+          className="absolute inset-x-[20%] top-[73.5%] z-20 grid place-items-center rounded-full bg-amber-100/95 px-[2%] py-[1%] text-center font-display font-black text-emerald-900 shadow-[0_3px_0_rgba(0,0,0,0.18)]"
+          style={{ fontSize: "clamp(0.55rem, 1.25vw, 1rem)" }}
+        >
+          🔊 Clique para ouvir a palavra
         </div>
 
         <button
@@ -162,6 +190,39 @@ export function KidsSongPlayer({
           aria-label={isPlaying ? "Pausar" : "Tocar"}
           className="absolute left-[46.2%] top-[52%] z-30 h-[14%] w-[8%] rounded-full bg-transparent"
         />
+
+        {/* Navegação inferior: Voltar | Início | Próxima */}
+        <nav className="absolute inset-x-[8%] top-[88.5%] z-30 flex items-center justify-between gap-[2%]">
+          <button
+            type="button"
+            onClick={goPrevLine}
+            disabled={lineIndex <= 0}
+            aria-label="Verso anterior"
+            className="flex flex-1 items-center justify-center gap-[4%] rounded-full border-2 border-white bg-emerald-700 px-[3%] py-[1.5%] font-display font-black text-white shadow-[0_3px_0_#064e3b] transition active:translate-y-0.5 active:shadow-none disabled:opacity-40 disabled:active:translate-y-0 disabled:active:shadow-[0_3px_0_#064e3b]"
+            style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}
+          >
+            ⬅️ Voltar
+          </button>
+          <Link
+            to="/infantil"
+            aria-label="Início"
+            className="flex flex-1 items-center justify-center gap-[4%] rounded-full border-2 border-white bg-amber-500 px-[3%] py-[1.5%] font-display font-black text-white shadow-[0_3px_0_#92400e] transition active:translate-y-0.5 active:shadow-none"
+            style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}
+          >
+            🏠 Início
+          </Link>
+          <button
+            type="button"
+            onClick={goNextLine}
+            disabled={lineIndex >= lyricRows.length - 1}
+            aria-label="Próximo verso"
+            className="flex flex-1 items-center justify-center gap-[4%] rounded-full border-2 border-white bg-emerald-700 px-[3%] py-[1.5%] font-display font-black text-white shadow-[0_3px_0_#064e3b] transition active:translate-y-0.5 active:shadow-none disabled:opacity-40 disabled:active:translate-y-0 disabled:active:shadow-[0_3px_0_#064e3b]"
+            style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.9rem)" }}
+          >
+            Próxima ➡️
+          </button>
+        </nav>
+
       </div>
 
       <audio
