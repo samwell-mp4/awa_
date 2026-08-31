@@ -4,8 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useLang, pickLang } from "@/lib/pick-lang";
 import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
-import leftKid from "@/assets/kids-player/left.png.asset.json";
-import rightKid from "@/assets/kids-player/right.png.asset.json";
+import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
 
 export function KidsSongPlayer({
   song,
@@ -118,20 +117,18 @@ export function KidsSongPlayer({
       />
 
       {/* Board */}
-      <div className="relative flex-1 overflow-hidden bg-gradient-to-b from-[#f7edd2] to-[#efe0be]">
-        {/* Characters */}
-        <img
-          src={leftKid.url}
-          alt=""
+      <div className="relative flex-1 overflow-hidden bg-[#4a2c17]">
+        {/* Original video filling the screen */}
+        <video
+          src={bgVideo.url}
+          autoPlay
+          loop
+          muted
+          playsInline
           aria-hidden
-          className="pointer-events-none absolute bottom-0 left-0 h-[45%] select-none object-contain opacity-95 sm:h-[62%]"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
-        <img
-          src={rightKid.url}
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute bottom-0 right-0 h-[45%] select-none object-contain opacity-95 sm:h-[62%]"
-        />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/25" />
 
         {/* Title plaque */}
         <div className="relative z-10 flex justify-center pt-3">
@@ -142,7 +139,7 @@ export function KidsSongPlayer({
 
         {/* Two columns */}
         <div className="relative z-10 mx-auto grid h-[calc(100%-9.5rem)] max-w-5xl grid-cols-2 gap-0 px-2 pt-3">
-          <div className="overflow-y-auto rounded-l-2xl bg-[#e6f2e2]/85 px-2 py-2 sm:px-6">
+          <div className="overflow-y-auto rounded-l-2xl bg-[#e6f2e2]/85 px-2 py-2 backdrop-blur-sm sm:px-6">
             <h2 className="mb-1 text-center font-display text-lg font-black text-[#2f6d3a] sm:text-2xl">
               Patxôhã
             </h2>
@@ -158,7 +155,7 @@ export function KidsSongPlayer({
               </p>
             ))}
           </div>
-          <div className="overflow-y-auto rounded-r-2xl bg-[#fbf3dc]/90 px-2 py-2 sm:px-6">
+          <div className="overflow-y-auto rounded-r-2xl bg-[#fbf3dc]/90 px-2 py-2 backdrop-blur-sm sm:px-6">
             <h2 className="mb-1 text-center font-display text-lg font-black text-[#a04a1e] sm:text-2xl">
               Português
             </h2>
