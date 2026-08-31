@@ -155,7 +155,7 @@ export function KidsSongPlayer({
               </p>
             ))}
           </div>
-          <div className="overflow-y-auto rounded-r-2xl bg-[#fbf3dc]/90 px-2 py-2 sm:px-6">
+          <div className="overflow-y-auto rounded-r-2xl bg-[#fbf3dc]/90 px-2 py-2 backdrop-blur-sm sm:px-6">
             <h2 className="mb-1 text-center font-display text-lg font-black text-[#a04a1e] sm:text-2xl">
               Português
             </h2>
