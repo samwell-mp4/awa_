@@ -30,13 +30,6 @@ export function KidsSongPlayer({
     else a.pause();
   }
 
-  function restart() {
-    const a = ref.current;
-    if (!a) return;
-    a.currentTime = 0;
-    void a.play()?.catch(() => {});
-  }
-
   return (
     <div className="fixed inset-0 z-[70] flex flex-col bg-[#4a2c17]">
       {/* Top wood bar */}
