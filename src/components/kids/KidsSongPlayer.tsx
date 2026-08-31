@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Home, Music2, Pause, Play, Volume2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useLang, pickLang } from "@/lib/pick-lang";
-import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 import type { MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import bgVideo from "@/assets/kids-player/bg.mp4.asset.json";
 
@@ -16,47 +14,14 @@ export function KidsSongPlayer({
   onClose: () => void;
 }) {
   const ref = useRef<HTMLAudioElement>(null);
-  const lang = useLang();
-  const [progress, setProgress] = useState(0);
-  const [audioDuration, setAudioDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setProgress(0);
-    setAudioDuration(0);
     const a = ref.current;
     if (!a) return;
     a.load();
     void a.play()?.catch(() => {});
   }, [song.id, song.audio_url]);
-
-  useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      const a = ref.current;
-      if (a) {
-        setProgress(a.currentTime);
-        if (a.duration && Number.isFinite(a.duration)) setAudioDuration(a.duration);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [song.id]);
-
-  const indLines = useMemo(() => splitLyrics(song.lyrics_indigenous || ""), [song.lyrics_indigenous]);
-  const transLines = useMemo(
-    () => splitLyrics(pickLang(song as any, "lyrics_pt", lang) || ""),
-    [song, lang],
-  );
-  const maxLen = Math.max(indLines.length, transLines.length);
-  const duration = resolveDuration(audioDuration, song.duration_seconds);
-
-  const bounds = useMemo(
-    () => computeLyricBounds(indLines, transLines, duration, song.sync_offsets || []),
-    [indLines, transLines, duration, song.id, lang, song.sync_offsets],
-  );
-  const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 
   function toggle() {
     const a = ref.current;
@@ -71,9 +36,6 @@ export function KidsSongPlayer({
     a.currentTime = 0;
     void a.play()?.catch(() => {});
   }
-
-  const lineSize = branding?.caption_max_size || "text-lg sm:text-2xl md:text-3xl";
-  const subSize = branding?.caption_max_subsize || "text-base sm:text-xl md:text-2xl";
 
   return (
     <div className="fixed inset-0 z-[70] flex flex-col bg-[#4a2c17]">
@@ -137,41 +99,6 @@ export function KidsSongPlayer({
           </div>
         </div>
 
-        {/* Two columns (compact, over the lower part so the video stays visible) */}
-        <div className="absolute inset-x-0 bottom-14 z-10 mx-auto grid max-h-[42%] max-w-3xl grid-cols-2 gap-1 overflow-hidden px-2">
-          <div className="overflow-y-auto rounded-xl bg-[#e6f2e2]/70 px-2 py-1 backdrop-blur-sm">
-            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#2f6d3a] sm:text-sm">
-              Patxôhã
-            </h2>
-            {Array.from({ length: maxLen }).map((_, i) => (
-              <p
-                key={i}
-                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
-                  i === activeIdx ? "text-[#1f5128]" : "text-[#2f6d3a]/60"
-                }`}
-              >
-                {indLines[i] || "\u00A0"}
-              </p>
-            ))}
-          </div>
-          <div className="overflow-y-auto rounded-xl bg-[#fbf3dc]/70 px-2 py-1 backdrop-blur-sm">
-            <h2 className="mb-0.5 text-center font-display text-[11px] font-black uppercase text-[#a04a1e] sm:text-sm">
-              Português
-            </h2>
-            {Array.from({ length: maxLen }).map((_, i) => (
-              <p
-                key={i}
-                className={`text-center text-[11px] font-bold leading-tight transition-colors sm:text-sm ${
-                  i === activeIdx ? "text-[#7b3411]" : "text-[#a04a1e]/60"
-                }`}
-              >
-                {transLines[i] || "\u00A0"}
-              </p>
-            ))}
-          </div>
-        </div>
-
-
         {/* Play knob */}
         <button
           onClick={toggle}
@@ -183,35 +110,19 @@ export function KidsSongPlayer({
 
 
         {/* Buttons */}
-        <div className="absolute inset-x-0 bottom-2 z-20 mx-auto grid max-w-5xl grid-cols-2 gap-2 px-3">
-          <div className="flex justify-center gap-2">
-            <button
-              onClick={restart}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Volume2 className="h-4 w-4" /> Ouvir
-            </button>
-            <button
-              onClick={toggle}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Play className="h-4 w-4 fill-current" /> Cantar Junto
-            </button>
-          </div>
-          <div className="flex justify-center gap-2">
-            <button
-              onClick={restart}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Volume2 className="h-4 w-4" /> Ouvir
-            </button>
-            <button
-              onClick={toggle}
-              className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
-            >
-              <Play className="h-4 w-4 fill-current" /> Cantar Junto
-            </button>
-          </div>
+        <div className="absolute inset-x-0 bottom-2 z-20 flex justify-center gap-2 px-3">
+          <button
+            onClick={restart}
+            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#2f6d3a] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#1f4a26] active:translate-y-0.5 active:shadow-none sm:text-sm"
+          >
+            <Volume2 className="h-4 w-4" /> Ouvir
+          </button>
+          <button
+            onClick={toggle}
+            className="inline-flex items-center gap-1 rounded-full border-2 border-[#f2d7a8] bg-[#b8541f] px-4 py-2 text-xs font-black uppercase text-[#f7e7c8] shadow-[0_4px_0_#7b3411] active:translate-y-0.5 active:shadow-none sm:text-sm"
+          >
+            <Play className="h-4 w-4 fill-current" /> Cantar Junto
+          </button>
         </div>
       </div>
 
