@@ -14,8 +14,22 @@ export function KidsSongPlayer({
 }) {
   const ref = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const indigenousLines = splitLyrics(song.lyrics_indigenous);
-  const portugueseLines = splitLyrics(song.lyrics_pt);
+  const rawIndigenousLines = splitLyrics(song.lyrics_indigenous);
+  const rawPortugueseLines = splitLyrics(song.lyrics_pt);
+  const lyricRows = Array.from(
+    { length: Math.max(rawIndigenousLines.length, rawPortugueseLines.length) },
+    (_, index) => ({
+      indigenous: rawIndigenousLines[index] ?? "",
+      portuguese: rawPortugueseLines[index] ?? "",
+    }),
+  ).filter(
+    (row, index, rows) =>
+      index === 0 ||
+      row.indigenous !== rows[index - 1]?.indigenous ||
+      row.portuguese !== rows[index - 1]?.portuguese,
+  );
+  const indigenousLines = lyricRows.map((row) => row.indigenous);
+  const portugueseLines = lyricRows.map((row) => row.portuguese);
   const lineCount = Math.max(indigenousLines.length, portugueseLines.length);
   const lyricSize =
     lineCount > 16
