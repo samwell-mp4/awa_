@@ -103,7 +103,7 @@ export function KidsSongPlayer({
         <button
           onClick={toggle}
           aria-label={isPlaying ? "Pausar" : "Tocar"}
-          className="absolute left-1/2 top-2 z-20 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
+          className="absolute right-3 top-3 z-20 grid h-12 w-12 place-items-center rounded-full border-[4px] border-[#8a5a2c] bg-[#2f6d3a] text-[#f7e7c8] shadow-[0_4px_0_#3a2110] active:translate-y-0.5 active:shadow-none"
         >
           {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Music2 className="h-5 w-5" />}
         </button>
