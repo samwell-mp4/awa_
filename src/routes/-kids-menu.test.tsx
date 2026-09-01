@@ -8,13 +8,13 @@ import { join } from "node:path";
  * compartilhada `KidsPage` (que aplica os dois).
  */
 const KIDS_ROUTES = [
-  "infantil.tsx",
   "trilhas-infantil.tsx",
   "musicas-infantil.tsx",
   "historias-infantil.tsx",
   "jogos-infantil.tsx",
   "amizade.tsx",
 ];
+
 
 const dir = join(process.cwd(), "src/routes");
 const shell = readFileSync(
