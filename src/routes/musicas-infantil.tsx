@@ -1,18 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { ArrowLeft, Pause, Play } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Play, Pause } from "lucide-react";
+import { requireArea } from "@/lib/area-guard";
 import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
-import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
-import { SiteHeader } from "@/components/home/site-header";
+import { setLastArea } from "@/lib/last-area";
+import { KidsPage, KidsCard } from "@/components/kids/kids-page";
 import { type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import { KidsSongPlayer } from "@/components/kids/KidsSongPlayer";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { useActiveTemplate } from "@/hooks/use-active-template";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
@@ -23,37 +19,25 @@ export const Route = createFileRoute("/musicas-infantil")({
       {
         name: "description",
         content:
-          "Menu infantil de cantigas indígenas do Awã Tech — bem colorido, com bichos, penas e tambor para as crianças cantarem juntas.",
+          "Cantigas indígenas para crianças cantarem junto, com a letra em Patxôhã e em português lado a lado.",
       },
+      { property: "og:title", content: "Cantigas da Aldeia — Awã Tech Infantil" },
+      {
+        property: "og:description",
+        content: "Toque numa cantiga e cante junto com a aldeia em Patxôhã.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MusicasInfantilPage,
 });
 
-
-
-// Bright kid palettes + a matching indigenous emoji
-const THEMES = [
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🪶", label: "Pena" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐢", label: "Tartaruga" },
-  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🐟", label: "Peixinho" },
-  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "🔥", label: "Fogueira" },
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🦜", label: "Arara" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🥁", label: "Tambor" },
-  { bg: "from-[#40916C] to-[#2D6A4F]", ring: "ring-white", emoji: "🌳", label: "Árvore" },
-  { bg: "from-[#2A9D8F] to-[#248277]", ring: "ring-white", emoji: "☀️", label: "Sol" },
-  { bg: "from-[#2D6A4F] to-[#1B4332]", ring: "ring-white", emoji: "🌙", label: "Lua" },
-  { bg: "from-[#F4A261] to-[#D17D3E]", ring: "ring-white", emoji: "🐸", label: "Sapinho" },
-];
+const EMOJIS = ["🥁", "🪶", "🦜", "🐢", "🔥", "🌙", "🐟", "☀️", "🌳", "🐸"];
 
 export function MusicasInfantilPage() {
-  const { t } = useTranslation();
-  const getFn = useServerFn(getSiteConfig);
-  const { data: branding } = useQuery({
-    queryKey: ["site_config", "branding"],
-    queryFn: () => getFn({ data: "branding" }),
-  });
-  const { template, config } = useActiveTemplate("musicas");
+  useEffect(() => setLastArea("/infantil"), []);
+  const [playing, setPlaying] = useState<Song | null>(null);
 
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
@@ -72,166 +56,57 @@ export function MusicasInfantilPage() {
     },
   });
 
-  const [playing, setPlaying] = useState<Song | null>(null);
-  const [isMaximized, setIsMaximized] = useState(false);
-
   return (
-    <div
-      className={`kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100 player-mode-${config.player_mode || 'default'}`}
-      style={{
-        backgroundImage: `url(${bgAsset.url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
-
-      <SiteHeader mode="infantil" />
-
-      <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
-          <Link
-            to="/infantil"
-            className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
-          >
-            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
-          </Link>
-          <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
-            🎶 Cantigas 🎶
-          </div>
-          <span className="w-16" />
+    <KidsPage title="Cantigas" subtitle="Toque para cantar junto" emoji="🎶">
+      {isLoading ? (
+        <div className="grid gap-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-20 animate-pulse rounded-[1.5rem] bg-white/15" />
+          ))}
         </div>
-      </header>
-
-      <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
-        {/* Big playful hero */}
-        <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-gradient-to-br from-amber-200 via-yellow-100 to-rose-100 p-5 text-center shadow-[0_18px_0_-8px_rgba(180,83,9,0.45),0_25px_50px_-20px_rgba(0,0,0,0.4)]">
-          <div className="flex justify-center gap-2 text-5xl">
-            <span className="kid-bounce" style={{ animationDelay: "0s" }}>🪶</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.2s" }}>🥁</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.4s" }}>🦜</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.6s" }}>🌈</span>
-          </div>
-          <h1 className="mt-2 font-display text-4xl font-black leading-none text-emerald-900 md:text-5xl">
-            Canta com a{" "}
-            <span className="inline-block kid-wiggle text-rose-600">Aldeia!</span>
-          </h1>
-          <p className="mt-2 text-base font-black text-emerald-800/80">
-            Toca no bichinho para ouvir a cantiga 🎵
-          </p>
-        </section>
-
-        {isLoading ? (
-          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
-            ))}
-          </div>
-        ) : songs.length === 0 ? (
-          <p className="text-center font-black text-emerald-800/70">
-            Em breve novas cantigas 🌱
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-            {songs.map((s, i) => {
-              const theme = THEMES[i % THEMES.length];
-              const isActive = playing?.id === s.id;
-              return (
+      ) : songs.length === 0 ? (
+        <KidsCard className="p-6 text-center font-black">
+          Em breve novas cantigas 🌱
+        </KidsCard>
+      ) : (
+        <ul className="grid gap-3">
+          {songs.map((s, i) => {
+            const active = playing?.id === s.id;
+            return (
+              <li key={s.id}>
                 <button
-                  key={s.id}
                   onClick={() => {
                     stopSpeak();
-                    setPlaying(isActive ? null : s);
+                    setPlaying(active ? null : s);
                   }}
-                  className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
+                  className="flex w-full items-center gap-3 rounded-[1.5rem] border-[5px] border-[#e9c46a] bg-[#fdfcf0] p-3 text-left text-[#123a2b] shadow-[0_10px_0_-4px_rgba(0,0,0,.35)] transition-transform active:translate-y-1 active:shadow-none"
                 >
-                  {/* Zigzag tribal top */}
-                  <svg viewBox="0 0 60 8" className="h-3 w-full text-white/90">
-                    <path d="M0 8 L6 0 L12 8 L18 0 L24 8 L30 0 L36 8 L42 0 L48 8 L54 0 L60 8" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-
-                  {/* Big emoji / play */}
-                  <div className="relative grid h-20 w-20 place-items-center rounded-full bg-white/95 text-5xl shadow-inner ring-[6px] ring-white/70">
-                    {isActive ? (
-                      <Pause className="h-9 w-9 fill-emerald-800 text-emerald-800" />
+                  <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-[#14503c] text-3xl">
+                    {active ? (
+                      <Pause className="h-7 w-7 fill-[#ffe9b8] text-[#ffe9b8]" />
                     ) : (
-                      <span aria-hidden className="kid-bounce" style={{ animationDelay: `${(i % 5) * 0.15}s` }}>
-                        {theme.emoji}
-                      </span>
+                      <span aria-hidden>{EMOJIS[i % EMOJIS.length]}</span>
                     )}
-                    {/* dotted halo */}
-                    <span className="absolute inset-0 rounded-full border-[3px] border-dashed border-white/70 kid-spin-slow" />
-                  </div>
-
-                  {/* Title */}
-                  <div className="w-full">
-                    <div className="line-clamp-2 font-display text-sm font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]">
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-display text-xl leading-tight">
                       {s.title}
-                    </div>
-                    {s.artist && (
-                      <div className="mt-0.5 line-clamp-1 text-[10px] font-black text-white/90">
-                        {s.artist}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Play tag */}
-                  <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full border-2 border-white bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-[0_4px_0_rgba(0,0,0,0.3)]">
-                    {isActive ? "Tocando…" : <>Tocar <Play className="h-3 w-3 fill-current" /></>}
+                    </span>
+                    <span className="block text-xs font-bold text-[#3f6b57]">
+                      {s.artist || s.language || "Patxôhã"}
+                    </span>
+                  </span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#e76f51] text-white">
+                    {active ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 fill-current" />}
                   </span>
                 </button>
-              );
-            })}
-          </div>
-        )}
-      </main>
-
-      {playing && (
-        <KidsSongPlayer
-          song={playing}
-          branding={branding}
-          onClose={() => {
-            setPlaying(null);
-            setIsMaximized(false);
-          }}
-        />
+              </li>
+            );
+          })}
+        </ul>
       )}
-    </div>
-  );
-}
 
-
-function TribalBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Big sun */}
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[7rem] opacity-40 kid-spin-slow">☀️</div>
-      {/* Floating friends */}
-      <div className="absolute left-2 top-32 text-6xl opacity-70 kid-bounce">🪶</div>
-      <div className="absolute right-3 top-44 text-6xl opacity-70 kid-wiggle">🦜</div>
-      <div className="absolute left-4 bottom-40 text-6xl opacity-70 kid-bounce" style={{ animationDelay: "0.5s" }}>🥁</div>
-      <div className="absolute right-6 bottom-56 text-6xl opacity-70 kid-wiggle" style={{ animationDelay: "0.3s" }}>🐢</div>
-      <div className="absolute left-1/3 bottom-24 text-5xl opacity-60 kid-bounce" style={{ animationDelay: "0.8s" }}>🐸</div>
-      <div className="absolute right-1/4 top-1/2 text-5xl opacity-60 kid-wiggle" style={{ animationDelay: "0.6s" }}>🐟</div>
-
-      {/* Ground grass */}
-      <svg
-        className="absolute inset-x-0 bottom-0 h-24 w-full text-emerald-500/70"
-        viewBox="0 0 400 40"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
-      </svg>
-
-      {/* Top tribal zigzag border */}
-      <svg
-        className="absolute inset-x-0 top-0 h-6 w-full text-amber-600/50"
-        viewBox="0 0 400 20"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
-      </svg>
-    </div>
+      {playing && <KidsSongPlayer song={playing} onClose={() => setPlaying(null)} />}
+    </KidsPage>
   );
 }
