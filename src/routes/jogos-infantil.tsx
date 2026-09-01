@@ -81,7 +81,7 @@ function JogosInfantilPage() {
       title="Jogos"
       subtitle="Escolha uma brincadeira"
       emoji="🎲"
-      back={game ? undefined : "/infantil"}
+      back={game ? null : "/infantil"}
     >
       <div className="mb-4 flex items-center justify-between">
         <span className="inline-flex items-center gap-1 rounded-full border-[3px] border-[#e9c46a] bg-[#14503c] px-3 py-1.5 text-sm font-black text-[#ffe9b8]">
