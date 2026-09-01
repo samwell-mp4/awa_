@@ -6,6 +6,8 @@ const LS_PREFIX = "awa_i18n_dom_";
 const ORIGINAL_TEXT = new WeakMap<Text, string>();
 const ORIGINAL_ATTR = new WeakMap<Element, Record<string, string>>();
 const PENDING = new Set<string>();
+/** Marca se alguma tradução de DOM já aconteceu nesta sessão. */
+const TRANSLATED_ONCE = { value: false };
 
 const SKIP_SELECTOR = [
   "script",
