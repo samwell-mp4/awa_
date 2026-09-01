@@ -3,8 +3,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Regressão: o menu infantil (SiteHeader mode="infantil") precisa estar em
- * TODAS as páginas da área infantil. Sem isso volta o "menu antigo".
+ * Regressão: toda página da área infantil precisa do cabeçalho/tema infantil,
+ * seja direto (`SiteHeader mode="infantil"` + `kids-theme`) ou via a casca
+ * compartilhada `KidsPage` (que aplica os dois).
  */
 const KIDS_ROUTES = [
   "infantil.tsx",
@@ -16,11 +17,22 @@ const KIDS_ROUTES = [
 ];
 
 const dir = join(process.cwd(), "src/routes");
+const shell = readFileSync(
+  join(process.cwd(), "src/components/kids/kids-page.tsx"),
+  "utf8",
+);
 
 describe("menu infantil", () => {
-  it.each(KIDS_ROUTES)("%s usa SiteHeader mode=\"infantil\"", (file) => {
+  it("a casca KidsPage aplica cabeçalho e tema infantil", () => {
+    expect(shell).toMatch(/<SiteHeader\s+mode="infantil"/);
+    expect(shell).toContain("kids-theme");
+  });
+
+  it.each(KIDS_ROUTES)("%s usa o cabeçalho infantil", (file) => {
     const src = readFileSync(join(dir, file), "utf8");
-    expect(src).toMatch(/<SiteHeader\s+mode="infantil"/);
+    const direct = /<SiteHeader\s+mode="infantil"/.test(src);
+    const viaShell = /KidsPage/.test(src);
+    expect(direct || viaShell).toBe(true);
   });
 
   it("trilhas.$slug.tsx mostra o menu infantil quando vem da área infantil", () => {
@@ -28,10 +40,10 @@ describe("menu infantil", () => {
     expect(src).toMatch(/isKids\s*\?\s*<SiteHeader\s+mode="infantil"/);
   });
 
-  it("todas as páginas infantis usam a classe kids-theme", () => {
+  it("todas as páginas infantis usam o tema kids", () => {
     for (const file of KIDS_ROUTES) {
       const src = readFileSync(join(dir, file), "utf8");
-      expect(src, file).toContain("kids-theme");
+      expect(src.includes("kids-theme") || src.includes("KidsPage"), file).toBe(true);
     }
   });
 });
