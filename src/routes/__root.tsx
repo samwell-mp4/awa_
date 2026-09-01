@@ -183,7 +183,12 @@ function RootComponent() {
       try {
         const { data: sess } = await supabase.auth.getSession();
         if (!sess.session) return;
+        // Já validado nesta sessão do navegador: evita uma chamada ao servidor
+        // em cada carregamento de página.
+        const cacheKey = `awa_login_ok_${sess.session.user.id}`;
+        if (sessionStorage.getItem(cacheKey) === "1") return;
         const res = await checkMyLoginAllowed();
+        if (res.allowed) sessionStorage.setItem(cacheKey, "1");
         if (cancelled) return;
         if (!res.allowed) {
           toast.error("Acesso não liberado. Contate o administrador do AWÃ TECH.");

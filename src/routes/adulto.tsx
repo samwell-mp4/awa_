@@ -17,18 +17,33 @@ import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 
+/** Cache curto do resultado do guard: evita 2 idas ao servidor por navegação. */
+let accessCache: { userId: string; ok: boolean; at: number } | null = null;
+const ACCESS_TTL = 5 * 60 * 1000;
+
 export const Route = createFileRoute("/adulto")({
   ssr: false,
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
-    const { data: hasAccess } = await supabase.rpc("has_plan_access", {
-      _user_id: data.user.id,
-      _plan: "adulto",
-      _check_env: getPaddleEnvironment(),
-    });
+    // getSession() lê do armazenamento local (instantâneo); getUser() fazia uma
+    // chamada de rede a cada entrada na área adulta.
+    const { data } = await supabase.auth.getSession();
+    const user = data.session?.user;
+    if (!user) throw redirect({ to: "/auth" });
+
+    let hasAccess: boolean | null = null;
+    if (accessCache && accessCache.userId === user.id && Date.now() - accessCache.at < ACCESS_TTL) {
+      hasAccess = accessCache.ok;
+    } else {
+      const res = await supabase.rpc("has_plan_access", {
+        _user_id: user.id,
+        _plan: "adulto",
+        _check_env: getPaddleEnvironment(),
+      });
+      hasAccess = !!res.data;
+      accessCache = { userId: user.id, ok: hasAccess, at: Date.now() };
+    }
     if (!hasAccess) {
-      console.warn("[Guard] Redirecting to plans: No access to Adulto for user", data.user.id);
+      console.warn("[Guard] Redirecting to plans: No access to Adulto for user", user.id);
       throw redirect({ to: "/planos", search: { need: "adulto" } as any });
     }
   },

@@ -35,8 +35,10 @@ export function useUserStats(): UserStats & { isLoading: boolean } {
   const { data, isLoading } = useQuery({
     queryKey: ["user-stats", userId],
     enabled: !!userId,
-    staleTime: 3_000,
-    refetchOnWindowFocus: true,
+    // O realtime abaixo já invalida quando há evento novo, então não precisamos
+    // refazer a consulta a cada navegação/foco de aba.
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
     queryFn: async (): Promise<UserStats> => {
       const { data, error } = await supabase
         .from("learning_events")
