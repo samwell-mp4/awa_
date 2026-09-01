@@ -236,6 +236,13 @@ export function AppLanguageAutoTranslator() {
     const root = document.body;
     if (!root) return;
 
+    // Português é o idioma original do app: não há nada para traduzir nem
+    // restaurar se nunca traduzimos nada nesta sessão. Sair aqui evita varrer
+    // o DOM inteiro (e um MutationObserver) a cada render — grande ganho de
+    // performance para a maioria dos usuários.
+    if ((lang === "pt" || lang === "pat") && !TRANSLATED_ONCE.value) return;
+    if (lang !== "pt" && lang !== "pat") TRANSLATED_ONCE.value = true;
+
     const translatePage = () => {
       const id = ++runId.current;
       const textNodes = collectTextNodes(root);
