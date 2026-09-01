@@ -43,7 +43,7 @@ export const Route = createFileRoute("/adulto")({
       accessCache = { userId: user.id, ok: hasAccess, at: Date.now() };
     }
     if (!hasAccess) {
-      console.warn("[Guard] Redirecting to plans: No access to Adulto for user", data.user.id);
+      console.warn("[Guard] Redirecting to plans: No access to Adulto for user", user.id);
       throw redirect({ to: "/planos", search: { need: "adulto" } as any });
     }
   },
