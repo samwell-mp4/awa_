@@ -87,7 +87,9 @@ export function useSubscription() {
       const hasAdulto = ADULTO_TIERS.some((t) => tiers.has(t));
       return { subs: subs ?? [], hasInfantil, hasAdulto };
     },
-    refetchOnWindowFocus: true,
+    // O realtime abaixo já atualiza a assinatura quando ela muda.
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
   });
 
   const refetchRef = useRef(query.refetch);
