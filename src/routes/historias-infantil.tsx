@@ -1,50 +1,30 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { requireArea } from "@/lib/area-guard";
-import { useEffect, useRef, useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getStoriesConfig } from "@/lib/infantil-content.functions";
-
-
-import { SiteHeader } from "@/components/home/site-header";
-import { SiteFooter } from "@/components/home/site-footer";
-import { getNarrationUrl } from "@/lib/narration-cache";
+import { Volume2, Square, X } from "lucide-react";
+import { requireArea } from "@/lib/area-guard";
 import { setLastArea } from "@/lib/last-area";
-
-import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
-import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
-import monteImg from "@/assets/kids-stories/monte.jpg.asset.json";
-import linguaImg from "@/assets/kids-stories/lingua.jpg.asset.json";
-import aldeiaAsset from "@/assets/kids-stories/aldeia.jpg.asset.json";
-import aweImg from "@/assets/kids-stories/awe.jpg.asset.json";
-import arteImg from "@/assets/kids-stories/arte.jpg.asset.json";
-
-
-const monte = monteImg.url;
-const ancianoImg = linguaImg.url;
-const aldeiaImg = aldeiaAsset.url;
-const dancaImg = aweImg.url;
-const artesanatoImg = arteImg.url;
-const albumJosaClean = josaImg.url;
-const albumAnciao = { url: joaoImg.url };
+import { speak, stopSpeak } from "@/lib/speak";
+import { getStoriesConfig } from "@/lib/infantil-content.functions";
+import { KIDS_STORIES, type KidsStory } from "@/lib/kids-data";
+import { KidsPage, KidsCard } from "@/components/kids/kids-page";
 
 export const Route = createFileRoute("/historias-infantil")({
   ssr: false,
   beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
-      { title: "Histórias e Narrativas — Awã Tech Infantil" },
+      { title: "Histórias da Aldeia — Awã Tech Infantil" },
       {
         name: "description",
         content:
-          "Histórias e narrativas do povo Pataxó contadas para crianças: anciãos, aldeia, língua Patxôhã, floresta e cultura viva.",
+          "Histórias do povo Pataxó contadas para crianças: anciãos, aldeia, língua Patxôhã, Awê e floresta.",
       },
-      { property: "og:title", content: "Histórias Pataxó — Awã Tech Infantil" },
+      { property: "og:title", content: "Histórias da Aldeia — Awã Tech Infantil" },
       {
         property: "og:description",
-        content:
-          "Um livro mágico e infantil com as histórias do povo Pataxó — para ouvir, ver e sonhar.",
+        content: "Contos dos anciãos Pataxó para as crianças ouvirem e sonharem.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -53,489 +33,128 @@ export const Route = createFileRoute("/historias-infantil")({
   component: HistoriasInfantilPage,
 });
 
-type Story = {
-  id: string;
-  chip: string;
-  chipEmoji: string;
-  title: string;
-  highlight: string;
-  image: string;
-  paragraphs: string[];
-  quote?: string;
-  color: string;
-  accent: string;
-};
-
-const STATIC_STORIES: Story[] = [
-  {
-    id: "josa",
-    chip: "Guardião da memória",
-    chipEmoji: "🪶",
-    title: "Ancião Josa",
-    highlight: "quem nunca desistiu da aldeia",
-    image: albumJosaClean,
-    paragraphs: [
-      "Desde menino, Josa aprendeu que a terra é a mãe que alimenta, que guarda os antigos e ensina os novos.",
-      "Ele lutou pela floresta, pelos rios e pela língua Patxôhã, para que nada do povo Pataxó se perdesse com o tempo.",
-      "Hoje ele reúne as crianças em volta do fogo e conta as histórias da aldeia — para que a memória continue viva.",
-    ],
-    quote:
-      "Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade.",
-    color: "#f4a261",
-    accent: "#2d6a4f",
-  },
-  {
-    id: "joao",
-    chip: "In memoriam",
-    chipEmoji: "🕯️",
-    title: "Ancião João",
-    highlight: "cantou até o último Awê",
-    image: albumAnciao.url,
-    paragraphs: [
-      "Seu João viu a aldeia crescer, enfrentou muitas lutas e nunca baixou a cabeça — sempre com maracá na mão e sorriso no rosto.",
-      "Ele dizia que ser ancião é mais que ter cabelos brancos: é guardar as histórias e plantar hoje para que a aldeia floresça amanhã.",
-      "Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê e em cada criança que aprende Patxôhã.",
-    ],
-    quote:
-      "Enquanto houver respeito e união, nosso povo seguirá forte.",
-    color: "#f4a261",
-    accent: "#2d6a4f",
-  },
-  {
-    id: "origem",
-    chip: "Origem e território",
-    chipEmoji: "🗺️",
-    title: "A casa Pataxó",
-    highlight: "é a Mata Atlântica",
-    image: monte,
-    paragraphs: [
-      "Os Pataxó vivem no sul da Bahia há muitos e muitos luares, guardando as praias, as matas e o sagrado Monte Pascoal.",
-      "São quase 50 aldeias espalhadas pela Bahia e Minas Gerais — cada uma com sua história, seu cacique e seu jeito de cuidar da terra.",
-    ],
-    color: "#2a9d8f",
-    accent: "#264653",
-  },
-  {
-    id: "lingua",
-    chip: "Língua Patxôhã",
-    chipEmoji: "🗣️",
-    title: "A língua do guerreiro",
-    highlight: "está voltando a falar",
-    image: ancianoImg,
-    paragraphs: [
-      "O Patxôhã quase foi silenciado pelo tempo, mas os anciãos e os professores estão trazendo cada palavra de volta.",
-      "Cada nova palavra aprendida é um ancestral que volta a falar — e é assim que a língua fica viva no coração das crianças.",
-    ],
-    color: "#e9c46a",
-    accent: "#8b5a2b",
-  },
-  {
-    id: "aldeia",
-    chip: "Vida na aldeia",
-    chipEmoji: "🏡",
-    title: "Nossa casa de palha",
-    highlight: "vive em roda",
-    image: aldeiaImg,
-    paragraphs: [
-      "Na aldeia, todo mundo se cuida: os mais velhos ensinam, as crianças brincam e a comida vem da terra, do rio e do mar.",
-      "No pátio central acontecem os conselhos, as danças e as festas — porque tudo o que é bonito, a gente vive junto.",
-    ],
-    color: "#8ecae6",
-    accent: "#023047",
-  },
-  {
-    id: "ritual",
-    chip: "Espiritualidade e dança",
-    chipEmoji: "🔥",
-    title: "O Awê é o canto",
-    highlight: "que abraça a floresta",
-    image: dancaImg,
-    paragraphs: [
-      "No Awê, os corpos pintados de urucum e jenipapo dançam em roda, ao som do maracá, unindo o povo aos encantados da mata.",
-      "É um agradecimento cantado: à floresta, aos animais e a cada estrela que vela a aldeia à noite.",
-    ],
-    color: "#e76f51",
-    accent: "#2a9d8f",
-  },
-  {
-    id: "arte",
-    chip: "Arte e artesanato",
-    chipEmoji: "🎨",
-    title: "Mãos que contam",
-    highlight: "a história do povo",
-    image: artesanatoImg,
-    paragraphs: [
-      "Sementes, penas, fibras e barro viram colares, cocares e cestos nas mãos dos artesãos Pataxó.",
-      "Cada risquinho, cada grafismo é uma palavra antiga — arte que também é escrita ancestral.",
-    ],
-    color: "#c77dff",
-    accent: "#5a189a",
-  },
-];
-
-// ---------- Narrator (click-to-play on the photo) ----------
-
-let currentAudio: HTMLAudioElement | null = null;
-let currentSetter: ((s: "idle") => void) | null = null;
-
-function useKidsNarrator(text: string, currentStories: Story[]) {
-  const { i18n } = useTranslation();
-  const [state, setState] = useState<"idle" | "loading" | "playing">("idle");
-  const [progress, setProgress] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const urlRef = useRef<string | null>(null);
-
-  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
-
-  // Reset cached audio when the UI language changes so narration re-fetches
-  // in the newly-selected language instead of replaying the old blob.
-  useEffect(() => {
-    stop();
-    audioRef.current = null;
-    urlRef.current = null;
-    prefetch();
-  }, [lang]);
-
-  useEffect(() => {
-    return () => {
-      audioRef.current?.pause();
-      audioRef.current = null;
-      urlRef.current = null;
-    };
-  }, []);
-
-  const stop = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    setState("idle");
-    setProgress(0);
-  };
-
-  const prefetch = async () => {
-    if (urlRef.current) return;
-    try {
-      const url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
-      if (url) urlRef.current = url;
-    } catch {}
-  };
-
-  useEffect(() => {
-    prefetch();
-    // Pre-warm narration for all stories if it's the first time
-    currentStories.forEach(s => {
-      const text = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
-      void getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
-    });
-  }, [currentStories]);
-
-
-
-  const play = async () => {
-    if (state === "playing") return stop();
-    if (currentAudio && currentAudio !== audioRef.current) {
-      try {
-        currentAudio.pause();
-      } catch {}
-      currentSetter?.("idle");
-    }
-    setState("loading");
-    try {
-      let url = urlRef.current;
-      if (!url) {
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
-        if (!url) {
-          setState("idle");
-          return;
-        }
-        urlRef.current = url;
-      }
-
-      const a = audioRef.current ?? new Audio();
-      audioRef.current = a;
-      a.src = url;
-      a.currentTime = 0;
-      a.ontimeupdate = () => {
-        if (a.duration > 0) setProgress(a.currentTime / a.duration);
-      };
-      a.onended = () => {
-        setState("idle");
-        setProgress(0);
-      };
-      currentAudio = a;
-      currentSetter = setState;
-      await a.play();
-      setState("playing");
-    } catch {
-      setState("idle");
-    }
-  };
-
-  return { state, progress, play, prefetch };
-}
-
-function KidsNarratorBar({
-  state,
-  progress,
-  onClick,
-  color,
-}: {
-  state: "idle" | "loading" | "playing";
-  progress: number;
-  onClick: () => void;
-  color: string;
-}) {
-  const { t } = useTranslation();
-  const label =
-    state === "loading"
-      ? t("common.kidsLoading")
-      : state === "playing"
-        ? t("common.kidsStop")
-        : t("common.kidsListen");
-  return (
-    <div className="mt-4 flex items-center gap-3">
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={state === "loading"}
-        className="flex items-center gap-2 rounded-full border-b-4 border-black/15 px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0 disabled:opacity-70"
-        style={{ background: color, fontFamily: "'Archivo Black', sans-serif" }}
-      >
-        <span aria-hidden className="text-base">
-          {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
-        </span>
-        {label}
-      </button>
-      <div className="relative h-3 flex-1 overflow-hidden rounded-full bg-black/10">
-        <div
-          className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-150"
-          style={{
-            width: `${Math.round(progress * 100)}%`,
-            background: `linear-gradient(90deg, ${color}, #e9c46a)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function StoryCard({ s, idx, currentStories }: { s: Story; idx: number; currentStories: Story[] }) {
-  const narrationText = `${s.title}. ${s.highlight}. ${s.paragraphs.join(" ")} ${s.quote ?? ""}`;
-  const { state, progress, play, prefetch } = useKidsNarrator(narrationText, currentStories);
-
-  return (
-    <article
-      className="story-card relative overflow-hidden rounded-[1.75rem] border-4 border-white/70 bg-[#fffdf3] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]"
-      style={{ animationDelay: `${idx * 80}ms` }}
-    >
-      <div className="flex items-center justify-center px-4 pt-4">
-        <span
-          className="inline-flex items-center gap-2 rounded-full px-4 py-1 text-[11px] uppercase tracking-widest text-white shadow"
-          style={{ background: s.accent }}
-        >
-          <span aria-hidden>{s.chipEmoji}</span> {s.chip}
-        </span>
-      </div>
-
-      <header className="px-5 pt-3 text-center">
-        <h2
-          className="text-2xl leading-tight text-[#3a2412] md:text-3xl"
-          style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
-        >
-          {s.title} <span style={{ color: s.color }}>— {s.highlight}</span>
-        </h2>
-      </header>
-
-      <button
-        type="button"
-        onClick={play}
-        onPointerEnter={prefetch}
-        onTouchStart={prefetch}
-        onFocus={prefetch}
-        aria-label={s.title}
-        className="relative mx-4 mt-4 block w-[calc(100%-2rem)] overflow-hidden rounded-2xl border-4 border-white shadow-inner transition-transform active:scale-[0.99]"
-      >
-        <img
-          src={s.image}
-          alt={s.title}
-          loading="lazy"
-          width={600}
-          height={400}
-          className="h-56 w-full object-cover md:h-72"
-        />
-
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 bg-black/20">
-           <div className="rounded-full bg-white/20 p-4 backdrop-blur-md">
-             <span className="text-4xl text-white">🔊</span>
-           </div>
-        </div>
-        <span
-          aria-hidden
-          className="pointer-events-none absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full text-2xl text-white shadow-lg"
-          style={{ background: s.color }}
-        >
-          {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
-        </span>
-      </button>
-
-      <div className="p-5">
-        <div
-          className={`rounded-2xl p-4 text-sm leading-relaxed text-slate-800 md:text-base transition-all duration-500 ${state === 'playing' ? 'bg-white shadow-md ring-2' : ''}`}
-          style={{ 
-            backgroundColor: state === 'playing' ? '#ffffff' : `${s.color}22`,
-            borderColor: s.color
-          }}
-        >
-          {s.paragraphs.map((p, i) => (
-            <p key={i} className={i > 0 ? "mt-2" : ""}>
-              {p}
-            </p>
-          ))}
-          {s.quote && (
-            <blockquote
-              className="mt-3 rounded-xl border-l-4 bg-white/70 p-3 italic text-slate-700"
-              style={{ borderColor: s.accent }}
-            >
-              “{s.quote}”
-            </blockquote>
-          )}
-        </div>
-
-        <KidsNarratorBar state={state} progress={progress} onClick={play} color={s.color} />
-      </div>
-    </article>
-  );
-}
-
-// ---------- Decorative jungle border ----------
-function JungleBorder() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 z-0"
-      style={{
-        background:
-          "radial-gradient(120% 40% at 50% 0%, rgba(46,125,50,0.18), transparent 60%), radial-gradient(120% 40% at 50% 100%, rgba(46,125,50,0.18), transparent 60%)",
-      }}
-    >
-      <div className="absolute -left-4 top-6 text-5xl select-none" style={{ animation: "leaf-sway 6s ease-in-out infinite" }}>🌿</div>
-      <div className="absolute -right-3 top-16 text-4xl select-none" style={{ animation: "leaf-sway 7s ease-in-out infinite reverse" }}>🍃</div>
-      <div className="absolute -left-3 bottom-24 text-4xl select-none" style={{ animation: "leaf-sway 8s ease-in-out infinite" }}>🌱</div>
-      <div className="absolute -right-4 bottom-10 text-5xl select-none" style={{ animation: "leaf-sway 9s ease-in-out infinite reverse" }}>🌿</div>
-      <div className="absolute left-8 top-2 text-2xl">✨</div>
-      <div className="absolute right-10 bottom-6 text-2xl">🦋</div>
-    </div>
-  );
-}
-
 function HistoriasInfantilPage() {
-  const { t, i18n } = useTranslation();
+  useEffect(() => setLastArea("/infantil"), []);
+  useEffect(() => () => stopSpeak(), []);
+
   const getFn = useServerFn(getStoriesConfig);
-  
   const { data: configStories } = useQuery({
     queryKey: ["site_config", "infantil_stories"],
     queryFn: () => getFn(),
+    staleTime: 1000 * 60 * 10,
   });
 
-  const stories = useMemo(() => {
-    if (configStories && Array.isArray(configStories) && configStories.length > 0) {
-      return configStories as Story[];
+  const stories = useMemo<KidsStory[]>(() => {
+    if (Array.isArray(configStories) && configStories.length > 0) {
+      return configStories as KidsStory[];
     }
-    return STATIC_STORIES;
+    return KIDS_STORIES;
   }, [configStories]);
 
-  useEffect(() => setLastArea("/infantil"), []);
-
+  const [open, setOpen] = useState<KidsStory | null>(null);
 
   return (
-    <div key={i18n.language} className="kids-theme min-h-screen text-foreground">
-      <style>{`
-        @keyframes leaf-sway { 0%,100%{transform:rotate(-6deg) translateY(0)} 50%{transform:rotate(6deg) translateY(-4px)} }
-        @keyframes card-pop { from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none} }
-        .story-card { animation: card-pop .5s ease-out both; }
-      `}</style>
+    <KidsPage title="Histórias" subtitle="Escolha um conto da aldeia" emoji="📖">
+      <ul className="grid gap-4 md:grid-cols-2">
+        {stories.map((s) => (
+          <li key={s.id}>
+            <button
+              onClick={() => {
+                stopSpeak();
+                setOpen(s);
+              }}
+              className="w-full overflow-hidden rounded-[1.75rem] border-[5px] border-[#e9c46a] bg-[#fdfcf0] text-left shadow-[0_12px_0_-4px_rgba(0,0,0,.35)] transition-transform active:translate-y-1 active:shadow-none"
+            >
+              <img
+                src={s.image}
+                alt={s.title}
+                loading="lazy"
+                className="h-40 w-full object-cover"
+              />
+              <span className="block p-4 text-[#123a2b]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#14503c] px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#ffe9b8]">
+                  {s.chipEmoji} {s.chip}
+                </span>
+                <span className="mt-2 block font-display text-2xl leading-tight">
+                  {s.title}
+                </span>
+                <span className="block text-sm font-bold text-[#3f6b57]">
+                  {s.highlight}
+                </span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
 
-      <SiteHeader mode="infantil" />
+      {open && <StoryReader story={open} onClose={() => setOpen(null)} />}
+    </KidsPage>
+  );
+}
 
-      <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif] md:max-w-2xl">
-        {/* HERO panel — matches the reference book style */}
-        <section className="relative overflow-hidden rounded-[2rem] border-4 border-white/70 bg-[#fdfcf0] p-5 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.25)] md:p-8">
-          <JungleBorder />
+function StoryReader({ story, onClose }: { story: KidsStory; onClose: () => void }) {
+  const [reading, setReading] = useState(false);
 
-          <div className="relative z-10">
-            <div className="flex items-start gap-3">
-              <div className="flex-1">
-                <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-[#2d6a4f] px-3 py-1 text-[10px] uppercase tracking-widest text-white">
-                  🪶 {t("common.kidsStoriesChip") ?? "Histórias do Povo"}
-                </p>
-                <h1
-                  className="text-3xl leading-[1.05] tracking-tight text-[#1b4332] md:text-5xl"
-                  style={{ fontFamily: "'Archivo Black', 'Archivo', sans-serif" }}
-                >
-                  Pataxó{" "}
-                  <span className="text-[#d17d3e]">guardiões</span>
-                  <br />
-                  <span className="text-[#2d6a4f]">da Mata Atlântica</span>
-                </h1>
-                <p className="mt-3 rounded-2xl bg-white/70 p-3 text-sm leading-snug text-slate-700 shadow-inner md:text-base">
-                  {t("common.kidsStoriesIntro") ??
-                    "Origem, território, língua, espiritualidade e arte de um povo que faz da cultura sua arma mais bonita."}
-                </p>
-              </div>
-              <div className="shrink-0 text-6xl md:text-7xl" aria-hidden>
-                🧒🏽
-              </div>
-            </div>
-          </div>
-        </section>
+  const fullText = `${story.title}. ${story.highlight}. ${story.paragraphs.join(" ")} ${
+    story.quote ?? ""
+  }`;
 
-        {/* STORY CARDS */}
-        <section className="mt-6 space-y-6" aria-label="Histórias infantis Pataxó">
-          {stories.map((s, idx) => (
-            <StoryCard key={s.id || idx} s={s} idx={idx} currentStories={stories} />
-          ))}
-        </section>
+  useEffect(() => () => stopSpeak(), []);
 
+  const toggle = () => {
+    if (reading) {
+      stopSpeak();
+      setReading(false);
+      return;
+    }
+    setReading(true);
+    speak(fullText, "pt-BR", 0.95, undefined, () => setReading(false));
+  };
 
-        {/* Closing CTA */}
-        <section className="mt-8 rounded-[1.75rem] border-4 border-white/70 bg-[#fdfcf0] p-6 text-center shadow-[0_14px_30px_-14px_rgba(0,0,0,0.25)]">
-          <p
-            className="text-2xl text-[#2d6a4f]"
-            style={{ fontFamily: "'Archivo Black', sans-serif" }}
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#0d2b21]/95 p-4 backdrop-blur">
+      <KidsCard className="mx-auto max-w-lg overflow-hidden">
+        <div className="relative">
+          <img src={story.image} alt={story.title} className="h-48 w-full object-cover" />
+          <button
+            onClick={() => {
+              stopSpeak();
+              onClose();
+            }}
+            aria-label="Fechar história"
+            className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border-[3px] border-[#fdfcf0] bg-[#e76f51] text-white"
           >
-            Ahuanã! 🌿
-          </p>
-          <p className="mt-2 text-sm text-slate-700">
-            Que estas histórias caminhem com você, curumim!
-          </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            <Link
-              to="/musicas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#f4a261] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
-              style={{ fontFamily: "'Archivo Black', sans-serif" }}
-            >
-              🎶 Cantigas
-            </Link>
-            <Link
-              to="/trilhas-infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#2a9d8f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
-              style={{ fontFamily: "'Archivo Black', sans-serif" }}
-            >
-              🗺️ Trilhas
-            </Link>
-            <Link
-              to="/infantil"
-              className="rounded-full border-b-4 border-black/15 bg-[#2d6a4f] px-4 py-2 text-sm text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0"
-              style={{ fontFamily: "'Archivo Black', sans-serif" }}
-            >
-              🏠 Menu
-            </Link>
-          </div>
-        </section>
-      </main>
+            <X className="h-5 w-5" />
+          </button>
+        </div>
 
-      <SiteFooter />
+        <div className="p-5">
+          <h2 className="font-display text-3xl leading-tight">{story.title}</h2>
+          <p className="text-sm font-black uppercase tracking-wide text-[#3f6b57]">
+            {story.highlight}
+          </p>
+
+          <button
+            onClick={toggle}
+            className="mt-4 inline-flex items-center gap-2 rounded-full border-[3px] border-[#123a2b] bg-[#e9c46a] px-4 py-2 text-sm font-black uppercase tracking-wide text-[#123a2b]"
+          >
+            {reading ? <Square className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            {reading ? "Parar" : "Ouvir a história"}
+          </button>
+
+          <div className="mt-4 space-y-3 text-[15px] font-semibold leading-relaxed">
+            {story.paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+
+          {story.quote && (
+            <blockquote className="mt-4 rounded-2xl border-l-[6px] border-[#e76f51] bg-[#f2ead6] p-3 text-sm font-bold italic">
+              “{story.quote}”
+            </blockquote>
+          )}
+        </div>
+      </KidsCard>
     </div>
   );
 }
