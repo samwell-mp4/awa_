@@ -63,14 +63,10 @@ export const Route = createFileRoute("/api/public/hooks/plan-expiry")({
           const { data: profile } = await admin
             .from("profiles").select("name").eq("id", sub.user_id).maybeSingle();
 
-          const productId = (sub.product_id as string) ?? "";
           const planLabel =
-            productId.includes("infantil") ? "Infantil" :
-            productId.includes("adulto") ? "Adulto" :
-            productId.includes("premium") ? "Premium" :
-            productId.includes("advanced") ? "Advanced" :
-            productId.includes("starter") ? "Starter" :
-            productId.includes("pro") ? "Pro" : "Awã Tech";
+            (sub.product_id as string)?.includes("infantil") ? "Infantil" :
+            (sub.product_id as string)?.includes("adulto") ? "Adulto" :
+            (sub.product_id as string)?.includes("premium") ? "Premium" : "Awã Tech";
 
           const expiresOn = periodEnd.toLocaleDateString("pt-BR");
           const payload = {

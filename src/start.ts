@@ -12,15 +12,9 @@ const errorMiddleware = createMiddleware().server(async ({ request, next }) => {
   try {
     return await next();
   } catch (error) {
-    // Framework/auth control-flow signals (e.g. 401 Response from auth
-    // middleware, redirects) must pass through untouched.
-    if (error instanceof Response) {
-      throw error;
-    }
     if (error != null && typeof error === "object" && "statusCode" in error) {
       throw error;
     }
-
     console.error(error);
     return new Response(renderErrorPage(), {
       status: 500,

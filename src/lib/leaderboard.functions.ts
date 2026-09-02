@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import type { Database } from "@/integrations/supabase/types";
 
 const inputSchema = z.object({ limit: z.number().int().min(1).max(50).default(10) });
 
@@ -12,19 +13,24 @@ export type TopLearner = {
 };
 
 export const getWeeklyTopLearners = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => inputSchema.parse(data ?? {}))
-  .handler(async ({ data, context }): Promise<TopLearner[]> => {
-    // Signed-in only: the RPC is no longer executable by anonymous visitors.
-    const { data: rows, error } = await (context as any).supabase.rpc("weekly_top_learners", {
+  .handler(async ({ data }): Promise<TopLearner[]> => {
+    // Publishable key + anon EXECUTE on the SECURITY DEFINER RPC. Avoid the
+    // service-role key here: Lovable Cloud may issue sb_secret_* keys that
+    // PostgREST rejects with "Expected 3 parts in JWT; got 1".
+    const supabase = createClient<Database>(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_PUBLISHABLE_KEY!,
+      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
+    );
+    const { data: rows, error } = await supabase.rpc("weekly_top_learners", {
       _limit: data.limit,
     });
     if (error) throw new Error(error.message);
-    return ((rows ?? []) as any[]).map((r) => ({
+    return (rows ?? []).map((r) => ({
       user_id: r.user_id,
       name: r.name,
       photo_url: r.photo_url,
       points: Number(r.points ?? 0),
     }));
   });
-

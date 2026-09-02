@@ -1,4 +1,3 @@
-import { requireArea } from "@/lib/area-guard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,7 +17,6 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/musicas")({
-  beforeLoad: () => requireArea("adulto"),
   ssr: false,
   head: () => ({
     meta: [

@@ -12,7 +12,6 @@ import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { TRAILS, type TrailSlug, getLearned, setLearned, markCertificate, hasCertificate } from "@/lib/trilhas";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
-import { requireArea } from "@/lib/area-guard";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { useLastArea } from "@/lib/last-area";
@@ -47,9 +46,8 @@ function nextTrailSlug(current: TrailSlug): TrailSlug {
 
 
 export const Route = createFileRoute("/trilhas/$slug")({
-  beforeLoad: async ({ params }) => {
+  beforeLoad: ({ params }) => {
     if (!(params.slug in TRAILS)) throw notFound();
-    await requireArea("adulto");
   },
   head: ({ params }) => {
     const t = TRAILS[params.slug as TrailSlug];

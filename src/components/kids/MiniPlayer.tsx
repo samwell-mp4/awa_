@@ -36,6 +36,8 @@ export function MiniPlayer({
   const [progress, setProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const [audioError, setAudioError] = useState(false);
+  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setProgress(0);
@@ -73,6 +75,16 @@ export function MiniPlayer({
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 
+  useEffect(() => {
+    const box = boxRef.current;
+    const el = lineRefs.current[activeIdx];
+    if (!box || !el) return;
+    box.scrollTo?.({
+      top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2,
+      behavior: "smooth",
+    });
+  }, [activeIdx]);
+
   function retryAudio() {
     const a = ref.current;
     if (!a) return;
@@ -91,8 +103,10 @@ export function MiniPlayer({
     >
       {maxLen > 0 && (
         <div
-          className={`relative mx-auto mb-2 w-full max-w-4xl rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 ${
-            isMaximized ? "flex-1 my-8 max-h-none overflow-hidden" : "overflow-y-auto max-h-64"
+          ref={boxRef}
+          onClick={onToggleMaximize}
+          className={`relative mx-auto mb-2 w-full max-w-4xl overflow-y-auto cursor-pointer rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 transition-all ${
+            isMaximized ? "flex-1 my-8 max-h-none text-2xl" : "max-h-40"
           }`}
         >
           {isMaximized && (
@@ -106,46 +120,41 @@ export function MiniPlayer({
               <X className="h-6 w-6" />
             </button>
           )}
-          {/* Column headers */}
-          <div className="mb-2 grid grid-cols-2 gap-4 border-b-2 border-amber-300/40 pb-2 text-center">
-            <span className="font-display text-sm font-black uppercase tracking-wider text-emerald-300">
-              🪶 Patxôhã
-            </span>
-            <span className="font-display text-sm font-black uppercase tracking-wider text-amber-300">
-              🇧🇷 Português
-            </span>
-          </div>
-          {/* Static two-column lyrics, line-by-line aligned */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-            {Array.from({ length: maxLen }).map((_, i) => {
-              const active = i === activeIdx;
-              return (
-                <div
-                  key={i}
-                  className="contents"
+          {Array.from({ length: maxLen }).map((_, i) => {
+            const active = i === activeIdx;
+            return (
+              <div
+                key={i}
+                ref={(el) => {
+                  lineRefs.current[i] = el;
+                }}
+                className={`py-4 text-center transition-all duration-300 ${
+                  active ? (isMaximized ? "scale-110" : "scale-105") : "opacity-50"
+                }`}
+              >
+                <p
+                  className={`font-display font-black leading-tight transition-all ${
+                    isMaximized 
+                      ? (branding?.caption_max_size || "text-3xl md:text-5xl") 
+                      : (branding?.caption_normal_size || "text-base")
+                  } ${active ? "text-amber-300" : "text-amber-100"}`}
                 >
+                  {indLines[i] || transLines[i] || "\u00A0"}
+                </p>
+                {indLines[i] && transLines[i] && (
                   <p
-                    className={`py-2 font-display font-black leading-tight ${
-                      isMaximized
-                        ? (branding?.caption_max_size || "text-2xl md:text-4xl")
-                        : (branding?.caption_normal_size || "text-sm")
-                    } ${active ? "text-emerald-300" : "text-emerald-100/60"}`}
+                    className={`font-bold italic transition-all ${
+                      isMaximized 
+                        ? (branding?.caption_max_subsize || "text-xl md:text-3xl mt-4") 
+                        : (branding?.caption_normal_subsize || "text-xs mt-1")
+                    } text-emerald-100/85`}
                   >
-                    {indLines[i] || "\u00A0"}
+                    {transLines[i]}
                   </p>
-                  <p
-                    className={`py-2 font-bold italic leading-tight ${
-                      isMaximized
-                        ? (branding?.caption_max_subsize || "text-lg md:text-3xl")
-                        : (branding?.caption_normal_subsize || "text-xs")
-                    } ${active ? "text-amber-300" : "text-amber-100/60"}`}
-                  >
-                    {transLines[i] || "\u00A0"}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
       <div className="mx-auto flex max-w-4xl items-center gap-3">

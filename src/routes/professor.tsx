@@ -1,4 +1,3 @@
-import { requireArea } from "@/lib/area-guard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { getPaddleEnvironment } from "@/lib/paddle";
@@ -29,7 +28,6 @@ import { CaptionPlayer } from "@/components/CaptionPlayer";
 
 
 export const Route = createFileRoute("/professor")({
-  beforeLoad: () => requireArea("adulto"),
   head: () => ({
     meta: [
       { title: "Professor Akuã — AWÃ TECH" },

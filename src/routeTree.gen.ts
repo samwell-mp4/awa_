@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TrilhasInfantilRouteImport } from './routes/trilhas-infantil'
@@ -20,7 +19,6 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReembolsoRouteImport } from './routes/reembolso'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
-import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as MusicasInfantilRouteImport } from './routes/musicas-infantil'
 import { Route as MusicasRouteImport } from './routes/musicas'
@@ -37,7 +35,6 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AprenderNumerosRouteImport } from './routes/aprender-numeros'
 import { Route as AmizadeRouteImport } from './routes/amizade'
-import { Route as AldeiaVelhaRouteImport } from './routes/aldeia-velha'
 import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AcessoNegadoRouteImport } from './routes/acesso-negado'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -55,11 +52,6 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksPlanExpiryRouteImport } from './routes/api/public/hooks/plan-expiry'
 
-const WelcomeRoute = WelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -108,11 +100,6 @@ const ProfessorRoute = ProfessorRouteImport.update({
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanosRoute = PlanosRouteImport.update({
@@ -193,11 +180,6 @@ const AprenderNumerosRoute = AprenderNumerosRouteImport.update({
 const AmizadeRoute = AmizadeRouteImport.update({
   id: '/amizade',
   path: '/amizade',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AldeiaVelhaRoute = AldeiaVelhaRouteImport.update({
-  id: '/aldeia-velha',
-  path: '/aldeia-velha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdultoRoute = AdultoRouteImport.update({
@@ -289,7 +271,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
-  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -306,7 +287,6 @@ export interface FileRoutesByFullPath {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
-  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -317,7 +297,6 @@ export interface FileRoutesByFullPath {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/welcome': typeof WelcomeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -335,7 +314,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
-  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -352,7 +330,6 @@ export interface FileRoutesByTo {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
-  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -363,7 +340,6 @@ export interface FileRoutesByTo {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/welcome': typeof WelcomeRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -383,7 +359,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
-  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -400,7 +375,6 @@ export interface FileRoutesById {
   '/musicas': typeof MusicasRoute
   '/musicas-infantil': typeof MusicasInfantilRoute
   '/planos': typeof PlanosRoute
-  '/pricing': typeof PricingRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
   '/reembolso': typeof ReembolsoRoute
@@ -411,7 +385,6 @@ export interface FileRoutesById {
   '/trilhas-infantil': typeof TrilhasInfantilRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/videos': typeof VideosRoute
-  '/welcome': typeof WelcomeRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/trilhas/$slug': typeof TrilhasSlugRoute
@@ -431,7 +404,6 @@ export interface FileRouteTypes {
     | '/'
     | '/acesso-negado'
     | '/adulto'
-    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -448,7 +420,6 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
-    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -459,7 +430,6 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/welcome'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -477,7 +447,6 @@ export interface FileRouteTypes {
     | '/'
     | '/acesso-negado'
     | '/adulto'
-    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -494,7 +463,6 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
-    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -505,7 +473,6 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/welcome'
     | '/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -524,7 +491,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/acesso-negado'
     | '/adulto'
-    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -541,7 +507,6 @@ export interface FileRouteTypes {
     | '/musicas'
     | '/musicas-infantil'
     | '/planos'
-    | '/pricing'
     | '/privacidade'
     | '/professor'
     | '/reembolso'
@@ -552,7 +517,6 @@ export interface FileRouteTypes {
     | '/trilhas-infantil'
     | '/unsubscribe'
     | '/videos'
-    | '/welcome'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
     | '/trilhas/$slug'
@@ -572,7 +536,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AcessoNegadoRoute: typeof AcessoNegadoRoute
   AdultoRoute: typeof AdultoRoute
-  AldeiaVelhaRoute: typeof AldeiaVelhaRoute
   AmizadeRoute: typeof AmizadeRoute
   AprenderNumerosRoute: typeof AprenderNumerosRoute
   AuthRoute: typeof AuthRoute
@@ -589,7 +552,6 @@ export interface RootRouteChildren {
   MusicasRoute: typeof MusicasRoute
   MusicasInfantilRoute: typeof MusicasInfantilRoute
   PlanosRoute: typeof PlanosRoute
-  PricingRoute: typeof PricingRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
   ReembolsoRoute: typeof ReembolsoRoute
@@ -600,7 +562,6 @@ export interface RootRouteChildren {
   TrilhasInfantilRoute: typeof TrilhasInfantilRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VideosRoute: typeof VideosRoute
-  WelcomeRoute: typeof WelcomeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   TrilhasSlugRoute: typeof TrilhasSlugRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -616,13 +577,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/welcome': {
-      id: '/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof WelcomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -691,13 +645,6 @@ declare module '@tanstack/react-router' {
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planos': {
@@ -810,13 +757,6 @@ declare module '@tanstack/react-router' {
       path: '/amizade'
       fullPath: '/amizade'
       preLoaderRoute: typeof AmizadeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aldeia-velha': {
-      id: '/aldeia-velha'
-      path: '/aldeia-velha'
-      fullPath: '/aldeia-velha'
-      preLoaderRoute: typeof AldeiaVelhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/adulto': {
@@ -950,7 +890,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AcessoNegadoRoute: AcessoNegadoRoute,
   AdultoRoute: AdultoRoute,
-  AldeiaVelhaRoute: AldeiaVelhaRoute,
   AmizadeRoute: AmizadeRoute,
   AprenderNumerosRoute: AprenderNumerosRoute,
   AuthRoute: AuthRoute,
@@ -967,7 +906,6 @@ const rootRouteChildren: RootRouteChildren = {
   MusicasRoute: MusicasRoute,
   MusicasInfantilRoute: MusicasInfantilRoute,
   PlanosRoute: PlanosRoute,
-  PricingRoute: PricingRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
   ReembolsoRoute: ReembolsoRoute,
@@ -978,7 +916,6 @@ const rootRouteChildren: RootRouteChildren = {
   TrilhasInfantilRoute: TrilhasInfantilRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VideosRoute: VideosRoute,
-  WelcomeRoute: WelcomeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   TrilhasSlugRoute: TrilhasSlugRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,

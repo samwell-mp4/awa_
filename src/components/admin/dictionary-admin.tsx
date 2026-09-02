@@ -5,11 +5,7 @@ import { toast } from "sonner";
 import { Save, Plus, Trash2, Search, Download, Upload, Loader2 } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 
-import ptToPatxohaDict from "@/data/patxoha-pt-to-patxoha.json";
-import patxohaToPtDict from "@/data/patxoha-patxoha-to-pt.json";
-
-// Base combinada (as duas seções do PDF) usada apenas para a importação em massa.
-const patxohaDict = [...ptToPatxohaDict, ...patxohaToPtDict];
+import patxohaDict from "@/data/patxoha-dictionary.json";
 
 type Entry = {
   id: string;

@@ -9,14 +9,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
  */
 export async function requireArea(plan: "adulto" | "infantil") {
   const { data } = await supabase.auth.getUser();
-  if (!data.user) {
-    // Depois do login volta para a página pedida (ou para a área do plano).
-    const here =
-      typeof window !== "undefined" && window.location?.pathname
-        ? window.location.pathname + (window.location.search ?? "")
-        : `/${plan}`;
-    throw redirect({ to: "/auth", search: { redirect: here } });
-  }
+  if (!data.user) throw redirect({ to: "/auth" });
   const { data: hasAccess } = await supabase.rpc("has_plan_access", {
     _user_id: data.user.id,
     _plan: plan,

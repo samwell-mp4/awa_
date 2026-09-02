@@ -50,13 +50,8 @@ export function useRealtimeContent() {
 
     channel.subscribe();
 
-    // Ao voltar para a aba/rede, garante que o conteúdo esteja fresco — mas no
-    // máximo uma vez a cada 5 min, senão o app refaz dezenas de consultas
-    // sempre que o usuário troca de aba (principal causa de lentidão).
-    let lastRefetch = Date.now();
+    // Ao voltar para a aba/rede, garante que o conteúdo esteja fresco.
     const refetchAll = () => {
-      if (Date.now() - lastRefetch < 5 * 60 * 1000) return;
-      lastRefetch = Date.now();
       for (const keys of Object.values(TABLE_QUERIES)) {
         for (const key of keys) qc.invalidateQueries({ queryKey: key });
       }

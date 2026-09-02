@@ -170,72 +170,6 @@ const sections: Section[] = [
   },
 ];
 
-// Histórias e Narrativas — Comunidade Indígena Pataxó Aldeia Velha (C.I.P.A.V.)
-// Texto original do relatório da comunidade. Junho de 2026.
-type StoryBlock = { author?: string; text: string; quote?: boolean };
-type RelatorioStory = { id: string; title: string; blocks: StoryBlock[] };
-
-const relatorioStories: RelatorioStory[] = [
-  {
-    id: "sempre-estivemos",
-    title: "Sempre estivemos aqui",
-    blocks: [
-      { text: "A presença nossa é ancestral, nossos direitos são originários que antecedem qualquer legislação construída pelos colonizadores. O uso da tese do marco temporal é inconstitucional e desumana. Os direitos a moradia, a saúde, educação e cultura são direitos fundamentais — isto se dá em nosso território, sem o território não podemos dar continuidade à reprodução física, material e imaterial." },
-      { text: "Sempre estivemos presente neste território, mas ao longo das décadas sempre fomos vítimas de opressão, sendo expulsos por pessoas que se apropriaram de forma indevida destas terras, principalmente com o uso de leis criadas pelos colonizadores. Primeiro foi a Capitanias Hereditárias — doaram nossas terras a pessoas que estavam em Portugal — estes por sua vez subdividiam os imensos lotes em sesmarias menores para repassar aos colonos." },
-      { text: "Nos foi imposta a língua colonizadora, fomos negados o direito de usarmos nossa língua materna, mas resistimos. Essa resistência se deu com inúmeras estratégias de nossos anciãos para dar continuidade às nossas crenças, costumes e tradições. A memória de luta foi passada através da oralidade, a produção do conhecimento, os saberes e fazeres sempre foram repassados geração a geração. Foi assim que os Pataxó da Terra Indígena Aldeia Velha resistiram." },
-    ],
-  },
-  {
-    id: "voz-dos-anciaos",
-    title: "A voz de nossos anciãos",
-    blocks: [
-      { author: "Seu Boaventura Antônio de Souza", quote: true, text: "Declaro que Maria Ângela da Conceição, minha mãe, foi nascida nesta Aldeia em 1901, saiu dessa Aldeia em 1914, período em que foram expulsos pelos poderosos fazendeiros. Os meus parentes eram daqui por parte de mãe, mas eu não fui nascido aqui. Porque na época que nasci, os fazendeiros já tinham expulsado minha mãe da Aldeia. Na época, ela estava com 13 anos de idade." },
-      { author: "Antônio Monteiro, posseiro da década de 1940", text: "Ele declarou que naquela época não tinha conhecimento da antiga farinheira. Falava para seus funcionários que aqui era uma área indígena — só sabia porque já havia percorrido a área e encontrado lugares onde foram moradas dos índios, alguns fornos, além de sambaquis — montões de conchas, ostras e esqueletos acumulados por tribos que aqui moravam no litoral." },
-      { author: "Seu Josivaldo Alves do Bonfim (Seu Josa)", quote: true, text: "Quantos anos tem a Aldeia Velha? Porque o meu avô veio com 18 anos solteiro para Aldeia Velha, foi para Caraíva, casou, teve cinco filhos. O meu pai cresceu, casou, teve quatro filhos — eu vim para aqui em 1960, com oito anos de idade. Quantos anos tem isso?" },
-      { text: "Seus ancestrais estiveram neste território no mínimo desde a década de 1930. Partiu em 16/05/2026, mas sua luta continua em nossa memória." },
-    ],
-  },
-  {
-    id: "a-expulsao",
-    title: "A expulsão",
-    blocks: [
-      { author: "Luzia, filha de Seu Josa", quote: true, text: "Saíram daqui corrida. O fazendeiro meteu a máquina na casa de Tuquinho, passou por cima da casa. Derrubaram também a casa de seu tio e as demais casas — saiu derrubando tudo com o trator. Tacou logo o gado aqui dentro e aí tiveram que sair." },
-      { author: "Dona Maria Rosa dos Santos (Dona Nair)", quote: true, text: "Mataram os animais de minha família — mataram o jegue, porcos, galinha, matou tudo. Cercou tudo, não tinha como passar nada. O menino estava agachado, bateu a mão dentro do fogo e queimou. Quando foram sair, o carro atolou numa lagoa, dormiram lá atolado, igual a mendigos — sem comer, sem beber, sem coberta, sem nada. Dormiu todo mundo no chão, desmaiados de cansaço e fome. No outro dia levaram até Porto Seguro e deixaram por lá. Para que não voltassem." },
-      { author: "Dona Nair", quote: true, text: "Eles têm raiva da gente porque a gente voltou. Tiraram a gente porque viram que estávamos trabalhando — lucraram o dobro com nossas coisas. Pensaram: tiro o que eles têm, daí não conseguem sobreviver." },
-    ],
-  },
-  {
-    id: "a-retomada",
-    title: "A Retomada — 1992 e 1998",
-    blocks: [
-      { text: "Em 1992, famílias pataxó dispersas se reuniram e voltaram ao território ancestral. Mas foram expulsos: chegaram cinquenta e cinco policiais por dentro da mata, com motosserra e gasolina, tocaram fogo em tudo e colocaram todos para fora. Tem um indígena que subiu e ficou pendurado no pé de Juerana, dormiu por lá de tanto medo." },
-      { text: "Em 1998, voltamos de vez. Dependemos desta terra, ela é sagrada e nunca vamos arredar o pé daqui — porque ela é dos indígenas. Nos juntamos a outras famílias Pataxó desterritorializadas que sempre transitaram por este território — nas romarias, nos festejos, nas caçadas, nas roças, nas coletas de sementes e ervas medicinais." },
-      { author: "Seu Áureo Cancela", quote: true, text: "Aqui não tinha ninguém, agora tem tanta criança, pai de família, mãe de família — para onde vão? O governo tem que defender a gente, peço compaixão. Somos seres humanos, não somos bicho. O branco não pode ser melhor que nós indígenas. Nós temos o direito de viver — o que Deus deixou foi para todos." },
-      { text: "82 anos, 9 filhos, 52 netos — e ainda luta." },
-      { author: "Maria das Neves Cancela", quote: true, text: "Como vamos ficar sem moradia? Como vamos viver? Viver na rua? Não podemos ficar calados, temos que falar." },
-      { author: "Dona Marinalva Cancela", quote: true, text: "Nós já estamos idosos, penso nas crianças, nos netos… se saírem daqui, para onde que vão pelo amor de Deus?" },
-    ],
-  },
-  {
-    id: "o-que-construimos",
-    title: "O que construímos",
-    blocks: [
-      { text: "Hoje somos mais de 2.350 pessoas, 470 famílias. Temos a Escola Indígena Pataxó Aldeia Velha, com 12 salas, onde se ensina a língua materna Patxôhã, co-oficializada em Porto Seguro em 2023. Temos pajés, parteiras e benzedeiras que cuidam da saúde com ervas medicinais, conhecimento passado de boca em boca. Temos o Grupo de Cultura que leva nosso canto e dança por todo o Brasil. Preservamos 7 quilômetros de manguezal, a mata atlântica, o rio Buranhém — porque cuidar da terra é cuidar de nós mesmos." },
-      { text: "Construímos nossas casas, abrimos trilhas com as próprias mãos, fazemos arte, plantamos, pescamos. Lutamos por saúde, por água, por direitos — mas acima de tudo lutamos para continuar sendo nós mesmos." },
-    ],
-  },
-  {
-    id: "a-luta-continua",
-    title: "A luta continua",
-    blocks: [
-      { text: "A Terra Indígena Pataxó Aldeia Velha foi homologada pelo Decreto Nº 12.000 em 18 de abril de 2024, registrada em 09 de julho de 2025. E mesmo assim, querem nos tirar daqui. Mandam intimações, ordens de saída. Dizem que a terra não é nossa." },
-      { text: "Mas como não é nossa, se aqui estão os ossos dos nossos avós? Se aqui nasceram nossos filhos, nossos netos, nossos bisnetos? Se aqui está a nossa vida inteira?" },
-      { quote: true, text: "Não vamos sair. Esta terra é nossa. É sagrada. É ancestral. E aqui ficaremos." },
-    ],
-  },
-];
-
-
 // Module-level browser cache: same text reused across components/re-renders
 const narrationUrlCache = new Map<string, string>();
 const narrationPromiseCache = new Map<string, Promise<string>>();
@@ -447,84 +381,6 @@ function useNarration(originalText: string) {
   };
 
   return { supported: true, speaking, loading, progress, toggle, prefetch };
-}
-
-function RelatorioStoryCard({ story, index }: { story: RelatorioStory; index: number }) {
-  const fullText = `${story.title}. ${story.blocks.map((b) => (b.author ? `${b.author} disse: ${b.text}` : b.text)).join(" ")}`;
-  const { speaking, loading, progress, toggle, prefetch } = useNarration(fullText);
-
-  return (
-    <article
-      id={story.id}
-      className="rounded-3xl border border-gold/25 bg-black/30 p-6 shadow-xl shadow-black/40 backdrop-blur md:p-8"
-    >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-          <Volume2 className="h-3.5 w-3.5" /> <T>Narrativa</T> {index + 1}
-        </div>
-        <button
-          type="button"
-          onClick={toggle}
-          onPointerEnter={prefetch}
-          onTouchStart={prefetch}
-          onFocus={prefetch}
-          disabled={loading}
-          className={`relative inline-flex items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 ${
-            speaking
-              ? "bg-amber-100 text-emerald-950"
-              : "bg-gold text-emerald-950 hover:brightness-110"
-          }`}
-          aria-label={speaking ? "Parar narração" : `Ouvir: ${story.title}`}
-        >
-          {speaking && (
-            <span
-              className="absolute inset-y-0 left-0 bg-emerald-900/20"
-              style={{ width: `${Math.round(progress * 100)}%` }}
-            />
-          )}
-          <span className="relative flex items-center gap-2">
-            {loading ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-900/40 border-t-emerald-950" />
-            ) : speaking ? (
-              <Square className="h-4 w-4" />
-            ) : (
-              <Volume2 className="h-4 w-4" />
-            )}
-            {speaking ? <T>Ouvindo… toque para parar</T> : loading ? <T>Preparando…</T> : <T>Clique para ouvir</T>}
-          </span>
-        </button>
-      </div>
-
-      <h3 className="mt-4 font-serif text-2xl text-amber-50 md:text-3xl">
-        {index + 1}. <T>{story.title}</T>
-      </h3>
-
-      <div className="mt-4 space-y-4 leading-relaxed text-amber-100/90">
-        {story.blocks.map((b, i) =>
-          b.quote ? (
-            <blockquote
-              key={i}
-              className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif italic text-amber-50"
-            >
-              {b.author && (
-                <p className="mb-2 not-italic font-sans text-sm font-semibold text-gold">
-                  <T>{b.author}</T>
-                </p>
-              )}
-              <T>{`“${b.text}”`}</T>
-            </blockquote>
-          ) : (
-            <div key={i}>
-              {b.author && (
-                <p className="mb-1 text-sm font-semibold text-gold"><T>{`${b.author}:`}</T></p>
-              )}
-              <p><T>{b.text}</T></p>
-            </div>
-          ),
-        )}
-      </div>
-    </article>
-  );
 }
 
 
@@ -866,37 +722,6 @@ function HistoriasPage() {
         </section>
 
 
-        {/* Histórias e Narrativas — Aldeia Velha (relatório da comunidade) */}
-        <section className="mb-16 md:mb-24">
-          <div className="mb-10 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">
-              🪶 <T>Comunidade Indígena Pataxó Aldeia Velha · C.I.P.A.V.</T>
-            </p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
-              <T>Histórias e</T> <span className="text-gold"><T>Narrativas</T></span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl font-serif text-lg italic text-amber-100/85">
-              <T>“A nossa voz não se apaga. A nossa memória não tem fim.”</T>
-            </p>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-amber-100/75">
-              <T>Cada história segue exatamente o texto original do relatório da comunidade. Toque no botão de áudio para ouvir a narrativa — palavra por palavra, cada relato, cada verdade.</T>
-            </p>
-            <p className="mt-2 text-xs uppercase tracking-[0.25em] text-gold/70">
-              <T>Território Ancestral · Porto Seguro, Bahia · Junho de 2026</T>
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {relatorioStories.map((story, i) => (
-              <RelatorioStoryCard key={story.id} story={story} index={i} />
-            ))}
-          </div>
-
-          <p className="mt-8 text-center text-xs text-amber-100/60">
-            <T>Comunidade Indígena Pataxó Aldeia Velha — C.I.P.A.V. Relatório produzido a partir da vivência, entrevistas e memória de nosso povo.</T>
-          </p>
-        </section>
-
         <div className="space-y-16 md:space-y-24">
           {translatedSections.map((s, i) => {
             const Icon = s.icon;
@@ -1002,13 +827,13 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
           </button>
         ))}
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((item) => (
           <figure
             key={item.title}
-            className="group flex flex-col overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur sm:flex-row"
+            className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
           >
-            <div className="aspect-[4/3] w-full shrink-0 overflow-hidden sm:aspect-auto sm:w-2/5">
+            <div className="aspect-[4/5] overflow-hidden">
               <img
                 src={item.src}
                 alt={item.title}
@@ -1016,7 +841,7 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
-            <figcaption className="flex flex-1 flex-col justify-center p-5">
+            <figcaption className="p-5">
               <div className="mb-1 inline-flex items-center gap-1 text-xs text-gold/80">
                 <MapPin className="h-3 w-3" /> {item.aldeia}
               </div>

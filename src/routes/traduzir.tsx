@@ -1,4 +1,3 @@
-import { requireArea } from "@/lib/area-guard";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +15,6 @@ import { CaptionPlayer } from "@/components/CaptionPlayer";
 
 
 export const Route = createFileRoute("/traduzir")({
-  beforeLoad: () => requireArea("adulto"),
   head: () => ({
     meta: [
       { title: "Tradutor Patxôhã ⇄ Português — AWÃ TECH" },

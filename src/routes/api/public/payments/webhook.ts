@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { verifyWebhook, EventName, type PaddleEnv } from "@/lib/paddle.server";
-import { isPaddleRequest } from "@/lib/paddle-ips.server";
 import type { Database } from "@/integrations/supabase/types";
 
 let _supabase: SupabaseClient<Database> | null = null;
@@ -18,29 +17,6 @@ function externalIds(items: any[] | undefined) {
     priceId: item?.price?.importMeta?.externalId as string | undefined,
     productId: item?.product?.importMeta?.externalId as string | undefined,
   };
-}
-
-/**
- * Keeps a user ↔ Paddle customer mapping so the customer portal works even
- * before/after a subscription row exists (e.g. cancellation history).
- */
-async function linkPaddleCustomer(userId: string, customerId: string, env: PaddleEnv) {
-  if (!userId || !customerId) return;
-  const db = getSupabase();
-  const { data: userRes } = await db.auth.admin.getUserById(userId);
-  const email = userRes?.user?.email ?? "";
-  await db
-    .from("paddle_customers")
-    .upsert(
-      {
-        user_id: userId,
-        paddle_customer_id: customerId,
-        email,
-        environment: env,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id,environment" },
-    );
 }
 
 async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
@@ -82,15 +58,10 @@ async function handleSubscriptionCreated(data: any, env: PaddleEnv) {
     { onConflict: "paddle_subscription_id" },
   );
 
-  await linkPaddleCustomer(userId, customerId, env);
+  // Store Paddle Customer ID in a way the client can potentially use it for Retain
+  // In a real app, you might want to sync this to the profiles table too.
 }
 
-
-/**
- * Handles every subscription lifecycle event that carries a status:
- * updated, activated, trialing, paused, resumed and past_due. If the row does
- * not exist yet (event arrived out of order), it falls back to an insert.
- */
 async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
   const { id, status, items, currentBillingPeriod, scheduledChange } = data;
   const { priceId, productId } = externalIds(items);
@@ -107,19 +78,12 @@ async function handleSubscriptionUpdated(data: any, env: PaddleEnv) {
     patch.price_id = priceId;
     patch.product_id = productId;
   }
-  const { data: rows } = await getSupabase()
+  await getSupabase()
     .from("subscriptions")
     .update(patch)
     .eq("paddle_subscription_id", id)
-    .eq("environment", env)
-    .select("id");
-
-  if (!rows?.length) {
-    // Out-of-order delivery (activated before created) — create the row.
-    await handleSubscriptionCreated(data, env);
-  }
+    .eq("environment", env);
 }
-
 
 async function handleSubscriptionCanceled(data: any, env: PaddleEnv) {
   await getSupabase()
@@ -164,13 +128,7 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
     case EventName.SubscriptionCreated:
       await handleSubscriptionCreated(event.data, env);
       break;
-    // All of these carry the full subscription object with its new status.
     case EventName.SubscriptionUpdated:
-    case EventName.SubscriptionActivated:
-    case EventName.SubscriptionTrialing:
-    case EventName.SubscriptionPaused:
-    case EventName.SubscriptionResumed:
-    case EventName.SubscriptionPastDue:
       await handleSubscriptionUpdated(event.data, env);
       break;
     case EventName.SubscriptionCanceled:
@@ -188,17 +146,12 @@ async function handleWebhook(req: Request, env: PaddleEnv) {
 }
 
 
-
 export const Route = createFileRoute("/api/public/payments/webhook")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const url = new URL(request.url);
         const env = (url.searchParams.get("env") || "sandbox") as PaddleEnv;
-        if (!(await isPaddleRequest(request, env))) {
-          console.warn("payments-webhook: rejected delivery from non-Paddle IP");
-          return new Response("Forbidden", { status: 403 });
-        }
         try {
           await handleWebhook(request, env);
           return Response.json({ received: true });

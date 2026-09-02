@@ -15,7 +15,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppLanguageAutoTranslator } from "@/components/AppLanguageAutoTranslator";
 import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
-import { PostLoginRedirect } from "@/components/PostLoginRedirect";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
@@ -122,11 +121,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Archivo+Black&family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&family=Hind:wght@400;600;700&family=DM+Serif+Display&family=Fira+Sans:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Archivo+Black&family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&family=Hind:wght@400;600;700&display=swap",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Archivo+Black&family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&family=Hind:wght@400;600;700&family=DM+Serif+Display&family=Fira+Sans:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Archivo+Black&family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&family=Hind:wght@400;600;700&display=swap",
         media: "all",
       },
     ],
@@ -183,12 +182,7 @@ function RootComponent() {
       try {
         const { data: sess } = await supabase.auth.getSession();
         if (!sess.session) return;
-        // Já validado nesta sessão do navegador: evita uma chamada ao servidor
-        // em cada carregamento de página.
-        const cacheKey = `awa_login_ok_${sess.session.user.id}`;
-        if (sessionStorage.getItem(cacheKey) === "1") return;
         const res = await checkMyLoginAllowed();
-        if (res.allowed) sessionStorage.setItem(cacheKey, "1");
         if (cancelled) return;
         if (!res.allowed) {
           toast.error("Acesso não liberado. Contate o administrador do AWÃ TECH.");
@@ -216,8 +210,6 @@ function RootComponent() {
       <RealtimeContentSync />
       <AppLanguageAutoTranslator />
       <PlanExpiryBanner />
-      <PostLoginRedirect />
-
 
       <Outlet />
 

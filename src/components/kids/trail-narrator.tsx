@@ -126,7 +126,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
             className="group/text block w-full text-left transition-opacity hover:opacity-80 active:opacity-60"
           >
             <h3
-              className="truncate text-lg text-[#2d6a4f] group-hover/text:underline"
+              className="truncate text-lg text-[#118ab2] group-hover/text:underline"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               {title}
@@ -165,7 +165,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
             className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-150"
             style={{
               width: `${Math.round(progress * 100)}%`,
-              background: `linear-gradient(90deg, ${color}, #e9c46a)`,
+              background: `linear-gradient(90deg, ${color}, #ffd166)`,
             }}
           />
         </div>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader } from "@/components/home/site-header";
@@ -31,9 +31,7 @@ const DEFAULT_NUMEROS = [
 
 function AprenderNumeros() {
   const { t, i18n } = useTranslation();
-  useEffect(() => {
-    setLastArea("/aprender-numeros");
-  }, []);
+  useEffect(() => setLastArea("/aprender-numeros"), []);
   const getFn = useServerFn(getNumbersConfig);
 
   const { data: config } = useQuery({
@@ -82,46 +80,46 @@ function AprenderNumeros() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader mode="adulto" />
-
-      <main className="w-full px-2 py-6 text-center sm:px-3 md:px-4 md:py-10">
-        <div className="mb-8 flex justify-start items-center px-1">
+    <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
+      <SiteHeader mode="infantil" />
+      
+      <main className="mx-auto max-w-4xl px-4 py-12 text-center">
+        <div className="mb-8 flex justify-between items-center">
           <button
             onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2.5 font-display text-base font-bold uppercase tracking-widest text-gold transition hover:bg-card"
+            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5 stroke-[3]" />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-3 font-display font-black leading-tight text-4xl text-gold sm:text-5xl md:text-6xl">
+        <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-12 px-2 text-base text-muted-foreground sm:text-lg">
+        <p className="mb-12 text-lg text-cream/80">
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
-        <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
           {displayNumeros.map((num, i) => (
             <button
               key={i}
               onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex w-full flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-card/60 p-5 shadow-lg transition hover:-translate-y-1 hover:border-gold/50 sm:p-6"
+              className="group flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
             >
-              <span className="font-display font-black leading-none text-5xl text-gold sm:text-6xl">
+              <span className="font-display text-5xl font-black text-emerald-900">
                 {i + 1}
               </span>
               <div className="flex flex-col">
-                <span className="font-display font-black uppercase text-xl text-foreground sm:text-2xl">
+                <span className="font-display text-lg font-black uppercase text-emerald-700">
                   {num.pat}
                 </span>
-                <span className="font-bold text-sm text-muted-foreground sm:text-base">
+                <span className="text-sm font-bold text-emerald-900/60">
                   {num.pt}
                 </span>
               </div>
-              <div className="mt-1 rounded-full border border-gold/30 bg-background/60 p-2.5">
+              <div className="mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200">
                 <span className="text-xl">🔊</span>
               </div>
             </button>

@@ -1,17 +1,10 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User, CreditCard, QrCode } from "lucide-react";
+import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
-import { initializePaddle, getPaddleEnvironment } from "@/lib/paddle";
-import { getVisitorCountry, resolvePaddlePrices } from "@/lib/pricing.functions";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import logoSrc from "@/assets/awa-tech-logo.png";
-
-
 
 export const Route = createFileRoute("/planos")({
   head: () => ({
@@ -38,10 +31,8 @@ export const Route = createFileRoute("/planos")({
     if (s.need === "infantil" || s.need === "adulto") out.need = s.need;
     return out;
   },
-  loader: async () => await getVisitorCountry(),
   component: PlanosPage,
 });
-
 
 const infantilBenefits = [
   "Trilha da Aldeia com jogos e cânticos",
@@ -65,84 +56,25 @@ type PriceId =
   | "awa_adulto_monthly"
   | "awa_adulto_semestral";
 
-const PLANOS_PRICE_IDS: PriceId[] = [
-  "awa_infantil_monthly",
-  "awa_infantil_semestral",
-  "awa_adulto_monthly",
-  "awa_adulto_semestral",
-];
-
-/**
- * Preços exibidos vêm sempre do Paddle (`formattedTotals`), na moeda do
- * visitante. Nenhum cálculo de preço acontece no frontend.
- */
-function useLocalizedPrices(country: string | null) {
-  const environment = getPaddleEnvironment();
-  return useQuery({
-    queryKey: ["planos_preview", environment, country ?? "auto"],
-    retry: 1,
-    staleTime: 5 * 60 * 1000,
-    queryFn: async (): Promise<Record<string, string>> => {
-      await initializePaddle();
-      const { map } = await resolvePaddlePrices({
-        data: { priceIds: PLANOS_PRICE_IDS, environment },
-      });
-      const items = Object.values(map).map((priceId) => ({ priceId, quantity: 1 }));
-      if (!items.length) return {};
-      const result = await window.Paddle.PricePreview({
-        items,
-        ...(country ? { address: { countryCode: country } } : {}),
-      });
-      const byPaddleId: Record<string, string> = {};
-      for (const line of result?.data?.details?.lineItems ?? []) {
-        byPaddleId[line.price.id] = line.formattedTotals.total;
-      }
-      const out: Record<string, string> = {};
-      for (const [externalId, paddleId] of Object.entries(map)) {
-        if (byPaddleId[paddleId]) out[externalId] = byPaddleId[paddleId];
-      }
-      return out;
-    },
-  });
-}
-
 function PlanosPage() {
-  const { country } = Route.useLoaderData();
   const { user, loading: authLoading } = useAuth();
   const { hasInfantil, hasAdulto } = useSubscription();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const navigate = useNavigate();
   const search = useSearch({ from: "/planos" });
-  const { data: prices } = useLocalizedPrices(country);
-
-  const [pending, setPending] = useState<PriceId | null>(null);
-
 
   function handleAssinar(priceId: PriceId) {
     if (!user) {
-      // Mantém o plano escolhido (?need=adulto|infantil) após o login.
-      const need = (search as { need?: string }).need;
-      const back = need ? `/planos?need=${encodeURIComponent(need)}` : "/planos";
-      navigate({ to: "/auth", search: { redirect: back } as any });
+      navigate({ to: "/auth", search: { redirect: "/planos" } as any });
       return;
     }
-    setPending(priceId);
-  }
-
-
-  function pagarCom(methods: string[]) {
-    if (!user || !pending) return;
-    const priceId = pending;
-    setPending(null);
     openCheckout({
       priceId,
       userId: user.id,
       email: user.email,
-      allowedPaymentMethods: methods,
       successUrl: `${window.location.origin}/minha-conta?checkout=success`,
     });
   }
-
 
   return (
     <div className="min-h-screen bg-[var(--gradient-forest)] text-cream">
@@ -202,9 +134,8 @@ function PlanosPage() {
             benefits={infantilBenefits}
             monthlyId="awa_infantil_monthly"
             semestralId="awa_infantil_semestral"
-            monthlyPrice={prices?.awa_infantil_monthly ?? "R$ 29,90"}
-            semestralPrice={prices?.awa_infantil_semestral ?? "R$ 149,90"}
-
+            monthlyPrice="R$ 29,90"
+            semestralPrice="R$ 149,90"
             semestralEquivalent="Equivale a R$ 24,98/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 17%"
             onAssinar={handleAssinar}
@@ -238,9 +169,8 @@ function PlanosPage() {
             benefits={adultoBenefits}
             monthlyId="awa_adulto_monthly"
             semestralId="awa_adulto_semestral"
-            monthlyPrice={prices?.awa_adulto_monthly ?? "R$ 39,90"}
-            semestralPrice={prices?.awa_adulto_semestral ?? "R$ 199,90"}
-
+            monthlyPrice="R$ 39,90"
+            semestralPrice="R$ 199,90"
             semestralEquivalent="Equivale a R$ 33,31/mês. Cobrado a cada 6 meses."
             savingsBadge="Melhor valor · economize 16%"
             onAssinar={handleAssinar}
@@ -273,62 +203,7 @@ function PlanosPage() {
           </Link>
         </section>
       </main>
-
-      <Dialog open={!!pending} onOpenChange={(o) => !o && setPending(null)}>
-        <DialogContent className="border-gold/30 bg-[oklch(0.18_0.04_145)] text-cream sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl font-black text-cream">
-              Forma de pagamento
-            </DialogTitle>
-            <DialogDescription className="text-foreground/70">
-              Escolha como você quer pagar. Pagamento seguro via Paddle.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="mt-2 grid gap-3">
-            <button
-              onClick={() => pagarCom(["card", "apple_pay", "google_pay"])}
-              disabled={checkoutLoading}
-              className="flex items-center gap-3 rounded-2xl border-2 border-gold/50 bg-gold/10 p-4 text-left transition hover:bg-gold/20 disabled:opacity-50"
-            >
-              <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-gold/20 text-gold">
-                <CreditCard className="h-5 w-5" />
-              </span>
-              <span>
-                <span className="block font-display text-base font-black text-cream">
-                  Cartão de crédito ou débito
-                </span>
-                <span className="block text-xs text-foreground/70">
-                  Visa, Mastercard, Elo, Amex · renovação automática
-                </span>
-              </span>
-            </button>
-
-            <button
-              onClick={() => pagarCom(["pix"])}
-              disabled={checkoutLoading}
-              className="flex items-center gap-3 rounded-2xl border-2 border-leaf/50 bg-leaf/10 p-4 text-left transition hover:bg-leaf/20 disabled:opacity-50"
-            >
-              <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-leaf/20 text-leaf">
-                <QrCode className="h-5 w-5" />
-              </span>
-              <span>
-                <span className="block font-display text-base font-black text-cream">Pix</span>
-                <span className="block text-xs text-foreground/70">
-                  QR Code na hora · aprovação imediata
-                </span>
-              </span>
-            </button>
-          </div>
-
-          <p className="mt-1 flex items-center gap-2 text-[11px] text-foreground/60">
-            <Shield className="h-3.5 w-3.5 text-gold" />
-            Seus dados são processados pela Paddle. Não guardamos seu cartão.
-          </p>
-        </DialogContent>
-      </Dialog>
     </div>
-
   );
 }
 

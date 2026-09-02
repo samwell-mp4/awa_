@@ -9,11 +9,7 @@ declare global {
 }
 
 export function getPaddleEnvironment(): "sandbox" | "live" {
-  // Fail loudly: never silently default to the wrong payment environment.
-  if (!clientToken) throw new Error("VITE_PAYMENTS_CLIENT_TOKEN is not set");
-  if (clientToken.startsWith("test_")) return "sandbox";
-  if (clientToken.startsWith("live_")) return "live";
-  throw new Error("VITE_PAYMENTS_CLIENT_TOKEN must start with 'test_' or 'live_'");
+  return clientToken?.startsWith("test_") ? "sandbox" : "live";
 }
 
 let paddleInitialized = false;

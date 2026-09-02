@@ -191,60 +191,6 @@ export type Database = {
         }
         Relationships: []
       }
-      dictionary_entries: {
-        Row: {
-          audio_url: string | null
-          category: string
-          created_at: string
-          direction: string
-          example: string | null
-          id: string
-          image_url: string | null
-          note: string | null
-          source: string
-          subcategory: string | null
-          term_patxoha: string
-          term_pt: string
-          updated_at: string
-          variant: string | null
-          word_type: string | null
-        }
-        Insert: {
-          audio_url?: string | null
-          category?: string
-          created_at?: string
-          direction: string
-          example?: string | null
-          id?: string
-          image_url?: string | null
-          note?: string | null
-          source?: string
-          subcategory?: string | null
-          term_patxoha: string
-          term_pt: string
-          updated_at?: string
-          variant?: string | null
-          word_type?: string | null
-        }
-        Update: {
-          audio_url?: string | null
-          category?: string
-          created_at?: string
-          direction?: string
-          example?: string | null
-          id?: string
-          image_url?: string | null
-          note?: string | null
-          source?: string
-          subcategory?: string | null
-          term_patxoha?: string
-          term_pt?: string
-          updated_at?: string
-          variant?: string | null
-          word_type?: string | null
-        }
-        Relationships: []
-      }
       email_send_log: {
         Row: {
           created_at: string

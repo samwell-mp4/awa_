@@ -4,31 +4,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { useAuth } from "@/hooks/use-auth";
 
-export type PlanTier = "infantil" | "adulto" | "premium" | "starter" | "pro" | "advanced" | null;
+export type PlanTier = "infantil" | "adulto" | "premium" | null;
 
 function tierFromIds(productId?: string | null, priceId?: string | null): PlanTier {
   const p = productId ?? "";
   const r = priceId ?? "";
-  const is = (slug: string) => p === `awa_${slug}` || r.startsWith(`awa_${slug}_`);
-  if (is("infantil")) return "infantil";
-  if (is("adulto")) return "adulto";
-  if (is("premium")) return "premium";
-  if (is("starter")) return "starter";
-  if (is("pro")) return "pro";
-  if (is("advanced")) return "advanced";
+  if (p === "awa_infantil" || r.startsWith("awa_infantil_")) return "infantil";
+  if (p === "awa_adulto" || r.startsWith("awa_adulto_")) return "adulto";
+  if (p === "awa_premium" || r.startsWith("awa_premium_")) return "premium";
   return null;
 }
-
-/**
- * Quais áreas cada plano libera. Mantido em sincronia com a função
- * `has_plan_access` do banco (que é a trava real, server-side).
- * Starter = Adulto. Pro/Advanced/Premium = Adulto + Infantil.
- */
-const ADULTO_TIERS: PlanTier[] = ["adulto", "premium", "starter", "pro", "advanced"];
-const INFANTIL_TIERS: PlanTier[] = ["infantil", "premium", "pro", "advanced"];
-
-/** Dias de tolerância após uma cobrança recusada (o Paddle segue tentando). */
-const PAST_DUE_GRACE_DAYS = 3;
 
 function isSubActive(sub: {
   status: string | null;
@@ -39,18 +24,15 @@ function isSubActive(sub: {
   if (sub.status === "active" || sub.status === "trialing") {
     return end === null || end > now;
   }
-  // Cobrança recusada: mantém o acesso por alguns dias enquanto o Paddle tenta
-  // novamente. O banner de aviso pede a atualização do cartão nesse período.
-  if (sub.status === "past_due") {
-    return end === null || end > now - PAST_DUE_GRACE_DAYS * 24 * 3600 * 1000;
-  }
-  // "paused" não libera acesso.
+  // Pagamento recusado corta o acesso imediatamente (o Paddle segue tentando
+  // cobrar; ao voltar para "active" o acesso é restaurado pelo webhook).
+  if (sub.status === "past_due") return false;
+
   if (sub.status === "canceled") {
     return end !== null && end > now;
   }
   return false;
 }
-
 
 export function useSubscription() {
   const { user, isAdmin } = useAuth();
@@ -83,13 +65,11 @@ export function useSubscription() {
         window.localStorage.setItem('paddle_customer_id', paddleCustomerId);
       }
 
-      const hasInfantil = INFANTIL_TIERS.some((t) => tiers.has(t));
-      const hasAdulto = ADULTO_TIERS.some((t) => tiers.has(t));
+      const hasInfantil = tiers.has("infantil") || tiers.has("premium");
+      const hasAdulto = tiers.has("adulto") || tiers.has("premium");
       return { subs: subs ?? [], hasInfantil, hasAdulto };
     },
-    // O realtime abaixo já atualiza a assinatura quando ela muda.
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: true,
   });
 
   const refetchRef = useRef(query.refetch);
