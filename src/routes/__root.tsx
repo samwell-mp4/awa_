@@ -220,6 +220,7 @@ function RootComponent() {
 
 function LanguageHydrator() {
   const { i18n } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     // Only run on client
