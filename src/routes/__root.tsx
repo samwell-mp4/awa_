@@ -242,6 +242,7 @@ function LanguageHydrator() {
     let cancelled = false;
     const apply = () => {
       if (cancelled) return;
+      cancelled = true;
       document.documentElement.lang = target;
       window.localStorage.setItem("awa_lang", target);
       if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
@@ -249,21 +250,19 @@ function LanguageHydrator() {
       }
     };
 
-    // Aguarda o fim do carregamento (inclui os trechos de página carregados
-    // sob demanda) para que a troca de idioma nunca conflite com a hidratação.
-    if (document.readyState === "complete") {
-      const id = window.setTimeout(apply, 0);
-      return () => {
-        cancelled = true;
-        window.clearTimeout(id);
-      };
-    }
-    window.addEventListener("load", apply, { once: true });
+    // Espera a página terminar de aparecer (inclusive os trechos carregados sob
+    // demanda) antes de trocar o idioma, para nunca conflitar com a montagem.
+    const unsub = router.subscribe("onRendered", () => {
+      window.setTimeout(apply, 0);
+    });
+    const fallbackId = window.setTimeout(apply, 1500);
     return () => {
       cancelled = true;
-      window.removeEventListener("load", apply);
+      unsub();
+      window.clearTimeout(fallbackId);
     };
-  }, [i18n]);
+  }, [i18n, router]);
+
 
 
   return null;
