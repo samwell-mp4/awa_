@@ -45,7 +45,7 @@ const THEMES = [
   { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
 ];
 
-export function MusicasInfantilPage() {
+function MusicasInfantilPage() {
   const { t } = useTranslation();
   const getFn = useServerFn(getSiteConfig);
   const { data: branding } = useQuery({

@@ -220,6 +220,7 @@ function RootComponent() {
 
 function LanguageHydrator() {
   const { i18n } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     // Only run on client
@@ -234,16 +235,36 @@ function LanguageHydrator() {
         ? detected
         : "pt";
 
-    if (target && target !== "pt") {
+    if (!target || target === "pt") {
+      document.documentElement.lang = "pt";
+      return;
+    }
+
+    let cancelled = false;
+    const apply = () => {
+      if (cancelled) return;
+      cancelled = true;
       document.documentElement.lang = target;
       window.localStorage.setItem("awa_lang", target);
       if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
         void i18n.changeLanguage(target);
       }
-    } else {
-      document.documentElement.lang = "pt";
-    }
-  }, [i18n]);
+    };
+
+    // Espera a página terminar de aparecer (inclusive os trechos carregados sob
+    // demanda) antes de trocar o idioma, para nunca conflitar com a montagem.
+    const unsub = router.subscribe("onRendered", () => {
+      window.setTimeout(apply, 0);
+    });
+    const fallbackId = window.setTimeout(apply, 1500);
+    return () => {
+      cancelled = true;
+      unsub();
+      window.clearTimeout(fallbackId);
+    };
+  }, [i18n, router]);
+
+
 
   return null;
 }
