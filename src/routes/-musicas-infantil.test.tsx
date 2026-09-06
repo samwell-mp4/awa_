@@ -29,7 +29,6 @@ vi.mock("@/lib/pick-lang", () => ({
   pickLang: (row: any, field: string) => row[field],
 }));
 
-import { MusicasInfantilPage } from "./musicas-infantil";
 
 const song = {
   id: "s1",
