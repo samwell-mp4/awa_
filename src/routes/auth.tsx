@@ -35,10 +35,15 @@ function AuthPage() {
   const [resendIn, setResendIn] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/" });
+      if (!cancelled && data.session) navigate({ to: "/" });
     });
+    return () => {
+      cancelled = true;
+    };
   }, [navigate]);
+
 
   useEffect(() => {
     if (resendIn <= 0) return;
