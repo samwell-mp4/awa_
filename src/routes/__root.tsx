@@ -234,16 +234,37 @@ function LanguageHydrator() {
         ? detected
         : "pt";
 
-    if (target && target !== "pt") {
+    if (!target || target === "pt") {
+      document.documentElement.lang = "pt";
+      return;
+    }
+
+    let cancelled = false;
+    const apply = () => {
+      if (cancelled) return;
       document.documentElement.lang = target;
       window.localStorage.setItem("awa_lang", target);
       if ((i18n.resolvedLanguage || i18n.language || "pt").slice(0, 2).toLowerCase() !== target) {
         void i18n.changeLanguage(target);
       }
-    } else {
-      document.documentElement.lang = "pt";
+    };
+
+    // Aguarda o fim do carregamento (inclui os trechos de página carregados
+    // sob demanda) para que a troca de idioma nunca conflite com a hidratação.
+    if (document.readyState === "complete") {
+      const id = window.setTimeout(apply, 0);
+      return () => {
+        cancelled = true;
+        window.clearTimeout(id);
+      };
     }
+    window.addEventListener("load", apply, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", apply);
+    };
   }, [i18n]);
+
 
   return null;
 }
