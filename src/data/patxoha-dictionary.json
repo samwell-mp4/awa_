@@ -153,7 +153,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "p’ap’ai/",
+  "term_indigenous": "p’ap’ai",
   "term_pt": "abelha",
   "language": "Patxôhã",
   "category": "Geral",
@@ -2061,8 +2061,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "kuhú-kuhú",
-  "term_pt": "andar ligeiro",
+  "term_indigenous": "kuhú",
+  "term_pt": "andar ligeiro-kuhú",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -4023,7 +4023,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "res/p",
+  "term_indigenous": "res / p",
   "term_pt": "bom dia",
   "language": "Patxôhã",
   "category": "Geral",
@@ -4482,8 +4482,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "meu-boi",
-  "term_pt": "bumba",
+  "term_indigenous": "boi",
+  "term_pt": "bumba-meu",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -6930,8 +6930,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "xâkây-txẽ",
-  "term_pt": "comido",
+  "term_indigenous": "txẽ",
+  "term_pt": "comido-xâkây",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -7650,7 +7650,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "kamayurá(kamaruá/kamarur",
+  "term_indigenous": "kamayurá(kamaruá / kamarur",
   "term_pt": "coragem",
   "language": "Patxôhã",
   "category": "Geral",
@@ -15750,8 +15750,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "mayõ-ῖhé",
-  "term_pt": "lua",
+  "term_indigenous": "ῖhé",
+  "term_pt": "lua-mayõ",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -15777,7 +15777,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "ãgohó-ῖhé /",
+  "term_indigenous": "ãgohó-ῖhé",
   "term_pt": "lua nova",
   "language": "Patxôhã",
   "category": "Geral",
@@ -16119,8 +16119,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "do-corpo",
-  "term_pt": "mãe",
+  "term_indigenous": "corpo",
+  "term_pt": "mãe-do",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -20385,8 +20385,8 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "hã-hã-hãe",
-  "term_pt": "povo",
+  "term_indigenous": "hã-hãe",
+  "term_pt": "povo-hã",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -21204,15 +21204,6 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "-",
-  "term_pt": "quero",
-  "language": "Patxôhã",
-  "category": "Geral",
-  "pronunciation": null,
-  "example": null,
-  "audio_url": null
- },
- {
   "term_indigenous": "tuphôk",
   "term_pt": "quieto",
   "language": "Patxôhã",
@@ -21987,7 +21978,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "se-",
+  "term_indigenous": "se",
   "term_pt": "retirar",
   "language": "Patxôhã",
   "category": "Geral",
@@ -24021,7 +24012,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "tsägô/txägô",
+  "term_indigenous": "tsägô / txägô",
   "term_pt": "tchau",
   "language": "Patxôhã",
   "category": "Geral",
@@ -24435,7 +24426,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "ekäp/ekéw",
+  "term_indigenous": "ekäp / ekéw",
   "term_pt": "tórax, peito",
   "language": "Patxôhã",
   "category": "Geral",
@@ -25803,7 +25794,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "ãwá’kãd-",
+  "term_indigenous": "ãwá’kãd",
   "term_pt": "vigiará",
   "language": "Patxôhã",
   "category": "Geral",
@@ -26379,7 +26370,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "anehõ/mupuk",
+  "term_indigenous": "anehõ / mupuk",
   "term_pt": "você",
   "language": "Patxôhã",
   "category": "Geral",
@@ -26793,7 +26784,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "ehä/ehé",
+  "term_indigenous": "ehä / ehé",
   "term_pt": "caçula",
   "language": "Patxôhã",
   "category": "Geral",
@@ -26883,7 +26874,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "fappet/tappet",
+  "term_indigenous": "fappet / tappet",
   "term_pt": "caderno",
   "language": "Patxôhã",
   "category": "Geral",
@@ -27109,7 +27100,7 @@
  },
  {
   "term_indigenous": "heruê",
-  "term_pt": "- ritual sagrado",
+  "term_pt": "ritual sagrado",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -27937,7 +27928,7 @@
  },
  {
   "term_indigenous": "niõñixina",
-  "term_pt": "cintilar, iluminar-",
+  "term_pt": "cintilar, iluminar",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -28197,7 +28188,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "pássaro/mata",
+  "term_indigenous": "pássaro / mata",
   "term_pt": "zabêlê",
   "language": "Patxôhã",
   "category": "Geral",
@@ -28504,7 +28495,7 @@
  },
  {
   "term_indigenous": "tsô’ôpa",
-  "term_pt": "touro, boi -",
+  "term_pt": "touro, boi",
   "language": "Patxôhã",
   "category": "Geral",
   "pronunciation": null,
@@ -28719,7 +28710,7 @@
   "audio_url": null
  },
  {
-  "term_indigenous": "yamã/awêry",
+  "term_indigenous": "yamã / awêry",
   "term_pt": "obrigado",
   "language": "Patxôhã",
   "category": "Geral",
