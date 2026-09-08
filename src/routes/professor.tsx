@@ -18,6 +18,8 @@ import {
   Sunrise,
   Users,
   Globe,
+  Sparkles,
+  GraduationCap,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -458,9 +460,9 @@ function ProfessorPage() {
           e.preventDefault();
           send(input);
         }}
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.94)] backdrop-blur-xl shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)]"
       >
-        <div className="mx-auto flex max-w-3xl items-end gap-2 px-4 py-3 md:px-8">
+        <div className="mx-auto flex max-w-3xl items-end gap-2.5 px-4 py-3 md:px-8">
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}
@@ -475,10 +477,10 @@ function ProfessorPage() {
               placeholder={t.placeholder}
               rows={1}
               maxLength={1000}
-              className="w-full resize-none rounded-2xl border border-gold/25 bg-card/70 px-4 py-3 pr-14 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition"
+              className="w-full resize-none rounded-2xl border border-gold/30 bg-card/80 px-4 py-3.5 pr-14 text-sm text-cream shadow-inner placeholder:text-foreground/40 focus:outline-none focus:border-gold/70 focus:ring-2 focus:ring-gold/25 transition"
             />
             {input.length > 800 && (
-              <div className="absolute right-3 bottom-1.5 text-[10px] font-semibold text-foreground/50">
+              <div className="absolute right-3 bottom-2 text-[10px] font-semibold text-foreground/50">
                 {input.length}/1000
               </div>
             )}
@@ -486,7 +488,7 @@ function ProfessorPage() {
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-forest-deep shadow-lg shadow-gold/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-gold to-gold/80 text-forest-deep shadow-lg shadow-gold/25 ring-1 ring-gold/40 transition hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
             aria-label={t.send}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
