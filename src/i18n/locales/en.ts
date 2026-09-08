@@ -36,7 +36,7 @@ export default {
     resourceVideosDesc: "Scenes and narratives from the Pataxó village.",
   },
   nav: {
-    dicionario: "Dictionary",
+    dicionario: "Patxôhã 2015 Dictionary",
     tradutor: "Translator",
     trilhas: "Trails",
     historias: "Stories",

@@ -1,0 +1,4086 @@
+[
+{
+"id": "pn-0001",
+"kind": "grupo",
+"titulo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0002",
+"kind": "verbete",
+"patxoha": "Taputarí",
+"portugues": "parente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0003",
+"kind": "verbete",
+"patxoha": "Ipamakã",
+"portugues": "pai",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0004",
+"kind": "verbete",
+"patxoha": "Kaponetú",
+"portugues": "pai adotivo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0005",
+"kind": "verbete",
+"patxoha": "Imamakã",
+"portugues": "mãe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0006",
+"kind": "verbete",
+"patxoha": "Ekây",
+"portugues": "madrasta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0007",
+"kind": "verbete",
+"patxoha": "Atöõ",
+"portugues": "mãe de leite",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0008",
+"kind": "verbete",
+"patxoha": "Konehõ",
+"portugues": "filho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0009",
+"kind": "verbete",
+"patxoha": "Kuhekê",
+"portugues": "filha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0010",
+"kind": "verbete",
+"patxoha": "Iñã",
+"portugues": "iñã – irmão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0011",
+"kind": "verbete",
+"patxoha": "Ĩtehemã",
+"portugues": "irmã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0012",
+"kind": "verbete",
+"patxoha": "Ehä",
+"portugues": "caçula",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0013",
+"kind": "verbete",
+"patxoha": "Eketãnay",
+"portugues": "primogênito",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0014",
+"kind": "verbete",
+"patxoha": "Iñãkô",
+"portugues": "irmão adotivo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0015",
+"kind": "verbete",
+"patxoha": "Hemãkô",
+"portugues": "irmã adotiva",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0016",
+"kind": "verbete",
+"patxoha": "Kehetohê",
+"portugues": "avô",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0017",
+"kind": "verbete",
+"patxoha": "Niõtxi",
+"portugues": "avó",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0018",
+"kind": "verbete",
+"patxoha": "Nionehõ",
+"portugues": "neto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0019",
+"kind": "verbete",
+"patxoha": "Niõhukê",
+"portugues": "neta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0020",
+"kind": "verbete",
+"patxoha": "Tamonetá",
+"portugues": "tio",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0021",
+"kind": "verbete",
+"patxoha": "Matamonetá",
+"portugues": "tia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0022",
+"kind": "verbete",
+"patxoha": "Nehõiñã",
+"portugues": "sobrinho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0023",
+"kind": "verbete",
+"patxoha": "Hukêhemã",
+"portugues": "sobrinha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0024",
+"kind": "verbete",
+"patxoha": "Ê’txũi",
+"portugues": "esposo(a)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0025",
+"kind": "verbete",
+"patxoha": "ipaê’txũi",
+"portugues": "sogro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0026",
+"kind": "verbete",
+"patxoha": "Imaê’txũi",
+"portugues": "sogra",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0027",
+"kind": "verbete",
+"patxoha": "Akôtãnay",
+"portugues": "cunhado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0028",
+"kind": "verbete",
+"patxoha": "Akôhemã",
+"portugues": "cunhada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0029",
+"kind": "verbete",
+"patxoha": "Hũpakã",
+"portugues": "compadre",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0030",
+"kind": "verbete",
+"patxoha": "Hũmakã",
+"portugues": "comadre",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0031",
+"kind": "verbete",
+"patxoha": "Kepôy",
+"portugues": "padrinho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0032",
+"kind": "verbete",
+"patxoha": "Imakô",
+"portugues": "madrinha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0033",
+"kind": "verbete",
+"patxoha": "Nioaktxũ",
+"portugues": "afilhado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0034",
+"kind": "verbete",
+"patxoha": "Nioamirã",
+"portugues": "afilhada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0035",
+"kind": "verbete",
+"patxoha": "Goypã",
+"portugues": "companheiro, parceiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0036",
+"kind": "verbete",
+"patxoha": "Kartenetú",
+"portugues": "amigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0037",
+"kind": "verbete",
+"patxoha": "Iamani",
+"portugues": "Mãe d’água",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0038",
+"kind": "verbete",
+"patxoha": "Katũbayá",
+"portugues": "Mãe da mata",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0039",
+"kind": "verbete",
+"patxoha": "Tupavê",
+"portugues": "idoso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0040",
+"kind": "verbete",
+"patxoha": "Kõbatê",
+"portugues": "inimigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0041",
+"kind": "verbete",
+"patxoha": "Apêtxury",
+"portugues": "fofoqueiro Substantivo nominal",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0042",
+"kind": "verbete",
+"patxoha": "Kakusú",
+"portugues": "homem",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0043",
+"kind": "verbete",
+"patxoha": "Kokuseká",
+"portugues": "homem casado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0044",
+"kind": "verbete",
+"patxoha": "Pakuyo",
+"portugues": "solteiro E NÚMEROS EM PATXÔHÃ",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0045",
+"kind": "verbete",
+"patxoha": "Niomaktxĩ",
+"portugues": "homem de respeito",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0046",
+"kind": "verbete",
+"patxoha": "Xohã",
+"portugues": "guerreiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0047",
+"kind": "verbete",
+"patxoha": "Jokana",
+"portugues": "mulher",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0048",
+"kind": "verbete",
+"patxoha": "Beketxiá",
+"portugues": "mulher casada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0049",
+"kind": "verbete",
+"patxoha": "Kitok",
+"portugues": "menino",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0050",
+"kind": "verbete",
+"patxoha": "Kitokĩhé",
+"portugues": "menina",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0051",
+"kind": "verbete",
+"patxoha": "Makiame",
+"portugues": "senhor (a)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0052",
+"kind": "verbete",
+"patxoha": "Ĩhé",
+"portugues": "moça",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0053",
+"kind": "verbete",
+"patxoha": "Akõ",
+"portugues": "rapaz",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0054",
+"kind": "verbete",
+"patxoha": "Ãko",
+"portugues": "mulher solteira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0055",
+"kind": "verbete",
+"patxoha": "Pakuipá",
+"portugues": "adolescente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0056",
+"kind": "verbete",
+"patxoha": "Tapurumã",
+"portugues": "jovem guerreiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0057",
+"kind": "verbete",
+"patxoha": "Mãgãĩ",
+"portugues": "homossexual",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0058",
+"kind": "verbete",
+"patxoha": "Mãgwãhã",
+"portugues": "sapatão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0059",
+"kind": "verbete",
+"patxoha": "Txanã",
+"portugues": "bebê",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0060",
+"kind": "verbete",
+"patxoha": "Pejô",
+"portugues": "grávida",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0061",
+"kind": "verbete",
+"patxoha": "Kahũko",
+"portugues": "malandro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0062",
+"kind": "verbete",
+"patxoha": "Urumã",
+"portugues": "jovem",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0063",
+"kind": "verbete",
+"patxoha": "Mude",
+"portugues": "ladrão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0064",
+"kind": "verbete",
+"patxoha": "naktamañã",
+"portugues": "noiva, comprometida (o)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0065",
+"kind": "verbete",
+"patxoha": "potuy",
+"portugues": "bêbado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0066",
+"kind": "verbete",
+"patxoha": "akâiéko",
+"portugues": "cacique",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0067",
+"kind": "verbete",
+"patxoha": "akâié",
+"portugues": "líder",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0068",
+"kind": "verbete",
+"patxoha": "ipakâié",
+"portugues": "professor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0069",
+"kind": "verbete",
+"patxoha": "imakâié",
+"portugues": "professora",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0070",
+"kind": "verbete",
+"patxoha": "kumuruguaxé",
+"portugues": "chefe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0071",
+"kind": "verbete",
+"patxoha": "Niamisũ",
+"portugues": "Deus",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0072",
+"kind": "verbete",
+"patxoha": "Kãñañãy",
+"portugues": "diabo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0073",
+"kind": "verbete",
+"patxoha": "Bakira",
+"portugues": "doido",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0074",
+"kind": "verbete",
+"patxoha": "Siratã",
+"portugues": "Jesus",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0075",
+"kind": "verbete",
+"patxoha": "Txôpay",
+"portugues": "primeiro índio da historia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0076",
+"kind": "verbete",
+"patxoha": "Abkhây",
+"portugues": "humano",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0077",
+"kind": "verbete",
+"patxoha": "Karai",
+"portugues": "gente de fora",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0078",
+"kind": "verbete",
+"patxoha": "Txihi",
+"portugues": "índio",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0079",
+"kind": "verbete",
+"patxoha": "Naô",
+"portugues": "espírito",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0080",
+"kind": "verbete",
+"patxoha": "Moho",
+"portugues": "morto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0081",
+"kind": "verbete",
+"patxoha": "Noktxiepetã",
+"portugues": "preguiçoso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0082",
+"kind": "verbete",
+"patxoha": "Txayhô",
+"portugues": "santo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0083",
+"kind": "verbete",
+"patxoha": "Tabtxirá",
+"portugues": "valente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0084",
+"kind": "verbete",
+"patxoha": "Juktanig",
+"portugues": "vaqueiro Outros........... Iẽp katerú",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0085",
+"kind": "verbete",
+"patxoha": "Arayñũ",
+"portugues": "marrom",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0086",
+"kind": "verbete",
+"patxoha": "Ãdxuara",
+"portugues": "rosa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0087",
+"kind": "verbete",
+"patxoha": "Epukuy",
+"portugues": "cinza",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0088",
+"kind": "verbete",
+"patxoha": "Tará",
+"portugues": "verde",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0089",
+"kind": "verbete",
+"patxoha": "Obi",
+"portugues": "azul",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0090",
+"kind": "verbete",
+"patxoha": "Eoató",
+"portugues": "vermelho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0091",
+"kind": "verbete",
+"patxoha": "Tapayñũ",
+"portugues": "preto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0092",
+"kind": "verbete",
+"patxoha": "Txiãgá",
+"portugues": "branco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0093",
+"kind": "verbete",
+"patxoha": "Ajú",
+"portugues": "amarelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0094",
+"kind": "verbete",
+"patxoha": "Kaheytá",
+"portugues": "laranja",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0095",
+"kind": "verbete",
+"patxoha": "Riukunãy",
+"portugues": "escuro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0096",
+"kind": "verbete",
+"patxoha": "Hũayõ",
+"portugues": "claro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0097",
+"kind": "verbete",
+"patxoha": "Iretuá",
+"portugues": "rocho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0098",
+"kind": "verbete",
+"patxoha": "Kamarú",
+"portugues": "niotxikajo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0099",
+"kind": "verbete",
+"patxoha": "Hàmàhãy",
+"portugues": "folha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0100",
+"kind": "verbete",
+"patxoha": "Hũkã",
+"portugues": "fruta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0101",
+"kind": "verbete",
+"patxoha": "Nawã",
+"portugues": "fruta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0102",
+"kind": "verbete",
+"patxoha": "Sarã",
+"portugues": "raiz",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0103",
+"kind": "verbete",
+"patxoha": "Karuriba",
+"portugues": "serno",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0104",
+"kind": "verbete",
+"patxoha": "Txatxiká",
+"portugues": "galho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0105",
+"kind": "verbete",
+"patxoha": "K ir ã",
+"portugues": "c asca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0106",
+"kind": "verbete",
+"patxoha": "Niorukirã",
+"portugues": "entre casca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0107",
+"kind": "verbete",
+"patxoha": "ãwãnuk",
+"portugues": "semente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0108",
+"kind": "verbete",
+"patxoha": "Txaha",
+"portugues": "flor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0109",
+"kind": "verbete",
+"patxoha": "Ãhãyã",
+"portugues": "copa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0110",
+"kind": "verbete",
+"patxoha": "Niotxarú",
+"portugues": "tronco, caule",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0111",
+"kind": "verbete",
+"patxoha": "Abjayá",
+"portugues": "palha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0112",
+"kind": "verbete",
+"patxoha": "Kaáy",
+"portugues": "embira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0113",
+"kind": "verbete",
+"patxoha": "Tsakã",
+"portugues": "caroço",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0114",
+"kind": "verbete",
+"patxoha": "Pajarú",
+"portugues": "madeira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0115",
+"kind": "verbete",
+"patxoha": "ãhãyô",
+"portugues": "sombra",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0116",
+"kind": "verbete",
+"patxoha": "hoyxek",
+"portugues": "horta, viveiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0117",
+"kind": "verbete",
+"patxoha": "hamãgui",
+"portugues": "mato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0118",
+"kind": "verbete",
+"patxoha": "pokãyá",
+"portugues": "planta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0119",
+"kind": "verbete",
+"patxoha": "ĩbá",
+"portugues": "mata",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0120",
+"kind": "verbete",
+"patxoha": "hoikaê",
+"portugues": "animal",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0121",
+"kind": "verbete",
+"patxoha": "pâpây",
+"portugues": "abelha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0122",
+"kind": "verbete",
+"patxoha": "pàkâi",
+"portugues": "passarinho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0123",
+"kind": "verbete",
+"patxoha": "giktaiá",
+"portugues": "pássaro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0124",
+"kind": "verbete",
+"patxoha": "aktxe",
+"portugues": "papagaio",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0125",
+"kind": "verbete",
+"patxoha": "pakka",
+"portugues": "quero-quero",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0126",
+"kind": "verbete",
+"patxoha": "pakatxeó",
+"portugues": "galo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0127",
+"kind": "verbete",
+"patxoha": "xukakay",
+"portugues": "galinha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0128",
+"kind": "verbete",
+"patxoha": "pôkotxõg",
+"portugues": "piolho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0129",
+"kind": "verbete",
+"patxoha": "hĩtaĩ",
+"portugues": "mutum",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0130",
+"kind": "verbete",
+"patxoha": "piây",
+"portugues": "lagarta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0131",
+"kind": "verbete",
+"patxoha": "txakĩ",
+"portugues": "carrapato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0132",
+"kind": "verbete",
+"patxoha": "ewaĩg",
+"portugues": "cágado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0133",
+"kind": "verbete",
+"patxoha": "ipakeĩg",
+"portugues": "camaleão, lagarto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0134",
+"kind": "verbete",
+"patxoha": "akeĩg",
+"portugues": "leão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 40,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0135",
+"kind": "verbete",
+"patxoha": "ãgã",
+"portugues": "serpente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0136",
+"kind": "verbete",
+"patxoha": "mãhã",
+"portugues": "peixe do rio",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0137",
+"kind": "verbete",
+"patxoha": "uhãy",
+"portugues": "tatu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0138",
+"kind": "verbete",
+"patxoha": "katê",
+"portugues": "caititu fêmea",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0139",
+"kind": "verbete",
+"patxoha": "txâhâb",
+"portugues": "caititu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0140",
+"kind": "verbete",
+"patxoha": "gahe",
+"portugues": "cutia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0141",
+"kind": "verbete",
+"patxoha": "etxã",
+"portugues": "porca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0142",
+"kind": "verbete",
+"patxoha": "mukuhé",
+"portugues": "porco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0143",
+"kind": "verbete",
+"patxoha": "txawã",
+"portugues": "capivara",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0144",
+"kind": "verbete",
+"patxoha": "kapihnã",
+"portugues": "lontra",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0145",
+"kind": "verbete",
+"patxoha": "kãbará",
+"portugues": "caranguejo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0146",
+"kind": "verbete",
+"patxoha": "mikui",
+"portugues": "carrapato pequeno",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0147",
+"kind": "verbete",
+"patxoha": "haniàhây",
+"portugues": "anta fêmea",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0148",
+"kind": "verbete",
+"patxoha": "amaxi",
+"portugues": "anta macho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0149",
+"kind": "verbete",
+"patxoha": "uki txavy",
+"portugues": "macaco, sagüi",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0150",
+"kind": "verbete",
+"patxoha": "poniohõ",
+"portugues": "macaco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0151",
+"kind": "verbete",
+"patxoha": "txahu",
+"portugues": "sariguê",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0152",
+"kind": "verbete",
+"patxoha": "búty",
+"portugues": "tartaruga",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0153",
+"kind": "verbete",
+"patxoha": "txúĩ",
+"portugues": "tamanduá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0154",
+"kind": "verbete",
+"patxoha": "exna",
+"portugues": "onça fêmea",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0155",
+"kind": "verbete",
+"patxoha": "hemũgãy",
+"portugues": "onça macho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0156",
+"kind": "verbete",
+"patxoha": "hãpe",
+"portugues": "gato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0157",
+"kind": "verbete",
+"patxoha": "kabahay",
+"portugues": "égua",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0158",
+"kind": "verbete",
+"patxoha": "kamadú",
+"portugues": "cavalo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0159",
+"kind": "verbete",
+"patxoha": "amaxep",
+"portugues": "anta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0160",
+"kind": "verbete",
+"patxoha": "hayapó",
+"portugues": "maribondo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0161",
+"kind": "verbete",
+"patxoha": "ãburê",
+"portugues": "marisco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0162",
+"kind": "verbete",
+"patxoha": "koriê",
+"portugues": "mosca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0163",
+"kind": "verbete",
+"patxoha": "simirã",
+"portugues": "formiga",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0164",
+"kind": "verbete",
+"patxoha": "uará",
+"portugues": "garça",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0165",
+"kind": "verbete",
+"patxoha": "akãtxẽ",
+"portugues": "teiú",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0166",
+"kind": "verbete",
+"patxoha": "kayñãdura",
+"portugues": "cobra",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0167",
+"kind": "verbete",
+"patxoha": "mãgãĩ",
+"portugues": "veado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0168",
+"kind": "verbete",
+"patxoha": "mãnãy",
+"portugues": "veado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0169",
+"kind": "verbete",
+"patxoha": "manãytê",
+"portugues": "boi",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0170",
+"kind": "verbete",
+"patxoha": "juktã",
+"portugues": "vaca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0171",
+"kind": "verbete",
+"patxoha": "hab",
+"portugues": "bezerro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0172",
+"kind": "verbete",
+"patxoha": "sirirã",
+"portugues": "aranha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0173",
+"kind": "verbete",
+"patxoha": "kutxiá",
+"portugues": "pintado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0174",
+"kind": "verbete",
+"patxoha": "petékétõ",
+"portugues": "beija-flor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0175",
+"kind": "verbete",
+"patxoha": "guanãbi",
+"portugues": "beija-flor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0176",
+"kind": "verbete",
+"patxoha": "miruã",
+"portugues": "besouro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0177",
+"kind": "verbete",
+"patxoha": "ipakéy",
+"portugues": "borboleta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0178",
+"kind": "verbete",
+"patxoha": "uayã",
+"portugues": "bomba",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0179",
+"kind": "verbete",
+"patxoha": "pekasú",
+"portugues": "pombo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0180",
+"kind": "verbete",
+"patxoha": "manãytê",
+"portugues": "porco do mato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0181",
+"kind": "verbete",
+"patxoha": "sxaẽ",
+"portugues": "porco do mato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0182",
+"kind": "verbete",
+"patxoha": "gnewi",
+"portugues": "preguiça",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0183",
+"kind": "verbete",
+"patxoha": "mawá",
+"portugues": "rã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0184",
+"kind": "verbete",
+"patxoha": "boré",
+"portugues": "caça/mato/mar",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0185",
+"kind": "verbete",
+"patxoha": "mukará",
+"portugues": "paca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0186",
+"kind": "verbete",
+"patxoha": "txapá",
+"portugues": "paca fêmea",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0187",
+"kind": "verbete",
+"patxoha": "ipek",
+"portugues": "pato",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0188",
+"kind": "verbete",
+"patxoha": "mukusuy",
+"portugues": "peixe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0189",
+"kind": "verbete",
+"patxoha": "kuké",
+"portugues": "cachorro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0190",
+"kind": "verbete",
+"patxoha": "pokré",
+"portugues": "rato nawã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0191",
+"kind": "verbete",
+"patxoha": "tapitá",
+"portugues": "banana",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0192",
+"kind": "verbete",
+"patxoha": "tapitatá",
+"portugues": "madura",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0193",
+"kind": "verbete",
+"patxoha": "kebká",
+"portugues": "banana",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0194",
+"kind": "verbete",
+"patxoha": "kartê",
+"portugues": "jaca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0195",
+"kind": "verbete",
+"patxoha": "mâdubi",
+"portugues": "amendoim",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0196",
+"kind": "verbete",
+"patxoha": "bakti",
+"portugues": "abacaxi",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0197",
+"kind": "verbete",
+"patxoha": "bokwãdxê",
+"portugues": "coco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0198",
+"kind": "verbete",
+"patxoha": "nukunã",
+"portugues": "raiz de mandioca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0199",
+"kind": "verbete",
+"patxoha": "kaheytá",
+"portugues": "laranja",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0200",
+"kind": "verbete",
+"patxoha": "pastoxõ",
+"portugues": "milho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0201",
+"kind": "verbete",
+"patxoha": "otxab",
+"portugues": "milho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0202",
+"kind": "verbete",
+"patxoha": "txuĩpã",
+"portugues": "batata",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0203",
+"kind": "verbete",
+"patxoha": "kavãg",
+"portugues": "feijão de corda",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0204",
+"kind": "verbete",
+"patxoha": "kumãdá",
+"portugues": "feijão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0205",
+"kind": "verbete",
+"patxoha": "pâkay",
+"portugues": "araruta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0206",
+"kind": "verbete",
+"patxoha": "sihnã",
+"portugues": "arroz",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0207",
+"kind": "verbete",
+"patxoha": "petây",
+"portugues": "pimenta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0208",
+"kind": "verbete",
+"patxoha": "uhuy",
+"portugues": "aipim",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0209",
+"kind": "verbete",
+"patxoha": "mĩâb",
+"portugues": "cana",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0210",
+"kind": "verbete",
+"patxoha": "ob’ruá",
+"portugues": "melancia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0211",
+"kind": "verbete",
+"patxoha": "udxeop",
+"portugues": "mamão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0212",
+"kind": "verbete",
+"patxoha": "kedxure",
+"portugues": "caju",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0213",
+"kind": "verbete",
+"patxoha": "múguru",
+"portugues": "limão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0214",
+"kind": "verbete",
+"patxoha": "hureb",
+"portugues": "tomate",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0215",
+"kind": "verbete",
+"patxoha": "hágurê",
+"portugues": "manga",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0216",
+"kind": "verbete",
+"patxoha": "hágujê",
+"portugues": "mangaba",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0217",
+"kind": "verbete",
+"patxoha": "ikaré",
+"portugues": "abacate",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0218",
+"kind": "verbete",
+"patxoha": "mikaré",
+"portugues": "jenipapo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0219",
+"kind": "verbete",
+"patxoha": "turig",
+"portugues": "pêra",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0220",
+"kind": "verbete",
+"patxoha": "agoirã",
+"portugues": "abóbora",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0221",
+"kind": "verbete",
+"patxoha": "goroara",
+"portugues": "goiaba",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0222",
+"kind": "verbete",
+"patxoha": "mubtxuk",
+"portugues": "maracujá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0223",
+"kind": "verbete",
+"patxoha": "paxẽg",
+"portugues": "cajá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0224",
+"kind": "verbete",
+"patxoha": "kãdara",
+"portugues": "cacau",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0225",
+"kind": "verbete",
+"patxoha": "pakâre",
+"portugues": "uva",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0226",
+"kind": "verbete",
+"patxoha": "ikexkô",
+"portugues": "morango",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0227",
+"kind": "verbete",
+"patxoha": "inurãy",
+"portugues": "maçã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0228",
+"kind": "verbete",
+"patxoha": "ãdxehê",
+"portugues": "pitanga apekôy abkahây (corpo humano)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0229",
+"kind": "verbete",
+"patxoha": "ãbakohay",
+"portugues": "cabeça (cabeceira)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0230",
+"kind": "verbete",
+"patxoha": "kokwã",
+"portugues": "cabeça",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0231",
+"kind": "verbete",
+"patxoha": "ĩxéw",
+"portugues": "cabelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0232",
+"kind": "verbete",
+"patxoha": "epotôy",
+"portugues": "cabelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0233",
+"kind": "verbete",
+"patxoha": "atxe",
+"portugues": "pena",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0234",
+"kind": "verbete",
+"patxoha": "epoxey",
+"portugues": "pelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0235",
+"kind": "verbete",
+"patxoha": "paaĩg",
+"portugues": "couro, pele",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0236",
+"kind": "verbete",
+"patxoha": "ĩxerẽgwá",
+"portugues": "pestana",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0237",
+"kind": "verbete",
+"patxoha": "ĩxehêkok",
+"portugues": "sobrancelha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0238",
+"kind": "verbete",
+"patxoha": "ĩxerẽb",
+"portugues": "barba",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0239",
+"kind": "verbete",
+"patxoha": "ĩxerẽbkwĩ",
+"portugues": "bigode",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0240",
+"kind": "verbete",
+"patxoha": "ĩxerẽbtxuy",
+"portugues": "penteio masculino",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0241",
+"kind": "verbete",
+"patxoha": "ĩxerẽbtxó",
+"portugues": "penteio feminino",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0242",
+"kind": "verbete",
+"patxoha": "ãgtay",
+"portugues": "boca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0243",
+"kind": "verbete",
+"patxoha": "atxohã",
+"portugues": "língua",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0244",
+"kind": "verbete",
+"patxoha": "atxũy",
+"portugues": "dente de animal",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0245",
+"kind": "verbete",
+"patxoha": "aktxôpetã",
+"portugues": "dente de leite",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0246",
+"kind": "verbete",
+"patxoha": "toxuy",
+"portugues": "dente de gente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0247",
+"kind": "verbete",
+"patxoha": "eoĩ",
+"portugues": "orelha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0248",
+"kind": "verbete",
+"patxoha": "eoĩkai",
+"portugues": "ouvido",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0249",
+"kind": "verbete",
+"patxoha": "ava",
+"portugues": "olho(menina do olho)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0250",
+"kind": "verbete",
+"patxoha": "ãgwá",
+"portugues": "olho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0251",
+"kind": "verbete",
+"patxoha": "maroxĩ",
+"portugues": "pupila",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0252",
+"kind": "verbete",
+"patxoha": "hekôk",
+"portugues": "testa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0253",
+"kind": "verbete",
+"patxoha": "atxihĩ",
+"portugues": "nariz(espiro)",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0254",
+"kind": "verbete",
+"patxoha": "ĩsikap",
+"portugues": "nariz",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0255",
+"kind": "verbete",
+"patxoha": "ekwĩkôk",
+"portugues": "queixo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0256",
+"kind": "verbete",
+"patxoha": "atxipay",
+"portugues": "pescoço",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0257",
+"kind": "verbete",
+"patxoha": "may",
+"portugues": "garganta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0258",
+"kind": "verbete",
+"patxoha": "nãyko",
+"portugues": "costas",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0259",
+"kind": "verbete",
+"patxoha": "teratõ",
+"portugues": "ombro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0260",
+"kind": "verbete",
+"patxoha": "mukuxé",
+"portugues": "braço superior",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0261",
+"kind": "verbete",
+"patxoha": "hamegãĩg",
+"portugues": "cotovelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0262",
+"kind": "verbete",
+"patxoha": "agnikatõ",
+"portugues": "braço inferior",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0263",
+"kind": "verbete",
+"patxoha": "apatxahây",
+"portugues": "perna",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0264",
+"kind": "verbete",
+"patxoha": "apatxá",
+"portugues": "panturrilha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0265",
+"kind": "verbete",
+"patxoha": "ãgôkay",
+"portugues": "seios",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0266",
+"kind": "verbete",
+"patxoha": "ekäp",
+"portugues": "peito, tórax",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0267",
+"kind": "verbete",
+"patxoha": "mukujê",
+"portugues": "peito com leite",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0268",
+"kind": "verbete",
+"patxoha": "ĩata",
+"portugues": "coração",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0269",
+"kind": "verbete",
+"patxoha": "kawatá",
+"portugues": "coração",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0270",
+"kind": "verbete",
+"patxoha": "akehe",
+"portugues": "estômago",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0271",
+"kind": "verbete",
+"patxoha": "goyrã",
+"portugues": "barriga",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0272",
+"kind": "verbete",
+"patxoha": "guai",
+"portugues": "barriga oca",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0273",
+"kind": "verbete",
+"patxoha": "burukuxó",
+"portugues": "abdome",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0274",
+"kind": "verbete",
+"patxoha": "koĩ",
+"portugues": "umbigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0275",
+"kind": "verbete",
+"patxoha": "mukuyãga",
+"portugues": "bubum",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0276",
+"kind": "verbete",
+"patxoha": "etxiãg",
+"portugues": "testículo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0277",
+"kind": "verbete",
+"patxoha": "ĩtxuy",
+"portugues": "pênis",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0278",
+"kind": "verbete",
+"patxoha": "ĩtxió",
+"portugues": "vagina",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0279",
+"kind": "verbete",
+"patxoha": "ĩkuy",
+"portugues": "anus",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0280",
+"kind": "verbete",
+"patxoha": "ékui",
+"portugues": "regada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0281",
+"kind": "verbete",
+"patxoha": "txàmãgay",
+"portugues": "fígado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0282",
+"kind": "verbete",
+"patxoha": "âpahab",
+"portugues": "dedo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0283",
+"kind": "verbete",
+"patxoha": "genipektó",
+"portugues": "dedo do pé",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0284",
+"kind": "verbete",
+"patxoha": "nupketô",
+"portugues": "polegada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0285",
+"kind": "verbete",
+"patxoha": "apahabtaĩg",
+"portugues": "unha",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0286",
+"kind": "verbete",
+"patxoha": "niomenã",
+"portugues": "casco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0287",
+"kind": "verbete",
+"patxoha": "pahab",
+"portugues": "mão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0288",
+"kind": "verbete",
+"patxoha": "niomenãy",
+"portugues": "sola do pé",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 41,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0289",
+"kind": "verbete",
+"patxoha": "pahamenãy",
+"portugues": "palma da mão",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0290",
+"kind": "verbete",
+"patxoha": "atxekõ",
+"portugues": "coxa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0291",
+"kind": "verbete",
+"patxoha": "amahây",
+"portugues": "joelho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0292",
+"kind": "verbete",
+"patxoha": "nukuĩ",
+"portugues": "rótula do joelho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0293",
+"kind": "verbete",
+"patxoha": "apaká(a)",
+"portugues": "pé",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0294",
+"kind": "verbete",
+"patxoha": "patayó",
+"portugues": "pé grande",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0295",
+"kind": "verbete",
+"patxoha": "txũg",
+"portugues": "tornozelo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0296",
+"kind": "verbete",
+"patxoha": "apekoy",
+"portugues": "corpo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0297",
+"kind": "verbete",
+"patxoha": "kove koy",
+"portugues": "corpo dele",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0298",
+"kind": "verbete",
+"patxoha": "awptxuy",
+"portugues": "osso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0299",
+"kind": "verbete",
+"patxoha": "avẽg",
+"portugues": "sangue",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0300",
+"kind": "verbete",
+"patxoha": "kũydã",
+"portugues": "pele",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0301",
+"kind": "verbete",
+"patxoha": "sunĩa",
+"portugues": "carne",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0302",
+"kind": "verbete",
+"patxoha": "ünĩ",
+"portugues": "carne de gente",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0303",
+"kind": "verbete",
+"patxoha": "tâiko",
+"portugues": "paladar",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0304",
+"kind": "verbete",
+"patxoha": "ake",
+"portugues": "tripa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0305",
+"kind": "verbete",
+"patxoha": "etã",
+"portugues": "ventre, útero números ordinais pukuixê 1o mixetxawé 2o petenyõ 3o 4o irekaho 5o wênoré 6o xamotxé uriwêmõ 7o aytemory 8o koáneré 9o 10o txoenê continuação, usar a regra dos números cardinais. números cardinais ruê apêtxienã 11 ruê krokxí 12 ruê mitxê 13 ruê rãtxê 14 ruê nigrê 15 krãmitxê 30 ate noventa xuê apêtxienã 100 hiã apêtxienã 1000",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0306",
+"kind": "verbete",
+"patxoha": "txuê apêtxienã",
+"portugues": "1000000 awã apêtxienã 1000000000 xaã apêtxienã 1000000000000 txaywã dxãdhã dias da semana",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0307",
+"kind": "verbete",
+"patxoha": "aktxorõ",
+"portugues": "domingo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0308",
+"kind": "verbete",
+"patxoha": "datxêã",
+"portugues": "Segunda-feira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0309",
+"kind": "verbete",
+"patxoha": "bôkiriá",
+"portugues": "Terça-feira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0310",
+"kind": "verbete",
+"patxoha": "ikaminã",
+"portugues": "Quarta-feira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0311",
+"kind": "verbete",
+"patxoha": "dxêhetuá",
+"portugues": "Quinta-feira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0312",
+"kind": "verbete",
+"patxoha": "éktanoã",
+"portugues": "Sexta-feira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0313",
+"kind": "verbete",
+"patxoha": "hetxiwé",
+"portugues": "sábado ãghõ honãg meses do ano",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0314",
+"kind": "verbete",
+"patxoha": "ariomã",
+"portugues": "janeiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0315",
+"kind": "verbete",
+"patxoha": "erimiopã",
+"portugues": "fevereiro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0316",
+"kind": "verbete",
+"patxoha": "urapiná",
+"portugues": "março",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0317",
+"kind": "verbete",
+"patxoha": "iriawá",
+"portugues": "abril",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0318",
+"kind": "verbete",
+"patxoha": "txawapê",
+"portugues": "maio",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0319",
+"kind": "verbete",
+"patxoha": "aktxawã",
+"portugues": "junho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0320",
+"kind": "verbete",
+"patxoha": "aridxawá",
+"portugues": "julho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0321",
+"kind": "verbete",
+"patxoha": "anienã",
+"portugues": "agosto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0322",
+"kind": "verbete",
+"patxoha": "kraymakã",
+"portugues": "setembro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0323",
+"kind": "verbete",
+"patxoha": "dxarepotxê",
+"portugues": "outubro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0324",
+"kind": "verbete",
+"patxoha": "kritawé",
+"portugues": "novembro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0325",
+"kind": "verbete",
+"patxoha": "meramiã",
+"portugues": "dezembro pronomes retos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0326",
+"kind": "verbete",
+"patxoha": "arnã",
+"portugues": "eu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0327",
+"kind": "verbete",
+"patxoha": "dxê’ê",
+"portugues": "tu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0328",
+"kind": "verbete",
+"patxoha": "topehê",
+"portugues": "ele",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0329",
+"kind": "verbete",
+"patxoha": "hotehô",
+"portugues": "nós",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0330",
+"kind": "verbete",
+"patxoha": "dxê’êp",
+"portugues": "vós",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0331",
+"kind": "verbete",
+"patxoha": "topehêp",
+"portugues": "eles pronomes oblíquos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0332",
+"kind": "verbete",
+"patxoha": "famoxi",
+"portugues": "mim, me",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0333",
+"kind": "verbete",
+"patxoha": "hũarnã",
+"portugues": "comigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0334",
+"kind": "verbete",
+"patxoha": "hũdxê’ê",
+"portugues": "contigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0335",
+"kind": "verbete",
+"patxoha": "hũtopehê",
+"portugues": "consigo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0336",
+"kind": "verbete",
+"patxoha": "hôk",
+"portugues": "lhe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0337",
+"kind": "verbete",
+"patxoha": "iõ",
+"portugues": "o",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0338",
+"kind": "verbete",
+"patxoha": "iẽ",
+"portugues": "a",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0339",
+"kind": "verbete",
+"patxoha": "hũdxê’êp",
+"portugues": "convosco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0340",
+"kind": "verbete",
+"patxoha": "hũhotehô",
+"portugues": "conosco pronomes de tratamentos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0341",
+"kind": "verbete",
+"patxoha": "anehõ",
+"portugues": "você",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0342",
+"kind": "verbete",
+"patxoha": "mupuk",
+"portugues": "você",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0343",
+"kind": "verbete",
+"patxoha": "makiame",
+"portugues": "senhor, senhora pronomes possessivos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0344",
+"kind": "verbete",
+"patxoha": "kãnã",
+"portugues": "minha,",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0345",
+"kind": "verbete",
+"patxoha": "kãpetô",
+"portugues": "meu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0346",
+"kind": "verbete",
+"patxoha": "kotenekô",
+"portugues": "seu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0347",
+"kind": "verbete",
+"patxoha": "nũgã",
+"portugues": "seu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0348",
+"kind": "verbete",
+"patxoha": "tâipâk",
+"portugues": "sua",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0349",
+"kind": "verbete",
+"patxoha": "hũkã",
+"portugues": "teu",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0350",
+"kind": "verbete",
+"patxoha": "kahnẽtú",
+"portugues": "nosso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0351",
+"kind": "verbete",
+"patxoha": "napinotô",
+"portugues": "nossa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0352",
+"kind": "verbete",
+"patxoha": "kepãy",
+"portugues": "ela",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0353",
+"kind": "verbete",
+"patxoha": "notẽ",
+"portugues": "agente pronomes demonstrativos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0354",
+"kind": "verbete",
+"patxoha": "ĩtãĩ",
+"portugues": "este",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0355",
+"kind": "verbete",
+"patxoha": "uĩtãĩ",
+"portugues": "neste",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0356",
+"kind": "verbete",
+"patxoha": "txepôy",
+"portugues": "estas",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0357",
+"kind": "verbete",
+"patxoha": "uĩtxêpoy",
+"portugues": "nesta",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0358",
+"kind": "verbete",
+"patxoha": "ahmônẽ",
+"portugues": "essa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0359",
+"kind": "verbete",
+"patxoha": "uĩmõnẽ",
+"portugues": "nessa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0360",
+"kind": "verbete",
+"patxoha": "ãtãy",
+"portugues": "isso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0361",
+"kind": "verbete",
+"patxoha": "uĩãtãy",
+"portugues": "nisso",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0362",
+"kind": "verbete",
+"patxoha": "txõg",
+"portugues": "aqui",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0363",
+"kind": "verbete",
+"patxoha": "txêk",
+"portugues": "ali",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0364",
+"kind": "verbete",
+"patxoha": "higuá",
+"portugues": "lá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0365",
+"kind": "verbete",
+"patxoha": "txeká",
+"portugues": "cá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0366",
+"kind": "verbete",
+"patxoha": "bereguá",
+"portugues": "atrás",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0367",
+"kind": "verbete",
+"patxoha": "kramiã",
+"portugues": "agora",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0368",
+"kind": "verbete",
+"patxoha": "tuhutari",
+"portugues": "hoje",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0369",
+"kind": "verbete",
+"patxoha": "mãpã",
+"portugues": "presente, instante",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0370",
+"kind": "verbete",
+"patxoha": "hãgnahay",
+"portugues": "amanhã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0371",
+"kind": "verbete",
+"patxoha": "ãgurá",
+"portugues": "outro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0372",
+"kind": "verbete",
+"patxoha": "ihê",
+"portugues": "aquele(a) mesmo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0373",
+"kind": "verbete",
+"patxoha": "haptxôy",
+"portugues": "depois",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0374",
+"kind": "verbete",
+"patxoha": "nokhô",
+"portugues": "nunca, jamais",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0375",
+"kind": "verbete",
+"patxoha": "poôtá",
+"portugues": "longe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0376",
+"kind": "verbete",
+"patxoha": "pori",
+"portugues": "perto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0377",
+"kind": "verbete",
+"patxoha": "kunã",
+"portugues": "próximo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0378",
+"kind": "verbete",
+"patxoha": "kixay",
+"portugues": "logo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0379",
+"kind": "verbete",
+"patxoha": "txãtu",
+"portugues": "próprio tal pronomes relativos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0380",
+"kind": "verbete",
+"patxoha": "dxá’á",
+"portugues": "que",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0381",
+"kind": "verbete",
+"patxoha": "pukãi",
+"portugues": "quem",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0382",
+"kind": "verbete",
+"patxoha": "dxá’ú",
+"portugues": "qual",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0383",
+"kind": "verbete",
+"patxoha": "kiôiã",
+"portugues": "coisa",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0384",
+"kind": "verbete",
+"patxoha": "tayatê",
+"portugues": "porque",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 42,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0385",
+"kind": "verbete",
+"patxoha": "ikô",
+"portugues": "por",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0386",
+"kind": "verbete",
+"patxoha": "japôtêrú",
+"portugues": "quando",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0387",
+"kind": "verbete",
+"patxoha": "irêk",
+"portugues": "onde",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0388",
+"kind": "verbete",
+"patxoha": "apiak",
+"portugues": "quanto",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0389",
+"kind": "verbete",
+"patxoha": "ahõhê",
+"portugues": "como",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0390",
+"kind": "verbete",
+"patxoha": "atxohé",
+"portugues": "maneira",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0391",
+"kind": "verbete",
+"patxoha": "hũ",
+"portugues": "com",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0392",
+"kind": "verbete",
+"patxoha": "ikô apiba",
+"portugues": "por fim",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0393",
+"kind": "verbete",
+"patxoha": "sãrug",
+"portugues": "cujo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0394",
+"kind": "verbete",
+"patxoha": "areneatxẽ",
+"portugues": "falado, dito",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0395",
+"kind": "verbete",
+"patxoha": "ihã",
+"portugues": "até pronomes indefinidos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0396",
+"kind": "verbete",
+"patxoha": "etaniã",
+"portugues": "cada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0397",
+"kind": "verbete",
+"patxoha": "petaniãg",
+"portugues": "cadê",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0398",
+"kind": "verbete",
+"patxoha": "paruka",
+"portugues": "alguém",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0399",
+"kind": "verbete",
+"patxoha": "tornẽpurú",
+"portugues": "algum",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0400",
+"kind": "verbete",
+"patxoha": "iapirõ",
+"portugues": "fulano",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0401",
+"kind": "verbete",
+"patxoha": "paktã",
+"portugues": "certo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0402",
+"kind": "verbete",
+"patxoha": "nitxi",
+"portugues": "muito",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0403",
+"kind": "verbete",
+"patxoha": "txaxó",
+"portugues": "menos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0404",
+"kind": "verbete",
+"patxoha": "hoarú",
+"portugues": "nenhum",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0405",
+"kind": "verbete",
+"patxoha": "guakxó",
+"portugues": "pouco",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0406",
+"kind": "verbete",
+"patxoha": "uãknitxi",
+"portugues": "demais",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0407",
+"kind": "verbete",
+"patxoha": "aponitô",
+"portugues": "bastante",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0408",
+"kind": "verbete",
+"patxoha": "tapuritú",
+"portugues": "mais",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0409",
+"kind": "verbete",
+"patxoha": "iamã",
+"portugues": "nada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0410",
+"kind": "verbete",
+"patxoha": "naãhã",
+"portugues": "sem",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0411",
+"kind": "verbete",
+"patxoha": "ikek’rõ",
+"portugues": "outro",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0412",
+"kind": "verbete",
+"patxoha": "hõtö",
+"portugues": "uma",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0413",
+"kind": "verbete",
+"patxoha": "nioniêmã",
+"portugues": "um",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0414",
+"kind": "verbete",
+"patxoha": "hũnitxi",
+"portugues": "vários",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0415",
+"kind": "verbete",
+"patxoha": "akdxihi",
+"portugues": "tudo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0416",
+"kind": "verbete",
+"patxoha": "hõtxomã",
+"portugues": "todo conectivos",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0417",
+"kind": "verbete",
+"patxoha": "ũpú",
+"portugues": "de",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0418",
+"kind": "verbete",
+"patxoha": "upâ",
+"portugues": "da",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0419",
+"kind": "verbete",
+"patxoha": "txó",
+"portugues": "do",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0420",
+"kind": "verbete",
+"patxoha": "uĩ",
+"portugues": "na, no",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0421",
+"kind": "verbete",
+"patxoha": "ũg",
+"portugues": "e",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0422",
+"kind": "verbete",
+"patxoha": "me’á",
+"portugues": "é",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0423",
+"kind": "verbete",
+"patxoha": "ũxé",
+"portugues": "em",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0424",
+"kind": "verbete",
+"patxoha": "dxahá",
+"portugues": "para",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0425",
+"kind": "verbete",
+"patxoha": "txayá",
+"portugues": "más principais saudações",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0426",
+"kind": "verbete",
+"patxoha": "hayôkunã",
+"portugues": "bom dia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0427",
+"kind": "verbete",
+"patxoha": "hayôxó",
+"portugues": "res/p bom dia",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0428",
+"kind": "verbete",
+"patxoha": "itxê niató",
+"portugues": "boa tarde",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0429",
+"kind": "verbete",
+"patxoha": "miriaú",
+"portugues": "res/p boa tarde",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0430",
+"kind": "verbete",
+"patxoha": "takohã",
+"portugues": "boa noite",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0431",
+"kind": "verbete",
+"patxoha": "akunã",
+"portugues": "res/p boa noite",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0432",
+"kind": "verbete",
+"patxoha": "itxê hamôp",
+"portugues": "boa noite na saída",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0433",
+"kind": "verbete",
+"patxoha": "bolukunã",
+"portugues": "res/p boa noite na saida",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0434",
+"kind": "verbete",
+"patxoha": "taputá tometô",
+"portugues": "seja bem vindo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0435",
+"kind": "verbete",
+"patxoha": "ihã atêkuã",
+"portugues": "até amanhã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0436",
+"kind": "verbete",
+"patxoha": "ihã",
+"portugues": "merekati – até mais tarde",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0437",
+"kind": "verbete",
+"patxoha": "tsägô",
+"portugues": "tchau",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0438",
+"kind": "verbete",
+"patxoha": "dawê",
+"portugues": "adeus",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0439",
+"kind": "verbete",
+"patxoha": "hatxótãy",
+"portugues": "jóia, ótimo, beleza, ok!",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0440",
+"kind": "verbete",
+"patxoha": "akxãy",
+"portugues": "olá, oi, alô",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0441",
+"kind": "verbete",
+"patxoha": "hũtxeká",
+"portugues": "com licença",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0442",
+"kind": "verbete",
+"patxoha": "pumũtxeká",
+"portugues": "face favor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0443",
+"kind": "verbete",
+"patxoha": "ikôtxeká",
+"portugues": "por favor",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0444",
+"kind": "verbete",
+"patxoha": "ápôytxeká",
+"portugues": "vem cá",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0445",
+"kind": "verbete",
+"patxoha": "hũnänãy",
+"portugues": "desculpe",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0446",
+"kind": "verbete",
+"patxoha": "ahnã ehtõ",
+"portugues": "eu te amo",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0447",
+"kind": "verbete",
+"patxoha": "ahnã mimô’ã anehõ",
+"portugues": "eu gosto de você pahnẽ ahnã apêtxienã",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0448",
+"kind": "verbete",
+"patxoha": "nipatxiõxó",
+"portugues": "dar-me um abraço",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0449",
+"kind": "verbete",
+"patxoha": "taypâk ĩtxãy ipamakã",
+"portugues": "sua bênção pai Niamisũ mãtxó kãpetô",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0450",
+"kind": "verbete",
+"patxoha": "konehõ",
+"portugues": "Deus te abençoe meu filho",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0451",
+"kind": "verbete",
+"patxoha": "Tukê tukehê",
+"portugues": "boa sorte",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0452",
+"kind": "verbete",
+"patxoha": "Iamã",
+"portugues": "obrigado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0453",
+"kind": "verbete",
+"patxoha": "Awêry",
+"portugues": "obrigado",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+},
+{
+"id": "pn-0454",
+"kind": "verbete",
+"patxoha": "Ikô iamã",
+"portugues": "por nada",
+"grupo": "Kanã patä mionã(Minha família)",
+"pagina": 43,
+"fonte": "Patxôhã 2015"
+}
+]

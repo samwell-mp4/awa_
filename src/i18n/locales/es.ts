@@ -36,7 +36,7 @@ export default {
     resourceVideosDesc: "Escenas y narrativas de la aldea Pataxó.",
   },
   nav: {
-    dicionario: "Diccionario",
+    dicionario: "Diccionario Patxôhã 2015",
     tradutor: "Traductor",
     trilhas: "Senderos",
     historias: "Historias",
