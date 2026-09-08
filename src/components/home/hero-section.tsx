@@ -115,6 +115,7 @@ export function HeroSection() {
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               to="/aprender-numeros"
+              search={{ area: "adulto" }}
               className="inline-flex items-center gap-2 rounded-xl border border-gold/30 bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gold backdrop-blur-sm transition hover:bg-gold/20"
             >
               <span className="text-lg">🔢</span> Aprender Números
