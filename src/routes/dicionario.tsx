@@ -95,6 +95,7 @@ function firstLetter(s: string): string {
 type EnrichedEntry = Entry & {
   _cat: string;
   _letter: string;
+  _letterPt: string;
   _indLower: string;
   _ptLower: string;
 };
@@ -112,6 +113,7 @@ const ENRICHED_ENTRIES: EnrichedEntry[] = (patxohaDict as Array<Omit<Entry, "id"
       ...base,
       _cat: categorize(entry),
       _letter: firstLetter(entry.term_indigenous),
+      _letterPt: firstLetter(entry.term_pt),
       _indLower: (entry.term_indigenous || "").toLowerCase(),
       _ptLower: (entry.term_pt || "").toLowerCase(),
     };
@@ -130,7 +132,16 @@ const LETTER_COUNTS: ReadonlyMap<string, number> = (() => {
   return m;
 })();
 
+const LETTER_COUNTS_PT: ReadonlyMap<string, number> = (() => {
+  const m = new Map<string, number>();
+  for (const e of ENRICHED_ENTRIES) m.set(e._letterPt, (m.get(e._letterPt) ?? 0) + 1);
+  return m;
+})();
+
 const TOTAL_ENTRIES = ENRICHED_ENTRIES.length;
+
+/** Direção da consulta: Patxôhã → Português ou Português → Patxôhã. */
+type Direction = "pat-pt" | "pt-pat";
 
 function DictionaryPage() {
   const backTo = useLastArea();
