@@ -101,11 +101,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "AWÃ TECH" },
       { name: "twitter:title", content: "AWÃ TECH — Línguas Indígenas, Culturas Vivas" },
       { name: "twitter:description", content: "Aprenda línguas indígenas brasileiras com vídeos, histórias, músicas e desafios. Uma plataforma educativa que preserva culturas vivas." },
-      { property: "og:image", content: "https://awa-tech.store/og-awa-tech.jpg" },
+      { property: "og:image", content: "https://awa-tech.store/og-awa-tech.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Logo AWÃ TECH" },
-      { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.jpg" },
+      { name: "twitter:image", content: "https://awa-tech.store/og-awa-tech.png" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },

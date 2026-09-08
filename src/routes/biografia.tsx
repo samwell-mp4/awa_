@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
 
-import logoSrc from "@/assets/awa-tech-logo.webp";
+import logoSrc from "@/assets/awa-tech-logo.png";
 import heroWoman from "@/assets/hero-woman.jpg";
 import { useLastArea } from "@/lib/last-area";
 

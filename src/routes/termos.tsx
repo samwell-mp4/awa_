@@ -36,15 +36,9 @@ function TermosPage() {
 
       <h2 className="mt-8 font-display text-xl font-bold text-gold">1. Quem somos</h2>
       <p>
-        O serviço <b>AWÃ TECH</b> é fornecido por <b>Adler Magno Santos</b>, pessoa física
-        empresária sediada no Brasil, que atua sob o nome comercial <b>AWÃ TECH</b> ("nós",
-        "nosso"). Ao criar uma conta ou assinar, você ("usuário") celebra um contrato diretamente
-        com <b>Adler Magno Santos (AWÃ TECH)</b> nos termos deste documento. Se não concordar, não
-        use a plataforma. Contato:{" "}
-        <a className="text-gold underline" href="mailto:duvidas@awa-tech.store">
-          duvidas@awa-tech.store
-        </a>
-        .
+        O <b>AWÃ TECH</b> é uma plataforma sediada no Brasil ("nós", "nosso"). Ao criar uma conta ou
+        assinar, você ("usuário") celebra um contrato conosco nos termos deste documento. Se não
+        concordar, não use a plataforma.
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">2. Serviço</h2>
@@ -56,30 +50,11 @@ function TermosPage() {
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">3. Planos e cobrança</h2>
-      <p>
-        Oferecemos duas assinaturas independentes, cada uma liberando apenas a sua área. Os valores
-        vigentes são exibidos publicamente na página{" "}
-        <Link to="/planos" className="text-gold underline">
-          Planos e preços
-        </Link>
-        :
-      </p>
       <ul className="mt-2 list-disc space-y-1 pl-6">
-        <li><b>Gratuito</b>: saudações, página inicial, planos e biografia.</li>
-        <li><b>Infantil Mensal</b>: R$ 29,90/mês, com renovação automática mensal.</li>
-        <li><b>Infantil Semestral</b>: R$ 149,90 a cada 6 meses, com renovação automática.</li>
-        <li><b>Adulto Mensal</b>: R$ 39,90/mês, com renovação automática mensal.</li>
-        <li><b>Adulto Semestral</b>: R$ 199,90 a cada 6 meses, com renovação automática.</li>
+        <li><b>Básico</b> (grátis): saudações, home, planos e biografia.</li>
+        <li><b>Premium Mensal</b>: R$ 29,90/mês, renovação automática mensal.</li>
+        <li><b>Premium Semestral</b>: R$ 149,90 a cada 6 meses, renovação automática.</li>
       </ul>
-      <p className="mt-2">
-        Todos os valores são em reais (BRL) e incluem os tributos aplicáveis, quando devidos. A
-        assinatura renova automaticamente ao fim de cada ciclo até que você cancele.
-      </p>
-      <p className="mt-2">
-        Nosso processo de pedidos é conduzido pelo nosso revendedor online <b>Paddle.com</b>. A
-        Paddle.com é a <b>Merchant of Record</b> de todos os nossos pedidos. A Paddle fornece todo o
-        atendimento ao cliente relacionado a pedidos e cuida das devoluções.
-      </p>
       <p className="mt-2">
         A cobrança, faturamento, impostos e emissão de recibos são processados por <b>Paddle.com Market Limited</b>,
         nosso <b>Merchant of Record</b>. Ao comprar, você também aceita os{" "}
@@ -98,7 +73,7 @@ function TermosPage() {
       <p>
         Você pode cancelar a qualquer momento em <b>Minha conta → Gerenciar assinatura</b>. O acesso Premium
         permanece disponível até o fim do período já pago. Reembolsos seguem nossa{" "}
-        <Link to="/reembolso" className="text-gold underline">Política de Reembolso</Link> (garantia de 30 dias).
+        <Link to="/reembolso" className="text-gold underline">Política de Reembolso</Link> (garantia de 14 dias).
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">5. Conta e segurança</h2>

@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
 import { useLang, type Lang } from "@/lib/pick-lang";
-import logoSrc from "@/assets/awa-tech-logo.webp";
+import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
 
 

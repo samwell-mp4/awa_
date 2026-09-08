@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
-import logoSrc from "@/assets/awa-tech-logo.webp";
+import logoSrc from "@/assets/awa-tech-logo.png";
 
 export const Route = createFileRoute("/planos")({
   head: () => ({

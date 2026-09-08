@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import logoSrc from "@/assets/awa-tech-logo.webp";
+import logoSrc from "@/assets/awa-tech-logo.png";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";

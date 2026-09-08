@@ -1,6 +1,6 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import logoSrc from "@/assets/awa-tech-logo.webp";
+import logoSrc from "@/assets/awa-tech-logo.png";
 
 export const Route = createFileRoute("/unsubscribe")({
   head: () => ({
