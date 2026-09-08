@@ -36,7 +36,7 @@ export default {
     resourceVideosDesc: "Cenas e narrativas da aldeia Pataxó.",
   },
   nav: {
-    dicionario: "Dicionário",
+    dicionario: "Dicionário Patxôhã 2015",
     tradutor: "Tradutor",
     trilhas: "Trilhas",
     historias: "Histórias",
