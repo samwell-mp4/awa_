@@ -62,6 +62,8 @@ type L10n = {
   listen: string;
   send: string;
   back: string;
+  heroBadge: string;
+  heroChips: string[];
   suggestions: { label: string; prompt: string }[];
   errorSpeak: string;
   errorAudio: string;
@@ -83,6 +85,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Ouvir",
     send: "Enviar",
     back: "Voltar",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronúncia", "Vocabulário", "Cultura Pataxó"],
     suggestions: [
       { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
       { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
@@ -107,6 +111,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Listen",
     send: "Send",
     back: "Back",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronunciation", "Vocabulary", "Pataxó Culture"],
     suggestions: [
       { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
       { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
@@ -131,6 +137,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Escuchar",
     send: "Enviar",
     back: "Volver",
+    heroBadge: "Profesor Akuã",
+    heroChips: ["Pronunciación", "Vocabulario", "Cultura Pataxó"],
     suggestions: [
       { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
       { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
@@ -155,6 +163,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Ouvir",
     send: "Enviar",
     back: "Iawê",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronúncia", "Palavras", "Cultura"],
     suggestions: [
       { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
       { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
