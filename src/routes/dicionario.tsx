@@ -360,7 +360,11 @@ function DictionaryPage() {
         </section>
 
         <section className="mt-5">
-          {filtered.length === 0 ? (
+          {!dict ? (
+            <div className="flex items-center justify-center gap-2 py-12 text-foreground/60">
+              <Loader2 className="h-5 w-5 animate-spin text-gold" /> {t("common.carregando", { defaultValue: "Carregando..." })}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
             <div className="space-y-6">
