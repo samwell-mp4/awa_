@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const GlossarioInfantil = lazy(() => import("@/components/kids/glossario-infantil").then(m => ({ default: m.GlossarioInfantil })));
 
@@ -182,9 +183,11 @@ function InfantilHome() {
             <h2 className="px-4 font-display text-2xl font-black text-emerald-900 text-center">
               {t("infantil.learning")}
             </h2>
-            <Suspense fallback={<div className="h-40 flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
-              <GlossarioInfantil />
-            </Suspense>
+            <ErrorBoundary area="glossario-infantil" message="Não foi possível carregar esta atividade. Tente novamente.">
+              <Suspense fallback={<div className="h-40 flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
+                <GlossarioInfantil />
+              </Suspense>
+            </ErrorBoundary>
           </section>
         )}
       </main>

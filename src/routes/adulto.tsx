@@ -14,6 +14,7 @@ import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { TrailsGrid } from "@/components/home/trails-grid";
 import { useActiveTemplate } from "@/hooks/use-active-template";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useDailyMission, useHomeTrails } from "@/hooks/use-home-data";
 
 
@@ -69,21 +70,31 @@ function AdultoHome() {
       <SiteHeader mode="adulto" />
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
-        <HeroSection />
-        <GreetingOfMoment />
-        <ContinueLearningCard />
+        <ErrorBoundary area="adulto-hero">
+          <HeroSection />
+          <GreetingOfMoment />
+          <ContinueLearningCard />
+        </ErrorBoundary>
 
         <div className="content-visibility-auto">
-          <TrailsGrid trails={trails} />
+          <ErrorBoundary area="adulto-trilhas" message="Não foi possível carregar as trilhas. Tente novamente.">
+            <TrailsGrid trails={trails} />
+          </ErrorBoundary>
         </div>
-        
+
         <section id="desafios" className="mt-8 grid gap-4 md:grid-cols-2 content-visibility-auto">
-          <DailyMissionCard mission={mission} />
-          <RankingCard />
+          <ErrorBoundary area="adulto-missao">
+            <DailyMissionCard mission={mission} />
+          </ErrorBoundary>
+          <ErrorBoundary area="adulto-ranking">
+            <RankingCard />
+          </ErrorBoundary>
         </section>
 
         <div className="content-visibility-auto">
-          <InstallCTA />
+          <ErrorBoundary area="adulto-install" fallback={() => null}>
+            <InstallCTA />
+          </ErrorBoundary>
         </div>
       </main>
 
