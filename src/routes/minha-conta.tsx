@@ -113,9 +113,12 @@ function MinhaContaPage() {
   }, [search.checkout, isPremium, refetch]);
 
   async function handleSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/" });
+    navigate({ to: "/", replace: true });
   }
+
 
   async function handlePortal() {
     setBusy(true);

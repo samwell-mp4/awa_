@@ -19,10 +19,14 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
 
 
   async function signOut() {
-    await supabase.auth.signOut();
+    // Cancela requisições em voo antes de limpar a sessão (evita erros 401
+    // aparecendo na tela) e remove a rota protegida do histórico.
+    await qc.cancelQueries();
     qc.clear();
-    navigate({ to: "/" });
+    await supabase.auth.signOut();
+    navigate({ to: "/", replace: true });
   }
+
 
   const isKids = mode === "infantil";
 
