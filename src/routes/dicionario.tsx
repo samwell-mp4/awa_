@@ -10,7 +10,7 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 
 import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
-import patxohaDict from "@/data/patxoha-dictionary.json";
+// O dicionário (572 KB) é carregado sob demanda para não pesar no bundle inicial.
 import { useLastArea } from "@/lib/last-area";
 
 
@@ -99,38 +99,51 @@ type EnrichedEntry = Entry & {
   _ptLower: string;
 };
 
-const ENRICHED_ENTRIES: EnrichedEntry[] = (patxohaDict as Array<Omit<Entry, "id">>).map(
-  (entry, index) => {
-    const base: Entry = {
-      id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
-      ...entry,
-      pronunciation: entry.pronunciation ?? null,
-      example: entry.example ?? null,
-      audio_url: entry.audio_url ?? null,
-    };
-    return {
-      ...base,
-      _cat: categorize(entry),
-      _letter: firstLetter(entry.term_indigenous),
-      _indLower: (entry.term_indigenous || "").toLowerCase(),
-      _ptLower: (entry.term_pt || "").toLowerCase(),
-    };
-  },
-);
+type DictData = {
+  entries: EnrichedEntry[];
+  catCounts: ReadonlyMap<string, number>;
+  letterCounts: ReadonlyMap<string, number>;
+};
 
-const CATEGORY_COUNTS: ReadonlyMap<string, number> = (() => {
-  const m = new Map<string, number>();
-  for (const e of ENRICHED_ENTRIES) m.set(e._cat, (m.get(e._cat) ?? 0) + 1);
-  return m;
-})();
+let dictCache: DictData | null = null;
+let dictPromise: Promise<DictData> | null = null;
 
-const LETTER_COUNTS: ReadonlyMap<string, number> = (() => {
-  const m = new Map<string, number>();
-  for (const e of ENRICHED_ENTRIES) m.set(e._letter, (m.get(e._letter) ?? 0) + 1);
-  return m;
-})();
+function loadDictionary(): Promise<DictData> {
+  if (dictCache) return Promise.resolve(dictCache);
+  if (!dictPromise) {
+    dictPromise = import("@/data/patxoha-dictionary.json").then((mod) => {
+      const raw = ((mod as any).default ?? mod) as Array<Omit<Entry, "id">>;
+      const entries: EnrichedEntry[] = raw.map((entry, index) => {
+        const base: Entry = {
+          id: `pdf-${index}-${entry.term_indigenous}-${entry.term_pt}`,
+          ...entry,
+          pronunciation: entry.pronunciation ?? null,
+          example: entry.example ?? null,
+          audio_url: entry.audio_url ?? null,
+        };
+        return {
+          ...base,
+          _cat: categorize(entry),
+          _letter: firstLetter(entry.term_indigenous),
+          _indLower: (entry.term_indigenous || "").toLowerCase(),
+          _ptLower: (entry.term_pt || "").toLowerCase(),
+        };
+      });
+      const catCounts = new Map<string, number>();
+      const letterCounts = new Map<string, number>();
+      for (const e of entries) {
+        catCounts.set(e._cat, (catCounts.get(e._cat) ?? 0) + 1);
+        letterCounts.set(e._letter, (letterCounts.get(e._letter) ?? 0) + 1);
+      }
+      dictCache = { entries, catCounts, letterCounts };
+      return dictCache;
+    });
+  }
+  return dictPromise;
+}
 
-const TOTAL_ENTRIES = ENRICHED_ENTRIES.length;
+const EMPTY_COUNTS: ReadonlyMap<string, number> = new Map();
+const EMPTY_ENTRIES: EnrichedEntry[] = [];
 
 function DictionaryPage() {
   const backTo = useLastArea();
@@ -151,10 +164,22 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
-  const enriched = ENRICHED_ENTRIES;
-  const counts = CATEGORY_COUNTS;
-  const letterCounts = LETTER_COUNTS;
+  // Dicionário carregado sob demanda (pré-enriquecido: categoria, letra, lowercase).
+  const [dict, setDict] = useState<DictData | null>(dictCache);
+  useEffect(() => {
+    if (dictCache) return;
+    let cancelled = false;
+    void loadDictionary().then((d) => {
+      if (!cancelled) setDict(d);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const enriched = dict?.entries ?? EMPTY_ENTRIES;
+  const counts = dict?.catCounts ?? EMPTY_COUNTS;
+  const letterCounts = dict?.letterCounts ?? EMPTY_COUNTS;
 
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
@@ -335,7 +360,11 @@ function DictionaryPage() {
         </section>
 
         <section className="mt-5">
-          {filtered.length === 0 ? (
+          {!dict ? (
+            <div className="flex items-center justify-center gap-2 py-12 text-foreground/60">
+              <Loader2 className="h-5 w-5 animate-spin text-gold" /> {t("common.carregando", { defaultValue: "Carregando..." })}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
             <div className="space-y-6">
