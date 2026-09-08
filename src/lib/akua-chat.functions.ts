@@ -275,7 +275,6 @@ Ao traduzir do português para Patxôhã:
       }
       throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
     }
-    const json = await res.json();
-    const reply: string = json.choices?.[0]?.message?.content ?? "...";
-    return { reply };
+    const content = await readChatContent(res);
+    return { reply: content.trim() || "..." };
   });
