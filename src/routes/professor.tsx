@@ -18,6 +18,8 @@ import {
   Sunrise,
   Users,
   Globe,
+  Sparkles,
+  GraduationCap,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -62,6 +64,8 @@ type L10n = {
   listen: string;
   send: string;
   back: string;
+  heroBadge: string;
+  heroChips: string[];
   suggestions: { label: string; prompt: string }[];
   errorSpeak: string;
   errorAudio: string;
@@ -83,6 +87,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Ouvir",
     send: "Enviar",
     back: "Voltar",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronúncia", "Vocabulário", "Cultura Pataxó"],
     suggestions: [
       { label: "Saudações do dia", prompt: "Me ensine as saudações usadas de manhã, à tarde e à noite em Patxôhã." },
       { label: "Vocabulário", prompt: "Ensine 5 palavras essenciais para quem está começando a aprender Patxôhã." },
@@ -107,6 +113,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Listen",
     send: "Send",
     back: "Back",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronunciation", "Vocabulary", "Pataxó Culture"],
     suggestions: [
       { label: "Daily greetings", prompt: "Teach me the greetings used in the morning, afternoon and evening in Patxôhã." },
       { label: "Vocabulary", prompt: "Teach me 5 essential words for someone starting to learn Patxôhã." },
@@ -131,6 +139,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Escuchar",
     send: "Enviar",
     back: "Volver",
+    heroBadge: "Profesor Akuã",
+    heroChips: ["Pronunciación", "Vocabulario", "Cultura Pataxó"],
     suggestions: [
       { label: "Saludos del día", prompt: "Enséñame los saludos usados por la mañana, la tarde y la noche en Patxôhã." },
       { label: "Vocabulario", prompt: "Enséñame 5 palabras esenciales para quien empieza a aprender Patxôhã." },
@@ -155,6 +165,8 @@ const L10N: Record<Lang, L10n> = {
     listen: "Ouvir",
     send: "Enviar",
     back: "Iawê",
+    heroBadge: "Professor Akuã",
+    heroChips: ["Pronúncia", "Palavras", "Cultura"],
     suggestions: [
       { label: "Saudações", prompt: "Me ensine as saudações do dia em Patxôhã." },
       { label: "Palavras", prompt: "Ensine 5 palavras essenciais em Patxôhã." },
@@ -311,34 +323,38 @@ function ProfessorPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.9)] backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)]">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold/90 hover:text-gold transition"
+            className="inline-flex items-center gap-1.5 rounded-full border border-transparent px-2.5 py-1.5 -ml-2.5 text-sm font-semibold text-gold/90 transition hover:border-gold/25 hover:bg-card/40 hover:text-gold"
           >
-            <ArrowLeft className="h-4 w-4" /> {L10N[lang].back}
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">{L10N[lang].back}</span>
           </Link>
 
           <div className="flex items-center gap-3">
             <div className="relative">
-              <img
-                loading="lazy"
-                decoding="async"
-                src={logoSrc}
-                alt=""
-                className="h-9 w-9 rounded-full border border-gold/40 object-cover shadow-md"
-              />
+              <div className="rounded-full bg-gradient-to-br from-gold/60 via-gold/20 to-transparent p-[2px]">
+                <img
+                  loading="lazy"
+                  decoding="async"
+                  src={logoSrc}
+                  alt=""
+                  className="h-10 w-10 rounded-full border border-forest-deep object-cover shadow-md"
+                />
+              </div>
               <span
                 aria-hidden
-                className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
               />
             </div>
             <div className="leading-tight">
               <div className="font-display text-sm font-black text-cream md:text-base">
                 Professor Akuã
               </div>
-              <div className="text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
+              <div className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
+                <Sparkles className="h-3 w-3" />
                 {t.subtitle}
               </div>
             </div>
@@ -347,7 +363,7 @@ function ProfessorPage() {
           <button
             onClick={resetConversation}
             disabled={isEmpty && !loading}
-            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/50 hover:text-cream disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40"
             title={t.newChat}
           >
             <RefreshCcw className="h-3.5 w-3.5" />
@@ -357,12 +373,50 @@ function ProfessorPage() {
       </header>
 
       <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
+        {isEmpty && !loading && (
+          <section className="mb-8 overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-br from-forest-deep/80 via-card/60 to-forest-deep/40 p-6 text-center shadow-[var(--shadow-card)] md:p-8">
+            <div className="relative mx-auto w-fit">
+              <div className="rounded-full bg-gradient-to-br from-gold via-gold/40 to-transparent p-[3px] shadow-[var(--shadow-gold)]">
+                <img
+                  src={logoSrc}
+                  alt="Professor Akuã"
+                  className="h-20 w-20 rounded-full border-2 border-forest-deep object-cover md:h-24 md:w-24"
+                />
+              </div>
+              <span
+                aria-hidden
+                className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-emerald-400 ring-2 ring-forest-deep"
+              />
+            </div>
+            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-forest-deep/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-gold">
+              <GraduationCap className="h-3 w-3" />
+              {t.heroBadge}
+            </span>
+            <h1 className="mt-3 font-display text-2xl font-black text-cream md:text-3xl">
+              Professor Akuã
+            </h1>
+            <p className="mx-auto mt-1.5 max-w-md text-xs text-foreground/70 md:text-sm">
+              {t.subtitle}
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {t.heroChips.map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full border border-leaf/30 bg-leaf/10 px-3 py-1 text-[11px] font-semibold text-leaf"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="space-y-5">
           {messages.map((m, i) => (
-            <Bubble 
-              key={i} 
-              msg={m} 
-              isLast={i === messages.length - 1} 
+            <Bubble
+              key={i}
+              msg={m}
+              isLast={i === messages.length - 1}
               activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
               onToggleAudio={toggleAudio}
             />
@@ -373,7 +427,8 @@ function ProfessorPage() {
 
         {isEmpty && !loading && (
           <section className="mt-8">
-            <div className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
+            <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground/50">
+              <Sparkles className="h-3.5 w-3.5 text-gold/70" />
               {t.suggestionsTitle}
             </div>
             <div className="grid gap-2.5 sm:grid-cols-2">
@@ -383,10 +438,10 @@ function ProfessorPage() {
                   <button
                     key={s.label}
                     onClick={() => send(s.prompt)}
-                    className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-card/40 p-3.5 text-left transition hover:border-gold/50 hover:bg-card/60"
+                    className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-card/40 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-gold/60 hover:bg-card/70 hover:shadow-[var(--shadow-gold)]"
                   >
-                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-leaf/15 text-leaf transition group-hover:bg-leaf/25">
-                      <Icon className="h-4.5 w-4.5" />
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-leaf/25 to-leaf/5 text-leaf ring-1 ring-leaf/20 transition group-hover:from-leaf/35 group-hover:to-leaf/15">
+                      <Icon className="h-5 w-5" />
                     </div>
                     <div className="min-w-0">
                       <div className="text-sm font-bold text-cream">{s.label}</div>
@@ -405,9 +460,9 @@ function ProfessorPage() {
           e.preventDefault();
           send(input);
         }}
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.94)] backdrop-blur-xl shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)]"
       >
-        <div className="mx-auto flex max-w-3xl items-end gap-2 px-4 py-3 md:px-8">
+        <div className="mx-auto flex max-w-3xl items-end gap-2.5 px-4 py-3 md:px-8">
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}
@@ -422,10 +477,10 @@ function ProfessorPage() {
               placeholder={t.placeholder}
               rows={1}
               maxLength={1000}
-              className="w-full resize-none rounded-2xl border border-gold/25 bg-card/70 px-4 py-3 pr-14 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition"
+              className="w-full resize-none rounded-2xl border border-gold/30 bg-card/80 px-4 py-3.5 pr-14 text-sm text-cream shadow-inner placeholder:text-foreground/40 focus:outline-none focus:border-gold/70 focus:ring-2 focus:ring-gold/25 transition"
             />
             {input.length > 800 && (
-              <div className="absolute right-3 bottom-1.5 text-[10px] font-semibold text-foreground/50">
+              <div className="absolute right-3 bottom-2 text-[10px] font-semibold text-foreground/50">
                 {input.length}/1000
               </div>
             )}
@@ -433,7 +488,7 @@ function ProfessorPage() {
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-forest-deep shadow-lg shadow-gold/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-gold to-gold/80 text-forest-deep shadow-lg shadow-gold/25 ring-1 ring-gold/40 transition hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
             aria-label={t.send}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
