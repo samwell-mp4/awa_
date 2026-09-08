@@ -98,7 +98,7 @@ function TermosPage() {
       <p>
         Você pode cancelar a qualquer momento em <b>Minha conta → Gerenciar assinatura</b>. O acesso Premium
         permanece disponível até o fim do período já pago. Reembolsos seguem nossa{" "}
-        <Link to="/reembolso" className="text-gold underline">Política de Reembolso</Link> (garantia de 14 dias).
+        <Link to="/reembolso" className="text-gold underline">Política de Reembolso</Link> (garantia de 30 dias).
       </p>
 
       <h2 className="mt-6 font-display text-xl font-bold text-gold">5. Conta e segurança</h2>
