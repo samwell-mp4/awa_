@@ -67,6 +67,8 @@ function AprenderNumeros() {
     }));
   }, [NUMEROS, translatedPt, currentLang]);
 
+  const [revealedCards, setRevealedCards] = useState<Set<number>>(new Set());
+
   const playAudio = (url: string, ptText: string) => {
     if (!url) {
       speak(ptText, "pt-BR");
