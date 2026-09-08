@@ -114,7 +114,7 @@ export function DictionaryAdmin() {
             value={draft.audio_url || ""}
             onChange={(v: string) => setDraft({ ...draft, audio_url: v })}
             onFile={async (file: File) => {
-              const path = `dictionary/audio/${crypto.randomUUID()}-${file.name}`;
+              const path = `dictionary/audio/${crypto.randomUUID()}.${(file.name.split(".").pop() ?? "bin").toLowerCase().replace(/[^a-z0-9]/g, "")}`;
               const { error } = await supabase.storage.from("songs").upload(path, file);
               if (error) return toast.error(error.message);
               const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
@@ -178,7 +178,7 @@ function EntryRow({ entry }: { entry: Entry }) {
           onChange={(v: string) => setE({ ...e, audio_url: v })}
           onFile={async (file: File) => {
 
-            const path = `dictionary/audio/${crypto.randomUUID()}-${file.name}`;
+            const path = `dictionary/audio/${crypto.randomUUID()}.${(file.name.split(".").pop() ?? "bin").toLowerCase().replace(/[^a-z0-9]/g, "")}`;
             const { error } = await supabase.storage.from("songs").upload(path, file);
             if (error) return toast.error(error.message);
             const { data } = await supabase.storage.from("songs").createSignedUrl(path, 60 * 60 * 24 * 365);
