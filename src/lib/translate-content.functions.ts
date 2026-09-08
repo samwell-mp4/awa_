@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
 
 const LANG_NAME: Record<string, string> = {
   en: "English",
