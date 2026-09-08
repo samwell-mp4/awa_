@@ -30,11 +30,11 @@ export const Route = createFileRoute("/api/public/hooks/plan-expiry")({
 
 
         const supabaseUrl = process.env.SUPABASE_URL!;
-        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-        if (!supabaseUrl || !serviceKey) {
+        if (!supabaseUrl) {
           return new Response(JSON.stringify({ error: "server config" }), { status: 500 });
         }
         const admin = createClient(supabaseUrl, serviceKey);
+
 
         const now = new Date();
         const in7 = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
