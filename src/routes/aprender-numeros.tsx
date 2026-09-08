@@ -13,6 +13,9 @@ import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/aprender-numeros")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    area: search.area === "adulto" ? ("adulto" as const) : ("infantil" as const),
+  }),
   component: AprenderNumeros,
 });
 
@@ -31,6 +34,8 @@ const DEFAULT_NUMEROS = [
 
 function AprenderNumeros() {
   const { t, i18n } = useTranslation();
+  const { area } = Route.useSearch();
+  const isAdult = area === "adulto";
   useEffect(() => setLastArea("/aprender-numeros"), []);
   const getFn = useServerFn(getNumbersConfig);
 
@@ -91,25 +96,51 @@ function AprenderNumeros() {
     playAudio(url, ptText);
   };
 
+  const backButtonClass = isAdult
+    ? "flex items-center gap-2 rounded-full border border-gold/40 bg-card/60 px-5 py-2 text-sm font-medium text-gold transition hover:bg-gold/10"
+    : "flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95";
+
+  const cardClass = isAdult
+    ? "group flex min-h-[170px] flex-col items-center justify-center gap-3 rounded-2xl border border-gold/25 bg-card/70 p-6 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.6)] transition hover:-translate-y-1 hover:border-gold/60"
+    : "group flex min-h-[190px] flex-col items-center justify-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white";
+
+  const numberClass = isAdult
+    ? "font-display text-5xl font-bold text-cream"
+    : "font-display text-5xl font-black text-emerald-900";
+  const patClass = isAdult
+    ? "font-display text-lg font-semibold uppercase tracking-wide text-gold"
+    : "font-display text-lg font-black uppercase text-emerald-700";
+  const ptClass = isAdult
+    ? "text-sm font-medium text-foreground/60"
+    : "text-sm font-bold text-emerald-900/60";
+  const audioChipClass = isAdult
+    ? "mt-2 rounded-full border border-gold/30 bg-gold/10 p-2 text-gold transition group-hover:bg-gold/20"
+    : "mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200";
+  const hiddenNumberClass = isAdult
+    ? "font-display text-5xl font-light text-gold/70 transition group-hover:scale-110"
+    : "font-display text-6xl font-black text-amber-500 transition group-hover:scale-110";
+  const hintClass = isAdult
+    ? "text-xs font-medium text-foreground/50"
+    : "text-sm font-bold text-emerald-900/60";
+
   return (
-    <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
-      <SiteHeader mode="infantil" />
-      
+    <div className={isAdult ? "min-h-screen bg-background text-foreground" : "kids-theme min-h-screen bg-[#0b3d2e] text-cream"}>
+      <SiteHeader mode={isAdult ? "adulto" : "infantil"} />
+
       <main className="mx-auto max-w-4xl px-4 py-12 text-center">
         <div className="mb-8 flex justify-between items-center">
-          <button
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2 rounded-full border-4 border-amber-300 bg-emerald-800 px-6 py-2 font-display text-lg font-black text-white shadow-xl transition hover:scale-105 active:scale-95"
-          >
-            <ArrowLeft className="h-5 w-5 stroke-[3]" />
+          <button onClick={() => window.history.back()} className={backButtonClass}>
+            <ArrowLeft className={isAdult ? "h-4 w-4" : "h-5 w-5 stroke-[3]"} />
             <span>{t("common.voltar")}</span>
           </button>
         </div>
 
-        <h1 className="mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl">
+        <h1 className={isAdult
+          ? "mb-4 font-display text-3xl font-bold text-cream md:text-4xl"
+          : "mb-4 font-display text-4xl font-black text-amber-300 md:text-5xl"}>
           {pageConfig?.title || t("numbers.title") || "Números em Patxôhã"}
         </h1>
-        <p className="mb-12 text-lg text-cream/80">
+        <p className={isAdult ? "mb-12 text-base text-foreground/70" : "mb-12 text-lg text-cream/80"}>
           {pageConfig?.subtitle || t("numbers.subtitle") || "Aprenda a contar na língua do povo Pataxó"}
         </p>
 
@@ -120,31 +151,23 @@ function AprenderNumeros() {
               <button
                 key={i}
                 onClick={() => handleCardClick(i, num.audio, num.pt)}
-                className="group flex min-h-[190px] flex-col items-center justify-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
+                className={cardClass}
               >
                 {revealed ? (
                   <>
-                    <span className="font-display text-5xl font-black text-emerald-900">
-                      {i + 1}
-                    </span>
+                    <span className={numberClass}>{i + 1}</span>
                     <div className="flex flex-col">
-                      <span className="font-display text-lg font-black uppercase text-emerald-700">
-                        {num.pat}
-                      </span>
-                      <span className="text-sm font-bold text-emerald-900/60">
-                        {num.pt}
-                      </span>
+                      <span className={patClass}>{num.pat}</span>
+                      <span className={ptClass}>{num.pt}</span>
                     </div>
-                    <div className="mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200">
+                    <div className={audioChipClass}>
                       <span className="text-xl">🔊</span>
                     </div>
                   </>
                 ) : (
                   <>
-                    <span className="font-display text-6xl font-black text-amber-500 transition group-hover:scale-110">
-                      ?
-                    </span>
-                    <span className="text-sm font-bold text-emerald-900/60">
+                    <span className={hiddenNumberClass}>?</span>
+                    <span className={hintClass}>
                       {t("numbers.tapToReveal") || "Toque para ver e ouvir"}
                     </span>
                   </>

@@ -63,7 +63,7 @@ export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
           const label = translateTrailName(t, trail.name);
           if (norm === "números" || norm === "numeros") {
             return (
-              <Link key={trail.name} to="/aprender-numeros" className={cardClass}>
+              <Link key={trail.name} to="/aprender-numeros" search={{ area: "adulto" }} className={cardClass}>
                 <TrailCardInner trail={trail} label={label} />
               </Link>
             );
