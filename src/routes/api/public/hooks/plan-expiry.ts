@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
+import { timingSafeEqual } from "crypto";
+
 
 // Called by pg_cron once per day. Finds subscriptions whose current_period_end
 // falls in [now, now+7d] and enqueues a warning email for each (idempotent by
@@ -9,21 +11,30 @@ export const Route = createFileRoute("/api/public/hooks/plan-expiry")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        // Auth via Supabase anon key in the "apikey" header (see schedule-jobs-options).
-        const apikey = request.headers.get("apikey");
-        const expected = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
-        if (!expected || apikey !== expected) {
+        // Only the scheduler may call this: it presents the service-role key as a
+        // bearer token (read from the vault inside the cron job). The publishable
+        // key must NOT be accepted here — it ships in the browser bundle, which
+        // would let anyone trigger e-mail sends.
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        const auth = request.headers.get("authorization") ?? "";
+        const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+        const ok =
+          !!serviceKey &&
+          token.length === serviceKey.length &&
+          timingSafeEqual(Buffer.from(token), Buffer.from(serviceKey));
+        if (!ok) {
           return new Response(JSON.stringify({ error: "unauthorized" }), {
             status: 401, headers: { "Content-Type": "application/json" },
           });
         }
 
+
         const supabaseUrl = process.env.SUPABASE_URL!;
-        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-        if (!supabaseUrl || !serviceKey) {
+        if (!supabaseUrl) {
           return new Response(JSON.stringify({ error: "server config" }), { status: 500 });
         }
         const admin = createClient(supabaseUrl, serviceKey);
+
 
         const now = new Date();
         const in7 = new Date(now.getTime() + 7 * 24 * 3600 * 1000);
