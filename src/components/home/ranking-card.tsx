@@ -6,14 +6,15 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { getWeeklyTopLearners, type TopLearner } from "@/lib/leaderboard.functions";
 
-function initials(name: string) {
-  return name
+function initials(name: string | null | undefined) {
+  return (name ?? "")
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
     .map((n) => n[0]?.toUpperCase() ?? "")
     .join("") || "A";
 }
+
 
 export function RankingCard() {
   const { t } = useTranslation();
