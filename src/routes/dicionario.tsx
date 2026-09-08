@@ -164,10 +164,22 @@ function DictionaryPage() {
     return () => window.clearTimeout(t);
   }, [query]);
 
-  // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
-  const enriched = ENRICHED_ENTRIES;
-  const counts = CATEGORY_COUNTS;
-  const letterCounts = LETTER_COUNTS;
+  // Dicionário carregado sob demanda (pré-enriquecido: categoria, letra, lowercase).
+  const [dict, setDict] = useState<DictData | null>(dictCache);
+  useEffect(() => {
+    if (dictCache) return;
+    let cancelled = false;
+    void loadDictionary().then((d) => {
+      if (!cancelled) setDict(d);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const enriched = dict?.entries ?? EMPTY_ENTRIES;
+  const counts = dict?.catCounts ?? EMPTY_COUNTS;
+  const letterCounts = dict?.letterCounts ?? EMPTY_COUNTS;
 
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
