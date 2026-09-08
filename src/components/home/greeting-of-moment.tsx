@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
@@ -13,8 +14,11 @@ export function GreetingOfMoment() {
   });
   const atual = pickByHour(list);
   const [termPtTranslated] = useAutoTranslate([atual?.term_pt ?? ""]);
-  if (!atual) return null;
-  const hour = new Date().getHours();
+  // A hora é lida somente após a montagem: durante o SSR ela não existe e
+  // renderizá-la direto causava divergência de hidratação.
+  const [hour, setHour] = useState<number | null>(null);
+  useEffect(() => setHour(new Date().getHours()), []);
+  if (!atual || hour === null) return null;
   const periodo =
     hour >= 5 && hour <= 11
       ? t("home.bomDia")
