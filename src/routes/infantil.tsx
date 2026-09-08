@@ -25,17 +25,21 @@ export const Route = createFileRoute("/infantil")({
   ssr: false,
   beforeLoad: async () => {
     const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
+    if (!data.user) throw redirect({ to: "/auth", reloadDocument: true });
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {
       _user_id: data.user.id,
       _plan: "infantil",
       _check_env: getPaddleEnvironment(),
     });
     if (!hasAccess) {
-      console.warn("[Guard] Redirecting to plans: No access to Infantil for user", data.user.id);
-      throw redirect({ to: "/planos", search: { need: "infantil" } as any });
+      throw redirect({
+        to: "/planos",
+        search: { need: "infantil" } as any,
+        reloadDocument: true,
+      });
     }
   },
+
   head: () => ({
     meta: [
       { title: "Awã Tech Infantil — Trilha da Aldeia" },
