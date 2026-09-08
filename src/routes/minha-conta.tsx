@@ -155,7 +155,6 @@ function MinhaContaPage() {
     awa_adulto_semestral: "Adulto Semestral (R$ 199,90)",
     awa_premium_monthly: "Premium Mensal (R$ 29,90)",
     awa_premium_semestral: "Premium Semestral (R$ 149,90)",
-
   };
 
   const s = statusLabel(subscription?.status, subscription?.cancel_at_period_end);
