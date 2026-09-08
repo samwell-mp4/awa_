@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.weekly_top_learners(integer) TO anon, authenticated, service_role;
