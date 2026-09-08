@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
+import { readJsonSafe } from "./ai-response.server";
 
 export const transcribeAudio = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
