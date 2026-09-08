@@ -95,6 +95,8 @@ function MinhaContaPage() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const openPortal = useServerFn(openCustomerPortalSession);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const search = useSearch({ from: "/minha-conta" });
   const [busy, setBusy] = useState(false);
   const [processing, setProcessing] = useState(search.checkout === "success");
