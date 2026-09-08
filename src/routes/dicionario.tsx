@@ -399,11 +399,14 @@ function DictionaryPage() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">{e.term_indigenous}</h3>
+                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">
+                                {direction === "pat-pt" ? e.term_indigenous : localize(e, "term_pt")}
+                              </h3>
                               <PlayIndicator />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {localize(e, "term_pt")}
+                              <span className="text-gold">→</span>{" "}
+                              {direction === "pat-pt" ? localize(e, "term_pt") : e.term_indigenous}
                             </div>
 
                           </div>
