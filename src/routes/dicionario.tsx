@@ -168,9 +168,6 @@ function DictionaryPage() {
   const counts = CATEGORY_COUNTS;
   const letterCounts = direction === "pat-pt" ? LETTER_COUNTS : LETTER_COUNTS_PT;
 
-  const headword = (e: EnrichedEntry) => (direction === "pat-pt" ? e.term_indigenous : e.term_pt);
-  const letterOf = (e: EnrichedEntry) => (direction === "pat-pt" ? e._letter : e._letterPt);
-
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
     const list = enriched.filter((e) => {
