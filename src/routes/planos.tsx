@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User } from "lucide-react";
+import { ArrowLeft, Check, Crown, Shield, Sparkles, Baby, User, CreditCard, QrCode } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { usePaddleCheckout } from "@/hooks/use-paddle-checkout";
@@ -181,10 +181,32 @@ function PlanosPage() {
         </section>
         )}
 
-        <p className="mt-10 flex items-center justify-center gap-2 text-center text-xs text-foreground/60">
-          <Shield className="h-3.5 w-3.5 text-gold" />
-          Pagamento seguro via Paddle (Merchant of Record). Cartão de crédito, débito e Pix.
-        </p>
+        <section className="mx-auto mt-10 max-w-2xl rounded-2xl border border-gold/25 bg-card/40 p-5 text-center">
+          <h3 className="font-display text-lg font-black text-cream">Formas de pagamento</h3>
+          <p className="mt-1 text-sm text-foreground/70">
+            Escolha como quiser pagar na hora de assinar:
+          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              { icon: <CreditCard className="h-4 w-4 text-gold" />, label: "Cartão de crédito" },
+              { icon: <CreditCard className="h-4 w-4 text-gold" />, label: "Cartão de débito" },
+              { icon: <QrCode className="h-4 w-4 text-gold" />, label: "Pix" },
+            ].map((m) => (
+              <span
+                key={m.label}
+                className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-background/40 px-4 py-2 text-sm font-semibold text-cream"
+              >
+                {m.icon}
+                {m.label}
+              </span>
+            ))}
+          </div>
+          <p className="mt-4 flex items-center justify-center gap-2 text-xs text-foreground/60">
+            <Shield className="h-3.5 w-3.5 text-gold" />
+            Pagamento seguro via Paddle (Merchant of Record). Vendedor: Awatech.
+          </p>
+        </section>
+
 
         <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-foreground/60">
           O acesso é liberado para a conta Google usada no login. Para liberar outro Gmail, faça login
