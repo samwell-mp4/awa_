@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { Save, Plus, Trash2, Search, Download, Upload, Loader2 } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 
-import patxohaDict from "@/data/patxoha-dictionary.json";
 
 type Entry = {
   id: string;
@@ -45,9 +44,10 @@ export function DictionaryAdmin() {
   const [importing, setImporting] = useState(false);
 
   async function importPdfDictionary() {
-    if (!confirm(`Reatualizar o dicionário Patxôhã do começo com ${patxohaDict.length} palavras do PDF? As entradas Patxôhã atuais serão substituídas para remover duplicatas.`)) return;
     setImporting(true);
     try {
+      const patxohaDict = ((await import("@/data/patxoha-dictionary.json")) as any).default as any[];
+      if (!confirm(`Reatualizar o dicionário Patxôhã do começo com ${patxohaDict.length} palavras do PDF? As entradas Patxôhã atuais serão substituídas para remover duplicatas.`)) { setImporting(false); return; }
       const { error: deleteError } = await supabase.from("dictionary").delete().eq("language", "Patxôhã");
       if (deleteError) throw deleteError;
 
@@ -93,7 +93,7 @@ export function DictionaryAdmin() {
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div>
             <h2 className="font-display text-lg font-black text-cream">Importar dicionário Patxôhã</h2>
-            <p className="text-xs text-foreground/60 mt-1">{patxohaDict.length} palavras extraídas do PDF oficial. Reatualiza do começo e remove duplicatas antigas.</p>
+            <p className="text-xs text-foreground/60 mt-1">3.192 palavras extraídas do PDF oficial. Reatualiza do começo e remove duplicatas antigas.</p>
           </div>
           <Btn onClick={importPdfDictionary} disabled={importing}>
             <Download className="h-4 w-4" /> {importing ? "Reatualizando..." : "Reatualizar do PDF"}
