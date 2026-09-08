@@ -22,9 +22,14 @@ function ReembolsoPage() {
         <h1 className="font-display text-3xl font-black text-cream">Política de Reembolso</h1>
         <p className="mt-2 text-xs text-foreground/60">Última atualização: {new Date().toLocaleDateString("pt-BR")}</p>
 
-        <h2 className="mt-8 font-display text-xl font-bold text-gold">Garantia de 14 dias</h2>
+        <p className="mt-4">
+          Esta política se aplica às assinaturas do <b>AWÃ TECH</b>, serviço fornecido por{" "}
+          <b>Adler Magno Santos</b> (nome comercial AWÃ TECH).
+        </p>
+
+        <h2 className="mt-8 font-display text-xl font-bold text-gold">Garantia de 30 dias</h2>
         <p>
-          Oferecemos <b>garantia de reembolso integral em até 14 dias</b> após a contratação, sem necessidade de
+          Oferecemos <b>garantia de reembolso integral em até 30 dias</b> após a contratação, sem necessidade de
           justificativa. Esse prazo atende e supera o direito de arrependimento previsto no{" "}
           <b>Art. 49 do Código de Defesa do Consumidor</b>.
         </p>
@@ -46,7 +51,7 @@ function ReembolsoPage() {
         </ol>
         <p className="mt-2">Processamos a solicitação em até 7 dias úteis.</p>
 
-        <h2 className="mt-6 font-display text-xl font-bold text-gold">Após os 14 dias</h2>
+        <h2 className="mt-6 font-display text-xl font-bold text-gold">Após os 30 dias</h2>
         <p>
           Você pode cancelar a renovação a qualquer momento em{" "}
           <Link to="/minha-conta" className="text-gold underline">Minha conta</Link>. O acesso Premium continua ativo
@@ -56,7 +61,7 @@ function ReembolsoPage() {
 
         <h2 className="mt-6 font-display text-xl font-bold text-gold">Assinatura semestral</h2>
         <p>
-          A garantia de 14 dias vale igualmente para o plano semestral. Após esse prazo, não há reembolso proporcional
+          A garantia de 30 dias vale igualmente para o plano semestral. Após esse prazo, não há reembolso proporcional
           dos meses restantes, mas o acesso segue ativo até o fim do semestre pago.
         </p>
       </main>
