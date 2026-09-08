@@ -73,9 +73,8 @@ Rules:
         }),
       });
       if (res.ok) {
-        const json = await res.json();
-        const raw: string = json.choices?.[0]?.message?.content ?? "{}";
-        const parsed = JSON.parse(raw);
+        const raw = await readChatContent(res);
+        const parsed = safeJsonParse<{ t?: unknown[] }>(raw);
         if (Array.isArray(parsed?.t) && parsed.t.length === misses.length) {
           translated = parsed.t.map(cleanTranslatedLine);
         }
