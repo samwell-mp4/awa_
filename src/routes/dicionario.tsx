@@ -95,6 +95,7 @@ function firstLetter(s: string): string {
 type EnrichedEntry = Entry & {
   _cat: string;
   _letter: string;
+  _letterPt: string;
   _indLower: string;
   _ptLower: string;
 };
@@ -112,6 +113,7 @@ const ENRICHED_ENTRIES: EnrichedEntry[] = (patxohaDict as Array<Omit<Entry, "id"
       ...base,
       _cat: categorize(entry),
       _letter: firstLetter(entry.term_indigenous),
+      _letterPt: firstLetter(entry.term_pt),
       _indLower: (entry.term_indigenous || "").toLowerCase(),
       _ptLower: (entry.term_pt || "").toLowerCase(),
     };
@@ -130,7 +132,16 @@ const LETTER_COUNTS: ReadonlyMap<string, number> = (() => {
   return m;
 })();
 
+const LETTER_COUNTS_PT: ReadonlyMap<string, number> = (() => {
+  const m = new Map<string, number>();
+  for (const e of ENRICHED_ENTRIES) m.set(e._letterPt, (m.get(e._letterPt) ?? 0) + 1);
+  return m;
+})();
+
 const TOTAL_ENTRIES = ENRICHED_ENTRIES.length;
+
+/** Direção da consulta: Patxôhã → Português ou Português → Patxôhã. */
+type Direction = "pat-pt" | "pt-pat";
 
 function DictionaryPage() {
   const backTo = useLastArea();
@@ -142,6 +153,7 @@ function DictionaryPage() {
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+  const [direction, setDirection] = useState<Direction>("pat-pt");
 
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -154,7 +166,7 @@ function DictionaryPage() {
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
   const enriched = ENRICHED_ENTRIES;
   const counts = CATEGORY_COUNTS;
-  const letterCounts = LETTER_COUNTS;
+  const letterCounts = direction === "pat-pt" ? LETTER_COUNTS : LETTER_COUNTS_PT;
 
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
@@ -162,19 +174,25 @@ function DictionaryPage() {
       // Usa campos pré-normalizados — sem toLowerCase() por keystroke.
       const matchQ = !q || e._indLower.includes(q) || e._ptLower.includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
-      const matchL = letter === "Todas" || e._letter === letter;
+      const matchL = letter === "Todas" || (direction === "pat-pt" ? e._letter : e._letterPt) === letter;
       return matchQ && matchC && matchL;
     });
     list.sort((a, b) => {
-      const cmp = a.term_indigenous.localeCompare(b.term_indigenous, "pt", { sensitivity: "base" });
+      const av = direction === "pat-pt" ? a.term_indigenous : a.term_pt;
+      const bv = direction === "pat-pt" ? b.term_indigenous : b.term_pt;
+      const cmp = av.localeCompare(bv, "pt", { sensitivity: "base" });
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, debouncedQuery, cat, letter, sort]);
+  }, [enriched, debouncedQuery, cat, letter, sort, direction]);
 
   useEffect(() => {
     setVisibleCount(120);
-  }, [query, cat, letter, sort]);
+  }, [query, cat, letter, sort, direction]);
+
+  useEffect(() => {
+    setLetter("Todas");
+  }, [direction]);
 
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
@@ -211,14 +229,14 @@ function DictionaryPage() {
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
     for (const e of visibleFiltered) {
-      const k = (e as any)._letter as string;
+      const k = direction === "pat-pt" ? e._letter : e._letterPt;
       if (!map.has(k)) map.set(k, [] as any);
       (map.get(k) as any).push(e);
     }
     return Array.from(map.entries()).sort(([a], [b]) =>
       sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
     );
-  }, [visibleFiltered, sort]);
+  }, [visibleFiltered, sort, direction]);
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
@@ -236,6 +254,30 @@ function DictionaryPage() {
 
       <main className="mx-auto max-w-5xl px-4 md:px-8">
         <section className="mt-6 card-elev rounded-2xl p-4 space-y-3">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-card/40 p-1">
+            {([
+              { key: "pat-pt", label: "Patxôhã → Português" },
+              { key: "pt-pat", label: "Português → Patxôhã" },
+            ] as { key: Direction; label: string }[]).map((opt) => {
+              const active = direction === opt.key;
+              return (
+                <button
+                  key={opt.key}
+                  type="button"
+                  onClick={() => setDirection(opt.key)}
+                  aria-pressed={active}
+                  className={`rounded-xl px-3 py-2 text-[11px] font-black transition sm:text-xs ${
+                    active
+                      ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
+                      : "text-foreground/70 hover:text-cream"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/50" />
             <input
@@ -354,11 +396,14 @@ function DictionaryPage() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">{e.term_indigenous}</h3>
+                              <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors">
+                                {direction === "pat-pt" ? e.term_indigenous : localize(e, "term_pt")}
+                              </h3>
                               <PlayIndicator />
                             </div>
                             <div className="mt-1 text-sm text-foreground/80">
-                              <span className="text-gold">→</span> {localize(e, "term_pt")}
+                              <span className="text-gold">→</span>{" "}
+                              {direction === "pat-pt" ? localize(e, "term_pt") : e.term_indigenous}
                             </div>
 
                           </div>
