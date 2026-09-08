@@ -155,6 +155,7 @@ function MinhaContaPage() {
     awa_adulto_semestral: "Adulto Semestral (R$ 199,90)",
     awa_premium_monthly: "Premium Mensal (R$ 29,90)",
     awa_premium_semestral: "Premium Semestral (R$ 149,90)",
+
   };
 
   const s = statusLabel(subscription?.status, subscription?.cancel_at_period_end);
@@ -450,11 +451,11 @@ function MinhaContaPage() {
               <div className="card-elev rounded-3xl border border-gold/40 p-6 md:p-8">
                 <div className="text-xs font-bold uppercase tracking-wider text-gold">Adulto</div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="font-display text-4xl font-black text-cream">R$ 29,90</span>
+                  <span className="font-display text-4xl font-black text-cream">R$ 39,90</span>
                   <span className="text-sm text-foreground/60">/mês</span>
                 </div>
                 <p className="mt-2 text-sm text-foreground/70">
-                  Dicionário, tradutor, Professor Akuã e conteúdo cultural. Ou semestral R$ 149,90.
+                  Dicionário, tradutor, Professor Akuã e conteúdo cultural. Ou semestral R$ 199,90.
                 </p>
                 <div className="mt-5 grid gap-2 sm:grid-cols-2">
                   <button
