@@ -44,6 +44,6 @@ export const transcribeAudio = createServerFn({ method: "POST" })
         message: `Não foi possível transcrever o áudio. ${message}`,
       };
     }
-    const json = await res.json();
-    return { text: (json.text ?? "") as string };
+    const json = await readJsonSafe<{ text?: string }>(res);
+    return { text: json?.text ?? "" };
   });
