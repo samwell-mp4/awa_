@@ -10,7 +10,7 @@ import { pickLang, useLang } from "@/lib/pick-lang";
 
 import { playFast } from "@/lib/audio-play";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
-import patxohaDict from "@/data/patxoha-dictionary.json";
+// O dicionário (572 KB) é carregado sob demanda para não pesar no bundle inicial.
 import { useLastArea } from "@/lib/last-area";
 
 
