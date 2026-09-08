@@ -21,17 +21,23 @@ export const Route = createFileRoute("/adulto")({
   ssr: false,
   beforeLoad: async () => {
     const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/auth" });
+    // `reloadDocument`: rota client-only — trocar de página no cliente após o
+    // SSR do placeholder gera divergência de hidratação.
+    if (!data.user) throw redirect({ to: "/auth", reloadDocument: true });
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {
       _user_id: data.user.id,
       _plan: "adulto",
       _check_env: getPaddleEnvironment(),
     });
     if (!hasAccess) {
-      console.warn("[Guard] Redirecting to plans: No access to Adulto for user", data.user.id);
-      throw redirect({ to: "/planos", search: { need: "adulto" } as any });
+      throw redirect({
+        to: "/planos",
+        search: { need: "adulto" } as any,
+        reloadDocument: true,
+      });
     }
   },
+
   head: () => ({
     meta: [
       { title: "Awã Tech Adulto — Trilhas, Dicionário e Cultura" },

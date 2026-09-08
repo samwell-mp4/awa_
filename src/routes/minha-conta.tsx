@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+
 import {
   ArrowLeft,
   Check,
@@ -93,6 +95,8 @@ function MinhaContaPage() {
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
   const openPortal = useServerFn(openCustomerPortalSession);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const search = useSearch({ from: "/minha-conta" });
   const [busy, setBusy] = useState(false);
   const [processing, setProcessing] = useState(search.checkout === "success");
@@ -113,9 +117,12 @@ function MinhaContaPage() {
   }, [search.checkout, isPremium, refetch]);
 
   async function handleSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/" });
+    navigate({ to: "/", replace: true });
   }
+
 
   async function handlePortal() {
     setBusy(true);

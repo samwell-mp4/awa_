@@ -154,9 +154,11 @@ function AdminPage() {
   }
 
   async function signOut() {
+    localStorage.removeItem("adminLogado");
     await supabase.auth.signOut();
-    navigate({ to: "/" });
+    navigate({ to: "/", replace: true });
   }
+
 
   if (loading) {
     return <div className="grid min-h-screen place-items-center text-foreground/70">Carregando painel...</div>;
