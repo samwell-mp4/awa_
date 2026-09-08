@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
 
 
 
@@ -79,9 +80,8 @@ export const narratePublic = createServerFn({ method: "POST" })
           }),
         });
         if (tr.ok) {
-          const j = await tr.json();
-          const raw: string = j.choices?.[0]?.message?.content ?? "{}";
-          const parsed = JSON.parse(raw);
+          const raw = await readChatContent(tr);
+          const parsed = safeJsonParse<{ t?: string }>(raw);
           if (typeof parsed?.t === "string" && parsed.t.trim()) {
             text = parsed.t.slice(0, 4000);
           }

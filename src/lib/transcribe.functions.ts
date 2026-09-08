@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
+import { readJsonSafe } from "./ai-response.server";
 
 export const transcribeAudio = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -44,6 +45,6 @@ export const transcribeAudio = createServerFn({ method: "POST" })
         message: `Não foi possível transcrever o áudio. ${message}`,
       };
     }
-    const json = await res.json();
-    return { text: (json.text ?? "") as string };
+    const json = await readJsonSafe<{ text?: string }>(res);
+    return { text: json?.text ?? "" };
   });

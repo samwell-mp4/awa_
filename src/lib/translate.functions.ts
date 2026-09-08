@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "@/lib/premium-guard";
+import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
 
 
 type Entry = { term_indigenous: string; term_pt: string };
@@ -212,14 +213,9 @@ ${compact}`;
       }
       throw new Error(`AI: ${res.status} ${errText}`);
     }
-    const json = await res.json();
-    const raw: string = json.choices?.[0]?.message?.content ?? "{}";
-    let parsed: { traducao: string; literal?: string; nota?: string };
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      parsed = { traducao: raw };
-    }
+    const raw = await readChatContent(res);
+    const parsed: { traducao: string; literal?: string; nota?: string } =
+      safeJsonParse<{ traducao: string; literal?: string; nota?: string }>(raw) ?? { traducao: raw };
     parsed.traducao = autoFormat(parsed.traducao ?? "");
     return { ...parsed, dict_size: dict.length, relevant_count: relevant.length };
   });

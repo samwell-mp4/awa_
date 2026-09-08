@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
+import { readChatContent } from "./ai-response.server";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Entry = { term_indigenous: string; term_pt: string };
@@ -275,7 +276,6 @@ Ao traduzir do português para Patxôhã:
       }
       throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
     }
-    const json = await res.json();
-    const reply: string = json.choices?.[0]?.message?.content ?? "...";
-    return { reply };
+    const content = await readChatContent(res);
+    return { reply: content.trim() || "..." };
   });
