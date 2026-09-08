@@ -16,7 +16,7 @@ import {
   Apple,
 } from "lucide-react";
 
-import logoSrc from "@/assets/awa-tech-logo.png";
+import logoSrc from "@/assets/awa-tech-logo.webp";
 import appPreviewAsset from "@/assets/app-preview.png.asset.json";
 import { useLastArea } from "@/lib/last-area";
 
