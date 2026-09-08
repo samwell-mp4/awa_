@@ -51,7 +51,7 @@ function ReembolsoPage() {
         </ol>
         <p className="mt-2">Processamos a solicitação em até 7 dias úteis.</p>
 
-        <h2 className="mt-6 font-display text-xl font-bold text-gold">Após os 14 dias</h2>
+        <h2 className="mt-6 font-display text-xl font-bold text-gold">Após os 30 dias</h2>
         <p>
           Você pode cancelar a renovação a qualquer momento em{" "}
           <Link to="/minha-conta" className="text-gold underline">Minha conta</Link>. O acesso Premium continua ativo
@@ -61,7 +61,7 @@ function ReembolsoPage() {
 
         <h2 className="mt-6 font-display text-xl font-bold text-gold">Assinatura semestral</h2>
         <p>
-          A garantia de 14 dias vale igualmente para o plano semestral. Após esse prazo, não há reembolso proporcional
+          A garantia de 30 dias vale igualmente para o plano semestral. Após esse prazo, não há reembolso proporcional
           dos meses restantes, mas o acesso segue ativo até o fim do semestre pago.
         </p>
       </main>
