@@ -81,6 +81,16 @@ function AprenderNumeros() {
     });
   };
 
+  const handleCardClick = (index: number, url: string, ptText: string) => {
+    setRevealedCards((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+    playAudio(url, ptText);
+  };
+
   return (
     <div className="kids-theme min-h-screen bg-[#0b3d2e] text-cream">
       <SiteHeader mode="infantil" />
