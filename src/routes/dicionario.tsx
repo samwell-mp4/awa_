@@ -153,6 +153,7 @@ function DictionaryPage() {
   const [cat, setCat] = useState<string>("Todas");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+  const [direction, setDirection] = useState<Direction>("pat-pt");
 
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -165,7 +166,10 @@ function DictionaryPage() {
   // Entradas já vêm pré-enriquecidas do módulo (categoria, letra, lowercase).
   const enriched = ENRICHED_ENTRIES;
   const counts = CATEGORY_COUNTS;
-  const letterCounts = LETTER_COUNTS;
+  const letterCounts = direction === "pat-pt" ? LETTER_COUNTS : LETTER_COUNTS_PT;
+
+  const headword = (e: EnrichedEntry) => (direction === "pat-pt" ? e.term_indigenous : e.term_pt);
+  const letterOf = (e: EnrichedEntry) => (direction === "pat-pt" ? e._letter : e._letterPt);
 
   const filtered = useMemo<EnrichedEntry[]>(() => {
     const q = debouncedQuery.toLowerCase().trim();
@@ -173,19 +177,25 @@ function DictionaryPage() {
       // Usa campos pré-normalizados — sem toLowerCase() por keystroke.
       const matchQ = !q || e._indLower.includes(q) || e._ptLower.includes(q);
       const matchC = cat === "Todas" || e._cat === cat;
-      const matchL = letter === "Todas" || e._letter === letter;
+      const matchL = letter === "Todas" || (direction === "pat-pt" ? e._letter : e._letterPt) === letter;
       return matchQ && matchC && matchL;
     });
     list.sort((a, b) => {
-      const cmp = a.term_indigenous.localeCompare(b.term_indigenous, "pt", { sensitivity: "base" });
+      const av = direction === "pat-pt" ? a.term_indigenous : a.term_pt;
+      const bv = direction === "pat-pt" ? b.term_indigenous : b.term_pt;
+      const cmp = av.localeCompare(bv, "pt", { sensitivity: "base" });
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [enriched, debouncedQuery, cat, letter, sort]);
+  }, [enriched, debouncedQuery, cat, letter, sort, direction]);
 
   useEffect(() => {
     setVisibleCount(120);
-  }, [query, cat, letter, sort]);
+  }, [query, cat, letter, sort, direction]);
+
+  useEffect(() => {
+    setLetter("Todas");
+  }, [direction]);
 
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
@@ -222,14 +232,14 @@ function DictionaryPage() {
   const grouped = useMemo(() => {
     const map = new Map<string, typeof visibleFiltered>();
     for (const e of visibleFiltered) {
-      const k = (e as any)._letter as string;
+      const k = direction === "pat-pt" ? e._letter : e._letterPt;
       if (!map.has(k)) map.set(k, [] as any);
       (map.get(k) as any).push(e);
     }
     return Array.from(map.entries()).sort(([a], [b]) =>
       sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
     );
-  }, [visibleFiltered, sort]);
+  }, [visibleFiltered, sort, direction]);
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
