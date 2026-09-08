@@ -51,9 +51,14 @@ export function useRealtimeContent() {
     channel.subscribe();
 
     // Ao voltar para a aba/rede, garante que o conteúdo esteja fresco.
+    // Limitado a 1x por 2 min e só nas queries ativas — evita rajada de
+    // requests a cada troca de aba.
+    let lastRefetch = Date.now();
     const refetchAll = () => {
+      if (Date.now() - lastRefetch < 120_000) return;
+      lastRefetch = Date.now();
       for (const keys of Object.values(TABLE_QUERIES)) {
-        for (const key of keys) qc.invalidateQueries({ queryKey: key });
+        for (const key of keys) qc.invalidateQueries({ queryKey: key, type: "active" });
       }
     };
     const onVisible = () => {
