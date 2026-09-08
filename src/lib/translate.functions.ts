@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "@/lib/premium-guard";
+import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
 
 
 type Entry = { term_indigenous: string; term_pt: string };
