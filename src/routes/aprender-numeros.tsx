@@ -13,6 +13,9 @@ import { useAutoTranslate } from "@/hooks/use-auto-translate";
 import { speak } from "@/lib/speak";
 
 export const Route = createFileRoute("/aprender-numeros")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    area: search.area === "adulto" ? ("adulto" as const) : ("infantil" as const),
+  }),
   component: AprenderNumeros,
 });
 
