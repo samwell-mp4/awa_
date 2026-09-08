@@ -18,6 +18,7 @@ import { PlanExpiryBanner } from "@/components/PlanExpiryBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
+import { AppErrorBoundary, ErrorBoundary } from "@/components/ErrorBoundary";
 
 import { toast } from "sonner";
 import "@/i18n";
@@ -207,11 +208,15 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageHydrator />
-      <RealtimeContentSync />
-      <AppLanguageAutoTranslator />
-      <PlanExpiryBanner />
+      <ErrorBoundary area="background-services" fallback={() => null}>
+        <RealtimeContentSync />
+        <AppLanguageAutoTranslator />
+        <PlanExpiryBanner />
+      </ErrorBoundary>
 
-      <Outlet />
+      <AppErrorBoundary>
+        <Outlet />
+      </AppErrorBoundary>
 
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>

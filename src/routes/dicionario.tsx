@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useSubscription } from "@/hooks/use-subscription";
 
 import { playFast } from "@/lib/audio-play";
@@ -51,7 +52,9 @@ function DictionaryRoute() {
   const { t } = useTranslation();
   return (
     <PremiumGate title={t("dictionary.premiumTitle")} description={t("dictionary.premiumDescription")}>
-      <DictionaryPage />
+      <ErrorBoundary area="dicionario" message="Não foi possível carregar o dicionário. Tente novamente.">
+        <DictionaryPage />
+      </ErrorBoundary>
     </PremiumGate>
   );
 }
@@ -148,16 +151,48 @@ function toVerbete(
 }
 
 // Pré-computação estática: roda uma vez no carregamento do módulo.
-const PT_PAT: Verbete[] = (ptPatData as PtPatRecord[]).map((r) =>
-  toVerbete(r.id, r.portugues, r.patxoha, r.patxoha, r.pagina, r.raw),
-);
+/** Lista segura: nunca lança, mesmo com JSON inesperado ou registro incompleto. */
+function safeList<T>(data: unknown): T[] {
+  return Array.isArray(data) ? (data.filter(Boolean) as T[]) : [];
+}
 
-const PAT_PT: Verbete[] = (patPtData as PatPtRecord[]).map((r) =>
-  toVerbete(r.id, r.patxoha, r.portugues, r.patxoha, r.pagina, r.raw),
-);
+/** Texto seguro preservando exatamente a grafia da fonte (acentos, apóstrofos). */
+function safeText(v: unknown): string {
+  return typeof v === "string" ? v : v == null ? "" : String(v);
+}
 
-const PALAVRAS_NUMEROS = palavrasNumerosData as PalavraNumero[];
-const GRAMATICA = gramaticaData as GramaticaLinha[];
+function safePage(v: unknown): number {
+  return typeof v === "number" && Number.isFinite(v) ? v : 0;
+}
+
+const PT_PAT: Verbete[] = safeList<PtPatRecord>(ptPatData)
+  .map((r, i) =>
+    toVerbete(
+      safeText(r.id) || `pt-pat-${i}`,
+      safeText(r.portugues),
+      safeText(r.patxoha),
+      safeText(r.patxoha),
+      safePage(r.pagina),
+      r.raw ? safeText(r.raw) : undefined,
+    ),
+  )
+  .filter((e) => e.head !== "" || e.gloss !== "");
+
+const PAT_PT: Verbete[] = safeList<PatPtRecord>(patPtData)
+  .map((r, i) =>
+    toVerbete(
+      safeText(r.id) || `pat-pt-${i}`,
+      safeText(r.patxoha),
+      safeText(r.portugues),
+      safeText(r.patxoha),
+      safePage(r.pagina),
+      r.raw ? safeText(r.raw) : undefined,
+    ),
+  )
+  .filter((e) => e.head !== "" || e.gloss !== "");
+
+const PALAVRAS_NUMEROS = safeList<PalavraNumero>(palavrasNumerosData);
+const GRAMATICA = safeList<GramaticaLinha>(gramaticaData).filter((l) => safeText(l.texto).trim() !== "");
 
 function letterCounts(list: Verbete[]): ReadonlyMap<string, number> {
   const m = new Map<string, number>();
