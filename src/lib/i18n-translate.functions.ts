@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
 
 // Server-side in-memory cache (per worker). Client also caches in localStorage.
 const cache = new Map<string, string>();
