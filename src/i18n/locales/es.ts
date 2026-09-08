@@ -192,5 +192,6 @@ export default {
   numbers: {
     title: "Números en Patxôhã",
     subtitle: "Aprenda a contar en la lengua del pueblo Pataxó",
+    tapToReveal: "Toca para ver y escuchar",
   },
 };

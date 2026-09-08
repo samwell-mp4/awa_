@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
 import { setLastArea } from "@/lib/last-area";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getNumbersConfig } from "@/lib/numbers.functions";
@@ -67,6 +67,8 @@ function AprenderNumeros() {
     }));
   }, [NUMEROS, translatedPt, currentLang]);
 
+  const [revealedCards, setRevealedCards] = useState<Set<number>>(new Set());
+
   const playAudio = (url: string, ptText: string) => {
     if (!url) {
       speak(ptText, "pt-BR");
@@ -77,6 +79,16 @@ function AprenderNumeros() {
       console.warn("Audio play failed, falling back to TTS:", e);
       speak(ptText, "pt-BR");
     });
+  };
+
+  const handleCardClick = (index: number, url: string, ptText: string) => {
+    setRevealedCards((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+    playAudio(url, ptText);
   };
 
   return (
@@ -102,28 +114,44 @@ function AprenderNumeros() {
         </p>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
-          {displayNumeros.map((num, i) => (
-            <button
-              key={i}
-              onClick={() => playAudio(num.audio, num.pt)}
-              className="group flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
-            >
-              <span className="font-display text-5xl font-black text-emerald-900">
-                {i + 1}
-              </span>
-              <div className="flex flex-col">
-                <span className="font-display text-lg font-black uppercase text-emerald-700">
-                  {num.pat}
-                </span>
-                <span className="text-sm font-bold text-emerald-900/60">
-                  {num.pt}
-                </span>
-              </div>
-              <div className="mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200">
-                <span className="text-xl">🔊</span>
-              </div>
-            </button>
-          ))}
+          {displayNumeros.map((num, i) => {
+            const revealed = revealedCards.has(i);
+            return (
+              <button
+                key={i}
+                onClick={() => handleCardClick(i, num.audio, num.pt)}
+                className="group flex min-h-[190px] flex-col items-center justify-center gap-3 rounded-3xl border-4 border-amber-300 bg-white/95 p-6 shadow-2xl transition hover:-translate-y-2 hover:bg-white"
+              >
+                {revealed ? (
+                  <>
+                    <span className="font-display text-5xl font-black text-emerald-900">
+                      {i + 1}
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="font-display text-lg font-black uppercase text-emerald-700">
+                        {num.pat}
+                      </span>
+                      <span className="text-sm font-bold text-emerald-900/60">
+                        {num.pt}
+                      </span>
+                    </div>
+                    <div className="mt-2 rounded-full bg-emerald-100 p-2 text-emerald-700 group-hover:bg-emerald-200">
+                      <span className="text-xl">🔊</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-display text-6xl font-black text-amber-500 transition group-hover:scale-110">
+                      ?
+                    </span>
+                    <span className="text-sm font-bold text-emerald-900/60">
+                      {t("numbers.tapToReveal") || "Toque para ver e ouvir"}
+                    </span>
+                  </>
+                )}
+              </button>
+            );
+          })}
         </div>
       </main>
 

@@ -17,8 +17,17 @@ export const getSiteConfig = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.string().parse(data))
   .handler(async ({ data: key, context }) => {
     const ctx = context as any;
-    if (!ctx?.supabase) return null;
-    const { data, error } = await ctx.supabase
+    let client = ctx?.supabase as SupabaseClient | undefined;
+    if (!client) {
+      // Public/anonymous read: site_config has a public SELECT policy.
+      const { createClient } = await import("@supabase/supabase-js");
+      client = createClient(
+        import.meta.env.VITE_SUPABASE_URL,
+        import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        { auth: { persistSession: false } }
+      ) as unknown as SupabaseClient;
+    }
+    const { data, error } = await client
       .from("site_config" as any)
       .select("value")
       .eq("key", key)
