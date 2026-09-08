@@ -257,6 +257,30 @@ function DictionaryPage() {
 
       <main className="mx-auto max-w-5xl px-4 md:px-8">
         <section className="mt-6 card-elev rounded-2xl p-4 space-y-3">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-card/40 p-1">
+            {([
+              { key: "pat-pt", label: "Patxôhã → Português" },
+              { key: "pt-pat", label: "Português → Patxôhã" },
+            ] as { key: Direction; label: string }[]).map((opt) => {
+              const active = direction === opt.key;
+              return (
+                <button
+                  key={opt.key}
+                  type="button"
+                  onClick={() => setDirection(opt.key)}
+                  aria-pressed={active}
+                  className={`rounded-xl px-3 py-2 text-[11px] font-black transition sm:text-xs ${
+                    active
+                      ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
+                      : "text-foreground/70 hover:text-cream"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/50" />
             <input
