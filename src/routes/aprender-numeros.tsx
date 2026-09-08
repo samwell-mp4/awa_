@@ -34,6 +34,8 @@ const DEFAULT_NUMEROS = [
 
 function AprenderNumeros() {
   const { t, i18n } = useTranslation();
+  const { area } = Route.useSearch();
+  const isAdult = area === "adulto";
   useEffect(() => setLastArea("/aprender-numeros"), []);
   const getFn = useServerFn(getNumbersConfig);
 
