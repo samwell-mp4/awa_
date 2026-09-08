@@ -33,9 +33,8 @@ Rules:
       }),
     });
     if (!res.ok) return texts;
-    const json = await res.json();
-    const raw: string = json.choices?.[0]?.message?.content ?? "{}";
-    const parsed = JSON.parse(raw);
+    const raw = await readChatContent(res);
+    const parsed = safeJsonParse<{ t?: unknown[] }>(raw);
     if (Array.isArray(parsed?.t) && parsed.t.length === texts.length) {
       return parsed.t.map((s: unknown) => String(s ?? ""));
     }
