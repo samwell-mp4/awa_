@@ -473,12 +473,14 @@ function NarratableVideo({
 
     let firstFrameCallback: number | undefined;
     const revealAfterPaintedFrame = () => {
+      const reveal = () => window.requestAnimationFrame(() => setVideoReady(true));
       if ("requestVideoFrameCallback" in video) {
-        firstFrameCallback = video.requestVideoFrameCallback(() => setVideoReady(true));
+        firstFrameCallback = video.requestVideoFrameCallback(reveal);
         return;
       }
-      window.requestAnimationFrame(() => setVideoReady(true));
+      reveal();
     };
+
     const onPlay = () => {
       setIsPlaying(true);
       revealAfterPaintedFrame();
@@ -512,15 +514,8 @@ function NarratableVideo({
   const mediaStack = (
     <div
       className="relative aspect-[4/3] w-full overflow-hidden rounded-none border-y border-gold/30 bg-cover bg-center shadow-2xl shadow-black/50 sm:aspect-video sm:rounded-3xl sm:border"
-      style={{ backgroundImage: `url(${poster})`, backgroundColor: "#1a0f0a" }}
+      style={{ backgroundImage: `url(${poster})`, backgroundColor: "#1a0f0a", isolation: "isolate" }}
     >
-      <img
-        src={poster}
-        alt={alt}
-        loading="lazy"
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-500 ${videoReady && isPlaying ? "opacity-0" : "opacity-100"}`}
-      />
       <video
         ref={videoRef}
         src={src}
@@ -529,10 +524,20 @@ function NarratableVideo({
         playsInline
         loop
         preload="metadata"
-        className={`absolute inset-0 h-full w-full object-cover ${videoReady && isPlaying ? "opacity-100" : "opacity-0"}`}
+        className="absolute inset-0 h-full w-full object-cover"
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
+      <img
+        src={poster}
+        alt={alt}
+        loading="lazy"
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-300 ${
+          videoReady && isPlaying ? "opacity-0" : "opacity-100"
+        }`}
+      />
+
       {(speaking || loading) && (
         <div className="pointer-events-none absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
           {loading ? (
