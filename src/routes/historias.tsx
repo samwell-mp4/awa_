@@ -471,15 +471,23 @@ function NarratableVideo({
       { threshold: 0.3 }
     );
 
-    const onPlay = () => setIsPlaying(true);
+    let firstFrameCallback: number | undefined;
+    const revealAfterPaintedFrame = () => {
+      if ("requestVideoFrameCallback" in video) {
+        firstFrameCallback = video.requestVideoFrameCallback(() => setVideoReady(true));
+        return;
+      }
+      window.requestAnimationFrame(() => setVideoReady(true));
+    };
+    const onPlay = () => {
+      setIsPlaying(true);
+      revealAfterPaintedFrame();
+    };
     const onPause = () => setIsPlaying(false);
     const onError = () => setVideoFailed(true);
-    const onReady = () => setVideoReady(true);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     video.addEventListener("error", onError);
-    video.addEventListener("loadeddata", onReady);
-    video.addEventListener("canplay", onReady);
     observer.observe(video);
 
     return () => {
@@ -487,8 +495,9 @@ function NarratableVideo({
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
-      video.removeEventListener("loadeddata", onReady);
-      video.removeEventListener("canplay", onReady);
+      if (firstFrameCallback !== undefined && "cancelVideoFrameCallback" in video) {
+        video.cancelVideoFrameCallback(firstFrameCallback);
+      }
     };
   }, [videoFailed]);
 
@@ -510,7 +519,7 @@ function NarratableVideo({
         alt={alt}
         loading="lazy"
         aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${videoReady ? "opacity-0" : "opacity-100"}`}
+        className={`pointer-events-none absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-500 ${videoReady && isPlaying ? "opacity-0" : "opacity-100"}`}
       />
       <video
         ref={videoRef}
@@ -520,7 +529,7 @@ function NarratableVideo({
         playsInline
         loop
         preload="metadata"
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 h-full w-full object-cover ${videoReady && isPlaying ? "opacity-100" : "opacity-0"}`}
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
