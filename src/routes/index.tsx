@@ -185,7 +185,21 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://awa-tech.store" },
+      {
+        property: "og:image",
+        content:
+          "https://awa-tech.store/__l5e/assets-v1/b63a81e3-e91b-4e41-8110-ee8404ec59b9/adulto-logo.png",
+      },
+      {
+        property: "og:image:alt",
+        content: "Awã Tech — logo oficial",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:image",
+        content:
+          "https://awa-tech.store/__l5e/assets-v1/b63a81e3-e91b-4e41-8110-ee8404ec59b9/adulto-logo.png",
+      },
     ],
     links: [{ rel: "canonical", href: "https://awa-tech.store" }],
   }),
