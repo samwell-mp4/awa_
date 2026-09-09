@@ -481,6 +481,21 @@ function NarratableVideo({
     sampleCanvas.height = 18;
     const sampleContext = sampleCanvas.getContext("2d", { willReadFrequently: true });
 
+    const scheduleFrameInspection = () => {
+      if (stopped || video.paused || video.ended) return;
+      if ("requestVideoFrameCallback" in video) {
+        frameCallback = video.requestVideoFrameCallback(() => {
+          frameCallback = undefined;
+          inspectFrame();
+        });
+      } else {
+        animationFrame = window.requestAnimationFrame(() => {
+          animationFrame = undefined;
+          inspectFrame();
+        });
+      }
+    };
+
     const inspectFrame = () => {
       if (stopped || video.paused || video.ended) return;
 
@@ -512,26 +527,12 @@ function NarratableVideo({
         setVideoReady(false);
       }
 
-      if ("requestVideoFrameCallback" in video) {
-        frameCallback = video.requestVideoFrameCallback(inspectFrame);
-      } else {
-        animationFrame = window.requestAnimationFrame(inspectFrame);
-      }
+      scheduleFrameInspection();
     };
 
     const beginFrameInspection = () => {
       if (frameCallback !== undefined || animationFrame !== undefined) return;
-      if ("requestVideoFrameCallback" in video) {
-        frameCallback = video.requestVideoFrameCallback(() => {
-          frameCallback = undefined;
-          inspectFrame();
-        });
-      } else {
-        animationFrame = window.requestAnimationFrame(() => {
-          animationFrame = undefined;
-          inspectFrame();
-        });
-      }
+      scheduleFrameInspection();
     };
 
     const onPlay = () => {
