@@ -446,6 +446,7 @@ function NarratableVideo({
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [posterReady, setPosterReady] = useState(false);
 
 
   useEffect(() => {
@@ -471,21 +472,79 @@ function NarratableVideo({
       { threshold: 0.3 }
     );
 
-    let firstFrameCallback: number | undefined;
-    const revealAfterPaintedFrame = () => {
-      const reveal = () => window.requestAnimationFrame(() => setVideoReady(true));
+    let frameCallback: number | undefined;
+    let animationFrame: number | undefined;
+    let stopped = false;
+    let consecutiveHealthyFrames = 0;
+    const sampleCanvas = document.createElement("canvas");
+    sampleCanvas.width = 32;
+    sampleCanvas.height = 18;
+    const sampleContext = sampleCanvas.getContext("2d", { willReadFrequently: true });
+
+    const scheduleFrameInspection = () => {
+      if (stopped || video.paused || video.ended) return;
       if ("requestVideoFrameCallback" in video) {
-        firstFrameCallback = video.requestVideoFrameCallback(reveal);
-        return;
+        frameCallback = video.requestVideoFrameCallback(() => {
+          frameCallback = undefined;
+          inspectFrame();
+        });
+      } else {
+        animationFrame = window.requestAnimationFrame(() => {
+          animationFrame = undefined;
+          inspectFrame();
+        });
       }
-      reveal();
+    };
+
+    const inspectFrame = () => {
+      if (stopped || video.paused || video.ended) return;
+
+      let healthy = true;
+      if (sampleContext && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        try {
+          sampleContext.drawImage(video, 0, 0, sampleCanvas.width, sampleCanvas.height);
+          const pixels = sampleContext.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data;
+          let greenPixels = 0;
+          const totalPixels = pixels.length / 4;
+          for (let index = 0; index < pixels.length; index += 4) {
+            const red = pixels[index] ?? 0;
+            const green = pixels[index + 1] ?? 0;
+            const blue = pixels[index + 2] ?? 0;
+            if (green > 70 && green > red * 1.35 && green > blue * 1.2) greenPixels += 1;
+          }
+          healthy = greenPixels / totalPixels < 0.45;
+        } catch {
+          // If frame inspection is unavailable, rely on the browser's painted-frame signal.
+          healthy = true;
+        }
+      }
+
+      if (healthy) {
+        consecutiveHealthyFrames += 1;
+        if (consecutiveHealthyFrames >= 2) setVideoReady(true);
+      } else {
+        consecutiveHealthyFrames = 0;
+        setVideoReady(false);
+      }
+
+      scheduleFrameInspection();
+    };
+
+    const beginFrameInspection = () => {
+      if (frameCallback !== undefined || animationFrame !== undefined) return;
+      scheduleFrameInspection();
     };
 
     const onPlay = () => {
       setIsPlaying(true);
-      revealAfterPaintedFrame();
+      setVideoReady(false);
+      consecutiveHealthyFrames = 0;
+      beginFrameInspection();
     };
-    const onPause = () => setIsPlaying(false);
+    const onPause = () => {
+      setIsPlaying(false);
+      setVideoReady(false);
+    };
     const onError = () => setVideoFailed(true);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
@@ -493,13 +552,15 @@ function NarratableVideo({
     observer.observe(video);
 
     return () => {
+      stopped = true;
       observer.disconnect();
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
-      if (firstFrameCallback !== undefined && "cancelVideoFrameCallback" in video) {
-        video.cancelVideoFrameCallback(firstFrameCallback);
+      if (frameCallback !== undefined && "cancelVideoFrameCallback" in video) {
+        video.cancelVideoFrameCallback(frameCallback);
       }
+      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame);
     };
   }, [videoFailed]);
 
@@ -528,10 +589,20 @@ function NarratableVideo({
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
+      {!posterReady && (
+        <div
+          className="pointer-events-none absolute inset-0 z-20 animate-pulse bg-muted"
+          role="status"
+          aria-label="Carregando imagem do vídeo"
+        >
+          <span className="sr-only">Carregando imagem do vídeo</span>
+        </div>
+      )}
       <img
         src={poster}
         alt={alt}
-        loading="lazy"
+        loading="eager"
+        onLoad={() => setPosterReady(true)}
         aria-hidden
         className={`pointer-events-none absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-300 ${
           videoReady && isPlaying ? "opacity-0" : "opacity-100"
