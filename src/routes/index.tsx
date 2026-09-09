@@ -184,12 +184,14 @@ export const Route = createFileRoute("/")({
           "Duas experiências dedicadas ao ensino de línguas indígenas: uma para adultos e outra para crianças.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://awa-tech.store" },
+      { property: "og:url", content: "https://www.awa-tech.store" },
       {
         property: "og:image",
         content:
-          "https://awa-tech.store/__l5e/assets-v1/b63a81e3-e91b-4e41-8110-ee8404ec59b9/adulto-logo.png",
+          "https://www.awa-tech.store/__l5e/assets-v1/284c06a2-f2fd-4503-976d-0edd6ac3f889/share-adulto.jpg",
       },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       {
         property: "og:image:alt",
         content: "Awã Tech — logo oficial",
@@ -198,10 +200,10 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:image",
         content:
-          "https://awa-tech.store/__l5e/assets-v1/b63a81e3-e91b-4e41-8110-ee8404ec59b9/adulto-logo.png",
+          "https://www.awa-tech.store/__l5e/assets-v1/284c06a2-f2fd-4503-976d-0edd6ac3f889/share-adulto.jpg",
       },
     ],
-    links: [{ rel: "canonical", href: "https://awa-tech.store" }],
+    links: [{ rel: "canonical", href: "https://www.awa-tech.store" }],
   }),
   component: LandingChoice,
 });
