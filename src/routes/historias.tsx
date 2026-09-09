@@ -473,12 +473,14 @@ function NarratableVideo({
 
     let firstFrameCallback: number | undefined;
     const revealAfterPaintedFrame = () => {
+      const reveal = () => window.requestAnimationFrame(() => setVideoReady(true));
       if ("requestVideoFrameCallback" in video) {
-        firstFrameCallback = video.requestVideoFrameCallback(() => setVideoReady(true));
+        firstFrameCallback = video.requestVideoFrameCallback(reveal);
         return;
       }
-      window.requestAnimationFrame(() => setVideoReady(true));
+      reveal();
     };
+
     const onPlay = () => {
       setIsPlaying(true);
       revealAfterPaintedFrame();
