@@ -475,8 +475,11 @@ function ProfessorPage() {
   }
 
   function resetConversation() {
+    recorder.cancel();
     currentAudioRef.current?.pause();
     setActiveAssistantAudio(null);
+    setVoicePaused(false);
+    setVoiceState("idle");
     setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
