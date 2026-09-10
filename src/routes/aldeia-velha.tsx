@@ -347,7 +347,8 @@ function AldeiaVelhaPage() {
 
       </header>
 
-      {/* Capa */}
+      {/* Capa (apenas na tela de temas) */}
+      {!current && (
       <section className="relative isolate overflow-hidden">
         <img
           src={PHOTOS.capa.src}
@@ -375,24 +376,93 @@ function AldeiaVelhaPage() {
             Bahia. Uma história de memória, resistência e luta contada pelos próprios moradores.
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
-            <a
-              href="#relatos"
+            <Link
+              to="/aldeia-velha"
+              search={{ tema: "relatos" }}
               className="inline-flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/12 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gold backdrop-blur-sm transition hover:bg-gold/22"
             >
               <Quote className="h-4 w-4" /> Ouvir os anciãos
-            </a>
-            <a
-              href="#retomada"
+            </Link>
+            <Link
+              to="/aldeia-velha"
+              search={{ tema: "retomada" }}
               className="inline-flex items-center gap-2 rounded-xl border border-cream/25 bg-cream/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-cream backdrop-blur-sm transition hover:bg-cream/18"
             >
               <Flame className="h-4 w-4" /> A retomada
-            </a>
+            </Link>
           </div>
         </div>
         <div className="tribal-border absolute bottom-0 left-0 right-0" />
       </section>
+      )}
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
+        {/* Índice de temas (pastas) */}
+        {!current && (
+          <section className="pt-12 md:pt-16">
+            <SectionTitle
+              icon={<Sparkles className="h-3.5 w-3.5" />}
+              eyebrow="Conteúdos organizados"
+              title="Escolha um tema"
+              desc="Cada tema reúne somente os conteúdos do seu assunto: relatos, território, escola, língua, cultura, saúde, projetos, fotos e vídeos."
+            />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {THEMES.map((t) => (
+                <Link
+                  key={t.id}
+                  to="/aldeia-velha"
+                  search={{ tema: t.id }}
+                  className="card-elev group flex flex-col overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
+                >
+                  {t.photo && (
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <img
+                        src={t.photo.src}
+                        alt={t.photo.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_145/0.85)] to-transparent"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-5">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold/85">
+                      {t.eyebrow}
+                    </span>
+                    <h3 className="mt-2 font-display text-xl font-black text-cream">{t.label}</h3>
+                    <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-foreground/75">
+                      {t.summary}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-gold">
+                      Abrir tema <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <p className="mt-8 pb-16 text-[13px] text-foreground/60">
+              Fonte: relatório “Somos Todos Aldeia Velha” — Comunidade Indígena Pataxó Aldeia Velha
+              (C.I.P.A.V.), Porto Seguro.
+            </p>
+          </section>
+        )}
+
+        {current && (
+          <div className="pt-8">
+            <Link
+              to="/aldeia-velha"
+              search={{}}
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider text-gold transition hover:bg-gold/20"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Todos os temas
+            </Link>
+          </div>
+        )}
+
         {/* Memória ancestral */}
         {show("memoria") && (
         <section id="memoria" className="scroll-mt-32 pt-14 md:pt-20">
