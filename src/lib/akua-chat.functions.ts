@@ -61,9 +61,10 @@ function pickRelevant(dict: Entry[], text: string): Entry[] {
 
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat" }) => d)
+  .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat"; area?: "adulto" | "infantil" }) => d)
   .handler(async ({ data, context }) => {
-    await assertPremium(context, data.environment ?? "live", "adulto");
+    const area = data.area === "infantil" ? "infantil" : "adulto";
+    await assertPremium(context, data.environment ?? "live", area);
     // Interrompe qualquer áudio SpeechSynthesis ativo no cliente antes de processar a resposta da IA
     // (A interrupção real acontece no cliente via listener global, mas aqui garantimos a lógica do servidor)
     const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
