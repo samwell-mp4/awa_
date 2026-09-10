@@ -1084,7 +1084,36 @@ function AldeiaVelhaPage() {
           </div>
         </section>
         )}
+
+        {current && (
+          <nav
+            aria-label="Navegar entre temas"
+            className="flex flex-wrap items-center justify-between gap-3 border-t border-gold/15 py-8 md:py-10"
+          >
+            {prev ? (
+              <Link
+                to="/aldeia-velha"
+                search={{ tema: prev.id }}
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
+              >
+                <ArrowLeft className="h-4 w-4 text-gold" /> {prev.label}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <Link
+                to="/aldeia-velha"
+                search={{ tema: next.id }}
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
+              >
+                {next.label} <ArrowRight className="h-4 w-4 text-gold" />
+              </Link>
+            )}
+          </nav>
+        )}
       </main>
+
 
       <PublicFooter />
 
