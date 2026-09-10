@@ -13,6 +13,7 @@ import {
   Languages,
   Leaf,
   Music,
+  Play,
   Quote,
   Sparkles,
   Stethoscope,
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 import { PublicFooter } from "@/components/PublicFooter";
+import { Button } from "@/components/ui/button";
 import { useLastArea } from "@/lib/last-area";
 import logoSrc from "@/assets/awa-tech-logo.png";
 import {
@@ -163,6 +165,75 @@ function Lightbox({ photo, onClose }: { photo: Photo; onClose: () => void }) {
       />
       <p className="max-w-2xl text-center text-sm text-cream/85">{photo.caption}</p>
     </div>
+  );
+}
+
+function instagramEmbedUrl(url: string) {
+  return `${url.replace(/\/+$/, "")}/embed/`;
+}
+
+function DocumentaryCard({ url, index }: { url: string; index: number }) {
+  const [playing, setPlaying] = useState(false);
+  const [unavailable, setUnavailable] = useState(false);
+  const label = `Documentário ${index + 1}`;
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:-translate-y-0.5 hover:border-gold/50 hover:bg-gold/10">
+      {playing && !unavailable && (
+        <div className="aspect-[9/16] w-full overflow-hidden border-b border-gold/20 bg-forest-deep">
+          <iframe
+            src={instagramEmbedUrl(url)}
+            title={`${label} — Aldeia Velha`}
+            className="h-full w-full border-0 bg-cream"
+            loading="lazy"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            onError={() => setUnavailable(true)}
+          />
+        </div>
+      )}
+
+      <div className="flex items-center justify-between gap-3 px-4 py-3.5">
+        <span className="flex min-w-0 items-center gap-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[12px] font-black text-forest-deep">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="truncate text-[13.5px] font-bold text-cream">{label}</span>
+        </span>
+
+        {!playing ? (
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            onClick={() => setPlaying(true)}
+            aria-label={`Reproduzir ${label}`}
+            title={`Reproduzir ${label}`}
+            className="shrink-0 rounded-full text-gold hover:bg-gold/15 hover:text-gold"
+          >
+            <Play className="h-4 w-4 fill-current" />
+          </Button>
+        ) : (
+          <ExternalLink className="h-4 w-4 shrink-0 text-gold/70" aria-hidden="true" />
+        )}
+      </div>
+
+      {unavailable && (
+        <div className="border-t border-gold/15 px-4 py-3 text-center">
+          <p className="text-[12px] text-foreground/70">
+            Este conteúdo não permitiu reprodução incorporada.
+          </p>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-bold text-gold hover:underline"
+          >
+            Assistir no Instagram <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        </div>
+      )}
+    </article>
   );
 }
 
@@ -845,23 +916,7 @@ function AldeiaVelhaPage() {
           />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {DOC_LINKS.map((url, i) => (
-              <a
-                key={url}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-3.5 transition hover:-translate-y-0.5 hover:border-gold/50 hover:bg-gold/10"
-              >
-                <span className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[12px] font-black text-forest-deep">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-[13.5px] font-bold text-cream">
-                    Documentário {i + 1}
-                  </span>
-                </span>
-                <ExternalLink className="h-4 w-4 shrink-0 text-gold/70 transition group-hover:text-gold" />
-              </a>
+              <DocumentaryCard key={url} url={url} index={i} />
             ))}
           </div>
         </section>
