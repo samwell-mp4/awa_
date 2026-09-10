@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   ArrowLeft,
+  ArrowRight,
   BookOpen,
   Droplets,
   ExternalLink,
@@ -36,13 +37,18 @@ import {
   POPULATION,
   PROJECTS,
   REFERENCES,
-  SECTIONS,
+  THEMES,
+  isTheme,
   TERRITORY_FACTS,
   TIMELINE,
   type Photo,
 } from "@/lib/aldeia-velha-content";
 
 export const Route = createFileRoute("/aldeia-velha")({
+  validateSearch: (search: Record<string, unknown>): { tema?: string } => {
+    const raw = typeof search.tema === "string" ? search.tema : undefined;
+    return isTheme(raw) ? { tema: raw } : {};
+  },
   head: () => ({
     meta: [
       { title: "Aldeia Velha — Território Ancestral Pataxó" },
@@ -274,24 +280,18 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
 function AldeiaVelhaPage() {
   const backTo = useLastArea();
   const [zoom, setZoom] = useState<Photo | null>(null);
-  const [active, setActive] = useState<string>(SECTIONS[0].id);
+  const { tema } = Route.useSearch();
+  const active = tema;
+  const show = (id: string) => tema === id;
+  const current = THEMES.find((t) => t.id === tema);
+  const index = current ? THEMES.indexOf(current) : -1;
+  const prev = index > 0 ? THEMES[index - 1] : undefined;
+  const next = index >= 0 && index < THEMES.length - 1 ? THEMES[index + 1] : undefined;
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActive(visible.target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0.01, 0.25, 0.6] },
-    );
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+  }, [tema]);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -319,14 +319,26 @@ function AldeiaVelhaPage() {
           </Link>
         </div>
         <nav
-          aria-label="Seções da história"
+          aria-label="Temas da história"
           className="border-t border-gold/15 bg-[oklch(0.12_0.03_145/0.6)]"
         >
           <div className="mx-auto flex max-w-6xl gap-1.5 overflow-x-auto px-3 py-2 md:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {SECTIONS.map((s) => (
-              <a
+            <Link
+              to="/aldeia-velha"
+              search={{}}
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
+                !active
+                  ? "border-gold/50 bg-gold/15 text-gold"
+                  : "border-transparent text-foreground/65 hover:border-gold/25 hover:bg-gold/8 hover:text-cream"
+              }`}
+            >
+              Todos os temas
+            </Link>
+            {THEMES.map((s) => (
+              <Link
                 key={s.id}
-                href={`#${s.id}`}
+                to="/aldeia-velha"
+                search={{ tema: s.id }}
                 className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
                   active === s.id
                     ? "border-gold/50 bg-gold/15 text-gold"
@@ -334,13 +346,15 @@ function AldeiaVelhaPage() {
                 }`}
               >
                 {s.label}
-              </a>
+              </Link>
             ))}
           </div>
         </nav>
+
       </header>
 
-      {/* Capa */}
+      {/* Capa (apenas na tela de temas) */}
+      {!current && (
       <section className="relative isolate overflow-hidden">
         <img
           src={PHOTOS.capa.src}
@@ -368,25 +382,95 @@ function AldeiaVelhaPage() {
             Bahia. Uma história de memória, resistência e luta contada pelos próprios moradores.
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
-            <a
-              href="#relatos"
+            <Link
+              to="/aldeia-velha"
+              search={{ tema: "relatos" }}
               className="inline-flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/12 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gold backdrop-blur-sm transition hover:bg-gold/22"
             >
               <Quote className="h-4 w-4" /> Ouvir os anciãos
-            </a>
-            <a
-              href="#retomada"
+            </Link>
+            <Link
+              to="/aldeia-velha"
+              search={{ tema: "retomada" }}
               className="inline-flex items-center gap-2 rounded-xl border border-cream/25 bg-cream/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-cream backdrop-blur-sm transition hover:bg-cream/18"
             >
               <Flame className="h-4 w-4" /> A retomada
-            </a>
+            </Link>
           </div>
         </div>
         <div className="tribal-border absolute bottom-0 left-0 right-0" />
       </section>
+      )}
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
+        {/* Índice de temas (pastas) */}
+        {!current && (
+          <section className="pt-12 md:pt-16">
+            <SectionTitle
+              icon={<Sparkles className="h-3.5 w-3.5" />}
+              eyebrow="Conteúdos organizados"
+              title="Escolha um tema"
+              desc="Cada tema reúne somente os conteúdos do seu assunto: relatos, território, escola, língua, cultura, saúde, projetos, fotos e vídeos."
+            />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {THEMES.map((t) => (
+                <Link
+                  key={t.id}
+                  to="/aldeia-velha"
+                  search={{ tema: t.id }}
+                  className="card-elev group flex flex-col overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
+                >
+                  {t.photo && (
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <img
+                        src={t.photo.src}
+                        alt={t.photo.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_145/0.85)] to-transparent"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-5">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold/85">
+                      {t.eyebrow}
+                    </span>
+                    <h3 className="mt-2 font-display text-xl font-black text-cream">{t.label}</h3>
+                    <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-foreground/75">
+                      {t.summary}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-gold">
+                      Abrir tema <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <p className="mt-8 pb-16 text-[13px] text-foreground/60">
+              Fonte: relatório “Somos Todos Aldeia Velha” — Comunidade Indígena Pataxó Aldeia Velha
+              (C.I.P.A.V.), Porto Seguro.
+            </p>
+          </section>
+        )}
+
+        {current && (
+          <div className="pt-8">
+            <Link
+              to="/aldeia-velha"
+              search={{}}
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider text-gold transition hover:bg-gold/20"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Todos os temas
+            </Link>
+          </div>
+        )}
+
         {/* Memória ancestral */}
+        {show("memoria") && (
         <section id="memoria" className="scroll-mt-32 pt-14 md:pt-20">
           <SectionTitle
             icon={<Leaf className="h-3.5 w-3.5" />}
@@ -425,8 +509,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Relatos dos anciãos */}
+        {show("relatos") && (
         <section id="relatos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Quote className="h-3.5 w-3.5" />}
@@ -479,8 +565,10 @@ function AldeiaVelhaPage() {
             <Figure photo={PHOTOS.residencias} onZoom={setZoom} ratio="aspect-[4/3]" />
           </div>
         </section>
+        )}
 
         {/* Linha do tempo */}
+        {show("retomada") && (
         <section id="retomada" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Flame className="h-3.5 w-3.5" />}
@@ -539,8 +627,10 @@ function AldeiaVelhaPage() {
             ))}
           </ol>
         </section>
+        )}
 
         {/* Território */}
+        {show("territorio") && (
         <section id="territorio" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Landmark className="h-3.5 w-3.5" />}
@@ -623,8 +713,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Educação */}
+        {show("educacao") && (
         <section id="educacao" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<GraduationCap className="h-3.5 w-3.5" />}
@@ -705,8 +797,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Patxôhã */}
+        {show("patxoha") && (
         <section id="patxoha" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Languages className="h-3.5 w-3.5" />}
@@ -741,8 +835,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Cultura */}
+        {show("cultura") && (
         <section id="cultura" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Music className="h-3.5 w-3.5" />}
@@ -791,8 +887,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Saúde */}
+        {show("saude") && (
         <section id="saude" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Heart className="h-3.5 w-3.5" />}
@@ -884,8 +982,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Projetos */}
+        {show("projetos") && (
         <section id="projetos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Sparkles className="h-3.5 w-3.5" />}
@@ -922,8 +1022,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Galeria */}
+        {show("galeria") && (
         <section id="galeria" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<ZoomIn className="h-3.5 w-3.5" />}
@@ -937,8 +1039,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Documentários */}
+        {show("documentarios") && (
         <section id="documentarios" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<ExternalLink className="h-3.5 w-3.5" />}
@@ -952,8 +1056,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Referências */}
+        {show("referencias") && (
         <section id="referencias" className="scroll-mt-32 pb-20 pt-16 md:pt-24">
           <SectionTitle
             icon={<BookOpen className="h-3.5 w-3.5" />}
@@ -981,7 +1087,37 @@ function AldeiaVelhaPage() {
             </p>
           </div>
         </section>
+        )}
+
+        {current && (
+          <nav
+            aria-label="Navegar entre temas"
+            className="flex flex-wrap items-center justify-between gap-3 border-t border-gold/15 py-8 md:py-10"
+          >
+            {prev ? (
+              <Link
+                to="/aldeia-velha"
+                search={{ tema: prev.id }}
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
+              >
+                <ArrowLeft className="h-4 w-4 text-gold" /> {prev.label}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <Link
+                to="/aldeia-velha"
+                search={{ tema: next.id }}
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
+              >
+                {next.label} <ArrowRight className="h-4 w-4 text-gold" />
+              </Link>
+            )}
+          </nav>
+        )}
       </main>
+
 
       <PublicFooter />
 

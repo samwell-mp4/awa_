@@ -4,6 +4,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
 import { readChatContent } from "./ai-response.server";
+import { ALDEIA_VELHA_KNOWLEDGE } from "./aldeia-velha-content";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Entry = { term_indigenous: string; term_pt: string };
@@ -120,6 +121,8 @@ FORMATO OBRIGATÓRIO DE EXEMPLOS EM PATXÔHÃ:
   E para responder:
   [ex]Awere doy || Olá para você também[/ex]
 - Nunca use [ex] para textos que não sejam Patxôhã.
+
+${ALDEIA_VELHA_KNOWLEDGE}
 
 
 
