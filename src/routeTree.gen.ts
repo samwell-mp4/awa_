@@ -35,6 +35,7 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AprenderNumerosRouteImport } from './routes/aprender-numeros'
 import { Route as AmizadeRouteImport } from './routes/amizade'
+import { Route as AldeiaVelhaRouteImport } from './routes/aldeia-velha'
 import { Route as AdultoRouteImport } from './routes/adulto'
 import { Route as AcessoNegadoRouteImport } from './routes/acesso-negado'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -182,6 +183,11 @@ const AmizadeRoute = AmizadeRouteImport.update({
   path: '/amizade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AldeiaVelhaRoute = AldeiaVelhaRouteImport.update({
+  id: '/aldeia-velha',
+  path: '/aldeia-velha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdultoRoute = AdultoRouteImport.update({
   id: '/adulto',
   path: '/adulto',
@@ -271,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
+  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -314,6 +321,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
+  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/acesso-negado': typeof AcessoNegadoRoute
   '/adulto': typeof AdultoRoute
+  '/aldeia-velha': typeof AldeiaVelhaRoute
   '/amizade': typeof AmizadeRoute
   '/aprender-numeros': typeof AprenderNumerosRoute
   '/auth': typeof AuthRoute
@@ -404,6 +413,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acesso-negado'
     | '/adulto'
+    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -447,6 +457,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acesso-negado'
     | '/adulto'
+    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -491,6 +502,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/acesso-negado'
     | '/adulto'
+    | '/aldeia-velha'
     | '/amizade'
     | '/aprender-numeros'
     | '/auth'
@@ -536,6 +548,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AcessoNegadoRoute: typeof AcessoNegadoRoute
   AdultoRoute: typeof AdultoRoute
+  AldeiaVelhaRoute: typeof AldeiaVelhaRoute
   AmizadeRoute: typeof AmizadeRoute
   AprenderNumerosRoute: typeof AprenderNumerosRoute
   AuthRoute: typeof AuthRoute
@@ -759,6 +772,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AmizadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aldeia-velha': {
+      id: '/aldeia-velha'
+      path: '/aldeia-velha'
+      fullPath: '/aldeia-velha'
+      preLoaderRoute: typeof AldeiaVelhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/adulto': {
       id: '/adulto'
       path: '/adulto'
@@ -890,6 +910,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AcessoNegadoRoute: AcessoNegadoRoute,
   AdultoRoute: AdultoRoute,
+  AldeiaVelhaRoute: AldeiaVelhaRoute,
   AmizadeRoute: AmizadeRoute,
   AprenderNumerosRoute: AprenderNumerosRoute,
   AuthRoute: AuthRoute,

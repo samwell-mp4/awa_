@@ -102,6 +102,7 @@ const ADULT_HREFS = new Set([
   "/musicas",
   "/videos",
   "/biografia",
+  "/aldeia-velha",
   "/instalar",
   "/minha-conta",
 ]);
@@ -172,6 +173,7 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.quemSomos"),
       items: [
         { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
+        { label: "Aldeia Velha", href: "/aldeia-velha", icon: ScrollText },
         { label: t("nav.instalar"), href: "/instalar", icon: Download },
       ],
     },
