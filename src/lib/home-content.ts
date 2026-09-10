@@ -102,6 +102,7 @@ const ADULT_HREFS = new Set([
   "/musicas",
   "/videos",
   "/biografia",
+  "/aldeia-velha",
   "/instalar",
   "/minha-conta",
 ]);
