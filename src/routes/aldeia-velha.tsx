@@ -45,6 +45,10 @@ import {
 } from "@/lib/aldeia-velha-content";
 
 export const Route = createFileRoute("/aldeia-velha")({
+  validateSearch: (search: Record<string, unknown>): { tema?: string } => {
+    const raw = typeof search.tema === "string" ? search.tema : undefined;
+    return isTheme(raw) ? { tema: raw } : {};
+  },
   head: () => ({
     meta: [
       { title: "Aldeia Velha — Território Ancestral Pataxó" },
