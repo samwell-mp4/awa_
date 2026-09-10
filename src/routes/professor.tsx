@@ -266,8 +266,10 @@ function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
+  const transcribe = useServerFn(transcribeAudio);
   const lang = useLang();
   const t = L10N[lang];
+  const v = VOICE_L10N[lang];
 
   const makeWelcome = (): Msg => ({ role: "assistant", content: t.welcome, at: Date.now() });
 
@@ -279,6 +281,75 @@ function ProfessorPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // --- Modo voz -------------------------------------------------------------
+  const recorder = useVoiceRecorder();
+  const [voiceState, setVoiceState] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
+  const [voicePaused, setVoicePaused] = useState(false);
+  const [micReady, setMicReady] = useState(false);
+  useEffect(() => setMicReady(isRecordingSupported()), []);
+
+  function pauseVoice() {
+    currentAudioRef.current?.pause();
+    setVoicePaused(true);
+  }
+
+  function resumeVoice() {
+    void currentAudioRef.current?.play().catch(() => {});
+    setVoicePaused(false);
+  }
+
+  function stopVoice() {
+    currentAudioRef.current?.pause();
+    setVoicePaused(false);
+    setActiveAssistantAudio(null);
+    setVoiceState("idle");
+  }
+
+  async function handleMic() {
+    if (!micReady) {
+      toast.error(v.unsupported);
+      return;
+    }
+    if (recorder.isRecording) {
+      const file = await recorder.stop();
+      if (!file) {
+        setVoiceState("idle");
+        toast.error(v.tooShort);
+        return;
+      }
+      setVoiceState("thinking");
+      try {
+        const fd = new FormData();
+        fd.append("file", file, file.name);
+        fd.append("language", lang === "pat" ? "pt" : lang);
+        fd.append("environment", getPaddleEnvironment());
+        const r = await transcribe({ data: fd });
+        const text = (r?.text ?? "").trim();
+        if (r?.error || !text) {
+          setVoiceState("idle");
+          toast.error(r?.message ?? v.sttFail);
+          return;
+        }
+        await send(text, true);
+      } catch {
+        setVoiceState("idle");
+        toast.error(v.sttFail);
+      }
+      return;
+    }
+    currentAudioRef.current?.pause();
+    setVoicePaused(false);
+    const ok = await recorder.start();
+    if (!ok) {
+      setVoiceState("idle");
+      toast.error(recorder.error === "unsupported" ? v.unsupported : v.denied);
+      return;
+    }
+    setVoiceState("listening");
+  }
+
+
 
 
 
