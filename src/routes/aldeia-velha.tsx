@@ -232,30 +232,34 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
         </span>
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-3 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-label={label}
-          onClick={() => setOpen(false)}
-        >
+      {open &&
+        typeof document !== "undefined" &&
+        createPortal(
           <div
-            className="relative w-full max-w-[420px] overflow-hidden rounded-2xl border border-gold/30 shadow-[var(--shadow-gold)]"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-3 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-label={label}
+            onClick={() => setOpen(false)}
           >
-            <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Fechar"
-              className="absolute right-2 top-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-forest-deep/80 text-gold backdrop-blur-sm transition hover:bg-forest-deep"
+            <div
+              className="relative w-full max-w-[420px] overflow-hidden rounded-2xl border border-gold/30 shadow-[var(--shadow-gold)]"
+              onClick={(e) => e.stopPropagation()}
             >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      )}
+              <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Fechar"
+                className="absolute right-2 top-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-forest-deep/80 text-gold backdrop-blur-sm transition hover:bg-forest-deep"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
+
     </article>
 
   );
