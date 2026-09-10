@@ -313,14 +313,26 @@ function AldeiaVelhaPage() {
           </Link>
         </div>
         <nav
-          aria-label="Seções da história"
+          aria-label="Temas da história"
           className="border-t border-gold/15 bg-[oklch(0.12_0.03_145/0.6)]"
         >
           <div className="mx-auto flex max-w-6xl gap-1.5 overflow-x-auto px-3 py-2 md:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {SECTIONS.map((s) => (
-              <a
+            <Link
+              to="/aldeia-velha"
+              search={{}}
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
+                !active
+                  ? "border-gold/50 bg-gold/15 text-gold"
+                  : "border-transparent text-foreground/65 hover:border-gold/25 hover:bg-gold/8 hover:text-cream"
+              }`}
+            >
+              Todos os temas
+            </Link>
+            {THEMES.map((s) => (
+              <Link
                 key={s.id}
-                href={`#${s.id}`}
+                to="/aldeia-velha"
+                search={{ tema: s.id }}
                 className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
                   active === s.id
                     ? "border-gold/50 bg-gold/15 text-gold"
@@ -328,10 +340,11 @@ function AldeiaVelhaPage() {
                 }`}
               >
                 {s.label}
-              </a>
+              </Link>
             ))}
           </div>
         </nav>
+
       </header>
 
       {/* Capa */}
