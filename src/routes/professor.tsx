@@ -186,6 +186,80 @@ const L10N: Record<Lang, L10n> = {
   },
 };
 
+type VoiceL10n = {
+  talk: string;
+  stopRec: string;
+  listening: string;
+  thinking: string;
+  speaking: string;
+  pause: string;
+  resume: string;
+  stopVoice: string;
+  denied: string;
+  unsupported: string;
+  tooShort: string;
+  sttFail: string;
+};
+
+const VOICE_L10N: Record<Lang, VoiceL10n> = {
+  pt: {
+    talk: "Falar",
+    stopRec: "Parar e enviar",
+    listening: "Ouvindo você…",
+    thinking: "Pensando…",
+    speaking: "Falando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Encerrar voz",
+    denied: "Precisamos da sua permissão do microfone para ouvir você.",
+    unsupported: "Este navegador não permite gravar voz. Você pode digitar sua pergunta.",
+    tooShort: "Não consegui ouvir. Fale um pouquinho mais perto do microfone.",
+    sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
+  },
+  en: {
+    talk: "Speak",
+    stopRec: "Stop and send",
+    listening: "Listening to you…",
+    thinking: "Thinking…",
+    speaking: "Speaking…",
+    pause: "Pause",
+    resume: "Resume",
+    stopVoice: "Stop voice",
+    denied: "We need your microphone permission to hear you.",
+    unsupported: "This browser cannot record voice. You can type your question.",
+    tooShort: "I couldn't hear you. Please speak closer to the microphone.",
+    sttFail: "I couldn't understand the audio. Try again or type instead.",
+  },
+  es: {
+    talk: "Hablar",
+    stopRec: "Parar y enviar",
+    listening: "Escuchándote…",
+    thinking: "Pensando…",
+    speaking: "Hablando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Terminar voz",
+    denied: "Necesitamos tu permiso del micrófono para escucharte.",
+    unsupported: "Este navegador no permite grabar voz. Puedes escribir tu pregunta.",
+    tooShort: "No pude escucharte. Habla un poco más cerca del micrófono.",
+    sttFail: "No pude entender el audio. Inténtalo de nuevo o escribe.",
+  },
+  pat: {
+    talk: "Falar",
+    stopRec: "Parar e enviar",
+    listening: "Ouvindo você…",
+    thinking: "Pensando…",
+    speaking: "Falando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Encerrar voz",
+    denied: "Precisamos da sua permissão do microfone para ouvir você.",
+    unsupported: "Este navegador não permite gravar voz. Você pode digitar sua pergunta.",
+    tooShort: "Não consegui ouvir. Fale mais perto do microfone.",
+    sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
+  },
+};
+
 const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
