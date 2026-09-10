@@ -274,24 +274,18 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
 function AldeiaVelhaPage() {
   const backTo = useLastArea();
   const [zoom, setZoom] = useState<Photo | null>(null);
-  const [active, setActive] = useState<string>(SECTIONS[0].id);
+  const { tema } = Route.useSearch();
+  const active = tema;
+  const show = (id: string) => tema === id;
+  const current = THEMES.find((t) => t.id === tema);
+  const index = current ? THEMES.indexOf(current) : -1;
+  const prev = index > 0 ? THEMES[index - 1] : undefined;
+  const next = index >= 0 && index < THEMES.length - 1 ? THEMES[index + 1] : undefined;
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActive(visible.target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0.01, 0.25, 0.6] },
-    );
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+  }, [tema]);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
