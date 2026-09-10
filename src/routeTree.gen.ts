@@ -17,6 +17,7 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SaudacoesRouteImport } from './routes/saudacoes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReembolsoRouteImport } from './routes/reembolso'
+import { Route as ProfessorInfantilRouteImport } from './routes/professor-infantil'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PlanosRouteImport } from './routes/planos'
@@ -91,6 +92,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ReembolsoRoute = ReembolsoRouteImport.update({
   id: '/reembolso',
   path: '/reembolso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessorInfantilRoute = ProfessorInfantilRouteImport.update({
+  id: '/professor-infantil',
+  path: '/professor-infantil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessorRoute = ProfessorRouteImport.update({
@@ -296,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -340,6 +347,7 @@ export interface FileRoutesByTo {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -386,6 +394,7 @@ export interface FileRoutesById {
   '/planos': typeof PlanosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/professor': typeof ProfessorRoute
+  '/professor-infantil': typeof ProfessorInfantilRoute
   '/reembolso': typeof ReembolsoRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saudacoes': typeof SaudacoesRoute
@@ -432,6 +441,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
+    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -476,6 +486,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
+    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -521,6 +532,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/privacidade'
     | '/professor'
+    | '/professor-infantil'
     | '/reembolso'
     | '/reset-password'
     | '/saudacoes'
@@ -567,6 +579,7 @@ export interface RootRouteChildren {
   PlanosRoute: typeof PlanosRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfessorRoute: typeof ProfessorRoute
+  ProfessorInfantilRoute: typeof ProfessorInfantilRoute
   ReembolsoRoute: typeof ReembolsoRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SaudacoesRoute: typeof SaudacoesRoute
@@ -644,6 +657,13 @@ declare module '@tanstack/react-router' {
       path: '/reembolso'
       fullPath: '/reembolso'
       preLoaderRoute: typeof ReembolsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professor-infantil': {
+      id: '/professor-infantil'
+      path: '/professor-infantil'
+      fullPath: '/professor-infantil'
+      preLoaderRoute: typeof ProfessorInfantilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/professor': {
@@ -929,6 +949,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlanosRoute: PlanosRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfessorRoute: ProfessorRoute,
+  ProfessorInfantilRoute: ProfessorInfantilRoute,
   ReembolsoRoute: ReembolsoRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SaudacoesRoute: SaudacoesRoute,
