@@ -443,3 +443,127 @@ export const REFERENCES: string[] = [
 
 export const AUTHOR_NOTE =
   "Angelo Santos do Carmo — Pataxó, liderança, professor, licenciado em Pedagogia (ULBRA, 2013) e em Ciências Humanas e Sociais (LICEEI/UNEB, 2019), Mestre em Relações Étnico-Raciais (PPGER/UFSB, 2022) e doutorando em Educação e Movimentos Sociais (FAE/UFMG).";
+
+/* ------------------------- Temas (pastas de conteúdo) ------------------------ */
+
+export type Theme = {
+  id: string;
+  label: string;
+  eyebrow: string;
+  summary: string;
+  photo?: Photo;
+};
+
+/** Cada tema é uma "pasta": mostra apenas os conteúdos do seu assunto. */
+export const THEMES: Theme[] = [
+  {
+    id: "memoria",
+    label: "Memória",
+    eyebrow: "Memória ancestral",
+    summary:
+      "Presença ancestral Pataxó no território, direitos originários, opressão e resistência pela oralidade; base documental do relatório e do relatório circunstancial da TI Aldeia Velha (2008).",
+    photo: PHOTOS.sambaqui,
+  },
+  {
+    id: "relatos",
+    label: "Anciãos",
+    eyebrow: "Oralidade, resistência e luta",
+    summary:
+      "Relatos dos anciãos e anciãs que nasceram, foram expulsos e voltaram ao território, com suas falas e memórias de luta.",
+    photo: PHOTOS.caciqueIpe,
+  },
+  {
+    id: "retomada",
+    label: "Retomada",
+    eyebrow: "Linha do tempo",
+    summary:
+      "Cronologia das expulsões, das primeiras investidas, da retomada definitiva de 1998 e dos marcos até a homologação da Terra Indígena.",
+    photo: PHOTOS.retomada1998,
+  },
+  {
+    id: "territorio",
+    label: "Território",
+    eyebrow: "Localização e caracterização",
+    summary:
+      "Localização em Arraial d'Ajuda, Porto Seguro (BA), Mata Atlântica, sítios arqueológicos, sambaqui, manguezal do rio Buranhém, moradias, água, infraestrutura e dados de população.",
+    photo: PHOTOS.entradaTI,
+  },
+  {
+    id: "educacao",
+    label: "Educação",
+    eyebrow: "Educação escolar indígena",
+    summary:
+      "Da primeira aula em kigeme (1998) à Escola Indígena Pataxó Aldeia Velha com 12 salas e 235 estudantes; Jogos Infanto-Juvenis e Intercâmbio Cultural e Intercultural.",
+    photo: PHOTOS.escolaAtual,
+  },
+  {
+    id: "patxoha",
+    label: "Patxôhã",
+    eyebrow: "Língua materna",
+    summary:
+      "A língua materna Patxôhã como identidade: ensino além da gramática, cosmologia e a cooficialização em Porto Seguro em 2023.",
+    photo: PHOTOS.cooficializacao,
+  },
+  {
+    id: "cultura",
+    label: "Cultura",
+    eyebrow: "Preservação ambiental e cultural",
+    summary:
+      "Grupo de Cultura da Aldeia, canto e dança, etnoturismo na reserva, intercâmbios com Barra Velha e Jaqueira, Museu a Céu Aberto e preservação ambiental.",
+    photo: PHOTOS.grupoCultura1,
+  },
+  {
+    id: "saude",
+    label: "Saberes e Saúde",
+    eyebrow: "Saberes tradicionais e saúde",
+    summary:
+      "Medicina tradicional (Pajé Jaçanã, benzimentos, ervas, garrafadas) e o serviço institucional PSF/UBSI da SESAI, com perfil demográfico da saúde.",
+    photo: PHOTOS.postoSaude,
+  },
+  {
+    id: "projetos",
+    label: "Projetos",
+    eyebrow: "Projetos sociais e culturais",
+    summary:
+      "Associações comunitárias, parcerias e projetos sociais, culturais e ambientais conquistados pela comunidade ao longo dos anos.",
+    photo: PHOTOS.museuCeuAberto,
+  },
+  {
+    id: "galeria",
+    label: "Galeria",
+    eyebrow: "Galeria",
+    summary: "Fotos registradas pela própria comunidade, reunidas no relatório Somos Todos Aldeia Velha.",
+    photo: PHOTOS.cantoDanca,
+  },
+  {
+    id: "documentarios",
+    label: "Documentários",
+    eyebrow: "Documentários e entrevistas",
+    summary:
+      "Documentários e entrevistas em vídeo com moradores e parceiros na luta pelo território tradicional.",
+    photo: PHOTOS.grupoCultura2,
+  },
+  {
+    id: "referencias",
+    label: "Referências",
+    eyebrow: "Fontes",
+    summary:
+      "Referências bibliográficas e documentais usadas no relatório, além da nota de sistematização dos relatos.",
+    photo: PHOTOS.residencias,
+  },
+];
+
+export function isTheme(id: string | undefined): boolean {
+  return !!id && THEMES.some((t) => t.id === id);
+}
+
+/** Base temática usada pelo Professor Akuã para responder sem misturar assuntos. */
+export const ALDEIA_VELHA_KNOWLEDGE = `
+═══════════════════════════════════
+BASE DE CONHECIMENTO — ALDEIA VELHA (organizada por temas)
+═══════════════════════════════════
+Fonte: relatório "Somos Todos Aldeia Velha" — Comunidade Indígena Pataxó Aldeia Velha (C.I.P.A.V.), Arraial d'Ajuda, Porto Seguro (BA).
+Cada tema abaixo é uma pasta de conteúdo do site (rota /aldeia-velha?tema=ID). Ao responder sobre Aldeia Velha, use SOMENTE o tema correspondente à pergunta e não misture assuntos de temas diferentes. Quando útil, indique ao usuário a pasta correspondente pelo nome.
+
+${THEMES.map((t) => `- ${t.label} (tema: ${t.id}) — ${t.eyebrow}: ${t.summary}`).join("\n")}
+`.trim();
