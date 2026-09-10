@@ -193,7 +193,9 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
       />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-black" />
     </div>
+
   );
 }
 
