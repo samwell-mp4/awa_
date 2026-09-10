@@ -2,6 +2,7 @@ import {
   Award,
   BookOpen,
   Download,
+  GraduationCap,
   Home,
   Library,
   Play,
