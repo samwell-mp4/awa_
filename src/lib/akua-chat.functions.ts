@@ -4,6 +4,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertPremium } from "./premium-guard";
 import { readChatContent } from "./ai-response.server";
+import { ALDEIA_VELHA_KNOWLEDGE } from "./aldeia-velha-content";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Entry = { term_indigenous: string; term_pt: string };
