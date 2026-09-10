@@ -121,6 +121,7 @@ const CHILD_HREFS = new Set([
   "/musicas-infantil",
   "/historias-infantil",
   "/jogos-infantil",
+  "/professor-infantil",
 ]);
 
 // Kids must land on the child-themed versions of these sections
@@ -151,6 +152,7 @@ export function useNavContent(mode: NavMode = "all") {
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
         { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
+        { label: "Professor Awã", href: "/professor-infantil", icon: GraduationCap },
       ],
     },
     {
