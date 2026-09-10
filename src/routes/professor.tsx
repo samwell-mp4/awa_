@@ -416,33 +416,43 @@ function ProfessorPage() {
     }
   }
 
-  async function autoSpeak(audio: HTMLAudioElement, text: string) {
+  async function autoSpeak(audio: HTMLAudioElement, text: string, voiceMode = false) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) return;
-      
+      if (r.error || !r.audio_base64) {
+        if (voiceMode) setVoiceState("idle");
+        return;
+      }
+
       const url = base64ToBlobUrl(r.audio_base64, r.mime);
       currentAudioRef.current?.pause();
       audio.src = url;
       currentAudioRef.current = audio;
       setActiveAssistantAudio(audio);
 
+      if (voiceMode) {
+        setVoicePaused(false);
+        setVoiceState("speaking");
+        audio.onended = () => setVoiceState("idle");
+      }
 
       // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
 
+      // Em modo voz o usuário controla com pausar/continuar, sem parar ao tocar na tela.
+      if (voiceMode) return;
       const stopHandler = () => {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
       };
       window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
-      /* silencioso */
+      if (voiceMode) setVoiceState("idle");
     }
   }
 
-  async function send(text: string) {
+  async function send(text: string, voiceMode = false) {
     const content = text.trim();
     if (!content || loading) return;
     const audio = new Audio();
@@ -450,11 +460,13 @@ function ProfessorPage() {
     setMessages(next);
     setInput("");
     setLoading(true);
+    if (voiceMode) setVoiceState("thinking");
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
-      void autoSpeak(audio, reply);
+      void autoSpeak(audio, reply, voiceMode);
     } catch (e: any) {
+      if (voiceMode) setVoiceState("idle");
       toast.error(e.message ?? t.errorSpeak);
     } finally {
       setLoading(false);
