@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ArrowLeft,
   BookOpen,
@@ -172,77 +173,99 @@ function instagramEmbedUrl(url: string) {
   return `${url.replace(/\/+$/, "")}/embed/`;
 }
 
+/** Instagram embed cropped so only the video area shows (no profile name/header/footer). */
+function CleanEmbed({ url, title }: { url: string; title: string }) {
+  return (
+    <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: "100 / 125" }}>
+      <iframe
+        src={instagramEmbedUrl(url)}
+        title={title}
+        scrolling="no"
+        className="absolute left-0 border-0 bg-black"
+        style={{
+          top: "-58px",
+          width: "100%",
+          height: "calc(100% + 420px)",
+          pointerEvents: "auto",
+        }}
+
+        loading="lazy"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowFullScreen
+      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-black" />
+    </div>
+
+  );
+}
+
 function DocumentaryCard({ url, index }: { url: string; index: number }) {
-  const [playing, setPlaying] = useState(false);
-  const [unavailable, setUnavailable] = useState(false);
+  const [open, setOpen] = useState(false);
   const label = `Documentário ${index + 1}`;
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:-translate-y-0.5 hover:border-gold/50 hover:bg-gold/10">
-      {playing && !unavailable && (
-        <div className="aspect-[9/16] w-full overflow-hidden border-b border-gold/20 bg-forest-deep">
-          <iframe
-            src={instagramEmbedUrl(url)}
-            title={`${label} — Aldeia Velha`}
-            className="h-full w-full border-0 bg-cream"
-            loading="lazy"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-            onError={() => setUnavailable(true)}
-          />
-        </div>
-      )}
-
-      <div className="flex items-center justify-between gap-3 px-4 py-3.5">
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+        aria-label={`Reproduzir ${label}`}
+      >
         <span className="flex min-w-0 items-center gap-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[12px] font-black text-forest-deep">
             {String(index + 1).padStart(2, "0")}
           </span>
           <span className="truncate text-[13.5px] font-bold text-cream">{label}</span>
         </span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-gold transition hover:bg-gold/15">
+          <Play className="h-4 w-4 fill-current" />
+        </span>
+      </button>
 
-        {!playing ? (
-          <Button
-            type="button"
-            size="icon"
-            variant="ghost"
-            onClick={() => setPlaying(true)}
-            aria-label={`Reproduzir ${label}`}
-            title={`Reproduzir ${label}`}
-            className="shrink-0 rounded-full text-gold hover:bg-gold/15 hover:text-gold"
+      {open &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-3 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-label={label}
+            onClick={() => setOpen(false)}
           >
-            <Play className="h-4 w-4 fill-current" />
-          </Button>
-        ) : (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Assistir ${label} no Instagram`}
-            title="Assistir no Instagram"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-gold/70 transition hover:bg-gold/15 hover:text-gold"
-          >
-            <ExternalLink className="h-4 w-4" />
-          </a>
+            <div
+              className="relative w-full max-w-[420px] overflow-hidden rounded-2xl border border-gold/30 shadow-[var(--shadow-gold)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Fechar"
+                className="absolute right-2 top-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-forest-deep/80 text-gold backdrop-blur-sm transition hover:bg-forest-deep"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </div>,
+          document.body,
         )}
-      </div>
 
-      {unavailable && (
-        <div className="border-t border-gold/15 px-4 py-3 text-center">
-          <p className="text-[12px] text-foreground/70">
-            Este conteúdo não permitiu reprodução incorporada.
-          </p>
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-bold text-gold hover:underline"
-          >
-            Assistir no Instagram <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-        </div>
-      )}
     </article>
+
   );
 }
 
