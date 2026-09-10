@@ -214,7 +214,16 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
             <Play className="h-4 w-4 fill-current" />
           </Button>
         ) : (
-          <ExternalLink className="h-4 w-4 shrink-0 text-gold/70" aria-hidden="true" />
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Assistir ${label} no Instagram`}
+            title="Assistir no Instagram"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-gold/70 transition hover:bg-gold/15 hover:text-gold"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
         )}
       </div>
 
