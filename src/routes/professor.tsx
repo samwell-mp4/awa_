@@ -20,6 +20,10 @@ import {
   Globe,
   Sparkles,
   GraduationCap,
+  Mic,
+  Square,
+  Pause,
+  Play,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -27,6 +31,8 @@ import { useLastArea } from "@/lib/last-area";
 import { useLang, type Lang } from "@/lib/pick-lang";
 import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
+import { transcribeAudio } from "@/lib/transcribe.functions";
+import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 
 
 export const Route = createFileRoute("/professor")({
