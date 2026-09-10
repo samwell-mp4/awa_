@@ -176,7 +176,7 @@ function instagramEmbedUrl(url: string) {
 /** Instagram embed cropped so only the video area shows (no profile name/header/footer). */
 function CleanEmbed({ url, title }: { url: string; title: string }) {
   return (
-    <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: "9 / 16" }}>
+    <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: "100 / 128" }}>
       <iframe
         src={instagramEmbedUrl(url)}
         title={title}
@@ -185,9 +185,10 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
         style={{
           top: "-58px",
           width: "100%",
-          height: "calc(100% + 210px)",
+          height: "calc(100% + 420px)",
           pointerEvents: "auto",
         }}
+
         loading="lazy"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
