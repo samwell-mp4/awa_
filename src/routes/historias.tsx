@@ -724,6 +724,39 @@ function HistoriasPage() {
 
       {/* Sections */}
       <main className="mx-auto max-w-5xl px-5 pb-32">
+        {/* História Narrativa — Aldeia Velha */}
+        <section className="mb-16 md:mb-24 -mt-10 md:-mt-14">
+          <Link
+            to="/aldeia-velha"
+            className="group grid overflow-hidden rounded-3xl border border-gold/30 bg-black/40 shadow-[var(--shadow-gold)] transition hover:-translate-y-1 md:grid-cols-2"
+          >
+            <div className="relative min-h-[220px] md:min-h-[320px]">
+              <img
+                src={PHOTOS.capa.src}
+                alt={PHOTOS.capa.alt}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            </div>
+            <div className="p-6 md:p-9">
+              <p className="text-xs uppercase tracking-[0.3em] text-gold">
+                🪶 <T>História Narrativa</T>
+              </p>
+              <h2 className="mt-3 font-serif text-2xl leading-tight text-amber-50 md:text-4xl">
+                <T>Somos Todos</T> <span className="text-gold"><T>Aldeia Velha</T></span>
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-amber-100/85 md:text-base">
+                <T>A história completa do território ancestral Pataxó contada pelos próprios moradores: memória, retomada, território, escola, língua Patxôhã, cultura, saúde e projetos — com fotos e documentários da comunidade.</T>
+              </p>
+              <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold">
+                <T>Ler a história</T> →
+              </span>
+            </div>
+          </Link>
+        </section>
+
         {/* Ancião Josa — destaque no topo */}
         <section className="mb-16 md:mb-24">
           <div className="mb-8 text-center">
