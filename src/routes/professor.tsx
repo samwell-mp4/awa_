@@ -20,6 +20,10 @@ import {
   Globe,
   Sparkles,
   GraduationCap,
+  Mic,
+  Square,
+  Pause,
+  Play,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
@@ -27,6 +31,8 @@ import { useLastArea } from "@/lib/last-area";
 import { useLang, type Lang } from "@/lib/pick-lang";
 import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
+import { transcribeAudio } from "@/lib/transcribe.functions";
+import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 
 
 export const Route = createFileRoute("/professor")({
@@ -180,14 +186,90 @@ const L10N: Record<Lang, L10n> = {
   },
 };
 
+type VoiceL10n = {
+  talk: string;
+  stopRec: string;
+  listening: string;
+  thinking: string;
+  speaking: string;
+  pause: string;
+  resume: string;
+  stopVoice: string;
+  denied: string;
+  unsupported: string;
+  tooShort: string;
+  sttFail: string;
+};
+
+const VOICE_L10N: Record<Lang, VoiceL10n> = {
+  pt: {
+    talk: "Falar",
+    stopRec: "Parar e enviar",
+    listening: "Ouvindo você…",
+    thinking: "Pensando…",
+    speaking: "Falando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Encerrar voz",
+    denied: "Precisamos da sua permissão do microfone para ouvir você.",
+    unsupported: "Este navegador não permite gravar voz. Você pode digitar sua pergunta.",
+    tooShort: "Não consegui ouvir. Fale um pouquinho mais perto do microfone.",
+    sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
+  },
+  en: {
+    talk: "Speak",
+    stopRec: "Stop and send",
+    listening: "Listening to you…",
+    thinking: "Thinking…",
+    speaking: "Speaking…",
+    pause: "Pause",
+    resume: "Resume",
+    stopVoice: "Stop voice",
+    denied: "We need your microphone permission to hear you.",
+    unsupported: "This browser cannot record voice. You can type your question.",
+    tooShort: "I couldn't hear you. Please speak closer to the microphone.",
+    sttFail: "I couldn't understand the audio. Try again or type instead.",
+  },
+  es: {
+    talk: "Hablar",
+    stopRec: "Parar y enviar",
+    listening: "Escuchándote…",
+    thinking: "Pensando…",
+    speaking: "Hablando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Terminar voz",
+    denied: "Necesitamos tu permiso del micrófono para escucharte.",
+    unsupported: "Este navegador no permite grabar voz. Puedes escribir tu pregunta.",
+    tooShort: "No pude escucharte. Habla un poco más cerca del micrófono.",
+    sttFail: "No pude entender el audio. Inténtalo de nuevo o escribe.",
+  },
+  pat: {
+    talk: "Falar",
+    stopRec: "Parar e enviar",
+    listening: "Ouvindo você…",
+    thinking: "Pensando…",
+    speaking: "Falando…",
+    pause: "Pausar",
+    resume: "Continuar",
+    stopVoice: "Encerrar voz",
+    denied: "Precisamos da sua permissão do microfone para ouvir você.",
+    unsupported: "Este navegador não permite gravar voz. Você pode digitar sua pergunta.",
+    tooShort: "Não consegui ouvir. Fale mais perto do microfone.",
+    sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
+  },
+};
+
 const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
   const backTo = useLastArea();
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
+  const transcribe = useServerFn(transcribeAudio);
   const lang = useLang();
   const t = L10N[lang];
+  const v = VOICE_L10N[lang];
 
   const makeWelcome = (): Msg => ({ role: "assistant", content: t.welcome, at: Date.now() });
 
@@ -199,6 +281,75 @@ function ProfessorPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // --- Modo voz -------------------------------------------------------------
+  const recorder = useVoiceRecorder();
+  const [voiceState, setVoiceState] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
+  const [voicePaused, setVoicePaused] = useState(false);
+  const [micReady, setMicReady] = useState(false);
+  useEffect(() => setMicReady(isRecordingSupported()), []);
+
+  function pauseVoice() {
+    currentAudioRef.current?.pause();
+    setVoicePaused(true);
+  }
+
+  function resumeVoice() {
+    void currentAudioRef.current?.play().catch(() => {});
+    setVoicePaused(false);
+  }
+
+  function stopVoice() {
+    currentAudioRef.current?.pause();
+    setVoicePaused(false);
+    setActiveAssistantAudio(null);
+    setVoiceState("idle");
+  }
+
+  async function handleMic() {
+    if (!micReady) {
+      toast.error(v.unsupported);
+      return;
+    }
+    if (recorder.isRecording) {
+      const file = await recorder.stop();
+      if (!file) {
+        setVoiceState("idle");
+        toast.error(v.tooShort);
+        return;
+      }
+      setVoiceState("thinking");
+      try {
+        const fd = new FormData();
+        fd.append("file", file, file.name);
+        fd.append("language", lang === "pat" ? "pt" : lang);
+        fd.append("environment", getPaddleEnvironment());
+        const r = await transcribe({ data: fd });
+        const text = (r?.text ?? "").trim();
+        if (r?.error || !text) {
+          setVoiceState("idle");
+          toast.error(r?.message ?? v.sttFail);
+          return;
+        }
+        await send(text, true);
+      } catch {
+        setVoiceState("idle");
+        toast.error(v.sttFail);
+      }
+      return;
+    }
+    currentAudioRef.current?.pause();
+    setVoicePaused(false);
+    const ok = await recorder.start();
+    if (!ok) {
+      setVoiceState("idle");
+      toast.error(recorder.error === "unsupported" ? v.unsupported : v.denied);
+      return;
+    }
+    setVoiceState("listening");
+  }
+
+
 
 
 
@@ -265,33 +416,43 @@ function ProfessorPage() {
     }
   }
 
-  async function autoSpeak(audio: HTMLAudioElement, text: string) {
+  async function autoSpeak(audio: HTMLAudioElement, text: string, voiceMode = false) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
-      if (r.error || !r.audio_base64) return;
-      
+      if (r.error || !r.audio_base64) {
+        if (voiceMode) setVoiceState("idle");
+        return;
+      }
+
       const url = base64ToBlobUrl(r.audio_base64, r.mime);
       currentAudioRef.current?.pause();
       audio.src = url;
       currentAudioRef.current = audio;
       setActiveAssistantAudio(audio);
 
+      if (voiceMode) {
+        setVoicePaused(false);
+        setVoiceState("speaking");
+        audio.onended = () => setVoiceState("idle");
+      }
 
       // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
 
+      // Em modo voz o usuário controla com pausar/continuar, sem parar ao tocar na tela.
+      if (voiceMode) return;
       const stopHandler = () => {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
       };
       window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
-      /* silencioso */
+      if (voiceMode) setVoiceState("idle");
     }
   }
 
-  async function send(text: string) {
+  async function send(text: string, voiceMode = false) {
     const content = text.trim();
     if (!content || loading) return;
     const audio = new Audio();
@@ -299,11 +460,13 @@ function ProfessorPage() {
     setMessages(next);
     setInput("");
     setLoading(true);
+    if (voiceMode) setVoiceState("thinking");
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
-      void autoSpeak(audio, reply);
+      void autoSpeak(audio, reply, voiceMode);
     } catch (e: any) {
+      if (voiceMode) setVoiceState("idle");
       toast.error(e.message ?? t.errorSpeak);
     } finally {
       setLoading(false);
@@ -312,8 +475,11 @@ function ProfessorPage() {
   }
 
   function resetConversation() {
+    recorder.cancel();
     currentAudioRef.current?.pause();
     setActiveAssistantAudio(null);
+    setVoicePaused(false);
+    setVoiceState("idle");
     setMessages([makeWelcome()]);
     setInput("");
     textareaRef.current?.focus();
@@ -462,7 +628,69 @@ function ProfessorPage() {
         }}
         className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.94)] backdrop-blur-xl shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)]"
       >
+        {voiceState !== "idle" && (
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-4 pt-3 md:px-8">
+            <span
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold ${
+                voiceState === "listening"
+                  ? "border-rose-400/40 bg-rose-500/15 text-rose-200"
+                  : voiceState === "thinking"
+                    ? "border-gold/40 bg-gold/15 text-gold"
+                    : "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+              }`}
+              aria-live="polite"
+            >
+              <span
+                aria-hidden
+                className={`h-2 w-2 rounded-full ${
+                  voiceState === "listening"
+                    ? "animate-pulse bg-rose-400"
+                    : voiceState === "thinking"
+                      ? "animate-pulse bg-gold"
+                      : "animate-pulse bg-emerald-400"
+                }`}
+              />
+              {voiceState === "listening" ? v.listening : voiceState === "thinking" ? v.thinking : v.speaking}
+            </span>
+
+            {voiceState === "speaking" && (
+              <>
+                <button
+                  type="button"
+                  onClick={voicePaused ? resumeVoice : pauseVoice}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/60 px-3 py-1.5 text-[11px] font-bold text-foreground/85 transition hover:border-gold/60 hover:text-cream"
+                >
+                  {voicePaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+                  {voicePaused ? v.resume : v.pause}
+                </button>
+                <button
+                  type="button"
+                  onClick={stopVoice}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/70 transition hover:border-rose-400/50 hover:text-rose-200"
+                >
+                  <Square className="h-3.5 w-3.5" />
+                  {v.stopVoice}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="mx-auto flex max-w-3xl items-end gap-2.5 px-4 py-3 md:px-8">
+          <button
+            type="button"
+            onClick={handleMic}
+            disabled={loading || voiceState === "thinking"}
+            className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 ${
+              recorder.isRecording
+                ? "border-rose-400/60 bg-rose-500/25 text-rose-100 shadow-lg shadow-rose-500/20 animate-pulse"
+                : "border-gold/30 bg-card/70 text-gold hover:border-gold/60 hover:bg-card/90"
+            }`}
+            aria-label={recorder.isRecording ? v.stopRec : v.talk}
+            title={recorder.isRecording ? v.stopRec : v.talk}
+          >
+            {recorder.isRecording ? <Square className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+          </button>
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}
@@ -495,7 +723,7 @@ function ProfessorPage() {
           </button>
         </div>
         <div className="pb-2 text-center text-[10px] text-foreground/40">
-          {t.hint}
+          {recorder.isRecording ? v.stopRec : t.hint}
         </div>
       </form>
     </div>
