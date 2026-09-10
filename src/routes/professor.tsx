@@ -628,7 +628,69 @@ function ProfessorPage() {
         }}
         className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.94)] backdrop-blur-xl shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)]"
       >
+        {voiceState !== "idle" && (
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-4 pt-3 md:px-8">
+            <span
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold ${
+                voiceState === "listening"
+                  ? "border-rose-400/40 bg-rose-500/15 text-rose-200"
+                  : voiceState === "thinking"
+                    ? "border-gold/40 bg-gold/15 text-gold"
+                    : "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+              }`}
+              aria-live="polite"
+            >
+              <span
+                aria-hidden
+                className={`h-2 w-2 rounded-full ${
+                  voiceState === "listening"
+                    ? "animate-pulse bg-rose-400"
+                    : voiceState === "thinking"
+                      ? "animate-pulse bg-gold"
+                      : "animate-pulse bg-emerald-400"
+                }`}
+              />
+              {voiceState === "listening" ? v.listening : voiceState === "thinking" ? v.thinking : v.speaking}
+            </span>
+
+            {voiceState === "speaking" && (
+              <>
+                <button
+                  type="button"
+                  onClick={voicePaused ? resumeVoice : pauseVoice}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/60 px-3 py-1.5 text-[11px] font-bold text-foreground/85 transition hover:border-gold/60 hover:text-cream"
+                >
+                  {voicePaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+                  {voicePaused ? v.resume : v.pause}
+                </button>
+                <button
+                  type="button"
+                  onClick={stopVoice}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/70 transition hover:border-rose-400/50 hover:text-rose-200"
+                >
+                  <Square className="h-3.5 w-3.5" />
+                  {v.stopVoice}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="mx-auto flex max-w-3xl items-end gap-2.5 px-4 py-3 md:px-8">
+          <button
+            type="button"
+            onClick={handleMic}
+            disabled={loading || voiceState === "thinking"}
+            className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 ${
+              recorder.isRecording
+                ? "border-rose-400/60 bg-rose-500/25 text-rose-100 shadow-lg shadow-rose-500/20 animate-pulse"
+                : "border-gold/30 bg-card/70 text-gold hover:border-gold/60 hover:bg-card/90"
+            }`}
+            aria-label={recorder.isRecording ? v.stopRec : v.talk}
+            title={recorder.isRecording ? v.stopRec : v.talk}
+          >
+            {recorder.isRecording ? <Square className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+          </button>
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}
@@ -661,7 +723,7 @@ function ProfessorPage() {
           </button>
         </div>
         <div className="pb-2 text-center text-[10px] text-foreground/40">
-          {t.hint}
+          {recorder.isRecording ? v.stopRec : t.hint}
         </div>
       </form>
     </div>
