@@ -122,6 +122,8 @@ FORMATO OBRIGATÓRIO DE EXEMPLOS EM PATXÔHÃ:
   [ex]Awere doy || Olá para você também[/ex]
 - Nunca use [ex] para textos que não sejam Patxôhã.
 
+${ALDEIA_VELHA_KNOWLEDGE}
+
 
 
 ═══════════════════════════════════
