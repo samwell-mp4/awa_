@@ -387,6 +387,7 @@ function AldeiaVelhaPage() {
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
         {/* Memória ancestral */}
+        {show("memoria") && (
         <section id="memoria" className="scroll-mt-32 pt-14 md:pt-20">
           <SectionTitle
             icon={<Leaf className="h-3.5 w-3.5" />}
@@ -425,8 +426,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Relatos dos anciãos */}
+        {show("relatos") && (
         <section id="relatos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Quote className="h-3.5 w-3.5" />}
@@ -479,8 +482,10 @@ function AldeiaVelhaPage() {
             <Figure photo={PHOTOS.residencias} onZoom={setZoom} ratio="aspect-[4/3]" />
           </div>
         </section>
+        )}
 
         {/* Linha do tempo */}
+        {show("retomada") && (
         <section id="retomada" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Flame className="h-3.5 w-3.5" />}
@@ -539,8 +544,10 @@ function AldeiaVelhaPage() {
             ))}
           </ol>
         </section>
+        )}
 
         {/* Território */}
+        {show("territorio") && (
         <section id="territorio" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Landmark className="h-3.5 w-3.5" />}
@@ -623,8 +630,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Educação */}
+        {show("educacao") && (
         <section id="educacao" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<GraduationCap className="h-3.5 w-3.5" />}
@@ -705,8 +714,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Patxôhã */}
+        {show("patxoha") && (
         <section id="patxoha" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Languages className="h-3.5 w-3.5" />}
@@ -741,8 +752,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Cultura */}
+        {show("cultura") && (
         <section id="cultura" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Music className="h-3.5 w-3.5" />}
@@ -791,8 +804,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Saúde */}
+        {show("saude") && (
         <section id="saude" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Heart className="h-3.5 w-3.5" />}
@@ -884,8 +899,10 @@ function AldeiaVelhaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Projetos */}
+        {show("projetos") && (
         <section id="projetos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<Sparkles className="h-3.5 w-3.5" />}
@@ -922,8 +939,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Galeria */}
+        {show("galeria") && (
         <section id="galeria" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<ZoomIn className="h-3.5 w-3.5" />}
@@ -937,8 +956,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Documentários */}
+        {show("documentarios") && (
         <section id="documentarios" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             icon={<ExternalLink className="h-3.5 w-3.5" />}
@@ -952,8 +973,10 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </section>
+        )}
 
         {/* Referências */}
+        {show("referencias") && (
         <section id="referencias" className="scroll-mt-32 pb-20 pt-16 md:pt-24">
           <SectionTitle
             icon={<BookOpen className="h-3.5 w-3.5" />}
@@ -981,6 +1004,7 @@ function AldeiaVelhaPage() {
             </p>
           </div>
         </section>
+        )}
       </main>
 
       <PublicFooter />
