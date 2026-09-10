@@ -13,7 +13,8 @@ export const transcribeAudio = createServerFn({ method: "POST" })
     if (file.size > 24 * 1024 * 1024) throw new Error("Arquivo > 24MB");
     const envRaw = (d.get("environment") as string | null) || "live";
     const environment: "sandbox" | "live" = envRaw === "sandbox" ? "sandbox" : "live";
-    return { file, language: (d.get("language") as string | null) || undefined, environment };
+    const area: "adulto" | "infantil" = (d.get("area") as string | null) === "infantil" ? "infantil" : "adulto";
+    return { file, language: (d.get("language") as string | null) || undefined, environment, area };
   })
   .handler(async ({ data, context }): Promise<{ text: string; error?: "PAYMENT_REQUIRED" | "STT_FAILED"; message?: string }> => {
     await assertPremium(context, data.environment, "adulto");
