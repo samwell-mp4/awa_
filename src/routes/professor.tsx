@@ -564,16 +564,6 @@ function ProfessorPage() {
             <p className="mx-auto mt-1.5 max-w-md text-xs text-foreground/70 md:text-sm">
               {t.subtitle}
             </p>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-              {t.heroChips.map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full border border-leaf/30 bg-leaf/10 px-3 py-1 text-[11px] font-semibold text-leaf"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
           </section>
         )}
 
