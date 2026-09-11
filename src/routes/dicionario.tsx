@@ -307,6 +307,8 @@ function DictionaryPage() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("Todas");
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement | null>(null);
+
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedQuery(query.trim()), 200);
