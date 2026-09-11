@@ -14,10 +14,6 @@ import {
   Copy,
   Check,
   RefreshCcw,
-  BookOpen,
-  Sunrise,
-  Users,
-  Globe,
   Sparkles,
   GraduationCap,
   Mic,
@@ -259,8 +255,6 @@ const VOICE_L10N: Record<Lang, VoiceL10n> = {
     sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
   },
 };
-
-const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
   const backTo = useLastArea();
@@ -564,16 +558,6 @@ function ProfessorPage() {
             <p className="mx-auto mt-1.5 max-w-md text-xs text-foreground/70 md:text-sm">
               {t.subtitle}
             </p>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-              {t.heroChips.map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full border border-leaf/30 bg-leaf/10 px-3 py-1 text-[11px] font-semibold text-leaf"
-                >
-                  {chip}
-                </span>
-              ))}
-            </div>
           </section>
         )}
 
@@ -591,34 +575,6 @@ function ProfessorPage() {
           <div ref={endRef} />
         </div>
 
-        {isEmpty && !loading && (
-          <section className="mt-8">
-            <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground/50">
-              <Sparkles className="h-3.5 w-3.5 text-gold/70" />
-              {t.suggestionsTitle}
-            </div>
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              {t.suggestions.map((s, idx) => {
-                const Icon = SUGGESTION_ICONS[idx] ?? BookOpen;
-                return (
-                  <button
-                    key={s.label}
-                    onClick={() => send(s.prompt)}
-                    className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-card/40 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-gold/60 hover:bg-card/70 hover:shadow-[var(--shadow-gold)]"
-                  >
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-leaf/25 to-leaf/5 text-leaf ring-1 ring-leaf/20 transition group-hover:from-leaf/35 group-hover:to-leaf/15">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-sm font-bold text-cream">{s.label}</div>
-                      <div className="mt-0.5 line-clamp-2 text-xs text-foreground/65">{s.prompt}</div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-        )}
       </main>
 
       <form
