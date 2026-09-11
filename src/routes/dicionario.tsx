@@ -715,7 +715,7 @@ function DictionaryPage() {
               <div className="space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {ilVisibleItems.map((e) => (
-                    <PlayableCard key={`il-${e.id}`} text={e.patxoha} audioUrl={null}>
+                    <PlayableCard key={`il-${e.id}`} text={e.patxoha} audioUrl={null} variant="light">
                       <div className="grid h-32 place-items-center rounded-[22px] bg-[oklch(0.90_0.09_140)] text-6xl">
                         <span aria-hidden>{e.emoji}</span>
                       </div>
