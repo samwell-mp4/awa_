@@ -379,7 +379,7 @@ function ProfessorPage() {
     try {
       setAudioBusyKey(key);
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) {
         setAudioBusyKey(null);
         return;
@@ -413,7 +413,7 @@ function ProfessorPage() {
   async function autoSpeak(audio: HTMLAudioElement, text: string, voiceMode = false) {
     try {
       const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment() } });
+      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) {
         if (voiceMode) setVoiceState("idle");
         return;
@@ -808,7 +808,7 @@ function Bubble({
     if (audioBusy) return;
     try {
       setAudioBusy(key);
-      const r = await speak({ data: { text, environment: getPaddleEnvironment() } });
+      const r = await speak({ data: { text, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) throw new Error(r.message ?? t.errorAudio);
       const audio = new Audio(base64ToBlobUrl(r.audio_base64, r.mime));
       audio.preload = "auto";

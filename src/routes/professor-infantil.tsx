@@ -94,7 +94,12 @@ function ProfessorInfantilPage() {
     try {
       setState("speaking");
       const r = await speak({
-        data: { text: clean(text).slice(0, 600), environment: getPaddleEnvironment() },
+        data: {
+          text: clean(text).slice(0, 600),
+          environment: getPaddleEnvironment(),
+          lang: "pt",
+          area: "infantil",
+        },
       });
       if (r.error || !r.audio_base64) {
         setState("idle");
