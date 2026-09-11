@@ -207,6 +207,50 @@ const PAT_PT: Verbete[] = safeList<PatPtRecord>(patPtData)
   .filter((e) => e.head !== "" || e.gloss !== "");
 
 const PALAVRAS_NUMEROS = safeList<PalavraNumero>(palavrasNumerosData);
+
+// Palavras e números também entram nas duas direções de consulta (PT→PAT e PAT→PT),
+// para que números (cardinais/ordinais) apareçam na busca dos dois dicionários.
+const NUMEROS_VERBETES = PALAVRAS_NUMEROS.filter(
+  (r) => r.kind !== "grupo" && safeText(r.patxoha).trim() !== "" && safeText(r.portugues).trim() !== "",
+);
+
+function pushUnique(list: Verbete[], extra: Verbete[]) {
+  const seen = new Set(list.map((e) => `${e._headNorm}|${e._glossNorm}`));
+  for (const e of extra) {
+    const key = `${e._headNorm}|${e._glossNorm}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    list.push(e);
+  }
+}
+
+pushUnique(
+  PT_PAT,
+  NUMEROS_VERBETES.map((r, i) =>
+    toVerbete(
+      `num-pt-${r.id || i}`,
+      safeText(r.portugues),
+      safeText(r.patxoha),
+      safeText(r.patxoha),
+      safePage(r.pagina),
+      safeText(r.categoria) || "Números",
+    ),
+  ),
+);
+
+pushUnique(
+  PAT_PT,
+  NUMEROS_VERBETES.map((r, i) =>
+    toVerbete(
+      `num-pat-${r.id || i}`,
+      safeText(r.patxoha),
+      safeText(r.portugues),
+      safeText(r.patxoha),
+      safePage(r.pagina),
+      safeText(r.categoria) || "Números",
+    ),
+  ),
+);
 const GRAMATICA = safeList<GramaticaLinha>(gramaticaData).filter((l) => safeText(l.texto).trim() !== "");
 
 function letterCounts(list: Verbete[]): ReadonlyMap<string, number> {
