@@ -1002,7 +1002,12 @@ function PlayableCard({
       }}
       aria-label={`Ouvir ${text}`}
       aria-busy={busy}
-      className={`group card-elev rounded-2xl p-4 cursor-pointer select-none transition hover:border-leaf/40 hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf ${busy ? "opacity-70" : ""}`}
+      className={`group cursor-pointer select-none transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf ${
+        variant === "light"
+          ? "rounded-[28px] bg-cream p-4 shadow-md"
+          : "card-elev rounded-2xl p-4 hover:border-leaf/40"
+      } ${busy ? "opacity-70" : ""}`}
+
     >
       {busy && (
         <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-leaf">
