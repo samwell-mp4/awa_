@@ -8,6 +8,7 @@ import {
   BookOpen,
   ArrowDownAZ,
   ArrowUpAZ,
+  ArrowLeftRight,
   Crown,
   Lock,
   Volume2,
@@ -72,6 +73,7 @@ type PtPatRecord = {
   pagina: number;
   fonte: string;
   raw?: string;
+  categoria?: string;
 };
 
 type PatPtRecord = {
@@ -81,6 +83,7 @@ type PatPtRecord = {
   pagina: number;
   fonte: string;
   raw?: string;
+  categoria?: string;
 };
 
 type PalavraNumero = {
@@ -92,9 +95,16 @@ type PalavraNumero = {
   grupo?: string;
   pagina: number;
   fonte: string;
+  categoria?: string;
 };
 
-type GramaticaLinha = { id: string; texto: string; pagina: number; fonte: string };
+type GramaticaLinha = {
+  id: string;
+  texto: string;
+  pagina: number;
+  fonte: string;
+  idioma?: "regra" | "portugues" | "patxoha";
+};
 
 /** Verbete normalizado para exibição, sem alterar a grafia da fonte. */
 type Verbete = {
@@ -110,6 +120,7 @@ type Verbete = {
   _letter: string;
   _headNorm: string;
   _glossNorm: string;
+  categoria: string;
 };
 
 type Section = "pt-pat" | "pat-pt" | "numeros" | "gramatica";
@@ -135,6 +146,7 @@ function toVerbete(
   gloss: string,
   patxoha: string,
   pagina: number,
+  categoria: string,
   raw?: string,
 ): Verbete {
   return {
@@ -147,6 +159,7 @@ function toVerbete(
     _letter: firstLetter(head),
     _headNorm: normalize(head),
     _glossNorm: normalize(gloss),
+    categoria,
   };
 }
 
@@ -173,6 +186,7 @@ const PT_PAT: Verbete[] = safeList<PtPatRecord>(ptPatData)
       safeText(r.patxoha),
       safeText(r.patxoha),
       safePage(r.pagina),
+      safeText(r.categoria) || "Geral",
       r.raw ? safeText(r.raw) : undefined,
     ),
   )
@@ -186,6 +200,7 @@ const PAT_PT: Verbete[] = safeList<PatPtRecord>(patPtData)
       safeText(r.portugues),
       safeText(r.patxoha),
       safePage(r.pagina),
+      safeText(r.categoria) || "Geral",
       r.raw ? safeText(r.raw) : undefined,
     ),
   )
@@ -203,6 +218,8 @@ function letterCounts(list: Verbete[]): ReadonlyMap<string, number> {
 const PT_PAT_LETTERS = letterCounts(PT_PAT);
 const PAT_PT_LETTERS = letterCounts(PAT_PT);
 
+const CATEGORIES = ["Todas", "Família", "Alimentos", "Animais", "Natureza", "Corpo humano", "Verbos", "Números", "Geral"] as const;
+
 const SECTIONS: { key: Section; label: string; hint: string }[] = [
   { key: "pt-pat", label: "🇧🇷 Português → Patxôhã", hint: `${PT_PAT.length} verbetes` },
   { key: "pat-pt", label: "🌿 Patxôhã → Português", hint: `${PAT_PT.length} verbetes` },
@@ -219,6 +236,7 @@ function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
+  const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("Todas");
   const [visibleCount, setVisibleCount] = useState(120);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -235,6 +253,7 @@ function DictionaryPage() {
     setLetter("Todas");
     setVisibleCount(120);
     setQuery("");
+    setCategory("Todas");
   }, [section]);
 
   useEffect(() => {
@@ -248,7 +267,8 @@ function DictionaryPage() {
     const list = source.filter((e) => {
       const matchQ = !q || e._headNorm.includes(q) || e._glossNorm.includes(q);
       const matchL = letter === "Todas" || e._letter === letter;
-      return matchQ && matchL;
+      const matchCategory = category === "Todas" || e.categoria === category;
+      return matchQ && matchL && matchCategory;
     });
     list.sort((a, b) => {
       if (q) {
@@ -260,7 +280,11 @@ function DictionaryPage() {
       return sort === "az" ? cmp : -cmp;
     });
     return list;
-  }, [isWordList, source, debouncedQuery, letter, sort]);
+  }, [isWordList, source, debouncedQuery, letter, sort, category]);
+
+  function invertDirection() {
+    setSection((current) => (current === "pt-pat" ? "pat-pt" : "pt-pat"));
+  }
 
   const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
   const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
@@ -353,6 +377,18 @@ function DictionaryPage() {
             })}
           </div>
 
+          {isWordList && (
+            <button
+              type="button"
+              onClick={invertDirection}
+              className="mx-auto flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-2 text-xs font-black text-gold transition hover:bg-gold/20"
+              aria-label="Inverter direção do dicionário"
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              PT ⇄ PATXÔHÃ
+            </button>
+          )}
+
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/50" />
             <input
@@ -410,7 +446,24 @@ function DictionaryPage() {
         </section>
 
         {isWordList && (
-          <section className="mt-4 card-elev rounded-2xl p-3">
+          <section className="mt-4 card-elev rounded-2xl p-3 space-y-3">
+            <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {CATEGORIES.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setCategory(item)}
+                  aria-pressed={category === item}
+                  className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-bold transition ${
+                    category === item
+                      ? "border-leaf bg-leaf text-forest-deep"
+                      : "border-gold/20 bg-card/50 text-foreground/70 hover:text-cream"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setLetter("Todas")}
@@ -473,6 +526,11 @@ function DictionaryPage() {
                               <div className="mt-1 text-sm text-foreground/80 break-words">
                                 <span className="text-gold">→</span> {e.gloss}
                               </div>
+                              {e.categoria !== "Geral" && (
+                                <span className="mt-2 inline-flex rounded-full border border-leaf/25 bg-leaf/10 px-2 py-0.5 text-[10px] font-bold text-leaf">
+                                  {e.categoria}
+                                </span>
+                              )}
                             </div>
                             <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
                               p. {e.pagina}
@@ -568,7 +626,13 @@ function DictionaryPage() {
                 {gramaticaLines.map((l) => (
                   <p
                     key={l.id}
-                    className="text-sm leading-relaxed text-foreground/85 break-words"
+                    className={`rounded-lg px-3 py-2 text-sm leading-relaxed break-words ${
+                      l.idioma === "patxoha"
+                        ? "border-l-4 border-leaf bg-leaf/10 font-bold text-leaf"
+                        : l.idioma === "portugues"
+                          ? "border-l-4 border-gold bg-gold/10 text-gold"
+                          : "text-foreground/85"
+                    }`}
                   >
                     {l.texto}
                   </p>
