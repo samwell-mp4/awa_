@@ -4,3 +4,5 @@
 - [x] Preservar integralmente o layout, textos, temas e identidade visual atuais.
 - [x] Oferecer alternativa de reprodução quando a incorporação não for permitida.
 - [x] Validar a página em desktop e mobile.
+
+- [ ] Reconstruir apenas o dicionário com as 46 páginas do PATXÔHÃ 2015, incluindo categorias, busca, inversão, áudio e gramática.
