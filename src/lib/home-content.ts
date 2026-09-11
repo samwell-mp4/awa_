@@ -106,6 +106,7 @@ const ADULT_HREFS = new Set([
   "/aldeia-velha",
   "/instalar",
   "/minha-conta",
+  "/aprender-numeros",
 ]);
 
 const CHILD_HREFS = new Set([
