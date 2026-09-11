@@ -299,6 +299,12 @@ function AldeiaVelhaPage() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   }, [tema]);
 
+  // Ao trocar de tema ou sair da página, interrompe qualquer áudio em curso.
+  useEffect(() => {
+    return () => stopHotspotAudio();
+  }, [tema]);
+
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
