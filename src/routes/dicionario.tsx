@@ -284,13 +284,14 @@ for (const e of ILUSTRADO) {
   for (const k of e.catKeys) ILUSTRADO_COUNTS.set(k, (ILUSTRADO_COUNTS.get(k) ?? 0) + 1);
 }
 
-const SECTIONS: { key: Section; label: string; hint: string }[] = [
-  { key: "ilustrado", label: "🖼️ Dicionário Ilustrado", hint: "por categorias" },
-  { key: "pt-pat", label: "🇧🇷 Português → Patxôhã", hint: `${PT_PAT.length} verbetes` },
-  { key: "pat-pt", label: "🌿 Patxôhã → Português", hint: `${PAT_PT.length} verbetes` },
-  { key: "numeros", label: "🔢 Palavras e Números", hint: "seção da fonte" },
-  { key: "gramatica", label: "📚 Gramática Patxôhã", hint: "regras da língua" },
+/** Tons pastéis das categorias, no espírito da referência visual. */
+const CHIP_TONES = [
+  "bg-[oklch(0.86_0.07_65)] text-forest-deep hover:brightness-105",
+  "bg-[oklch(0.94_0.05_135)] text-forest-deep hover:brightness-105",
+  "bg-cream text-forest-deep hover:brightness-105",
+  "bg-[oklch(0.90_0.12_135)] text-forest-deep hover:brightness-105",
 ];
+
 
 function DictionaryPage() {
   const backTo = useLastArea();
