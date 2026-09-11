@@ -3041,7 +3041,7 @@
     "id": "pn-0305",
     "kind": "verbete",
     "patxoha": "etã",
-    "portugues": "ventre, útero números ordinais pukuixê 1o mixetxawé 2o petenyõ 3o 4o irekaho 5o wênoré 6o xamotxé uriwêmõ 7o aytemory 8o koáneré 9o 10o txoenê continuação, usar a regra dos números cardinais. números cardinais ruê apêtxienã 11 ruê krokxí 12 ruê mitxê 13 ruê rãtxê 14 ruê nigrê 15 krãmitxê 30 ate noventa xuê apêtxienã 100 hiã apêtxienã 1000",
+    "portugues": "ventre, útero",
     "grupo": "Kanã patä mionã(Minha família)",
     "pagina": 42,
     "fonte": "Patxôhã 2015",
@@ -3051,7 +3051,7 @@
     "id": "pn-0306",
     "kind": "verbete",
     "patxoha": "txuê apêtxienã",
-    "portugues": "1000000 awã apêtxienã 1000000000 xaã apêtxienã 1000000000000 txaywã dxãdhã dias da semana",
+    "portugues": "1000000",
     "grupo": "Kanã patä mionã(Minha família)",
     "pagina": 42,
     "fonte": "Patxôhã 2015",
@@ -4534,6 +4534,372 @@
     "portugues": "por nada",
     "grupo": "Kanã patä mionã(Minha família)",
     "pagina": 43,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-num-g1",
+    "kind": "grupo",
+    "titulo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-01",
+    "kind": "verbete",
+    "patxoha": "pukuixê",
+    "portugues": "1º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-02",
+    "kind": "verbete",
+    "patxoha": "mixetxawé",
+    "portugues": "2º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-03",
+    "kind": "verbete",
+    "patxoha": "petenyõ",
+    "portugues": "3º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-04",
+    "kind": "verbete",
+    "patxoha": "irekaho",
+    "portugues": "4º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-05",
+    "kind": "verbete",
+    "patxoha": "wênoré",
+    "portugues": "5º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-06",
+    "kind": "verbete",
+    "patxoha": "xamotxé",
+    "portugues": "6º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-07",
+    "kind": "verbete",
+    "patxoha": "uriwêmõ",
+    "portugues": "7º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-08",
+    "kind": "verbete",
+    "patxoha": "aytemory",
+    "portugues": "8º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-09",
+    "kind": "verbete",
+    "patxoha": "koáneré",
+    "portugues": "9º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-ord-10",
+    "kind": "verbete",
+    "patxoha": "txoenê",
+    "portugues": "10º",
+    "grupo": "Números ordinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-num-g2",
+    "kind": "grupo",
+    "titulo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-01",
+    "kind": "verbete",
+    "patxoha": "txuĩbá",
+    "portugues": "0",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-02",
+    "kind": "verbete",
+    "patxoha": "apêtxienã",
+    "portugues": "1",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-03",
+    "kind": "verbete",
+    "patxoha": "krokxí",
+    "portugues": "2",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-04",
+    "kind": "verbete",
+    "patxoha": "mitxê",
+    "portugues": "3",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-05",
+    "kind": "verbete",
+    "patxoha": "rãtxê",
+    "portugues": "4",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-06",
+    "kind": "verbete",
+    "patxoha": "nigrê",
+    "portugues": "5",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-07",
+    "kind": "verbete",
+    "patxoha": "patxiá",
+    "portugues": "6",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-08",
+    "kind": "verbete",
+    "patxoha": "dxãdxê",
+    "portugues": "7",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-09",
+    "kind": "verbete",
+    "patxoha": "nitxẽ",
+    "portugues": "8",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-10",
+    "kind": "verbete",
+    "patxoha": "rawata",
+    "portugues": "9",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-11",
+    "kind": "verbete",
+    "patxoha": "rótsa",
+    "portugues": "10",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-12",
+    "kind": "verbete",
+    "patxoha": "ruê apêtxienã",
+    "portugues": "11",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-13",
+    "kind": "verbete",
+    "patxoha": "ruê krokxí",
+    "portugues": "12",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-14",
+    "kind": "verbete",
+    "patxoha": "ruê mitxê",
+    "portugues": "13",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-15",
+    "kind": "verbete",
+    "patxoha": "ruê rãtxê",
+    "portugues": "14",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-16",
+    "kind": "verbete",
+    "patxoha": "ruê nigrê",
+    "portugues": "15",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-17",
+    "kind": "verbete",
+    "patxoha": "krãkrokxi",
+    "portugues": "20",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-18",
+    "kind": "verbete",
+    "patxoha": "krãmitxê",
+    "portugues": "30",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-19",
+    "kind": "verbete",
+    "patxoha": "krãrãtxê",
+    "portugues": "40",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-20",
+    "kind": "verbete",
+    "patxoha": "krãnigrê",
+    "portugues": "50",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-21",
+    "kind": "verbete",
+    "patxoha": "xuê apêtxienã",
+    "portugues": "100",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-22",
+    "kind": "verbete",
+    "patxoha": "hiã apêtxienã",
+    "portugues": "1000",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-23",
+    "kind": "verbete",
+    "patxoha": "txuê apêtxienã",
+    "portugues": "1000000",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-24",
+    "kind": "verbete",
+    "patxoha": "awã apêtxienã",
+    "portugues": "1000000000",
+    "grupo": "Números cardinais",
+    "pagina": 42,
+    "fonte": "Patxôhã 2015",
+    "categoria": "Números"
+  },
+  {
+    "id": "pn-car-25",
+    "kind": "verbete",
+    "patxoha": "xaã apêtxienã",
+    "portugues": "1000000000000",
+    "grupo": "Números cardinais",
+    "pagina": 42,
     "fonte": "Patxôhã 2015",
     "categoria": "Números"
   }
