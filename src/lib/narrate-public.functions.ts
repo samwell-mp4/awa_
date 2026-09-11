@@ -20,9 +20,9 @@ function keyFor(text: string, voice: string, lang: string) {
 }
 
 const INSTRUCTIONS: Record<string, string> = {
-  pt: "Fale em português do Brasil, com voz masculina grave, calma e sábia, ritmo pausado, como um ancião indígena contando uma história ancestral com emoção respeitosa.",
-  en: "Speak in English with a deep, calm, wise male voice, slow paced, like an indigenous elder telling an ancestral story with respectful emotion.",
-  es: "Habla en español con una voz masculina grave, calma y sabia, con ritmo pausado, como un anciano indígena contando una historia ancestral con emoción respetuosa.",
+  pt: "Fale em português do Brasil como uma pessoa real conversando, não como um narrador de locução. Voz masculina calorosa, madura e serena, de um ancião indígena contando sua própria história a alguém sentado ao lado. Ritmo natural e variado: acelere um pouco nas partes leves, desacelere nas partes graves, faça micro-pausas reais nas vírgulas e pausas maiores nos pontos, respire entre as frases. Entonação viva, com pequenas variações de altura e volume, emoção contida e respeitosa. Soe humano e espontâneo, nunca robótico, nunca mecânico, nunca apressado, sem tom de propaganda e sem exagerar a dramatização.",
+  en: "Speak English like a real person talking, not like a voice-over narrator. Warm, mature, calm male voice of an indigenous elder telling his own story to someone sitting beside him. Natural, varied pacing: slightly quicker on light parts, slower on solemn parts, real micro-pauses at commas and longer pauses at full stops, breathe between sentences. Lively intonation with small changes in pitch and volume, restrained respectful emotion. Sound human and spontaneous, never robotic, never mechanical, never rushed.",
+  es: "Habla en español como una persona real conversando, no como un locutor. Voz masculina cálida, madura y serena, de un anciano indígena contando su propia historia a alguien sentado a su lado. Ritmo natural y variado: un poco más rápido en las partes ligeras, más lento en las partes solemnes, micro-pausas reales en las comas y pausas más largas en los puntos, respira entre frases. Entonación viva, con pequeñas variaciones de tono y volumen, emoción contenida y respetuosa. Suena humano y espontáneo, nunca robótico, nunca mecánico, nunca apresurado.",
 };
 
 // Instruções para pronúncia de palavras isoladas do dicionário Patxôhã.
