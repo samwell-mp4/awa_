@@ -621,9 +621,9 @@ function DictionaryPage() {
         )}
 
         {section === "ilustrado" && (
-          <section className="mt-4 card-elev rounded-2xl p-3">
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {ILUSTRADO_CATEGORIAS.map((c) => {
+          <section className="mt-5">
+            <div className="flex flex-wrap gap-3">
+              {ILUSTRADO_CATEGORIAS.map((c, i) => {
                 const active = ilCat === c.key;
                 const count = ILUSTRADO_COUNTS.get(c.key) ?? 0;
                 return (
@@ -632,19 +632,15 @@ function DictionaryPage() {
                     type="button"
                     onClick={() => setIlCat(c.key)}
                     aria-pressed={active}
-                    className={`flex items-center gap-2 rounded-2xl border px-3 py-3 text-left transition ${
+                    title={`${count} palavras`}
+                    className={`rounded-[22px] px-5 py-4 text-left font-display text-base font-black transition ${
                       active
-                        ? "border-leaf bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
-                        : "border-gold/20 bg-card/50 text-cream hover:border-gold/50"
+                        ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
+                        : CHIP_TONES[i % CHIP_TONES.length]
                     }`}
                   >
-                    <span aria-hidden className="text-xl">{c.emoji}</span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-xs font-black">{c.label}</span>
-                      <span className={`block text-[10px] font-bold ${active ? "opacity-70" : "opacity-50"}`}>
-                        {count} palavras
-                      </span>
-                    </span>
+                    <span aria-hidden className="mr-2">{c.emoji}</span>
+                    {c.label}
                   </button>
                 );
               })}
@@ -652,32 +648,29 @@ function DictionaryPage() {
                 type="button"
                 onClick={() => setIlCat("todas")}
                 aria-pressed={ilCat === "todas"}
-                className={`flex items-center gap-2 rounded-2xl border px-3 py-3 text-left transition ${
+                className={`rounded-[22px] px-5 py-4 text-left font-display text-base font-black leading-tight transition ${
                   ilCat === "todas"
-                    ? "border-leaf bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
-                    : "border-gold/20 bg-card/50 text-cream hover:border-gold/50"
+                    ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
+                    : "bg-[oklch(0.88_0.12_135)] text-forest-deep hover:brightness-105"
                 }`}
               >
-                <span aria-hidden className="text-xl">📖</span>
-                <span className="min-w-0">
-                  <span className="block truncate text-xs font-black">Todas as Palavras</span>
-                  <span className="block text-[10px] font-bold opacity-50">{ILUSTRADO.length} palavras</span>
-                </span>
+                <span aria-hidden className="mr-2">📖</span>
+                Todas
+                <br />
+                as Palavras
               </button>
               <button
                 type="button"
                 onClick={() => setSection("gramatica")}
-                className="flex items-center gap-2 rounded-2xl border border-gold/30 bg-gold/10 px-3 py-3 text-left text-gold transition hover:bg-gold/20"
+                className="rounded-[22px] bg-[oklch(0.82_0.07_60)] px-5 py-4 text-left font-display text-base font-black text-forest-deep transition hover:brightness-105"
               >
-                <span aria-hidden className="text-xl">📚</span>
-                <span className="min-w-0">
-                  <span className="block truncate text-xs font-black">Gramática</span>
-                  <span className="block text-[10px] font-bold opacity-70">{GRAMATICA.length} linhas</span>
-                </span>
+                <span aria-hidden className="mr-2">📚</span>
+                Gramática
               </button>
             </div>
           </section>
         )}
+
 
         <section className="mt-5">
           {section === "ilustrado" ? (
