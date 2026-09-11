@@ -303,15 +303,15 @@ function DictionaryPage() {
     );
   }, [visibleFiltered, sort]);
 
-  // Palavras e números: pesquisa dentro da própria seção, agrupada pelos títulos da fonte.
+  // Palavras e números: pesquisa dentro da própria seção, agrupada por tema (números primeiro).
   const numerosGroups = useMemo(() => {
     const q = normalize(debouncedQuery);
-    const groups: { titulo: string; pagina: number; items: PalavraNumero[] }[] = [];
+    const base: { titulo: string; pagina: number; items: PalavraNumero[] }[] = [];
     let current: { titulo: string; pagina: number; items: PalavraNumero[] } | null = null;
     for (const item of PALAVRAS_NUMEROS) {
       if (item.kind === "grupo") {
         current = { titulo: item.titulo ?? "", pagina: item.pagina, items: [] };
-        groups.push(current);
+        base.push(current);
         continue;
       }
       const match =
@@ -321,12 +321,41 @@ function DictionaryPage() {
       if (!match) continue;
       if (!current) {
         current = { titulo: "Palavras e Números", pagina: item.pagina, items: [] };
-        groups.push(current);
+        base.push(current);
       }
       current.items.push(item);
     }
-    return groups.filter((g) => g.items.length > 0);
+
+    // Quebra grupos muito grandes em subgrupos temáticos para facilitar a navegação.
+    const expanded: { titulo: string; pagina: number; items: PalavraNumero[] }[] = [];
+    for (const g of base) {
+      if (g.items.length === 0) continue;
+      if (g.items.length <= 40) {
+        expanded.push(g);
+        continue;
+      }
+      const byCat = new Map<string, PalavraNumero[]>();
+      for (const it of g.items) {
+        const cat = it.categoria || "Geral";
+        const arr = byCat.get(cat);
+        if (arr) arr.push(it);
+        else byCat.set(cat, [it]);
+      }
+      for (const [cat, items] of byCat) {
+        expanded.push({ titulo: `${g.titulo} · ${cat}`, pagina: items[0]?.pagina ?? g.pagina, items });
+      }
+    }
+
+    const rank = (titulo: string) => {
+      const n = normalize(titulo);
+      if (n.includes("ordinais")) return 0;
+      if (n.includes("cardinais")) return 1;
+      if (n.includes("numero")) return 2;
+      return 3;
+    };
+    return expanded.sort((a, b) => rank(a.titulo) - rank(b.titulo));
   }, [debouncedQuery]);
+
 
   const gramaticaLines = useMemo(() => {
     const q = normalize(debouncedQuery);
