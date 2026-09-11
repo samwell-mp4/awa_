@@ -3,7 +3,7 @@
  *
  * Para adicionar um áudio, basta preencher a URL do ponto correspondente
  * (arquivo em src/assets via lovable-assets, /public ou URL externa).
- * Pontos sem URL continuam visíveis? Não: ficam ocultos automaticamente,
+ * Pontos sem URL ficam ocultos automaticamente,
  * então a interface nunca mostra um ponto que não toca nada.
  */
 export type HotspotId =
