@@ -297,7 +297,9 @@ function DictionaryPage() {
   const { t } = useTranslation();
   const { isPremium } = useSubscription();
 
-  const [section, setSection] = useState<Section>("pt-pat");
+  const [section, setSection] = useState<Section>("ilustrado");
+  const [ilCat, setIlCat] = useState<string>("numeros");
+  const [ilVisible, setIlVisible] = useState(60);
   const [query, setQuery] = useState("");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
