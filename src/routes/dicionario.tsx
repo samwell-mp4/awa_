@@ -918,13 +918,17 @@ function DictionaryPage() {
   );
 }
 
-function PlayIndicator() {
+function PlayIndicator({ variant = "dark" }: { variant?: "dark" | "light" }) {
   return (
     <span
       aria-hidden
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf group-hover:bg-leaf/40 group-hover:scale-110 transition"
+      className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition group-hover:scale-110 ${
+        variant === "light"
+          ? "bg-cream text-[oklch(0.38_0.10_140)] shadow-md"
+          : "bg-leaf/20 text-leaf group-hover:bg-leaf/40"
+      }`}
     >
-      <Volume2 className="h-3.5 w-3.5" />
+      <Volume2 className="h-4 w-4" />
     </span>
   );
 }
@@ -932,12 +936,15 @@ function PlayIndicator() {
 function PlayableCard({
   text,
   audioUrl,
+  variant = "dark",
   children,
 }: {
   text: string;
   audioUrl: string | null;
+  variant?: "dark" | "light";
   children: React.ReactNode;
 }) {
+
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
 
