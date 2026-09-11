@@ -455,62 +455,97 @@ function DictionaryPage() {
 
   return (
     <div className="min-h-screen pb-24 md:pb-12">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+      <header className="sticky top-0 z-40 bg-[oklch(0.18_0.04_145/0.9)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 md:px-8">
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
+            aria-label={t("common.voltar")}
+            className="grid h-10 w-10 place-items-center rounded-full border border-cream/25 text-cream transition hover:bg-cream/10"
           >
-            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
+            <ArrowLeft className="h-4 w-4" />
           </Link>
-          <div className="flex items-center gap-2 text-cream font-display font-black">
-            <BookOpen className="h-5 w-5 text-leaf" /> Dicionário Patxôhã 2015
+          <div className="text-center">
+            <div className="font-display text-2xl font-black tracking-tight text-cream md:text-3xl">
+              PATXÔHÃ
+            </div>
+            <div className="text-[11px] font-semibold text-cream/70">Dicionário Digital</div>
           </div>
-          <span className="w-14" />
+          <button
+            type="button"
+            onClick={() => searchRef.current?.focus()}
+            aria-label="Buscar"
+            className="grid h-10 w-10 place-items-center rounded-full border border-cream/25 text-cream transition hover:bg-cream/10"
+          >
+            <Search className="h-4 w-4" />
+          </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 md:px-8">
-        <section className="mt-6 card-elev rounded-2xl p-4 space-y-3">
-          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-card/40 p-1 lg:grid-cols-4">
-            {SECTIONS.map((opt) => {
-              const active = section === opt.key;
-              return (
-                <button
-                  key={opt.key}
-                  type="button"
-                  onClick={() => setSection(opt.key)}
-                  aria-pressed={active}
-                  className={`rounded-xl px-3 py-2 text-[11px] font-black leading-tight transition sm:text-xs ${
-                    active
-                      ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
-                      : "text-foreground/70 hover:text-cream"
-                  }`}
-                >
-                  <span className="block">{opt.label}</span>
-                  <span className={`mt-0.5 block text-[9px] font-semibold ${active ? "opacity-70" : "opacity-50"}`}>
-                    {opt.hint}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {isWordList && (
+        <section className="mt-5 space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSection("pt-pat")}
+              aria-pressed={section === "pt-pat"}
+              className={`flex-1 min-w-[220px] rounded-full px-6 py-4 text-center font-display text-base font-black transition md:text-lg ${
+                section === "pt-pat"
+                  ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
+                  : "bg-cream text-forest-deep hover:brightness-105"
+              }`}
+            >
+              Português <span className="mx-1 opacity-60">→</span> PATXÔHÃ
+            </button>
+            <button
+              type="button"
+              onClick={() => setSection("pat-pt")}
+              aria-pressed={section === "pat-pt"}
+              className={`flex-1 min-w-[220px] rounded-full px-6 py-4 text-center font-display text-base font-black transition md:text-lg ${
+                section === "pat-pt"
+                  ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
+                  : "bg-cream text-forest-deep hover:brightness-105"
+              }`}
+            >
+              PATXÔHÃ <span className="mx-1 opacity-60">→</span> Português
+            </button>
             <button
               type="button"
               onClick={invertDirection}
-              className="mx-auto flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-2 text-xs font-black text-gold transition hover:bg-gold/20"
               aria-label="Inverter direção do dicionário"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg transition hover:brightness-105"
             >
-              <ArrowLeftRight className="h-4 w-4" />
-              PT ⇄ PATXÔHÃ
+              <ArrowLeftRight className="h-5 w-5" />
             </button>
-          )}
+            <button
+              type="button"
+              onClick={() => setSection("ilustrado")}
+              aria-pressed={section === "ilustrado"}
+              className={`rounded-full px-5 py-3 font-display text-sm font-black transition ${
+                section === "ilustrado"
+                  ? "bg-cream text-forest-deep shadow-lg"
+                  : "border border-cream/30 text-cream hover:bg-cream/10"
+              }`}
+            >
+              🖼️ Ilustrado
+            </button>
+            <button
+              type="button"
+              onClick={() => setSection("numeros")}
+              aria-pressed={section === "numeros"}
+              className={`rounded-full px-5 py-3 font-display text-sm font-black transition ${
+                section === "numeros"
+                  ? "bg-cream text-forest-deep shadow-lg"
+                  : "border border-cream/30 text-cream hover:bg-cream/10"
+              }`}
+            >
+              🔢 Palavras e Números
+            </button>
+          </div>
 
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/50" />
+            <Search className="absolute left-5 top-1/2 h-4 w-4 -translate-y-1/2 text-forest-deep/50" />
             <input
+              ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={
@@ -524,12 +559,12 @@ function DictionaryPage() {
                       ? "Buscar em palavras e números..."
                       : "Buscar na gramática..."
               }
-              className="w-full rounded-xl border border-gold/25 bg-card/60 pl-10 pr-3 py-3 text-sm text-cream placeholder:text-foreground/40 focus:outline-none focus:border-gold/60"
+              className="w-full rounded-full bg-cream pl-12 pr-4 py-4 text-sm font-semibold text-forest-deep placeholder:text-forest-deep/45 focus:outline-none focus:ring-2 focus:ring-[oklch(0.80_0.16_135)]"
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <div className="text-xs font-semibold text-foreground/70">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="text-xs font-semibold text-cream/70">
               {isWordList
                 ? `${visibleFiltered.length}${hasMore ? "+" : ""} ${
                     visibleFiltered.length === 1 ? "verbete" : "verbetes"
@@ -545,20 +580,16 @@ function DictionaryPage() {
               <div className="flex gap-1">
                 <button
                   onClick={() => setSort("az")}
-                  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-bold ${
-                    sort === "az"
-                      ? "border-gold/60 bg-gold/20 text-gold"
-                      : "border-gold/15 bg-card/40 text-foreground/60"
+                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold ${
+                    sort === "az" ? "bg-cream text-forest-deep" : "border border-cream/30 text-cream/70"
                   }`}
                 >
                   <ArrowDownAZ className="h-3 w-3" /> A-Z
                 </button>
                 <button
                   onClick={() => setSort("za")}
-                  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-bold ${
-                    sort === "za"
-                      ? "border-gold/60 bg-gold/20 text-gold"
-                      : "border-gold/15 bg-card/40 text-foreground/60"
+                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold ${
+                    sort === "za" ? "bg-cream text-forest-deep" : "border border-cream/30 text-cream/70"
                   }`}
                 >
                   <ArrowUpAZ className="h-3 w-3" /> Z-A
@@ -567,6 +598,7 @@ function DictionaryPage() {
             )}
           </div>
         </section>
+
 
         {isWordList && (
           <section className="mt-4 card-elev rounded-2xl p-3 space-y-3">
