@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
   Search,
   ArrowLeft,
-  BookOpen,
+  
   ArrowDownAZ,
   ArrowUpAZ,
   ArrowLeftRight,
