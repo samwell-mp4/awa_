@@ -14,10 +14,6 @@ import {
   Copy,
   Check,
   RefreshCcw,
-  BookOpen,
-  Sunrise,
-  Users,
-  Globe,
   Sparkles,
   GraduationCap,
   Mic,
@@ -259,8 +255,6 @@ const VOICE_L10N: Record<Lang, VoiceL10n> = {
     sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
   },
 };
-
-const SUGGESTION_ICONS = [Sunrise, BookOpen, Users, Globe];
 
 function ProfessorPage() {
   const backTo = useLastArea();
