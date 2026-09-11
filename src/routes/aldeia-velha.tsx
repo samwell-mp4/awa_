@@ -23,6 +23,8 @@ import {
   ZoomIn,
 } from "lucide-react";
 
+import { AudioHotspot } from "@/components/AudioHotspot";
+import { stopHotspotAudio, type HotspotId } from "@/lib/audio-hotspots";
 import { PublicFooter } from "@/components/PublicFooter";
 import { Button } from "@/components/ui/button";
 import { useLastArea } from "@/lib/last-area";
@@ -77,17 +79,22 @@ function SectionTitle({
   eyebrow,
   title,
   desc,
+  audioId,
 }: {
   icon: React.ReactNode;
   eyebrow: string;
   title: string;
   desc?: string;
+  audioId?: HotspotId;
 }) {
   return (
     <header className="mb-7">
-      <span className="chip-gold inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
-        {icon} {eyebrow}
-      </span>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="chip-gold inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
+          {icon} {eyebrow}
+        </span>
+        {audioId && <AudioHotspot id={audioId} />}
+      </div>
       <h2 className="mt-4 font-display text-2xl font-black leading-tight text-cream md:text-4xl">
         {title}
       </h2>
@@ -292,6 +299,12 @@ function AldeiaVelhaPage() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   }, [tema]);
 
+  // Ao trocar de tema ou sair da página, interrompe qualquer áudio em curso.
+  useEffect(() => {
+    return () => stopHotspotAudio();
+  }, [tema]);
+
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -473,6 +486,7 @@ function AldeiaVelhaPage() {
         {show("memoria") && (
         <section id="memoria" className="scroll-mt-32 pt-14 md:pt-20">
           <SectionTitle
+            audioId="memoria"
             icon={<Leaf className="h-3.5 w-3.5" />}
             eyebrow="Memória ancestral"
             title="Nossa presença é ancestral"
@@ -515,6 +529,7 @@ function AldeiaVelhaPage() {
         {show("relatos") && (
         <section id="relatos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="relatos"
             icon={<Quote className="h-3.5 w-3.5" />}
             eyebrow="Oralidade, resistência e luta"
             title="A palavra dos anciãos e anciãs"
@@ -571,6 +586,7 @@ function AldeiaVelhaPage() {
         {show("retomada") && (
         <section id="retomada" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="retomada"
             icon={<Flame className="h-3.5 w-3.5" />}
             eyebrow="Linha do tempo"
             title="A retomada do território"
@@ -633,6 +649,7 @@ function AldeiaVelhaPage() {
         {show("territorio") && (
         <section id="territorio" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="territorio"
             icon={<Landmark className="h-3.5 w-3.5" />}
             eyebrow="Localização e caracterização"
             title="O território e seus dados"
@@ -719,6 +736,7 @@ function AldeiaVelhaPage() {
         {show("educacao") && (
         <section id="educacao" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="educacao"
             icon={<GraduationCap className="h-3.5 w-3.5" />}
             eyebrow="Educação escolar indígena"
             title="A escola é o coração da comunidade"
@@ -803,6 +821,7 @@ function AldeiaVelhaPage() {
         {show("patxoha") && (
         <section id="patxoha" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="patxoha"
             icon={<Languages className="h-3.5 w-3.5" />}
             eyebrow="Língua materna"
             title="Patxôhã, identidade própria"
@@ -841,6 +860,7 @@ function AldeiaVelhaPage() {
         {show("cultura") && (
         <section id="cultura" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="cultura"
             icon={<Music className="h-3.5 w-3.5" />}
             eyebrow="Preservação ambiental e cultural"
             title="A cultura que sustenta a aldeia"
@@ -893,6 +913,7 @@ function AldeiaVelhaPage() {
         {show("saude") && (
         <section id="saude" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="saude"
             icon={<Heart className="h-3.5 w-3.5" />}
             eyebrow="Saberes tradicionais e saúde"
             title="Duas medicinas que caminham juntas"
@@ -988,6 +1009,7 @@ function AldeiaVelhaPage() {
         {show("projetos") && (
         <section id="projetos" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="projetos"
             icon={<Sparkles className="h-3.5 w-3.5" />}
             eyebrow="Projetos sociais e culturais"
             title="Associações, parcerias e conquistas"
@@ -1028,6 +1050,7 @@ function AldeiaVelhaPage() {
         {show("galeria") && (
         <section id="galeria" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="galeria"
             icon={<ZoomIn className="h-3.5 w-3.5" />}
             eyebrow="Galeria"
             title="As fotos da comunidade"
@@ -1045,6 +1068,7 @@ function AldeiaVelhaPage() {
         {show("documentarios") && (
         <section id="documentarios" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
+            audioId="documentarios"
             icon={<ExternalLink className="h-3.5 w-3.5" />}
             eyebrow="Documentários e entrevistas"
             title="Vozes em vídeo"
@@ -1062,6 +1086,7 @@ function AldeiaVelhaPage() {
         {show("referencias") && (
         <section id="referencias" className="scroll-mt-32 pb-20 pt-16 md:pt-24">
           <SectionTitle
+            audioId="referencias"
             icon={<BookOpen className="h-3.5 w-3.5" />}
             eyebrow="Fontes"
             title="Referências"
