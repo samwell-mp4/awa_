@@ -853,21 +853,21 @@ function DictionaryPage() {
           ) : gramaticaLines.length === 0 ? (
             <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
           ) : (
-            <div className="card-elev rounded-2xl p-4 md:p-6">
-              <h2 className="font-display text-lg font-black text-cream">
-                Regras gramaticais da língua Patxôhã
+            <div className="rounded-[28px] bg-cream p-5 md:p-8 shadow-xl">
+              <h2 className="font-display text-2xl font-black text-forest-deep md:text-3xl">
+                <span className="text-[oklch(0.42_0.09_45)]">Gramática</span> PATXÔHÃ
               </h2>
-              <p className="mt-1 text-[11px] font-semibold text-foreground/60">{SOURCE_LABEL}</p>
-              <div className="mt-4 space-y-2">
+              <p className="mt-1 text-[11px] font-semibold text-forest-deep/60">{SOURCE_LABEL}</p>
+              <div className="mt-5 space-y-2 md:columns-2 md:gap-8 [&>p]:break-inside-avoid">
                 {gramaticaLines.map((l) => (
                   <p
                     key={l.id}
                     className={`rounded-lg px-3 py-2 text-sm leading-relaxed break-words ${
                       l.idioma === "patxoha"
-                        ? "border-l-4 border-leaf bg-leaf/10 font-bold text-leaf"
+                        ? "border-l-4 border-[oklch(0.55_0.13_140)] bg-[oklch(0.55_0.13_140/0.12)] font-bold text-[oklch(0.35_0.10_140)]"
                         : l.idioma === "portugues"
-                          ? "border-l-4 border-gold bg-gold/10 text-gold"
-                          : "text-foreground/85"
+                          ? "border-l-4 border-[oklch(0.62_0.11_60)] bg-[oklch(0.62_0.11_60/0.14)] text-[oklch(0.40_0.09_50)]"
+                          : "text-forest-deep/80"
                     }`}
                   >
                     {l.texto}
@@ -875,6 +875,7 @@ function DictionaryPage() {
                 ))}
               </div>
             </div>
+
           )}
         </section>
 
