@@ -264,7 +264,23 @@ const PAT_PT_LETTERS = letterCounts(PAT_PT);
 
 const CATEGORIES = ["Todas", "Família", "Alimentos", "Animais", "Natureza", "Corpo humano", "Verbos", "Números", "Geral"] as const;
 
+// -----------------------------------------------------------------------------
+// DICIONÁRIO ILUSTRADO: verbetes com ilustração e categorias clicáveis
+// -----------------------------------------------------------------------------
+type VerbeteIlustrado = Verbete & { catKeys: string[]; emoji: string };
+
+const ILUSTRADO: VerbeteIlustrado[] = PT_PAT.map((e) => {
+  const catKeys = categoriasDoVerbete(e.head, e.categoria);
+  return { ...e, catKeys, emoji: emojiDoVerbete(e.head, catKeys) };
+});
+
+const ILUSTRADO_COUNTS = new Map<string, number>();
+for (const e of ILUSTRADO) {
+  for (const k of e.catKeys) ILUSTRADO_COUNTS.set(k, (ILUSTRADO_COUNTS.get(k) ?? 0) + 1);
+}
+
 const SECTIONS: { key: Section; label: string; hint: string }[] = [
+  { key: "ilustrado", label: "🖼️ Dicionário Ilustrado", hint: "por categorias" },
   { key: "pt-pat", label: "🇧🇷 Português → Patxôhã", hint: `${PT_PAT.length} verbetes` },
   { key: "pat-pt", label: "🌿 Patxôhã → Português", hint: `${PAT_PT.length} verbetes` },
   { key: "numeros", label: "🔢 Palavras e Números", hint: "seção da fonte" },
