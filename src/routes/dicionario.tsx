@@ -123,7 +123,7 @@ type Verbete = {
   categoria: string;
 };
 
-type Section = "pt-pat" | "pat-pt" | "numeros" | "gramatica";
+type Section = "ilustrado" | "pt-pat" | "pat-pt" | "numeros" | "gramatica";
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
