@@ -534,7 +534,9 @@ function DictionaryPage() {
                 ? `${visibleFiltered.length}${hasMore ? "+" : ""} ${
                     visibleFiltered.length === 1 ? "verbete" : "verbetes"
                   }`
-                : section === "numeros"
+                : section === "ilustrado"
+                  ? `${ilustradoItems.length} palavras nesta categoria`
+                  : section === "numeros"
                   ? `${numerosGroups.reduce((n, g) => n + g.items.length, 0)} palavras`
                   : `${gramaticaLines.length} linhas`}
               <span className="ml-2 opacity-60">· {SOURCE_LABEL}</span>
