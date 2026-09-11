@@ -430,6 +430,29 @@ function DictionaryPage() {
     return GRAMATICA.filter((l) => normalize(l.texto).includes(q));
   }, [debouncedQuery]);
 
+  // Dicionário Ilustrado: cards da categoria escolhida, com busca combinada.
+  const ilustradoItems = useMemo(() => {
+    const q = normalize(debouncedQuery);
+    const list = ILUSTRADO.filter((e) => {
+      const matchCat = ilCat === "todas" || e.catKeys.includes(ilCat);
+      const matchQ = !q || e._headNorm.includes(q) || e._glossNorm.includes(q);
+      return matchCat && matchQ;
+    });
+    list.sort((a, b) => a.head.localeCompare(b.head, "pt", { sensitivity: "base" }));
+    return list;
+  }, [ilCat, debouncedQuery]);
+
+  useEffect(() => {
+    setIlVisible(60);
+  }, [ilCat, debouncedQuery]);
+
+  const ilCap = isPremium ? ilVisible : Math.min(FREE_LIMIT, ilVisible);
+  const ilVisibleItems = useMemo(() => ilustradoItems.slice(0, ilCap), [ilustradoItems, ilCap]);
+  const ilLockedByFree = !isPremium && ilustradoItems.length > FREE_LIMIT;
+  const ilHasMore = isPremium
+    ? ilustradoItems.length > ilVisible
+    : ilustradoItems.length > FREE_LIMIT;
+
   return (
     <div className="min-h-screen pb-24 md:pb-12">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
