@@ -685,28 +685,33 @@ function DictionaryPage() {
               <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
             ) : (
               <div className="space-y-5">
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {ilVisibleItems.map((e) => (
                     <PlayableCard key={`il-${e.id}`} text={e.patxoha} audioUrl={null}>
-                      <div className="grid h-28 place-items-center rounded-2xl bg-leaf/15 text-5xl">
+                      <div className="grid h-32 place-items-center rounded-[22px] bg-[oklch(0.90_0.09_140)] text-6xl">
                         <span aria-hidden>{e.emoji}</span>
                       </div>
-                      <div className="mt-3 flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <h3 className="font-display text-lg font-black text-cream break-words">{e.head}</h3>
-                          <p className="mt-0.5 text-sm font-bold text-leaf break-words">{e.patxoha}</p>
-                        </div>
+                      <h3 className="mt-4 font-display text-2xl font-black leading-tight text-forest-deep break-words">
+                        {e.head}
+                      </h3>
+                      <div className="mt-1 flex items-center justify-between gap-2">
+                        <p className="min-w-0 text-lg font-bold text-[oklch(0.38_0.10_140)] break-words">
+                          {e.patxoha}
+                        </p>
                         <PlayIndicator />
                       </div>
-                      <div className="mt-2 flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/60">
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-forest-deep/55">
                           Ouvir pronúncia
                         </span>
-                        <span className="chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">p. {e.pagina}</span>
+                        <span className="rounded-full bg-forest-deep/10 px-2 py-0.5 text-[10px] font-bold text-forest-deep/70">
+                          p. {e.pagina}
+                        </span>
                       </div>
                     </PlayableCard>
                   ))}
                 </div>
+
                 {ilLockedByFree ? (
                   <div className="card-elev rounded-3xl border border-gold/30 p-6 text-center">
                     <h3 className="font-display text-xl font-black text-cream">
