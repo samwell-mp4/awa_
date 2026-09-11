@@ -726,7 +726,8 @@ function DictionaryPage() {
                         <p className="min-w-0 text-lg font-bold text-[oklch(0.38_0.10_140)] break-words">
                           {e.patxoha}
                         </p>
-                        <PlayIndicator />
+                        <PlayIndicator variant="light" />
+
                       </div>
                       <div className="mt-3 flex items-center justify-between gap-2">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-forest-deep/55">
