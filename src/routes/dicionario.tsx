@@ -26,6 +26,11 @@ import ptPatData from "@/data/dic-pt-pat.json";
 import patPtData from "@/data/dic-pat-pt.json";
 import palavrasNumerosData from "@/data/dic-palavras-numeros.json";
 import gramaticaData from "@/data/dic-gramatica.json";
+import {
+  ILUSTRADO_CATEGORIAS,
+  categoriasDoVerbete,
+  emojiDoVerbete,
+} from "@/lib/dic-ilustrado";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
