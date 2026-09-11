@@ -1,716 +1,835 @@
 [
-{
-"id": "gr-0001",
-"texto": "Estrutura das frases.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0002",
-"texto": "A formação das frases na ordem crescente (OSV) OJETO + SUJEITO + (VERBO) e na ordem",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0003",
-"texto": "crescente (SVO) SUJEITO + VERBO + OBJETO.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0004",
-"texto": "EX: a) ? Ahõhê anehõ tornõ",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0005",
-"texto": "? Ahõhê tornõ anehõ",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0006",
-"texto": "Como vai você?",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0007",
-"texto": "A pontuação. (?, !, .)",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0008",
-"texto": "A pontuação é colocada no começo da frase. EX:",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0009",
-"texto": "a) ? Dxahá kijeme anehõ tornõ",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0010",
-"texto": "? Anehõ tornõ dxahá kijeme",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0011",
-"texto": "Você vai para casa?",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0012",
-"texto": "A vírgula é colocada no lado esquerdo da palavra seguinte da frase e ou contrário. EX:",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0013",
-"texto": "a) . Kotê walatxatxuy arnã ,dxê’ê ,topehê txuhap",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0014",
-"texto": ". Arnã ,dxê’ê ,topehê txuhap kotê walatxatxuy",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0015",
-"texto": "Eu, tu e ele vamos tomar banho.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0016",
-"texto": "A escrita.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0017",
-"texto": "As escritas das palavras têm as seguintes formas.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0018",
-"texto": "Os sons nasais serão representados por um sinal nasal (~), não por (N ou M). EX:",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0019",
-"texto": "a) Miãga- água",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0020",
-"texto": "b) Ãhô- não",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0021",
-"texto": "c) Ahõhê- como",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0022",
-"texto": "d)Arnã- eu",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0023",
-"texto": "O uso do (W e Y)",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0024",
-"texto": "O som (U) será usado quando antecede por uma consoante.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0025",
-"texto": "a) MUkará",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0026",
-"texto": "b) mUeká",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0027",
-"texto": "a) AkUã- flecha",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0028",
-"texto": "O som (W), ele será usado em palavras com o som de (U) seguido ou antecedido de vogais que",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0029",
-"texto": "formem um único som (sílaba) e no começo de nomes próprios seguidas ou não de vogais que",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0030",
-"texto": "formem um único som.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0031",
-"texto": "EX: a) arakWã- o pássaro",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0032",
-"texto": "b) Werimêhe- amor, como nome próprio.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0033",
-"texto": "O uso do (Y)",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0034",
-"texto": "Ele será usado para substituir o (I), quando duas vogais formarem um único som (silaba). Também",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0035",
-"texto": "no final das palavras que tiver o som de (I) fraco EX:",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0036",
-"texto": "a) patatxay- sapato",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0037",
-"texto": "b) haptxôy- depois",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0038",
-"texto": "c) akatxury – discriminação",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0039",
-"texto": "d) âkâwtxy– correr",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0040",
-"texto": "e) mãgutxi - comida",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0041",
-"texto": "f) e também no começo de nomes próprios.",
-"pagina": 44,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0042",
-"texto": "Singular plural.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0043",
-"texto": "Para passar uma frase toda do singular para plural é preciso:",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0044",
-"texto": "Acrescentar a letra (P) na direita de um artigo ou pronome.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0045",
-"texto": "a) Usar um artigo no plural, ou.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0046",
-"texto": "EX: Arẽgá iõp kitok tornõ",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0047",
-"texto": "Iõp kitok tornõ arẽgá",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0048",
-"texto": "Os meninos vão brincar.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0049",
-"texto": "b) Usar um pronome no plural.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0050",
-"texto": "EX: . kanãp taputarí ? akdxihí tokmã",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0051",
-"texto": "Meus parentes, tudo bem?",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0052",
-"texto": "c) Com exceção dos pronomes (nós, vós e eles) que já estão no plural.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0053",
-"texto": "EX: . Tokmã hotehô torotê",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0054",
-"texto": "Hotehô torotê tokmã",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0055",
-"texto": "Nós estamos bem.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0056",
-"texto": "Obs: Usando um artigo ou um pronome no plural, toda a frase estará no plural também.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0057",
-"texto": "d) Se um parágrafo todo tiver a concordância ao mesmo sujeito, também estará todo ele no",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0058",
-"texto": "plural.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0059",
-"texto": "e) Ou por um numeral",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0060",
-"texto": "EX: . Mitxê kitok torotê uí~ txôhão",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0061",
-"texto": "Três meninos estão no terreiro.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0062",
-"texto": "A entonação da voz",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0063",
-"texto": "Vai depender de que sentido se expressa na frase. EX:",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0064",
-"texto": "a) Se for uma afirmação ou resposta (.) seguirá a entonação pela acentuação nas palavras,",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0065",
-"texto": "falando arrastado imitando os mais velhos.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0066",
-"texto": "EX: . Arnã torotê tokerê’irá mãgutá",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0067",
-"texto": "Eu estou querendo comer.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0068",
-"texto": "b) Se for uma interrogação (?), a primeira sílaba será alta, as silabas ou palavras no meio",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0069",
-"texto": "serão pela a acentuação e a última também será alta.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0070",
-"texto": "EX: ? Ahõhê tornõ tâypâk patä’mionã",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0071",
-"texto": "Como vai a sua família?",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0072",
-"texto": "c) Se for uma exclamação (!), a primeira sílaba será alta, as silabas ou palavras no meio serão",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0073",
-"texto": "pela a acentuação, e a última sílaba é média e alongada.",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0074",
-"texto": "EX: ! Parnên apetxienã bugaí hũ miãga",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0075",
-"texto": "Dar-me um copo com água!",
-"pagina": 45,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0076",
-"texto": "Terminações das palavras em patxôhã",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0077",
-"texto": "Terminações verbais que serão usadas para as raízes já existentes, isso quando não existir",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0078",
-"texto": "nas palavras já catalogadas, uma de sentido equivalente:",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0079",
-"texto": "Infinitivo = ré – uhitueré",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0080",
-"texto": "Gerúndio = irá - hamiaiá",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0081",
-"texto": "Particípio = txẽ - areneatxẽ",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0082",
-"texto": "Passado perfeito = ã hamiã",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0083",
-"texto": "Passado mais que perfeito = hamiá’kãd",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0084",
-"texto": "Passado imperfeitos, sentido de aparência = êksu",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0085",
-"texto": "Presente = xó – himiaxó",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0086",
-"texto": "Futuro do pretérito = ĩ",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0087",
-"texto": "Futuro do presente = kãd’hamiá",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0088",
-"texto": "Substantivo:",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0089",
-"texto": "Coletivo = txê – geral",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0090",
-"texto": "Coletivo de nacionalidade, grupo = hãe",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0091",
-"texto": "Central = atê – hamatê, só pede ser usado para um radical já existente, mas formará a palavra",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0092",
-"texto": "central. Em outros casos será criado um outro radical. Quando terminadas em uma ou duas",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0093",
-"texto": "vogais, elas serão eliminadas e será acrescentado atê",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0094",
-"texto": "Profissões = ará – hamiará – dançarino",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0095",
-"texto": "profissões de controle e direção = ũg- joôkatũg - motorista",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0096",
-"texto": "Subs = derivada = wãy – akãwãy = altura",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0097",
-"texto": "Subs = que seja um objetos = aô",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0098",
-"texto": "Subs = ação = watá – elimina a vogal final da palavra.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0099",
-"texto": "Se na colagem das palavras estiver uma vogal, esta será eliminada para compor a nova",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0100",
-"texto": "palavra, aja visto, todas estas terminações começam com por vogais, o que deve ser",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0101",
-"texto": "preservado é a nasalização original.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0102",
-"texto": "Sub.com valor de Adj. boas e maus qualidades, o que depende da raiz que estar sendo",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0103",
-"texto": "utilizada = ãga = nomayga = mayogenãga = discussão",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0104",
-"texto": "Adj. Qualidade boa = ãhi = nomaysãhi",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0105",
-"texto": "Adj. Neutro, mas que derive o bem = asê = e forma a parte genérica, quando não houver no",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0106",
-"texto": "adjetivo.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0107",
-"texto": "Adj. Qualidade ruim = itá",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0108",
-"texto": "Adj. Neutro, mas que seja coisa mal, usaremos = ená = e forma a parte genérica, quando não",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0109",
-"texto": "houver no adjetivo equivalente.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0110",
-"texto": "Advérbio:",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0111",
-"texto": "Intensidade = kwê",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0112",
-"texto": "Modo: Terminados em MENTE = nuk",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0113",
-"texto": "Lugar = nig",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0114",
-"texto": "Wãk e apê = inclusão e exclusão.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0115",
-"texto": "Toda vez que se coloca ãh antes de uma palavra, ele valerá como antônimo. Isso desde não",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0116",
-"texto": "tenha um antônimo equivalente, então se aprecia a regra de usar uma raiz já existente. Caso a",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0117",
-"texto": "raiz comesse com uma vogal, se ajuntará automaticamente com ah, preservando o som da",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0118",
-"texto": "vogal já existente. Se for uma consoante esta cairá e fica no lugar o h de ãh. EX: heuhá –",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-},
-{
-"id": "gr-0119",
-"texto": "construir; ãheuhá – destruir. Ou ainda: ãtxuhã – fé; ãhãtxuhã – dúvida.",
-"pagina": 46,
-"fonte": "Patxôhã 2015"
-}
+  {
+    "id": "gr-0001",
+    "texto": "Estrutura das frases.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0002",
+    "texto": "A formação das frases na ordem crescente (OSV) OJETO + SUJEITO + (VERBO) e na ordem",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0003",
+    "texto": "crescente (SVO) SUJEITO + VERBO + OBJETO.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0004",
+    "texto": "EX: a) ? Ahõhê anehõ tornõ",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0005",
+    "texto": "? Ahõhê tornõ anehõ",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0006",
+    "texto": "Como vai você?",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0007",
+    "texto": "A pontuação. (?, !, .)",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0008",
+    "texto": "A pontuação é colocada no começo da frase. EX:",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0009",
+    "texto": "a) ? Dxahá kijeme anehõ tornõ",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0010",
+    "texto": "? Anehõ tornõ dxahá kijeme",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0011",
+    "texto": "Você vai para casa?",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0012",
+    "texto": "A vírgula é colocada no lado esquerdo da palavra seguinte da frase e ou contrário. EX:",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0013",
+    "texto": "a) . Kotê walatxatxuy arnã ,dxê’ê ,topehê txuhap",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0014",
+    "texto": ". Arnã ,dxê’ê ,topehê txuhap kotê walatxatxuy",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0015",
+    "texto": "Eu, tu e ele vamos tomar banho.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0016",
+    "texto": "A escrita.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0017",
+    "texto": "As escritas das palavras têm as seguintes formas.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0018",
+    "texto": "Os sons nasais serão representados por um sinal nasal (~), não por (N ou M). EX:",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0019",
+    "texto": "a) Miãga- água",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0020",
+    "texto": "b) Ãhô- não",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0021",
+    "texto": "c) Ahõhê- como",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0022",
+    "texto": "d)Arnã- eu",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0023",
+    "texto": "O uso do (W e Y)",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0024",
+    "texto": "O som (U) será usado quando antecede por uma consoante.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0025",
+    "texto": "a) MUkará",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0026",
+    "texto": "b) mUeká",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0027",
+    "texto": "a) AkUã- flecha",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0028",
+    "texto": "O som (W), ele será usado em palavras com o som de (U) seguido ou antecedido de vogais que",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0029",
+    "texto": "formem um único som (sílaba) e no começo de nomes próprios seguidas ou não de vogais que",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0030",
+    "texto": "formem um único som.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0031",
+    "texto": "EX: a) arakWã- o pássaro",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0032",
+    "texto": "b) Werimêhe- amor, como nome próprio.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0033",
+    "texto": "O uso do (Y)",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0034",
+    "texto": "Ele será usado para substituir o (I), quando duas vogais formarem um único som (silaba). Também",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0035",
+    "texto": "no final das palavras que tiver o som de (I) fraco EX:",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0036",
+    "texto": "a) patatxay- sapato",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0037",
+    "texto": "b) haptxôy- depois",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0038",
+    "texto": "c) akatxury – discriminação",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0039",
+    "texto": "d) âkâwtxy– correr",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0040",
+    "texto": "e) mãgutxi - comida",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0041",
+    "texto": "f) e também no começo de nomes próprios.",
+    "pagina": 44,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0042",
+    "texto": "Singular plural.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0043",
+    "texto": "Para passar uma frase toda do singular para plural é preciso:",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0044",
+    "texto": "Acrescentar a letra (P) na direita de um artigo ou pronome.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0045",
+    "texto": "a) Usar um artigo no plural, ou.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0046",
+    "texto": "EX: Arẽgá iõp kitok tornõ",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0047",
+    "texto": "Iõp kitok tornõ arẽgá",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0048",
+    "texto": "Os meninos vão brincar.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0049",
+    "texto": "b) Usar um pronome no plural.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0050",
+    "texto": "EX: . kanãp taputarí ? akdxihí tokmã",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0051",
+    "texto": "Meus parentes, tudo bem?",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0052",
+    "texto": "c) Com exceção dos pronomes (nós, vós e eles) que já estão no plural.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0053",
+    "texto": "EX: . Tokmã hotehô torotê",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0054",
+    "texto": "Hotehô torotê tokmã",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0055",
+    "texto": "Nós estamos bem.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "portugues"
+  },
+  {
+    "id": "gr-0056",
+    "texto": "Obs: Usando um artigo ou um pronome no plural, toda a frase estará no plural também.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0057",
+    "texto": "d) Se um parágrafo todo tiver a concordância ao mesmo sujeito, também estará todo ele no",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0058",
+    "texto": "plural.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0059",
+    "texto": "e) Ou por um numeral",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0060",
+    "texto": "EX: . Mitxê kitok torotê uí~ txôhão",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0061",
+    "texto": "Três meninos estão no terreiro.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0062",
+    "texto": "A entonação da voz",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0063",
+    "texto": "Vai depender de que sentido se expressa na frase. EX:",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0064",
+    "texto": "a) Se for uma afirmação ou resposta (.) seguirá a entonação pela acentuação nas palavras,",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0065",
+    "texto": "falando arrastado imitando os mais velhos.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0066",
+    "texto": "EX: . Arnã torotê tokerê’irá mãgutá",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0067",
+    "texto": "Eu estou querendo comer.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0068",
+    "texto": "b) Se for uma interrogação (?), a primeira sílaba será alta, as silabas ou palavras no meio",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0069",
+    "texto": "serão pela a acentuação e a última também será alta.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0070",
+    "texto": "EX: ? Ahõhê tornõ tâypâk patä’mionã",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0071",
+    "texto": "Como vai a sua família?",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0072",
+    "texto": "c) Se for uma exclamação (!), a primeira sílaba será alta, as silabas ou palavras no meio serão",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0073",
+    "texto": "pela a acentuação, e a última sílaba é média e alongada.",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0074",
+    "texto": "EX: ! Parnên apetxienã bugaí hũ miãga",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0075",
+    "texto": "Dar-me um copo com água!",
+    "pagina": 45,
+    "fonte": "Patxôhã 2015",
+    "idioma": "patxoha"
+  },
+  {
+    "id": "gr-0076",
+    "texto": "Terminações das palavras em patxôhã",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0077",
+    "texto": "Terminações verbais que serão usadas para as raízes já existentes, isso quando não existir",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0078",
+    "texto": "nas palavras já catalogadas, uma de sentido equivalente:",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0079",
+    "texto": "Infinitivo = ré – uhitueré",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0080",
+    "texto": "Gerúndio = irá - hamiaiá",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0081",
+    "texto": "Particípio = txẽ - areneatxẽ",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0082",
+    "texto": "Passado perfeito = ã hamiã",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0083",
+    "texto": "Passado mais que perfeito = hamiá’kãd",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0084",
+    "texto": "Passado imperfeitos, sentido de aparência = êksu",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0085",
+    "texto": "Presente = xó – himiaxó",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0086",
+    "texto": "Futuro do pretérito = ĩ",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0087",
+    "texto": "Futuro do presente = kãd’hamiá",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0088",
+    "texto": "Substantivo:",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0089",
+    "texto": "Coletivo = txê – geral",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0090",
+    "texto": "Coletivo de nacionalidade, grupo = hãe",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0091",
+    "texto": "Central = atê – hamatê, só pede ser usado para um radical já existente, mas formará a palavra",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0092",
+    "texto": "central. Em outros casos será criado um outro radical. Quando terminadas em uma ou duas",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0093",
+    "texto": "vogais, elas serão eliminadas e será acrescentado atê",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0094",
+    "texto": "Profissões = ará – hamiará – dançarino",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0095",
+    "texto": "profissões de controle e direção = ũg- joôkatũg - motorista",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0096",
+    "texto": "Subs = derivada = wãy – akãwãy = altura",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0097",
+    "texto": "Subs = que seja um objetos = aô",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0098",
+    "texto": "Subs = ação = watá – elimina a vogal final da palavra.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0099",
+    "texto": "Se na colagem das palavras estiver uma vogal, esta será eliminada para compor a nova",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0100",
+    "texto": "palavra, aja visto, todas estas terminações começam com por vogais, o que deve ser",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0101",
+    "texto": "preservado é a nasalização original.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0102",
+    "texto": "Sub.com valor de Adj. boas e maus qualidades, o que depende da raiz que estar sendo",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0103",
+    "texto": "utilizada = ãga = nomayga = mayogenãga = discussão",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0104",
+    "texto": "Adj. Qualidade boa = ãhi = nomaysãhi",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0105",
+    "texto": "Adj. Neutro, mas que derive o bem = asê = e forma a parte genérica, quando não houver no",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0106",
+    "texto": "adjetivo.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0107",
+    "texto": "Adj. Qualidade ruim = itá",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0108",
+    "texto": "Adj. Neutro, mas que seja coisa mal, usaremos = ená = e forma a parte genérica, quando não",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0109",
+    "texto": "houver no adjetivo equivalente.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0110",
+    "texto": "Advérbio:",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0111",
+    "texto": "Intensidade = kwê",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0112",
+    "texto": "Modo: Terminados em MENTE = nuk",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0113",
+    "texto": "Lugar = nig",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0114",
+    "texto": "Wãk e apê = inclusão e exclusão.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0115",
+    "texto": "Toda vez que se coloca ãh antes de uma palavra, ele valerá como antônimo. Isso desde não",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0116",
+    "texto": "tenha um antônimo equivalente, então se aprecia a regra de usar uma raiz já existente. Caso a",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0117",
+    "texto": "raiz comesse com uma vogal, se ajuntará automaticamente com ah, preservando o som da",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0118",
+    "texto": "vogal já existente. Se for uma consoante esta cairá e fica no lugar o h de ãh. EX: heuhá –",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  },
+  {
+    "id": "gr-0119",
+    "texto": "construir; ãheuhá – destruir. Ou ainda: ãtxuhã – fé; ãhãtxuhã – dúvida.",
+    "pagina": 46,
+    "fonte": "Patxôhã 2015",
+    "idioma": "regra"
+  }
 ]
