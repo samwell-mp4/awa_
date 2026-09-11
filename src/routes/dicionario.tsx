@@ -26,6 +26,11 @@ import ptPatData from "@/data/dic-pt-pat.json";
 import patPtData from "@/data/dic-pat-pt.json";
 import palavrasNumerosData from "@/data/dic-palavras-numeros.json";
 import gramaticaData from "@/data/dic-gramatica.json";
+import {
+  ILUSTRADO_CATEGORIAS,
+  categoriasDoVerbete,
+  emojiDoVerbete,
+} from "@/lib/dic-ilustrado";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
@@ -123,7 +128,7 @@ type Verbete = {
   categoria: string;
 };
 
-type Section = "pt-pat" | "pat-pt" | "numeros" | "gramatica";
+type Section = "ilustrado" | "pt-pat" | "pat-pt" | "numeros" | "gramatica";
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -264,7 +269,23 @@ const PAT_PT_LETTERS = letterCounts(PAT_PT);
 
 const CATEGORIES = ["Todas", "Família", "Alimentos", "Animais", "Natureza", "Corpo humano", "Verbos", "Números", "Geral"] as const;
 
+// -----------------------------------------------------------------------------
+// DICIONÁRIO ILUSTRADO: verbetes com ilustração e categorias clicáveis
+// -----------------------------------------------------------------------------
+type VerbeteIlustrado = Verbete & { catKeys: string[]; emoji: string };
+
+const ILUSTRADO: VerbeteIlustrado[] = PT_PAT.map((e) => {
+  const catKeys = categoriasDoVerbete(e.head, e.categoria);
+  return { ...e, catKeys, emoji: emojiDoVerbete(e.head, catKeys) };
+});
+
+const ILUSTRADO_COUNTS = new Map<string, number>();
+for (const e of ILUSTRADO) {
+  for (const k of e.catKeys) ILUSTRADO_COUNTS.set(k, (ILUSTRADO_COUNTS.get(k) ?? 0) + 1);
+}
+
 const SECTIONS: { key: Section; label: string; hint: string }[] = [
+  { key: "ilustrado", label: "🖼️ Dicionário Ilustrado", hint: "por categorias" },
   { key: "pt-pat", label: "🇧🇷 Português → Patxôhã", hint: `${PT_PAT.length} verbetes` },
   { key: "pat-pt", label: "🌿 Patxôhã → Português", hint: `${PAT_PT.length} verbetes` },
   { key: "numeros", label: "🔢 Palavras e Números", hint: "seção da fonte" },
@@ -276,7 +297,9 @@ function DictionaryPage() {
   const { t } = useTranslation();
   const { isPremium } = useSubscription();
 
-  const [section, setSection] = useState<Section>("pt-pat");
+  const [section, setSection] = useState<Section>("ilustrado");
+  const [ilCat, setIlCat] = useState<string>("numeros");
+  const [ilVisible, setIlVisible] = useState(60);
   const [query, setQuery] = useState("");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
@@ -407,6 +430,29 @@ function DictionaryPage() {
     return GRAMATICA.filter((l) => normalize(l.texto).includes(q));
   }, [debouncedQuery]);
 
+  // Dicionário Ilustrado: cards da categoria escolhida, com busca combinada.
+  const ilustradoItems = useMemo(() => {
+    const q = normalize(debouncedQuery);
+    const list = ILUSTRADO.filter((e) => {
+      const matchCat = ilCat === "todas" || e.catKeys.includes(ilCat);
+      const matchQ = !q || e._headNorm.includes(q) || e._glossNorm.includes(q);
+      return matchCat && matchQ;
+    });
+    list.sort((a, b) => a.head.localeCompare(b.head, "pt", { sensitivity: "base" }));
+    return list;
+  }, [ilCat, debouncedQuery]);
+
+  useEffect(() => {
+    setIlVisible(60);
+  }, [ilCat, debouncedQuery]);
+
+  const ilCap = isPremium ? ilVisible : Math.min(FREE_LIMIT, ilVisible);
+  const ilVisibleItems = useMemo(() => ilustradoItems.slice(0, ilCap), [ilustradoItems, ilCap]);
+  const ilLockedByFree = !isPremium && ilustradoItems.length > FREE_LIMIT;
+  const ilHasMore = isPremium
+    ? ilustradoItems.length > ilVisible
+    : ilustradoItems.length > FREE_LIMIT;
+
   return (
     <div className="min-h-screen pb-24 md:pb-12">
       <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
@@ -468,7 +514,9 @@ function DictionaryPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={
-                section === "pt-pat"
+                section === "ilustrado"
+                  ? "Buscar palavra ilustrada..."
+                  : section === "pt-pat"
                   ? "Buscar em português..."
                   : section === "pat-pt"
                     ? "Buscar em Patxôhã..."
@@ -486,7 +534,9 @@ function DictionaryPage() {
                 ? `${visibleFiltered.length}${hasMore ? "+" : ""} ${
                     visibleFiltered.length === 1 ? "verbete" : "verbetes"
                   }`
-                : section === "numeros"
+                : section === "ilustrado"
+                  ? `${ilustradoItems.length} palavras nesta categoria`
+                  : section === "numeros"
                   ? `${numerosGroups.reduce((n, g) => n + g.items.length, 0)} palavras`
                   : `${gramaticaLines.length} linhas`}
               <span className="ml-2 opacity-60">· {SOURCE_LABEL}</span>
@@ -570,8 +620,121 @@ function DictionaryPage() {
           </section>
         )}
 
+        {section === "ilustrado" && (
+          <section className="mt-4 card-elev rounded-2xl p-3">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {ILUSTRADO_CATEGORIAS.map((c) => {
+                const active = ilCat === c.key;
+                const count = ILUSTRADO_COUNTS.get(c.key) ?? 0;
+                return (
+                  <button
+                    key={c.key}
+                    type="button"
+                    onClick={() => setIlCat(c.key)}
+                    aria-pressed={active}
+                    className={`flex items-center gap-2 rounded-2xl border px-3 py-3 text-left transition ${
+                      active
+                        ? "border-leaf bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
+                        : "border-gold/20 bg-card/50 text-cream hover:border-gold/50"
+                    }`}
+                  >
+                    <span aria-hidden className="text-xl">{c.emoji}</span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-xs font-black">{c.label}</span>
+                      <span className={`block text-[10px] font-bold ${active ? "opacity-70" : "opacity-50"}`}>
+                        {count} palavras
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                onClick={() => setIlCat("todas")}
+                aria-pressed={ilCat === "todas"}
+                className={`flex items-center gap-2 rounded-2xl border px-3 py-3 text-left transition ${
+                  ilCat === "todas"
+                    ? "border-leaf bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
+                    : "border-gold/20 bg-card/50 text-cream hover:border-gold/50"
+                }`}
+              >
+                <span aria-hidden className="text-xl">📖</span>
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-black">Todas as Palavras</span>
+                  <span className="block text-[10px] font-bold opacity-50">{ILUSTRADO.length} palavras</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSection("gramatica")}
+                className="flex items-center gap-2 rounded-2xl border border-gold/30 bg-gold/10 px-3 py-3 text-left text-gold transition hover:bg-gold/20"
+              >
+                <span aria-hidden className="text-xl">📚</span>
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-black">Gramática</span>
+                  <span className="block text-[10px] font-bold opacity-70">{GRAMATICA.length} linhas</span>
+                </span>
+              </button>
+            </div>
+          </section>
+        )}
+
         <section className="mt-5">
-          {isWordList ? (
+          {section === "ilustrado" ? (
+            ilustradoItems.length === 0 ? (
+              <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
+            ) : (
+              <div className="space-y-5">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {ilVisibleItems.map((e) => (
+                    <PlayableCard key={`il-${e.id}`} text={e.patxoha} audioUrl={null}>
+                      <div className="grid h-28 place-items-center rounded-2xl bg-leaf/15 text-5xl">
+                        <span aria-hidden>{e.emoji}</span>
+                      </div>
+                      <div className="mt-3 flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <h3 className="font-display text-lg font-black text-cream break-words">{e.head}</h3>
+                          <p className="mt-0.5 text-sm font-bold text-leaf break-words">{e.patxoha}</p>
+                        </div>
+                        <PlayIndicator />
+                      </div>
+                      <div className="mt-2 flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/60">
+                          Ouvir pronúncia
+                        </span>
+                        <span className="chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">p. {e.pagina}</span>
+                      </div>
+                    </PlayableCard>
+                  ))}
+                </div>
+                {ilLockedByFree ? (
+                  <div className="card-elev rounded-3xl border border-gold/30 p-6 text-center">
+                    <h3 className="font-display text-xl font-black text-cream">
+                      {t("dictionary.freeLimitTitle", { count: FREE_LIMIT })}
+                    </h3>
+                    <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
+                      {t("dictionary.freeLimitDescription")}
+                    </p>
+                    <Link
+                      to="/planos"
+                      className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
+                    >
+                      <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
+                    </Link>
+                  </div>
+                ) : ilHasMore ? (
+                  <div className="text-center">
+                    <button
+                      onClick={() => setIlVisible((n) => n + 60)}
+                      className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
+                    >
+                      {t("dictionary.showMore")}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            )
+          ) : isWordList ? (
             filtered.length === 0 ? (
               <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
             ) : (
