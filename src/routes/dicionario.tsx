@@ -514,7 +514,9 @@ function DictionaryPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={
-                section === "pt-pat"
+                section === "ilustrado"
+                  ? "Buscar palavra ilustrada..."
+                  : section === "pt-pat"
                   ? "Buscar em português..."
                   : section === "pat-pt"
                     ? "Buscar em Patxôhã..."
