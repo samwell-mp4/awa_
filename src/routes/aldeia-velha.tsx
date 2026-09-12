@@ -340,11 +340,39 @@ function CleanEmbed({
   );
 }
 
-/** Card com o vídeo já embutido: o player é montado quando o card aparece na tela. */
-function DocumentaryCard({ url, index }: { url: string; index: number }) {
+/**
+ * Card com o vídeo já embutido: o player é montado quando o card aparece na tela.
+ * Para garantir que só um documentário toque por vez, cada card avisa quando seu
+ * embed recebe o foco (onActivate) e, quando deixa de ser o ativo, é remontado
+ * via `token` — isso remove e recria o iframe do Instagram, parando o vídeo que
+ * estava rodando.
+ */
+function DocumentaryCard({
+  url,
+  index,
+  active,
+  onActivate,
+}: {
+  url: string;
+  index: number;
+  active: boolean;
+  onActivate: () => void;
+}) {
   const label = `Documentário ${index + 1}`;
   const ref = useRef<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
+  // Contador que força o remount do CleanEmbed quando este card perde o "ativo":
+  // ao trocar de vídeo, o anterior é desmontado (parando a reprodução) e
+  // remontado em estado pausado (pronto para tocar de novo).
+  const [token, setToken] = useState(0);
+  const prevActive = useRef(active);
+
+  useEffect(() => {
+    if (prevActive.current && !active) {
+      setToken((t) => t + 1);
+    }
+    prevActive.current = active;
+  }, [active]);
 
   useEffect(() => {
     const el = ref.current;
@@ -370,7 +398,12 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
     <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:border-gold/50">
       <div ref={ref} className="relative w-full bg-black">
         {ready ? (
-          <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
+          <CleanEmbed
+            key={token}
+            url={url}
+            title={`${label} — Aldeia Velha`}
+            onActivated={onActivate}
+          />
         ) : (
           <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 104" }}>
             <Play className="h-8 w-8 fill-current text-gold/60" />
