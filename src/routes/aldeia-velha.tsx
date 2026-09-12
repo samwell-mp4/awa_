@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -212,73 +211,50 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
   );
 }
 
+/** Card com o vídeo já embutido: o player é montado quando o card aparece na tela. */
 function DocumentaryCard({ url, index }: { url: string; index: number }) {
-  const [open, setOpen] = useState(false);
   const label = `Documentário ${index + 1}`;
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+    const el = ref.current;
+    if (!el || ready) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setReady(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setReady(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ready]);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:-translate-y-0.5 hover:border-gold/50 hover:bg-gold/10">
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-        aria-label={`Reproduzir ${label}`}
-      >
-        <span className="flex min-w-0 items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[12px] font-black text-forest-deep">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="truncate text-[13.5px] font-bold text-cream">{label}</span>
-        </span>
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-gold transition hover:bg-gold/15">
-          <Play className="h-4 w-4 fill-current" />
-        </span>
-      </button>
-
-      {open &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-3 backdrop-blur-sm"
-            role="dialog"
-            aria-modal="true"
-            aria-label={label}
-            onClick={() => setOpen(false)}
-          >
-            <div
-              className="relative w-full max-w-[420px] overflow-hidden rounded-2xl border border-gold/30 shadow-[var(--shadow-gold)]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Fechar"
-                className="absolute right-2 top-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-forest-deep/80 text-gold backdrop-blur-sm transition hover:bg-forest-deep"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>,
-          document.body,
+    <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:border-gold/50">
+      <div ref={ref} className="relative w-full bg-black">
+        {ready ? (
+          <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
+        ) : (
+          <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 125" }}>
+            <Play className="h-8 w-8 fill-current text-gold/60" />
+          </div>
         )}
-
+      </div>
+      <div className="flex items-center gap-3 px-4 py-3">
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[11px] font-black text-forest-deep">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className="truncate text-[13.5px] font-bold text-cream">{label}</span>
+      </div>
     </article>
-
   );
 }
 
