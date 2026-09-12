@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Save, Layout, Image as ImageIcon, Palette, Plus, Trash2, Sparkles, Video, Globe, Type, FileText, Languages, KeyRound, Shield, Layers } from "lucide-react";
 import { Field, Input, Btn, Card, Textarea } from "./ui";
 import { TemplatesAdmin } from "./templates-admin";
+import { notifyContentUpdated } from "@/lib/notify-content-updated";
 
 
 export function LayoutAdmin() {
@@ -73,6 +74,7 @@ export function LayoutAdmin() {
       await updateFn({ data: { key, value } });
       toast.success(`${label} atualizado!`);
       qc.invalidateQueries({ queryKey: ["site_config", key] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }

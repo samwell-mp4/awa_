@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Save, Plus, Trash2, BookOpen, Gamepad2, Map, Upload, Loader2, Volume2, Type, Palette } from "lucide-react";
 import { Field, Input, Btn, Card, Textarea } from "./ui";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyContentUpdated } from "@/lib/notify-content-updated";
 
 export function InfantilContentAdmin() {
   const [tab, setTab] = useState<"stories" | "games" | "trails">("stories");
@@ -67,6 +68,7 @@ function StoriesAdmin() {
       await updateFn({ data: draft });
       toast.success("Histórias atualizadas!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_stories"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
@@ -208,6 +210,7 @@ function GamesAdmin() {
       await updateFn({ data: draft });
       toast.success("Jogos atualizados!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_games"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
@@ -294,6 +297,7 @@ function TrailsTotemsAdmin() {
       await updateFn({ data: draft });
       toast.success("Totens das trilhas atualizados!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_trails_totems"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }

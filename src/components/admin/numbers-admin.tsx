@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Save, Plus, Trash2, Hash, Volume2, Type, Layout, Upload, Loader2 } from "lucide-react";
 import { Field, Input, Btn, Card } from "./ui";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyContentUpdated } from "@/lib/notify-content-updated";
 
 export function NumbersAdmin() {
   const qc = useQueryClient();
@@ -76,6 +77,7 @@ export function NumbersAdmin() {
       // Force a refetch to ensure local state is in sync with DB
       await refetch();
       
+      void notifyContentUpdated();
       toast.success("Configuração de números salva!", { id: tid });
     } catch (e: any) {
       toast.error(e.message || "Erro ao salvar", { id: tid });
