@@ -137,8 +137,12 @@ export const addAllowlist = createServerFn({ method: "POST" })
   .inputValidator((d: { email?: string; phone?: string; note?: string; plan?: string }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const email = data.email?.trim().toLowerCase() || null;
+    // Remove espaços acidentais ("W Camila 6@gmail.com" -> "wcamila6@gmail.com")
+    const email = data.email?.replace(/\s+/g, "").toLowerCase() || null;
     const phone = data.phone?.trim() || null;
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      throw new Error("Email inválido");
+    }
     const plan = ["adulto", "infantil", "ambos"].includes(data.plan ?? "") ? data.plan! : "ambos";
     if (!email && !phone) throw new Error("Informe email ou celular");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -150,10 +154,11 @@ export const addAllowlist = createServerFn({ method: "POST" })
     // Liberação automática: se a pessoa já tem conta, o acesso é concedido na hora.
     // Se ainda não tem, o gatilho do banco concede assim que ela criar a conta.
     const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const digits = (v?: string | null) => (v ?? "").replace(/\D/g, "");
     const target = userList?.users.find(
       (u) =>
-        (email && u.email?.toLowerCase() === email) || (phone && u.phone === phone.replace(/^\+/, "")) ||
-        (phone && u.phone === phone),
+        (!!email && u.email?.replace(/\s+/g, "").toLowerCase() === email) ||
+        (!!phone && digits(u.phone) !== "" && digits(u.phone) === digits(phone)),
     );
     if (target) {
       await supabaseAdmin
@@ -180,13 +185,14 @@ export const removeAllowlist = createServerFn({ method: "POST" })
 
     // Remoção automática do acesso concedido por essa liberação.
     if (entry) {
-      const email = entry.email?.toLowerCase() ?? null;
+      const email = entry.email?.replace(/\s+/g, "").toLowerCase() ?? null;
       const phone = entry.phone ?? null;
+      const digits = (v?: string | null) => (v ?? "").replace(/\D/g, "");
       const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
       const target = userList?.users.find(
         (u) =>
-          (email && u.email?.toLowerCase() === email) ||
-          (phone && (u.phone === phone || u.phone === phone.replace(/^\+/, ""))),
+          (!!email && u.email?.replace(/\s+/g, "").toLowerCase() === email) ||
+          (!!phone && digits(u.phone) !== "" && digits(u.phone) === digits(phone)),
       );
       if (target) {
         const { data: isTargetAdmin } = await supabaseAdmin.rpc("has_role", {
@@ -209,17 +215,13 @@ export const removeAllowlist = createServerFn({ method: "POST" })
 export const checkMyLoginAllowed = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Admin sempre tem acesso liberado
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
-    if (isAdmin) return { allowed: true };
-
+    // Uma única verificação no banco cobre: admin, liberação feita pelo admin,
+    // acesso gratuito (premium manual) e assinatura ativa.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId);
-    const email = u?.user?.email ?? null;
-    const phone = u?.user?.phone ?? null;
-    const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email ?? "", _phone: phone ?? "" });
+    const { data, error } = await supabaseAdmin.rpc("is_access_allowed", {
+      _user_id: context.userId,
+    });
+    // Em caso de falha técnica, nunca bloqueia a pessoa.
+    if (error) return { allowed: true };
     return { allowed: !!data };
   });
