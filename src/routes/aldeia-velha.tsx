@@ -240,9 +240,57 @@ function CleanEmbed({
   onActivated?: () => void;
 }) {
   const cropRef = useRef<HTMLDivElement | null>(null);
+  // "Palco" que entra em tela cheia: fundo preto ocupando a tela toda, com o
+  // recorte exato do vídeo centralizado — assim o cabeçalho/rodapé do
+  // Instagram continuam escondidos mesmo em fullscreen.
+  const stageRef = useRef<HTMLDivElement | null>(null);
   const [mediaH, setMediaH] = useState<number | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const onActivatedRef = useRef(onActivated);
   onActivatedRef.current = onActivated;
+
+  /**
+   * Alterna tela cheia no card do vídeo. Ao entrar, tenta virar a tela do
+   * aparelho conforme a orientação do vídeo (reel vertical → retrato, filme
+   * horizontal → paisagem), mantendo o recorte sincronizado com a mídia.
+   * Ao sair, devolve a orientação ao normal.
+   */
+  const toggleFullscreen = async () => {
+    const stage = stageRef.current;
+    const crop = cropRef.current;
+    if (!stage || !crop) return;
+    try {
+      if (document.fullscreenElement === stage) {
+        await document.exitFullscreen();
+        return;
+      }
+      await stage.requestFullscreen();
+      const w = crop.clientWidth || 1;
+      const h = mediaH ?? (crop.clientHeight || 1);
+      const orientation: OrientationLockType = h > w ? "portrait" : "landscape";
+      await screen.orientation.lock(orientation).catch(() => undefined);
+    } catch {
+      /* aparelhos que não suportam fullscreen/orientation: segue sem travar */
+    }
+  };
+
+  // Sincroniza o estado (e a rotação da tela) com o ciclo de fullscreen,
+  // incluindo saída pelo gesto/botão nativo do aparelho.
+  useEffect(() => {
+    const onFsChange = () => {
+      const active = document.fullscreenElement === stageRef.current;
+      setIsFullscreen(active);
+      if (!active) {
+        try {
+          screen.orientation.unlock();
+        } catch {
+          /* noop */
+        }
+      }
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
 
   // Carrega o script e reprocessa periodicamente (o blockquote pode aparecer
   // depois do script já ter rodado, então chamamos process() algumas vezes).
@@ -280,6 +328,7 @@ function CleanEmbed({
 
     apply();
     const ro = new ResizeObserver(apply);
+    ro.observe(crop);
     const mo = new MutationObserver(apply);
     mo.observe(crop, { childList: true, subtree: true });
     const t = window.setInterval(apply, 400);
@@ -309,8 +358,19 @@ function CleanEmbed({
 
   return (
     <div
+      ref={stageRef}
+      className={
+        isFullscreen
+          ? "flex h-full w-full items-center justify-center bg-black"
+          : "w-full"
+      }
+    >
+    <div
       ref={cropRef}
       className="relative w-full overflow-hidden bg-black"
+      // Mantém a altura medida da mídia também em tela cheia: o recorte do
+      // cabeçalho/rodapé continua exato e o restante da tela fica com o fundo
+      // preto nativo do modo fullscreen (efeito "letterbox" do cinema).
       style={
         mediaH != null
           ? { height: `${mediaH}px` }
@@ -336,6 +396,36 @@ function CleanEmbed({
           apareça caso o embed renderize com alturas um pouco diferentes. */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-black" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-black" />
+      {/* Botão de tela cheia: expande o vídeo e vira a tela do aparelho
+          conforme a orientação do vídeo (vertical → retrato, horizontal →
+          paisagem). Some enquanto já está em tela cheia — nesse caso a saída
+          é pelo gesto/botão nativo do aparelho. */}
+      {!isFullscreen && (
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label={`Assistir ${title} em tela cheia`}
+          className="absolute bottom-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+            aria-hidden="true"
+          >
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+            <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+        </button>
+      )}
+    </div>
     </div>
   );
 }
