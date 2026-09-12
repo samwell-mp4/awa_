@@ -231,41 +231,24 @@ export async function toggleHotspotAudio(id: HotspotId, lang = "pt") {
     if (i === 0) setState({ id, loading: false });
     // Espera o trecho anterior terminar antes de tocar este.
     await new Promise<void>((resolve) => {
-      const onEnded = () => {
-        cleanup();
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        clearInterval(guard);
+        el.removeEventListener("ended", finish);
+        el.removeEventListener("error", finish);
         resolve();
       };
-      const onError = () => {
-        cleanup();
-        resolve();
-      };
-      const cleanup = () => {
-        el.removeEventListener("ended", onEnded);
-        el.removeEventListener("error", onError);
-      };
-      el.addEventListener("ended", onEnded);
-      el.addEventListener("error", onError);
+      el.addEventListener("ended", finish);
+      el.addEventListener("error", finish);
       el.src = url;
       el.currentTime = 0;
-      el.play().catch(() => {
-        cleanup();
-        resolve();
-      });
+      el.play().catch(finish);
       // Se outro ponto assumir durante este trecho, encerra a espera.
       const guard = setInterval(() => {
-        if (token !== playToken) {
-          clearInterval(guard);
-          cleanup();
-          resolve();
-        }
+        if (token !== playToken) finish();
       }, 200);
-      const origResolve = resolve;
-      void origResolve;
-      el.addEventListener(
-        "ended",
-        () => clearInterval(guard),
-        { once: true },
-      );
     });
     if (token !== playToken) return;
   }
