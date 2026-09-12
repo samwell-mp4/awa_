@@ -263,7 +263,6 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
       ifr.style.background = "#000";
       ifr.setAttribute("title", title);
       ifr.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
-      ifr.setAttribute("allowfullscreen", "");
       ifr.setAttribute("loading", "lazy");
 
       setMediaH((prev) => (prev != null && Math.abs(prev - media) <= 1 ? prev : media));
