@@ -73,6 +73,7 @@ export function LayoutAdmin() {
       await updateFn({ data: { key, value } });
       toast.success(`${label} atualizado!`);
       qc.invalidateQueries({ queryKey: ["site_config", key] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
