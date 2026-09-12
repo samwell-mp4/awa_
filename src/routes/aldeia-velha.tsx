@@ -425,6 +425,13 @@ function DocumentaryCard({
 function AldeiaVelhaPage() {
   const backTo = useLastArea();
   const [zoom, setZoom] = useState<Photo | null>(null);
+  // Índice do documentário em reprodução. Só um toca por vez: ao tocar em outro,
+  // o ativo anterior é remontado (e portanto parado).
+  const [activeDoc, setActiveDoc] = useState<number | null>(null);
+  const activateDoc = useCallback(
+    (i: number) => setActiveDoc((cur) => (cur === i ? cur : i)),
+    [],
+  );
   const { tema } = Route.useSearch();
   const active = tema;
   const show = (id: string) => tema === id;
