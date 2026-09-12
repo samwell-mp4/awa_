@@ -185,13 +185,14 @@ export const removeAllowlist = createServerFn({ method: "POST" })
 
     // Remoção automática do acesso concedido por essa liberação.
     if (entry) {
-      const email = entry.email?.toLowerCase() ?? null;
+      const email = entry.email?.replace(/\s+/g, "").toLowerCase() ?? null;
       const phone = entry.phone ?? null;
+      const digits = (v?: string | null) => (v ?? "").replace(/\D/g, "");
       const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
       const target = userList?.users.find(
         (u) =>
-          (email && u.email?.toLowerCase() === email) ||
-          (phone && (u.phone === phone || u.phone === phone.replace(/^\+/, ""))),
+          (!!email && u.email?.replace(/\s+/g, "").toLowerCase() === email) ||
+          (!!phone && digits(u.phone) !== "" && digits(u.phone) === digits(phone)),
       );
       if (target) {
         const { data: isTargetAdmin } = await supabaseAdmin.rpc("has_role", {
