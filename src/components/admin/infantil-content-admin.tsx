@@ -297,6 +297,7 @@ function TrailsTotemsAdmin() {
       await updateFn({ data: draft });
       toast.success("Totens das trilhas atualizados!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_trails_totems"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
