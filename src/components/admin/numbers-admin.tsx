@@ -76,6 +76,7 @@ export function NumbersAdmin() {
       // Force a refetch to ensure local state is in sync with DB
       await refetch();
       
+      void notifyContentUpdated();
       toast.success("Configuração de números salva!", { id: tid });
     } catch (e: any) {
       toast.error(e.message || "Erro ao salvar", { id: tid });
