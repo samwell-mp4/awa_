@@ -140,6 +140,9 @@ export function AllowlistAdmin() {
                         <Phone className="h-3.5 w-3.5" /> {e.phone}
                       </span>
                     )}
+                    <span className="inline-flex items-center rounded-full bg-cream/10 px-2.5 py-1 text-xs font-semibold text-cream">
+                      {e.plan === "adulto" ? "Adulto" : e.plan === "infantil" ? "Infantil" : "Adulto + Infantil"}
+                    </span>
                   </div>
                   {e.note && <div className="mt-1 truncate text-sm text-foreground/70">{e.note}</div>}
                   <div className="mt-0.5 text-[11px] text-foreground/50">Adicionado: {fmt(e.created_at)}</div>
