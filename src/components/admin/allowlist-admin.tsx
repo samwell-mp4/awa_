@@ -31,7 +31,7 @@ export function AllowlistAdmin() {
   async function add() {
     if (!email.trim() && !phone.trim()) return toast.error("Informe email ou celular");
     try {
-      const res = await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined } });
+      const res = await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined, plan } });
       toast.success(
         res?.activated
           ? "Acesso liberado e ativado na hora para essa pessoa"
