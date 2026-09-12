@@ -181,33 +181,135 @@ function Lightbox({ photo, onClose }: { photo: Photo; onClose: () => void }) {
   );
 }
 
-function instagramEmbedUrl(url: string) {
-  return `${url.replace(/\/+$/, "")}/embed/`;
+/**
+ * Altura aproximada do cabeçalho do embed do Instagram (avatar + usuário +
+ * botão "Ver perfil"), usada para deslocar o iframe e esconder somente o header.
+ */
+const IG_HEADER_PX = 45;
+
+/**
+ * Altura aproximada do rodapé do embed ("Ver mais no Instagram", ícones, curtidas
+ * e campo de comentário). Usada para cortar o rodapé e mostrar só a mídia.
+ * Mesmo com ?hidecaption=true o Instagram mantém essa barra de ações.
+ */
+const IG_FOOTER_PX = 150;
+
+/** Proporção reservada enquanto a altura real da mídia ainda não foi medida. */
+const IG_PLACEHOLDER_RATIO = "100 / 104";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type Instgrm = { Embeds?: { process: () => void } };
+function processEmbeds() {
+  try {
+    (window as unknown as { instgrm?: Instgrm }).instgrm?.Embeds?.process();
+  } catch {
+    /* noop */
+  }
 }
 
-/** Instagram embed cropped so only the video area shows (no profile name/header/footer). */
+/** Carrega o script oficial do Instagram uma única vez e processa os blockquotes. */
+function ensureEmbedScript() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById("ig-embeds-js")) {
+    processEmbeds();
+    return;
+  }
+  const s = document.createElement("script");
+  s.id = "ig-embeds-js";
+  s.src = "https://www.instagram.com/embed.js";
+  s.async = true;
+  s.onload = processEmbeds;
+  document.body.appendChild(s);
+}
+
+/**
+ * Embed do Instagram recortado via SDK oficial: o script dimensiona o iframe
+ * automaticamente para o conteúdo (cabeçalho + mídia + rodapé), medimos essa
+ * altura e cortamos o cabeçalho (topo) e o rodapé ("Ver mais no Instagram",
+ * curtidas, comentários), exibindo somente a área do vídeo — seja ele vertical
+ * (reel) ou horizontal. Assim nenhum elemento do Instagram vaza, independente
+ * da proporção da publicação.
+ */
 function CleanEmbed({ url, title }: { url: string; title: string }) {
+  const cropRef = useRef<HTMLDivElement | null>(null);
+  const [mediaH, setMediaH] = useState<number | null>(null);
+
+  // Carrega o script e reprocessa periodicamente (o blockquote pode aparecer
+  // depois do script já ter rodado, então chamamos process() algumas vezes).
+  useEffect(() => {
+    ensureEmbedScript();
+    const t = window.setInterval(processEmbeds, 600);
+    return () => window.clearInterval(t);
+  }, []);
+
+  // Mede a altura real do iframe gerado pelo SDK e posiciona tudo.
+  useEffect(() => {
+    const crop = cropRef.current;
+    if (!crop) return;
+
+    const apply = () => {
+      const ifr = crop.querySelector<HTMLIFrameElement>("iframe");
+      if (!ifr) return;
+      const H = ifr.clientHeight || Number(ifr.getAttribute("height")) || 0;
+      if (H <= 0) return;
+
+      const media = Math.max(H - IG_HEADER_PX - IG_FOOTER_PX, 90);
+      ifr.style.position = "absolute";
+      ifr.style.left = "0";
+      ifr.style.top = `${-IG_HEADER_PX}px`;
+      ifr.style.width = "100%";
+      ifr.style.height = `${H}px`;
+      ifr.style.border = "0";
+      ifr.style.background = "#000";
+      ifr.setAttribute("title", title);
+      ifr.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+      ifr.setAttribute("loading", "lazy");
+
+      setMediaH((prev) => (prev != null && Math.abs(prev - media) <= 1 ? prev : media));
+    };
+
+    apply();
+    const ro = new ResizeObserver(apply);
+    const mo = new MutationObserver(apply);
+    mo.observe(crop, { childList: true, subtree: true });
+    const t = window.setInterval(apply, 400);
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+      window.clearInterval(t);
+    };
+  }, [title]);
+
   return (
-    <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: "100 / 125" }}>
-      <iframe
-        src={instagramEmbedUrl(url)}
-        title={title}
-        scrolling="no"
-        className="absolute left-0 border-0 bg-black"
+    <div
+      ref={cropRef}
+      className="relative w-full overflow-hidden bg-black"
+      style={
+        mediaH != null
+          ? { height: `${mediaH}px` }
+          : { aspectRatio: IG_PLACEHOLDER_RATIO }
+      }
+    >
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink={`${url.replace(/\/+$/, "")}/?hidecaption=true`}
+        data-instgrm-version="14"
         style={{
-          top: "-58px",
+          background: "#FFF",
+          border: "0",
+          margin: "0",
+          maxWidth: "100%",
+          minWidth: "0",
+          padding: "0",
           width: "100%",
-          height: "calc(100% + 420px)",
-          pointerEvents: "auto",
         }}
-
-        loading="lazy"
-        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowFullScreen
+        aria-label={title}
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-black" />
+      {/* Tarjas pretas garantindo que nenhum resquício de cabeçalho/rodapé
+          apareça caso o embed renderize com alturas um pouco diferentes. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-black" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-black" />
     </div>
-
   );
 }
 
@@ -243,7 +345,7 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
         {ready ? (
           <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
         ) : (
-          <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 125" }}>
+          <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 104" }}>
             <Play className="h-8 w-8 fill-current text-gold/60" />
           </div>
         )}
