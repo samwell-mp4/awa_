@@ -358,6 +358,14 @@ function CleanEmbed({
 
   return (
     <div
+      ref={stageRef}
+      className={
+        isFullscreen
+          ? "flex h-full w-full items-center justify-center bg-black"
+          : "w-full"
+      }
+    >
+    <div
       ref={cropRef}
       className="relative w-full overflow-hidden bg-black"
       // Mantém a altura medida da mídia também em tela cheia: o recorte do
