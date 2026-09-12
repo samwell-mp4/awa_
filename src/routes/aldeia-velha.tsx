@@ -290,6 +290,23 @@ function CleanEmbed({
     };
   }, [title]);
 
+  // Detecta quando a pessoa toca em "play" dentro do embed do Instagram: o clique
+  // dentro do iframe tira o foco da janela (window blur) e o activeElement vira
+  // o iframe deste card. Usamos isso para garantir que só um documentário toque
+  // por vez — ao ativar um, o anterior é remontado (e portanto parado).
+  useEffect(() => {
+    const onWinBlur = () => {
+      const crop = cropRef.current;
+      if (!crop) return;
+      const a = document.activeElement;
+      if (a && a.tagName === "IFRAME" && crop.contains(a)) {
+        onActivatedRef.current?.();
+      }
+    };
+    window.addEventListener("blur", onWinBlur);
+    return () => window.removeEventListener("blur", onWinBlur);
+  }, []);
+
   return (
     <div
       ref={cropRef}
