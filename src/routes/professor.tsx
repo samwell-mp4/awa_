@@ -269,9 +269,7 @@ function ProfessorPage() {
   const t = L10N[lang];
   const v = VOICE_L10N[lang];
 
-  const makeWelcome = (): Msg => ({ role: "assistant", content: t.welcome, at: Date.now() });
-
-  const [messages, setMessages] = useState<Msg[]>(() => [makeWelcome()]);
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeAssistantAudio, setActiveAssistantAudio] = useState<HTMLAudioElement | null>(null);
@@ -351,14 +349,7 @@ function ProfessorPage() {
 
 
 
-  // When the UI language changes and no user message was sent, refresh the welcome.
-  useEffect(() => {
-    setMessages((prev) => {
-      if (prev.length <= 1) return [{ role: "assistant", content: t.welcome, at: Date.now() }];
-      return prev;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang]);
+  // (Nenhuma mensagem de boas-vindas: o professor começa direto.)
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -478,12 +469,12 @@ function ProfessorPage() {
     setActiveAssistantAudio(null);
     setVoicePaused(false);
     setVoiceState("idle");
-    setMessages([makeWelcome()]);
+    setMessages([]);
     setInput("");
     textareaRef.current?.focus();
   }
 
-  const isEmpty = messages.length <= 1;
+  const isEmpty = messages.length === 0;
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
