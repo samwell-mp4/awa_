@@ -252,14 +252,15 @@ function CleanEmbed({
    * Ao sair, devolve a orientação ao normal.
    */
   const toggleFullscreen = async () => {
+    const stage = stageRef.current;
     const crop = cropRef.current;
-    if (!crop) return;
+    if (!stage || !crop) return;
     try {
-      if (document.fullscreenElement === crop) {
+      if (document.fullscreenElement === stage) {
         await document.exitFullscreen();
         return;
       }
-      await crop.requestFullscreen();
+      await stage.requestFullscreen();
       const w = crop.clientWidth || 1;
       const h = mediaH ?? (crop.clientHeight || 1);
       const orientation: OrientationLockType = h > w ? "portrait" : "landscape";
