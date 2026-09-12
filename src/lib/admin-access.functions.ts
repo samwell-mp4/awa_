@@ -209,17 +209,13 @@ export const removeAllowlist = createServerFn({ method: "POST" })
 export const checkMyLoginAllowed = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Admin sempre tem acesso liberado
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
-    if (isAdmin) return { allowed: true };
-
+    // Uma única verificação no banco cobre: admin, liberação feita pelo admin,
+    // acesso gratuito (premium manual) e assinatura ativa.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId);
-    const email = u?.user?.email ?? null;
-    const phone = u?.user?.phone ?? null;
-    const { data } = await supabaseAdmin.rpc("is_login_allowed", { _email: email ?? "", _phone: phone ?? "" });
+    const { data, error } = await supabaseAdmin.rpc("is_access_allowed", {
+      _user_id: context.userId,
+    });
+    // Em caso de falha técnica, nunca bloqueia a pessoa.
+    if (error) return { allowed: true };
     return { allowed: !!data };
   });
