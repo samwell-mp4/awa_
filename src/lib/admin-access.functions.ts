@@ -137,8 +137,12 @@ export const addAllowlist = createServerFn({ method: "POST" })
   .inputValidator((d: { email?: string; phone?: string; note?: string; plan?: string }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const email = data.email?.trim().toLowerCase() || null;
+    // Remove espaços acidentais ("W Camila 6@gmail.com" -> "wcamila6@gmail.com")
+    const email = data.email?.replace(/\s+/g, "").toLowerCase() || null;
     const phone = data.phone?.trim() || null;
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      throw new Error("Email inválido");
+    }
     const plan = ["adulto", "infantil", "ambos"].includes(data.plan ?? "") ? data.plan! : "ambos";
     if (!email && !phone) throw new Error("Informe email ou celular");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
