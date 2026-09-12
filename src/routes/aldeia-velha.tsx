@@ -185,29 +185,47 @@ function instagramEmbedUrl(url: string) {
   return `${url.replace(/\/+$/, "")}/embed/`;
 }
 
-/** Instagram embed cropped so only the video area shows (no profile name/header/footer). */
+/**
+ * Altura aproximada do cabeçalho do embed do Instagram (avatar + usuário +
+ * botão "Ver perfil"). Usada para deslocar o iframe e esconder somente o header.
+ */
+const IG_HEADER_PX = 48;
+
+/**
+ * Proporção da área de mídia do embed do Instagram (reels e posts) em relação à
+ * largura. O embed renderiza a mídia numa área praticamente quadrada; usamos
+ * 100/104 para comportar leves variações sem cortar o vídeo.
+ */
+const IG_MEDIA_RATIO = "100 / 104";
+
+/** Instagram embed recortado: mostra só a área de mídia (sem header e sem rodapé "Ver mais no Instagram"). */
 function CleanEmbed({ url, title }: { url: string; title: string }) {
   return (
-    <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: "100 / 125" }}>
+    <div
+      className="relative w-full overflow-hidden bg-black"
+      style={{ aspectRatio: IG_MEDIA_RATIO }}
+    >
       <iframe
         src={instagramEmbedUrl(url)}
         title={title}
         scrolling="no"
         className="absolute left-0 border-0 bg-black"
         style={{
-          top: "-58px",
+          top: `-${IG_HEADER_PX}px`,
           width: "100%",
-          height: "calc(100% + 420px)",
+          height: `calc(100% + ${IG_HEADER_PX}px)`,
           pointerEvents: "auto",
         }}
-
         loading="lazy"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-black" />
+      {/* Tarja preta no topo e no rodapé para garantir que nenhum elemento do
+          cabeçalho ou do rodapé do Instagram vaze caso o embed renderize com
+          alturas um pouco diferentes das esperadas. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-black" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-black" />
     </div>
-
   );
 }
 
