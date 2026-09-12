@@ -355,12 +355,13 @@ function CleanEmbed({
     <div
       ref={cropRef}
       className="relative w-full overflow-hidden bg-black"
+      // Mantém a altura medida da mídia também em tela cheia: o recorte do
+      // cabeçalho/rodapé continua exato e o restante da tela fica com o fundo
+      // preto nativo do modo fullscreen (efeito "letterbox" do cinema).
       style={
-        isFullscreen
-          ? { height: "100%" }
-          : mediaH != null
-            ? { height: `${mediaH}px` }
-            : { aspectRatio: IG_PLACEHOLDER_RATIO }
+        mediaH != null
+          ? { height: `${mediaH}px` }
+          : { aspectRatio: IG_PLACEHOLDER_RATIO }
       }
     >
       <blockquote
