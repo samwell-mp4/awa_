@@ -379,6 +379,35 @@ function CleanEmbed({
           apareça caso o embed renderize com alturas um pouco diferentes. */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-black" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-black" />
+      {/* Botão de tela cheia: expande o vídeo e vira a tela do aparelho
+          conforme a orientação do vídeo (vertical → retrato, horizontal →
+          paisagem). Some enquanto já está em tela cheia — nesse caso a saída
+          é pelo gesto/botão nativo do aparelho. */}
+      {!isFullscreen && (
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label={`Assistir ${title} em tela cheia`}
+          className="absolute bottom-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+            aria-hidden="true"
+          >
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+            <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
