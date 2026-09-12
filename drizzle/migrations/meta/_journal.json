@@ -8,6 +8,13 @@
       "when": 1789191298924,
       "tag": "0000_auto_release_allowlist_and_live_config",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789192219429,
+      "tag": "0001_allowlist_plan_access",
+      "breakpoints": true
     }
   ]
 }
