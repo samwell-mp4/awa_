@@ -65,8 +65,19 @@ export function useSubscription() {
         window.localStorage.setItem('paddle_customer_id', paddleCustomerId);
       }
 
-      const hasInfantil = tiers.has("infantil") || tiers.has("premium");
-      const hasAdulto = tiers.has("adulto") || tiers.has("premium");
+      let hasInfantil = tiers.has("infantil") || tiers.has("premium");
+      let hasAdulto = tiers.has("adulto") || tiers.has("premium");
+
+      // Acesso liberado manualmente pelo administrador (email/celular na lista
+      // de liberação) também abre a área correspondente.
+      if (!hasInfantil || !hasAdulto) {
+        const [{ data: okInfantil }, { data: okAdulto }] = await Promise.all([
+          supabase.rpc("has_plan_access", { _user_id: user.id, _plan: "infantil", _check_env: env }),
+          supabase.rpc("has_plan_access", { _user_id: user.id, _plan: "adulto", _check_env: env }),
+        ]);
+        hasInfantil = hasInfantil || !!okInfantil;
+        hasAdulto = hasAdulto || !!okAdulto;
+      }
       return { subs: subs ?? [], hasInfantil, hasAdulto };
     },
     refetchOnWindowFocus: true,

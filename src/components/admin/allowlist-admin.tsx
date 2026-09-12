@@ -20,6 +20,7 @@ export function AllowlistAdmin() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
+  const [plan, setPlan] = useState<"ambos" | "adulto" | "infantil">("ambos");
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["login_allowlist"],
@@ -30,7 +31,7 @@ export function AllowlistAdmin() {
   async function add() {
     if (!email.trim() && !phone.trim()) return toast.error("Informe email ou celular");
     try {
-      const res = await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined } });
+      const res = await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined, plan } });
       toast.success(
         res?.activated
           ? "Acesso liberado e ativado na hora para essa pessoa"
@@ -81,6 +82,29 @@ export function AllowlistAdmin() {
             <Input placeholder="Ex: Professora Ana" value={note} onChange={(e) => setNote(e.target.value)} />
           </Field>
         </div>
+        <div className="mt-3">
+          <div className="mb-1.5 text-xs font-semibold text-foreground/70">Áreas liberadas</div>
+          <div className="grid grid-cols-3 gap-2 rounded-2xl border border-gold/20 bg-background/40 p-1">
+            {([
+              { v: "ambos", l: "Adulto + Infantil" },
+              { v: "adulto", l: "Somente Adulto" },
+              { v: "infantil", l: "Somente Infantil" },
+            ] as const).map((o) => (
+              <button
+                key={o.v}
+                type="button"
+                onClick={() => setPlan(o.v)}
+                className={`rounded-xl px-3 py-2.5 text-xs font-bold transition ${
+                  plan === o.v
+                    ? "bg-gold/15 text-cream ring-1 ring-gold/40"
+                    : "text-foreground/60 hover:bg-gold/5 hover:text-cream"
+                }`}
+              >
+                {o.l}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="mt-3 flex justify-end">
           <Btn onClick={add}><UserPlus className="h-4 w-4" /> Liberar acesso</Btn>
         </div>
@@ -116,6 +140,9 @@ export function AllowlistAdmin() {
                         <Phone className="h-3.5 w-3.5" /> {e.phone}
                       </span>
                     )}
+                    <span className="inline-flex items-center rounded-full bg-cream/10 px-2.5 py-1 text-xs font-semibold text-cream">
+                      {e.plan === "adulto" ? "Adulto" : e.plan === "infantil" ? "Infantil" : "Adulto + Infantil"}
+                    </span>
                   </div>
                   {e.note && <div className="mt-1 truncate text-sm text-foreground/70">{e.note}</div>}
                   <div className="mt-0.5 text-[11px] text-foreground/50">Adicionado: {fmt(e.created_at)}</div>
