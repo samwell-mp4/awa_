@@ -4,9 +4,9 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 /**
  * Registro central dos pontos de áudio interativos.
  *
- * Cada ponto tem um texto narrado com voz natural (gerada em alta qualidade
- * no servidor). Se um dia houver um arquivo de áudio gravado, basta preencher
- * `url` — ele passa a ser usado no lugar da voz gerada, sem mexer no layout.
+ * A narração lê o TEXTO COMPLETO da seção exibida na tela (extraído do DOM
+ * no momento do clique), garantindo que nenhuma palavra fique de fora.
+ * O `text` abaixo serve apenas como reserva caso a seção não seja encontrada.
  */
 export type HotspotId =
   | "memoria"
@@ -88,6 +88,7 @@ let audioEl: HTMLAudioElement | null = null;
 let state: State = { id: null, loading: false };
 const listeners = new Set<Listener>();
 const generated = new Map<string, string>();
+let playToken = 0;
 
 function emit() {
   listeners.forEach((l) => l());
@@ -110,6 +111,7 @@ export function getHotspotState(): State {
 }
 
 export function stopHotspotAudio() {
+  playToken += 1; // invalida qualquer sequência de geração em curso
   if (audioEl) {
     try {
       audioEl.pause();
@@ -124,21 +126,59 @@ function ensureAudio() {
   if (!audioEl) {
     audioEl = new Audio();
     audioEl.preload = "auto";
-    audioEl.addEventListener("ended", stopHotspotAudio);
-    audioEl.addEventListener("error", stopHotspotAudio);
   }
   return audioEl;
 }
 
-async function resolveUrl(id: HotspotId, lang: string): Promise<string | null> {
-  const entry = AUDIO_HOTSPOTS[id];
-  if (entry.url) return entry.url;
-  const key = `${id}::${lang}`;
+/* --------------------- Texto completo da seção (DOM) --------------------- */
+
+/**
+ * Lê todo o texto visível da seção correspondente ao ponto de áudio,
+ * removendo os rótulos dos próprios botões de áudio ("Ouvir", "Tocando"...)
+ * para que a narração não leia a interface.
+ */
+function fullSectionText(id: HotspotId): string {
+  if (typeof document === "undefined") return AUDIO_HOTSPOTS[id].text;
+  const section = document.getElementById(id);
+  if (!section) return AUDIO_HOTSPOTS[id].text;
+  const clone = section.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll("button, nav, iframe, script, style").forEach((el) => el.remove());
+  const text = (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+  return text.length > 40 ? text : AUDIO_HOTSPOTS[id].text;
+}
+
+/** Divide o texto em pedaços pequenos (limite seguro do serviço de voz),
+ *  preferindo cortar no fim das frases. */
+function chunkText(text: string, max = 1200): string[] {
+  const sentences = text.match(/[^.!?…]+[.!?…]*\s*/g) ?? [text];
+  const chunks: string[] = [];
+  let current = "";
+  const flush = () => {
+    if (current.trim()) chunks.push(current.trim());
+    current = "";
+  };
+  for (const s of sentences) {
+    if (s.length > max) {
+      flush();
+      for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
+      continue;
+    }
+    if (current && current.length + s.length > max) flush();
+    current += s;
+  }
+  flush();
+  return chunks.filter(Boolean);
+}
+
+/* --------------------------- Geração com cache --------------------------- */
+
+async function narrateChunk(text: string, lang: string): Promise<string | null> {
+  const key = `${lang}::${text}`;
   const cached = generated.get(key);
   if (cached) return cached;
   try {
     const res = await narratePublic({
-      data: { text: entry.text, lang, voice: "onyx", mode: "story" },
+      data: { text, lang, voice: "onyx", mode: "story" },
     });
     if (!res?.audio_base64) return null;
     const url = base64ToBlobUrl(res.audio_base64, res.mime || "audio/mpeg");
@@ -150,8 +190,9 @@ async function resolveUrl(id: HotspotId, lang: string): Promise<string | null> {
 }
 
 /**
- * Toca (ou pausa) a narração do ponto. Só um áudio toca por vez:
- * clicar em outro ponto interrompe o anterior imediatamente.
+ * Toca (ou pausa) a narração COMPLETA do ponto. O áudio começa assim que o
+ * primeiro trecho é gerado e os demais trechos entram em sequência, sem
+ * perder nenhuma palavra do texto exibido. Só um áudio toca por vez.
  */
 export async function toggleHotspotAudio(id: HotspotId, lang = "pt") {
   if (typeof window === "undefined") return;
@@ -159,27 +200,75 @@ export async function toggleHotspotAudio(id: HotspotId, lang = "pt") {
     stopHotspotAudio();
     return;
   }
+  stopHotspotAudio();
+  const token = playToken;
   const el = ensureAudio();
-  try {
-    el.pause();
-  } catch {
-    /* ignore */
-  }
   setState({ id, loading: true });
 
-  const url = await resolveUrl(id, lang);
-  // Outro ponto foi acionado enquanto este carregava — descarta.
-  if (state.id !== id) return;
-  if (!url) {
+  const entry = AUDIO_HOTSPOTS[id];
+  if (entry.url) {
+    el.src = entry.url;
+    el.currentTime = 0;
+    setState({ id, loading: false });
+    try {
+      await el.play();
+    } catch {
+      stopHotspotAudio();
+    }
+    return;
+  }
+
+  const chunks = chunkText(fullSectionText(id));
+  if (!chunks.length) {
     stopHotspotAudio();
     return;
   }
-  if (el.src !== url) el.src = url;
-  el.currentTime = 0;
-  setState({ id, loading: false });
-  try {
-    await el.play();
-  } catch {
-    stopHotspotAudio();
+
+  for (let i = 0; i < chunks.length; i++) {
+    const url = await narrateChunk(chunks[i], lang);
+    if (token !== playToken) return; // usuário trocou de ponto ou parou
+    if (!url) continue; // trecho falhou: segue para o próximo sem perder o resto
+    if (i === 0) setState({ id, loading: false });
+    // Espera o trecho anterior terminar antes de tocar este.
+    await new Promise<void>((resolve) => {
+      const onEnded = () => {
+        cleanup();
+        resolve();
+      };
+      const onError = () => {
+        cleanup();
+        resolve();
+      };
+      const cleanup = () => {
+        el.removeEventListener("ended", onEnded);
+        el.removeEventListener("error", onError);
+      };
+      el.addEventListener("ended", onEnded);
+      el.addEventListener("error", onError);
+      el.src = url;
+      el.currentTime = 0;
+      el.play().catch(() => {
+        cleanup();
+        resolve();
+      });
+      // Se outro ponto assumir durante este trecho, encerra a espera.
+      const guard = setInterval(() => {
+        if (token !== playToken) {
+          clearInterval(guard);
+          cleanup();
+          resolve();
+        }
+      }, 200);
+      const origResolve = resolve;
+      void origResolve;
+      el.addEventListener(
+        "ended",
+        () => clearInterval(guard),
+        { once: true },
+      );
+    });
+    if (token !== playToken) return;
   }
+
+  if (token === playToken && state.id === id) stopHotspotAudio();
 }
