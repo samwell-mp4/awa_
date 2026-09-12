@@ -426,6 +426,7 @@ function CleanEmbed({
         </button>
       )}
     </div>
+    </div>
   );
 }
 
