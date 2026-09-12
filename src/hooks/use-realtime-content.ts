@@ -15,12 +15,23 @@ const TABLE_QUERIES: Record<string, string[][]> = {
     ["saudacoes"],
     ["trilha-words"],
   ],
+  dictionary_entries: [
+    ["dictionary"],
+    ["dict_admin"],
+    ["dict-patxoha-all"],
+    ["dict-category-totals"],
+    ["saudacoes"],
+    ["trilha-words"],
+  ],
   trails: [["trails"]],
   songs: [["songs_public"], ["songs_infantil"], ["songs_admin"]],
   daily_mission: [["daily_mission"], ["missions_all"]],
   daily_video: [["daily_video"], ["daily_video_all"], ["daily-word-video-pool"]],
   ambient_videos: [["ambient_videos"]],
-  site_config: [["site_config"]],
+  ui_templates: [["ui_templates"], ["site_config"]],
+  // site_config guarda todo o conteúdo dinâmico (adulto + infantil):
+  // heróis, branding, menu, histórias, jogos, totens, números, templates.
+  site_config: [["site_config"], ["aprender_numeros_content"]],
 };
 
 /**
