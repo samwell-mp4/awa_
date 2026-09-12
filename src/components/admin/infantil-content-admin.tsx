@@ -68,6 +68,7 @@ function StoriesAdmin() {
       await updateFn({ data: draft });
       toast.success("Histórias atualizadas!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_stories"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
