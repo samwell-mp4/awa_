@@ -1221,7 +1221,13 @@ function AldeiaVelhaPage() {
           />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {DOC_LINKS.map((url, i) => (
-              <DocumentaryCard key={url} url={url} index={i} />
+              <DocumentaryCard
+                key={url}
+                url={url}
+                index={i}
+                active={activeDoc === i}
+                onActivate={() => activateDoc(i)}
+              />
             ))}
           </div>
         </section>
