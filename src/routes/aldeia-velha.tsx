@@ -356,9 +356,11 @@ function CleanEmbed({
       ref={cropRef}
       className="relative w-full overflow-hidden bg-black"
       style={
-        mediaH != null
-          ? { height: `${mediaH}px` }
-          : { aspectRatio: IG_PLACEHOLDER_RATIO }
+        isFullscreen
+          ? { height: "100%" }
+          : mediaH != null
+            ? { height: `${mediaH}px` }
+            : { aspectRatio: IG_PLACEHOLDER_RATIO }
       }
     >
       <blockquote
