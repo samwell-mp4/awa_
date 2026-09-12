@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -230,9 +230,19 @@ function ensureEmbedScript() {
  * (reel) ou horizontal. Assim nenhum elemento do Instagram vaza, independente
  * da proporção da publicação.
  */
-function CleanEmbed({ url, title }: { url: string; title: string }) {
+function CleanEmbed({
+  url,
+  title,
+  onActivated,
+}: {
+  url: string;
+  title: string;
+  onActivated?: () => void;
+}) {
   const cropRef = useRef<HTMLDivElement | null>(null);
   const [mediaH, setMediaH] = useState<number | null>(null);
+  const onActivatedRef = useRef(onActivated);
+  onActivatedRef.current = onActivated;
 
   // Carrega o script e reprocessa periodicamente (o blockquote pode aparecer
   // depois do script já ter rodado, então chamamos process() algumas vezes).
@@ -280,6 +290,23 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
     };
   }, [title]);
 
+  // Detecta quando a pessoa toca em "play" dentro do embed do Instagram: o clique
+  // dentro do iframe tira o foco da janela (window blur) e o activeElement vira
+  // o iframe deste card. Usamos isso para garantir que só um documentário toque
+  // por vez — ao ativar um, o anterior é remontado (e portanto parado).
+  useEffect(() => {
+    const onWinBlur = () => {
+      const crop = cropRef.current;
+      if (!crop) return;
+      const a = document.activeElement;
+      if (a && a.tagName === "IFRAME" && crop.contains(a)) {
+        onActivatedRef.current?.();
+      }
+    };
+    window.addEventListener("blur", onWinBlur);
+    return () => window.removeEventListener("blur", onWinBlur);
+  }, []);
+
   return (
     <div
       ref={cropRef}
@@ -313,11 +340,39 @@ function CleanEmbed({ url, title }: { url: string; title: string }) {
   );
 }
 
-/** Card com o vídeo já embutido: o player é montado quando o card aparece na tela. */
-function DocumentaryCard({ url, index }: { url: string; index: number }) {
+/**
+ * Card com o vídeo já embutido: o player é montado quando o card aparece na tela.
+ * Para garantir que só um documentário toque por vez, cada card avisa quando seu
+ * embed recebe o foco (onActivate) e, quando deixa de ser o ativo, é remontado
+ * via `token` — isso remove e recria o iframe do Instagram, parando o vídeo que
+ * estava rodando.
+ */
+function DocumentaryCard({
+  url,
+  index,
+  active,
+  onActivate,
+}: {
+  url: string;
+  index: number;
+  active: boolean;
+  onActivate: () => void;
+}) {
   const label = `Documentário ${index + 1}`;
   const ref = useRef<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
+  // Contador que força o remount do CleanEmbed quando este card perde o "ativo":
+  // ao trocar de vídeo, o anterior é desmontado (parando a reprodução) e
+  // remontado em estado pausado (pronto para tocar de novo).
+  const [token, setToken] = useState(0);
+  const prevActive = useRef(active);
+
+  useEffect(() => {
+    if (prevActive.current && !active) {
+      setToken((t) => t + 1);
+    }
+    prevActive.current = active;
+  }, [active]);
 
   useEffect(() => {
     const el = ref.current;
@@ -343,7 +398,12 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
     <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:border-gold/50">
       <div ref={ref} className="relative w-full bg-black">
         {ready ? (
-          <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
+          <CleanEmbed
+            key={token}
+            url={url}
+            title={`${label} — Aldeia Velha`}
+            onActivated={onActivate}
+          />
         ) : (
           <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 104" }}>
             <Play className="h-8 w-8 fill-current text-gold/60" />
@@ -365,6 +425,13 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
 function AldeiaVelhaPage() {
   const backTo = useLastArea();
   const [zoom, setZoom] = useState<Photo | null>(null);
+  // Índice do documentário em reprodução. Só um toca por vez: ao tocar em outro,
+  // o ativo anterior é remontado (e portanto parado).
+  const [activeDoc, setActiveDoc] = useState<number | null>(null);
+  const activateDoc = useCallback(
+    (i: number) => setActiveDoc((cur) => (cur === i ? cur : i)),
+    [],
+  );
   const { tema } = Route.useSearch();
   const active = tema;
   const show = (id: string) => tema === id;
@@ -1154,7 +1221,13 @@ function AldeiaVelhaPage() {
           />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {DOC_LINKS.map((url, i) => (
-              <DocumentaryCard key={url} url={url} index={i} />
+              <DocumentaryCard
+                key={url}
+                url={url}
+                index={i}
+                active={activeDoc === i}
+                onActivate={() => activateDoc(i)}
+              />
             ))}
           </div>
         </section>
