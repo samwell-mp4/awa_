@@ -323,6 +323,7 @@ function CleanEmbed({
 
     apply();
     const ro = new ResizeObserver(apply);
+    ro.observe(crop);
     const mo = new MutationObserver(apply);
     mo.observe(crop, { childList: true, subtree: true });
     const t = window.setInterval(apply, 400);
