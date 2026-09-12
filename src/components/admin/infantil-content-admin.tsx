@@ -210,6 +210,7 @@ function GamesAdmin() {
       await updateFn({ data: draft });
       toast.success("Jogos atualizados!");
       qc.invalidateQueries({ queryKey: ["site_config", "infantil_games"] });
+      void notifyContentUpdated();
     } catch (e: any) {
       toast.error(e.message);
     }
