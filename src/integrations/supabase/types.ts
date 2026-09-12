@@ -827,6 +827,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_access_allowed: { Args: { _user_id: string }; Returns: boolean }
       is_login_allowed: {
         Args: { _email: string; _phone: string }
         Returns: boolean
