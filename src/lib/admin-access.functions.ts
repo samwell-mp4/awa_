@@ -126,7 +126,7 @@ export const listAllowlist = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await supabaseAdmin
       .from("login_allowlist")
-      .select("id,email,phone,note,created_at")
+      .select("id,email,phone,note,plan,created_at")
       .order("created_at", { ascending: false });
     if (error) throw error;
     return data ?? [];
