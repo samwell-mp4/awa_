@@ -154,10 +154,11 @@ export const addAllowlist = createServerFn({ method: "POST" })
     // Liberação automática: se a pessoa já tem conta, o acesso é concedido na hora.
     // Se ainda não tem, o gatilho do banco concede assim que ela criar a conta.
     const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const digits = (v?: string | null) => (v ?? "").replace(/\D/g, "");
     const target = userList?.users.find(
       (u) =>
-        (email && u.email?.toLowerCase() === email) || (phone && u.phone === phone.replace(/^\+/, "")) ||
-        (phone && u.phone === phone),
+        (!!email && u.email?.replace(/\s+/g, "").toLowerCase() === email) ||
+        (!!phone && digits(u.phone) !== "" && digits(u.phone) === digits(phone)),
     );
     if (target) {
       await supabaseAdmin
