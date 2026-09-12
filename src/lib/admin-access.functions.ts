@@ -145,7 +145,22 @@ export const addAllowlist = createServerFn({ method: "POST" })
       .from("login_allowlist")
       .insert({ email, phone, note: data.note?.trim() || null, created_by: context.userId });
     if (error) throw new Error(error.message);
-    return { ok: true };
+
+    // Liberação automática: se a pessoa já tem conta, o acesso é concedido na hora.
+    // Se ainda não tem, o gatilho do banco concede assim que ela criar a conta.
+    const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const target = userList?.users.find(
+      (u) =>
+        (email && u.email?.toLowerCase() === email) || (phone && u.phone === phone.replace(/^\+/, "")) ||
+        (phone && u.phone === phone),
+    );
+    if (target) {
+      await supabaseAdmin
+        .from("user_roles")
+        .upsert({ user_id: target.id, role: "premium", expires_at: null }, { onConflict: "user_id,role" });
+      return { ok: true, activated: true };
+    }
+    return { ok: true, activated: false };
   });
 
 export const removeAllowlist = createServerFn({ method: "POST" })
@@ -154,10 +169,41 @@ export const removeAllowlist = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: entry } = await supabaseAdmin
+      .from("login_allowlist")
+      .select("email,phone")
+      .eq("id", data.id)
+      .maybeSingle();
     const { error } = await supabaseAdmin.from("login_allowlist").delete().eq("id", data.id);
     if (error) throw error;
+
+    // Remoção automática do acesso concedido por essa liberação.
+    if (entry) {
+      const email = entry.email?.toLowerCase() ?? null;
+      const phone = entry.phone ?? null;
+      const { data: userList } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+      const target = userList?.users.find(
+        (u) =>
+          (email && u.email?.toLowerCase() === email) ||
+          (phone && (u.phone === phone || u.phone === phone.replace(/^\+/, ""))),
+      );
+      if (target) {
+        const { data: isTargetAdmin } = await supabaseAdmin.rpc("has_role", {
+          _user_id: target.id,
+          _role: "admin",
+        });
+        if (!isTargetAdmin) {
+          await supabaseAdmin
+            .from("user_roles")
+            .delete()
+            .eq("user_id", target.id)
+            .eq("role", "premium");
+        }
+      }
+    }
     return { ok: true };
   });
+
 
 export const checkMyLoginAllowed = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

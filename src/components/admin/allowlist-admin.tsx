@@ -30,8 +30,12 @@ export function AllowlistAdmin() {
   async function add() {
     if (!email.trim() && !phone.trim()) return toast.error("Informe email ou celular");
     try {
-      await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined } });
-      toast.success("Acesso liberado");
+      const res = await addFn({ data: { email: email.trim() || undefined, phone: phone.trim() || undefined, note: note.trim() || undefined } });
+      toast.success(
+        res?.activated
+          ? "Acesso liberado e ativado na hora para essa pessoa"
+          : "Acesso liberado — será ativado automaticamente quando a pessoa criar a conta",
+      );
       setEmail("");
       setPhone("");
       setNote("");
@@ -40,6 +44,7 @@ export function AllowlistAdmin() {
       toast.error(e.message);
     }
   }
+
 
   async function remove(id: string, label: string) {
     if (!confirm(`Remover acesso de ${label}?`)) return;
