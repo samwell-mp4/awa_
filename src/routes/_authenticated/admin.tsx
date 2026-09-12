@@ -1,11 +1,8 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteConfig } from "@/lib/admin-layout.functions";
+
 import {
   ArrowLeft,
   BookOpen,
@@ -126,10 +123,8 @@ function AdminPage() {
             <span className="hidden text-lg sm:inline">Painel AWÃ</span>
           </div>
           <button
-            onClick={async () => {
-              localStorage.removeItem("adminLogado");
-              await signOut();
-            }}
+            onClick={signOut}
+
             className="inline-flex items-center gap-1 rounded-full border border-gold/30 px-3 py-1.5 text-xs font-semibold text-foreground/80 hover:border-gold/60 hover:text-gold"
           >
             <LogOut className="h-3.5 w-3.5" /> Sair
