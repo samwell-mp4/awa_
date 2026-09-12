@@ -20,6 +20,7 @@ export function AllowlistAdmin() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
+  const [plan, setPlan] = useState<"ambos" | "adulto" | "infantil">("ambos");
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["login_allowlist"],
