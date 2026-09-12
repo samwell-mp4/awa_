@@ -134,16 +134,17 @@ export const listAllowlist = createServerFn({ method: "GET" })
 
 export const addAllowlist = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { email?: string; phone?: string; note?: string }) => d)
+  .inputValidator((d: { email?: string; phone?: string; note?: string; plan?: string }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const email = data.email?.trim().toLowerCase() || null;
     const phone = data.phone?.trim() || null;
+    const plan = ["adulto", "infantil", "ambos"].includes(data.plan ?? "") ? data.plan! : "ambos";
     if (!email && !phone) throw new Error("Informe email ou celular");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("login_allowlist")
-      .insert({ email, phone, note: data.note?.trim() || null, created_by: context.userId });
+      .insert({ email, phone, plan, note: data.note?.trim() || null, created_by: context.userId });
     if (error) throw new Error(error.message);
 
     // Liberação automática: se a pessoa já tem conta, o acesso é concedido na hora.
