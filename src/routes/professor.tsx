@@ -15,7 +15,6 @@ import {
   Check,
   RefreshCcw,
   Sparkles,
-  GraduationCap,
   Mic,
   Square,
   Pause,
@@ -183,6 +182,7 @@ const L10N: Record<Lang, L10n> = {
 };
 
 type VoiceL10n = {
+  invite: string;
   talk: string;
   stopRec: string;
   listening: string;
@@ -199,6 +199,7 @@ type VoiceL10n = {
 
 const VOICE_L10N: Record<Lang, VoiceL10n> = {
   pt: {
+    invite: "Toque para falar com o Professor Akuã",
     talk: "Falar",
     stopRec: "Parar e enviar",
     listening: "Ouvindo você…",
@@ -213,6 +214,7 @@ const VOICE_L10N: Record<Lang, VoiceL10n> = {
     sttFail: "Não consegui entender o áudio. Tente de novo ou digite.",
   },
   en: {
+    invite: "Tap to speak with Professor Akuã",
     talk: "Speak",
     stopRec: "Stop and send",
     listening: "Listening to you…",
@@ -227,6 +229,7 @@ const VOICE_L10N: Record<Lang, VoiceL10n> = {
     sttFail: "I couldn't understand the audio. Try again or type instead.",
   },
   es: {
+    invite: "Toca para hablar con el Profesor Akuã",
     talk: "Hablar",
     stopRec: "Parar y enviar",
     listening: "Escuchándote…",
@@ -241,6 +244,7 @@ const VOICE_L10N: Record<Lang, VoiceL10n> = {
     sttFail: "No pude entender el audio. Inténtalo de nuevo o escribe.",
   },
   pat: {
+    invite: "Toque para falar com o Professor Akuã",
     talk: "Falar",
     stopRec: "Parar e enviar",
     listening: "Ouvindo você…",
@@ -532,35 +536,7 @@ function ProfessorPage() {
         </div>
       </header>
 
-      <main className="flex-1 mx-auto w-full max-w-3xl px-4 md:px-8 pb-44 pt-6">
-        {isEmpty && !loading && (
-          <section className="mb-8 overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-br from-forest-deep/80 via-card/60 to-forest-deep/40 p-6 text-center shadow-[var(--shadow-card)] md:p-8">
-            <div className="relative mx-auto w-fit">
-              <div className="rounded-full bg-gradient-to-br from-gold via-gold/40 to-transparent p-[3px] shadow-[var(--shadow-gold)]">
-                <img
-                  src={logoSrc}
-                  alt="Professor Akuã"
-                  className="h-20 w-20 rounded-full border-2 border-forest-deep object-cover md:h-24 md:w-24"
-                />
-              </div>
-              <span
-                aria-hidden
-                className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-emerald-400 ring-2 ring-forest-deep"
-              />
-            </div>
-            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-forest-deep/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-gold">
-              <GraduationCap className="h-3 w-3" />
-              {t.heroBadge}
-            </span>
-            <h1 className="mt-3 font-display text-2xl font-black text-cream md:text-3xl">
-              Professor Akuã
-            </h1>
-            <p className="mx-auto mt-1.5 max-w-md text-xs text-foreground/70 md:text-sm">
-              {t.subtitle}
-            </p>
-          </section>
-        )}
-
+      <main className="flex-1 mx-auto w-full max-w-3xl px-4 pb-72 pt-6 md:px-8">
         <div className="space-y-5">
           {messages.map((m, i) => (
             <Bubble
@@ -577,111 +553,89 @@ function ProfessorPage() {
 
       </main>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          send(input);
-        }}
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.94)] backdrop-blur-xl shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)]"
-      >
-        {voiceState !== "idle" && (
-          <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-4 pt-3 md:px-8">
-            <span
-              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold ${
-                voiceState === "listening"
-                  ? "border-rose-400/40 bg-rose-500/15 text-rose-200"
-                  : voiceState === "thinking"
-                    ? "border-gold/40 bg-gold/15 text-gold"
-                    : "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
-              }`}
-              aria-live="polite"
-            >
-              <span
-                aria-hidden
-                className={`h-2 w-2 rounded-full ${
-                  voiceState === "listening"
-                    ? "animate-pulse bg-rose-400"
-                    : voiceState === "thinking"
-                      ? "animate-pulse bg-gold"
-                      : "animate-pulse bg-emerald-400"
-                }`}
-              />
-              {voiceState === "listening" ? v.listening : voiceState === "thinking" ? v.thinking : v.speaking}
-            </span>
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.96)] px-4 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-3">
+          <p className="text-center text-xs font-bold uppercase text-gold/80" aria-live="polite">
+            {voiceState === "listening"
+              ? v.listening
+              : voiceState === "thinking"
+                ? v.thinking
+                : voiceState === "speaking"
+                  ? v.speaking
+                  : v.invite}
+          </p>
 
-            {voiceState === "speaking" && (
-              <>
-                <button
-                  type="button"
-                  onClick={voicePaused ? resumeVoice : pauseVoice}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-card/60 px-3 py-1.5 text-[11px] font-bold text-foreground/85 transition hover:border-gold/60 hover:text-cream"
-                >
-                  {voicePaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-                  {voicePaused ? v.resume : v.pause}
-                </button>
-                <button
-                  type="button"
-                  onClick={stopVoice}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/70 transition hover:border-rose-400/50 hover:text-rose-200"
-                >
-                  <Square className="h-3.5 w-3.5" />
-                  {v.stopVoice}
-                </button>
-              </>
-            )}
-          </div>
-        )}
-
-        <div className="mx-auto flex max-w-3xl items-end gap-2.5 px-4 py-3 md:px-8">
           <button
             type="button"
             onClick={handleMic}
             disabled={loading || voiceState === "thinking"}
-            className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 ${
+            className={`flex w-full max-w-sm items-center justify-center gap-3 rounded-2xl border px-6 py-4 text-base font-black uppercase transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 ${
               recorder.isRecording
                 ? "border-rose-400/60 bg-rose-500/25 text-rose-100 shadow-lg shadow-rose-500/20 animate-pulse"
-                : "border-gold/30 bg-card/70 text-gold hover:border-gold/60 hover:bg-card/90"
+                : "border-gold/50 bg-gold text-forest-deep shadow-lg shadow-gold/20 hover:brightness-110"
             }`}
             aria-label={recorder.isRecording ? v.stopRec : v.talk}
             title={recorder.isRecording ? v.stopRec : v.talk}
           >
-            {recorder.isRecording ? <Square className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            {recorder.isRecording ? <Square className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
+            {recorder.isRecording ? v.stopRec : v.talk}
           </button>
-          <div className="relative flex-1">
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  send(input);
-                }
-              }}
-              placeholder={t.placeholder}
-              rows={1}
-              maxLength={1000}
-              className="w-full resize-none rounded-2xl border border-gold/30 bg-card/80 px-4 py-3.5 pr-14 text-sm text-cream shadow-inner placeholder:text-foreground/40 focus:outline-none focus:border-gold/70 focus:ring-2 focus:ring-gold/25 transition"
-            />
-            {input.length > 800 && (
-              <div className="absolute right-3 bottom-2 text-[10px] font-semibold text-foreground/50">
-                {input.length}/1000
-              </div>
-            )}
-          </div>
-          <button
-            type="submit"
-            disabled={loading || !input.trim()}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-gold to-gold/80 text-forest-deep shadow-lg shadow-gold/25 ring-1 ring-gold/40 transition hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
-            aria-label={t.send}
+
+          {voiceState === "speaking" && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={voicePaused ? resumeVoice : pauseVoice}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-gold/30 bg-card/70 px-4 py-2 text-xs font-bold text-foreground/85"
+              >
+                {voicePaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                {voicePaused ? v.resume : v.pause}
+              </button>
+              <button
+                type="button"
+                onClick={stopVoice}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-400/40 bg-rose-500/15 px-4 py-2 text-xs font-bold text-rose-200"
+              >
+                <Square className="h-4 w-4" /> {v.stopVoice}
+              </button>
+            </div>
+          )}
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void send(input);
+            }}
+            className="flex w-full items-end gap-2.5"
           >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-          </button>
+            <div className="relative flex-1">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    void send(input);
+                  }
+                }}
+                placeholder={t.placeholder}
+                rows={1}
+                maxLength={1000}
+                className="w-full resize-none rounded-2xl border border-gold/30 bg-card/80 px-4 py-3.5 text-sm text-cream shadow-inner placeholder:text-foreground/40 focus:border-gold/70 focus:outline-none focus:ring-2 focus:ring-gold/25"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold text-forest-deep shadow-lg shadow-gold/20 transition active:scale-95 disabled:opacity-40"
+              aria-label={t.send}
+            >
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+            </button>
+          </form>
         </div>
-        <div className="pb-2 text-center text-[10px] text-foreground/40">
-          {recorder.isRecording ? v.stopRec : t.hint}
-        </div>
-      </form>
+      </div>
     </div>
   );
 }
