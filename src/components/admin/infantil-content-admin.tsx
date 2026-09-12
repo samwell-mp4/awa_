@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Save, Plus, Trash2, BookOpen, Gamepad2, Map, Upload, Loader2, Volume2, Type, Palette } from "lucide-react";
 import { Field, Input, Btn, Card, Textarea } from "./ui";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyContentUpdated } from "@/lib/notify-content-updated";
 
 export function InfantilContentAdmin() {
   const [tab, setTab] = useState<"stories" | "games" | "trails">("stories");
