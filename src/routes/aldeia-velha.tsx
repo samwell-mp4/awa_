@@ -230,9 +230,19 @@ function ensureEmbedScript() {
  * (reel) ou horizontal. Assim nenhum elemento do Instagram vaza, independente
  * da proporção da publicação.
  */
-function CleanEmbed({ url, title }: { url: string; title: string }) {
+function CleanEmbed({
+  url,
+  title,
+  onActivated,
+}: {
+  url: string;
+  title: string;
+  onActivated?: () => void;
+}) {
   const cropRef = useRef<HTMLDivElement | null>(null);
   const [mediaH, setMediaH] = useState<number | null>(null);
+  const onActivatedRef = useRef(onActivated);
+  onActivatedRef.current = onActivated;
 
   // Carrega o script e reprocessa periodicamente (o blockquote pode aparecer
   // depois do script já ter rodado, então chamamos process() algumas vezes).
