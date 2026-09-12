@@ -240,6 +240,10 @@ function CleanEmbed({
   onActivated?: () => void;
 }) {
   const cropRef = useRef<HTMLDivElement | null>(null);
+  // "Palco" que entra em tela cheia: fundo preto ocupando a tela toda, com o
+  // recorte exato do vídeo centralizado — assim o cabeçalho/rodapé do
+  // Instagram continuam escondidos mesmo em fullscreen.
+  const stageRef = useRef<HTMLDivElement | null>(null);
   const [mediaH, setMediaH] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const onActivatedRef = useRef(onActivated);
@@ -274,7 +278,7 @@ function CleanEmbed({
   // incluindo saída pelo gesto/botão nativo do aparelho.
   useEffect(() => {
     const onFsChange = () => {
-      const active = document.fullscreenElement === cropRef.current;
+      const active = document.fullscreenElement === stageRef.current;
       setIsFullscreen(active);
       if (!active) {
         try {
