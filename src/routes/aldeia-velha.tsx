@@ -261,7 +261,7 @@ function DocumentaryCard({ url, index }: { url: string; index: number }) {
         {ready ? (
           <CleanEmbed url={url} title={`${label} — Aldeia Velha`} />
         ) : (
-          <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 125" }}>
+          <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 104" }}>
             <Play className="h-8 w-8 fill-current text-gold/60" />
           </div>
         )}
