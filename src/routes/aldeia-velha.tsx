@@ -241,8 +241,51 @@ function CleanEmbed({
 }) {
   const cropRef = useRef<HTMLDivElement | null>(null);
   const [mediaH, setMediaH] = useState<number | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const onActivatedRef = useRef(onActivated);
   onActivatedRef.current = onActivated;
+
+  /**
+   * Alterna tela cheia no card do vídeo. Ao entrar, tenta virar a tela do
+   * aparelho conforme a orientação do vídeo (reel vertical → retrato, filme
+   * horizontal → paisagem), mantendo o recorte sincronizado com a mídia.
+   * Ao sair, devolve a orientação ao normal.
+   */
+  const toggleFullscreen = async () => {
+    const crop = cropRef.current;
+    if (!crop) return;
+    try {
+      if (document.fullscreenElement === crop) {
+        await document.exitFullscreen();
+        return;
+      }
+      await crop.requestFullscreen();
+      const w = crop.clientWidth || 1;
+      const h = mediaH ?? crop.clientHeight || 1;
+      const orientation: OrientationLockType = h > w ? "portrait" : "landscape";
+      await screen.orientation.lock(orientation).catch(() => undefined);
+    } catch {
+      /* aparelhos que não suportam fullscreen/orientation: segue sem travar */
+    }
+  };
+
+  // Sincroniza o estado (e a rotação da tela) com o ciclo de fullscreen,
+  // incluindo saída pelo gesto/botão nativo do aparelho.
+  useEffect(() => {
+    const onFsChange = () => {
+      const active = document.fullscreenElement === cropRef.current;
+      setIsFullscreen(active);
+      if (!active) {
+        try {
+          screen.orientation.unlock();
+        } catch {
+          /* noop */
+        }
+      }
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
 
   // Carrega o script e reprocessa periodicamente (o blockquote pode aparecer
   // depois do script já ter rodado, então chamamos process() algumas vezes).
