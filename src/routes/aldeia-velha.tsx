@@ -261,7 +261,7 @@ function CleanEmbed({
       }
       await crop.requestFullscreen();
       const w = crop.clientWidth || 1;
-      const h = mediaH ?? crop.clientHeight || 1;
+      const h = mediaH ?? (crop.clientHeight || 1);
       const orientation: OrientationLockType = h > w ? "portrait" : "landscape";
       await screen.orientation.lock(orientation).catch(() => undefined);
     } catch {
