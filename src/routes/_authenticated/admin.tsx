@@ -42,14 +42,39 @@ export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel de Controle — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async () => {
     // O layout _authenticated já garante que há sessão. Aqui validamos a role
-    // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles).
+    // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles) e, se a
+    // chamada falhar por rede/timeout, confirmamos direto em public.user_roles.
     const { data: userData } = await supabase.auth.getUser();
     const uid = userData.user?.id;
     if (!uid) throw redirect({ to: "/auth" });
-    const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: uid,
-      _role: "admin",
-    });
+
+    let isAdmin = false;
+    let checked = false;
+    for (let attempt = 0; attempt < 2 && !checked; attempt++) {
+      const { data, error } = await supabase.rpc("has_role", {
+        _user_id: uid,
+        _role: "admin",
+      });
+      if (!error) {
+        checked = true;
+        isAdmin = data === true;
+      }
+    }
+
+    if (!checked || !isAdmin) {
+      const { data: rows, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", uid)
+        .eq("role", "admin")
+        .limit(1);
+      if (!error && rows && rows.length > 0) isAdmin = true;
+      else if (!checked && error) {
+        // Falha técnica de verificação: não trate como "sem permissão".
+        throw redirect({ to: "/auth" });
+      }
+    }
+
     if (!isAdmin) throw redirect({ to: "/acesso-negado" });
   },
   component: AdminPage,
