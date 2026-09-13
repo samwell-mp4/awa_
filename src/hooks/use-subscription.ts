@@ -105,9 +105,18 @@ export function useSubscription() {
         () => void refetchRef.current(),
       )
       .subscribe();
+    const chAllow = supabase
+      .channel(`allow_${user.id}_${suffix}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "login_allowlist" },
+        () => void refetchRef.current(),
+      )
+      .subscribe();
     return () => {
       supabase.removeChannel(chSub);
       supabase.removeChannel(chRoles);
+      supabase.removeChannel(chAllow);
     };
   }, [user?.id]);
 
