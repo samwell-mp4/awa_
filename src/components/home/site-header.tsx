@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -9,26 +9,9 @@ import { useNavContent, type NavGroup, type NavMode } from "@/lib/home-content";
 import { Logo } from "./logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-/**
- * Lê o acesso administrativo de emergência apenas depois da hidratação, para o
- * HTML do servidor e do navegador nunca divergirem (evitava o erro de tela).
- */
-function useEmergencyAdmin(): boolean {
-  const [emergency, setEmergency] = useState(false);
-  useEffect(() => {
-    try {
-      setEmergency(window.localStorage.getItem("adminLogado") === "sim");
-    } catch {
-      setEmergency(false);
-    }
-  }, []);
-  return emergency;
-}
-
 export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: NavMode; showBackButton?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
-  const emergencyAdmin = useEmergencyAdmin();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useTranslation();
@@ -106,7 +89,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
                 {n.label}
               </Link>
             ))}
-            {(isAdmin || emergencyAdmin) && (
+            {isAdmin && (
               <Link
                 to="/admin"
                 className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30"
@@ -166,7 +149,6 @@ function MobileDrawer({
   mode?: NavMode;
 }) {
   const { t } = useTranslation();
-  const emergencyAdmin = useEmergencyAdmin();
   const { groups } = useNavContent(mode);
   const [openGroup, setOpenGroup] = useState<string | null>(groups[0]?.title ?? null);
   const isKids = mode === "infantil";
@@ -230,7 +212,7 @@ function MobileDrawer({
           })}
 
           <div className="mt-2 flex flex-col gap-2">
-            {(isAdmin || emergencyAdmin) && (
+            {isAdmin && (
               <Link
                 to="/admin"
                 onClick={onClose}
@@ -320,7 +302,7 @@ function MobileDrawer({
         })}
 
         <div className="border-t border-gold/15 pt-3 flex flex-col gap-1">
-          {(isAdmin || emergencyAdmin) && (
+          {isAdmin && (
             <Link
               to="/admin"
               onClick={onClose}
