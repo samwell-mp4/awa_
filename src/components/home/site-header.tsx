@@ -120,9 +120,12 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             <LanguageSwitcher />
           </nav>
         )}
-        <div className={isKids ? "" : "xl:hidden"}>
-          <LanguageSwitcher />
-        </div>
+        {isKids && (
+          <div>
+            <LanguageSwitcher />
+          </div>
+        )}
+
       </div>
 
       {open && (
