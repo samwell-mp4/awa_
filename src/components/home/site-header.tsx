@@ -63,17 +63,29 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             </span>
           </div>
         ) : (
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className={
-              isKids
-                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
-                : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
-            }
-            aria-label={t("nav.menu")}
-          >
-            <Menu className={isKids ? "h-7 w-7" : "h-5 w-5"} strokeWidth={isKids ? 3 : 2} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className={
+                isKids
+                  ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                  : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
+              }
+              aria-label={t("nav.menu")}
+            >
+              <Menu className={isKids ? "h-7 w-7" : "h-5 w-5"} strokeWidth={isKids ? 3 : 2} />
+            </button>
+            <span
+              className={
+                isKids
+                  ? "font-display text-lg font-black uppercase text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.2)]"
+                  : "font-display text-sm font-bold uppercase tracking-widest text-gold xl:hidden"
+              }
+            >
+              {t("nav.menu")}
+            </span>
+          </div>
+
         )}
         <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
           <Logo mode={isKids ? "infantil" : "adulto"} />
