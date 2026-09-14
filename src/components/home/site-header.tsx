@@ -62,21 +62,24 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
               {t("common.voltar")}
             </span>
           </div>
-        ) : isKids ? (
+        ) : (
           <button
             onClick={() => setOpen((v) => !v)}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+            className={
+              isKids
+                ? "grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] transition-transform active:translate-y-0.5 active:shadow-none"
+                : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold xl:hidden"
+            }
             aria-label={t("nav.menu")}
           >
-            <Menu className="h-7 w-7" strokeWidth={3} />
+            <Menu className={isKids ? "h-7 w-7" : "h-5 w-5"} strokeWidth={isKids ? 3 : 2} />
           </button>
-        ) : null}
-
+        )}
         <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
           <Logo mode={isKids ? "infantil" : "adulto"} />
         </div>
         {!isKids && (
-          <nav className="flex flex-1 items-center gap-1 overflow-x-auto">
+          <nav className="hidden xl:flex items-center gap-1">
             {topNavLinks.map((n) => (
               <Link
                 key={n.href}
@@ -120,12 +123,9 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
             <LanguageSwitcher />
           </nav>
         )}
-        {isKids && (
-          <div>
-            <LanguageSwitcher />
-          </div>
-        )}
-
+        <div className={isKids ? "" : "xl:hidden"}>
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {open && (

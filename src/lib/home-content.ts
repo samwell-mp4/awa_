@@ -55,6 +55,7 @@ export const navGroups: NavGroup[] = [
     title: "Língua e Conhecimento",
     items: [
       { label: "Dicionário", href: "/dicionario", icon: Library },
+      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
       { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
@@ -66,7 +67,13 @@ export const navGroups: NavGroup[] = [
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
       { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
-      { label: "Aprender Números", href: "/aprender-numeros", icon: Award },
+    ],
+  },
+  {
+    title: "Quem Somos e Ajuda",
+    items: [
+      { label: "Biografia Awã Tech", href: "/biografia", icon: BookOpen },
+      { label: "Baixar / Instalar App", href: "/instalar", icon: Download },
     ],
   },
   {
@@ -77,6 +84,7 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
+  { label: "Tradutor", href: "/traduzir" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
@@ -84,21 +92,22 @@ export const topNavLinks = [
   { label: "Jogos", href: "/jogos" },
 ];
 
-
 export type NavMode = "adulto" | "infantil" | "all";
 
 const ADULT_HREFS = new Set([
   "/dicionario",
+  "/traduzir",
   "/trilhas",
   "/professor",
   "/historias",
   "/musicas",
   "/videos",
+  "/biografia",
+  "/aldeia-velha",
   "/instalar",
   "/minha-conta",
   "/aprender-numeros",
 ]);
-
 
 const CHILD_HREFS = new Set([
   "/saudacoes",
@@ -143,6 +152,7 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
+        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
         { label: "Professor Awã", href: "/professor-infantil", icon: GraduationCap },
       ],
@@ -155,7 +165,20 @@ export function useNavContent(mode: NavMode = "all") {
         { label: t("nav.musicasLong"), href: "/musicas", icon: Play },
         { label: t("nav.videosLong"), href: "/videos", icon: Video },
         { label: t("nav.jogosLong"), href: "/jogos", icon: Trophy },
+      ],
+    },
+    {
+      title: t("nav.groups.educacao"),
+      items: [
         { label: "Aprender Números", href: "/aprender-numeros", icon: Award },
+      ],
+    },
+    {
+      title: t("nav.groups.quemSomos"),
+      items: [
+        { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
+        { label: "Aldeia Velha", href: "/aldeia-velha", icon: ScrollText },
+        { label: t("nav.instalar"), href: "/instalar", icon: Download },
       ],
     },
     {
@@ -169,6 +192,7 @@ export function useNavContent(mode: NavMode = "all") {
 
   const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
+    { label: t("nav.tradutor"), href: "/traduzir" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },
@@ -176,7 +200,6 @@ export function useNavContent(mode: NavMode = "all") {
     { label: t("nav.jogos"), href: "/jogos" },
     { label: "Números", href: "/aprender-numeros" },
   ];
-
   const top = filterByMode(rawTop, mode);
   return { groups, top };
 }
