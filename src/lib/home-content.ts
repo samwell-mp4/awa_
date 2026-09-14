@@ -55,7 +55,6 @@ export const navGroups: NavGroup[] = [
     title: "Língua e Conhecimento",
     items: [
       { label: "Dicionário", href: "/dicionario", icon: Library },
-      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
       { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
@@ -67,13 +66,7 @@ export const navGroups: NavGroup[] = [
       { label: "Músicas e Cantigas", href: "/musicas", icon: Play },
       { label: "Vídeos e Registros", href: "/videos", icon: Video },
       { label: "Jogos e Atividades", href: "/jogos", icon: Trophy },
-    ],
-  },
-  {
-    title: "Quem Somos e Ajuda",
-    items: [
-      { label: "Biografia Awã Tech", href: "/biografia", icon: BookOpen },
-      { label: "Baixar / Instalar App", href: "/instalar", icon: Download },
+      { label: "Aprender Números", href: "/aprender-numeros", icon: Award },
     ],
   },
   {
@@ -84,13 +77,13 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
-  { label: "Tradutor", href: "/traduzir" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
   { label: "Vídeos", href: "/videos" },
   { label: "Jogos", href: "/jogos" },
 ];
+
 
 export type NavMode = "adulto" | "infantil" | "all";
 
