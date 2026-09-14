@@ -76,7 +76,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
           <Logo mode={isKids ? "infantil" : "adulto"} />
         </div>
         {!isKids && (
-          <nav className="hidden xl:flex items-center gap-1">
+          <nav className="flex flex-1 items-center gap-1 overflow-x-auto">
             {topNavLinks.map((n) => (
               <Link
                 key={n.href}
