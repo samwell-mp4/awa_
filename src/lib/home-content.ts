@@ -96,18 +96,16 @@ export type NavMode = "adulto" | "infantil" | "all";
 
 const ADULT_HREFS = new Set([
   "/dicionario",
-  "/traduzir",
   "/trilhas",
   "/professor",
   "/historias",
   "/musicas",
   "/videos",
-  "/biografia",
-  "/aldeia-velha",
   "/instalar",
   "/minha-conta",
   "/aprender-numeros",
 ]);
+
 
 const CHILD_HREFS = new Set([
   "/saudacoes",
