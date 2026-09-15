@@ -58,8 +58,13 @@ function IntercambioPage() {
         </header>
 
         <section className="mt-10">
+          <IntercambioDocumentario />
+        </section>
+
+        <section className="mt-10">
           <IntercambioStory onZoom={setZoom} />
         </section>
+
       </div>
 
       {zoom && (
