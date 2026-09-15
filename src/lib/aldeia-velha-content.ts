@@ -620,6 +620,15 @@ export const THEMES: Theme[] = [
     photo: PHOTOS.escolaAtual,
   },
   {
+    id: "intercambio",
+    label: "Intercâmbio",
+    eyebrow: "Intercâmbio Cultural e Territorial",
+    summary:
+      "Experiência guiada do Intercâmbio Cultural e Territorial da Escola Indígena Pataxó Aldeia Velha: caminhada pelo território, saberes tradicionais, pintura corporal, rodas de conversa e o encontro entre gerações.",
+    photo: PHOTOS.jogosInfanto,
+  },
+  {
+
     id: "patxoha",
     label: "Patxôhã",
     eyebrow: "Língua materna",
