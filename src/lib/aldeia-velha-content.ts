@@ -500,6 +500,56 @@ export const INTERCAMBIO_PHOTOS = {
     "Caminhada cultural pelo território durante o intercâmbio",
     "Participantes Pataxó caminhando juntos pelo território, com pinturas corporais e trajes tradicionais",
   ),
+  artesanato: p(
+    interArtesanato,
+    "Ancião ensinando o trabalho com madeira e fibras naturais",
+    "Ancião Pataxó sentado trabalhando madeira e fibras, rodeado por estudantes que observam",
+  ),
+  cantoRoda: p(
+    interCantoRoda,
+    "Canto de acolhimento com maracás na oca da escola",
+    "Comunidade reunida em fila cantando com maracás sob a cobertura de palha decorada com bandeirinhas",
+  ),
+  acolhida: p(
+    interAcolhida,
+    "Acolhida dos estudantes na Aldeia Pataxó",
+    "Liderança Pataxó recebendo estudantes sentados sob a árvore, junto à placa da aldeia",
+  ),
+  rodaOca: p(
+    interRodaOca,
+    "Estudantes reunidos na oca antes das atividades",
+    "Jovens em pé na oca de palha, atentos ao início das atividades do intercâmbio",
+  ),
+  oficinaFibras: p(
+    interOficinaFibras,
+    "Oficina de saberes tradicionais registrada pela comunidade",
+    "Roda de pessoas em volta da mesa onde o ancião demonstra o trabalho com fibras, com câmera registrando",
+  ),
+  escutaMata: p(
+    interEscutaMata,
+    "Escuta e conversa na entrada da mata",
+    "Grande grupo de estudantes ouvindo uma liderança Pataxó na trilha, com a mata ao fundo",
+  ),
+  banhoErvas: p(
+    interBanhoErvas,
+    "Banho de ervas durante a vivência cultural",
+    "Estudantes em pé recebendo banho de ervas preparado em panela grande sob as árvores",
+  ),
+  descanso: p(
+    interDescanso,
+    "Momento de descanso e convivência no alojamento",
+    "Participantes deitados em colchões conversando dentro do alojamento da aldeia",
+  ),
+  cozinha: p(
+    interCozinha,
+    "Preparo da comida tradicional em folhas de bananeira",
+    "Alimentos envoltos em folhas de bananeira sobre a mesa da cozinha tradicional",
+  ),
+  defumacao: p(
+    interDefumacao,
+    "Defumação e bênção antes das atividades",
+    "Pajé conduzindo defumação no centro da roda de estudantes",
+  ),
 } as const;
 
 export const INTERCAMBIO_GALLERY: Photo[] = Object.values(INTERCAMBIO_PHOTOS);
