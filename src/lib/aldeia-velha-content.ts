@@ -628,8 +628,8 @@ export const THEMES: Theme[] = [
     photo: PHOTOS.jogosInfanto,
   },
   {
-
     id: "patxoha",
+
     label: "Patxôhã",
     eyebrow: "Língua materna",
     summary:
