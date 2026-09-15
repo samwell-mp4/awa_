@@ -686,36 +686,67 @@ function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
         </div>
       </div>
 
-      <div className="card-elev rounded-2xl p-5">
-        <h4 className="font-display text-lg font-black text-cream">
-          📸 Galeria — Momentos do Intercâmbio
-        </h4>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {INTERCAMBIO_GALLERY.map((ph) => (
-            <figure key={ph.src} className="overflow-hidden rounded-xl border border-gold/15">
-              <img
-                src={ph.src}
-                alt={ph.alt}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[4/3] w-full object-cover"
-              />
-              <figcaption className="px-3 py-2 text-[12.5px] leading-snug text-foreground/70">
-                {ph.caption}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
-            <div key={n.title} className="rounded-xl border border-gold/15 p-3">
-              <p className="text-[13px] font-bold text-gold/90">
-                {i + 1}. {n.title}
-              </p>
-              <p className="mt-1 text-[13px] leading-relaxed text-foreground/75">{n.text}</p>
+      <div className="card-elev overflow-hidden rounded-2xl">
+        <button
+          type="button"
+          onClick={() => setFolderOpen((v) => !v)}
+          aria-expanded={folderOpen}
+          className="flex w-full items-center gap-3 px-5 py-4 text-left"
+        >
+          <FolderOpen className="h-5 w-5 shrink-0 text-gold" />
+          <span className="min-w-0 flex-1">
+            <span className="block truncate font-display text-lg font-black text-cream">
+              Pasta de fotos — Intercâmbio
+            </span>
+            <span className="block text-[12.5px] text-foreground/65">
+              {INTERCAMBIO_GALLERY.length} fotos e {INTERCAMBIO_GALLERY_NOTES.length} momentos
+            </span>
+          </span>
+          <ArrowRight
+            className={`h-4 w-4 shrink-0 text-gold transition-transform ${folderOpen ? "rotate-90" : ""}`}
+          />
+        </button>
+
+        {folderOpen && (
+          <div className="border-t border-gold/15 p-5">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {INTERCAMBIO_GALLERY.map((ph) => (
+                <figure key={ph.src} className="overflow-hidden rounded-xl border border-gold/15">
+                  <button
+                    type="button"
+                    onClick={() => onZoom(ph)}
+                    aria-label={`Ampliar foto: ${ph.caption}`}
+                    className="relative block w-full"
+                  >
+                    <img
+                      src={ph.src}
+                      alt={ph.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                    <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-gold/40 bg-[oklch(0.14_0.04_145/0.75)] text-gold backdrop-blur-sm">
+                      <ZoomIn className="h-3.5 w-3.5" />
+                    </span>
+                  </button>
+                  <figcaption className="px-3 py-2 text-[12.5px] leading-snug text-foreground/70">
+                    {ph.caption}
+                  </figcaption>
+                </figure>
+              ))}
             </div>
-          ))}
-        </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
+                <div key={n.title} className="rounded-xl border border-gold/15 p-3">
+                  <p className="text-[13px] font-bold text-gold/90">
+                    {i + 1}. {n.title}
+                  </p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-foreground/75">{n.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
