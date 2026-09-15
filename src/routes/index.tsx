@@ -19,6 +19,7 @@ import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
 import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
 import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
 import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
+import infantilMenuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
 type Dict = {
@@ -257,7 +258,7 @@ function LandingChoice() {
   const adultLogoUrl = branding?.adulto_logo_url || adultoLogo.url;
   const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
   const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
-  const childVideoUrl = branding?.infantil_menu_video_url || videoSrc.infantil;
+  const childVideoUrl = infantilMenuVideo.url;
 
 
   const pending = !!user && subLoading;
