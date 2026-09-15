@@ -1057,7 +1057,21 @@ function AldeiaVelhaPage() {
         )}
 
         {/* Patxôhã */}
+        {/* Intercâmbio Cultural e Territorial */}
+        {show("intercambio") && (
+        <section id="intercambio" className="scroll-mt-32 pt-14 md:pt-20">
+          <SectionTitle
+            icon={<Sparkles className="h-3.5 w-3.5" />}
+            eyebrow="Intercâmbio Cultural e Territorial"
+            title="Quando o território se transforma em sala de aula"
+            desc={INTERCAMBIO_SUBTITLE}
+          />
+          <IntercambioStory onZoom={setZoom} />
+        </section>
+        )}
+
         {show("patxoha") && (
+
         <section id="patxoha" className="scroll-mt-32 pt-16 md:pt-24">
           <SectionTitle
             audioId="patxoha"
