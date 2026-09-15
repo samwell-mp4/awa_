@@ -16,9 +16,9 @@ import adultoLogo from "@/assets/adulto-logo.png.asset.json";
 import videoAdultoPt from "@/assets/video-adulto-pt.mp4.asset.json";
 import videoAdultoEn from "@/assets/video-adulto-en.mp4.asset.json";
 import videoAdultoEs from "@/assets/video-adulto-es.mp4.asset.json";
-import videoInfantilPt from "@/assets/video-infantil-pt.mp4.asset.json";
-import videoInfantilEn from "@/assets/video-infantil-en.mp4.asset.json";
-import videoInfantilEs from "@/assets/video-infantil-es.mp4.asset.json";
+import videoInfantilPt from "@/assets/video-infantil-kids-pt.mp4.asset.json";
+import videoInfantilEn from "@/assets/video-infantil-kids-en.mp4.asset.json";
+import videoInfantilEs from "@/assets/video-infantil-kids-es.mp4.asset.json";
 import infantilMenuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 import landingBg from "@/assets/landing-bg.jpg.asset.json";
 
