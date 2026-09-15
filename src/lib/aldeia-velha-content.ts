@@ -35,6 +35,7 @@ import casasHabitacional from "@/assets/aldeia-velha/av-029-061.jpg.asset.json";
 import interPreparo from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0103.jpg.asset.json";
 import interRodaNoite from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0034.jpg.asset.json";
 import interPintura from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0094.jpg.asset.json";
+import interCaminhada from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0088.jpg.asset.json";
 
 export type Photo = { src: string; caption: string; alt: string };
 
@@ -484,6 +485,11 @@ export const INTERCAMBIO_PHOTOS = {
     "Pintura corporal: uma jovem sendo pintada por outra estudante",
     "Jovem Pataxó recebendo pintura corporal no rosto durante o intercâmbio",
   ),
+  caminhada: p(
+    interCaminhada,
+    "Caminhada cultural pelo território durante o intercâmbio",
+    "Participantes Pataxó caminhando juntos pelo território, com pinturas corporais e trajes tradicionais",
+  ),
 } as const;
 
 export const INTERCAMBIO_GALLERY: Photo[] = Object.values(INTERCAMBIO_PHOTOS);
@@ -517,7 +523,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "Caminhar pelo território é uma forma de aprender. Ao sair dos espaços tradicionais da sala de aula e entrar em contato com a comunidade e a natureza, os estudantes percebem que o território guarda histórias, práticas, memórias e conhecimentos.",
       "A terra não é apenas o lugar onde se vive. Ela também é memória, identidade, pertencimento e aprendizado.",
     ],
-    photo: PHOTOS.reservaPlaca,
+    photo: INTERCAMBIO_PHOTOS.caminhada,
   },
   {
     id: "cultura",
