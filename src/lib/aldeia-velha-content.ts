@@ -31,6 +31,10 @@ import grupoCultura1 from "@/assets/aldeia-velha/av-026-055.jpg.asset.json";
 import grupoCultura2 from "@/assets/aldeia-velha/av-027-057.jpg.asset.json";
 import museuCeuAberto from "@/assets/aldeia-velha/av-028-059.jpg.asset.json";
 import casasHabitacional from "@/assets/aldeia-velha/av-029-061.jpg.asset.json";
+// Fotos do Intercâmbio Cultural e Territorial enviadas pela comunidade.
+import interPreparo from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0103.jpg.asset.json";
+import interRodaNoite from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0034.jpg.asset.json";
+import interPintura from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0094.jpg.asset.json";
 
 export type Photo = { src: string; caption: string; alt: string };
 
@@ -463,6 +467,27 @@ export const INTERCAMBIO_SUBTITLE =
   "Escola Indígena Pataxó Aldeia Velha — quando o território se transforma em sala de aula.";
 
 /** Narrativa em capítulos, apresentada como experiência guiada (botão “Começar a história”). */
+/** Fotos do intercâmbio registradas pela comunidade. */
+export const INTERCAMBIO_PHOTOS = {
+  preparo: p(
+    interPreparo,
+    "Preparo tradicional com folhas e água durante o intercâmbio",
+    "Mão mexendo folhas dentro de uma grande panela com água, no preparo tradicional",
+  ),
+  rodaNoite: p(
+    interRodaNoite,
+    "Roda de conversa à noite com estudantes e educadores",
+    "Estudantes sentados em roda escutando durante atividade noturna no terreiro",
+  ),
+  pintura: p(
+    interPintura,
+    "Pintura corporal: uma jovem sendo pintada por outra estudante",
+    "Jovem Pataxó recebendo pintura corporal no rosto durante o intercâmbio",
+  ),
+} as const;
+
+export const INTERCAMBIO_GALLERY: Photo[] = Object.values(INTERCAMBIO_PHOTOS);
+
 export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
   {
     id: "abertura",
