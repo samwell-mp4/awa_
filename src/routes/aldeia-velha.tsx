@@ -522,6 +522,7 @@ function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [auto, setAuto] = useState(true);
+  const [folderOpen, setFolderOpen] = useState(false);
   const total = INTERCAMBIO_CHAPTERS.length;
   const chapter = INTERCAMBIO_CHAPTERS[step];
 
