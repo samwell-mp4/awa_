@@ -104,7 +104,6 @@ export const SECTIONS = [
   { id: "retomada", label: "Retomada" },
   { id: "territorio", label: "Território" },
   { id: "educacao", label: "Educação" },
-  { id: "intercambio", label: "Intercâmbio" },
 
   { id: "patxoha", label: "Patxôhã" },
   { id: "cultura", label: "Cultura" },
@@ -709,14 +708,6 @@ export const THEMES: Theme[] = [
     summary:
       "Da primeira aula em kigeme (1998) à Escola Indígena Pataxó Aldeia Velha com 12 salas e 235 estudantes; Jogos Infanto-Juvenis e Intercâmbio Cultural e Intercultural.",
     photo: PHOTOS.escolaAtual,
-  },
-  {
-    id: "intercambio",
-    label: "Intercâmbio",
-    eyebrow: "Intercâmbio Cultural e Territorial",
-    summary:
-      "Experiência guiada do Intercâmbio Cultural e Territorial da Escola Indígena Pataxó Aldeia Velha: caminhada pelo território, saberes tradicionais, pintura corporal, rodas de conversa e o encontro entre gerações.",
-    photo: PHOTOS.jogosInfanto,
   },
   {
     id: "patxoha",

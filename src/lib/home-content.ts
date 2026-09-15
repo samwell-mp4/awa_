@@ -104,6 +104,7 @@ const ADULT_HREFS = new Set([
   "/videos",
   "/biografia",
   "/aldeia-velha",
+  "/intercambio",
   "/instalar",
   "/minha-conta",
   "/aprender-numeros",
@@ -178,6 +179,7 @@ export function useNavContent(mode: NavMode = "all") {
       items: [
         { label: t("nav.biografia"), href: "/biografia", icon: BookOpen },
         { label: "Aldeia Velha", href: "/aldeia-velha", icon: ScrollText },
+        { label: "Intercâmbio Cultural", href: "/intercambio", icon: Sparkles },
         { label: t("nav.instalar"), href: "/instalar", icon: Download },
       ],
     },
