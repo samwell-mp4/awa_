@@ -7,6 +7,7 @@ import {
   Droplets,
   ExternalLink,
   Flame,
+  FolderOpen,
   GraduationCap,
   Heart,
   Home,
