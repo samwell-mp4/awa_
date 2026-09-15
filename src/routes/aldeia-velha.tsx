@@ -558,15 +558,27 @@ function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             Uma experiência guiada em {total} momentos: as fotos avançam junto com a narrativa do
             intercâmbio.
           </p>
-          <Button
-            onClick={() => {
-              setStep(0);
-              setStarted(true);
-            }}
-            className="shrink-0 rounded-full bg-gold px-6 py-5 text-sm font-bold uppercase tracking-[0.14em] text-forest-deep hover:brightness-110"
-          >
-            <Play className="mr-2 h-4 w-4" /> Começar a história
-          </Button>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Button
+              onClick={() => {
+                setStep(0);
+                setStarted(true);
+              }}
+              className="rounded-full bg-gold px-6 py-5 text-sm font-bold uppercase tracking-[0.14em] text-forest-deep hover:brightness-110"
+            >
+              <Play className="mr-2 h-4 w-4" /> Começar a história
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setStarted(true);
+                setFolderOpen(true);
+              }}
+              className="rounded-full border border-gold/35 px-5 py-5 text-sm font-bold uppercase tracking-[0.14em] text-gold"
+            >
+              <FolderOpen className="mr-2 h-4 w-4" /> Pasta de fotos
+            </Button>
+          </div>
         </div>
       </div>
     );
