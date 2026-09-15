@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, X } from "lucide-react";
 
 import { PublicFooter } from "@/components/PublicFooter";
 import { IntercambioStory } from "@/components/aldeia-velha/intercambio-story";
+import { IntercambioDocumentario } from "@/components/aldeia-velha/documentario";
 import { INTERCAMBIO_SUBTITLE, type Photo } from "@/lib/aldeia-velha-content";
 
 export const Route = createFileRoute("/intercambio")({
