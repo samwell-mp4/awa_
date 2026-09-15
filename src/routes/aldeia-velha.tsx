@@ -642,6 +642,15 @@ function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
           >
             {auto ? "Pausar sequência" : "Retomar sequência"}
           </Button>
+          <Button
+            variant="ghost"
+            onClick={() => setFolderOpen((v) => !v)}
+            aria-expanded={folderOpen}
+            className="rounded-full border border-gold/30 text-gold"
+          >
+            <FolderOpen className="mr-1.5 h-4 w-4" />
+            {folderOpen ? "Fechar pasta" : `Pasta de fotos (${INTERCAMBIO_GALLERY.length})`}
+          </Button>
           {step + 1 < total ? (
             <Button
               onClick={() => setStep((s) => Math.min(total - 1, s + 1))}
