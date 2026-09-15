@@ -476,6 +476,15 @@ export const INTERCAMBIO_OPENING =
 export const INTERCAMBIO_SUBTITLE =
   "Escola Indígena Pataxó Aldeia Velha — quando o território se transforma em sala de aula.";
 
+/** Documentário do intercâmbio, exibido dentro da página. */
+export const INTERCAMBIO_DOCUMENTARIO = {
+  title: "Documentário — Intercâmbio Cultural e Territorial",
+  description:
+    "Registro completo do intercâmbio: a caminhada pelo território, os cantos, os saberes das mais velhas e das mais velhos, o preparo tradicional e as rodas de conversa da Escola Indígena Pataxó Aldeia Velha.",
+  embedUrl: "https://drive.google.com/file/d/18Mmr2dahGYZ1fMs9ifpkezqhJUc0Y9mA/preview",
+};
+
+
 /** Narrativa em capítulos, apresentada como experiência guiada (botão “Começar a história”). */
 /** Fotos do intercâmbio registradas pela comunidade. */
 export const INTERCAMBIO_PHOTOS = {
