@@ -30,7 +30,7 @@ const albumJosa = { url: albumJosaClean };
 import videoJosa from "@/assets/videos/anciao-josa.mp4.asset.json";
 import videoJoao from "@/assets/videos/anciao-joao-2.mp4.asset.json";
 import { useLastArea } from "@/lib/last-area";
-import { PHOTOS } from "@/lib/aldeia-velha-content";
+import { PHOTOS, INTERCAMBIO_GALLERY } from "@/lib/aldeia-velha-content";
 
 const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
 type Aldeia = (typeof ALDEIAS)[number];
