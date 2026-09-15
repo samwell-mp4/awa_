@@ -35,6 +35,7 @@ import {
   GALLERY,
   HEALTH_DEMOGRAPHICS,
   INTERCAMBIO_CHAPTERS,
+  INTERCAMBIO_GALLERY,
   INTERCAMBIO_GALLERY_NOTES,
   INTERCAMBIO_OPENING,
   INTERCAMBIO_SUBTITLE,
@@ -666,6 +667,22 @@ function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
         <h4 className="font-display text-lg font-black text-cream">
           📸 Galeria — Momentos do Intercâmbio
         </h4>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {INTERCAMBIO_GALLERY.map((ph) => (
+            <figure key={ph.src} className="overflow-hidden rounded-xl border border-gold/15">
+              <img
+                src={ph.src}
+                alt={ph.alt}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="px-3 py-2 text-[12.5px] leading-snug text-foreground/70">
+                {ph.caption}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
             <div key={n.title} className="rounded-xl border border-gold/15 p-3">

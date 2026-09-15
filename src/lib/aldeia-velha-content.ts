@@ -31,6 +31,10 @@ import grupoCultura1 from "@/assets/aldeia-velha/av-026-055.jpg.asset.json";
 import grupoCultura2 from "@/assets/aldeia-velha/av-027-057.jpg.asset.json";
 import museuCeuAberto from "@/assets/aldeia-velha/av-028-059.jpg.asset.json";
 import casasHabitacional from "@/assets/aldeia-velha/av-029-061.jpg.asset.json";
+// Fotos do Intercâmbio Cultural e Territorial enviadas pela comunidade.
+import interPreparo from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0103.jpg.asset.json";
+import interRodaNoite from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0034.jpg.asset.json";
+import interPintura from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0094.jpg.asset.json";
 
 export type Photo = { src: string; caption: string; alt: string };
 
@@ -463,6 +467,27 @@ export const INTERCAMBIO_SUBTITLE =
   "Escola Indígena Pataxó Aldeia Velha — quando o território se transforma em sala de aula.";
 
 /** Narrativa em capítulos, apresentada como experiência guiada (botão “Começar a história”). */
+/** Fotos do intercâmbio registradas pela comunidade. */
+export const INTERCAMBIO_PHOTOS = {
+  preparo: p(
+    interPreparo,
+    "Preparo tradicional com folhas e água durante o intercâmbio",
+    "Mão mexendo folhas dentro de uma grande panela com água, no preparo tradicional",
+  ),
+  rodaNoite: p(
+    interRodaNoite,
+    "Roda de conversa à noite com estudantes e educadores",
+    "Estudantes sentados em roda escutando durante atividade noturna no terreiro",
+  ),
+  pintura: p(
+    interPintura,
+    "Pintura corporal: uma jovem sendo pintada por outra estudante",
+    "Jovem Pataxó recebendo pintura corporal no rosto durante o intercâmbio",
+  ),
+} as const;
+
+export const INTERCAMBIO_GALLERY: Photo[] = Object.values(INTERCAMBIO_PHOTOS);
+
 export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
   {
     id: "abertura",
@@ -482,7 +507,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "Durante o intercâmbio, os estudantes acompanharam de perto atividades e demonstrações de saberes tradicionais. Um conhecimento relacionado ao trabalho com fibras e materiais naturais é compartilhado diante dos jovens.",
       "Mais do que observar uma técnica, eles têm a oportunidade de conhecer a experiência de quem aprendeu esses conhecimentos ao longo da vida. É assim que o conhecimento continua caminhando: de pessoa para pessoa, de geração para geração.",
     ],
-    photo: PHOTOS.antonioNobre,
+    photo: INTERCAMBIO_PHOTOS.preparo,
   },
   {
     id: "territorio",
@@ -502,7 +527,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "A pintura corporal aparece como um dos momentos de expressão cultural registrados durante a experiência.",
       "Para os estudantes, participar desses momentos possibilita aproximar-se de elementos da cultura e compreender que a identidade indígena está presente nos gestos, nos conhecimentos, nas formas de expressão e na convivência comunitária. Cada experiência se transforma em uma oportunidade de aprender e respeitar.",
     ],
-    photo: PHOTOS.cantoDanca,
+    photo: INTERCAMBIO_PHOTOS.pintura,
   },
   {
     id: "geracoes",
@@ -512,7 +537,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "Crianças, jovens e adultos compartilham o mesmo espaço. Em rodas de conversa e momentos de convivência, os mais jovens observam, perguntam, participam e escutam.",
       "Esse encontro é fundamental porque aproxima diferentes gerações e permite que conhecimentos sejam compartilhados de maneira viva. O ancião ensina. O jovem aprende. A criança observa. E o conhecimento continua vivo.",
     ],
-    photo: PHOTOS.encontroPajes,
+    photo: INTERCAMBIO_PHOTOS.rodaNoite,
   },
   {
     id: "comunidades",
