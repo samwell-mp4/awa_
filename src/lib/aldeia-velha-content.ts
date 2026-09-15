@@ -36,6 +36,16 @@ import interPreparo from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0103.
 import interRodaNoite from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0034.jpg.asset.json";
 import interPintura from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0094.jpg.asset.json";
 import interCaminhada from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0088.jpg.asset.json";
+import interArtesanato from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0084.jpg.asset.json";
+import interCantoRoda from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0022.jpg.asset.json";
+import interAcolhida from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0019.jpg.asset.json";
+import interRodaOca from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0018.jpg.asset.json";
+import interOficinaFibras from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0080.jpg.asset.json";
+import interEscutaMata from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0085.jpg.asset.json";
+import interBanhoErvas from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0020.jpg.asset.json";
+import interDescanso from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0083.jpg.asset.json";
+import interCozinha from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0017.jpg.asset.json";
+import interDefumacao from "@/assets/aldeia-velha/intercambio-IMG-20260915-WA0016.jpg.asset.json";
 
 export type Photo = { src: string; caption: string; alt: string };
 
