@@ -259,7 +259,7 @@ function LandingChoice() {
   const childLogoUrl = branding?.infantil_logo_url || infantilLogo.url;
   const adultVideoUrl = branding?.adulto_video_url || videoSrc.adulto;
   const childVideoUrl =
-    branding?.infantil_menu_video_url || videoSrc.infantil || infantilMenuVideo.url;
+    videoSrc.infantil || branding?.infantil_menu_video_url || infantilMenuVideo.url;
 
 
   const pending = !!user && subLoading;
