@@ -89,6 +89,8 @@ export const SECTIONS = [
   { id: "retomada", label: "Retomada" },
   { id: "territorio", label: "Território" },
   { id: "educacao", label: "Educação" },
+  { id: "intercambio", label: "Intercâmbio" },
+
   { id: "patxoha", label: "Patxôhã" },
   { id: "cultura", label: "Cultura" },
   { id: "saude", label: "Saberes e Saúde" },
@@ -443,6 +445,127 @@ export const REFERENCES: string[] = [
 
 export const AUTHOR_NOTE =
   "Angelo Santos do Carmo — Pataxó, liderança, professor, licenciado em Pedagogia (ULBRA, 2013) e em Ciências Humanas e Sociais (LICEEI/UNEB, 2019), Mestre em Relações Étnico-Raciais (PPGER/UFSB, 2022) e doutorando em Educação e Movimentos Sociais (FAE/UFMG).";
+
+/* ------------------- Intercâmbio Cultural e Territorial ------------------- */
+
+export type StoryChapter = {
+  id: string;
+  emoji: string;
+  title: string;
+  paragraphs: string[];
+  photo: Photo;
+};
+
+export const INTERCAMBIO_OPENING =
+  "Conhecer um território é também conhecer as histórias, as pessoas e os saberes que vivem nele.";
+
+export const INTERCAMBIO_SUBTITLE =
+  "Escola Indígena Pataxó Aldeia Velha — quando o território se transforma em sala de aula.";
+
+/** Narrativa em capítulos, apresentada como experiência guiada (botão “Começar a história”). */
+export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
+  {
+    id: "abertura",
+    emoji: "🌿",
+    title: "Quando o território se transforma em sala de aula",
+    paragraphs: [
+      "O conhecimento também vive fora das paredes da escola. Na experiência de Intercâmbio Cultural e Territorial da Escola Indígena Pataxó Aldeia Velha, estudantes, educadores e participantes tiveram a oportunidade de vivenciar momentos de encontro, escuta, aprendizado e troca de saberes.",
+      "A caminhada pelo território revela que cada espaço pode ensinar. A mata, as árvores, a terra, os espaços de convivência, os trabalhos manuais e as práticas culturais fazem parte de uma aprendizagem que aproxima as pessoas e fortalece a identidade.",
+    ],
+    photo: PHOTOS.entradaTI,
+  },
+  {
+    id: "saberes",
+    emoji: "🏹",
+    title: "Aprender com quem guarda o conhecimento",
+    paragraphs: [
+      "Durante o intercâmbio, os estudantes acompanharam de perto atividades e demonstrações de saberes tradicionais. Um conhecimento relacionado ao trabalho com fibras e materiais naturais é compartilhado diante dos jovens.",
+      "Mais do que observar uma técnica, eles têm a oportunidade de conhecer a experiência de quem aprendeu esses conhecimentos ao longo da vida. É assim que o conhecimento continua caminhando: de pessoa para pessoa, de geração para geração.",
+    ],
+    photo: PHOTOS.antonioNobre,
+  },
+  {
+    id: "territorio",
+    emoji: "🌿",
+    title: "O território também ensina",
+    paragraphs: [
+      "Caminhar pelo território é uma forma de aprender. Ao sair dos espaços tradicionais da sala de aula e entrar em contato com a comunidade e a natureza, os estudantes percebem que o território guarda histórias, práticas, memórias e conhecimentos.",
+      "A terra não é apenas o lugar onde se vive. Ela também é memória, identidade, pertencimento e aprendizado.",
+    ],
+    photo: PHOTOS.reservaPlaca,
+  },
+  {
+    id: "cultura",
+    emoji: "🎨",
+    title: "Cultura que se vive",
+    paragraphs: [
+      "A pintura corporal aparece como um dos momentos de expressão cultural registrados durante a experiência.",
+      "Para os estudantes, participar desses momentos possibilita aproximar-se de elementos da cultura e compreender que a identidade indígena está presente nos gestos, nos conhecimentos, nas formas de expressão e na convivência comunitária. Cada experiência se transforma em uma oportunidade de aprender e respeitar.",
+    ],
+    photo: PHOTOS.cantoDanca,
+  },
+  {
+    id: "geracoes",
+    emoji: "🤝",
+    title: "O encontro entre diferentes gerações",
+    paragraphs: [
+      "Crianças, jovens e adultos compartilham o mesmo espaço. Em rodas de conversa e momentos de convivência, os mais jovens observam, perguntam, participam e escutam.",
+      "Esse encontro é fundamental porque aproxima diferentes gerações e permite que conhecimentos sejam compartilhados de maneira viva. O ancião ensina. O jovem aprende. A criança observa. E o conhecimento continua vivo.",
+    ],
+    photo: PHOTOS.encontroPajes,
+  },
+  {
+    id: "comunidades",
+    emoji: "🌱",
+    title: "Entre comunidades, uma troca de saberes",
+    paragraphs: [
+      "O intercâmbio também representa um encontro entre pessoas e territórios. A presença dos estudantes em outro espaço comunitário, incluindo o registro junto à identificação da Aldeia Pataxó Aroeira, mostra a dimensão territorial dessa experiência: conhecer outros espaços, outras pessoas e outras formas de vivenciar e fortalecer a cultura.",
+      "Não se trata apenas de visitar um lugar. É chegar para conhecer, ouvir, aprender, compartilhar e levar novos conhecimentos consigo.",
+    ],
+    photo: PHOTOS.grupoCultura1,
+  },
+  {
+    id: "escola",
+    emoji: "❤️",
+    title: "Uma escola que ultrapassa seus muros",
+    paragraphs: [
+      "A experiência mostra que a educação indígena acontece em muitos lugares. A escola está na conversa com os mais velhos, no contato com a natureza, no fazer artesanal, na pintura, na língua, na convivência e na caminhada pelo território.",
+      "Por isso, o intercâmbio cultural e territorial amplia o significado de aprender.",
+    ],
+    photo: PHOTOS.escolaAtual,
+  },
+  {
+    id: "patxoha",
+    emoji: "🗣️",
+    title: "Patxôhã: língua, memória e identidade",
+    paragraphs: [
+      "Valorizar o Patxôhã é também valorizar a memória e a identidade Pataxó. A língua faz parte desse processo de fortalecimento cultural e pode estar presente nas atividades, nas histórias, nas músicas, nas conversas e nas experiências vividas pelos estudantes.",
+      "Uma língua ensinada é uma memória que continua sendo contada.",
+    ],
+    photo: PHOTOS.cooficializacao,
+  },
+  {
+    id: "futuro",
+    emoji: "🌳",
+    title: "O futuro começa no território",
+    paragraphs: [
+      "Ao final da experiência, ficam muito mais do que fotografias. Ficam encontros, aprendizados e histórias para contar. Fica a compreensão de que preservar a cultura também significa valorizar as pessoas, os conhecimentos tradicionais, a língua e o território.",
+      "A Escola Indígena Pataxó Aldeia Velha participa desse movimento ao aproximar educação, cultura, território e juventude. Porque quando os jovens conhecem suas raízes, eles também ajudam a construir o futuro.",
+    ],
+    photo: PHOTOS.jogosInfanto,
+  },
+];
+
+export const INTERCAMBIO_GALLERY_NOTES: { title: string; text: string }[] = [
+  { title: "Chegada e acolhimento", text: "O encontro começa com a aproximação entre estudantes, educadores e comunidade." },
+  { title: "Saberes tradicionais", text: "Os estudantes acompanham práticas e conhecimentos compartilhados no território." },
+  { title: "Roda de conversa", text: "Um espaço de escuta, diálogo e troca de experiências." },
+  { title: "Pintura corporal", text: "Um momento de expressão e aproximação com elementos culturais." },
+  { title: "Vivência no território", text: "A caminhada permite conhecer os espaços e perceber a natureza como parte do processo educativo." },
+  { title: "Encontro entre gerações", text: "Crianças, jovens e adultos participam juntos, fortalecendo a transmissão dos conhecimentos." },
+  { title: "Cultura e convivência", text: "O intercâmbio cria vínculos e aproxima diferentes experiências." },
+  { title: "Memória do encontro", text: "Cada fotografia registra uma parte da história construída durante essa experiência." },
+];
 
 /* ------------------------- Temas (pastas de conteúdo) ------------------------ */
 
