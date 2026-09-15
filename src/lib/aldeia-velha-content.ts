@@ -507,7 +507,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "Durante o intercâmbio, os estudantes acompanharam de perto atividades e demonstrações de saberes tradicionais. Um conhecimento relacionado ao trabalho com fibras e materiais naturais é compartilhado diante dos jovens.",
       "Mais do que observar uma técnica, eles têm a oportunidade de conhecer a experiência de quem aprendeu esses conhecimentos ao longo da vida. É assim que o conhecimento continua caminhando: de pessoa para pessoa, de geração para geração.",
     ],
-    photo: PHOTOS.antonioNobre,
+    photo: INTERCAMBIO_PHOTOS.preparo,
   },
   {
     id: "territorio",
@@ -527,7 +527,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "A pintura corporal aparece como um dos momentos de expressão cultural registrados durante a experiência.",
       "Para os estudantes, participar desses momentos possibilita aproximar-se de elementos da cultura e compreender que a identidade indígena está presente nos gestos, nos conhecimentos, nas formas de expressão e na convivência comunitária. Cada experiência se transforma em uma oportunidade de aprender e respeitar.",
     ],
-    photo: PHOTOS.cantoDanca,
+    photo: INTERCAMBIO_PHOTOS.pintura,
   },
   {
     id: "geracoes",
@@ -537,7 +537,7 @@ export const INTERCAMBIO_CHAPTERS: StoryChapter[] = [
       "Crianças, jovens e adultos compartilham o mesmo espaço. Em rodas de conversa e momentos de convivência, os mais jovens observam, perguntam, participam e escutam.",
       "Esse encontro é fundamental porque aproxima diferentes gerações e permite que conhecimentos sejam compartilhados de maneira viva. O ancião ensina. O jovem aprende. A criança observa. E o conhecimento continua vivo.",
     ],
-    photo: PHOTOS.encontroPajes,
+    photo: INTERCAMBIO_PHOTOS.rodaNoite,
   },
   {
     id: "comunidades",
