@@ -7,6 +7,6 @@
 
 - [x] Reconstruir apenas o dicionário com as 46 páginas do PATXÔHÃ 2015, incluindo categorias, busca, inversão, áudio e gramática.
 
-- [ ] Painel visual inteligente: rascunhos + publicação + histórico (site_config)
-- [ ] Biblioteca de imagens com análise por IA e sugestão de uso
-- [ ] Editor visual da área de músicas (capa, fundo, cores, layout, letras)
+- [x] Painel visual inteligente: rascunhos + publicação + histórico (site_config)
+- [x] Biblioteca de imagens com análise por IA e sugestão de uso
+- [x] Editor visual da área de músicas (capa, fundo, cores, layout, letras)
