@@ -82,7 +82,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 
-type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site" | "numbers" | "infantil_content";
+type Tab = "home" | "trails" | "video" | "mission" | "dictionary" | "songs" | "tools" | "access" | "allowlist" | "payments" | "layout" | "site" | "numbers" | "infantil_content" | "visual";
 
 type Section = {
   k: Tab;
@@ -108,6 +108,7 @@ const SECTIONS: Section[] = [
   { k: "site", label: "IA & Sistema", icon: Wand2, desc: "Akuã, Tradutor e acesso irrestrito.", group: "Sistema", accent: "from-leaf/30 to-gold/20" },
   { k: "numbers", label: "Números", icon: Hash, desc: "Editar números e áudios educativos.", group: "Conteúdo", accent: "from-rose-500/30 to-rose-600/20" },
   { k: "infantil_content", label: "Infantil+", icon: Sparkles, desc: "Gerenciar Histórias, Jogos e Trilhas.", group: "Conteúdo", accent: "from-amber-400/30 to-orange-500/20" },
+  { k: "visual", label: "Editor Visual", icon: Wand2, desc: "Editar páginas com rascunho, prévia, publicação e imagens com IA.", group: "Sistema", accent: "from-gold/30 to-leaf/25" },
 ];
 
 
@@ -273,6 +274,7 @@ function AdminPage() {
                   {tab === "site" && <SiteAdmin />}
                   {tab === "infantil_content" && <InfantilContentAdmin />}
                   {tab === "numbers" && <NumbersAdmin />}
+                  {tab === "visual" && <VisualEditorAdmin />}
 
                 </Suspense>
 
