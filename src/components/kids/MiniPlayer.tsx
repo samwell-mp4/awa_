@@ -167,7 +167,10 @@ export function MiniPlayer({
                   );
                 })}
               </div>
-              <div className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4">
+              <div
+                className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4"
+                style={st.translation_color ? { background: st.translation_color } : undefined}
+              >
                 <h3 className="mb-3 border-b-2 border-amber-900/30 pb-2 text-center font-display text-xl font-black text-amber-900">
                   Português
                 </h3>
