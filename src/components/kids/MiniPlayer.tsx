@@ -97,7 +97,7 @@ export function MiniPlayer({
     <div
       className={`fixed inset-x-0 bottom-0 z-[60] transition-all duration-500 ease-in-out ${
         isMaximized
-          ? "top-0 h-screen flex flex-col bg-emerald-950 p-6"
+          ? "top-0 h-screen flex flex-col bg-[#4a2c13] p-4 md:p-6"
           : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
       }`}
     >
@@ -106,11 +106,11 @@ export function MiniPlayer({
           <button
             onClick={onClose}
             aria-label="Fechar e voltar às cantigas"
-            className="absolute right-0 top-0 z-50 grid h-10 w-10 place-items-center rounded-full border-2 border-amber-300/60 bg-emerald-900 text-amber-200 hover:bg-emerald-800"
+            className="absolute right-0 top-0 z-50 grid h-10 w-10 place-items-center rounded-full border-2 border-amber-200/70 bg-[#6b3d1c] text-amber-100 hover:bg-[#7d4a24]"
           >
             <X className="h-5 w-5" />
           </button>
-          <h2 className="mb-3 text-center font-display text-2xl font-black text-amber-200 md:text-3xl">
+          <h2 className="mx-auto mb-4 rounded-2xl border-4 border-[#8a5526] bg-[#6b3d1c] px-6 py-2 text-center font-display text-2xl font-black text-amber-50 shadow-[0_6px_0_#3c220f] md:text-3xl">
             🎶 {song.title} 🎶
           </h2>
           {maxLen === 0 ? (
@@ -120,10 +120,10 @@ export function MiniPlayer({
           ) : (
             <div
               ref={boxRef}
-              className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-amber-300/70 bg-emerald-950/70 p-4 md:grid-cols-2 md:gap-6"
+              className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-[#8a5526] bg-amber-50 p-4 md:grid-cols-2 md:gap-6"
             >
-              <div className="min-w-0">
-                <h3 className="mb-3 border-b-2 border-amber-300/40 pb-2 text-center font-display text-xl font-black text-amber-300">
+              <div className="min-w-0 rounded-2xl bg-emerald-50 p-4">
+                <h3 className="mb-3 border-b-2 border-emerald-800/30 pb-2 text-center font-display text-xl font-black text-emerald-900">
                   Patxohã
                 </h3>
                 {Array.from({ length: maxLen }).map((_, i) => {
@@ -136,15 +136,15 @@ export function MiniPlayer({
                       }}
                       className={`py-2 text-center font-display font-black leading-tight transition-all duration-300 ${
                         branding?.caption_max_size || "text-2xl md:text-3xl"
-                      } ${active ? "scale-105 text-amber-300" : "text-amber-100/60"}`}
+                      } ${active ? "scale-105 text-emerald-700" : "text-emerald-900"}`}
                     >
                       {indLines[i] || "\u00A0"}
                     </p>
                   );
                 })}
               </div>
-              <div className="min-w-0 md:border-l-2 md:border-amber-300/25 md:pl-6">
-                <h3 className="mb-3 border-b-2 border-amber-300/40 pb-2 text-center font-display text-xl font-black text-emerald-200">
+              <div className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4">
+                <h3 className="mb-3 border-b-2 border-amber-900/30 pb-2 text-center font-display text-xl font-black text-amber-900">
                   Português
                 </h3>
                 {Array.from({ length: maxLen }).map((_, i) => {
@@ -154,7 +154,7 @@ export function MiniPlayer({
                       key={i}
                       className={`py-2 text-center font-bold italic leading-tight transition-all duration-300 ${
                         branding?.caption_max_subsize || "text-xl md:text-2xl"
-                      } ${active ? "scale-105 text-white" : "text-emerald-100/55"}`}
+                      } ${active ? "scale-105 text-amber-700" : "text-amber-950/80"}`}
                     >
                       {transLines[i] || "\u00A0"}
                     </p>
