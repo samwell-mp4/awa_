@@ -138,9 +138,15 @@ export function MiniPlayer({
           ) : (
             <div
               ref={boxRef}
-              className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-[#8a5526] bg-amber-50 p-4 md:grid-cols-2 md:gap-6"
+              className={`grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-[#8a5526] bg-amber-50 p-4 md:gap-6 ${
+                stacked ? "" : "md:grid-cols-2"
+              }`}
+              style={st.panel_color ? { background: st.panel_color } : undefined}
             >
-              <div className="min-w-0 rounded-2xl bg-emerald-50 p-4">
+              <div
+                className="min-w-0 rounded-2xl bg-emerald-50 p-4"
+                style={st.indigenous_color ? { background: st.indigenous_color } : undefined}
+              >
                 <h3 className="mb-3 border-b-2 border-emerald-800/30 pb-2 text-center font-display text-xl font-black text-emerald-900">
                   Patxohã
                 </h3>
