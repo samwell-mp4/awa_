@@ -3,6 +3,16 @@ import { X } from "lucide-react";
 import { useLang, pickLang } from "@/lib/pick-lang";
 import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 
+/** Aparência escolhida no painel para cada cantiga. */
+export type SongStyle = {
+  bg_color?: string;
+  panel_color?: string;
+  indigenous_color?: string;
+  translation_color?: string;
+  accent_color?: string;
+  layout?: "lado-a-lado" | "empilhado";
+};
+
 export type MiniPlayerSong = {
   id: string;
   title: string;
@@ -16,6 +26,7 @@ export type MiniPlayerSong = {
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
   sync_offsets?: number[];
+  style?: SongStyle | null;
 };
 
 export function MiniPlayer({
