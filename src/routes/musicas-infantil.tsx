@@ -141,8 +141,15 @@ function MusicasInfantilPage() {
                   key={s.id}
                   onClick={() => {
                     stopSpeak();
-                    setPlaying(isActive ? null : s);
+                    if (isActive) {
+                      setPlaying(null);
+                      setIsMaximized(false);
+                    } else {
+                      setPlaying(s);
+                      setIsMaximized(true);
+                    }
                   }}
+
                   className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
                 >
                   {/* Zigzag tribal top */}
