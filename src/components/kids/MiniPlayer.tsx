@@ -136,15 +136,15 @@ export function MiniPlayer({
                       }}
                       className={`py-2 text-center font-display font-black leading-tight transition-all duration-300 ${
                         branding?.caption_max_size || "text-2xl md:text-3xl"
-                      } ${active ? "scale-105 text-amber-300" : "text-amber-100/60"}`}
+                      } ${active ? "scale-105 text-emerald-700" : "text-emerald-900"}`}
                     >
                       {indLines[i] || "\u00A0"}
                     </p>
                   );
                 })}
               </div>
-              <div className="min-w-0 md:border-l-2 md:border-amber-300/25 md:pl-6">
-                <h3 className="mb-3 border-b-2 border-amber-300/40 pb-2 text-center font-display text-xl font-black text-emerald-200">
+              <div className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4">
+                <h3 className="mb-3 border-b-2 border-amber-900/30 pb-2 text-center font-display text-xl font-black text-amber-900">
                   Português
                 </h3>
                 {Array.from({ length: maxLen }).map((_, i) => {
@@ -154,7 +154,7 @@ export function MiniPlayer({
                       key={i}
                       className={`py-2 text-center font-bold italic leading-tight transition-all duration-300 ${
                         branding?.caption_max_subsize || "text-xl md:text-2xl"
-                      } ${active ? "scale-105 text-white" : "text-emerald-100/55"}`}
+                      } ${active ? "scale-105 text-amber-700" : "text-amber-950/80"}`}
                     >
                       {transLines[i] || "\u00A0"}
                     </p>
