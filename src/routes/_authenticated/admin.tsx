@@ -35,6 +35,7 @@ const LayoutAdmin = lazy(() => import("@/components/admin/layout-admin").then((m
 const SiteAdmin = lazy(() => import("@/components/admin/site-admin").then((m) => ({ default: m.SiteAdmin })));
 const NumbersAdmin = lazy(() => import("@/components/admin/numbers-admin").then((m) => ({ default: m.NumbersAdmin })));
 const InfantilContentAdmin = lazy(() => import("@/components/admin/infantil-content-admin").then((m) => ({ default: m.InfantilContentAdmin })));
+const VisualEditorAdmin = lazy(() => import("@/components/admin/visual-editor-admin").then((m) => ({ default: m.VisualEditorAdmin })));
 
 
 
