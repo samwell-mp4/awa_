@@ -125,7 +125,10 @@ export function MiniPlayer({
           >
             <X className="h-5 w-5" />
           </button>
-          <h2 className="mx-auto mb-4 rounded-2xl border-4 border-[#8a5526] bg-[#6b3d1c] px-6 py-2 text-center font-display text-2xl font-black text-amber-50 shadow-[0_6px_0_#3c220f] md:text-3xl">
+          <h2
+            className="mx-auto mb-4 rounded-2xl border-4 border-[#8a5526] bg-[#6b3d1c] px-6 py-2 text-center font-display text-2xl font-black text-amber-50 shadow-[0_6px_0_#3c220f] md:text-3xl"
+            style={st.accent_color ? { color: st.accent_color } : undefined}
+          >
             🎶 {song.title} 🎶
           </h2>
           {maxLen === 0 ? (
