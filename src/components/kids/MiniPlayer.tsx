@@ -3,6 +3,16 @@ import { X } from "lucide-react";
 import { useLang, pickLang } from "@/lib/pick-lang";
 import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 
+/** Aparência escolhida no painel para cada cantiga. */
+export type SongStyle = {
+  bg_color?: string;
+  panel_color?: string;
+  indigenous_color?: string;
+  translation_color?: string;
+  accent_color?: string;
+  layout?: "lado-a-lado" | "empilhado";
+};
+
 export type MiniPlayerSong = {
   id: string;
   title: string;
@@ -16,6 +26,7 @@ export type MiniPlayerSong = {
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
   sync_offsets?: number[];
+  style?: SongStyle | null;
 };
 
 export function MiniPlayer({
@@ -93,6 +104,9 @@ export function MiniPlayer({
     void a.play()?.catch(() => {});
   }
 
+  const st = song.style ?? {};
+  const stacked = st.layout === "empilhado";
+
   return (
     <div
       className={`fixed inset-x-0 bottom-0 z-[60] transition-all duration-500 ease-in-out ${
@@ -100,6 +114,7 @@ export function MiniPlayer({
           ? "top-0 h-screen flex flex-col bg-[#4a2c13] p-4 md:p-6"
           : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
       }`}
+      style={isMaximized && st.bg_color ? { background: st.bg_color } : undefined}
     >
       {isMaximized ? (
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden">
@@ -110,7 +125,10 @@ export function MiniPlayer({
           >
             <X className="h-5 w-5" />
           </button>
-          <h2 className="mx-auto mb-4 rounded-2xl border-4 border-[#8a5526] bg-[#6b3d1c] px-6 py-2 text-center font-display text-2xl font-black text-amber-50 shadow-[0_6px_0_#3c220f] md:text-3xl">
+          <h2
+            className="mx-auto mb-4 rounded-2xl border-4 border-[#8a5526] bg-[#6b3d1c] px-6 py-2 text-center font-display text-2xl font-black text-amber-50 shadow-[0_6px_0_#3c220f] md:text-3xl"
+            style={st.accent_color ? { color: st.accent_color } : undefined}
+          >
             🎶 {song.title} 🎶
           </h2>
           {maxLen === 0 ? (
@@ -120,9 +138,15 @@ export function MiniPlayer({
           ) : (
             <div
               ref={boxRef}
-              className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-[#8a5526] bg-amber-50 p-4 md:grid-cols-2 md:gap-6"
+              className={`grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-[#8a5526] bg-amber-50 p-4 md:gap-6 ${
+                stacked ? "" : "md:grid-cols-2"
+              }`}
+              style={st.panel_color ? { background: st.panel_color } : undefined}
             >
-              <div className="min-w-0 rounded-2xl bg-emerald-50 p-4">
+              <div
+                className="min-w-0 rounded-2xl bg-emerald-50 p-4"
+                style={st.indigenous_color ? { background: st.indigenous_color } : undefined}
+              >
                 <h3 className="mb-3 border-b-2 border-emerald-800/30 pb-2 text-center font-display text-xl font-black text-emerald-900">
                   Patxohã
                 </h3>
@@ -143,7 +167,10 @@ export function MiniPlayer({
                   );
                 })}
               </div>
-              <div className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4">
+              <div
+                className="min-w-0 rounded-2xl bg-[#f6e7c4] p-4"
+                style={st.translation_color ? { background: st.translation_color } : undefined}
+              >
                 <h3 className="mb-3 border-b-2 border-amber-900/30 pb-2 text-center font-display text-xl font-black text-amber-900">
                   Português
                 </h3>

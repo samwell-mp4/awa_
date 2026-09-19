@@ -389,6 +389,57 @@ export type Database = {
         }
         Relationships: []
       }
+      media_library: {
+        Row: {
+          ai_description: string | null
+          ai_layout_hint: string | null
+          ai_palette: string[]
+          ai_suggested_pages: string[]
+          ai_tags: string[]
+          created_at: string
+          created_by: string | null
+          filename: string | null
+          height: number | null
+          id: string
+          mime_type: string | null
+          storage_path: string | null
+          url: string
+          width: number | null
+        }
+        Insert: {
+          ai_description?: string | null
+          ai_layout_hint?: string | null
+          ai_palette?: string[]
+          ai_suggested_pages?: string[]
+          ai_tags?: string[]
+          created_at?: string
+          created_by?: string | null
+          filename?: string | null
+          height?: number | null
+          id?: string
+          mime_type?: string | null
+          storage_path?: string | null
+          url: string
+          width?: number | null
+        }
+        Update: {
+          ai_description?: string | null
+          ai_layout_hint?: string | null
+          ai_palette?: string[]
+          ai_suggested_pages?: string[]
+          ai_tags?: string[]
+          created_at?: string
+          created_by?: string | null
+          filename?: string | null
+          height?: number | null
+          id?: string
+          mime_type?: string | null
+          storage_path?: string | null
+          url?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
       paddle_customers: {
         Row: {
           created_at: string
@@ -464,6 +515,54 @@ export type Database = {
         }
         Relationships: []
       }
+      site_config_drafts: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      site_config_versions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          key: string
+          note: string | null
+          value: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          key: string
+          note?: string | null
+          value: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          key?: string
+          note?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
       songs: {
         Row: {
           aldeia: string | null
@@ -487,6 +586,7 @@ export type Database = {
           lyrics_pt_en: string | null
           lyrics_pt_es: string | null
           order_index: number
+          style: Json
           sync_offsets: number[] | null
           title: string
           title_en: string | null
@@ -516,6 +616,7 @@ export type Database = {
           lyrics_pt_en?: string | null
           lyrics_pt_es?: string | null
           order_index?: number
+          style?: Json
           sync_offsets?: number[] | null
           title: string
           title_en?: string | null
@@ -545,6 +646,7 @@ export type Database = {
           lyrics_pt_en?: string | null
           lyrics_pt_es?: string | null
           order_index?: number
+          style?: Json
           sync_offsets?: number[] | null
           title?: string
           title_en?: string | null

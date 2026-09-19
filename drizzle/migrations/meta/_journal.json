@@ -22,6 +22,13 @@
       "when": 1789216931122,
       "tag": "0002_fix_access_allowlist_normalized",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789794199582,
+      "tag": "0003_visual_editor_drafts_media",
+      "breakpoints": true
     }
   ]
 }
