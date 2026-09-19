@@ -104,8 +104,8 @@ export function MiniPlayer({
       {isMaximized ? (
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden">
           <button
-            onClick={onToggleMaximize}
-            aria-label="Fechar letras"
+            onClick={onClose}
+            aria-label="Fechar e voltar às cantigas"
             className="absolute right-0 top-0 z-50 grid h-10 w-10 place-items-center rounded-full border-2 border-amber-300/60 bg-emerald-900 text-amber-200 hover:bg-emerald-800"
           >
             <X className="h-5 w-5" />
