@@ -101,62 +101,109 @@ export function MiniPlayer({
           : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
       }`}
     >
-      {maxLen > 0 && (
-        <div
-          ref={boxRef}
-          onClick={onToggleMaximize}
-          className={`relative mx-auto mb-2 w-full max-w-4xl overflow-y-auto cursor-pointer rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2 transition-all ${
-            isMaximized ? "flex-1 my-8 max-h-none text-2xl" : "max-h-40"
-          }`}
-        >
-          {isMaximized && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleMaximize();
-              }}
-              className="sticky float-right right-0 top-0 z-50 rounded-full bg-white/10 p-2 text-white/50 hover:bg-white/20 hover:text-white"
+      {isMaximized ? (
+        <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden">
+          <button
+            onClick={onToggleMaximize}
+            aria-label="Fechar letras"
+            className="absolute right-0 top-0 z-50 grid h-10 w-10 place-items-center rounded-full border-2 border-amber-300/60 bg-emerald-900 text-amber-200 hover:bg-emerald-800"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <h2 className="mb-3 text-center font-display text-2xl font-black text-amber-200 md:text-3xl">
+            🎶 {song.title} 🎶
+          </h2>
+          {maxLen === 0 ? (
+            <p className="mt-10 text-center font-display text-lg font-black text-amber-100/80">
+              A letra desta cantiga ainda não foi cadastrada 🌱
+            </p>
+          ) : (
+            <div
+              ref={boxRef}
+              className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border-4 border-amber-300/70 bg-emerald-950/70 p-4 md:grid-cols-2 md:gap-6"
             >
-              <X className="h-6 w-6" />
-            </button>
-          )}
-          {Array.from({ length: maxLen }).map((_, i) => {
-            const active = i === activeIdx;
-            return (
-              <div
-                key={i}
-                ref={(el) => {
-                  lineRefs.current[i] = el;
-                }}
-                className={`py-4 text-center transition-all duration-300 ${
-                  active ? (isMaximized ? "scale-110" : "scale-105") : "opacity-50"
-                }`}
-              >
-                <p
-                  className={`font-display font-black leading-tight transition-all ${
-                    isMaximized 
-                      ? (branding?.caption_max_size || "text-3xl md:text-5xl") 
-                      : (branding?.caption_normal_size || "text-base")
-                  } ${active ? "text-amber-300" : "text-amber-100"}`}
-                >
-                  {indLines[i] || transLines[i] || "\u00A0"}
-                </p>
-                {indLines[i] && transLines[i] && (
-                  <p
-                    className={`font-bold italic transition-all ${
-                      isMaximized 
-                        ? (branding?.caption_max_subsize || "text-xl md:text-3xl mt-4") 
-                        : (branding?.caption_normal_subsize || "text-xs mt-1")
-                    } text-emerald-100/85`}
-                  >
-                    {transLines[i]}
-                  </p>
-                )}
+              <div className="min-w-0">
+                <h3 className="mb-3 border-b-2 border-amber-300/40 pb-2 text-center font-display text-xl font-black text-amber-300">
+                  Patxohã
+                </h3>
+                {Array.from({ length: maxLen }).map((_, i) => {
+                  const active = i === activeIdx;
+                  return (
+                    <p
+                      key={i}
+                      ref={(el) => {
+                        lineRefs.current[i] = el as unknown as HTMLDivElement;
+                      }}
+                      className={`py-2 text-center font-display font-black leading-tight transition-all duration-300 ${
+                        branding?.caption_max_size || "text-2xl md:text-3xl"
+                      } ${active ? "scale-105 text-amber-300" : "text-amber-100/60"}`}
+                    >
+                      {indLines[i] || "\u00A0"}
+                    </p>
+                  );
+                })}
               </div>
-            );
-          })}
+              <div className="min-w-0 md:border-l-2 md:border-amber-300/25 md:pl-6">
+                <h3 className="mb-3 border-b-2 border-amber-300/40 pb-2 text-center font-display text-xl font-black text-emerald-200">
+                  Português
+                </h3>
+                {Array.from({ length: maxLen }).map((_, i) => {
+                  const active = i === activeIdx;
+                  return (
+                    <p
+                      key={i}
+                      className={`py-2 text-center font-bold italic leading-tight transition-all duration-300 ${
+                        branding?.caption_max_subsize || "text-xl md:text-2xl"
+                      } ${active ? "scale-105 text-white" : "text-emerald-100/55"}`}
+                    >
+                      {transLines[i] || "\u00A0"}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
+      ) : (
+        maxLen > 0 && (
+          <div
+            ref={boxRef}
+            onClick={onToggleMaximize}
+            className="relative mx-auto mb-2 max-h-40 w-full max-w-4xl cursor-pointer overflow-y-auto rounded-2xl border-4 border-amber-300/70 bg-emerald-950/60 px-3 py-2"
+          >
+            {Array.from({ length: maxLen }).map((_, i) => {
+              const active = i === activeIdx;
+              return (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    lineRefs.current[i] = el;
+                  }}
+                  className={`py-4 text-center transition-all duration-300 ${active ? "scale-105" : "opacity-50"}`}
+                >
+                  <p
+                    className={`font-display font-black leading-tight ${
+                      branding?.caption_normal_size || "text-base"
+                    } ${active ? "text-amber-300" : "text-amber-100"}`}
+                  >
+                    {indLines[i] || transLines[i] || "\u00A0"}
+                  </p>
+                  {indLines[i] && transLines[i] && (
+                    <p
+                      className={`font-bold italic ${
+                        branding?.caption_normal_subsize || "text-xs mt-1"
+                      } text-emerald-100/85`}
+                    >
+                      {transLines[i]}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )
       )}
+
       <div className="mx-auto flex max-w-4xl items-center gap-3">
         {song.cover_url ? (
           <img
