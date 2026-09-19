@@ -220,6 +220,11 @@ export function MiniPlayer({
         <div className="min-w-0 flex-1">
           <div className="truncate font-display text-base font-black text-amber-200">{song.title}</div>
           {song.artist && <div className="truncate text-[11px] font-bold text-emerald-100/80">{song.artist}</div>}
+          {!song.audio_url && (
+            <div className="mt-1 text-[11px] font-bold text-amber-100/85">
+              O áudio desta cantiga ainda não foi cadastrado 🌱
+            </div>
+          )}
           <audio
             ref={ref}
             src={song.audio_url}
