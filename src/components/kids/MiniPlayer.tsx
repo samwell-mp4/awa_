@@ -104,8 +104,8 @@ export function MiniPlayer({
       {isMaximized ? (
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden">
           <button
-            onClick={onToggleMaximize}
-            aria-label="Fechar letras"
+            onClick={onClose}
+            aria-label="Fechar e voltar às cantigas"
             className="absolute right-0 top-0 z-50 grid h-10 w-10 place-items-center rounded-full border-2 border-amber-300/60 bg-emerald-900 text-amber-200 hover:bg-emerald-800"
           >
             <X className="h-5 w-5" />
@@ -220,6 +220,11 @@ export function MiniPlayer({
         <div className="min-w-0 flex-1">
           <div className="truncate font-display text-base font-black text-amber-200">{song.title}</div>
           {song.artist && <div className="truncate text-[11px] font-bold text-emerald-100/80">{song.artist}</div>}
+          {!song.audio_url && (
+            <div className="mt-1 text-[11px] font-bold text-amber-100/85">
+              O áudio desta cantiga ainda não foi cadastrado 🌱
+            </div>
+          )}
           <audio
             ref={ref}
             src={song.audio_url}
