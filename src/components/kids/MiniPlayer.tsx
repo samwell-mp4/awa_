@@ -104,6 +104,9 @@ export function MiniPlayer({
     void a.play()?.catch(() => {});
   }
 
+  const st = song.style ?? {};
+  const stacked = st.layout === "empilhado";
+
   return (
     <div
       className={`fixed inset-x-0 bottom-0 z-[60] transition-all duration-500 ease-in-out ${
@@ -111,6 +114,7 @@ export function MiniPlayer({
           ? "top-0 h-screen flex flex-col bg-[#4a2c13] p-4 md:p-6"
           : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
       }`}
+      style={isMaximized && st.bg_color ? { background: st.bg_color } : undefined}
     >
       {isMaximized ? (
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden">
