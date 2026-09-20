@@ -28,6 +28,7 @@ import { useUserStats } from "@/hooks/use-user-stats";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import kidsLogoRef from "@/assets/infantil-logo-ref.png";
 import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 import kidsBg from "@/assets/kids-menu-bg.jpg";
 import kidsCharacter from "@/assets/kids-menu-character.png";
