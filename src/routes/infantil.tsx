@@ -88,7 +88,7 @@ const EXPLORE = [
   { label: "Pronúncia", icon: Mic, to: "/saudacoes" },
   { label: "Músicas", icon: Music, to: "/musicas-infantil" },
   { label: "Histórias", icon: BookOpen, to: "/historias-infantil" },
-  { label: "Cultura", icon: Trophy, to: "/trilhas-infantil" },
+  { label: "Contos", icon: Trophy, to: "/trilhas-infantil" },
   { label: "Números", icon: null, to: "/aprender-numeros", digits: "123" },
   { label: "Vídeos", icon: Play, to: "/videos" },
 ] as const;
@@ -147,7 +147,7 @@ function InfantilHome() {
                 fetchPriority="high"
                 decoding="async"
                 draggable={false}
-                className="w-full max-w-[320px] rounded-[1.75rem] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)] self-start"
+                className="w-full max-w-[340px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)] self-start"
               />
             </div>
 
@@ -160,7 +160,7 @@ function InfantilHome() {
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="pointer-events-none mx-auto -mb-2 h-[130px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[200px]"
+                className="pointer-events-none mx-auto -mb-3 h-[165px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[265px]"
               />
               <div className="mb-1 flex items-center justify-end gap-2">
                 <img
@@ -202,7 +202,7 @@ function InfantilHome() {
                 <BookOpen className="h-6 w-6 text-amber-200" />
                 <span className="font-display text-lg font-black">Continuar aprendendo</span>
               </div>
-              <div className="mt-0.5 text-sm font-bold opacity-95">Trilhas em Patxohã</div>
+              <div className="mt-0.5 text-sm font-bold opacity-95">Lição 3 — Saudações em Patxohã</div>
               <div className="mt-2 flex items-center gap-2">
                 <div className="h-3 flex-1 overflow-hidden rounded-full bg-emerald-900/50">
                   <div className="h-full rounded-full bg-lime-400" style={{ width: `${nextLevelPct}%` }} />
