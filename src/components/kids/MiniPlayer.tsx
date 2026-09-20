@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import { X } from "lucide-react";
 import { useLang, pickLang } from "@/lib/pick-lang";
-import { splitLyrics, resolveDuration, computeLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
+import { splitLyrics, resolveDuration, resolveLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
 
 /** Aparência escolhida no painel para cada cantiga. */
 export type SongStyle = {
@@ -25,7 +25,9 @@ export type MiniPlayerSong = {
   lyrics_pt_en: string | null;
   lyrics_pt_es: string | null;
   duration_seconds: number | null;
-  sync_offsets?: number[];
+  sync_offsets?: number[] | null;
+  sync_times?: number[] | null;
+
   style?: SongStyle | null;
 };
 
@@ -80,9 +82,17 @@ export function MiniPlayer({
   const duration = resolveDuration(audioDuration, song.duration_seconds);
   
   const bounds = useMemo(
-    () => computeLyricBounds(indLines, transLines, duration, song.sync_offsets || []),
-    [indLines, transLines, duration, song.id, lang, song.sync_offsets]
+    () =>
+      resolveLyricBounds({
+        indLines,
+        ptLines: transLines,
+        duration,
+        times: song.sync_times ?? null,
+        offsets: song.sync_offsets ?? null,
+      }),
+    [indLines, transLines, duration, song.id, lang, song.sync_offsets, song.sync_times]
   );
+
 
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
 

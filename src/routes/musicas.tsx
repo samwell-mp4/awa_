@@ -15,7 +15,7 @@ import {
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
-import { computeLyricBounds, activeLineIndex, resolveDuration } from "@/lib/lyric-sync";
+import { activeLineIndex, resolveDuration, resolveLyricBounds } from "@/lib/lyric-sync";
 
 export const Route = createFileRoute("/musicas")({
   ssr: false,
@@ -55,6 +55,8 @@ type Song = {
   lyrics_pt_es?: string | null;
   duration_seconds?: number | null;
   sync_offsets?: number[] | null;
+  sync_times?: number[] | null;
+
 };
 
 
@@ -71,7 +73,7 @@ function MusicasPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets,sync_times")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -420,9 +422,17 @@ function Player({
   // tamanho de cada verso (versos longos duram mais), com antecipação leve.
   const syncDuration = resolveDuration(duration, song.duration_seconds ?? null);
   const bounds = useMemo(
-    () => computeLyricBounds(indLines, ptLines, syncDuration, song.sync_offsets || []),
-    [indLines, ptLines, syncDuration, song.sync_offsets],
+    () =>
+      resolveLyricBounds({
+        indLines,
+        ptLines,
+        duration: syncDuration,
+        times: song.sync_times ?? null,
+        offsets: song.sync_offsets ?? null,
+      }),
+    [indLines, ptLines, syncDuration, song.sync_offsets, song.sync_times],
   );
+
   const activeIdx = useMemo(() => {
     if (maxLen <= 0) return -1;
     if (!bounds.length) return 0;

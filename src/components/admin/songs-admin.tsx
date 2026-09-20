@@ -25,6 +25,8 @@ type Song = {
   is_active: boolean;
   order_index: number;
   sync_offsets?: number[];
+  sync_times?: number[];
+
 };
 
 const ALDEIAS = ["Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"];
@@ -580,8 +582,20 @@ function SongRow({
   const qc = useQueryClient();
   const [s, setS] = useState(song);
   const [uploading, setUploading] = useState<string | null>(null);
-  
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const syncLines = useMemo(
+    () =>
+      (s.lyrics_indigenous || s.lyrics_pt || "")
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    [s.lyrics_indigenous, s.lyrics_pt],
+  );
+  const markedCount = (s.sync_times || []).filter((t) => typeof t === "number" && Number.isFinite(t)).length;
+
   useEffect(() => setS(song), [song]);
+
 
   async function handleUploadRow(songId: string, field: "cover_url", file: File) {
     if (field === "cover_url" && !permissions.edit_covers) {
@@ -618,8 +632,11 @@ function SongRow({
         is_active: s.is_active,
         order_index: s.order_index,
         aldeia: s.aldeia || null,
-        // @ts-ignore - Added sync_offsets to DB but not yet in generated types
         sync_offsets: s.sync_offsets || [],
+        sync_times: (s.sync_times || []).map((t) =>
+          typeof t === "number" && Number.isFinite(t) ? t : null,
+        ),
+
       } as any)
       .eq("id", s.id);
     if (error) return toast.error(error.message);
@@ -679,84 +696,94 @@ function SongRow({
         </Field>
       </div>
 
-      {/* Manual Sync Calibration & Realtime Adjuster */}
+      {/* Marcação manual dos tempos das legendas */}
       <div className="mt-6 border-t border-white/10 pt-4">
         <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gold mb-3 flex items-center gap-2">
-          <Sparkles className="h-3 w-3" /> Ajuste de Sincronia em Tempo Real
+          <Sparkles className="h-3 w-3" /> Sincronizar legendas (marcar tempos)
         </h4>
-        
-        <div className="mb-4 flex items-center gap-4 p-3 rounded-2xl bg-gold/5 border border-gold/10">
-          <div className="flex-1 text-[10px] text-foreground/70">
-            <strong>Instruções:</strong> Dê o play na música e, quando a voz começar cada frase, clique no botão ⏱️ da linha correspondente para marcar o tempo exato automaticamente.
+
+        <div className="mb-4 rounded-2xl border border-gold/10 bg-gold/5 p-3">
+          <p className="text-[10px] leading-relaxed text-foreground/70">
+            <strong>Como usar:</strong> toque o play abaixo e, no instante em que a voz começa cada
+            verso, clique em <em>Marcar</em> na linha correspondente. Os tempos ficam em segundos e
+            podem ser corrigidos à mão. Versos sem marca são calculados entre as marcas vizinhas.
+          </p>
+          {s.audio_url ? (
+            <audio ref={audioRef} src={s.audio_url} controls preload="metadata" className="mt-3 w-full" />
+          ) : (
+            <p className="mt-2 text-[10px] font-bold text-amber-300">
+              Cadastre o áudio desta música para marcar os tempos.
+            </p>
+          )}
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Btn
+              variant="outline"
+              className="text-[10px] py-1 h-auto"
+              onClick={() => setS({ ...s, sync_times: [] })}
+            >
+              Limpar marcações
+            </Btn>
+            <Btn onClick={onPreview} variant="outline" className="text-[10px] py-1 h-auto">
+              <Eye className="h-3 w-3 mr-1" /> Ver no player
+            </Btn>
           </div>
-          <Btn onClick={onPreview} variant="outline" className="text-[10px] py-1 h-auto">
-            <Eye className="h-3 w-3 mr-1" /> Abrir Player para Ajustar
-          </Btn>
         </div>
 
         <div className="grid gap-2 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
-          {s.lyrics_indigenous.split('\n').filter(l => l.trim()).map((line, idx) => (
-            <div key={idx} className="flex items-center gap-3 p-2 rounded-xl bg-black/20 group hover:bg-black/30 transition-colors">
-              <span className="w-6 text-[10px] font-bold text-foreground/40">{idx + 1}</span>
-              <span className="flex-1 text-xs text-cream truncate">{line}</span>
-              
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    const audio = document.querySelector('audio');
-                    if (audio) {
-                      const newOffsets = [...(s.sync_offsets || [])];
-                      // Calcula o tempo proporcional que esta linha deveria terminar
-                      // Para simplificar, o offset é a diferença entre o tempo atual e o tempo proporcional calculado
-                      const indLines = s.lyrics_indigenous.split('\n').filter(l => l.trim());
-                      const ptLines = s.lyrics_pt.split('\n').filter(l => l.trim());
-                      const maxLines = Math.max(indLines.length, ptLines.length);
-                      
-                      const weights: number[] = [];
-                      for (let i = 0; i < maxLines; i++) {
-                        weights.push(Math.max(8, (indLines[i] ?? "").length, (ptLines[i] ?? "").length));
-                      }
-                      const totalWeight = weights.reduce((a, b) => a + b, 0);
-                      let accWeight = 0;
-                      for (let i = 0; i <= idx; i++) accWeight += weights[i];
-                      
-                      const targetTime = (accWeight / totalWeight) * audio.duration;
-                      const offset = audio.currentTime - targetTime;
-                      
-                      newOffsets[idx] = parseFloat(offset.toFixed(2));
-                      setS({ ...s, sync_offsets: newOffsets });
-                      toast.success(`Linha ${idx + 1} marcada: ${audio.currentTime.toFixed(1)}s`);
-                    } else {
-                      toast.error("Dê o play na música primeiro!");
-                    }
-                  }}
-                  title="Marcar tempo atual"
-                  className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20"
-                >
-                  <Sparkles className="h-3 w-3" />
-                </button>
+          {syncLines.map((line, idx) => {
+            const marked = s.sync_times?.[idx];
+            return (
+              <div key={idx} className="flex items-center gap-3 rounded-xl bg-black/20 p-2 hover:bg-black/30">
+                <span className="w-6 text-[10px] font-bold text-foreground/40">{idx + 1}</span>
+                <span className="flex-1 truncate text-xs text-cream">{line}</span>
 
-                <input
-                  type="number"
-                  step="0.1"
-                  value={s.sync_offsets?.[idx] || 0}
-                  onChange={(e) => {
-                    const newOffsets = [...(s.sync_offsets || [])];
-                    newOffsets[idx] = parseFloat(e.target.value) || 0;
-                    setS({ ...s, sync_offsets: newOffsets });
-                  }}
-                  className="w-16 rounded-lg border border-gold/20 bg-forest-deep/50 px-2 py-1 text-[10px] text-gold focus:border-gold outline-none"
-                  placeholder="0.0s"
-                />
-                <span className="text-[9px] font-bold text-foreground/30">s</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      const audio = audioRef.current;
+                      if (!audio || !s.audio_url) {
+                        toast.error("Toque o áudio desta música primeiro.");
+                        return;
+                      }
+                      const times = [...(s.sync_times || [])];
+                      while (times.length < idx) times.push(undefined as unknown as number);
+                      times[idx] = parseFloat(audio.currentTime.toFixed(2));
+                      setS({ ...s, sync_times: times });
+                      toast.success(`Verso ${idx + 1}: ${audio.currentTime.toFixed(2)}s`);
+                    }}
+                    className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300 hover:bg-emerald-500/20"
+                  >
+                    Marcar
+                  </button>
+
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={typeof marked === "number" ? marked : ""}
+                    placeholder="—"
+                    onChange={(e) => {
+                      const times = [...(s.sync_times || [])];
+                      while (times.length < idx) times.push(undefined as unknown as number);
+                      const v = e.target.value;
+                      times[idx] = v === "" ? (undefined as unknown as number) : parseFloat(v);
+                      setS({ ...s, sync_times: times });
+                    }}
+                    className="w-20 rounded-lg border border-gold/20 bg-forest-deep/50 px-2 py-1 text-[10px] text-gold outline-none focus:border-gold"
+                  />
+                  <span className="text-[9px] font-bold text-foreground/30">s</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <p className="mt-3 text-[9px] text-foreground/50 italic leading-relaxed">
-          * Dica: O botão de faísca (⏱️) calcula automaticamente o atraso/adiantamento necessário baseado no tempo atual do áudio.
+        <p className="mt-3 text-[9px] italic leading-relaxed text-foreground/50">
+          {markedCount === 0
+            ? "Nenhum verso marcado — a legenda usa o cálculo automático."
+            : `${markedCount} de ${syncLines.length} versos marcados manualmente.`}
         </p>
       </div>
+
 
       <div className="mt-6 flex items-center justify-between gap-3 flex-wrap">
         <label className="inline-flex items-center gap-2 text-xs text-foreground/70">
