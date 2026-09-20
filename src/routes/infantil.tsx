@@ -278,7 +278,20 @@ function InfantilHome() {
               className="overflow-hidden rounded-[1.5rem] border-4 border-amber-300 shadow-xl"
               style={{ background: "#0b3d2e" }}
             >
-              <VideoMenu src={videoUrl} label={t("infantil.title")} />
+              <VideoMenu src={videoUrl} label={t("infantil.title")} poster={kidsCharacter} />
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1 bg-[#5a3a22] px-2 py-1.5 text-amber-50">
+                <div className="min-w-0">
+                  <div className="text-[8px] font-black uppercase opacity-80 sm:text-[10px]">Patxôhã</div>
+                  <div className="font-display truncate text-xs font-black sm:text-base">Awê</div>
+                </div>
+                <span aria-hidden className="text-amber-300">
+                  ◈
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[8px] font-black uppercase opacity-80 sm:text-[10px]">Português</div>
+                  <div className="truncate text-[10px] font-bold sm:text-sm">Olá, seja bem-vindo</div>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl sm:p-4">
               <div className="text-[11px] font-black opacity-90 sm:text-sm">Vídeo do dia</div>
