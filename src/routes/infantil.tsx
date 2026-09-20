@@ -303,17 +303,17 @@ function InfantilHome() {
             >
               <VideoMenu src={videoUrl} label={t("infantil.title")} />
             </div>
-            <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-4 text-amber-50 shadow-xl">
-              <div className="text-sm font-black opacity-90">Vídeo do dia</div>
-              <div className="font-display text-2xl font-black leading-tight">Saudações em Patxohã</div>
-              <p className="mt-1 text-sm font-semibold opacity-90">
+            <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl sm:p-4">
+              <div className="text-[11px] font-black opacity-90 sm:text-sm">Vídeo do dia</div>
+              <div className="font-display text-base font-black leading-tight sm:text-2xl">Saudações em Patxohã</div>
+              <p className="mt-1 text-[10px] font-semibold leading-snug opacity-90 sm:text-sm">
                 Aprenda a cumprimentar em Patxohã com o professor Awã.
               </p>
               <Link
                 to="/videos"
-                className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border-4 border-amber-600/50 bg-amber-500 px-5 py-2 font-display text-lg font-black text-amber-950 shadow-lg transition hover:-translate-y-0.5 active:scale-95"
+                className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-amber-600/50 bg-amber-500 px-3 py-1.5 font-display text-sm font-black text-amber-950 shadow-lg transition hover:-translate-y-0.5 active:scale-95 sm:mt-3 sm:gap-2 sm:border-4 sm:px-5 sm:py-2 sm:text-lg"
               >
-                <Play className="h-5 w-5" /> Assistir agora
+                <Play className="h-4 w-4 sm:h-5 sm:w-5" /> Assistir agora
               </Link>
             </div>
           </section>
