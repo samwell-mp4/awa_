@@ -350,19 +350,19 @@ function InfantilHome() {
 
             <Link
               to="/dicionario"
-              className="flex items-center gap-3 rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-4 text-amber-50 shadow-xl transition hover:-translate-y-0.5 active:scale-[0.99]"
+              className="flex items-center gap-2 rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl transition hover:-translate-y-0.5 active:scale-[0.99] sm:gap-3 sm:p-4"
             >
-              <div className="flex-1">
-                <div className="text-sm font-black opacity-90">Palavra do dia</div>
-                <div className="font-display text-2xl font-black text-amber-300">Akuá</div>
-                <div className="text-sm font-semibold opacity-90">Significa: olá, bom dia</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[11px] font-black opacity-90 sm:text-sm">Palavra do dia</div>
+                <div className="font-display text-lg font-black text-amber-300 sm:text-2xl">Akuá</div>
+                <div className="text-[10px] font-semibold opacity-90 sm:text-sm">Significa: olá, bom dia</div>
               </div>
               <img
                 src={trailNatureza}
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="h-20 w-16 rounded-xl border-2 border-amber-300/60 object-cover"
+                className="h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:h-20 sm:w-16"
               />
             </Link>
           </section>
