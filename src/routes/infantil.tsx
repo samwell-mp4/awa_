@@ -75,21 +75,6 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
-type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
-  key: HotspotKey;
-  emoji: string;
-  color: string;
-};
-
-const defaultHotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
-  { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
-  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
-  { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
-];
 
 const TRAIL_CARDS = [
   { n: 1, label: "Saudações", img: trailSaudacoes, to: "/trilhas/$slug", slug: "saudacoes", tint: "#4c9a2a" },
