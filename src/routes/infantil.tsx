@@ -116,7 +116,7 @@ function InfantilHome() {
     queryFn: () => getFn({ data: "branding" }),
   });
 
-  const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
+  const logoUrl = kidsLogoRef || branding?.infantil_logo_url || infantilLogo.url;
   const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
 
   const nextLevelPct = Math.min(100, points % 100);
