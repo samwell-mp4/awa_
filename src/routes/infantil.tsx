@@ -319,10 +319,10 @@ function InfantilHome() {
           </section>
 
           {/* Explorar mais + Palavra do dia */}
-          <section className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-[2fr_1fr]">
-            <div className="rounded-[1.5rem] border-4 border-amber-200 bg-amber-50/95 p-3 shadow-xl">
-              <h2 className="mb-2 font-display text-xl font-black text-emerald-900">Explorar mais</h2>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+          <section className="mt-3 grid grid-cols-[2fr_1fr] gap-2 sm:gap-3">
+            <div className="rounded-[1.5rem] border-4 border-amber-200 bg-amber-50/95 p-2 shadow-xl sm:p-3">
+              <h2 className="mb-2 font-display text-base font-black text-emerald-900 sm:text-xl">Explorar mais</h2>
+              <div className="grid grid-cols-6 gap-1 sm:gap-2">
                 {EXPLORE.map((e) => {
                   const Icon = e.icon;
                   return (
