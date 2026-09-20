@@ -1,5 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState, useMemo, lazy, Suspense } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
@@ -10,7 +10,6 @@ import {
   Flame,
   Gamepad2,
   Home,
-  Loader2,
   Mic,
   Music,
   Play,
@@ -26,11 +25,6 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
-
-const GlossarioInfantil = lazy(() =>
-  import("@/components/kids/glossario-infantil").then((m) => ({ default: m.GlossarioInfantil })),
-);
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -405,27 +399,6 @@ function InfantilHome() {
             <span>{t("common.voltar")}</span>
           </Link>
 
-          {t("infantil.learning") && (
-            <section className="mt-10 content-visibility-auto">
-              <h2 className="px-4 text-center font-display text-2xl font-black text-amber-100 drop-shadow">
-                {t("infantil.learning")}
-              </h2>
-              <ErrorBoundary
-                area="glossario-infantil"
-                message="Não foi possível carregar esta atividade. Tente novamente."
-              >
-                <Suspense
-                  fallback={
-                    <div className="flex h-40 items-center justify-center">
-                      <Loader2 className="animate-spin" />
-                    </div>
-                  }
-                >
-                  <GlossarioInfantil />
-                </Suspense>
-              </ErrorBoundary>
-            </section>
-          )}
         </main>
 
         {/* Barra inferior fixa */}
