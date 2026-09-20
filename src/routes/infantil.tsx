@@ -271,7 +271,7 @@ function InfantilHome() {
                   to={c.to as any}
                   params={(c.slug ? { slug: c.slug } : {}) as any}
                   aria-label={`Trilha ${c.label}`}
-                  className="overflow-hidden rounded-2xl border-4 bg-emerald-900/40 shadow-lg transition hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="overflow-hidden rounded-xl border-2 bg-emerald-900/40 shadow-lg transition hover:-translate-y-0.5 active:scale-[0.98] sm:rounded-2xl sm:border-4"
                   style={{ borderColor: c.tint }}
                 >
                   <img
@@ -279,10 +279,10 @@ function InfantilHome() {
                     alt={c.label}
                     loading="lazy"
                     decoding="async"
-                    className="h-24 w-full object-cover"
+                    className="h-14 w-full object-cover sm:h-24"
                   />
-                  <div className="px-2 py-1.5">
-                    <div className="font-display text-sm font-black text-amber-50">
+                  <div className="px-1 py-1 sm:px-2 sm:py-1.5">
+                    <div className="font-display text-[10px] font-black leading-tight text-amber-50 sm:text-sm">
                       {c.n}. {c.label}
                     </div>
                     <div className="mt-1 h-2 overflow-hidden rounded-full bg-black/30">
