@@ -458,6 +458,22 @@ function Player({
       });
   }, [song.id, isSC]);
 
+  // Acompanha o tempo do áudio de forma contínua para a letra seguir a voz.
+  useEffect(() => {
+    if (isSC) return;
+    let raf = 0;
+    const tick = () => {
+      const a = audioRef.current;
+      if (a) {
+        setProgress(a.currentTime);
+        if (a.duration && Number.isFinite(a.duration)) setDuration(a.duration);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [song.id, isSC]);
+
   // SoundCloud Widget API — track progress + play/pause
   useEffect(() => {
     if (!isSC) return;
