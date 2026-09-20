@@ -1,5 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
@@ -75,21 +75,6 @@ export const Route = createFileRoute("/infantil")({
   component: InfantilHome,
 });
 
-type HotspotKey = "trilhas" | "cantico" | "historia" | "jogos" | "amizade";
-type Hotspot = {
-  to: "/trilhas-infantil" | "/musicas-infantil" | "/historias-infantil" | "/jogos-infantil" | "/amizade";
-  key: HotspotKey;
-  emoji: string;
-  color: string;
-};
-
-const defaultHotspots: Hotspot[] = [
-  { to: "/trilhas-infantil", key: "trilhas", emoji: "🗺️", color: "#06d6a0" },
-  { to: "/musicas-infantil", key: "cantico", emoji: "🎶", color: "#ef476f" },
-  { to: "/historias-infantil", key: "historia", emoji: "📖", color: "#f4a261" },
-  { to: "/jogos-infantil", key: "jogos", emoji: "🎮", color: "#118ab2" },
-  { to: "/amizade", key: "amizade", emoji: "💛", color: "#c77dff" },
-];
 
 const TRAIL_CARDS = [
   { n: 1, label: "Saudações", img: trailSaudacoes, to: "/trilhas/$slug", slug: "saudacoes", tint: "#4c9a2a" },
@@ -124,15 +109,6 @@ function InfantilHome() {
   const { config } = useActiveTemplate("infantil");
   const { points, level, streak } = useUserStats();
 
-  const { data: hotspotsData } = useQuery({
-    queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn({ data: "infantil_hotspots" }),
-  });
-
-  const hotspots = useMemo(
-    () => (Array.isArray(hotspotsData) ? (hotspotsData as Hotspot[]) : defaultHotspots) || [],
-    [hotspotsData],
-  );
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
@@ -161,7 +137,7 @@ function InfantilHome() {
 
         <main className="mx-auto max-w-4xl px-3 pb-28 md:px-6">
           {/* Topo: logo + personagem + estatísticas */}
-          <section className="relative mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <section className="relative mt-2 grid grid-cols-2 gap-2 sm:gap-3">
             <div className="flex items-center justify-center">
               <img
                 src={logoUrl}
@@ -171,7 +147,7 @@ function InfantilHome() {
                 fetchPriority="high"
                 decoding="async"
                 draggable={false}
-                className="w-full max-w-[320px] rounded-[1.75rem] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                className="w-full max-w-[320px] rounded-[1.75rem] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)] self-start"
               />
             </div>
 
@@ -184,7 +160,7 @@ function InfantilHome() {
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="pointer-events-none mx-auto -mb-2 h-[190px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[230px]"
+                className="pointer-events-none mx-auto -mb-2 h-[130px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[200px]"
               />
               <div className="mb-1 flex items-center justify-end gap-2">
                 <img
@@ -217,7 +193,7 @@ function InfantilHome() {
           </section>
 
           {/* Continuar aprendendo + Nível */}
-          <section className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <section className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
             <Link
               to="/trilhas-infantil"
               className="rounded-2xl border-4 border-emerald-900/40 bg-emerald-700 px-4 py-3 text-white shadow-lg transition hover:-translate-y-0.5 active:scale-[0.99]"
@@ -264,14 +240,14 @@ function InfantilHome() {
                 Ver todas <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
               {TRAIL_CARDS.map((c) => (
                 <Link
                   key={c.label}
                   to={c.to as any}
                   params={(c.slug ? { slug: c.slug } : {}) as any}
                   aria-label={`Trilha ${c.label}`}
-                  className="overflow-hidden rounded-2xl border-4 bg-emerald-900/40 shadow-lg transition hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="overflow-hidden rounded-xl border-2 bg-emerald-900/40 shadow-lg transition hover:-translate-y-0.5 active:scale-[0.98] sm:rounded-2xl sm:border-4"
                   style={{ borderColor: c.tint }}
                 >
                   <img
@@ -279,10 +255,10 @@ function InfantilHome() {
                     alt={c.label}
                     loading="lazy"
                     decoding="async"
-                    className="h-24 w-full object-cover"
+                    className="h-14 w-full object-cover sm:h-24"
                   />
-                  <div className="px-2 py-1.5">
-                    <div className="font-display text-sm font-black text-amber-50">
+                  <div className="px-1 py-1 sm:px-2 sm:py-1.5">
+                    <div className="font-display text-[10px] font-black leading-tight text-amber-50 sm:text-sm">
                       {c.n}. {c.label}
                     </div>
                     <div className="mt-1 h-2 overflow-hidden rounded-full bg-black/30">
@@ -295,7 +271,7 @@ function InfantilHome() {
           </section>
 
           {/* Vídeo do dia */}
-          <section className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+          <section className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
             <div
               key={languageKey}
               className="overflow-hidden rounded-[1.5rem] border-4 border-amber-300 shadow-xl"
@@ -303,26 +279,26 @@ function InfantilHome() {
             >
               <VideoMenu src={videoUrl} label={t("infantil.title")} />
             </div>
-            <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-4 text-amber-50 shadow-xl">
-              <div className="text-sm font-black opacity-90">Vídeo do dia</div>
-              <div className="font-display text-2xl font-black leading-tight">Saudações em Patxohã</div>
-              <p className="mt-1 text-sm font-semibold opacity-90">
+            <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl sm:p-4">
+              <div className="text-[11px] font-black opacity-90 sm:text-sm">Vídeo do dia</div>
+              <div className="font-display text-base font-black leading-tight sm:text-2xl">Saudações em Patxohã</div>
+              <p className="mt-1 text-[10px] font-semibold leading-snug opacity-90 sm:text-sm">
                 Aprenda a cumprimentar em Patxohã com o professor Awã.
               </p>
               <Link
                 to="/videos"
-                className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border-4 border-amber-600/50 bg-amber-500 px-5 py-2 font-display text-lg font-black text-amber-950 shadow-lg transition hover:-translate-y-0.5 active:scale-95"
+                className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-amber-600/50 bg-amber-500 px-3 py-1.5 font-display text-sm font-black text-amber-950 shadow-lg transition hover:-translate-y-0.5 active:scale-95 sm:mt-3 sm:gap-2 sm:border-4 sm:px-5 sm:py-2 sm:text-lg"
               >
-                <Play className="h-5 w-5" /> Assistir agora
+                <Play className="h-4 w-4 sm:h-5 sm:w-5" /> Assistir agora
               </Link>
             </div>
           </section>
 
           {/* Explorar mais + Palavra do dia */}
-          <section className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-[2fr_1fr]">
-            <div className="rounded-[1.5rem] border-4 border-amber-200 bg-amber-50/95 p-3 shadow-xl">
-              <h2 className="mb-2 font-display text-xl font-black text-emerald-900">Explorar mais</h2>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+          <section className="mt-3 grid grid-cols-[2fr_1fr] gap-2 sm:gap-3">
+            <div className="rounded-[1.5rem] border-4 border-amber-200 bg-amber-50/95 p-2 shadow-xl sm:p-3">
+              <h2 className="mb-2 font-display text-base font-black text-emerald-900 sm:text-xl">Explorar mais</h2>
+              <div className="grid grid-cols-6 gap-1 sm:gap-2">
                 {EXPLORE.map((e) => {
                   const Icon = e.icon;
                   return (
@@ -332,14 +308,14 @@ function InfantilHome() {
                       aria-label={e.label}
                       className="flex flex-col items-center gap-1 text-center"
                     >
-                      <span className="grid h-14 w-14 place-items-center rounded-2xl border-4 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95">
+                      <span className="grid aspect-square w-full place-items-center rounded-xl border-2 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95 sm:rounded-2xl sm:border-4">
                         {Icon ? (
-                          <Icon className="h-7 w-7" />
+                          <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
                         ) : (
-                          <span className="font-display text-lg font-black">{(e as any).digits}</span>
+                          <span className="font-display text-sm font-black sm:text-lg">{(e as any).digits}</span>
                         )}
                       </span>
-                      <span className="text-[11px] font-black uppercase tracking-wide text-emerald-900">
+                      <span className="text-[8px] font-black uppercase leading-tight tracking-tight text-emerald-900 sm:text-[11px] sm:tracking-wide">
                         {e.label}
                       </span>
                     </Link>
@@ -350,46 +326,23 @@ function InfantilHome() {
 
             <Link
               to="/dicionario"
-              className="flex items-center gap-3 rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-4 text-amber-50 shadow-xl transition hover:-translate-y-0.5 active:scale-[0.99]"
+              className="flex items-center gap-2 rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl transition hover:-translate-y-0.5 active:scale-[0.99] sm:gap-3 sm:p-4"
             >
-              <div className="flex-1">
-                <div className="text-sm font-black opacity-90">Palavra do dia</div>
-                <div className="font-display text-2xl font-black text-amber-300">Akuá</div>
-                <div className="text-sm font-semibold opacity-90">Significa: olá, bom dia</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[11px] font-black opacity-90 sm:text-sm">Palavra do dia</div>
+                <div className="font-display text-lg font-black text-amber-300 sm:text-2xl">Akuá</div>
+                <div className="text-[10px] font-semibold opacity-90 sm:text-sm">Significa: olá, bom dia</div>
               </div>
               <img
                 src={trailNatureza}
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="h-20 w-16 rounded-xl border-2 border-amber-300/60 object-cover"
+                className="h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:h-20 sm:w-16"
               />
             </Link>
           </section>
 
-          {/* Atalhos infantis configuráveis pelo painel */}
-          <section
-            key={`labels-${languageKey}`}
-            className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5"
-          >
-            {Array.isArray(hotspots) &&
-              hotspots.map((h: any) => (
-                <Link
-                  key={`${languageKey}-${h.to}-${h.key}`}
-                  to={h.to}
-                  aria-label={t(`infantil.hotspots.${h.key}`) || h.key}
-                  className="flex flex-col items-center gap-1 rounded-2xl border-4 bg-white/95 px-3 py-3 font-display text-sm font-black uppercase tracking-wide text-emerald-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-white"
-                  style={{ borderColor: h.color }}
-                >
-                  <span className="text-2xl md:text-3xl" aria-hidden>
-                    {h.emoji}
-                  </span>
-                  <span className="text-center leading-tight">
-                    {t(`infantil.hotspots.${h.key}`) || h.key}
-                  </span>
-                </Link>
-              ))}
-          </section>
 
           <Link
             to="/"
