@@ -264,7 +264,7 @@ function InfantilHome() {
                 Ver todas <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
               {TRAIL_CARDS.map((c) => (
                 <Link
                   key={c.label}
