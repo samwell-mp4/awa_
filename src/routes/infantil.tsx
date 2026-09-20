@@ -10,7 +10,6 @@ import {
   Flame,
   Gamepad2,
   Home,
-  Loader2,
   Mic,
   Music,
   Play,
