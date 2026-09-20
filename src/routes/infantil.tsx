@@ -124,15 +124,6 @@ function InfantilHome() {
   const { config } = useActiveTemplate("infantil");
   const { points, level, streak } = useUserStats();
 
-  const { data: hotspotsData } = useQuery({
-    queryKey: ["site_config", "infantil_hotspots"],
-    queryFn: () => getFn({ data: "infantil_hotspots" }),
-  });
-
-  const hotspots = useMemo(
-    () => (Array.isArray(hotspotsData) ? (hotspotsData as Hotspot[]) : defaultHotspots) || [],
-    [hotspotsData],
-  );
 
   const { data: branding } = useQuery({
     queryKey: ["site_config", "branding"],
