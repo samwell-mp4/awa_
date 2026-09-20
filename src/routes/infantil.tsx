@@ -295,7 +295,7 @@ function InfantilHome() {
           </section>
 
           {/* Vídeo do dia */}
-          <section className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+          <section className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
             <div
               key={languageKey}
               className="overflow-hidden rounded-[1.5rem] border-4 border-amber-300 shadow-xl"
