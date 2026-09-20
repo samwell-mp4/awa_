@@ -26,11 +26,6 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
-
-const GlossarioInfantil = lazy(() =>
-  import("@/components/kids/glossario-infantil").then((m) => ({ default: m.GlossarioInfantil })),
-);
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
