@@ -332,14 +332,14 @@ function InfantilHome() {
                       aria-label={e.label}
                       className="flex flex-col items-center gap-1 text-center"
                     >
-                      <span className="grid h-14 w-14 place-items-center rounded-2xl border-4 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95">
+                      <span className="grid aspect-square w-full place-items-center rounded-xl border-2 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95 sm:rounded-2xl sm:border-4">
                         {Icon ? (
-                          <Icon className="h-7 w-7" />
+                          <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
                         ) : (
-                          <span className="font-display text-lg font-black">{(e as any).digits}</span>
+                          <span className="font-display text-sm font-black sm:text-lg">{(e as any).digits}</span>
                         )}
                       </span>
-                      <span className="text-[11px] font-black uppercase tracking-wide text-emerald-900">
+                      <span className="text-[8px] font-black uppercase leading-tight tracking-tight text-emerald-900 sm:text-[11px] sm:tracking-wide">
                         {e.label}
                       </span>
                     </Link>
