@@ -396,7 +396,7 @@ function InfantilHome() {
   );
 }
 
-function VideoMenu({ src, label }: { src: string; label: string }) {
+function VideoMenu({ src, label, poster }: { src: string; label: string; poster?: string }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [ready, setReady] = useState(false);
 
@@ -415,18 +415,29 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
   }, [src]);
 
   return (
-    <video
-      ref={ref}
-      src={src}
-      className="block h-auto w-full select-none transition-opacity duration-300"
-      style={{ opacity: ready ? 1 : 0, background: "#0b3d2e" }}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      aria-label={label}
-      draggable={false}
-    />
+    <div className="relative">
+      {poster ? (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-300"
+          style={{ opacity: ready ? 0 : 1 }}
+        />
+      ) : null}
+      <video
+        ref={ref}
+        src={src}
+        className="relative block h-auto w-full select-none transition-opacity duration-300"
+        style={{ opacity: ready ? 1 : 0 }}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-label={label}
+        draggable={false}
+      />
+    </div>
   );
 }
