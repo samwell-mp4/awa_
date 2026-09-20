@@ -29,6 +29,13 @@
       "when": 1789794199582,
       "tag": "0003_visual_editor_drafts_media",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789911002243,
+      "tag": "0004_add_songs_sync_times",
+      "breakpoints": true
     }
   ]
 }

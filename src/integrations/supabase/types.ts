@@ -588,6 +588,7 @@ export type Database = {
           order_index: number
           style: Json
           sync_offsets: number[] | null
+          sync_times: number[] | null
           title: string
           title_en: string | null
           title_es: string | null
@@ -618,6 +619,7 @@ export type Database = {
           order_index?: number
           style?: Json
           sync_offsets?: number[] | null
+          sync_times?: number[] | null
           title: string
           title_en?: string | null
           title_es?: string | null
@@ -648,6 +650,7 @@ export type Database = {
           order_index?: number
           style?: Json
           sync_offsets?: number[] | null
+          sync_times?: number[] | null
           title?: string
           title_en?: string | null
           title_es?: string | null
@@ -897,6 +900,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      collapse_repeated_lines: { Args: { txt: string }; Returns: string }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

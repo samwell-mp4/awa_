@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { splitLyrics, computeLyricBounds, activeLineIndex, resolveDuration } from "@/lib/lyric-sync";
+import { splitLyrics, resolveLyricBounds, activeLineIndex, resolveDuration } from "@/lib/lyric-sync";
 
 type CaptionPlayerProps = {
   text: string;
   audio: HTMLAudioElement | null;
   durationSeconds?: number;
+  /** Tempos de início marcados manualmente (segundos), quando existirem. */
+  times?: (number | string | null)[] | null;
   className?: string;
   activeColor?: string;
   inactiveColor?: string;
@@ -14,10 +16,12 @@ export function CaptionPlayer({
   text,
   audio,
   durationSeconds,
+  times,
   className = "",
   activeColor = "text-gold",
   inactiveColor = "text-cream/50",
 }: CaptionPlayerProps) {
+
   const [progress, setProgress] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -40,7 +44,11 @@ export function CaptionPlayer({
 
   const lines = useMemo(() => splitLyrics(text), [text]);
   const duration = useMemo(() => resolveDuration(audioDuration, durationSeconds), [audioDuration, durationSeconds]);
-  const bounds = useMemo(() => computeLyricBounds(lines, [], duration), [lines, duration]);
+  const bounds = useMemo(
+    () => resolveLyricBounds({ indLines: lines, duration, times: times ?? null }),
+    [lines, duration, times],
+  );
+
   const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [bounds, progress]);
 
   useEffect(() => {
