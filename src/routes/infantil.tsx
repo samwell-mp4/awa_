@@ -171,7 +171,7 @@ function InfantilHome() {
                 fetchPriority="high"
                 decoding="async"
                 draggable={false}
-                className="w-full max-w-[320px] rounded-[1.75rem] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                className="w-full max-w-[320px] rounded-[1.75rem] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)] self-start"
               />
             </div>
 
