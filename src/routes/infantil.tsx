@@ -352,7 +352,7 @@ function InfantilHome() {
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="hidden h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:block sm:h-20 sm:w-16"
+                className="h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:h-20 sm:w-16"
               />
             </Link>
           </section>
