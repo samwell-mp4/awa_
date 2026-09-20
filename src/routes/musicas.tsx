@@ -15,6 +15,7 @@ import {
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
+import { computeLyricBounds, activeLineIndex, resolveDuration } from "@/lib/lyric-sync";
 
 export const Route = createFileRoute("/musicas")({
   ssr: false,
