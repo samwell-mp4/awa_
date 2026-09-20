@@ -405,27 +405,6 @@ function InfantilHome() {
             <span>{t("common.voltar")}</span>
           </Link>
 
-          {t("infantil.learning") && (
-            <section className="mt-10 content-visibility-auto">
-              <h2 className="px-4 text-center font-display text-2xl font-black text-amber-100 drop-shadow">
-                {t("infantil.learning")}
-              </h2>
-              <ErrorBoundary
-                area="glossario-infantil"
-                message="Não foi possível carregar esta atividade. Tente novamente."
-              >
-                <Suspense
-                  fallback={
-                    <div className="flex h-40 items-center justify-center">
-                      <Loader2 className="animate-spin" />
-                    </div>
-                  }
-                >
-                  <GlossarioInfantil />
-                </Suspense>
-              </ErrorBoundary>
-            </section>
-          )}
         </main>
 
         {/* Barra inferior fixa */}
