@@ -28,6 +28,7 @@ import { useUserStats } from "@/hooks/use-user-stats";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
+import kidsLogoRef from "@/assets/infantil-logo-ref.png";
 import menuVideo from "@/assets/infantil-menu-video.mp4.asset.json";
 import kidsBg from "@/assets/kids-menu-bg.jpg";
 import kidsCharacter from "@/assets/kids-menu-character.png";
@@ -115,7 +116,7 @@ function InfantilHome() {
     queryFn: () => getFn({ data: "branding" }),
   });
 
-  const logoUrl = branding?.infantil_logo_url || infantilLogo.url;
+  const logoUrl = kidsLogoRef || branding?.infantil_logo_url || infantilLogo.url;
   const videoUrl = branding?.infantil_menu_video_url || menuVideo.url;
 
   const nextLevelPct = Math.min(100, points % 100);
@@ -277,7 +278,20 @@ function InfantilHome() {
               className="overflow-hidden rounded-[1.5rem] border-4 border-amber-300 shadow-xl"
               style={{ background: "#0b3d2e" }}
             >
-              <VideoMenu src={videoUrl} label={t("infantil.title")} />
+              <VideoMenu src={videoUrl} label={t("infantil.title")} poster={kidsCharacter} />
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1 bg-[#5a3a22] px-2 py-1.5 text-amber-50">
+                <div className="min-w-0">
+                  <div className="text-[8px] font-black uppercase opacity-80 sm:text-[10px]">Patxôhã</div>
+                  <div className="font-display truncate text-xs font-black sm:text-base">Awê</div>
+                </div>
+                <span aria-hidden className="text-amber-300">
+                  ◈
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[8px] font-black uppercase opacity-80 sm:text-[10px]">Português</div>
+                  <div className="truncate text-[10px] font-bold sm:text-sm">Olá, seja bem-vindo</div>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col justify-center rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl sm:p-4">
               <div className="text-[11px] font-black opacity-90 sm:text-sm">Vídeo do dia</div>
@@ -338,7 +352,7 @@ function InfantilHome() {
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="hidden h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:block sm:h-20 sm:w-16"
+                className="h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:h-20 sm:w-16"
               />
             </Link>
           </section>
@@ -382,7 +396,7 @@ function InfantilHome() {
   );
 }
 
-function VideoMenu({ src, label }: { src: string; label: string }) {
+function VideoMenu({ src, label, poster }: { src: string; label: string; poster?: string }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [ready, setReady] = useState(false);
 
@@ -401,18 +415,29 @@ function VideoMenu({ src, label }: { src: string; label: string }) {
   }, [src]);
 
   return (
-    <video
-      ref={ref}
-      src={src}
-      className="block h-auto w-full select-none transition-opacity duration-300"
-      style={{ opacity: ready ? 1 : 0, background: "#0b3d2e" }}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      aria-label={label}
-      draggable={false}
-    />
+    <div className="relative">
+      {poster ? (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-300"
+          style={{ opacity: ready ? 0 : 1 }}
+        />
+      ) : null}
+      <video
+        ref={ref}
+        src={src}
+        className="relative block h-auto w-full select-none transition-opacity duration-300"
+        style={{ opacity: ready ? 1 : 0 }}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-label={label}
+        draggable={false}
+      />
+    </div>
   );
 }
