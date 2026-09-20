@@ -413,18 +413,18 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
-  // Sincronização com ajuste fixo de antecipação (estilo ontimeupdate).
-  // Distribui as linhas na janela cantada e adianta por um valor fixo,
-  // como sugerido: `tempo = currentTime - AJUSTE_FIXO`.
-  const AJUSTE_FIXO = 1.2; // segundos para adiantar a legenda
-  const activeIdx = (() => {
+  // Sincronização automática: a duração é distribuída proporcionalmente ao
+  // tamanho de cada verso (versos longos duram mais), com antecipação leve.
+  const syncDuration = resolveDuration(duration, song.duration_seconds ?? null);
+  const bounds = useMemo(
+    () => computeLyricBounds(indLines, ptLines, syncDuration, song.sync_offsets || []),
+    [indLines, ptLines, syncDuration, song.sync_offsets],
+  );
+  const activeIdx = useMemo(() => {
     if (maxLen <= 0) return -1;
-    if (duration <= 0) return 0;
-    const lyricWindow = Math.max(1, duration * 0.9);
-    const t = Math.max(0, Math.min(lyricWindow, progress + AJUSTE_FIXO));
-    const rel = t / lyricWindow;
-    return Math.max(0, Math.min(maxLen - 1, Math.floor(rel * maxLen)));
-  })();
+    if (!bounds.length) return 0;
+    return activeLineIndex(bounds, progress, 0.6);
+  }, [bounds, progress, maxLen]);
 
   const lineRefs = useRef<Array<HTMLDivElement | null>>([]);
   useEffect(() => {
