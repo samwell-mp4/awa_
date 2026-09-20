@@ -217,7 +217,7 @@ function InfantilHome() {
           </section>
 
           {/* Continuar aprendendo + Nível */}
-          <section className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <section className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
             <Link
               to="/trilhas-infantil"
               className="rounded-2xl border-4 border-emerald-900/40 bg-emerald-700 px-4 py-3 text-white shadow-lg transition hover:-translate-y-0.5 active:scale-[0.99]"
