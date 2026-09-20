@@ -184,7 +184,7 @@ function InfantilHome() {
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="pointer-events-none mx-auto -mb-2 h-[190px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[230px]"
+                className="pointer-events-none mx-auto -mb-2 h-[130px] w-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] sm:h-[200px]"
               />
               <div className="mb-1 flex items-center justify-end gap-2">
                 <img
