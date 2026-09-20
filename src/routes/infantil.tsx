@@ -161,7 +161,7 @@ function InfantilHome() {
 
         <main className="mx-auto max-w-4xl px-3 pb-28 md:px-6">
           {/* Topo: logo + personagem + estatísticas */}
-          <section className="relative mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <section className="relative mt-2 grid grid-cols-2 gap-2 sm:gap-3">
             <div className="flex items-center justify-center">
               <img
                 src={logoUrl}
