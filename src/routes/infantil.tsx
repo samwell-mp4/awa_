@@ -306,7 +306,7 @@ function InfantilHome() {
                       key={e.label}
                       to={e.to as any}
                       aria-label={e.label}
-                      className="flex flex-col items-center gap-1 text-center"
+                      className="flex min-w-0 flex-col items-center gap-1 text-center"
                     >
                       <span className="grid aspect-square w-full place-items-center rounded-xl border-2 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95 sm:rounded-2xl sm:border-4">
                         {Icon ? (
@@ -315,7 +315,7 @@ function InfantilHome() {
                           <span className="font-display text-sm font-black sm:text-lg">{(e as any).digits}</span>
                         )}
                       </span>
-                      <span className="text-[8px] font-black uppercase leading-tight tracking-tight text-emerald-900 sm:text-[11px] sm:tracking-wide">
+                      <span className="w-full break-words hyphens-auto text-[7px] font-black uppercase leading-[1.1] tracking-tight text-emerald-900 sm:text-[11px] sm:tracking-wide">
                         {e.label}
                       </span>
                     </Link>
@@ -338,7 +338,7 @@ function InfantilHome() {
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:h-20 sm:w-16"
+                className="hidden h-14 w-10 rounded-xl border-2 border-amber-300/60 object-cover sm:block sm:h-20 sm:w-16"
               />
             </Link>
           </section>
@@ -376,6 +376,7 @@ function InfantilHome() {
         </nav>
 
         <SiteFooter />
+        <div aria-hidden className="h-20" />
       </div>
     </div>
   );
