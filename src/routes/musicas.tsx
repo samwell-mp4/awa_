@@ -15,6 +15,7 @@ import {
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
+import { computeLyricBounds, activeLineIndex, resolveDuration } from "@/lib/lyric-sync";
 
 export const Route = createFileRoute("/musicas")({
   ssr: false,
@@ -52,6 +53,8 @@ type Song = {
   description_es?: string | null;
   lyrics_pt_en?: string | null;
   lyrics_pt_es?: string | null;
+  duration_seconds?: number | null;
+  sync_offsets?: number[] | null;
 };
 
 
@@ -68,7 +71,7 @@ function MusicasPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es")
+        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets")
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -413,18 +416,18 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
-  // Sincronização com ajuste fixo de antecipação (estilo ontimeupdate).
-  // Distribui as linhas na janela cantada e adianta por um valor fixo,
-  // como sugerido: `tempo = currentTime - AJUSTE_FIXO`.
-  const AJUSTE_FIXO = 1.2; // segundos para adiantar a legenda
-  const activeIdx = (() => {
+  // Sincronização automática: a duração é distribuída proporcionalmente ao
+  // tamanho de cada verso (versos longos duram mais), com antecipação leve.
+  const syncDuration = resolveDuration(duration, song.duration_seconds ?? null);
+  const bounds = useMemo(
+    () => computeLyricBounds(indLines, ptLines, syncDuration, song.sync_offsets || []),
+    [indLines, ptLines, syncDuration, song.sync_offsets],
+  );
+  const activeIdx = useMemo(() => {
     if (maxLen <= 0) return -1;
-    if (duration <= 0) return 0;
-    const lyricWindow = Math.max(1, duration * 0.9);
-    const t = Math.max(0, Math.min(lyricWindow, progress + AJUSTE_FIXO));
-    const rel = t / lyricWindow;
-    return Math.max(0, Math.min(maxLen - 1, Math.floor(rel * maxLen)));
-  })();
+    if (!bounds.length) return 0;
+    return activeLineIndex(bounds, progress, 0.6);
+  }, [bounds, progress, maxLen]);
 
   const lineRefs = useRef<Array<HTMLDivElement | null>>([]);
   useEffect(() => {
@@ -453,6 +456,22 @@ function Player({
         setLoadingAudio(false);
         setPlaying(false);
       });
+  }, [song.id, isSC]);
+
+  // Acompanha o tempo do áudio de forma contínua para a letra seguir a voz.
+  useEffect(() => {
+    if (isSC) return;
+    let raf = 0;
+    const tick = () => {
+      const a = audioRef.current;
+      if (a) {
+        setProgress(a.currentTime);
+        if (a.duration && Number.isFinite(a.duration)) setDuration(a.duration);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [song.id, isSC]);
 
   // SoundCloud Widget API — track progress + play/pause
