@@ -275,9 +275,25 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
                 <div key={n.title} className="rounded-xl border border-gold/15 p-3">
-                  <p className="text-[13px] font-bold text-gold/90">
-                    {i + 1}. {n.title}
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <button
+                      type="button"
+                      onClick={() => listen(`note-${n.title}`, `${n.title}. ${n.text}`)}
+                      aria-label={
+                        speakingId === `note-${n.title}` ? "Parar áudio" : "Ouvir esta mensagem"
+                      }
+                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
+                    >
+                      {speakingId === `note-${n.title}` ? (
+                        <Square className="h-3 w-3" />
+                      ) : (
+                        <Volume2 className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                    <p className="text-[13px] font-bold text-gold/90">
+                      {i + 1}. {n.title}
+                    </p>
+                  </div>
                   <p className="mt-1 text-[13px] leading-relaxed text-foreground/75">{n.text}</p>
                 </div>
               ))}
