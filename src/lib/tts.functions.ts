@@ -50,10 +50,8 @@ export const speakText = createServerFn({ method: "POST" })
     const text = (data.text ?? "").slice(0, 2000);
     if (!text.trim()) throw new Error("Texto vazio");
     const spokenLanguage = data.lang === "en" || data.lang === "es" ? data.lang : "pt";
-    const instructions =
-      data.area === "infantil"
-        ? CHILD_VOICE_INSTRUCTIONS
-        : NATURAL_VOICE_INSTRUCTIONS[spokenLanguage];
+    // Mesma voz e mesmo estilo de narração em todas as áreas do site.
+    const instructions = NATURAL_VOICE_INSTRUCTIONS[spokenLanguage];
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
