@@ -19,8 +19,6 @@ const NATURAL_VOICE_INSTRUCTIONS: Record<Exclude<TtsLanguage, "pat">, string> = 
   es: "Habla en español como una persona real en una conversación cercana. Usa una voz masculina cálida, madura, serena y acogedora. Varía suavemente el ritmo y la entonación, haz micropausas naturales en las comas y pausas completas entre ideas. Da énfasis discreto a las palabras importantes. Respira entre frases cuando resulte natural. Nunca suenes robótico, mecánico, apresurado, teatral ni publicitario.",
 };
 
-const CHILD_VOICE_INSTRUCTIONS =
-  "Fale em português brasileiro como um professor amigo conversando com uma criança. Voz masculina calorosa, alegre, paciente e natural. Use frases curtas, ritmo tranquilo, pausas claras e entonação espontânea. Destaque com delicadeza as palavras em Patxôhã para facilitar a repetição. Nunca soe robótico, infantilizado, exagerado ou como locução publicitária.";
 
 async function readGatewayError(res: Response) {
   const raw = await res.text().catch(() => "");
