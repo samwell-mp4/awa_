@@ -66,7 +66,8 @@ export function getPremiumNarrationUrl(
 ): Promise<string | null> {
   const text = (opts.text ?? "").trim();
   if (!text) return Promise.resolve(null);
-  const voice = opts.voice ?? "alloy";
+  // Voz única do site (mesma de toda a narração).
+  const voice = opts.voice ?? "onyx";
   const key = `premium::${voice}::${text}`;
 
   const hit = urls.get(key);
