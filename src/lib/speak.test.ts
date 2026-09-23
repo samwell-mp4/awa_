@@ -41,7 +41,8 @@ describe('Speech System (speak.ts)', () => {
   });
 
   it('deve cancelar áudio anterior antes de começar um novo', () => {
-    speakModule.speak('Teste');
+    // Com onBoundary (legendas palavra por palavra) usa a voz do navegador.
+    speakModule.speak('Teste', 'pt-BR', 1, undefined, undefined, () => {});
     expect(mockSynth.cancel).toHaveBeenCalled();
     expect(mockSynth.speak).toHaveBeenCalled();
   });
