@@ -125,11 +125,40 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             </h3>
             <div className="space-y-3">
               {chapter.paragraphs.map((p) => (
-                <p key={p} className="text-[14.5px] leading-relaxed text-foreground/82">
-                  {p}
-                </p>
+                <div key={p} className="flex items-start gap-2">
+                  <button
+                    type="button"
+                    onClick={() => listen(p, p)}
+                    aria-label={speakingId === p ? "Parar áudio" : "Ouvir esta mensagem"}
+                    className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
+                  >
+                    {speakingId === p ? (
+                      <Square className="h-3.5 w-3.5" />
+                    ) : (
+                      <Volume2 className="h-4 w-4" />
+                    )}
+                  </button>
+                  <p className="text-[14.5px] leading-relaxed text-foreground/82">{p}</p>
+                </div>
               ))}
             </div>
+            <Button
+              variant="ghost"
+              onClick={() =>
+                listen(`chapter-${chapter.id}`, `${chapter.title}. ${chapter.paragraphs.join(" ")}`)
+              }
+              className="w-fit rounded-full border border-gold/35 text-gold"
+            >
+              {speakingId === `chapter-${chapter.id}` ? (
+                <>
+                  <Square className="mr-1.5 h-4 w-4" /> Parar áudio
+                </>
+              ) : (
+                <>
+                  <Volume2 className="mr-1.5 h-4 w-4" /> Ouvir este momento
+                </>
+              )}
+            </Button>
             <p className="text-[12.5px] italic text-foreground/60">{chapter.photo.caption}</p>
           </div>
         </div>
