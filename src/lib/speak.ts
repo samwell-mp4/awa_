@@ -175,6 +175,10 @@ function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1
 }
 
 export function stopSpeak() {
+  playToken++;
+  if (typeof window !== "undefined") {
+    void import("@/lib/audio-play").then(({ stopFast }) => stopFast());
+  }
   const s = synth();
   if (!s) return;
   try {
