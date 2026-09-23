@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, FolderOpen, Play, Quote, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, FolderOpen, Play, Quote, Square, Volume2, ZoomIn } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { speak, stopSpeak } from "@/lib/speak";
 import {
   INTERCAMBIO_CHAPTERS,
   INTERCAMBIO_GALLERY,
@@ -16,8 +17,22 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
   const [step, setStep] = useState(0);
   const [auto, setAuto] = useState(true);
   const [folderOpen, setFolderOpen] = useState(false);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
   const total = INTERCAMBIO_CHAPTERS.length;
   const chapter = INTERCAMBIO_CHAPTERS[step];
+
+  useEffect(() => stopSpeak, []);
+
+  function listen(id: string, text: string) {
+    stopSpeak();
+    if (speakingId === id) {
+      setSpeakingId(null);
+      return;
+    }
+    setSpeakingId(id);
+    speak(text, "pt-BR", 0.95, undefined, () => setSpeakingId(null));
+  }
+
 
   useEffect(() => {
     if (!started || !auto) return;
@@ -110,11 +125,40 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             </h3>
             <div className="space-y-3">
               {chapter.paragraphs.map((p) => (
-                <p key={p} className="text-[14.5px] leading-relaxed text-foreground/82">
-                  {p}
-                </p>
+                <div key={p} className="flex items-start gap-2">
+                  <button
+                    type="button"
+                    onClick={() => listen(p, p)}
+                    aria-label={speakingId === p ? "Parar áudio" : "Ouvir esta mensagem"}
+                    className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
+                  >
+                    {speakingId === p ? (
+                      <Square className="h-3.5 w-3.5" />
+                    ) : (
+                      <Volume2 className="h-4 w-4" />
+                    )}
+                  </button>
+                  <p className="text-[14.5px] leading-relaxed text-foreground/82">{p}</p>
+                </div>
               ))}
             </div>
+            <Button
+              variant="ghost"
+              onClick={() =>
+                listen(`chapter-${chapter.id}`, `${chapter.title}. ${chapter.paragraphs.join(" ")}`)
+              }
+              className="w-fit rounded-full border border-gold/35 text-gold"
+            >
+              {speakingId === `chapter-${chapter.id}` ? (
+                <>
+                  <Square className="mr-1.5 h-4 w-4" /> Parar áudio
+                </>
+              ) : (
+                <>
+                  <Volume2 className="mr-1.5 h-4 w-4" /> Ouvir este momento
+                </>
+              )}
+            </Button>
             <p className="text-[12.5px] italic text-foreground/60">{chapter.photo.caption}</p>
           </div>
         </div>
@@ -231,9 +275,25 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
                 <div key={n.title} className="rounded-xl border border-gold/15 p-3">
-                  <p className="text-[13px] font-bold text-gold/90">
-                    {i + 1}. {n.title}
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <button
+                      type="button"
+                      onClick={() => listen(`note-${n.title}`, `${n.title}. ${n.text}`)}
+                      aria-label={
+                        speakingId === `note-${n.title}` ? "Parar áudio" : "Ouvir esta mensagem"
+                      }
+                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
+                    >
+                      {speakingId === `note-${n.title}` ? (
+                        <Square className="h-3 w-3" />
+                      ) : (
+                        <Volume2 className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                    <p className="text-[13px] font-bold text-gold/90">
+                      {i + 1}. {n.title}
+                    </p>
+                  </div>
                   <p className="mt-1 text-[13px] leading-relaxed text-foreground/75">{n.text}</p>
                 </div>
               ))}
