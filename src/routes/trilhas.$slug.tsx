@@ -388,7 +388,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "nova", environment: getPaddleEnvironment() } });
+        const r = await speak({ data: { text, voice: "onyx", environment: getPaddleEnvironment() } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar áudio");
         }
