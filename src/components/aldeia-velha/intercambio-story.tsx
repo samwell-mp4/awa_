@@ -125,21 +125,24 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             </h3>
             <div className="space-y-3">
               {chapter.paragraphs.map((p) => (
-                <div key={p} className="flex items-start gap-2">
-                  <button
-                    type="button"
-                    onClick={() => listen(p, p)}
-                    aria-label={speakingId === p ? "Parar áudio" : "Ouvir esta mensagem"}
-                    className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
-                  >
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => listen(p, p)}
+                  aria-label={speakingId === p ? "Parar áudio" : "Tocar áudio desta mensagem"}
+                  className={`flex w-full items-start gap-2 rounded-xl px-2 py-1.5 text-left transition hover:bg-gold/10 ${
+                    speakingId === p ? "bg-gold/10" : ""
+                  }`}
+                >
+                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold">
                     {speakingId === p ? (
                       <Square className="h-3.5 w-3.5" />
                     ) : (
                       <Volume2 className="h-4 w-4" />
                     )}
-                  </button>
-                  <p className="text-[14.5px] leading-relaxed text-foreground/82">{p}</p>
-                </div>
+                  </span>
+                  <span className="text-[14.5px] leading-relaxed text-foreground/82">{p}</span>
+                </button>
               ))}
             </div>
             <Button
@@ -274,28 +277,35 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {INTERCAMBIO_GALLERY_NOTES.map((n, i) => (
-                <div key={n.title} className="rounded-xl border border-gold/15 p-3">
-                  <div className="flex items-start gap-2">
-                    <button
-                      type="button"
-                      onClick={() => listen(`note-${n.title}`, `${n.title}. ${n.text}`)}
-                      aria-label={
-                        speakingId === `note-${n.title}` ? "Parar áudio" : "Ouvir esta mensagem"
-                      }
-                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold hover:bg-gold/20"
-                    >
+                <button
+                  key={n.title}
+                  type="button"
+                  onClick={() => listen(`note-${n.title}`, `${n.title}. ${n.text}`)}
+                  aria-label={
+                    speakingId === `note-${n.title}`
+                      ? "Parar áudio"
+                      : "Tocar áudio desta mensagem"
+                  }
+                  className={`rounded-xl border border-gold/15 p-3 text-left transition hover:bg-gold/10 ${
+                    speakingId === `note-${n.title}` ? "bg-gold/10" : ""
+                  }`}
+                >
+                  <span className="flex items-start gap-2">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold">
                       {speakingId === `note-${n.title}` ? (
                         <Square className="h-3 w-3" />
                       ) : (
                         <Volume2 className="h-3.5 w-3.5" />
                       )}
-                    </button>
-                    <p className="text-[13px] font-bold text-gold/90">
+                    </span>
+                    <span className="text-[13px] font-bold text-gold/90">
                       {i + 1}. {n.title}
-                    </p>
-                  </div>
-                  <p className="mt-1 text-[13px] leading-relaxed text-foreground/75">{n.text}</p>
-                </div>
+                    </span>
+                  </span>
+                  <span className="mt-1 block text-[13px] leading-relaxed text-foreground/75">
+                    {n.text}
+                  </span>
+                </button>
               ))}
             </div>
           </div>

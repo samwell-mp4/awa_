@@ -77,11 +77,67 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
+// Voz padrão do site: narração natural (IA) com a mesma voz em todas as telas.
+const SITE_VOICE = "onyx";
+let playToken = 0;
+
+/**
+ * Fala um texto com a voz oficial do site.
+ * Usa a narração natural (mais real e profissional) e, se ela falhar,
+ * cai para a voz do navegador. Quando `onBoundary` é pedido (legendas
+ * palavra por palavra), usa direto a voz do navegador.
+ */
 export function speak(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void, onBoundary?: (charIndex: number) => void) {
+  if (!text) return;
+
+  if (!onBoundary && typeof window !== "undefined") {
+    const token = ++playToken;
+    stopSpeak();
+    void import("@/lib/narration-cache")
+      .then(({ getNarrationUrl }) =>
+        getNarrationUrl({ text, lang, mode: "story", voice: SITE_VOICE }),
+      )
+      .then(async (url) => {
+        if (token !== playToken) return;
+        if (!url) {
+          speakWithBrowser(text, lang, rate, onStart, onEnd);
+          return;
+        }
+        const { playFast, attachEndHandler } = await import("@/lib/audio-play");
+        if (token !== playToken) return;
+        attachEndHandler(() => {
+          if (token === playToken) onEnd?.();
+        });
+        onStart?.();
+        await playFast(url).catch(() => {
+          if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd);
+        });
+      })
+      .catch(() => {
+        if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd);
+      });
+    registerStopOnPointerDown();
+    return;
+  }
+
+  speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
+}
+
+function registerStopOnPointerDown() {
+  if (typeof window === "undefined") return;
+  const stopHandler = () => {
+    stopSpeak();
+    window.removeEventListener("pointerdown", stopHandler);
+  };
+  window.addEventListener("pointerdown", stopHandler, { once: true });
+}
+
+function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void, onBoundary?: (charIndex: number) => void) {
   const s = synth();
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
+    
     
     // Cancela qualquer áudio em execução antes de iniciar o novo
     s.cancel();
@@ -119,6 +175,10 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
 }
 
 export function stopSpeak() {
+  playToken++;
+  if (typeof window !== "undefined") {
+    void import("@/lib/audio-play").then(({ stopFast }) => stopFast());
+  }
   const s = synth();
   if (!s) return;
   try {
