@@ -61,7 +61,8 @@ export const speakText = createServerFn({ method: "POST" })
       body: JSON.stringify({
         model: "openai/gpt-4o-mini-tts",
         input: text,
-        voice: data.voice ?? (data.area === "infantil" ? "alloy" : "onyx"),
+        // Voz única em todo o site (adulto e infantil).
+        voice: "onyx",
         response_format: "mp3",
         instructions,
       }),
