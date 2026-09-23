@@ -29,6 +29,20 @@ export function playFast(url: string): Promise<void> {
   return a.play();
 }
 
+let endHandler: (() => void) | null = null;
+
+/** Registra um callback para quando o áudio compartilhado terminar. */
+export function attachEndHandler(fn: () => void) {
+  if (!sharedAudio) {
+    sharedAudio = new Audio();
+    sharedAudio.preload = "auto";
+  }
+  const a = sharedAudio;
+  if (endHandler) a.removeEventListener("ended", endHandler);
+  endHandler = fn;
+  a.addEventListener("ended", fn, { once: true });
+}
+
 export function stopFast() {
   if (sharedAudio) {
     try {
