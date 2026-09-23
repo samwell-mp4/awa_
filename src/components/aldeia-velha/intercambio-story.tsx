@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, FolderOpen, Play, Quote, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, FolderOpen, Play, Quote, Square, Volume2, ZoomIn } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { speak, stopSpeak } from "@/lib/speak";
 import {
   INTERCAMBIO_CHAPTERS,
   INTERCAMBIO_GALLERY,
