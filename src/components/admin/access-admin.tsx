@@ -53,7 +53,33 @@ export function AccessAdmin() {
     queryKey: ["all_users"],
     queryFn: () => usersFn(),
     refetchInterval: 15_000,
+    refetchOnWindowFocus: true,
   });
+
+  // Novos cadastros aparecem na hora (sem esperar o refetch periódico)
+  useEffect(() => {
+    const ch = supabase
+      .channel("admin-new-signups")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        () => {
+          qc.invalidateQueries({ queryKey: ["all_users"] });
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "login_allowlist" },
+        () => {
+          qc.invalidateQueries({ queryKey: ["all_users"] });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [qc]);
+
 
   const { data: allPermissions = [] } = useQuery({
     queryKey: ["admin_user_permissions"],
