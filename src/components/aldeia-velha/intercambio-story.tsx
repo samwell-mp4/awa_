@@ -17,8 +17,22 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
   const [step, setStep] = useState(0);
   const [auto, setAuto] = useState(true);
   const [folderOpen, setFolderOpen] = useState(false);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
   const total = INTERCAMBIO_CHAPTERS.length;
   const chapter = INTERCAMBIO_CHAPTERS[step];
+
+  useEffect(() => stopSpeak, []);
+
+  function listen(id: string, text: string) {
+    stopSpeak();
+    if (speakingId === id) {
+      setSpeakingId(null);
+      return;
+    }
+    setSpeakingId(id);
+    speak(text, "pt-BR", 0.95, undefined, () => setSpeakingId(null));
+  }
+
 
   useEffect(() => {
     if (!started || !auto) return;
