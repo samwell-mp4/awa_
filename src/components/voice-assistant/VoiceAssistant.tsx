@@ -11,6 +11,8 @@ export const DEFAULT_ASSISTANT_CONFIG: AssistantConfig = { enabled: true, name: 
 
 type Phase = "idle" | "listening" | "processing" | "speaking";
 type Msg = { role: "user" | "assistant"; content: string };
+type Direction = "auto" | "pt-pat" | "pat-pt";
+const DIR_LABEL: Record<Direction, string> = { auto: "Automático", "pt-pat": "PT → Patxôhã", "pat-pt": "Patxôhã → PT" };
 
 const PHASE_LABEL: Record<Phase, string> = {
   idle: "Aguardando",
@@ -56,6 +58,44 @@ export function VoiceAssistant() {
   const [reply, setReply] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [level, setLevel] = useState(0);
+  const [msgs, setMsgs] = useState<Msg[]>([]);
+  const [live, setLive] = useState("");
+  const [direction, setDirection] = useState<Direction>("auto");
+  const dirRef = useRef<Direction>("auto");
+  const srRef = useRef<{ stop: () => void; abort: () => void } | null>(null);
+
+  const stopLive = useCallback(() => {
+    try { srRef.current?.abort(); } catch { /* ignore */ }
+    srRef.current = null;
+    setLive("");
+  }, []);
+
+  const startLive = useCallback(() => {
+    stopLive();
+    const W = window as unknown as Record<string, unknown>;
+    const SR = (W.SpeechRecognition || W.webkitSpeechRecognition) as
+      | (new () => {
+          lang: string; continuous: boolean; interimResults: boolean;
+          onresult: (e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void;
+          onerror: () => void; start: () => void; stop: () => void; abort: () => void;
+        })
+      | undefined;
+    if (!SR) return;
+    try {
+      const r = new SR();
+      r.lang = "pt-BR";
+      r.continuous = true;
+      r.interimResults = true;
+      r.onresult = (e) => {
+        let t = "";
+        for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+        setLive(t);
+      };
+      r.onerror = () => {};
+      r.start();
+      srRef.current = r;
+    } catch { /* ignore */ }
+  }, [stopLive]);
 
   const history = useRef<Msg[]>([]);
   const phaseRef = useRef<Phase>("idle");
@@ -99,7 +139,8 @@ export function VoiceAssistant() {
     recRef.current = rec;
     vad.current = { spoke: false, lastVoice: 0, startedAt: performance.now(), loudSince: 0 };
     setP("listening");
-  }, [stopAudio]);
+    startLive();
+  }, [stopAudio, startLive]);
 
   const playReply = useCallback(
     async (text: string, reuse = false) => {
@@ -140,6 +181,7 @@ export function VoiceAssistant() {
     const rec = recRef.current;
     if (!rec) return;
     setP("processing");
+    stopLive();
     await new Promise<void>((res) => {
       rec.onstop = () => res();
       try {
@@ -165,17 +207,21 @@ export function VoiceAssistant() {
       }
       setHeard(text);
       history.current.push({ role: "user", content: text });
-      const out = await askVoiceAssistant({ data: { messages: history.current, name: cfg?.name } });
+      setMsgs([...history.current]);
+      const out = await askVoiceAssistant({
+        data: { messages: history.current, name: cfg?.name, direction: dirRef.current },
+      });
       if (phaseRef.current !== "processing") return;
       history.current.push({ role: "assistant", content: out.reply });
       setReply(out.reply);
+      setMsgs([...history.current]);
       lastAudioUrl.current = null;
       await playReply(out.reply);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Não consegui entender agora.");
       startListening();
     }
-  }, [cfg?.name, playReply, startListening]);
+  }, [cfg?.name, playReply, startListening, stopLive]);
 
   // Laço de detecção de voz (silêncio + interrupção natural)
   const tick = useCallback(() => {
@@ -224,6 +270,7 @@ export function VoiceAssistant() {
     }
     recRef.current = null;
     stopAudio();
+    stopLive();
     try {
       speechSynthesis.cancel();
     } catch {
@@ -235,12 +282,13 @@ export function VoiceAssistant() {
     ctxRef.current = null;
     analyserRef.current = null;
     history.current = [];
+    setMsgs([]);
     setHeard("");
     setReply("");
     setError(null);
     setP("idle");
     setOpen(false);
-  }, [stopAudio]);
+  }, [stopAudio, stopLive]);
 
   const openConversation = useCallback(async () => {
     setOpen(true);
@@ -281,6 +329,7 @@ export function VoiceAssistant() {
         /* ignore */
       }
       recRef.current = null;
+      stopLive();
       setP("idle");
     } else if (next && phaseRef.current === "idle") startListening();
   };
@@ -371,7 +420,7 @@ export function VoiceAssistant() {
                 <div className="font-display text-lg font-black">{name}</div>
                 <div className="flex items-center gap-1 text-xs text-foreground/70" aria-live="polite">
                   {phase === "processing" && <Loader2 className="h-3 w-3 animate-spin" />}
-                  {!micOn && phase === "idle" ? "Microfone desligado" : PHASE_LABEL[phase]}
+                  {!micOn && phase === "idle" ? "Desligado" : PHASE_LABEL[phase]}
                 </div>
               </div>
             </div>
@@ -380,20 +429,44 @@ export function VoiceAssistant() {
             </button>
           </div>
 
+          <div className="mt-3 flex flex-wrap gap-1" role="radiogroup" aria-label="Direção da tradução">
+            {(Object.keys(DIR_LABEL) as Direction[]).map((d) => (
+              <button
+                key={d}
+                role="radio"
+                aria-checked={direction === d}
+                onClick={() => {
+                  dirRef.current = d;
+                  setDirection(d);
+                }}
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${direction === d ? "bg-gold text-background" : "bg-foreground/10"}`}
+              >
+                {DIR_LABEL[d]}
+              </button>
+            ))}
+          </div>
+
           <div className="mt-4 max-h-56 space-y-3 overflow-y-auto text-sm">
-            {!heard && !reply && (
+            {!msgs.length && !live && (
               <p className="text-foreground/70">Pode falar. Ex.: “Como fala água em Patxôhã?”</p>
             )}
-            {heard && (
-              <div className="ml-auto w-fit max-w-[85%] rounded-2xl bg-foreground/10 px-3 py-2">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50">Você</div>
-                {heard}
-              </div>
+            {msgs.map((m, i) =>
+              m.role === "user" ? (
+                <div key={i} className="ml-auto w-fit max-w-[85%] rounded-2xl bg-foreground/10 px-3 py-2">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50">Você</div>
+                  {m.content}
+                </div>
+              ) : (
+                <div key={i} className="w-fit max-w-[90%] rounded-2xl bg-gold/15 px-3 py-2">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-gold/80">Awã Tech</div>
+                  {m.content}
+                </div>
+              ),
             )}
-            {reply && (
-              <div className="w-fit max-w-[90%] rounded-2xl bg-gold/15 px-3 py-2">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-gold/80">{name}</div>
-                {reply}
+            {live && phase === "listening" && (
+              <div className="ml-auto w-fit max-w-[85%] rounded-2xl border border-dashed border-foreground/30 px-3 py-2 italic text-foreground/80">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/50">Você</div>
+                {live}
               </div>
             )}
             {error && <p className="text-xs text-destructive">{error}</p>}
