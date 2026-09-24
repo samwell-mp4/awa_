@@ -48,7 +48,9 @@ export const askAkua = createServerFn({ method: "POST" })
     const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ou AI_GATEWAY_TOKEN ausente");
 
-    const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const STOP = new Set(["como","fala","falar","diz","dizer","se","em","de","do","da","que","qual","o","a","os","as","e","um","uma","patxoha","pataxo","significa","palavra","traduz","traduzir","quer","para","por","no","na","eu","voce","me"]);
+    const rawUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    const lastUser = norm(rawUser).split(/[^a-z0-9]+/).filter((t) => t && !STOP.has(t)).join(" ");
     const ptRel = pickRelevant(PT_PAT, lastUser, "portugues");
     const patRel = pickRelevant(PAT_PT, lastUser, "patxoha");
     const ptBlock = ptRel.map((e) => `${e.portugues} → ${e.patxoha}`).join("\n") || "(nenhuma entrada)";
@@ -89,9 +91,8 @@ FORMATO OBRIGATÓRIO DE EXEMPLOS EM PATXÔHÃ:
 - Pode haver texto explicativo antes e depois — apenas os exemplos vão dentro de [ex]...[/ex].
 - Exemplo de resposta:
   Para cumprimentar, dizemos:
-  [ex]Awere || Olá, saudações[/ex]
-  E para responder:
-  [ex]Awere doy || Olá para você também[/ex]
+  [ex]miãga || água[/ex]
+  (use apenas palavras que estejam nas listas do Dicionário 2015 abaixo)
 - Nunca use [ex] para textos que não sejam Patxôhã.
 
 ${ALDEIA_VELHA_KNOWLEDGE}
@@ -185,18 +186,6 @@ GUIA DE PRONÚNCIA (use sempre que pedirem "como pronunciar")
 - Dica: ouça o áudio, repita devagar, depois acelere — como passo de dança.
 
 ═══════════════════════════════════
-SAUDAÇÕES OFICIAIS (use SEMPRE estas formas quando perguntarem)
-═══════════════════════════════════
-- hayôkunã = Bom dia (pron.: ha-yô-ku-nã). Resposta: hayôxó.
-- ĩtxê niató = Boa tarde (pron.: ĩ-txê ni-a-tó). Resposta: miriaú.
-- akunã = Boa noite (pron.: a-ku-nã). Despedida noturna: bolukunã / ĩtxê hamôp.
-- akxãy = Olá / Oi (qualquer hora).
-- dawê = Adeus (até nos encontrarmos).
-- ihã atêkuã = Até amanhã.
-- yamã / awêry = Obrigado (reconhecer o bem recebido).
-- txuhap! = Vamos lá!
-
-═══════════════════════════════════
 PERGUNTAS FREQUENTES (responda nesta linha)
 ═══════════════════════════════════
 - "Posso mudar a pronúncia?" → Sim, cada comunidade tem seu jeitinho — isso é riqueza. Mas guarde a forma original como referência.
@@ -227,7 +216,8 @@ REGRAS DO DICIONÁRIO:
 3. Copie a grafia exatamente como está (ã, ô, ä, x, ẽ etc.). Não adapte nem corrija.
 4. O Dicionário 2015 sempre prevalece sobre qualquer outro conhecimento.
 5. SEMPRE apresente TODAS as traduções da lista correspondente para a palavra consultada (todas as linhas com essa palavra), sem omitir nenhuma, na mesma ordem da lista.
-6. Se a palavra não estiver na lista correspondente, diga que ela não consta no Dicionário Patxôhã 2015. NUNCA invente nem crie palavras.`;
+6. Qualquer palavra em Patxôhã que você escrever (inclusive em saudações, exemplos, incentivos ou gramática) DEVE existir nas listas acima. Nunca use palavras de memória ou de conversas anteriores.
+7. Se a palavra não estiver na lista correspondente, diga que ela não consta no Dicionário Patxôhã 2015. NUNCA invente nem crie palavras.`;
 
     const kidsRules = `
 ═══════════════════════════════════
@@ -253,8 +243,9 @@ MODO INFANTIL (OBRIGATÓRIO)
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
+        model: "google/gemini-3-flash-preview",
         messages,
+        temperature: 0.2,
       }),
     });
 
