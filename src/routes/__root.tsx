@@ -205,16 +205,58 @@ function RootComponent() {
     };
   }, []);
 
+  const appRouter = useRouter();
   useEffect(() => {
-    // Uma aba só: qualquer link com target="_blank" abre na mesma aba (PC e celular).
+    // Uma aba só + sem recarregar: links internos trocam só o conteúdo (navegação interna).
     const onClick = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement | null)?.closest?.("a[target='_blank'], a[target='_new']") as HTMLAnchorElement | null;
-      if (!a || !a.href) return;
-      e.preventDefault();
-      window.location.href = a.href;
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || a.hasAttribute("download")) return;
+      const url = new URL(a.href, window.location.href);
+      const isBlank = a.target === "_blank" || a.target === "_new";
+      if (url.origin === window.location.origin) {
+        if (url.pathname.startsWith("/api/") || /\.[a-z0-9]{2,5}$/i.test(url.pathname)) return;
+        if (url.pathname === window.location.pathname && url.hash) return;
+        e.preventDefault();
+        void appRouter.navigate({ href: url.pathname + url.search + url.hash });
+      } else if (isBlank) {
+        e.preventDefault();
+        window.location.href = a.href;
+      }
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
+  }, [appRouter]);
+
+  useEffect(() => {
+    // Preserva o progresso de vídeos/áudios (lições, músicas) ao trocar de página na mesma aba.
+    const key = (m: HTMLMediaElement) => `awa_media_pos:${m.currentSrc || m.src}`;
+    const onTime = (e: Event) => {
+      const m = e.target as HTMLMediaElement;
+      if (!(m instanceof HTMLMediaElement) || !(m.currentSrc || m.src)) return;
+      try {
+        if (m.ended) sessionStorage.removeItem(key(m));
+        else if (m.currentTime > 2) sessionStorage.setItem(key(m), String(m.currentTime));
+      } catch {}
+    };
+    const onMeta = (e: Event) => {
+      const m = e.target as HTMLMediaElement;
+      if (!(m instanceof HTMLMediaElement)) return;
+      try {
+        const t = Number(sessionStorage.getItem(key(m)));
+        if (t > 2 && m.currentTime < 1 && (!m.duration || t < m.duration - 2)) m.currentTime = t;
+      } catch {}
+    };
+    document.addEventListener("timeupdate", onTime, true);
+    document.addEventListener("pause", onTime, true);
+    document.addEventListener("ended", onTime, true);
+    document.addEventListener("loadedmetadata", onMeta, true);
+    return () => {
+      document.removeEventListener("timeupdate", onTime, true);
+      document.removeEventListener("pause", onTime, true);
+      document.removeEventListener("ended", onTime, true);
+      document.removeEventListener("loadedmetadata", onMeta, true);
+    };
   }, []);
 
 
