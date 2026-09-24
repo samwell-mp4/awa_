@@ -26,13 +26,14 @@ const STOP = new Set([
 
 export const askVoiceAssistant = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { messages: Msg[]; name?: string }) => {
+  .inputValidator((d: { messages: Msg[]; name?: string; direction?: "auto" | "pt-pat" | "pat-pt" }) => {
     if (!Array.isArray(d?.messages)) throw new Error("messages obrigatório");
     const messages = d.messages
       .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
       .slice(-16)
       .map((m) => ({ role: m.role, content: m.content.slice(0, 1500) }));
-    return { messages, name: (d.name || "Akuã").slice(0, 40) };
+    const direction = d.direction === "pt-pat" || d.direction === "pat-pt" ? d.direction : "auto";
+    return { messages, name: (d.name || "Akuã").slice(0, 40), direction };
   })
   .handler(async ({ data, context }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
@@ -84,7 +85,13 @@ export const askVoiceAssistant = createServerFn({ method: "POST" })
 
     const system = `Você é ${data.name}, assistente de conversa POR VOZ do Awã Tech, especialista em Patxôhã (língua Pataxó).
 Suas respostas serão FALADAS em voz alta: seja curto (1 a 3 frases), natural e acolhedor, sem markdown, sem listas, sem emojis.
-Trabalhe principalmente com tradução Português ↔ Patxôhã. Detecte o idioma quando houver segurança.
+Trabalhe principalmente com tradução Português ↔ Patxôhã. ${
+      data.direction === "pt-pat"
+        ? "DIREÇÃO ESCOLHIDA: o usuário fala em Português; traduza e responda com a palavra em Patxôhã."
+        : data.direction === "pat-pt"
+          ? "DIREÇÃO ESCOLHIDA: o usuário fala em Patxôhã; traduza e responda em Português."
+          : "Detecte automaticamente o idioma falado e responda com a tradução no idioma contrário."
+    }
 Use o histórico da conversa para entender referências como "repete", "e essa?", "a outra", "a primeira".
 REGRA ABSOLUTA: use SOMENTE a BASE DO AWÃ TECH abaixo para palavras, significados, traduções e pronúncias em Patxôhã. NUNCA invente.
 Se a palavra pedida não estiver na base, diga: "Essa palavra ainda não está cadastrada ou validada na base do Awã Tech." e, no FINAL da resposta, acrescente exatamente [FALTA: palavra] (uma tag por palavra ausente).
