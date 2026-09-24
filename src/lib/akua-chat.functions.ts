@@ -226,7 +226,8 @@ REGRAS DO DICIONÁRIO:
 2. Pergunta em Patxôhã → responda SOMENTE com o significado da LISTA 2.
 3. Copie a grafia exatamente como está (ã, ô, ä, x, ẽ etc.). Não adapte nem corrija.
 4. O Dicionário 2015 sempre prevalece sobre qualquer outro conhecimento.
-5. Se a palavra não estiver na lista correspondente, diga que ela não consta no Dicionário Patxôhã 2015. NUNCA invente nem crie palavras.`;
+5. SEMPRE apresente TODAS as traduções da lista correspondente para a palavra consultada (todas as linhas com essa palavra), sem omitir nenhuma, na mesma ordem da lista.
+6. Se a palavra não estiver na lista correspondente, diga que ela não consta no Dicionário Patxôhã 2015. NUNCA invente nem crie palavras.`;
 
     const kidsRules = `
 ═══════════════════════════════════
