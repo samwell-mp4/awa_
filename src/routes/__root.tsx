@@ -205,6 +205,18 @@ function RootComponent() {
     };
   }, []);
 
+  useEffect(() => {
+    // Uma aba só: qualquer link com target="_blank" abre na mesma aba (PC e celular).
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement | null)?.closest?.("a[target='_blank'], a[target='_new']") as HTMLAnchorElement | null;
+      if (!a || !a.href) return;
+      e.preventDefault();
+      window.location.href = a.href;
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
