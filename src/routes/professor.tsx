@@ -592,39 +592,6 @@ function ProfessorPage() {
             </div>
           )}
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void send(input);
-            }}
-            className="flex w-full items-end gap-2.5"
-          >
-            <div className="relative flex-1">
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    void send(input);
-                  }
-                }}
-                placeholder={t.placeholder}
-                rows={1}
-                maxLength={1000}
-                className="w-full resize-none rounded-2xl border border-gold/30 bg-card/80 px-4 py-3.5 text-sm text-cream shadow-inner placeholder:text-foreground/40 focus:border-gold/70 focus:outline-none focus:ring-2 focus:ring-gold/25"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading || !input.trim()}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold text-forest-deep shadow-lg shadow-gold/20 transition active:scale-95 disabled:opacity-40"
-              aria-label={t.send}
-            >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-            </button>
-          </form>
         </div>
       </div>
     </div>
