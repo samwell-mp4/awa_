@@ -37,6 +37,32 @@ function pickRelevant(list: Entry[], text: string, key: "portugues" | "patxoha")
   return [...exact, ...partial].slice(0, 140);
 }
 
+// Índice de verificação: palavra Patxôhã → páginas no Dicionário 2015.
+const lowerKey = (s: string) => s.toLowerCase().replace(/[’`´]/g, "'").replace(/\s+/g, " ").trim();
+const PAGE_INDEX = new Map<string, Set<number>>();
+for (const e of [...PT_PAT, ...PAT_PT] as Array<Entry & { pagina?: number }>) {
+  if (!e?.patxoha) continue;
+  for (const v of String(e.patxoha).split(/[,;/]/)) {
+    const k = lowerKey(v);
+    if (!k) continue;
+    if (!PAGE_INDEX.has(k)) PAGE_INDEX.set(k, new Set());
+    if (typeof e.pagina === "number") PAGE_INDEX.get(k)!.add(e.pagina);
+  }
+}
+
+/** Anexa fonte e página a cada [ex]pat || tradução[/ex]. */
+export function annotateSources(reply: string): string {
+  return reply.replace(/\[ex\]([\s\S]*?)\|\|([\s\S]*?)\[\/ex\]/g, (_m, pat: string, tr: string) => {
+    const word = pat.trim();
+    const trans = tr.split("||")[0].trim();
+    const pages = PAGE_INDEX.get(lowerKey(word));
+    const label = pages
+      ? `📖 Dicionário Patxôhã 2015${pages.size ? ` · p. ${[...pages].sort((a, b) => a - b).join(", ")}` : ""}`
+      : "⚠ Não localizado no Dicionário Patxôhã 2015";
+    return `[ex]${word} || ${trans} || ${label}[/ex]`;
+  });
+}
+
 export const askAkua = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { messages: Msg[]; environment?: "sandbox" | "live"; lang?: "pt" | "en" | "es" | "pat"; area?: "adulto" | "infantil" }) => d)
@@ -266,5 +292,5 @@ MODO INFANTIL (OBRIGATÓRIO)
       throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
     }
     const content = await readChatContent(res);
-    return { reply: content.trim() || "..." };
+    return { reply: annotateSources(content.trim()) || "..." };
   });

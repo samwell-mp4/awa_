@@ -373,7 +373,7 @@ function ProfessorPage() {
     
     try {
       setAudioBusyKey(key);
-      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
+      const clean = text.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) {
         setAudioBusyKey(null);
@@ -407,7 +407,7 @@ function ProfessorPage() {
 
   async function autoSpeak(audio: HTMLAudioElement, text: string, voiceMode = false) {
     try {
-      const clean = text.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
+      const clean = text.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) {
         if (voiceMode) setVoiceState("idle");
@@ -652,7 +652,7 @@ function renderInline(text: string, keyPrefix: string) {
 type Block =
   | { type: "paragraph"; text: string }
   | { type: "bullets"; items: string[] }
-  | { type: "example"; pat: string; pt: string };
+  | { type: "example"; pat: string; pt: string; src?: string };
 
 function parseBlocks(content: string): Block[] {
   // Extract [ex]…||…[/ex] as example blocks; split the rest into paragraphs / bullet groups.
@@ -679,7 +679,8 @@ function parseBlocks(content: string): Block[] {
   };
   while ((m = re.exec(content)) !== null) {
     if (m.index > last) pushText(content.slice(last, m.index));
-    blocks.push({ type: "example", pat: m[1].trim(), pt: m[2].trim() });
+    const [ptPart, srcPart] = m[2].split("||");
+    blocks.push({ type: "example", pat: m[1].trim(), pt: ptPart.trim(), src: srcPart?.trim() });
     last = m.index + m[0].length;
   }
   if (last < content.length) pushText(content.slice(last));
@@ -768,7 +769,7 @@ function Bubble({
           <div className="space-y-2.5">
             {isLast && !isUser && (
               <CaptionPlayer 
-                text={msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "")} 
+                text={msg.content.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "")} 
                 audio={activeAudio || null}
                 className="mb-2"
               />
@@ -823,6 +824,11 @@ function Bubble({
                     </button>
                   </div>
                   <div className="mt-0.5 text-xs text-foreground/70">{b.pt}</div>
+                  {b.src && (
+                    <div className={`mt-1 text-[10px] font-semibold uppercase tracking-wide ${b.src.startsWith("⚠") ? "text-destructive" : "text-leaf"}`}>
+                      {b.src}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -851,7 +857,7 @@ function Bubble({
                 <>
                   <span aria-hidden>·</span>
                   <button
-                    onClick={() => playText(msg.content.replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
+                    onClick={() => playText(msg.content.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
                     disabled={audioBusy === "full" && !onToggleAudio}
                     className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
                     aria-label={t.listen}
