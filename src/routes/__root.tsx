@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { checkMyLoginAllowed } from "@/lib/admin-access.functions";
 import { RealtimeContentSync } from "@/hooks/use-realtime-content";
 import { AppErrorBoundary, ErrorBoundary } from "@/components/ErrorBoundary";
+import { AutoUpdater } from "@/components/AutoUpdater";
 
 import { toast } from "sonner";
 import "@/i18n";
@@ -210,6 +211,7 @@ function RootComponent() {
       <LanguageHydrator />
       <ErrorBoundary area="background-services" fallback={() => null}>
         <RealtimeContentSync />
+        <AutoUpdater />
         <AppLanguageAutoTranslator />
         <PlanExpiryBanner />
       </ErrorBoundary>
