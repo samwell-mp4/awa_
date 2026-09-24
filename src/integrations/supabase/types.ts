@@ -47,6 +47,33 @@ export type Database = {
         }
         Relationships: []
       }
+      assistant_misses: {
+        Row: {
+          created_at: string
+          id: string
+          question: string | null
+          resolved: boolean
+          term: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question?: string | null
+          resolved?: boolean
+          term: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question?: string | null
+          resolved?: boolean
+          term?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       daily_mission: {
         Row: {
           correct_index: number
