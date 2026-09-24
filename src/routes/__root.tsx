@@ -21,7 +21,6 @@ import { RealtimeContentSync } from "@/hooks/use-realtime-content";
 import { AppErrorBoundary, ErrorBoundary } from "@/components/ErrorBoundary";
 
 import { toast } from "sonner";
-import { VoiceAssistant } from "@/components/voice-assistant/VoiceAssistant";
 import "@/i18n";
 
 
@@ -213,7 +212,6 @@ function RootComponent() {
         <RealtimeContentSync />
         <AppLanguageAutoTranslator />
         <PlanExpiryBanner />
-        <VoiceAssistant />
       </ErrorBoundary>
 
       <AppErrorBoundary>
