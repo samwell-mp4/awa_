@@ -61,8 +61,6 @@ function TermosPage() {
         <a
           className="text-gold underline"
           href="https://www.paddle.com/legal/checkout-buyer-terms"
-          target="_blank"
-          rel="noreferrer"
         >
           Termos do Comprador da Paddle
         </a>
