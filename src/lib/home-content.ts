@@ -55,7 +55,6 @@ export const navGroups: NavGroup[] = [
     title: "Língua e Conhecimento",
     items: [
       { label: "Dicionário", href: "/dicionario", icon: Library },
-      { label: "Tradutor", href: "/traduzir", icon: BookOpen },
       { label: "Trilhas", href: "/trilhas", icon: Award },
       { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
@@ -153,7 +152,6 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
-        { label: t("nav.tradutor"), href: "/traduzir", icon: BookOpen },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
         { label: "Professor Awã", href: "/professor-infantil", icon: GraduationCap },
       ],
