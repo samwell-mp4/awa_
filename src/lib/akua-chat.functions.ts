@@ -7,57 +7,34 @@ import { readChatContent } from "./ai-response.server";
 import { ALDEIA_VELHA_KNOWLEDGE } from "./aldeia-velha-content";
 
 type Msg = { role: "user" | "assistant"; content: string };
-type Entry = { term_indigenous: string; term_pt: string };
+import ptPat2015 from "@/data/dic-pt-pat.json";
+import patPt2015 from "@/data/dic-pat-pt.json";
 
-let _dictCache: { data: Entry[]; at: number } | null = null;
-const DICT_TTL_MS = 1000 * 60 * 30;
-
-async function loadDict(): Promise<Entry[]> {
-  if (_dictCache && Date.now() - _dictCache.at < DICT_TTL_MS) return _dictCache.data;
-  const supabase = createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_PUBLISHABLE_KEY!,
-    { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-  );
-  const PAGE = 2000;
-  let from = 0;
-  const all: Entry[] = [];
-  for (let i = 0; i < 10; i++) {
-    const { data, error } = await supabase
-      .from("dictionary")
-      .select("term_indigenous,term_pt")
-      .order("term_indigenous")
-      .range(from, from + PAGE - 1);
-    if (error) throw new Error(error.message);
-    if (!data || data.length === 0) break;
-    all.push(...(data as Entry[]));
-    if (data.length < PAGE) break;
-    from += PAGE;
-  }
-  _dictCache = { data: all, at: Date.now() };
-  return all;
-}
+// Fonte única: Dicionário Patxôhã 2015 — duas listas independentes.
+type Entry = { portugues: string; patxoha: string };
+const PT_PAT = ptPat2015 as Entry[];
+const PAT_PT = patPt2015 as Entry[];
 
 function norm(s: string) {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function pickRelevant(dict: Entry[], text: string): Entry[] {
-  const toks = new Set(norm(text).split(/[^a-z0-9]+/).filter((t) => t.length >= 3));
+function pickRelevant(list: Entry[], text: string, key: "portugues" | "patxoha"): Entry[] {
+  const toks = new Set(norm(text).split(/[^a-z0-9]+/).filter((t) => t.length >= 2));
   if (toks.size === 0) return [];
-  const out: Entry[] = [];
-  for (const e of dict) {
-    const pt = norm(e.term_pt);
-    const ind = norm(e.term_indigenous);
-    for (const t of toks) {
-      if (pt.includes(t) || ind.includes(t)) {
-        out.push(e);
-        break;
-      }
+  const exact: Entry[] = [];
+  const partial: Entry[] = [];
+  for (const e of list) {
+    const words = norm(e[key]).split(/[^a-z0-9]+/).filter(Boolean);
+    let hit = false;
+    for (const t of toks) if (words.includes(t)) hit = true;
+    if (hit) exact.push(e);
+    else if (partial.length < 60) {
+      for (const t of toks) if (t.length >= 4 && norm(e[key]).includes(t)) { partial.push(e); break; }
     }
-    if (out.length >= 120) break;
+    if (exact.length >= 120) break;
   }
-  return out;
+  return [...exact, ...partial].slice(0, 140);
 }
 
 export const askAkua = createServerFn({ method: "POST" })
@@ -71,21 +48,11 @@ export const askAkua = createServerFn({ method: "POST" })
     const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
     if (!apiKey) throw new Error("LOVABLE_API_KEY ou AI_GATEWAY_TOKEN ausente");
 
-    const dict = await loadDict();
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
-    const relevant = pickRelevant(dict, lastUser);
-    // core sample for orientation + all relevant (dedup)
-    const seen = new Set<string>();
-    const used: Entry[] = [];
-    for (const e of [...relevant, ...dict.slice(0, 80)]) {
-      const k = `${e.term_indigenous}|${e.term_pt}`;
-      if (seen.has(k)) continue;
-      seen.add(k);
-      used.push(e);
-      if (used.length >= 220) break;
-    }
-    const compact = used.map((e) => `${e.term_indigenous} = ${e.term_pt}`).join("\n");
-
+    const ptRel = pickRelevant(PT_PAT, lastUser, "portugues");
+    const patRel = pickRelevant(PAT_PT, lastUser, "patxoha");
+    const ptBlock = ptRel.map((e) => `${e.portugues} → ${e.patxoha}`).join("\n") || "(nenhuma entrada)";
+    const patBlock = patRel.map((e) => `${e.patxoha} → ${e.portugues}`).join("\n") || "(nenhuma entrada)";
 
     const langCode = data.lang ?? "pt";
     const langInstruction =
@@ -244,14 +211,22 @@ MENSAGENS DE INCENTIVO (use de vez em quando ao encerrar)
 - "A língua é o nosso vestido mais bonito — vista-o todos os dias."
 
 ═══════════════════════════════════
-DICIONÁRIO RELEVANTE (${used.length} de ${dict.length} palavras) — formato: termo_indígena = tradução_pt
+DICIONÁRIO PATXÔHÃ 2015 — FONTE OFICIAL ÚNICA
 ═══════════════════════════════════
-${compact}
+Há DUAS listas independentes. NUNCA misture as duas.
 
-Ao traduzir do português para Patxôhã:
-1. Monte a frase palavra por palavra usando o dicionário acima e as REGRAS GRAMATICAIS.
-2. Mostre: (a) a frase em Patxôhã, (b) tradução literal, (c) breve nota cultural quando útil.
-3. Se faltar palavra, diga que não a conhece e sugira a mais próxima ou crie uma nova respeitando as terminações descritas.`;
+LISTA 1 — PORTUGUÊS → PATXÔHÃ (use quando a pergunta vier em português):
+${ptBlock}
+
+LISTA 2 — PATXÔHÃ → PORTUGUÊS (use quando a pergunta vier em Patxôhã):
+${patBlock}
+
+REGRAS DO DICIONÁRIO:
+1. Pergunta em português → responda SOMENTE com o termo da LISTA 1.
+2. Pergunta em Patxôhã → responda SOMENTE com o significado da LISTA 2.
+3. Copie a grafia exatamente como está (ã, ô, ä, x, ẽ etc.). Não adapte nem corrija.
+4. O Dicionário 2015 sempre prevalece sobre qualquer outro conhecimento.
+5. Se a palavra não estiver na lista correspondente, diga que ela não consta no Dicionário Patxôhã 2015. NUNCA invente nem crie palavras.`;
 
     const kidsRules = `
 ═══════════════════════════════════
