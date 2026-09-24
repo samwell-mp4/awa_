@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { PublicFooter } from "@/components/PublicFooter";
+import { PageListenButton } from "@/components/PageListenButton";
 import {
   ArrowLeft,
   Download,
@@ -120,6 +121,7 @@ function InstalarPage() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
+        <div className="mb-6 flex justify-center"><PageListenButton /></div>
         {/* Hero / App Store Style */}
         <section className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* App Preview */}
