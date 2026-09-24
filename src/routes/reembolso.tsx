@@ -35,7 +35,7 @@ function ReembolsoPage() {
         </p>
         <ol className="mt-2 list-decimal space-y-1 pl-6">
           <li>
-            Acessar <a className="text-gold underline" href="https://paddle.net" target="_blank" rel="noreferrer">paddle.net</a>{" "}
+            Acessar <a className="text-gold underline" href="https://paddle.net">paddle.net</a>{" "}
             com o e-mail da compra para gerenciar pagamentos e pedir reembolso; ou
           </li>
           <li>
