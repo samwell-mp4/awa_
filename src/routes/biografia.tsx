@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
+import { PageListenButton } from "@/components/PageListenButton";
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -60,6 +61,7 @@ function BiografiaPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10 md:px-8">
+        <div className="mb-6 flex justify-center"><PageListenButton /></div>
         {/* Hero */}
         <section className="relative overflow-hidden rounded-3xl border border-gold/20 bg-card/40">
           <div className="absolute inset-0">
