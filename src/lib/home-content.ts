@@ -83,7 +83,7 @@ export const navGroups: NavGroup[] = [
 
 export const topNavLinks = [
   { label: "Dicionário", href: "/dicionario" },
-  { label: "Tradutor", href: "/traduzir" },
+  { label: "Professor Akuã", href: "/professor" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
   { label: "Músicas", href: "/musicas" },
@@ -192,7 +192,8 @@ export function useNavContent(mode: NavMode = "all") {
 
   const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
-    { label: t("nav.tradutor"), href: "/traduzir" },
+    { label: "Professor Akuã", href: "/professor" },
+    { label: "Professor Akuã", href: "/professor-infantil" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },
