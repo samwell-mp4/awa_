@@ -9,11 +9,8 @@ import {
   ChevronRight,
   Flame,
   Gamepad2,
-  Mic,
-  Music,
   Play,
   Star,
-  Trophy,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
