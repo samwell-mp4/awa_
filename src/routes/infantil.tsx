@@ -76,10 +76,10 @@ export const Route = createFileRoute("/infantil")({
 
 
 const TRAIL_CARDS = [
-  { n: 1, label: "Saudações", img: trailSaudacoes, to: "/trilhas/$slug", slug: "saudacoes", tint: "#4c9a2a" },
-  { n: 2, label: "Família", img: trailFamilia, to: "/trilhas/$slug", slug: "familia", tint: "#e9a13b" },
-  { n: 3, label: "Natureza", img: trailNatureza, to: "/trilhas/$slug", slug: "natureza", tint: "#2f8f9d" },
-  { n: 4, label: "Animais", img: trailAnimais, to: "/trilhas/$slug", slug: "animais", tint: "#d94f2b" },
+  { n: 1, label: "Saudações", img: trailSaudacoes, to: "/trilhas/$slug", slug: "saudacoes", tint: "#4c9a2a", area: "infantil" },
+  { n: 2, label: "Família", img: trailFamilia, to: "/trilhas/$slug", slug: "familia", tint: "#e9a13b", area: "infantil" },
+  { n: 3, label: "Natureza", img: trailNatureza, to: "/trilhas/$slug", slug: "natureza", tint: "#2f8f9d", area: "infantil" },
+  { n: 4, label: "Animais", img: trailAnimais, to: "/trilhas/$slug", slug: "animais", tint: "#d94f2b", area: "infantil" },
   { n: 5, label: "Cultura", img: trailCultura, to: "/trilhas-infantil", slug: null, tint: "#8558a8" },
 ] as const;
 
@@ -238,6 +238,7 @@ function InfantilHome() {
                   key={c.label}
                   to={c.to as any}
                   params={(c.slug ? { slug: c.slug } : {}) as any}
+                  search={(c.slug ? { area: c.area } : {}) as any}
                   aria-label={`Trilha ${c.label}`}
                   className="overflow-hidden rounded-xl border-2 bg-emerald-900/40 shadow-lg transition hover:-translate-y-0.5 active:scale-[0.98] sm:rounded-2xl sm:border-4"
                   style={{ borderColor: c.tint }}

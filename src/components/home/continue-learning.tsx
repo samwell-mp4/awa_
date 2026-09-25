@@ -109,6 +109,7 @@ export function ContinueLearningCard() {
               <Link
                 to="/trilhas/$slug"
                 params={{ slug: l.slug }}
+                search={{ area: "adulto" }}
                 className="group flex items-center gap-3 rounded-xl border border-gold/15 bg-forest-deep/30 p-3 hover:border-gold/40 hover:bg-forest-deep/50 transition"
               >
                 <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gold/10 text-base">

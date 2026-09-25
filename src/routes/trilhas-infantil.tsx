@@ -224,6 +224,7 @@ function TrilhaInfantilPage() {
                   <Link
                     to="/trilhas/$slug"
                     params={{ slug }}
+                    search={{ area: "infantil" }}
                     aria-label={label}
                     className="block"
                   >
@@ -297,6 +298,7 @@ function TrilhaInfantilPage() {
                   key={"nav-" + slug}
                   to="/trilhas/$slug"
                   params={{ slug }}
+                  search={{ area: "infantil" }}
                   aria-label={label}
                   className="flex h-14 items-center justify-center rounded-xl border-b-4 border-black/10 shadow-sm transition-all active:translate-y-1 active:border-b-0"
                   style={{ background: style.color }}
