@@ -9,13 +9,11 @@ import {
   ChevronRight,
   Flame,
   Gamepad2,
-  Home,
   Mic,
   Music,
   Play,
   Star,
   Trophy,
-  User,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
@@ -94,13 +92,6 @@ const EXPLORE = [
   { label: "Vídeos", icon: Play, to: "/videos" },
 ] as const;
 
-const BOTTOM_NAV = [
-  { label: "Início", icon: Home, to: "/infantil" },
-  { label: "Aprender", icon: BookOpen, to: "/trilhas-infantil" },
-  { label: "Vídeos", icon: Play, to: "/videos" },
-  { label: "Desafios", icon: Trophy, to: "/jogos-infantil" },
-  { label: "Perfil", icon: User, to: "/minha-conta" },
-] as const;
 
 function InfantilHome() {
   const { t, i18n } = useTranslation();
@@ -368,29 +359,7 @@ function InfantilHome() {
 
         </main>
 
-        {/* Barra inferior fixa */}
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-emerald-900/50 bg-emerald-700/95 backdrop-blur">
-          <div className="mx-auto flex max-w-4xl items-center justify-around px-2 py-2">
-            {BOTTOM_NAV.map((n) => {
-              const Icon = n.icon;
-              return (
-                <Link
-                  key={n.label}
-                  to={n.to as any}
-                  aria-label={n.label}
-                  className="flex flex-col items-center gap-0.5 rounded-xl px-2 py-1 text-amber-100 transition hover:bg-emerald-800/70 active:scale-95"
-                  activeProps={{ className: "bg-emerald-900/70 text-amber-300" }}
-                >
-                  <Icon className="h-6 w-6" />
-                  <span className="text-[11px] font-black uppercase tracking-wide">{n.label}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
-
         <SiteFooter />
-        <div aria-hidden className="h-20" />
       </div>
     </div>
   );

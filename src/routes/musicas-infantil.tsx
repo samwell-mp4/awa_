@@ -224,14 +224,6 @@ function TribalBackdrop() {
       <div className="absolute left-1/3 bottom-24 text-5xl opacity-60 kid-bounce" style={{ animationDelay: "0.8s" }}>🐸</div>
       <div className="absolute right-1/4 top-1/2 text-5xl opacity-60 kid-wiggle" style={{ animationDelay: "0.6s" }}>🐟</div>
 
-      {/* Ground grass */}
-      <svg
-        className="absolute inset-x-0 bottom-0 h-24 w-full text-emerald-500/70"
-        viewBox="0 0 400 40"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 40 L10 15 L20 40 L28 20 L38 40 L48 10 L58 40 L70 18 L80 40 L92 8 L104 40 L116 20 L128 40 L140 12 L152 40 L164 18 L176 40 L188 10 L200 40 L212 20 L224 40 L236 8 L248 40 L260 20 L272 40 L284 12 L296 40 L308 18 L320 40 L332 10 L344 40 L356 20 L368 40 L380 15 L392 40 L400 20 L400 40 Z" fill="currentColor" />
-      </svg>
 
       {/* Top tribal zigzag border */}
       <svg
