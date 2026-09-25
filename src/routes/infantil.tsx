@@ -310,6 +310,9 @@ function InfantilHome() {
             </Link>
           </section>
 
+          <KidsWordQuiz />
+
+
 
           <Link
             to="/"
