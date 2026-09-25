@@ -132,12 +132,15 @@ const CHILD_HREF_MAP: Record<string, string> = {
   "/trilhas": "/trilhas-infantil",
   "/historias": "/historias-infantil",
   "/jogos": "/jogos-infantil",
+  "/professor": "/professor-infantil",
 };
 
 function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[] {
   if (mode === "all") return items;
   const allowed = mode === "adulto" ? ADULT_HREFS : CHILD_HREFS;
-  const filtered = items.filter((it) => allowed.has(it.href));
+  const filtered = items.filter(
+    (it) => allowed.has(it.href) || (mode === "infantil" && it.href === "/professor"),
+  );
   if (mode !== "infantil") return filtered;
   return filtered.map((it) =>
     CHILD_HREF_MAP[it.href] ? { ...it, href: CHILD_HREF_MAP[it.href] } : it,
@@ -193,7 +196,6 @@ export function useNavContent(mode: NavMode = "all") {
   const rawTop = [
     { label: t("nav.dicionario"), href: "/dicionario" },
     { label: "Professor Akuã", href: "/professor" },
-    { label: "Professor Akuã", href: "/professor-infantil" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
     { label: t("nav.musicas"), href: "/musicas" },
