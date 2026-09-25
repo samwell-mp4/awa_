@@ -80,14 +80,6 @@ const TRAIL_CARDS = [
   { n: 5, label: "Cultura", img: trailCultura, to: "/trilhas-infantil", slug: null, tint: "#8558a8" },
 ] as const;
 
-const EXPLORE = [
-  { label: "Pronúncia", icon: Mic, to: "/saudacoes" },
-  { label: "Músicas", icon: Music, to: "/musicas-infantil" },
-  { label: "Histórias", icon: BookOpen, to: "/historias-infantil" },
-  { label: "Contos", icon: Trophy, to: "/trilhas-infantil" },
-  { label: "Números", icon: null, to: "/aprender-numeros", digits: "123" },
-  { label: "Vídeos", icon: Play, to: "/videos" },
-] as const;
 
 
 function InfantilHome() {
