@@ -9,11 +9,8 @@ import {
   ChevronRight,
   Flame,
   Gamepad2,
-  Mic,
-  Music,
   Play,
   Star,
-  Trophy,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SiteFooter } from "@/components/home/site-footer";
@@ -83,14 +80,6 @@ const TRAIL_CARDS = [
   { n: 5, label: "Cultura", img: trailCultura, to: "/trilhas-infantil", slug: null, tint: "#8558a8" },
 ] as const;
 
-const EXPLORE = [
-  { label: "Pronúncia", icon: Mic, to: "/saudacoes" },
-  { label: "Músicas", icon: Music, to: "/musicas-infantil" },
-  { label: "Histórias", icon: BookOpen, to: "/historias-infantil" },
-  { label: "Contos", icon: Trophy, to: "/trilhas-infantil" },
-  { label: "Números", icon: null, to: "/aprender-numeros", digits: "123" },
-  { label: "Vídeos", icon: Play, to: "/videos" },
-] as const;
 
 
 function InfantilHome() {
@@ -300,36 +289,8 @@ function InfantilHome() {
             </div>
           </section>
 
-          {/* Explorar mais + Palavra do dia */}
-          <section className="mt-3 grid grid-cols-[2fr_1fr] gap-2 sm:gap-3">
-            <div className="rounded-[1.5rem] border-4 border-amber-200 bg-amber-50/95 p-2 shadow-xl sm:p-3">
-              <h2 className="mb-2 font-display text-base font-black text-emerald-900 sm:text-xl">Explorar mais</h2>
-              <div className="grid grid-cols-6 gap-1 sm:gap-2">
-                {EXPLORE.map((e) => {
-                  const Icon = e.icon;
-                  return (
-                    <Link
-                      key={e.label}
-                      to={e.to as any}
-                      aria-label={e.label}
-                      className="flex min-w-0 flex-col items-center gap-1 text-center"
-                    >
-                      <span className="grid aspect-square w-full place-items-center rounded-xl border-2 border-emerald-900/30 bg-emerald-700 text-white shadow-md transition hover:-translate-y-0.5 active:scale-95 sm:rounded-2xl sm:border-4">
-                        {Icon ? (
-                          <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
-                        ) : (
-                          <span className="font-display text-sm font-black sm:text-lg">{(e as any).digits}</span>
-                        )}
-                      </span>
-                      <span className="w-full break-words hyphens-auto text-[7px] font-black uppercase leading-[1.1] tracking-tight text-emerald-900 sm:text-[11px] sm:tracking-wide">
-                        {e.label}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
+          {/* Palavra do dia */}
+          <section className="mt-3">
             <Link
               to="/dicionario"
               className="flex items-center gap-2 rounded-[1.5rem] border-4 border-amber-900/40 bg-[#5a3a22]/95 p-2.5 text-amber-50 shadow-xl transition hover:-translate-y-0.5 active:scale-[0.99] sm:gap-3 sm:p-4"
