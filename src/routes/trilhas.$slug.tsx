@@ -49,6 +49,9 @@ export const Route = createFileRoute("/trilhas/$slug")({
   beforeLoad: ({ params }) => {
     if (!(params.slug in TRAILS)) throw notFound();
   },
+  validateSearch: (search: Record<string, unknown>): { area?: "adulto" | "infantil" } => ({
+    area: search.area === "infantil" ? "infantil" : search.area === "adulto" ? "adulto" : undefined,
+  }),
   head: ({ params }) => {
     const t = TRAILS[params.slug as TrailSlug];
     return {
@@ -84,6 +87,7 @@ type Word = {
 
 function TrilhaPage() {
   const backTo = useLastArea();
+  const { area } = Route.useSearch();
   const { slug } = Route.useParams();
 
   const trail = TRAILS[slug as TrailSlug];
@@ -179,7 +183,7 @@ function TrilhaPage() {
   ]);
   const localize = useLocalize(tr);
 
-  const isKids = typeof backTo === "string" && backTo.includes("infantil");
+  const isKids = area === "infantil" || (!area && typeof backTo === "string" && backTo.includes("infantil"));
 
   return (
     <div className={`min-h-screen ${isKids ? "kids-theme" : ""}`}>
@@ -317,7 +321,7 @@ function TrilhaPage() {
           onClose={() => setShowCert(false)}
           onNext={() => {
             setShowCert(false);
-            navigate({ to: "/trilhas/$slug", params: { slug: nextSlug } });
+            navigate({ to: "/trilhas/$slug", params: { slug: nextSlug }, search: { area: isKids ? "infantil" : "adulto" } });
           }}
         />
       )}

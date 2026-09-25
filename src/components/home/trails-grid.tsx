@@ -44,7 +44,7 @@ function TrailCardInner({ trail, label }: { trail: HomeTrail; label: string }) {
   );
 }
 
-export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
+export function TrailsGrid({ trails, mode = "adulto" }: { trails: HomeTrail[]; mode?: "adulto" | "infantil" }) {
   const { t } = useTranslation();
   return (
     <section className="mt-8">
@@ -63,13 +63,13 @@ export function TrailsGrid({ trails }: { trails: HomeTrail[] }) {
           const label = translateTrailName(t, trail.name);
           if (norm === "números" || norm === "numeros") {
             return (
-              <Link key={trail.name} to="/aprender-numeros" search={{ area: "adulto" }} className={cardClass}>
+              <Link key={trail.name} to="/aprender-numeros" search={{ area: mode }} className={cardClass}>
                 <TrailCardInner trail={trail} label={label} />
               </Link>
             );
           }
           return slug ? (
-            <Link key={trail.name} to="/trilhas/$slug" params={{ slug }} className={cardClass}>
+            <Link key={trail.name} to="/trilhas/$slug" params={{ slug }} search={{ area: mode }} className={cardClass}>
               <TrailCardInner trail={trail} label={label} />
             </Link>
           ) : (

@@ -46,7 +46,7 @@ function TrilhasPage() {
             {t("home.trailsTitle")}
           </h1>
         </div>
-        <TrailsGrid trails={trails} />
+        <TrailsGrid trails={trails} mode="adulto" />
       </main>
       <SiteFooter />
     </div>

@@ -78,7 +78,7 @@ function AdultoHome() {
 
         <div className="content-visibility-auto">
           <ErrorBoundary area="adulto-trilhas" message="Não foi possível carregar as trilhas. Tente novamente.">
-            <TrailsGrid trails={trails} />
+            <TrailsGrid trails={trails} mode="adulto" />
           </ErrorBoundary>
         </div>
 
