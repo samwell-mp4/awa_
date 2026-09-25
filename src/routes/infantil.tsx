@@ -20,6 +20,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
+import { KidsWordQuiz } from "@/components/kids/KidsWordQuiz";
 
 import infantilMenu from "@/assets/infantil-menu.jpg.asset.json";
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
