@@ -5,7 +5,6 @@ import { speak, stopSpeak } from "@/lib/speak";
 /** Botão "Ouvir página": narra todo o texto do <main> da página. */
 export function PageListenButton() {
   const [playing, setPlaying] = useState(false);
-  useEffect(() => () => stopSpeak(), []);
 
   const toggle = () => {
     if (playing) {
@@ -19,6 +18,21 @@ export function PageListenButton() {
     setPlaying(true);
     speak(text, "pt-BR", 1, undefined, () => setPlaying(false));
   };
+
+  // Começa a narrar sozinho assim que a página abre.
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const main = document.querySelector("main");
+      const text = (main?.innerText || "").replace(/\s+\n/g, "\n").trim().slice(0, 4000);
+      if (!text) return;
+      setPlaying(true);
+      speak(text, "pt-BR", 1, undefined, () => setPlaying(false));
+    }, 150);
+    return () => {
+      window.clearTimeout(id);
+      stopSpeak();
+    };
+  }, []);
 
   return (
     <button
