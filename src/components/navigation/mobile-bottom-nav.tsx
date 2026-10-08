@@ -16,6 +16,7 @@ export function MobileBottomNav() {
 
   // Hide on auth, standalone, or chat input routes to avoid visual conflict
   const isExcluded =
+    pathname === "/" ||
     pathname === "/auth" ||
     pathname.startsWith("/auth/") ||
     pathname === "/reset-password" ||

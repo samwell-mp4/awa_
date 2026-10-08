@@ -26,7 +26,7 @@ import { getSiteConfig } from "@/lib/admin-layout.functions";
 import { Logo } from "@/components/home/logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { SiteFooter } from "@/components/home/site-footer";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth, loginAsTestUser } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 
 import infantilLogoJson from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -309,7 +309,8 @@ function CleanLandingPage() {
                 </Link>
               ) : (
                 <Link
-                  to="/auth"
+                  to="/adulto"
+                  onClick={() => loginAsTestUser()}
                   className="inline-flex items-center gap-1.5 rounded-full bg-[#1b4332] px-4 py-1.5 text-xs font-bold text-white shadow-xs transition hover:bg-[#2d6a4f] sm:px-5 sm:py-2"
                 >
                   <LogIn className="h-4 w-4" />

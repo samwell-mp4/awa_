@@ -553,7 +553,9 @@ export function SidebarLayoutWrapper({ children }: { children: React.ReactNode }
     };
   }, [isAdultMode]);
 
-  if (isAuthRoute) {
+  const isLanding = pathname === "/";
+
+  if (isAuthRoute || isLanding) {
     return <>{children}</>;
   }
 

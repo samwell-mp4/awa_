@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { loginAsTestUser } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { Sparkles, Phone, ShieldCheck, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import authBg from "@/assets/awa-auth-bg.jpg.asset.json";
@@ -35,13 +36,9 @@ function AuthPage() {
   const [resendIn, setResendIn] = useState(0);
 
   useEffect(() => {
-    let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!cancelled && data.session) navigate({ to: "/" });
-    });
-    return () => {
-      cancelled = true;
-    };
+    loginAsTestUser();
+    toast.success("Modo de teste: Acesso liberado sem senha!");
+    navigate({ to: "/adulto" });
   }, [navigate]);
 
 
@@ -165,26 +162,32 @@ function AuthPage() {
             Continue com sua conta Google ou receba um código por SMS no seu celular.
           </p>
 
-          {import.meta.env.DEV && (
-            <div className="mt-4 p-4 rounded-2xl bg-gold/15 border border-gold/40 text-center">
-              <p className="text-xs text-gold font-semibold uppercase tracking-wider">Modo Local (Login Desativado)</p>
-              <p className="mt-1 text-xs text-foreground/80">O login foi liberado para desenvolvimento local.</p>
-              <div className="mt-3 flex gap-2">
-                <Link
-                  to="/adulto"
-                  className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
-                >
-                  Entrar Adulto
-                </Link>
-                <Link
-                  to="/infantil"
-                  className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
-                >
-                  Entrar Infantil
-                </Link>
-              </div>
+          <div className="mt-4 p-4 rounded-2xl bg-gold/15 border border-gold/40 text-center">
+            <p className="text-xs text-gold font-semibold uppercase tracking-wider">Modo de Teste (Acesso Liberado)</p>
+            <p className="mt-1 text-xs text-foreground/80">O acesso foi liberado para testes rápidos sem senha.</p>
+            <div className="mt-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  loginAsTestUser();
+                  navigate({ to: "/adulto" });
+                }}
+                className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
+              >
+                Entrar Adulto
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  loginAsTestUser();
+                  navigate({ to: "/infantil" });
+                }}
+                className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
+              >
+                Entrar Infantil
+              </button>
             </div>
-          )}
+          </div>
 
           {/* Method tabs */}
           <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-background/40 p-1">
