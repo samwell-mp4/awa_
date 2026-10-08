@@ -28,7 +28,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth, isTestModeActive } from "@/hooks/use-auth";
 import { useUserStats } from "@/hooks/use-user-stats";
 import { useDailyMission, useHomeTrails, type HomeTrail } from "@/hooks/use-home-data";
 import { fetchSaudacoes, pickByHour, type Saudacao } from "@/routes/saudacoes";
@@ -51,7 +51,7 @@ import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 export const Route = createFileRoute("/adulto")({
   ssr: false,
   beforeLoad: async () => {
-    if (import.meta.env.DEV) return;
+    if (import.meta.env.DEV || isTestModeActive()) return;
     const { data } = await supabase.auth.getUser();
     if (!data.user) throw redirect({ to: "/auth", reloadDocument: true });
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {

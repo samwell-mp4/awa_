@@ -35,11 +35,7 @@ function AuthPage() {
   const [step, setStep] = useState<"phone" | "code">("phone");
   const [resendIn, setResendIn] = useState(0);
 
-  useEffect(() => {
-    loginAsTestUser();
-    toast.success("Modo de teste: Acesso liberado sem senha!");
-    navigate({ to: "/adulto" });
-  }, [navigate]);
+
 
 
   useEffect(() => {
@@ -130,10 +126,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="relative min-h-screen grid place-items-center px-4 py-10 overflow-hidden">
-      <img src={authBg.url} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background/95 backdrop-blur-[3px]" />
-
+    <div className="relative min-h-screen grid place-items-center px-4 py-10 overflow-hidden bg-[#0c1811] bg-gradient-to-b from-[#11241a] via-[#0c1811] to-[#070e0a]">
       <div className="relative w-full max-w-md">
         {/* Brand */}
         <div className="flex items-center justify-between mb-4">
@@ -147,7 +140,14 @@ function AuthPage() {
 
         <div className="card-elev rounded-3xl p-7 sm:p-8 backdrop-blur-xl bg-card/85 border border-gold/25 shadow-2xl">
           <div className="flex items-center gap-3">
-            <img src={adultoLogo.url} alt="" className="h-11 w-11 rounded-2xl object-cover ring-1 ring-gold/40 shadow" />
+            <img
+              src="/adulto-logo.png"
+              alt="AWÃ TECH"
+              onError={(e) => {
+                e.currentTarget.src = "/awa-tech-logo.png";
+              }}
+              className="h-11 w-11 rounded-2xl object-cover ring-1 ring-gold/40 shadow"
+            />
             <div>
               <div className="text-[10px] font-bold tracking-[0.28em] text-gold/80 inline-flex items-center gap-1">
                 <Sparkles className="h-3 w-3" /> AWÃ TECH

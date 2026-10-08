@@ -30,6 +30,7 @@ import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
 import { KidsWordQuiz } from "@/components/kids/KidsWordQuiz";
+import { isTestModeActive } from "@/hooks/use-auth";
 
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import kidsLogoRef from "@/assets/infantil-logo-ref.png";
@@ -45,7 +46,7 @@ import trailCultura from "@/assets/trail-cultura.jpg";
 export const Route = createFileRoute("/infantil")({
   ssr: false,
   beforeLoad: async () => {
-    if (import.meta.env.DEV) return;
+    if (import.meta.env.DEV || isTestModeActive()) return;
     const { data } = await supabase.auth.getUser();
     if (!data.user) throw redirect({ to: "/auth", reloadDocument: true });
     const { data: hasAccess } = await supabase.rpc("has_plan_access", {

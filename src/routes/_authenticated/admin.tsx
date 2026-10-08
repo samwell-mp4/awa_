@@ -40,10 +40,12 @@ const VisualEditorAdmin = lazy(() => import("@/components/admin/visual-editor-ad
 
 
 
+import { isTestModeActive } from "@/hooks/use-auth";
+
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Painel de Controle — AWÃ TECH" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async () => {
-    if (import.meta.env.DEV) return;
+    if (import.meta.env.DEV || isTestModeActive()) return;
     // O layout _authenticated já garante que há sessão. Aqui validamos a role
     // 'admin' pelo has_role (SECURITY DEFINER lendo public.user_roles) e, se a
     // chamada falhar por rede/timeout, confirmamos direto em public.user_roles.

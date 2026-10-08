@@ -1,6 +1,7 @@
 import { redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
+import { isTestModeActive } from "@/hooks/use-auth";
 
 /**
  * Route guard for premium areas. Each plan only unlocks its own area:
@@ -8,7 +9,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
  * Admins pass through (handled inside has_plan_access).
  */
 export async function requireArea(plan: "adulto" | "infantil") {
-  if (import.meta.env.DEV) return;
+  if (import.meta.env.DEV || isTestModeActive()) return;
   const { data } = await supabase.auth.getUser();
   // `reloadDocument` avoids a hydration mismatch: these routes are client-only,
   // so the server sent a placeholder for them — a client-side swap to another
