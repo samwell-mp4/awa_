@@ -20,5 +20,15 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  vite: {},
+  vite: {
+    server: {
+      proxy: {
+        "/__l5e/assets-v1": {
+          target: "https://www.awa-tech.store",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  },
 });
