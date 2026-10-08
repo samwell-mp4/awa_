@@ -33,7 +33,6 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
     speak(text, "pt-BR", 0.95, undefined, () => setSpeakingId(null));
   }
 
-
   useEffect(() => {
     if (!started || !auto) return;
     const id = window.setTimeout(() => {
@@ -44,7 +43,7 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
 
   if (!started) {
     return (
-      <div className="card-elev overflow-hidden rounded-3xl">
+      <div className="overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs">
         <div className="relative aspect-[16/9] w-full overflow-hidden">
           <img
             src={PHOTOS.jogosInfanto.src}
@@ -53,16 +52,16 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
             decoding="async"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.14_0.04_145/0.95)] via-[oklch(0.14_0.04_145/0.5)] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#11231b]/90 via-[#11231b]/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-5 md:p-8">
-            <p className="flex max-w-2xl items-start gap-2 font-display text-lg font-bold leading-snug text-cream md:text-2xl">
-              <Quote className="mt-1 h-5 w-5 shrink-0 text-gold" />
+            <p className="flex max-w-2xl items-start gap-2 font-display text-lg font-bold leading-snug text-white md:text-2xl">
+              <Quote className="mt-1 h-5 w-5 shrink-0 text-[#e9c46a]" />
               {INTERCAMBIO_OPENING}
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-3 p-5 md:flex-row md:items-center md:justify-between md:p-6">
-          <p className="max-w-xl text-[14px] leading-relaxed text-foreground/75">
+          <p className="max-w-xl text-[14px] leading-relaxed text-[#4b5563]">
             Uma experiência guiada em {total} momentos: as fotos avançam junto com a narrativa do
             intercâmbio.
           </p>
@@ -72,17 +71,17 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
                 setStep(0);
                 setStarted(true);
               }}
-              className="rounded-full bg-gold px-6 py-5 text-sm font-bold uppercase tracking-[0.14em] text-forest-deep hover:brightness-110"
+              className="rounded-full bg-[#1b4332] px-6 py-5 text-sm font-bold tracking-wide text-white hover:bg-[#2d6a4f] shadow-xs"
             >
               <Play className="mr-2 h-4 w-4" /> Começar a história
             </Button>
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={() => {
                 setStarted(true);
                 setFolderOpen(true);
               }}
-              className="rounded-full border border-gold/35 px-5 py-5 text-sm font-bold uppercase tracking-[0.14em] text-gold"
+              className="rounded-full border-[#e8e4dc] bg-white px-5 py-5 text-sm font-bold tracking-wide text-[#1b4332] hover:bg-[#1b4332]/5"
             >
               <FolderOpen className="mr-2 h-4 w-4" /> Pasta de fotos
             </Button>
@@ -94,13 +93,13 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
 
   return (
     <div className="space-y-5">
-      <div className="card-elev overflow-hidden rounded-3xl">
+      <div className="overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs">
         <div className="grid gap-0 md:grid-cols-2">
           <button
             type="button"
             onClick={() => onZoom(chapter.photo)}
             aria-label={`Ampliar foto: ${chapter.photo.caption}`}
-            className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full"
+            className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full group"
           >
             <img
               key={chapter.photo.src}
@@ -108,18 +107,18 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
               alt={chapter.photo.alt}
               loading="lazy"
               decoding="async"
-              className="h-full w-full animate-in fade-in duration-700 object-cover"
+              className="h-full w-full animate-in fade-in duration-700 object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-gold/40 bg-[oklch(0.14_0.04_145/0.75)] text-gold backdrop-blur-sm">
+            <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-white/40 bg-black/50 text-white backdrop-blur-sm">
               <ZoomIn className="h-4 w-4" />
             </span>
           </button>
 
           <div className="flex flex-col justify-center gap-3 p-5 md:p-8">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold/85">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1b4332]">
               Momento {step + 1} de {total}
             </span>
-            <h3 className="font-display text-xl font-black leading-tight text-cream md:text-3xl">
+            <h3 className="font-display text-xl font-black leading-tight text-[#11231b] md:text-3xl">
               <span className="mr-2">{chapter.emoji}</span>
               {chapter.title}
             </h3>
@@ -130,27 +129,29 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
                   type="button"
                   onClick={() => listen(p, p)}
                   aria-label={speakingId === p ? "Parar áudio" : "Tocar áudio desta mensagem"}
-                  className={`flex w-full items-start gap-2 rounded-xl px-2 py-1.5 text-left transition hover:bg-gold/10 ${
-                    speakingId === p ? "bg-gold/10" : ""
+                  className={`flex w-full items-start gap-2.5 rounded-xl border p-2.5 text-left transition ${
+                    speakingId === p
+                      ? "border-[#1b4332]/40 bg-[#1b4332]/5"
+                      : "border-transparent hover:border-[#e8e4dc] hover:bg-[#f9f8f6]"
                   }`}
                 >
-                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold">
+                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[#1b4332]/25 bg-[#1b4332]/10 text-[#1b4332]">
                     {speakingId === p ? (
                       <Square className="h-3.5 w-3.5" />
                     ) : (
                       <Volume2 className="h-4 w-4" />
                     )}
                   </span>
-                  <span className="text-[14.5px] leading-relaxed text-foreground/82">{p}</span>
+                  <span className="text-[14.5px] leading-relaxed text-[#374151]">{p}</span>
                 </button>
               ))}
             </div>
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={() =>
                 listen(`chapter-${chapter.id}`, `${chapter.title}. ${chapter.paragraphs.join(" ")}`)
               }
-              className="w-fit rounded-full border border-gold/35 text-gold"
+              className="w-fit rounded-full border-[#e8e4dc] text-[#1b4332] hover:bg-[#1b4332]/5"
             >
               {speakingId === `chapter-${chapter.id}` ? (
                 <>
@@ -162,31 +163,31 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
                 </>
               )}
             </Button>
-            <p className="text-[12.5px] italic text-foreground/60">{chapter.photo.caption}</p>
+            <p className="text-[12.5px] italic text-[#6b7280]">{chapter.photo.caption}</p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 border-t border-gold/15 px-4 py-3 md:px-6">
+        <div className="flex flex-wrap items-center gap-2 border-t border-[#e8e4dc] bg-[#faf9f6] px-4 py-3 md:px-6">
           <Button
             variant="ghost"
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="rounded-full text-foreground/80"
+            className="rounded-full text-[#374151] hover:bg-black/5"
           >
             <ArrowLeft className="mr-1.5 h-4 w-4" /> Anterior
           </Button>
           <Button
             variant="ghost"
             onClick={() => setAuto((a) => !a)}
-            className="rounded-full text-foreground/80"
+            className="rounded-full text-[#374151] hover:bg-black/5"
           >
             {auto ? "Pausar sequência" : "Retomar sequência"}
           </Button>
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={() => setFolderOpen((v) => !v)}
             aria-expanded={folderOpen}
-            className="rounded-full border border-gold/30 text-gold"
+            className="rounded-full border-[#e8e4dc] bg-white text-[#1b4332] hover:bg-[#1b4332]/5"
           >
             <FolderOpen className="mr-1.5 h-4 w-4" />
             {folderOpen ? "Fechar pasta" : `Pasta de fotos (${INTERCAMBIO_GALLERY.length})`}
@@ -194,7 +195,7 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
           {step + 1 < total ? (
             <Button
               onClick={() => setStep((s) => Math.min(total - 1, s + 1))}
-              className="ml-auto rounded-full bg-gold text-forest-deep hover:brightness-110"
+              className="ml-auto rounded-full bg-[#1b4332] text-white hover:bg-[#2d6a4f] shadow-xs"
             >
               Próximo <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
@@ -204,14 +205,14 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
                 setStep(0);
                 setStarted(false);
               }}
-              className="ml-auto rounded-full bg-gold text-forest-deep hover:brightness-110"
+              className="ml-auto rounded-full bg-[#1b4332] text-white hover:bg-[#2d6a4f] shadow-xs"
             >
               <Play className="mr-1.5 h-4 w-4" /> Ver de novo
             </Button>
           )}
         </div>
 
-        <div className="flex gap-1.5 px-4 pb-4 md:px-6">
+        <div className="flex gap-1.5 bg-[#faf9f6] px-4 pb-4 md:px-6">
           {INTERCAMBIO_CHAPTERS.map((c, i) => (
             <button
               key={c.id}
@@ -219,57 +220,57 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
               aria-label={`Ir para: ${c.title}`}
               onClick={() => setStep(i)}
               className={`h-1.5 flex-1 rounded-full transition ${
-                i <= step ? "bg-gold" : "bg-gold/20"
+                i <= step ? "bg-[#1b4332]" : "bg-[#e8e4dc]"
               }`}
             />
           ))}
         </div>
       </div>
 
-      <div className="card-elev overflow-hidden rounded-2xl">
+      <div className="overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white shadow-xs">
         <button
           type="button"
           onClick={() => setFolderOpen((v) => !v)}
           aria-expanded={folderOpen}
-          className="flex w-full items-center gap-3 px-5 py-4 text-left"
+          className="flex w-full items-center gap-3 px-5 py-4 text-left hover:bg-[#f9f8f6] transition"
         >
-          <FolderOpen className="h-5 w-5 shrink-0 text-gold" />
+          <FolderOpen className="h-5 w-5 shrink-0 text-[#1b4332]" />
           <span className="min-w-0 flex-1">
-            <span className="block truncate font-display text-lg font-black text-cream">
+            <span className="block truncate font-display text-lg font-black text-[#11231b]">
               Pasta de fotos — Intercâmbio
             </span>
-            <span className="block text-[12.5px] text-foreground/65">
+            <span className="block text-[12.5px] text-[#6b7280]">
               {INTERCAMBIO_GALLERY.length} fotos e {INTERCAMBIO_GALLERY_NOTES.length} momentos
             </span>
           </span>
           <ArrowRight
-            className={`h-4 w-4 shrink-0 text-gold transition-transform ${folderOpen ? "rotate-90" : ""}`}
+            className={`h-4 w-4 shrink-0 text-[#1b4332] transition-transform ${folderOpen ? "rotate-90" : ""}`}
           />
         </button>
 
         {folderOpen && (
-          <div className="border-t border-gold/15 p-5">
+          <div className="border-t border-[#e8e4dc] p-5">
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {INTERCAMBIO_GALLERY.map((ph) => (
-                <figure key={ph.src} className="overflow-hidden rounded-xl border border-gold/15">
+                <figure key={ph.src} className="overflow-hidden rounded-xl border border-[#e8e4dc] bg-[#faf9f6]">
                   <button
                     type="button"
                     onClick={() => onZoom(ph)}
                     aria-label={`Ampliar foto: ${ph.caption}`}
-                    className="relative block w-full"
+                    className="relative block w-full group"
                   >
                     <img
                       src={ph.src}
                       alt={ph.alt}
                       loading="lazy"
                       decoding="async"
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-[4/3] w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-gold/40 bg-[oklch(0.14_0.04_145/0.75)] text-gold backdrop-blur-sm">
+                    <span className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-white/40 bg-black/50 text-white backdrop-blur-sm">
                       <ZoomIn className="h-3.5 w-3.5" />
                     </span>
                   </button>
-                  <figcaption className="px-3 py-2 text-[12.5px] leading-snug text-foreground/70">
+                  <figcaption className="px-3 py-2.5 text-[12.5px] leading-snug text-[#4b5563]">
                     {ph.caption}
                   </figcaption>
                 </figure>
@@ -286,23 +287,25 @@ export function IntercambioStory({ onZoom }: { onZoom: (p: Photo) => void }) {
                       ? "Parar áudio"
                       : "Tocar áudio desta mensagem"
                   }
-                  className={`rounded-xl border border-gold/15 p-3 text-left transition hover:bg-gold/10 ${
-                    speakingId === `note-${n.title}` ? "bg-gold/10" : ""
+                  className={`rounded-xl border p-3.5 text-left transition ${
+                    speakingId === `note-${n.title}`
+                      ? "border-[#1b4332]/40 bg-[#1b4332]/5"
+                      : "border-[#e8e4dc] bg-[#faf9f6] hover:bg-[#1b4332]/5"
                   }`}
                 >
                   <span className="flex items-start gap-2">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-[#1b4332]/25 bg-[#1b4332]/10 text-[#1b4332]">
                       {speakingId === `note-${n.title}` ? (
                         <Square className="h-3 w-3" />
                       ) : (
                         <Volume2 className="h-3.5 w-3.5" />
                       )}
                     </span>
-                    <span className="text-[13px] font-bold text-gold/90">
+                    <span className="text-[13px] font-bold text-[#11231b]">
                       {i + 1}. {n.title}
                     </span>
                   </span>
-                  <span className="mt-1 block text-[13px] leading-relaxed text-foreground/75">
+                  <span className="mt-1 block text-[13px] leading-relaxed text-[#4b5563]">
                     {n.text}
                   </span>
                 </button>

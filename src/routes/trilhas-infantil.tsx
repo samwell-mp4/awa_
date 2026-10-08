@@ -4,15 +4,35 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getTrailsTotemsConfig } from "@/lib/infantil-content.functions";
-import { useMemo } from "react";
-
+import { useMemo, useState } from "react";
+import {
+  ChevronRight,
+  Clock,
+  BookOpen,
+  Search,
+  X,
+  Compass,
+  Sparkles,
+  CheckCircle2,
+  GraduationCap,
+} from "lucide-react";
 
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { trailSlugMap } from "@/lib/home-content";
 import { useHomeTrails } from "@/hooks/use-home-data";
-import { translateTrailName } from "@/components/home/trails-grid";
 import { TrailNarrator } from "@/components/kids/trail-narrator";
+import kidsBg from "@/assets/kids-menu-bg.jpg";
+import { PageHeader } from "@/components/education/page-header";
+import { ProgressBar } from "@/components/education/progress-bar";
+import { LearningStatusBadge, type LearningStatus } from "@/components/education/learning-status-badge";
+import { EmptyState } from "@/components/education/empty-state";
+import { getLearned, TRAILS, type TrailSlug } from "@/lib/trilhas";
+import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
+import trailFamilia from "@/assets/trail-familia.jpg";
+import trailNatureza from "@/assets/trail-natureza.jpg";
+import trailAnimais from "@/assets/trail-animais.jpg";
+import trailCultura from "@/assets/trail-cultura.jpg";
 
 export const Route = createFileRoute("/trilhas-infantil")({
   ssr: false,
@@ -23,295 +43,310 @@ export const Route = createFileRoute("/trilhas-infantil")({
       {
         name: "description",
         content:
-          "Trilhas da Aldeia: mapa colorido e infantil com totens de saudações, família, natureza e animais em línguas indígenas.",
-      },
-      { property: "og:title", content: "Trilhas da Aldeia — Awã Tech" },
-      {
-        property: "og:description",
-        content: "Mapa mágico e divertido das trilhas de aprendizado Awã Tech.",
+          "Trilhas de Aprendizado: percursos sequenciais para aprender a língua Patxôhã, natureza e tradições indígenas.",
       },
     ],
   }),
   component: TrilhaInfantilPage,
 });
 
-type TotemStyle = {
-  emoji: string;
-  color: string; // main hex
-  shadow: string; // shadow tint hex with alpha
-  islandTop: string; // island top gradient stops
-  islandBottom: string;
-  position: string; // absolute position classes
-  rotate: string;
+const TRAIL_META: Record<string, { img: string; time: string; totalEst: number; category: string }> = {
+  saudacoes: { img: trailSaudacoes, time: "15 min", totalEst: 12, category: "Língua & Comunicação" },
+  familia: { img: trailFamilia, time: "20 min", totalEst: 14, category: "Cultura & Pessoas" },
+  natureza: { img: trailNatureza, time: "25 min", totalEst: 16, category: "Mata & Meio Ambiente" },
+  animais: { img: trailAnimais, time: "20 min", totalEst: 15, category: "Fauna da Aldeia" },
+  cultura: { img: trailCultura, time: "30 min", totalEst: 18, category: "Memória Ancestral" },
 };
 
-const STATIC_TOTEM_STYLES: Record<string, TotemStyle> = {
-  saudacoes: {
-    emoji: "🤝",
-    color: "#ffd166",
-    shadow: "rgba(255,209,102,0.45)",
-    islandTop: "#a7f3d0",
-    islandBottom: "#6bbf8a",
-    position: "top-2 right-8",
-    rotate: "-3deg",
-  },
-  familia: {
-    emoji: "🏠",
-    color: "#ef476f",
-    shadow: "rgba(239,71,111,0.45)",
-    islandTop: "#c4b5fd",
-    islandBottom: "#8b7ad1",
-    position: "top-36 left-4",
-    rotate: "4deg",
-  },
-  natureza: {
-    emoji: "🌳",
-    color: "#06d6a0",
-    shadow: "rgba(6,214,160,0.45)",
-    islandTop: "#fde68a",
-    islandBottom: "#e0b04a",
-    position: "top-[280px] right-4",
-    rotate: "-4deg",
-  },
-  animais: {
-    emoji: "🐢",
-    color: "#118ab2",
-    shadow: "rgba(17,138,178,0.45)",
-    islandTop: "#fca5a5",
-    islandBottom: "#c96b6b",
-    position: "bottom-4 left-8",
-    rotate: "3deg",
-  },
-};
-
-function FloatingIsland({ top, bottom, size = 140 }: { top: string; bottom: string; size?: number }) {
-  const w = size;
-  const h = Math.round(size * 0.55);
-  return (
-    <svg
-      aria-hidden
-      viewBox={`0 0 ${w} ${h}`}
-      className="absolute left-1/2 top-full -translate-x-1/2 -translate-y-3"
-      style={{ width: w, height: h, filter: "drop-shadow(0 12px 12px rgba(0,0,0,0.25))" }}
-    >
-      <defs>
-        <linearGradient id={`isl-${top}-${bottom}`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={top} />
-          <stop offset="55%" stopColor={top} />
-          <stop offset="55%" stopColor={bottom} />
-          <stop offset="100%" stopColor={bottom} />
-        </linearGradient>
-      </defs>
-      <ellipse cx={w / 2} cy={h * 0.35} rx={w * 0.42} ry={h * 0.42} fill={`url(#isl-${top}-${bottom})`} />
-      {/* tiny grass tufts */}
-      <path d={`M ${w * 0.3} ${h * 0.32} q 3 -6 6 0`} stroke={bottom} strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d={`M ${w * 0.55} ${h * 0.28} q 3 -7 6 0`} stroke={bottom} strokeWidth="2" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
+type FilterStatus = "todas" | "em_andamento" | "nao_iniciado" | "concluido";
 
 function TrilhaInfantilPage() {
   const { t, i18n } = useTranslation();
-  const trails = useHomeTrails();
-  const getFn = useServerFn(getTrailsTotemsConfig);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<FilterStatus>("todas");
 
-  const { data: configTotems } = useQuery({
-    queryKey: ["site_config", "infantil_trails_totems"],
-    queryFn: () => getFn(),
-  });
+  // Compute learned items and statuses per trail
+  const allTrails = useMemo(() => {
+    const list: TrailSlug[] = ["saudacoes", "familia", "natureza", "animais", "cultura"];
+    return list.map((slug) => {
+      const trail = TRAILS[slug];
+      const meta = TRAIL_META[slug] || {
+        img: trailSaudacoes,
+        time: "15 min",
+        totalEst: 12,
+        category: "Língua & Cultura",
+      };
+      const learned = getLearned(slug);
+      const learnedCount = learned.size;
+      const totalCount = meta.totalEst;
+      const percent = Math.min(100, Math.round((learnedCount / totalCount) * 100));
 
-  const totemStyles = useMemo(() => {
-    if (configTotems && typeof configTotems === "object") {
-      return configTotems as Record<string, TotemStyle>;
-    }
-    return STATIC_TOTEM_STYLES;
-  }, [configTotems]);
+      let status: LearningStatus = "nao_iniciado";
+      if (percent === 100) status = "concluido";
+      else if (learnedCount > 0) status = "em_andamento";
 
+      return {
+        slug,
+        name: trail?.name ?? (slug.charAt(0).toUpperCase() + slug.slice(1)),
+        intro: trail?.intro ?? "Aprenda palavras e expressões da aldeia.",
+        img: meta.img,
+        time: meta.time,
+        category: meta.category,
+        learnedCount,
+        totalCount,
+        percent,
+        status,
+      };
+    });
+  }, []);
 
-  const titleTop = t("common.kidsTrailsTitle").replace(/^[^\p{L}]*/u, ""); // strip leading emoji if present
-  const subtitle = t("common.kidsTrailsSubtitle");
+  const totalLearned = allTrails.reduce((acc, t) => acc + t.learnedCount, 0);
+  const totalActivities = allTrails.reduce((acc, t) => acc + t.totalCount, 0);
+  const completedTrailsCount = allTrails.filter((t) => t.status === "concluido").length;
+  const inProgressTrailsCount = allTrails.filter((t) => t.status === "em_andamento").length;
+
+  const filteredTrails = useMemo(() => {
+    return allTrails.filter((trail) => {
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesName = trail.name.toLowerCase().includes(q);
+        const matchesIntro = trail.intro.toLowerCase().includes(q);
+        const matchesCat = trail.category.toLowerCase().includes(q);
+        if (!matchesName && !matchesIntro && !matchesCat) return false;
+      }
+
+      if (activeFilter === "todas") return true;
+      if (activeFilter === "em_andamento") return trail.status === "em_andamento";
+      if (activeFilter === "nao_iniciado") return trail.status === "nao_iniciado";
+      if (activeFilter === "concluido") return trail.status === "concluido";
+      return true;
+    });
+  }, [allTrails, searchQuery, activeFilter]);
 
   return (
-    <div key={i18n.language} className="kids-theme min-h-screen bg-[#fdfcf0] text-foreground will-change-transform">
-      <style>{`
-        @keyframes kids-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-        @keyframes kids-wobble { 0%,100%{transform:rotate(var(--rot))} 50%{transform:rotate(calc(var(--rot) * -1))} }
-        @keyframes kids-pop { 0%{transform:scale(.6);opacity:0} 60%{transform:scale(1.1);opacity:1} 100%{transform:scale(1)} }
-        @keyframes kids-dash { to { stroke-dashoffset: -240 } }
-        @keyframes kids-cloud { 0%{transform:translateX(-20px)} 50%{transform:translateX(20px)} 100%{transform:translateX(-20px)} }
-        .kids-totem { animation: kids-pop .5s ease-out both, kids-float 3.6s ease-in-out infinite; }
-        .kids-totem:hover { animation-play-state: paused; }
-      `}</style>
+    <div
+      key={i18n.language}
+      className="kids-theme relative min-h-screen text-[#fefae0] font-sans"
+      style={{
+        backgroundImage: `url(${kidsBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      {/* High-contrast atmospheric scrim layer */}
+      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
 
-      <SiteHeader mode="infantil" />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-md px-4 pb-16 pt-4 font-['Hind',sans-serif]">
-        <div className="relative overflow-hidden rounded-[2rem] border-4 border-[#ffd166]/40 bg-[#fdfcf0] shadow-inner">
-          {/* Decorative clouds */}
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70">
-            <div className="absolute left-4 top-6 text-4xl" style={{ animation: "kids-cloud 12s ease-in-out infinite" }}>☁️</div>
-            <div className="absolute right-6 top-16 text-3xl" style={{ animation: "kids-cloud 15s ease-in-out infinite reverse" }}>☁️</div>
-            <div className="absolute right-10 top-2 text-2xl">☀️</div>
-          </div>
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-4 sm:px-6">
+          <PageHeader
+            breadcrumbs={[
+              { label: "Início", href: "/infantil" },
+              { label: "Trilhas de Aprendizado" },
+            ]}
+            title="Trilhas da Aldeia"
+            description="Escolha uma trilha e percorra cada etapa para conhecer a língua, os saberes e as histórias dos povos indígenas."
+            badge={`${totalLearned} de ${totalActivities} lições concluídas`}
+          />
 
-          {/* Header */}
-          <header className="relative z-10 px-6 pt-10 text-center">
-            <Link
-              to="/infantil"
-              className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-black text-[#118ab2] shadow ring-2 ring-[#ffd166]/60 hover:scale-105 active:scale-95"
-              aria-label={t("common.voltar")}
-            >
-              <span aria-hidden>←</span> {t("common.voltar")}
-            </Link>
-            <h1
-              className="text-4xl uppercase leading-none tracking-tight text-[#118ab2]"
-              style={{ fontFamily: "'Archivo Black', 'Archivo', system-ui, sans-serif" }}
-            >
-              {titleTop.split(" ").slice(0, -1).join(" ") || "Trilhas da"}
-              <br />
-              <span className="text-[#ef476f]">
-                {titleTop.split(" ").slice(-1)[0] || "Aldeia"}
-              </span>
-            </h1>
-            <p className="mt-3 text-lg font-bold text-[#06d6a0]">{subtitle}</p>
-          </header>
-
-          {/* Adventure map area */}
-          <div className="relative mx-4 my-6 h-[520px]">
-            {/* Winding dashed trail */}
-            <svg
-              aria-hidden
-              className="pointer-events-none absolute inset-0 h-full w-full"
-              viewBox="0 0 300 520"
-              fill="none"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M230 70 C 230 150, 70 150, 70 220 C 70 300, 230 300, 230 380 C 230 460, 70 460, 70 500"
-                stroke="#ffd166"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeDasharray="10 14"
-                style={{ animation: "kids-dash 6s linear infinite" }}
-              />
-              {/* footprints */}
-              {[
-                [150, 130], [90, 200], [150, 260], [210, 330], [150, 400], [90, 470],
-              ].map(([x, y], i) => (
-                <text key={i} x={x} y={y} fontSize="14" textAnchor="middle" opacity="0.7">
-                  {i % 2 ? "🐾" : "👣"}
-                </text>
-              ))}
-            </svg>
-
-            {/* Totems */}
-            {trails.slice(0, 4).map((trail, i) => {
-              const slug = trailSlugMap[trail.name];
-              if (!slug) return null;
-              const style = totemStyles[slug];
-              if (!style) return null;
-              const label = translateTrailName(t, trail.name);
-              return (
-                <div
-                  key={slug}
-                  className={`kids-totem group absolute ${style.position} transition-transform hover:scale-110 active:scale-95`}
-                  style={{
-                    animationDelay: `${i * 120}ms`,
-                    // @ts-expect-error CSS var
-                    "--rot": style.rotate,
-                  }}
-                >
-                  <Link
-                    to="/trilhas/$slug"
-                    params={{ slug }}
-                    search={{ area: "infantil" }}
-                    aria-label={label}
-                    className="block"
-                  >
-                    <span className="relative block">
-                      {/* Glow */}
-                      <span
-                        aria-hidden
-                        className="absolute -inset-3 rounded-full opacity-70 blur-xl transition group-hover:opacity-100"
-                        style={{ background: style.color }}
-                      />
-
-                      {/* Totem bubble */}
-                      <span
-                        className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 border-white text-white"
-                        style={{
-                          background: style.color,
-                          boxShadow: `0 10px 0 -2px ${style.shadow}, 0 20px 30px -10px ${style.shadow}`,
-                          transform: `rotate(${style.rotate})`,
-                        }}
-                      >
-                        <span className="text-3xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
-                        <span
-                          className="mt-0.5 text-[10px] uppercase tracking-widest text-white"
-                          style={{ fontFamily: "'Archivo Black', sans-serif" }}
-                        >
-                          {label}
-                        </span>
-                      </span>
-
-                      {/* Floating island shadow beneath */}
-                      <FloatingIsland top={style.islandTop} bottom={style.islandBottom} />
-                    </span>
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Narração das trilhas — título e descrição com áudio */}
-          <section className="px-4 pb-4" aria-label={t("common.kidsTrailsTitle")}>
-            <div className="grid gap-3">
-              {trails.slice(0, 4).map((trail) => {
-                const slug = trailSlugMap[trail.name];
-                if (!slug) return null;
-                const style = totemStyles[slug];
-                if (!style) return null;
-                const descKey = `common.trailDesc${slug.charAt(0).toUpperCase() + slug.slice(1)}`;
-                return (
-                  <TrailNarrator
-                    key={"narr-" + slug}
-                    title={translateTrailName(t, trail.name)}
-                    description={t(descKey)}
-                    color={style.color}
-                    emoji={style.emoji}
-                  />
-                );
-              })}
+          {/* Educational Quick Stats Bar */}
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="awa-card-3 p-3 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-lg bg-[#2a170a] border border-[#633916] grid place-items-center text-[#ffd166]">
+                <Compass className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-xs text-[#d4a373]">Total de Trilhas</div>
+                <div className="text-base font-bold text-[#fefae0]">{allTrails.length} percursos</div>
+              </div>
             </div>
-          </section>
 
-          {/* Quick nav footer */}
-          <div className="grid grid-cols-4 gap-2 border-t-2 border-[#ffd166]/40 bg-white/60 p-4 backdrop-blur-sm">
-            {trails.slice(0, 4).map((trail) => {
-              const slug = trailSlugMap[trail.name];
-              if (!slug) return null;
-              const style = totemStyles[slug];
-              if (!style) return null;
-              const label = translateTrailName(t, trail.name);
-              return (
-                <Link
-                  key={"nav-" + slug}
-                  to="/trilhas/$slug"
-                  params={{ slug }}
-                  search={{ area: "infantil" }}
-                  aria-label={label}
-                  className="flex h-14 items-center justify-center rounded-xl border-b-4 border-black/10 shadow-sm transition-all active:translate-y-1 active:border-b-0"
-                  style={{ background: style.color }}
-                >
-                  <span className="text-2xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">{style.emoji}</span>
-                </Link>
-              );
-            })}
+            <div className="awa-card-3 p-3 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-lg bg-[#2a170a] border border-[#633916] grid place-items-center text-[#2a9d8f]">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-xs text-[#d4a373]">Em Andamento</div>
+                <div className="text-base font-bold text-[#2a9d8f]">{inProgressTrailsCount} trilhas</div>
+              </div>
+            </div>
+
+            <div className="awa-card-3 p-3 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-lg bg-[#2a170a] border border-[#633916] grid place-items-center text-[#22c55e]">
+                <CheckCircle2 className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-xs text-[#d4a373]">Concluídas</div>
+                <div className="text-base font-bold text-[#22c55e]">{completedTrailsCount} trilhas</div>
+              </div>
+            </div>
+
+            <div className="awa-card-3 p-3 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-lg bg-[#2a170a] border border-[#633916] grid place-items-center text-[#ffd166]">
+                <GraduationCap className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-xs text-[#d4a373]">Lições Aprendidas</div>
+                <div className="text-base font-bold text-[#ffd166]">{totalLearned} / {totalActivities}</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </main>
 
-      <SiteFooter />
+          {/* Search & Filter Bar */}
+          <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            {/* Search Input */}
+            <div className="relative w-full sm:max-w-xs">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar trilha ou tema..."
+                className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: "todas", label: `Todas (${allTrails.length})` },
+                { id: "em_andamento", label: `Em Andamento (${inProgressTrailsCount})` },
+                { id: "nao_iniciado", label: "Não Iniciadas" },
+                { id: "concluido", label: `Concluídas (${completedTrailsCount})` },
+              ].map((btn) => (
+                <button
+                  key={btn.id}
+                  onClick={() => setActiveFilter(btn.id as FilterStatus)}
+                  className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
+                    activeFilter === btn.id
+                      ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
+                      : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
+                  }`}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Educational Trail Cards List */}
+          <div className="mt-6 flex flex-col gap-4">
+            {filteredTrails.length === 0 ? (
+              <EmptyState
+                title="Nenhuma trilha encontrada"
+                description={
+                  searchQuery
+                    ? `Nenhum resultado para "${searchQuery}". Tente outro termo de busca.`
+                    : "Não há trilhas com o filtro selecionado."
+                }
+                actionLabel="Limpar filtros"
+                onAction={() => {
+                  setSearchQuery("");
+                  setActiveFilter("todas");
+                }}
+              />
+            ) : (
+              filteredTrails.map((trail, index) => {
+                const isRecommended =
+                  trail.status === "em_andamento" ||
+                  (trail.status === "nao_iniciado" && index === 0);
+
+                return (
+                  <div
+                    key={trail.slug}
+                    className={`rounded-2xl p-4 sm:p-5 transition shadow-lg border ${
+                      isRecommended
+                        ? "awa-card-1 border-[#ffd166]/60"
+                        : "awa-card-2 border-[#633916]/60"
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                      {/* Trail image / thumbnail */}
+                      <div className="relative h-32 w-full sm:h-28 sm:w-44 shrink-0 overflow-hidden rounded-xl bg-black/40 border border-[#633916]/80">
+                        <img
+                          src={trail.img}
+                          alt={trail.name}
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2 rounded-md bg-[#180e07]/90 px-2 py-0.5 text-[10px] font-bold text-[#ffd166] border border-[#633916]">
+                          Trilha #{index + 1}
+                        </div>
+                      </div>
+
+                      {/* Trail content info */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <LearningStatusBadge status={trail.status} />
+                          <span className="text-[11px] font-semibold text-[#2a9d8f]">
+                            {trail.category}
+                          </span>
+                          <span className="flex items-center gap-1 text-[11px] text-[#d4a373]">
+                            <Clock className="h-3 w-3" /> {trail.time}
+                          </span>
+                          <span className="flex items-center gap-1 text-[11px] text-[#d4a373]">
+                            <BookOpen className="h-3 w-3" /> {trail.totalCount} atividades
+                          </span>
+                        </div>
+
+                        <h2 className="text-lg sm:text-xl font-black text-[#fefae0] tracking-tight">
+                          {trail.name}
+                        </h2>
+                        <p className="mt-1 text-xs text-[#fefae0]/85 leading-relaxed max-w-xl">
+                          {trail.intro}
+                        </p>
+
+                        <div className="mt-3.5 max-w-md">
+                          <ProgressBar
+                            current={trail.learnedCount}
+                            total={trail.totalCount}
+                            size="sm"
+                            showPercent
+                          />
+                        </div>
+                      </div>
+
+                      {/* Primary Trail CTA */}
+                      <div className="shrink-0 w-full sm:w-auto pt-2 sm:pt-0">
+                        <Link
+                          to="/trilhas/$slug"
+                          params={{ slug: trail.slug }}
+                          search={{ area: "infantil" }}
+                          className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-black transition active:scale-95 shadow ${
+                            isRecommended
+                              ? "bg-gradient-to-r from-[#ffd166] to-[#f59e0b] text-[#1a0e04] hover:brightness-110 shadow-lg"
+                              : "bg-[#2b170c] border border-[#633916] text-[#ffd166] hover:bg-[#3d1f0e] hover:border-[#ffd166]/60"
+                          }`}
+                        >
+                          <span>{trail.status === "concluido" ? "Revisar Trilha" : trail.status === "em_andamento" ? "Continuar Trilha" : "Começar Trilha"}</span>
+                          <ChevronRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          {/* Trail Narrator integration */}
+          <div className="mt-8">
+            <TrailNarrator />
+          </div>
+        </main>
+
+        <SiteFooter mode="infantil" />
+      </div>
     </div>
   );
 }

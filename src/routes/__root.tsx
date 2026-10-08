@@ -24,6 +24,7 @@ import { VoiceAssistant } from "@/components/voice-assistant/VoiceAssistant";
 
 import { toast } from "sonner";
 import "@/i18n";
+import { SidebarProvider, SidebarLayoutWrapper } from "@/components/navigation/site-sidebar";
 
 
 function NotFoundComponent() {
@@ -263,20 +264,24 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageHydrator />
-      <ErrorBoundary area="background-services" fallback={() => null}>
-        <RealtimeContentSync />
-        <AutoUpdater />
-        <VoiceAssistant />
-        <AppLanguageAutoTranslator />
-        <PlanExpiryBanner />
-      </ErrorBoundary>
+      <SidebarProvider>
+        <LanguageHydrator />
+        <ErrorBoundary area="background-services" fallback={() => null}>
+          <RealtimeContentSync />
+          <AutoUpdater />
+          <VoiceAssistant />
+          <AppLanguageAutoTranslator />
+          <PlanExpiryBanner />
+        </ErrorBoundary>
 
-      <AppErrorBoundary>
-        <Outlet />
-      </AppErrorBoundary>
+        <AppErrorBoundary>
+          <SidebarLayoutWrapper>
+            <Outlet />
+          </SidebarLayoutWrapper>
+        </AppErrorBoundary>
 
-      <Toaster theme="dark" position="top-right" richColors />
+        <Toaster theme="dark" position="top-right" richColors />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 }

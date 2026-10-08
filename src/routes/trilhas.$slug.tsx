@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft, Volume2, Loader2, Check, Award, X, Sparkles, RotateCw, Shuffle, ArrowRight,
+  BookOpen, ChevronLeft, ChevronRight, Search,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { speakText } from "@/lib/tts.functions";
@@ -14,8 +15,15 @@ import { toast } from "sonner";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useAutoTranslate } from "@/hooks/use-auto-translate";
-import { useLastArea } from "@/lib/last-area";
 import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
+import { PageHeader } from "@/components/education/page-header";
+import { ProgressBar } from "@/components/education/progress-bar";
+import { LessonNavigation } from "@/components/education/lesson-navigation";
+import { EmptyState } from "@/components/education/empty-state";
+import { Pagination } from "@/components/education/pagination";
+import { useLastArea } from "@/lib/last-area";
+import kidsBg from "@/assets/kids-menu-bg.jpg";
 
 function useTr(texts: string[]) {
   const translated = useAutoTranslate(texts);
@@ -46,6 +54,7 @@ function nextTrailSlug(current: TrailSlug): TrailSlug {
 
 
 export const Route = createFileRoute("/trilhas/$slug")({
+  ssr: false,
   beforeLoad: ({ params }) => {
     if (!(params.slug in TRAILS)) throw notFound();
   },
@@ -112,8 +121,18 @@ function TrilhaPage() {
   const [showCert, setShowCert] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showMatch, setShowMatch] = useState(false);
+  const [showFlashcards, setShowFlashcards] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterMode, setFilterMode] = useState<"todas" | "pendentes" | "aprendidas">("todas");
+  const [currentPage, setCurrentPage] = useState(1);
+  const WORDS_PER_PAGE = 8;
 
   useEffect(() => { setLearnedState(getLearned(slug)); }, [slug]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterMode, slug]);
 
   function logLearningEvent(action: string) {
     supabase.auth.getUser().then(({ data }) => {
@@ -159,12 +178,32 @@ function TrilhaPage() {
   }
 
   function resetProgress() {
-
-
     setLearnedState(new Set());
     setLearned(slug, new Set());
     toast.success("Novas lições prontas! Bons estudos 🌱");
   }
+
+  const filteredWords = useMemo(() => {
+    return words.filter((w) => {
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesInd = (w.term_indigenous || "").toLowerCase().includes(q);
+        const matchesPt = (w.term_pt || "").toLowerCase().includes(q);
+        const matchesPron = (w.pronunciation || "").toLowerCase().includes(q);
+        if (!matchesInd && !matchesPt && !matchesPron) return false;
+      }
+      const isLearned = learned.has(w.id);
+      if (filterMode === "pendentes" && isLearned) return false;
+      if (filterMode === "aprendidas" && !isLearned) return false;
+      return true;
+    });
+  }, [words, searchQuery, filterMode, learned]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredWords.length / WORDS_PER_PAGE));
+  const paginatedWords = useMemo(() => {
+    const start = (currentPage - 1) * WORDS_PER_PAGE;
+    return filteredWords.slice(start, start + WORDS_PER_PAGE);
+  }, [filteredWords, currentPage]);
 
   const grouped = useMemo(() => {
     if (trail.groups) {
@@ -186,125 +225,301 @@ function TrilhaPage() {
   const isKids = area === "infantil" || (!area && typeof backTo === "string" && backTo.includes("infantil"));
 
   return (
-    <div className={`min-h-screen ${isKids ? "kids-theme" : ""}`}>
-      {isKids ? <SiteHeader mode="infantil" /> : null}
-      <header className={`sticky top-0 z-40 border-b backdrop-blur-xl ${isKids ? "border-amber-300/60 bg-white/85" : "border-gold/20 bg-[oklch(0.18_0.04_145/0.75)]"}`}>
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to={(isKids ? "/trilhas-infantil" : "/trilhas") as "/"} className={`inline-flex items-center gap-2 text-sm font-semibold hover:underline ${isKids ? "text-emerald-800" : "text-gold"}`}>
-            <ArrowLeft className="h-4 w-4" /> {tr("Trilhas")}
-          </Link>
-          <div className={`flex items-center gap-2 font-display font-black ${isKids ? "text-emerald-900 text-xl" : "text-cream"}`}>
-            <span className={isKids ? "text-3xl" : ""}>{trail.emoji}</span> {tr(trail.name)}
-          </div>
-          <button onClick={resetProgress} title={tr("Reiniciar")} className={isKids ? "text-emerald-700 hover:text-amber-600" : "text-foreground/60 hover:text-gold"}>
-            <RotateCw className="h-4 w-4" />
-          </button>
+    <div
+      className={`min-h-screen relative text-foreground ${isKids ? "kids-theme bg-cover bg-center bg-no-repeat bg-fixed" : ""}`}
+      style={isKids ? { backgroundImage: `url(${kidsBg})` } : undefined}
+    >
+      {isKids && (
+        <div
+          aria-hidden
+          className="awa-bg-scrim pointer-events-none fixed inset-0"
+        />
+      )}
+
+      <div className="relative z-10 flex min-h-screen flex-col justify-between">
+        <div>
+          {isKids ? <SiteHeader mode="infantil" /> : (
+            <>
+              <SiteHeader mode="adulto" />
+              <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+                <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+                  <Link to="/trilhas" className="inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]">
+                    <ArrowLeft className="h-4 w-4" /> {tr("Trilhas")}
+                  </Link>
+                  <div className="flex items-center gap-2 font-display text-sm md:text-base font-black text-[#11231b]">
+                    {trail.emoji} {tr(trail.name)}
+                  </div>
+                  <button onClick={resetProgress} title={tr("Reiniciar")} className="text-[#6b7280] hover:text-[#1b4332] transition">
+                    <RotateCw className="h-4 w-4" />
+                  </button>
+                </div>
+              </header>
+            </>
+          )}
+
+          <main className="mx-auto max-w-5xl px-4 py-6 md:px-8">
+            {isKids ? (
+              <div className="space-y-4">
+                <PageHeader
+                  breadcrumbs={[
+                    { label: "Início", href: "/infantil" },
+                    { label: "Trilhas", href: "/trilhas-infantil" },
+                    { label: tr(trail.name) },
+                  ]}
+                  title={tr(trail.name)}
+                  description={tr(trail.intro || "Aprenda palavras e expressões da aldeia.")}
+                  badge={`${learned.size} de ${words.length} palavras aprendidas`}
+                  primaryAction={{
+                    label: learned.size >= words.length ? "Revisar Trilha" : "Continuar Atividade",
+                    onClick: () => setShowQuiz(true),
+                  }}
+                />
+
+                {/* Educational Action Bar with Progress */}
+                <div className="awa-card-1 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+                  <div className="w-full md:max-w-md">
+                    <ProgressBar current={learned.size} total={words.length || 1} showPercent />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+                    <button
+                      onClick={() => setShowFlashcards(true)}
+                      disabled={words.length === 0}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#ffd166] to-[#f59e0b] px-3.5 py-2 text-xs font-black text-[#1a0e04] hover:brightness-110 disabled:opacity-50 transition shadow active:scale-95"
+                    >
+                      <BookOpen className="h-4 w-4" />
+                      <span>Modo Estudo</span>
+                    </button>
+                    <button
+                      onClick={() => setShowQuiz(true)}
+                      disabled={words.length < 4}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#2a9d8f] px-3.5 py-2 text-xs font-bold text-white hover:brightness-110 disabled:opacity-50 transition shadow"
+                    >
+                      <Sparkles className="h-4 w-4" /> {tr("Quiz")}
+                    </button>
+                    <button
+                      onClick={() => setShowMatch(true)}
+                      disabled={words.length < 4}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-[#633916] bg-[#251408] px-3.5 py-2 text-xs font-bold text-[#ffd166] hover:border-[#ffd166]/60 disabled:opacity-50 transition"
+                    >
+                      <Shuffle className="h-4 w-4" /> {tr("Combinar")}
+                    </button>
+                    {hasCertificate(slug) && (
+                      <button
+                        onClick={() => setShowCert(true)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-[#ffd166]/50 bg-[#331c0e] px-3.5 py-2 text-xs font-bold text-[#ffd166] hover:bg-[#432512] transition shadow"
+                      >
+                        <Award className="h-4 w-4" /> {tr("Medalha")}
+                      </button>
+                    )}
+                    <button
+                      onClick={resetProgress}
+                      title="Reiniciar progresso desta trilha"
+                      className="p-2 rounded-xl border border-[#633916] bg-[#251408] text-[#d4a373] hover:text-[#ffd166] transition"
+                    >
+                      <RotateCw className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Search Bar & Filters */}
+                <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                  <div className="relative w-full sm:max-w-xs">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Buscar palavra ou tradução..."
+                      className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchQuery("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { id: "todas", label: `Todas (${words.length})` },
+                      { id: "pendentes", label: `Pendentes (${Math.max(0, words.length - learned.size)})` },
+                      { id: "aprendidas", label: `Aprendidas (${learned.size})` },
+                    ].map((btn) => (
+                      <button
+                        key={btn.id}
+                        onClick={() => setFilterMode(btn.id as any)}
+                        className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
+                          filterMode === btn.id
+                            ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
+                            : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
+                        }`}
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Counter */}
+                <div className="flex items-center justify-between text-xs text-[#d4a373] px-1 pt-1">
+                  <span>
+                    Mostrando palavras {filteredWords.length > 0 ? (currentPage - 1) * WORDS_PER_PAGE + 1 : 0}–
+                    {Math.min(currentPage * WORDS_PER_PAGE, filteredWords.length)} de {filteredWords.length}
+                  </span>
+                  {searchQuery && (
+                    <span className="text-[#ffd166]">Filtro ativo: "{searchQuery}"</span>
+                  )}
+                </div>
+
+                {/* Paginated Word Grid */}
+                <div className="pt-2">
+                  {isLoading ? (
+                    <div className="grid gap-3.5 sm:grid-cols-2">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="awa-card-2 h-28 rounded-2xl animate-pulse" />
+                      ))}
+                    </div>
+                  ) : filteredWords.length === 0 ? (
+                    <EmptyState
+                      title="Nenhuma palavra encontrada"
+                      description={
+                        searchQuery
+                          ? `Nenhum resultado para "${searchQuery}". Tente outro termo.`
+                          : filterMode === "aprendidas"
+                          ? "Você ainda não aprendeu nenhuma palavra desta trilha. Toque em 'Aprender' para registrar seu avanço!"
+                          : "Todas as palavras desta trilha já foram aprendidas! Parabéns!"
+                      }
+                      actionLabel="Ver todas as palavras"
+                      onAction={() => {
+                        setSearchQuery("");
+                        setFilterMode("todas");
+                      }}
+                    />
+                  ) : (
+                    <div className="grid gap-3.5 sm:grid-cols-2">
+                      {paginatedWords.map((w) => (
+                        <WordCard
+                          key={w.id}
+                          w={w}
+                          learned={learned.has(w.id)}
+                          onToggle={() => toggleLearned(w.id)}
+                          localize={localize}
+                          isKids={isKids}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Responsive Pagination Controls */}
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  className="pt-6"
+                />
+
+                {/* Sequential navigation */}
+                <div className="pt-8">
+                  <LessonNavigation
+                    previousLabel="Trilhas da Aldeia"
+                    onPrevious={() => navigate({ to: "/trilhas-infantil" })}
+                    nextLabel={learned.size >= words.length ? `Próxima: ${nextTrail.name}` : "Praticar no Quiz (+20 pts)"}
+                    onNext={() => {
+                      if (learned.size >= words.length) {
+                        navigate({ to: "/trilhas/$slug", params: { slug: nextSlug }, search: { area: "infantil" } });
+                      } else {
+                        setShowQuiz(true);
+                      }
+                    }}
+                    stickyOnMobile
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <section className="rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-8 shadow-xs">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#b47e28]">
+                    <span>{trail.emoji}</span>
+                    <span>Trilha Temática</span>
+                  </div>
+                  <p className="mt-2 font-display text-2xl md:text-3xl font-black text-[#11231b] tracking-tight">{tr(trail.intro)}</p>
+                  <p className="mt-2 text-sm text-[#4b5563] leading-relaxed">{tr(trail.apoio)}</p>
+
+                  <div className="mt-5">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#11231b]">
+                      <span>{learned.size} / {words.length} {tr("palavras aprendidas")}</span>
+                      <span className="text-[#2d6a4f]">{progress}% concluído</span>
+                    </div>
+                    <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#f4f2ec]">
+                      <div className="h-full rounded-full bg-gradient-to-r from-[#2d6a4f] to-[#52b788] transition-all" style={{ width: `${progress}%` }} />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-2.5">
+                    <button
+                      onClick={() => setShowQuiz(true)}
+                      disabled={words.length < 4}
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#1b4332] px-5 py-2.5 text-xs font-bold text-white shadow-xs transition hover:bg-[#2d6a4f] active:scale-95 disabled:opacity-50"
+                    >
+                      <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
+                    </button>
+                    <button
+                      onClick={() => setShowMatch(true)}
+                      disabled={words.length < 4}
+                      className="inline-flex items-center gap-2 rounded-xl border border-[#e8e4dc] bg-[#f7f6f2] px-5 py-2.5 text-xs font-bold text-[#11231b] shadow-xs transition hover:bg-white hover:border-[#1b4332] disabled:opacity-50"
+                    >
+                      <Shuffle className="h-4 w-4 text-[#2d6a4f]" /> {tr("Associar imagem ↔ palavra")}
+                    </button>
+                    {hasCertificate(slug) && (
+                      <button
+                        onClick={() => setShowCert(true)}
+                        className="inline-flex items-center gap-2 rounded-xl border border-[#b47e28]/40 bg-[#b47e28]/10 px-5 py-2.5 text-xs font-bold text-[#b47e28]"
+                      >
+                        <Award className="h-4 w-4" /> {tr("Ver certificado")}
+                      </button>
+                    )}
+                  </div>
+                </section>
+
+                {isLoading ? (
+                  <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> {tr("Carregando...")}</div>
+                ) : (
+                  grouped.map((g) => (
+                    <section key={g.label} className="mt-8">
+                      <h2 className="text-lg sm:text-xl font-black mb-3 text-[#11231b] tracking-tight">
+                        {g.label}
+                      </h2>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {g.items.map((w) => (
+                          <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} isKids={false} />
+                        ))}
+                      </div>
+                    </section>
+                  ))
+                )}
+              </>
+            )}
+          </main>
         </div>
-      </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
-        {isKids ? (
-          <section className="relative overflow-hidden rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-br from-yellow-100 via-orange-100 to-emerald-100 p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]">
-            <div className="flex flex-col items-center text-center">
-              <div className="text-7xl md:text-8xl drop-shadow-md animate-[wiggle_2s_ease-in-out_infinite]" aria-hidden>{trail.emoji}</div>
-              <h1 className="mt-3 font-display text-3xl md:text-4xl font-black text-emerald-900">{tr(trail.name)}</h1>
-              <p className="mt-2 text-base md:text-lg font-bold text-emerald-800/90 max-w-xl">{tr("Vamos brincar e aprender!")}</p>
-            </div>
+        <SiteFooter mode={isKids ? "infantil" : "adulto"} />
+      </div>
 
-            <div className="mt-5 mx-auto max-w-md">
-              <div className="flex items-center justify-between text-sm font-black text-emerald-900">
-                <span>⭐ {learned.size} / {words.length}</span>
-                <span>{progress}%</span>
-              </div>
-              <div className="mt-2 h-5 w-full overflow-hidden rounded-full border-2 border-amber-300 bg-white/70">
-                <div className="h-full bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 transition-all" style={{ width: `${progress}%` }} />
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <button
-                onClick={() => setShowQuiz(true)}
-                disabled={words.length < 4}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-emerald-700 bg-gradient-to-b from-emerald-400 to-emerald-500 px-6 py-4 text-lg font-black text-white shadow-lg transition active:translate-y-[3px] active:border-b-2 disabled:opacity-50"
-              >
-                <Sparkles className="h-6 w-6" /> {tr("Jogar")}
-              </button>
-              <button
-                onClick={() => setShowMatch(true)}
-                disabled={words.length < 4}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-orange-600 bg-gradient-to-b from-amber-400 to-orange-400 px-6 py-4 text-lg font-black text-white shadow-lg transition active:translate-y-[3px] active:border-b-2 disabled:opacity-50"
-              >
-                <Shuffle className="h-6 w-6" /> {tr("Combinar")}
-              </button>
-              {hasCertificate(slug) && (
-                <button
-                  onClick={() => setShowCert(true)}
-                  className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-2xl border-b-[6px] border-yellow-600 bg-gradient-to-b from-yellow-300 to-amber-400 px-6 py-4 text-lg font-black text-emerald-900 shadow-lg transition active:translate-y-[3px] active:border-b-2"
-                >
-                  <Award className="h-6 w-6" /> {tr("Medalha")}
-                </button>
-              )}
-            </div>
-          </section>
-        ) : (
-          <section className={`card-elev rounded-[2rem] border-4 border-gold/25 bg-gradient-to-br ${trail.color} p-6 md:p-8 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.35)]`}>
-            <p className="font-display text-2xl md:text-3xl font-black text-cream">{tr(trail.intro)}</p>
-            <p className="mt-2 text-sm text-foreground/85">{tr(trail.apoio)}</p>
-
-            <div className="mt-5">
-              <div className="flex items-center justify-between text-xs font-bold text-cream/90">
-                <span>{learned.size} / {words.length} {tr("palavras")}</span>
-                <span className="text-gold">{progress}%</span>
-              </div>
-              <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-forest-deep/60">
-                <div className="h-full bg-[var(--gradient-gold)] transition-all" style={{ width: `${progress}%` }} />
-              </div>
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              <button
-                onClick={() => setShowQuiz(true)}
-                disabled={words.length < 4}
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-leaf)] px-5 py-2.5 text-sm font-bold text-cream disabled:opacity-50"
-              >
-                <Sparkles className="h-4 w-4" /> {tr("Praticar quiz")}
-              </button>
-              <button
-                onClick={() => setShowMatch(true)}
-                disabled={words.length < 4}
-                className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold disabled:opacity-50"
-              >
-                <Shuffle className="h-4 w-4" /> {tr("Associar imagem ↔ palavra")}
-              </button>
-              {hasCertificate(slug) && (
-                <button
-                  onClick={() => setShowCert(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold"
-                >
-                  <Award className="h-4 w-4" /> {tr("Ver certificado")}
-                </button>
-              )}
-            </div>
-          </section>
-        )}
-
-        {isLoading ? (
-          <div className="mt-8 flex items-center gap-2 text-foreground/60"><Loader2 className="h-4 w-4 animate-spin" /> {tr("Carregando...")}</div>
-        ) : (
-          grouped.map((g) => (
-            <section key={g.label} className="mt-8">
-              <h2 className={`font-display text-xl md:text-2xl font-black mb-4 ${isKids ? "text-emerald-900" : "text-cream"}`}>
-                {isKids ? "✨ " : ""}{g.label}
-              </h2>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {g.items.map((w) => (
-                  <WordCard key={w.id} w={w} learned={learned.has(w.id)} onToggle={() => toggleLearned(w.id)} localize={localize} isKids={isKids} />
-                ))}
-              </div>
-            </section>
-          ))
-        )}
-      </main>
+      {showFlashcards && (
+        <FlashcardModal
+          words={filteredWords.length > 0 ? filteredWords : words}
+          learnedIds={learned}
+          onClose={() => setShowFlashcards(false)}
+          onToggleLearned={(id) => toggleLearned(id)}
+          localize={localize}
+        />
+      )}
 
       {showQuiz && words.length >= 4 && (
         <QuizModal words={words} onClose={() => setShowQuiz(false)} onCorrect={(id) => markLearned(id)} localize={localize} tr={tr} />
@@ -329,25 +544,173 @@ function TrilhaPage() {
   );
 }
 
+function FlashcardModal({
+  words,
+  learnedIds,
+  onClose,
+  onToggleLearned,
+  localize,
+}: {
+  words: Word[];
+  learnedIds: Set<string>;
+  onClose: () => void;
+  onToggleLearned: (id: string) => void;
+  localize: (row: any, field: string) => string;
+}) {
+  const [index, setIndex] = useState(0);
+  const current = words[index];
+  const isLearned = current ? learnedIds.has(current.id) : false;
+
+  if (!current) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="awa-card-1 relative w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-[#ffd166]/50">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-xl bg-black/40 text-[#fefae0]/70 hover:text-white border border-[#633916]"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        {/* Step indicator */}
+        <div className="flex items-center justify-between text-xs text-[#d4a373] mb-3">
+          <span className="font-bold text-[#ffd166] flex items-center gap-1.5">
+            <BookOpen className="h-4 w-4" /> Modo Estudo Passo a Passo
+          </span>
+          <span className="font-semibold">{index + 1} de {words.length}</span>
+        </div>
+        <div className="h-2 w-full bg-black/50 rounded-full overflow-hidden mb-6">
+          <div
+            className="h-full bg-gradient-to-r from-[#ffd166] to-[#f59e0b] transition-all duration-300"
+            style={{ width: `${((index + 1) / words.length) * 100}%` }}
+          />
+        </div>
+
+        {/* Flashcard body */}
+        <div className="text-center py-4 bg-[#180e07]/80 rounded-2xl border border-[#633916]/50 p-6 shadow-inner">
+          <div className="font-display text-3xl sm:text-4xl font-black text-[#ffd166] mb-2 tracking-tight">
+            {current.term_indigenous}
+          </div>
+
+          <div className="text-lg sm:text-xl font-bold text-[#ffffff] mb-3">
+            {localize(current, "term_pt")}
+          </div>
+
+          {current.pronunciation && (
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#251408] border border-[#633916] px-4 py-1 text-xs text-[#d4a373] font-medium mb-4">
+              <span>🗣️ Pronúncia:</span>
+              <span className="text-[#ffd166] font-bold">{current.pronunciation}</span>
+            </div>
+          )}
+
+          {current.example && (
+            <div className="mt-2 text-xs italic text-[#fefae0]/85 bg-black/40 rounded-xl p-3 border border-[#633916]/40 max-w-md mx-auto">
+              "{current.example}"
+            </div>
+          )}
+
+          {/* Big audio button */}
+          <div className="mt-6 flex justify-center">
+            <PlayBtn text={current.term_indigenous} audioUrl={current.audio_url} />
+          </div>
+        </div>
+
+        {/* Toggle Learned & Navigation */}
+        <div className="mt-6 pt-4 border-t border-[#633916]/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <button
+            onClick={() => onToggleLearned(current.id)}
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 min-h-[44px] text-xs font-bold transition shadow ${
+              isLearned
+                ? "bg-[#2a9d8f] text-white"
+                : "bg-[#251408] border border-[#633916] text-[#ffd166] hover:border-[#ffd166]"
+            }`}
+          >
+            <Check className="h-4 w-4 shrink-0" />
+            <span>{isLearned ? "Aprendida ✓" : "Marcar como Aprendida"}</span>
+          </button>
+
+          {/* Nav buttons */}
+          <div className="flex items-center justify-end gap-2">
+            <button
+              disabled={index === 0}
+              onClick={() => setIndex((i) => Math.max(0, i - 1))}
+              className="rounded-xl border border-[#633916] bg-[#251408] min-h-[44px] min-w-[44px] grid place-items-center text-[#fefae0] hover:border-[#ffd166] disabled:opacity-40 transition"
+              title="Palavra anterior"
+              aria-label="Palavra anterior"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              disabled={index === words.length - 1}
+              onClick={() => setIndex((i) => Math.min(words.length - 1, i + 1))}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#ffd166] to-[#f59e0b] px-4 py-2.5 min-h-[44px] text-xs font-black text-[#1a0e04] hover:brightness-110 disabled:opacity-40 transition shadow"
+            >
+              <span>Próxima</span>
+              <ChevronRight className="h-4 w-4 ml-1 inline shrink-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned: boolean; onToggle: () => void; localize: (row: any, field: string) => string; isKids?: boolean }) {
   const trAria = useTr(["Marcar como aprendida", "Marcar como não aprendida"]);
   if (isKids) {
     return (
-      <div className={`rounded-3xl border-4 p-4 transition ${learned ? "border-emerald-400 bg-emerald-50" : "border-amber-300 bg-white/80"} shadow-md`}>
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <div className="font-display text-xl font-black text-emerald-900 truncate">{w.term_indigenous}</div>
-            <div className="text-base font-bold text-orange-700 truncate">{localize(w, "term_pt")}</div>
-            {w.pronunciation && <div className="text-sm text-emerald-800/80 mt-0.5">🗣️ {w.pronunciation}</div>}
+      <div
+        className={`awa-card-2 rounded-2xl p-4 transition shadow-md border ${
+          learned
+            ? "border-[#2a9d8f]/70 bg-[#16271e]"
+            : "border-[#633916]/60 hover:border-[#ffd166]/60"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-display text-lg sm:text-xl font-black text-[#ffd166] tracking-tight">
+                {w.term_indigenous}
+              </span>
+              {learned && (
+                <span className="inline-flex items-center gap-0.5 rounded-md bg-[#2a9d8f]/20 border border-[#2a9d8f]/50 px-1.5 py-0.5 text-[10px] font-bold text-[#2a9d8f]">
+                  ✓ Aprendida
+                </span>
+              )}
+            </div>
+
+            <div className="text-sm font-bold text-[#ffffff] mt-1">
+              {localize(w, "term_pt")}
+            </div>
+
+            {w.pronunciation && (
+              <div className="mt-1.5 inline-flex items-center gap-1 rounded-md bg-[#180e07] border border-[#633916]/60 px-2 py-0.5 text-[11px] text-[#d4a373]">
+                <span className="text-[10px]">🗣️</span>
+                <span className="font-medium text-[#ffd166]">{w.pronunciation}</span>
+              </div>
+            )}
+
+            {w.example && (
+              <div className="mt-2 text-[11px] text-[#fefae0]/75 italic line-clamp-2">
+                "{w.example}"
+              </div>
+            )}
           </div>
-          <div className="flex flex-col items-center gap-2">
+
+          <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0">
             <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
             <button
               onClick={onToggle}
               aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
-              className={`grid h-11 w-11 place-items-center rounded-full border-b-4 transition active:translate-y-[2px] ${learned ? "border-emerald-700 bg-emerald-500 text-white" : "border-amber-500 bg-amber-300 text-emerald-900"}`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition shadow active:scale-95 ${
+                learned
+                  ? "bg-[#2a9d8f] text-white"
+                  : "bg-[#251408] border border-[#633916] text-[#ffd166] hover:border-[#ffd166]"
+              }`}
             >
-              <Check className="h-5 w-5" />
+              <Check className="h-3.5 w-3.5" />
+              <span>{learned ? "Aprendida" : "Aprender"}</span>
             </button>
           </div>
         </div>
@@ -355,20 +718,47 @@ function WordCard({ w, learned, onToggle, localize, isKids }: { w: Word; learned
     );
   }
   return (
-    <div className={`card-elev rounded-2xl border p-4 transition ${learned ? "border-gold/60 bg-gold/5" : "border-gold/15"}`}>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <div className="font-display text-lg font-bold text-gold truncate">{w.term_indigenous}</div>
-          <div className="text-sm text-cream/90 truncate">{localize(w, "term_pt")}</div>
+    <div className={`rounded-2xl border p-4 transition shadow-xs ${
+      learned
+        ? "border-emerald-500/50 bg-emerald-50/60"
+        : "border-[#e8e4dc] bg-white hover:border-[#2d6a4f]/50 hover:shadow-sm"
+    }`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-display text-lg font-bold text-[#1b4332] truncate">
+              {w.term_indigenous}
+            </span>
+            {learned && (
+              <span className="inline-flex items-center rounded-md bg-emerald-100 border border-emerald-300 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                ✓ Aprendida
+              </span>
+            )}
+          </div>
+          <div className="text-sm font-medium text-[#374151] truncate mt-0.5">{localize(w, "term_pt")}</div>
 
-          {w.pronunciation && <div className="text-xs text-foreground/60 mt-0.5">🗣️ {w.pronunciation}</div>}
+          {w.pronunciation && (
+            <div className="text-xs text-[#6b7280] mt-1 inline-flex items-center gap-1">
+              <span>🗣️</span>
+              <span className="font-medium text-[#b47e28]">{w.pronunciation}</span>
+            </div>
+          )}
+          {w.example && (
+            <div className="text-xs text-[#6b7280] italic mt-1 line-clamp-1">
+              "{w.example}"
+            </div>
+          )}
         </div>
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <PlayBtn text={w.term_indigenous} audioUrl={w.audio_url} />
           <button
             onClick={onToggle}
             aria-label={learned ? trAria("Marcar como não aprendida") : trAria("Marcar como aprendida")}
-            className={`grid h-9 w-9 place-items-center rounded-full transition ${learned ? "bg-gold text-forest-deep" : "bg-leaf/15 text-leaf hover:bg-leaf/25"}`}
+            className={`grid h-9 w-9 place-items-center rounded-xl transition ${
+              learned
+                ? "bg-[#1b4332] text-white shadow-xs"
+                : "border border-[#e8e4dc] bg-[#f4f2ec] text-[#1b4332] hover:bg-emerald-50 hover:border-emerald-300"
+            }`}
           >
             <Check className="h-4 w-4" />
           </button>

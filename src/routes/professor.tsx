@@ -28,6 +28,7 @@ import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
 import { transcribeAudio } from "@/lib/transcribe.functions";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
+import { SiteHeader } from "@/components/home/site-header";
 
 
 export const Route = createFileRoute("/professor")({
@@ -477,12 +478,14 @@ function ProfessorPage() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)]">
+    <div className="min-h-screen flex flex-col bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 rounded-full border border-transparent px-2.5 py-1.5 -ml-2.5 text-sm font-semibold text-gold/90 transition hover:border-gold/25 hover:bg-card/40 hover:text-gold"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3 py-1.5 text-xs font-bold text-[#1f2937] transition hover:border-[#1b4332] hover:bg-[#f4f2ec] shadow-xs"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">{L10N[lang].back}</span>
@@ -490,25 +493,25 @@ function ProfessorPage() {
 
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="rounded-full bg-gradient-to-br from-gold/60 via-gold/20 to-transparent p-[2px]">
+              <div className="rounded-full bg-gradient-to-br from-[#b47e28]/60 via-[#2d6a4f]/20 to-transparent p-[2px]">
                 <img
                   loading="lazy"
                   decoding="async"
                   src={logoSrc}
                   alt=""
-                  className="h-10 w-10 rounded-full border border-forest-deep object-cover shadow-md"
+                  className="h-10 w-10 rounded-full border border-[#e8e4dc] object-cover shadow-xs bg-white"
                 />
               </div>
               <span
                 aria-hidden
-                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white"
               />
             </div>
             <div className="leading-tight">
-              <div className="font-display text-sm font-black text-cream md:text-base">
+              <div className="font-display text-sm font-black text-[#11231b] md:text-base">
                 Professor Akuã
               </div>
-              <div className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300/80">
+              <div className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-wider text-[#2d6a4f]">
                 <Sparkles className="h-3 w-3" />
                 {t.subtitle}
               </div>
@@ -518,7 +521,7 @@ function ProfessorPage() {
           <button
             onClick={resetConversation}
             disabled={isEmpty && !loading}
-            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3 py-1.5 text-xs font-bold text-[#4b5563] transition hover:border-[#1b4332] hover:text-[#11231b] shadow-xs disabled:opacity-40"
             title={t.newChat}
           >
             <RefreshCcw className="h-3.5 w-3.5" />
@@ -544,9 +547,9 @@ function ProfessorPage() {
 
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.96)] px-4 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#e8e4dc] bg-white/95 px-4 pb-4 pt-3 shadow-lg backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-3">
-          <p className="text-center text-xs font-bold uppercase text-gold/80" aria-live="polite">
+          <p className="text-center text-xs font-bold uppercase tracking-wider text-[#b47e28]" aria-live="polite">
             {voiceState === "listening"
               ? v.listening
               : voiceState === "thinking"
@@ -562,8 +565,8 @@ function ProfessorPage() {
             disabled={loading || voiceState === "thinking"}
             className={`flex w-full max-w-sm items-center justify-center gap-3 rounded-2xl border px-6 py-4 text-base font-black uppercase transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 ${
               recorder.isRecording
-                ? "border-rose-400/60 bg-rose-500/25 text-rose-100 shadow-lg shadow-rose-500/20 animate-pulse"
-                : "border-gold/50 bg-gold text-forest-deep shadow-lg shadow-gold/20 hover:brightness-110"
+                ? "border-rose-400/60 bg-rose-50 text-rose-700 shadow-lg shadow-rose-500/10 animate-pulse"
+                : "border-[#1b4332] bg-[#1b4332] text-white shadow-md hover:bg-[#2d6a4f]"
             }`}
             aria-label={recorder.isRecording ? v.stopRec : v.talk}
             title={recorder.isRecording ? v.stopRec : v.talk}
@@ -577,7 +580,7 @@ function ProfessorPage() {
               <button
                 type="button"
                 onClick={voicePaused ? resumeVoice : pauseVoice}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-gold/30 bg-card/70 px-4 py-2 text-xs font-bold text-foreground/85"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-[#e8e4dc] bg-white px-4 py-2 text-xs font-bold text-[#11231b] shadow-xs"
               >
                 {voicePaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
                 {voicePaused ? v.resume : v.pause}
@@ -585,7 +588,7 @@ function ProfessorPage() {
               <button
                 type="button"
                 onClick={stopVoice}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-400/40 bg-rose-500/15 px-4 py-2 text-xs font-bold text-rose-200"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700"
               >
                 <Square className="h-4 w-4" /> {v.stopVoice}
               </button>
@@ -601,10 +604,10 @@ function ProfessorPage() {
 function TypingIndicator() {
   return (
     <div className="flex justify-start">
-      <div className="flex items-center gap-2 rounded-2xl border border-leaf/20 bg-card/50 px-4 py-3">
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.3s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.15s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf" />
+      <div className="flex items-center gap-2 rounded-2xl border border-[#e8e4dc] bg-white px-4 py-3 shadow-xs">
+        <span className="h-2 w-2 animate-bounce rounded-full bg-[#1b4332] [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-[#1b4332] [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-[#1b4332]" />
       </div>
     </div>
   );
@@ -634,14 +637,14 @@ function tokenizeInline(text: string): InlineToken[] {
   return tokens;
 }
 
-function renderInline(text: string, keyPrefix: string) {
+function renderInline(text: string, keyPrefix: string, isUser = false) {
   return tokenizeInline(text).map((tok, i) => {
     const k = `${keyPrefix}-${i}`;
-    if (tok.type === "bold") return <strong key={k} className="font-bold text-cream">{tok.value}</strong>;
-    if (tok.type === "italic") return <em key={k} className="italic text-cream/90">{tok.value}</em>;
+    if (tok.type === "bold") return <strong key={k} className={`font-bold ${isUser ? "text-white" : "text-[#11231b]"}`}>{tok.value}</strong>;
+    if (tok.type === "italic") return <em key={k} className={`italic ${isUser ? "text-white/90" : "text-[#374151]"}`}>{tok.value}</em>;
     if (tok.type === "code")
       return (
-        <code key={k} className="rounded bg-forest-deep/60 px-1.5 py-0.5 font-mono text-[0.85em] text-gold">
+        <code key={k} className={`rounded px-1.5 py-0.5 font-mono text-[0.85em] ${isUser ? "bg-white/20 text-white" : "bg-[#f4f2ec] text-[#b47e28]"}`}>
           {tok.value}
         </code>
       );
@@ -760,10 +763,10 @@ function Bubble({
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
         <div
-          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+          className={`rounded-2xl px-4.5 py-3.5 text-sm leading-relaxed shadow-xs ${
             isUser
-              ? "border border-gold/40 bg-gold/15 text-cream"
-              : "border border-leaf/25 bg-card/70 text-foreground/90"
+              ? "bg-[#1b4332] text-white"
+              : "border border-[#e8e4dc] bg-white text-[#1f2937]"
           }`}
         >
           <div className="space-y-2.5">
@@ -780,10 +783,10 @@ function Bubble({
                 return (
                   <p 
                     key={i} 
-                    className="whitespace-pre-wrap cursor-pointer hover:text-gold transition-colors"
-                    onClick={() => playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
+                    className={`whitespace-pre-wrap ${!isUser ? "cursor-pointer hover:text-[#1b4332] transition-colors" : ""}`}
+                    onClick={() => !isUser && playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
                   >
-                    {renderInline(b.text, `p${i}`)}
+                    {renderInline(b.text, `p${i}`, isUser)}
                   </p>
                 );
               }
@@ -792,8 +795,8 @@ function Bubble({
                   <ul key={i} className="ml-1 space-y-1">
                     {b.items.map((item: string, j: number) => (
                       <li key={j} className="flex gap-2">
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
-                        <span>{renderInline(item, `b${i}-${j}`)}</span>
+                        <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${isUser ? "bg-white/80" : "bg-[#b47e28]"}`} />
+                        <span>{renderInline(item, `b${i}-${j}`, isUser)}</span>
                       </li>
                     ))}
                   </ul>
@@ -802,7 +805,7 @@ function Bubble({
               // example
               const key = `ex-${i}`;
               return (
-                <div key={i} className="my-1 rounded-xl border border-gold/30 bg-forest-deep/50 px-3 py-2">
+                <div key={i} className="my-1 rounded-xl border border-[#b47e28]/25 bg-[#b47e28]/5 px-3 py-2">
                   <div className="flex items-start justify-between gap-2">
                     <button
                       onClick={() => playText(b.pat, key)}
@@ -810,10 +813,10 @@ function Bubble({
                       className="group flex flex-1 items-center gap-3 text-left transition hover:opacity-80 disabled:opacity-50"
                       aria-label={`Ouvir ${b.pat}`}
                     >
-                      <div className="font-display text-base font-black text-gold group-hover:underline decoration-gold/30 underline-offset-4">
+                      <div className="font-display text-base font-black text-[#b47e28] group-hover:underline decoration-[#b47e28]/30 underline-offset-4">
                         {b.pat}
                       </div>
-                      <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30">
+                      <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#1b4332]/10 text-[#1b4332] transition group-hover:bg-[#1b4332]/20">
                         {audioBusy === key ? (
                           <VolumeX className="h-3.5 w-3.5 animate-pulse" />
                         ) : (
@@ -823,9 +826,9 @@ function Bubble({
                       </div>
                     </button>
                   </div>
-                  <div className="mt-0.5 text-xs text-foreground/70">{b.pt}</div>
+                  <div className="mt-0.5 text-xs text-[#4b5563]">{b.pt}</div>
                   {b.src && (
-                    <div className={`mt-1 text-[10px] font-semibold uppercase tracking-wide ${b.src.startsWith("⚠") ? "text-destructive" : "text-leaf"}`}>
+                    <div className={`mt-1 text-[10px] font-semibold uppercase tracking-wide ${b.src.startsWith("⚠") ? "text-rose-600" : "text-[#1b4332]"}`}>
                       {b.src}
                     </div>
                   )}
@@ -836,7 +839,7 @@ function Bubble({
         </div>
 
         <div
-          className={`flex items-center gap-2 px-1 text-[10px] text-foreground/40 ${
+          className={`flex items-center gap-2 px-1 text-[10px] text-[#6b7280] ${
             isUser ? "flex-row-reverse" : ""
           }`}
         >
@@ -846,11 +849,11 @@ function Bubble({
               <span aria-hidden>·</span>
               <button
                 onClick={copyMessage}
-                className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition"
+                className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-[#f4f2ec] hover:text-[#11231b] transition"
                 aria-label={t.copy}
                 title={t.copy}
               >
-                {copied ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                {copied ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3" />}
                 {copied ? t.copied : t.copy}
               </button>
               {isLast && (
@@ -859,7 +862,7 @@ function Bubble({
                   <button
                     onClick={() => playText(msg.content.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
                     disabled={audioBusy === "full" && !onToggleAudio}
-                    className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
+                    className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-[#f4f2ec] hover:text-[#11231b] transition disabled:opacity-50"
                     aria-label={t.listen}
                     title={t.listen}
                   >

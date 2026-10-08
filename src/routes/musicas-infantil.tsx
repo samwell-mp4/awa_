@@ -1,49 +1,58 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Pause, Play } from "lucide-react";
+import {
+  Pause,
+  Play,
+  Heart,
+  Clock,
+  CheckCircle2,
+  Search,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { stopSpeak } from "@/lib/speak";
-import bgAsset from "@/assets/musicas-infantil-bg.jpg.asset.json";
+import kidsBg from "@/assets/kids-menu-bg.jpg";
 import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
+import { PageHeader } from "@/components/education/page-header";
+import { EmptyState } from "@/components/education/empty-state";
+import { Pagination } from "@/components/education/pagination";
 import { MiniPlayer, type MiniPlayerSong as Song } from "@/components/kids/MiniPlayer";
 import { getSiteConfig } from "@/lib/admin-layout.functions";
-import { useActiveTemplate } from "@/hooks/use-active-template";
 
 export const Route = createFileRoute("/musicas-infantil")({
   ssr: false,
   beforeLoad: () => requireArea("infantil"),
   head: () => ({
     meta: [
-      { title: "Cantigas da Aldeia — Awã Tech Infantil" },
+      { title: "Músicas e Cânticos — Awã Tech Infantil" },
       {
         name: "description",
         content:
-          "Menu infantil de cantigas indígenas do Awã Tech — bem colorido, com bichos, penas e tambor para as crianças cantarem juntas.",
+          "Cantigas indígenas do Awã Tech: cânticos sagrados, maracá e melodias da floresta para as crianças cantarem juntas.",
       },
     ],
   }),
   component: MusicasInfantilPage,
 });
 
+function formatDuration(sec: number | null | undefined): string {
+  if (!sec || isNaN(sec)) return "2:30";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? "0" : ""}${s}`;
+}
 
+type FilterType = "todas" | "patxoha" | "portugues" | "bilingue" | "ouvidas" | "favoritas";
 
-// Bright kid palettes + a matching indigenous emoji
-const THEMES = [
-  { bg: "from-rose-400 via-pink-400 to-fuchsia-400", ring: "ring-rose-100", emoji: "🪶", label: "Pena" },
-  { bg: "from-emerald-400 via-lime-400 to-yellow-300", ring: "ring-emerald-100", emoji: "🐢", label: "Tartaruga" },
-  { bg: "from-sky-400 via-cyan-400 to-teal-300", ring: "ring-sky-100", emoji: "🐟", label: "Peixinho" },
-  { bg: "from-orange-400 via-red-400 to-rose-400", ring: "ring-orange-100", emoji: "🔥", label: "Fogueira" },
-  { bg: "from-violet-400 via-fuchsia-400 to-pink-300", ring: "ring-violet-100", emoji: "🦜", label: "Arara" },
-  { bg: "from-amber-500 via-orange-400 to-rose-300", ring: "ring-amber-100", emoji: "🥁", label: "Tambor" },
-  { bg: "from-teal-400 via-emerald-400 to-lime-300", ring: "ring-teal-100", emoji: "🌳", label: "Árvore" },
-  { bg: "from-yellow-400 via-amber-400 to-orange-400", ring: "ring-yellow-100", emoji: "☀️", label: "Sol" },
-  { bg: "from-indigo-400 via-blue-400 to-sky-300", ring: "ring-indigo-100", emoji: "🌙", label: "Lua" },
-  { bg: "from-lime-400 via-green-400 to-emerald-400", ring: "ring-lime-100", emoji: "🐸", label: "Sapinho" },
-];
+const ITEMS_PER_PAGE = 9;
 
 function MusicasInfantilPage() {
   const { t } = useTranslation();
@@ -52,7 +61,6 @@ function MusicasInfantilPage() {
     queryKey: ["site_config", "branding"],
     queryFn: () => getFn({ data: "branding" }),
   });
-  const { template, config } = useActiveTemplate("musicas");
 
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ["songs_infantil"],
@@ -63,7 +71,6 @@ function MusicasInfantilPage() {
         .select(
           "id,title,artist,audio_url,cover_url,language,lyrics_indigenous,lyrics_pt,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets,sync_times,style",
         )
-
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -72,167 +79,313 @@ function MusicasInfantilPage() {
     },
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<FilterType>("todas");
+  const [currentPage, setCurrentPage] = useState(1);
   const [playing, setPlaying] = useState<Song | null>(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [listenedIds, setListenedIds] = useState<Set<string>>(new Set());
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+
+  // Load listened & favorites from localStorage
+  useEffect(() => {
+    try {
+      const savedListened = localStorage.getItem("awa_kids_listened_songs");
+      if (savedListened) setListenedIds(new Set(JSON.parse(savedListened)));
+      const savedFavs = localStorage.getItem("awa_kids_fav_songs");
+      if (savedFavs) setFavoriteIds(new Set(JSON.parse(savedFavs)));
+    } catch {}
+  }, []);
+
+  // Reset page when filter or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilter, searchQuery]);
+
+  const toggleFavorite = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFavoriteIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      try {
+        localStorage.setItem("awa_kids_fav_songs", JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  };
+
+  const handlePlaySong = (song: Song) => {
+    stopSpeak();
+    if (playing?.id === song.id) {
+      setPlaying(null);
+      setIsMaximized(false);
+    } else {
+      setPlaying(song);
+      setIsMaximized(true);
+      setListenedIds((prev) => {
+        const next = new Set(prev).add(song.id);
+        try {
+          localStorage.setItem("awa_kids_listened_songs", JSON.stringify([...next]));
+        } catch {}
+        return next;
+      });
+    }
+  };
+
+  const filteredSongs = useMemo(() => {
+    return songs.filter((s) => {
+      // Search matching
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesTitle = (s.title || "").toLowerCase().includes(q);
+        const matchesArtist = (s.artist || "").toLowerCase().includes(q);
+        const matchesLyrics =
+          (s.lyrics_indigenous || "").toLowerCase().includes(q) ||
+          (s.lyrics_pt || "").toLowerCase().includes(q);
+        if (!matchesTitle && !matchesArtist && !matchesLyrics) return false;
+      }
+
+      // Filter category
+      if (activeFilter === "todas") return true;
+      if (activeFilter === "favoritas") return favoriteIds.has(s.id);
+      if (activeFilter === "ouvidas") return listenedIds.has(s.id);
+      const lang = (s.language || "").toLowerCase();
+      if (activeFilter === "patxoha") return lang.includes("patx") || lang.includes("ind");
+      if (activeFilter === "portugues") return lang.includes("port");
+      if (activeFilter === "bilingue") return lang.includes("biling") || (s.lyrics_indigenous && s.lyrics_pt);
+      return true;
+    });
+  }, [songs, activeFilter, searchQuery, favoriteIds, listenedIds]);
+
+  // Pagination calculation
+  const totalPages = Math.max(1, Math.ceil(filteredSongs.length / ITEMS_PER_PAGE));
+  const paginatedSongs = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredSongs.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredSongs, currentPage]);
+
+  const filterButtons: { id: FilterType; label: string }[] = [
+    { id: "todas", label: `Todas (${songs.length})` },
+    { id: "patxoha", label: "Patxôhã" },
+    { id: "portugues", label: "Português" },
+    { id: "bilingue", label: "Bilíngue" },
+    { id: "ouvidas", label: `Ouvidas (${listenedIds.size})` },
+    { id: "favoritas", label: `Favoritas (${favoriteIds.size})` },
+  ];
 
   return (
     <div
-      className={`kids-theme min-h-screen relative overflow-hidden text-emerald-950 bg-emerald-100 player-mode-${config.player_mode || 'default'}`}
+      className="kids-theme relative min-h-screen text-[#fefae0] font-sans"
       style={{
-        backgroundImage: `url(${bgAsset.url})`,
+        backgroundImage: `url(${kidsBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center top",
         backgroundAttachment: "fixed",
       }}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/40" />
+      {/* High-contrast atmospheric scrim layer */}
+      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
 
-      <SiteHeader mode="infantil" />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <SiteHeader mode="infantil" />
 
-      <header className="relative sticky top-0 z-30 border-b-[6px] border-dashed border-amber-400 bg-amber-100/85 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-3">
-          <Link
-            to="/infantil"
-            className="inline-flex items-center gap-1 rounded-full border-2 border-emerald-900 bg-emerald-600 px-3 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_0_#064e3b] active:translate-y-0.5 active:shadow-none"
-          >
-            <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
-          </Link>
-          <div className="flex items-center gap-1 font-display text-xl font-black text-rose-700 drop-shadow">
-            🎶 Cantigas 🎶
-          </div>
-          <span className="w-16" />
-        </div>
-      </header>
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-4 sm:px-6">
+          <PageHeader
+            breadcrumbs={[
+              { label: "Início", href: "/infantil" },
+              { label: "Músicas e Cânticos" },
+            ]}
+            title="Músicas e Cânticos"
+            description="Aprenda cantos, palavras e histórias ancestrais através da música e do toque sagrado do maracá."
+            badge={`${songs.length} cantigas • ${listenedIds.size} ouvidas`}
+            primaryAction={
+              songs.length > 0
+                ? {
+                    label: playing ? "Pausar Reprodução" : "Continuar Ouvindo",
+                    onClick: () => {
+                      const nextToPlay = songs.find((s) => !listenedIds.has(s.id)) || songs[0];
+                      if (nextToPlay) handlePlaySong(nextToPlay);
+                    },
+                  }
+                : undefined
+            }
+          />
 
-      <main className="relative mx-auto max-w-4xl px-3 pb-32 pt-4">
-        {/* Big playful hero */}
-        <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-[6px] border-white bg-gradient-to-br from-amber-200 via-yellow-100 to-rose-100 p-5 text-center shadow-[0_18px_0_-8px_rgba(180,83,9,0.45),0_25px_50px_-20px_rgba(0,0,0,0.4)]">
-          <div className="flex justify-center gap-2 text-5xl">
-            <span className="kid-bounce" style={{ animationDelay: "0s" }}>🪶</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.2s" }}>🥁</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.4s" }}>🦜</span>
-            <span className="kid-bounce" style={{ animationDelay: "0.6s" }}>🌈</span>
-          </div>
-          <h1 className="mt-2 font-display text-4xl font-black leading-none text-emerald-900 md:text-5xl">
-            Canta com a{" "}
-            <span className="inline-block kid-wiggle text-rose-600">Aldeia!</span>
-          </h1>
-          <p className="mt-2 text-base font-black text-emerald-800/80">
-            Toca no bichinho para ouvir a cantiga 🎵
-          </p>
-        </section>
-
-        {isLoading ? (
-          <div className="grid animate-pulse grid-cols-2 gap-5 sm:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-[2rem] bg-white/60" />
-            ))}
-          </div>
-        ) : songs.length === 0 ? (
-          <p className="text-center font-black text-emerald-800/70">
-            Em breve novas cantigas 🌱
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-            {songs.map((s, i) => {
-              const theme = THEMES[i % THEMES.length];
-              const isActive = playing?.id === s.id;
-              return (
+          {/* Search Bar & Filters Controls */}
+          <div className="mt-6 flex flex-col gap-3">
+            {/* Search Input */}
+            <div className="relative w-full max-w-md">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar cantiga, artista ou letra..."
+                className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+              />
+              {searchQuery && (
                 <button
-                  key={s.id}
-                  onClick={() => {
-                    stopSpeak();
-                    if (isActive) {
-                      setPlaying(null);
-                      setIsMaximized(false);
-                    } else {
-                      setPlaying(s);
-                      setIsMaximized(true);
-                    }
-                  }}
-
-                  className={`group relative flex aspect-square flex-col items-center justify-between rounded-[2rem] border-[5px] border-white bg-gradient-to-br ${theme.bg} p-3 text-center shadow-[0_10px_0_-3px_rgba(0,0,0,0.25),0_20px_35px_-15px_rgba(0,0,0,0.4)] ring-4 ${theme.ring} transition-transform hover:-translate-y-1 hover:rotate-[-1deg] hover:scale-[1.04] active:translate-y-0.5 active:scale-95`}
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
                 >
-                  {/* Zigzag tribal top */}
-                  <svg viewBox="0 0 60 8" className="h-3 w-full text-white/90">
-                    <path d="M0 8 L6 0 L12 8 L18 0 L24 8 L30 0 L36 8 L42 0 L48 8 L54 0 L60 8" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-
-                  {/* Big emoji / play */}
-                  <div className="relative grid h-20 w-20 place-items-center rounded-full bg-white/95 text-5xl shadow-inner ring-[6px] ring-white/70">
-                    {isActive ? (
-                      <Pause className="h-9 w-9 fill-emerald-800 text-emerald-800" />
-                    ) : (
-                      <span aria-hidden className="kid-bounce" style={{ animationDelay: `${(i % 5) * 0.15}s` }}>
-                        {theme.emoji}
-                      </span>
-                    )}
-                    {/* dotted halo */}
-                    <span className="absolute inset-0 rounded-full border-[3px] border-dashed border-white/70 kid-spin-slow" />
-                  </div>
-
-                  {/* Title */}
-                  <div className="w-full">
-                    <div className="line-clamp-2 font-display text-sm font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.35)]">
-                      {s.title}
-                    </div>
-                    {s.artist && (
-                      <div className="mt-0.5 line-clamp-1 text-[10px] font-black text-white/90">
-                        {s.artist}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Play tag */}
-                  <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full border-2 border-white bg-emerald-900 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-[0_4px_0_rgba(0,0,0,0.3)]">
-                    {isActive ? "Tocando…" : <>Tocar <Play className="h-3 w-3 fill-current" /></>}
-                  </span>
+                  <X className="h-4 w-4" />
                 </button>
-              );
-            })}
+              )}
+            </div>
+
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2">
+              {filterButtons.map((btn) => (
+                <button
+                  key={btn.id}
+                  onClick={() => setActiveFilter(btn.id)}
+                  className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
+                    activeFilter === btn.id
+                      ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
+                      : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
+                  }`}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Status & Counter */}
+          <div className="mt-4 flex items-center justify-between text-xs text-[#d4a373] px-1">
+            <span>
+              Mostrando {filteredSongs.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}–
+              {Math.min(currentPage * ITEMS_PER_PAGE, filteredSongs.length)} de {filteredSongs.length} cantigas
+            </span>
+            {searchQuery && (
+              <span className="text-[#ffd166]">Filtro de busca ativo: "{searchQuery}"</span>
+            )}
+          </div>
+
+          {/* Songs Grid / Library */}
+          <div className="mt-3">
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="awa-card-2 h-24 rounded-2xl animate-pulse" />
+                ))}
+              </div>
+            ) : filteredSongs.length === 0 ? (
+              <EmptyState
+                title="Nenhuma cantiga encontrada"
+                description={
+                  searchQuery
+                    ? `Nenhum resultado para "${searchQuery}". Tente outro termo ou limpe a busca.`
+                    : "Tente alterar os filtros selecionados para explorar outros cânticos da aldeia."
+                }
+                actionLabel="Limpar filtros e busca"
+                onAction={() => {
+                  setActiveFilter("todas");
+                  setSearchQuery("");
+                }}
+              />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {paginatedSongs.map((s) => {
+                  const isPlaying = playing?.id === s.id;
+                  const isFav = favoriteIds.has(s.id);
+                  const isListened = listenedIds.has(s.id);
+
+                  return (
+                    <div
+                      key={s.id}
+                      onClick={() => handlePlaySong(s)}
+                      className={`awa-card-2 group flex items-center gap-3.5 rounded-2xl p-3.5 transition cursor-pointer shadow-md hover:-translate-y-0.5 ${
+                        isPlaying
+                          ? "border-[#ffd166] bg-[#2a170a]"
+                          : "hover:border-[#ffd166]/50"
+                      }`}
+                    >
+                      {/* Play / Thumbnail button */}
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#251408] border border-[#633916] flex items-center justify-center">
+                        {isPlaying ? (
+                          <div className="grid h-8 w-8 place-items-center rounded-full bg-[#ffd166] text-[#1a0e04]">
+                            <Pause className="h-4 w-4 fill-current" />
+                          </div>
+                        ) : (
+                          <div className="grid h-8 w-8 place-items-center rounded-full bg-[#331c0e] text-[#ffd166] group-hover:scale-110 transition">
+                            <Play className="ml-0.5 h-4 w-4 fill-current" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Song Information */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="rounded bg-[#251408] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#ffd166] border border-[#633916]">
+                            {s.language || "Patxôhã"}
+                          </span>
+                          {isListened && (
+                            <span className="flex items-center gap-0.5 text-[10px] text-[#2a9d8f] font-semibold">
+                              <CheckCircle2 className="h-3 w-3" /> Ouvida
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="truncate font-bold text-sm text-[#fefae0] mt-1 group-hover:text-[#ffd166]">
+                          {s.title}
+                        </div>
+
+                        <div className="flex items-center gap-2 text-[11px] text-[#d4a373] mt-0.5">
+                          <span>{s.artist || "Povo Pataxó"}</span>
+                          <span>•</span>
+                          <span className="flex items-center gap-0.5">
+                            <Clock className="h-3 w-3" /> {formatDuration(s.duration_seconds)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Favorite Button */}
+                      <button
+                        onClick={(e) => toggleFavorite(s.id, e)}
+                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition ${
+                          isFav
+                            ? "border-red-500/50 bg-red-950/60 text-red-400"
+                            : "border-white/10 bg-transparent text-white/40 hover:text-white"
+                        }`}
+                        title={isFav ? "Remover dos favoritos" : "Favoritar"}
+                      >
+                        <Heart className={`h-4 w-4 ${isFav ? "fill-current" : ""}`} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Responsive Pagination Controls */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            className="mt-8"
+          />
+        </main>
+
+        {/* Global MiniPlayer Integration */}
+        {playing && (
+          <MiniPlayer
+            song={playing}
+            branding={branding}
+            onClose={() => {
+              setPlaying(null);
+              setIsMaximized(false);
+            }}
+            isMaximized={isMaximized}
+            onToggleMaximize={() => setIsMaximized((prev) => !prev)}
+          />
         )}
-      </main>
 
-      {playing && (
-        <MiniPlayer
-          song={playing}
-          branding={branding}
-          onClose={() => {
-            setPlaying(null);
-            setIsMaximized(false);
-          }}
-          isMaximized={isMaximized}
-          onToggleMaximize={() => setIsMaximized(!isMaximized)}
-        />
-      )}
-    </div>
-  );
-}
-
-
-function TribalBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Big sun */}
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[7rem] opacity-40 kid-spin-slow">☀️</div>
-      {/* Floating friends */}
-      <div className="absolute left-2 top-32 text-6xl opacity-70 kid-bounce">🪶</div>
-      <div className="absolute right-3 top-44 text-6xl opacity-70 kid-wiggle">🦜</div>
-      <div className="absolute left-4 bottom-40 text-6xl opacity-70 kid-bounce" style={{ animationDelay: "0.5s" }}>🥁</div>
-      <div className="absolute right-6 bottom-56 text-6xl opacity-70 kid-wiggle" style={{ animationDelay: "0.3s" }}>🐢</div>
-      <div className="absolute left-1/3 bottom-24 text-5xl opacity-60 kid-bounce" style={{ animationDelay: "0.8s" }}>🐸</div>
-      <div className="absolute right-1/4 top-1/2 text-5xl opacity-60 kid-wiggle" style={{ animationDelay: "0.6s" }}>🐟</div>
-
-
-      {/* Top tribal zigzag border */}
-      <svg
-        className="absolute inset-x-0 top-0 h-6 w-full text-amber-600/50"
-        viewBox="0 0 400 20"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 10 L10 0 L20 10 L30 0 L40 10 L50 0 L60 10 L70 0 L80 10 L90 0 L100 10 L110 0 L120 10 L130 0 L140 10 L150 0 L160 10 L170 0 L180 10 L190 0 L200 10 L210 0 L220 10 L230 0 L240 10 L250 0 L260 10 L270 0 L280 10 L290 0 L300 10 L310 0 L320 10 L330 0 L340 10 L350 0 L360 10 L370 0 L380 10 L390 0 L400 10" fill="none" stroke="currentColor" strokeWidth="3" />
-      </svg>
+        <SiteFooter mode="infantil" />
+      </div>
     </div>
   );
 }

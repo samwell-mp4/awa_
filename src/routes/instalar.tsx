@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { PublicFooter } from "@/components/PublicFooter";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 import { PageListenButton } from "@/components/PageListenButton";
 import {
   ArrowLeft,
@@ -92,27 +93,28 @@ function InstalarPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/90 backdrop-blur-xl shadow-xs">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 md:px-8">
           <Link to={backTo as "/"} className="flex items-center gap-2.5">
             <img
               loading="lazy"
               decoding="async"
               src={logoSrc}
               alt="AWÃ TECH"
-              className="h-10 w-10 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
+              className="h-10 w-10 shrink-0 rounded-full bg-white p-0.5 object-contain border border-[#e8e4dc] shadow-xs"
             />
             <div className="leading-none">
-              <div className="font-display text-lg font-black tracking-tight text-cream">
-                AWÃ <span className="text-leaf">TECH</span>
+              <div className="font-display text-lg font-black tracking-tight text-[#11231b]">
+                AWÃ <span className="text-[#2d6a4f]">TECH</span>
               </div>
             </div>
           </Link>
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3.5 py-1.5 text-xs font-bold text-[#1f2937] transition hover:border-[#1b4332] hover:bg-[#f4f2ec] shadow-xs"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar
@@ -127,21 +129,20 @@ function InstalarPage() {
           {/* App Preview */}
           <div className="relative order-1 lg:order-2">
             <div className="relative mx-auto max-w-md">
-              <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-leaf/20 via-gold/10 to-earth/20 blur-2xl" />
+              <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-[#2d6a4f]/15 via-[#b47e28]/10 to-transparent blur-2xl" />
               <img
                 decoding="async"
                 src={appPreviewAsset.url}
                 alt="Prévia do aplicativo Awã Tech em três telas: início, dicionário e música"
-                className="relative mx-auto w-full max-w-sm rounded-3xl"
+                className="relative mx-auto w-full max-w-sm rounded-3xl shadow-xl border border-[#e8e4dc]"
                 width={1024}
                 height={1024}
                 loading="eager"
               />
-
             </div>
             <div className="mt-4 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2 text-xs font-semibold text-cream backdrop-blur-md shadow-lg sm:text-sm">
-                <Download className="h-4 w-4 text-gold" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#e8e4dc] bg-white px-4 py-2 text-xs font-bold text-[#11231b] shadow-xs sm:text-sm">
+                <Download className="h-4 w-4 text-[#b47e28]" />
                 Instale grátis no Android e iPhone
               </div>
             </div>
@@ -149,22 +150,22 @@ function InstalarPage() {
 
           {/* Content */}
           <div className="order-2 text-center lg:order-1 lg:text-left">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 text-sm font-semibold text-gold">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#b47e28]/30 bg-[#b47e28]/10 px-4 py-1.5 text-xs font-bold text-[#b47e28]">
               <Sparkles className="h-4 w-4" />
               PWA — App Web Progressivo
             </div>
 
-            <h1 className="mt-5 font-display text-3xl font-extrabold text-cream md:text-4xl lg:text-5xl">
-              Baixe o <span className="text-leaf">Awã Tech</span>
+            <h1 className="mt-4 font-display text-3xl font-extrabold text-[#11231b] md:text-4xl lg:text-5xl tracking-tight">
+              Baixe o <span className="text-[#2d6a4f]">Awã Tech</span>
             </h1>
-            <p className="mt-4 text-lg text-foreground/80 md:text-xl">
+            <p className="mt-4 text-base text-[#4b5563] md:text-lg leading-relaxed">
               Leve o dicionário Patxôhã, as músicas, as histórias e o Professor Akuã no seu celular — sem
               precisar da loja de apps.
             </p>
 
             {isInstalled ? (
-              <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-5 py-3 text-sm font-semibold text-gold">
-                <Check className="h-5 w-5" />
+              <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-5 py-3 text-sm font-bold text-[#1b4332]">
+                <Check className="h-5 w-5 text-emerald-600" />
                 O Awã Tech já está instalado neste dispositivo
               </div>
             ) : (
@@ -172,7 +173,7 @@ function InstalarPage() {
                 {platform === "android" && deferredPrompt && (
                   <button
                     onClick={handleInstall}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-leaf px-6 py-3.5 text-sm font-bold text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4332] px-6 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#2d6a4f] active:scale-95 sm:w-auto"
                   >
                     <Download className="h-5 w-5" />
                     Instalar no Android
@@ -182,7 +183,7 @@ function InstalarPage() {
                 {platform === "android" && !deferredPrompt && (
                   <button
                     onClick={() => setShowAndroidSteps((s) => !s)}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-leaf px-6 py-3.5 text-sm font-bold text-cream shadow-[var(--shadow-glow)] transition hover:brightness-110 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1b4332] px-6 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#2d6a4f] sm:w-auto"
                   >
                     <Smartphone className="h-5 w-5" />
                     Como instalar no Android
@@ -192,32 +193,32 @@ function InstalarPage() {
                 {platform !== "android" && (
                   <button
                     onClick={() => setShowIOSSteps((s) => !s)}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#5D4037] px-6 py-3.5 text-sm font-bold text-cream transition hover:brightness-110 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#11231b] px-6 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#1b4332] sm:w-auto"
                   >
                     <Apple className="h-5 w-5" />
-                    iPhone
+                    Instalar no iPhone
                   </button>
                 )}
 
                 {platform === "other" && (
                   <button
                     onClick={() => setShowAndroidSteps((s) => !s)}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/40 bg-card/60 px-6 py-3.5 text-sm font-bold text-cream transition hover:bg-gold/10 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#e8e4dc] bg-white px-6 py-3.5 text-sm font-bold text-[#11231b] transition hover:bg-[#f4f2ec] shadow-xs sm:w-auto"
                   >
-                    <Smartphone className="h-5 w-5" />
+                    <Smartphone className="h-5 w-5 text-[#2d6a4f]" />
                     Android
                   </button>
                 )}
               </div>
             )}
 
-            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-foreground/60 lg:justify-start">
+            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-[#6b7280] lg:justify-start">
               <span className="inline-flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5" />
+                <Globe className="h-3.5 w-3.5 text-[#2d6a4f]" />
                 Não precisa de APK
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5" />
+                <Check className="h-3.5 w-3.5 text-emerald-600" />
                 Instalação segura
               </span>
             </div>
@@ -226,14 +227,14 @@ function InstalarPage() {
 
         {/* iOS steps */}
         {showIOSSteps && !isInstalled && (
-          <section className="mt-8 rounded-3xl border border-gold/15 bg-card/40 p-6 md:p-8">
+          <section className="mt-8 rounded-2xl border border-[#e8e4dc] bg-white p-6 shadow-sm md:p-8">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold/15 text-gold">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#b47e28]/10 text-[#b47e28]">
                 <Smartphone className="h-5 w-5" />
               </div>
-              <h2 className="font-display text-xl font-bold text-cream">Instalar no iPhone</h2>
+              <h2 className="font-display text-xl font-bold text-[#11231b]">Instalar no iPhone</h2>
             </div>
-            <div className="mt-5 grid gap-3 text-sm text-foreground/80 sm:grid-cols-2">
+            <div className="mt-5 grid gap-3 text-sm text-[#374151] sm:grid-cols-2">
               <Step number={1} text="Abra o site no Safari." />
               <Step number={2} icon={Share2} text="Toque no botão Compartilhar na barra inferior." />
               <Step number={3} icon={MoreVertical} text="Role para baixo e toque em 'Adicionar à Tela de Início'." />
@@ -244,14 +245,14 @@ function InstalarPage() {
 
         {/* Android steps */}
         {showAndroidSteps && !isInstalled && (
-          <section className="mt-6 rounded-3xl border border-gold/15 bg-card/40 p-6 md:p-8">
+          <section className="mt-6 rounded-2xl border border-[#e8e4dc] bg-white p-6 shadow-sm md:p-8">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-leaf/15 text-leaf">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#2d6a4f]/10 text-[#2d6a4f]">
                 <Smartphone className="h-5 w-5" />
               </div>
-              <h2 className="font-display text-xl font-bold text-cream">Instalar no Android</h2>
+              <h2 className="font-display text-xl font-bold text-[#11231b]">Instalar no Android</h2>
             </div>
-            <div className="mt-5 grid gap-3 text-sm text-foreground/80 sm:grid-cols-2">
+            <div className="mt-5 grid gap-3 text-sm text-[#374151] sm:grid-cols-2">
               <Step number={1} text="Abra o site no Chrome." />
               <Step number={2} text="Toque no menu ⋮ no canto superior direito." />
               <Step number={3} text="Escolha 'Adicionar à tela inicial' ou 'Instalar app'." />
@@ -262,7 +263,7 @@ function InstalarPage() {
 
         {/* Why install */}
         <section className="mt-12">
-          <h2 className="mb-6 text-center font-display text-2xl font-bold text-cream">
+          <h2 className="mb-6 text-center font-display text-2xl font-bold text-[#11231b]">
             Por que instalar?
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -293,7 +294,7 @@ function InstalarPage() {
         <div className="mt-12 text-center">
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center justify-center rounded-full border border-gold/40 bg-card/60 px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-gold/10"
+            className="inline-flex items-center justify-center rounded-full border border-[#e8e4dc] bg-white px-6 py-2.5 text-sm font-bold text-[#11231b] shadow-xs transition hover:border-[#1b4332] hover:bg-[#f4f2ec]"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Voltar para o início
@@ -301,8 +302,7 @@ function InstalarPage() {
         </div>
       </main>
 
-      <PublicFooter />
-
+      <SiteFooter mode="adulto" />
     </div>
   );
 }
@@ -318,7 +318,7 @@ function Step({
   return (
     <div className="flex items-start gap-3">
       {Icon && (
-        <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gold/10 text-gold">
+        <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#b47e28]/10 text-[#b47e28]">
           <Icon className="h-3.5 w-3.5" />
         </span>
       )}
@@ -337,12 +337,14 @@ function Benefit({
   text: string;
 }) {
   return (
-    <div className="rounded-2xl border border-gold/10 bg-card/30 p-4">
-      <div className="flex items-center gap-2 text-cream">
-        <Icon className="h-4 w-4 text-gold" />
+    <div className="rounded-2xl border border-[#e8e4dc] bg-white p-5 shadow-xs transition hover:border-[#2d6a4f] hover:shadow-md">
+      <div className="flex items-center gap-2.5 text-[#11231b]">
+        <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#b47e28]/10 text-[#b47e28]">
+          <Icon className="h-4 w-4" />
+        </div>
         <h3 className="text-sm font-bold">{title}</h3>
       </div>
-      <p className="mt-1 text-xs leading-relaxed text-foreground/70">{text}</p>
+      <p className="mt-2 text-xs leading-relaxed text-[#4b5563]">{text}</p>
     </div>
   );
 }

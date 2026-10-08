@@ -108,13 +108,13 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
 
   return (
     <article
-      className="relative overflow-hidden rounded-3xl border-4 border-white/70 bg-white/85 p-4 shadow-lg backdrop-blur-sm"
-      style={{ boxShadow: `0 8px 0 -2px ${color}55, 0 12px 24px -8px ${color}66` }}
+      className="relative overflow-hidden rounded-2xl border-2 border-[#8d5b2d] bg-gradient-to-b from-[#331c0c] to-[#1e0f06] p-4 text-[#fefae0] shadow-lg backdrop-blur-sm"
+      style={{ boxShadow: `0 8px 20px -6px rgba(0,0,0,0.6), 0 0 12px ${color}22` }}
     >
       <div className="flex items-start gap-3">
         <span
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl"
-          style={{ background: color, boxShadow: `0 4px 0 -1px ${color}88` }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl shadow-md border border-white/20"
+          style={{ background: color }}
           aria-hidden
         >
           {emoji}
@@ -123,15 +123,15 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
           <button
             type="button"
             onClick={play}
-            className="group/text block w-full text-left transition-opacity hover:opacity-80 active:opacity-60"
+            className="group/text block w-full text-left transition-opacity hover:opacity-90 active:opacity-75"
           >
             <h3
-              className="truncate text-lg text-[#118ab2] group-hover/text:underline"
-              style={{ fontFamily: "'Archivo Black', sans-serif" }}
+              className="truncate text-lg font-black text-[#ffd166] group-hover/text:underline"
+              style={{ fontFamily: "'Fraunces', 'Fredoka', serif" }}
             >
               {title}
             </h3>
-            <p className="mt-1 text-sm leading-snug text-slate-700">{description}</p>
+            <p className="mt-1 text-xs sm:text-sm leading-snug text-[#fefae0]/80 font-medium">{description}</p>
           </button>
         </div>
       </div>
@@ -148,11 +148,10 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
               voice: "onyx",
             })
           }
-
           disabled={state === "loading"}
           aria-label={label}
-          className="flex items-center gap-2 rounded-full border-b-4 border-black/15 px-4 py-2 text-sm font-black uppercase tracking-wide text-white shadow-md transition-all active:translate-y-0.5 active:border-b-0 disabled:opacity-70"
-          style={{ background: color, fontFamily: "'Archivo Black', sans-serif" }}
+          className="flex items-center gap-2 rounded-xl border border-white/20 px-3.5 py-1.5 text-xs font-black uppercase tracking-wide text-white shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-70"
+          style={{ background: color }}
         >
           <span aria-hidden className="text-base">
             {state === "playing" ? "⏸" : state === "loading" ? "⏳" : "🔊"}
@@ -160,7 +159,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
           {label}
         </button>
 
-        <div className="relative h-3 flex-1 overflow-hidden rounded-full bg-black/10">
+        <div className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-black/50 border border-black/40">
           <div
             className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-150"
             style={{
@@ -170,7 +169,7 @@ export function TrailNarrator({ title, description, color, emoji }: Props) {
           />
         </div>
         <span
-          className="w-9 text-right text-xs font-bold text-slate-500 tabular-nums"
+          className="w-9 text-right text-xs font-black text-[#4ade80] tabular-nums"
           aria-live="polite"
         >
           {Math.round(progress * 100)}%

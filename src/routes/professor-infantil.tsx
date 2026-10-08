@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Loader2, Mic, Pause, Play, Send, Square, Volume2 } from "lucide-react";
+import { Loader2, Mic, Pause, Play, Send, Square, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
@@ -10,23 +10,20 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
+import { SiteHeader } from "@/components/home/site-header";
+import { PageHeader } from "@/components/education/page-header";
+import kidsBg from "@/assets/kids-menu-bg.jpg";
 
 export const Route = createFileRoute("/professor-infantil")({
+  ssr: false,
   head: () => ({
     meta: [
-      { title: "Professor Awã Infantil — AWÃ TECH" },
+      { title: "Professor Awã — Tutor de Patxôhã Infantil" },
       {
         name: "description",
         content:
-          "Converse com o Professor Awã Infantil: fale, ouça e aprenda palavras em Patxôhã de forma simples e divertida.",
+          "Converse com o Professor Awã: tutor interativo para crianças aprenderem Patxôhã falando e ouvindo.",
       },
-      { property: "og:title", content: "Professor Awã Infantil" },
-      {
-        property: "og:description",
-        content: "Um professor amigo para crianças aprenderem Patxôhã falando e ouvindo.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
@@ -43,7 +40,14 @@ export const Route = createFileRoute("/professor-infantil")({
 type Msg = { role: "user" | "assistant"; content: string };
 
 const WELCOME =
-  "Akxãy, parente pequeno! 🌿 Eu sou o Professor Awã. Toque no botão grande e fale comigo — eu te ensino palavrinhas em Patxôhã! 🦜";
+  "Akxãy, pequeno parente! 🌿 Eu sou o Professor Awã, seu tutor de Patxôhã. O que você gostaria de aprender hoje?";
+
+const SUGGESTIONS = [
+  "Como dizer olá em Patxôhã?",
+  "Ensine os números de 1 a 5",
+  "Como se diz família?",
+  "Conte uma história rápida da aldeia",
+];
 
 function clean(text: string) {
   return text
@@ -74,6 +78,7 @@ function ProfessorInfantilPage() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, state]);
+
   useEffect(() => {
     return () => {
       audioRef.current?.pause();
@@ -187,165 +192,199 @@ function ProfessorInfantilPage() {
     setState("listening");
   }
 
-  const statusText =
-    state === "listening"
-      ? "Ouvindo você… 👂"
-      : state === "thinking"
-        ? "Pensando… 🤔"
-        : state === "speaking"
-          ? "Falando… 🗣️"
-          : "Toque para falar comigo!";
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fffdf3] via-[#fef3c7] to-[#dcfce7] font-['Fredoka','Baloo_2',sans-serif]">
-      <header className="sticky top-0 z-30 border-b-4 border-white/70 bg-gradient-to-r from-[#ffd166] via-[#ef476f] to-[#06d6a0] px-3 py-3">
-        <div className="mx-auto flex max-w-3xl items-center gap-3">
-          <Link
-            to="/infantil"
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-white text-[#ef476f] shadow-[0_6px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none"
-            aria-label="Voltar"
-          >
-            <ArrowLeft className="h-7 w-7" strokeWidth={3} />
-          </Link>
-          <div className="min-w-0">
-            <h1 className="truncate text-lg font-black uppercase text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.2)]">
-              Professor Awã
-            </h1>
-            <p className="text-xs font-bold text-white/90">Seu amigo do Patxôhã 🌿</p>
-          </div>
-        </div>
-      </header>
+    <div
+      className="relative min-h-screen text-[#fefae0] font-sans flex flex-col justify-between"
+      style={{
+        backgroundImage: `url(${kidsBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
 
-      <main className="mx-auto max-w-3xl px-4 pb-64 pt-5">
-        <div className="flex flex-col gap-3">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={m.role === "user" ? "flex justify-end" : "flex items-start gap-2"}
-            >
-              {m.role === "assistant" && (
-                <div
-                  className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border-4 border-white bg-[#06d6a0] text-2xl shadow-[0_4px_0_rgba(0,0,0,0.12)] ${
-                    state === "speaking" ? "animate-bounce" : ""
-                  }`}
-                  aria-hidden
-                >
-                  🦜
-                </div>
-              )}
-              <div
-                className={
-                  m.role === "user"
-                    ? "max-w-[80%] rounded-3xl rounded-br-md border-4 border-white bg-[#118ab2] px-4 py-3 text-base font-bold text-white shadow-[0_5px_0_rgba(0,0,0,0.12)]"
-                    : "max-w-[85%] rounded-3xl rounded-bl-md border-4 border-white bg-white px-4 py-3 text-base font-semibold text-[#3a2412] shadow-[0_5px_0_rgba(0,0,0,0.1)]"
-                }
-              >
-                <p className="whitespace-pre-wrap leading-relaxed">{clean(m.content)}</p>
-                {m.role === "assistant" && i > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => playReply(m.content)}
-                    className="mt-2 inline-flex items-center gap-1 rounded-xl bg-[#ffd166] px-3 py-1.5 text-sm font-black text-[#3a2412] shadow-[0_3px_0_rgba(0,0,0,0.12)] active:translate-y-0.5 active:shadow-none"
-                  >
-                    <Volume2 className="h-4 w-4" strokeWidth={3} /> Ouvir
-                  </button>
-                )}
+      <div className="relative z-10 flex flex-col flex-1">
+        <SiteHeader mode="infantil" />
+
+        <main className="mx-auto w-full max-w-4xl flex-1 px-4 pb-48 pt-4 sm:px-6">
+          <PageHeader
+            breadcrumbs={[
+              { label: "Início", href: "/infantil" },
+              { label: "Professor Awã" },
+            ]}
+            title="Professor Awã"
+            description="Seu tutor de Patxôhã e cultura indígena. Fale no microfone ou digite suas perguntas."
+          />
+
+          {/* Tutor Welcome & Question Suggestions */}
+          <div className="mt-5 awa-card-1 rounded-2xl p-5 shadow-xl border border-[#633916]">
+            <div className="flex items-center gap-3.5">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#251408] border border-[#ffd166] text-2xl shadow-md">
+                🦜
+              </div>
+              <div>
+                <h2 className="text-base font-black text-[#ffd166]">
+                  "Awê! O que vamos aprender hoje?"
+                </h2>
+                <p className="text-xs text-[#fefae0]/80">
+                  Toque em uma das sugestões abaixo ou faça sua própria pergunta:
+                </p>
               </div>
             </div>
-          ))}
-          {state === "thinking" && (
-            <div className="flex items-center gap-2 text-base font-black text-[#ef476f]">
-              <Loader2 className="h-5 w-5 animate-spin" /> Pensando… 🤔
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {SUGGESTIONS.map((sug) => (
+                <button
+                  key={sug}
+                  onClick={() => send(sug, true)}
+                  disabled={state === "thinking"}
+                  className="rounded-xl border border-[#633916] bg-[#251408] px-3.5 py-1.5 text-xs font-semibold text-[#ffd166] hover:border-[#ffd166] hover:bg-[#331c0e] transition shadow active:scale-95 disabled:opacity-50"
+                >
+                  {sug}
+                </button>
+              ))}
             </div>
-          )}
-          <div ref={endRef} />
-        </div>
-      </main>
+          </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t-4 border-white bg-[#fffdf3]/95 px-4 pb-5 pt-3 backdrop-blur">
+          {/* Chat Messages List */}
+          <div className="mt-6 flex flex-col gap-3.5">
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={m.role === "user" ? "flex justify-end" : "flex items-start gap-3"}
+              >
+                {m.role === "assistant" && (
+                  <div
+                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#633916] bg-[#251408] text-xl shadow ${
+                      state === "speaking" ? "border-[#ffd166] animate-pulse" : ""
+                    }`}
+                  >
+                    🦜
+                  </div>
+                )}
+                <div
+                  className={
+                    m.role === "user"
+                      ? "max-w-[85%] rounded-2xl rounded-br-sm border border-[#2a9d8f] bg-gradient-to-b from-[#1b382b] to-[#12241c] p-3.5 text-sm font-medium text-[#fefae0] shadow"
+                      : "awa-card-2 max-w-[85%] rounded-2xl rounded-bl-sm p-4 text-sm font-medium text-[#fefae0] shadow border border-[#633916]"
+                  }
+                >
+                  <p className="whitespace-pre-wrap leading-relaxed">{clean(m.content)}</p>
+                  {m.role === "assistant" && i > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => playReply(m.content)}
+                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-[#633916] bg-[#251408] px-2.5 py-1 text-xs font-bold text-[#ffd166] hover:border-[#ffd166] transition"
+                    >
+                      <Volume2 className="h-3.5 w-3.5" />
+                      <span>Ouvir</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {state === "thinking" && (
+              <div className="flex items-center gap-2 text-sm font-bold text-[#ffd166]">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>O Professor Awã está pensando...</span>
+              </div>
+            )}
+            <div ref={endRef} />
+          </div>
+        </main>
+      </div>
+
+      {/* Fixed Bottom Dock with Safe Area Support */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#633916]/80 bg-[#180e07]/95 px-4 pb-5 pt-3 shadow-2xl backdrop-blur-md pb-[max(1.25rem,env(safe-area-inset-bottom))]">
         <div className="mx-auto max-w-3xl">
-          <p
-            aria-live="polite"
-            className="mb-2 text-center text-sm font-black uppercase tracking-wide text-[#118ab2]"
-          >
-            {statusText}
-          </p>
+          <div className="flex items-center justify-between gap-2 mb-2 px-1">
+            <span className="text-xs font-bold text-[#d4a373]">
+              {state === "listening"
+                ? "🎙️ Ouvindo você falar..."
+                : state === "thinking"
+                ? "🧠 Pensando na resposta..."
+                : state === "speaking"
+                ? "🗣️ Professor Awã falando..."
+                : "Fale pelo microfone ou digite abaixo:"}
+            </span>
 
-          <div className="flex flex-col items-center gap-3">
+            {state === "speaking" && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (paused) {
+                      void audioRef.current?.play();
+                      setPaused(false);
+                    } else {
+                      audioRef.current?.pause();
+                      setPaused(true);
+                    }
+                  }}
+                  className="text-xs font-bold text-[#ffd166] hover:underline"
+                >
+                  {paused ? "Continuar" : "Pausar"}
+                </button>
+                <button
+                  type="button"
+                  onClick={stopVoice}
+                  className="text-xs font-bold text-red-400 hover:underline"
+                >
+                  Parar
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Big Mic Action Button */}
             <button
               type="button"
               onClick={handleMic}
               disabled={state === "thinking"}
-              className={`flex w-full max-w-sm items-center justify-center gap-3 rounded-3xl border-4 border-white px-6 py-5 text-xl font-black uppercase text-white shadow-[0_8px_0_rgba(0,0,0,0.18)] transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 ${
-                recorder.isRecording ? "animate-pulse bg-[#ef476f]" : "bg-[#06d6a0]"
+              className={`flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl px-4 text-xs font-black uppercase text-white shadow transition active:scale-95 disabled:opacity-50 ${
+                recorder.isRecording
+                  ? "bg-red-600 animate-pulse"
+                  : "bg-gradient-to-r from-[#ffd166] to-[#f59e0b] text-[#1a0e04]"
               }`}
+              title="Falar no microfone"
             >
               {recorder.isRecording ? (
                 <>
-                  <Square className="h-7 w-7" strokeWidth={3} /> Pronto!
+                  <Square className="h-4 w-4 fill-current" />
+                  <span>Pronto</span>
                 </>
               ) : (
                 <>
-                  <Mic className="h-7 w-7" strokeWidth={3} /> Falar
+                  <Mic className="h-4 w-4" />
+                  <span>Falar</span>
                 </>
               )}
             </button>
 
-            {state === "speaking" && (
-              <div className="flex items-center gap-2">
-                {paused ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      void audioRef.current?.play().catch(() => {});
-                      setPaused(false);
-                    }}
-                    className="inline-flex items-center gap-1 rounded-2xl border-4 border-white bg-[#ffd166] px-4 py-2 text-sm font-black uppercase text-[#3a2412] shadow-[0_4px_0_rgba(0,0,0,0.12)] active:translate-y-0.5 active:shadow-none"
-                  >
-                    <Play className="h-5 w-5" strokeWidth={3} /> Continuar
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      audioRef.current?.pause();
-                      setPaused(true);
-                    }}
-                    className="inline-flex items-center gap-1 rounded-2xl border-4 border-white bg-[#ffd166] px-4 py-2 text-sm font-black uppercase text-[#3a2412] shadow-[0_4px_0_rgba(0,0,0,0.12)] active:translate-y-0.5 active:shadow-none"
-                  >
-                    <Pause className="h-5 w-5" strokeWidth={3} /> Pausar
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={stopVoice}
-                  className="inline-flex items-center gap-1 rounded-2xl border-4 border-white bg-[#ef476f] px-4 py-2 text-sm font-black uppercase text-white shadow-[0_4px_0_rgba(0,0,0,0.12)] active:translate-y-0.5 active:shadow-none"
-                >
-                  <Square className="h-5 w-5" strokeWidth={3} /> Parar
-                </button>
-              </div>
-            )}
-
+            {/* Text Input Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 void send(input, false);
               }}
-              className="flex w-full items-center gap-2"
+              className="flex flex-1 items-center gap-2 min-w-0"
             >
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ou escreva aqui…"
-                className="min-w-0 flex-1 rounded-2xl border-4 border-white bg-white px-4 py-3 text-base font-semibold text-[#3a2412] shadow-[0_4px_0_rgba(0,0,0,0.08)] outline-none placeholder:text-[#3a2412]/40"
+                placeholder="Digite ou pergunte algo ao professor..."
+                className="w-full rounded-xl border border-[#633916] bg-[#251408] px-4 py-2.5 text-sm text-[#fefae0] placeholder:text-[#d4a373]/50 focus:border-[#ffd166] focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || state === "thinking"}
-                className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-4 border-white bg-[#118ab2] text-white shadow-[0_5px_0_rgba(0,0,0,0.15)] active:translate-y-0.5 active:shadow-none disabled:opacity-50"
-                aria-label="Enviar"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#331c0e] border border-[#633916] text-[#ffd166] hover:border-[#ffd166] transition disabled:opacity-40"
+                aria-label="Enviar mensagem"
               >
-                <Send className="h-6 w-6" strokeWidth={3} />
+                <Send className="h-4 w-4" />
               </button>
             </form>
           </div>

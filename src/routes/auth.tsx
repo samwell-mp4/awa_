@@ -142,6 +142,27 @@ function AuthPage() {
             Continue com sua conta Google ou receba um código por SMS no seu celular.
           </p>
 
+          {import.meta.env.DEV && (
+            <div className="mt-4 p-4 rounded-2xl bg-gold/15 border border-gold/40 text-center">
+              <p className="text-xs text-gold font-semibold uppercase tracking-wider">Modo Local (Login Desativado)</p>
+              <p className="mt-1 text-xs text-foreground/80">O login foi liberado para desenvolvimento local.</p>
+              <div className="mt-3 flex gap-2">
+                <Link
+                  to="/adulto"
+                  className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
+                >
+                  Entrar Adulto
+                </Link>
+                <Link
+                  to="/infantil"
+                  className="flex-1 rounded-xl bg-gold px-3 py-2 text-xs font-black text-forest-deep shadow transition hover:brightness-110"
+                >
+                  Entrar Infantil
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Method tabs */}
           <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-gold/20 bg-background/40 p-1">
             <TabButton active={method === "google"} onClick={() => { setMethod("google"); setStep("phone"); }}>

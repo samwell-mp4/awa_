@@ -21,16 +21,15 @@ import { useSubscription } from "@/hooks/use-subscription";
 
 import { playFast } from "@/lib/audio-play";
 import { useLastArea } from "@/lib/last-area";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 
 import ptPatData from "@/data/dic-pt-pat.json";
 import patPtData from "@/data/dic-pat-pt.json";
 import palavrasNumerosData from "@/data/dic-palavras-numeros.json";
 import gramaticaData from "@/data/dic-gramatica.json";
-import {
-  ILUSTRADO_CATEGORIAS,
-  categoriasDoVerbete,
-  emojiDoVerbete,
-} from "@/lib/dic-ilustrado";
+import { ILUSTRADO_CATEGORIAS, categoriasDoVerbete, emojiDoVerbete } from "@/lib/dic-ilustrado";
+import { Pagination } from "@/components/education/pagination";
 
 export const Route = createFileRoute("/dicionario")({
   head: () => ({
@@ -284,14 +283,16 @@ for (const e of ILUSTRADO) {
   for (const k of e.catKeys) ILUSTRADO_COUNTS.set(k, (ILUSTRADO_COUNTS.get(k) ?? 0) + 1);
 }
 
-/** Tons pastéis das categorias, no espírito da referência visual. */
+/** Tons limpos e profissionais das categorias no tema adulto. */
 const CHIP_TONES = [
-  "bg-[oklch(0.86_0.07_65)] text-forest-deep hover:brightness-105",
-  "bg-[oklch(0.94_0.05_135)] text-forest-deep hover:brightness-105",
-  "bg-cream text-forest-deep hover:brightness-105",
-  "bg-[oklch(0.90_0.12_135)] text-forest-deep hover:brightness-105",
+  "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/40 hover:bg-[#fbfaf7]",
+  "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/40 hover:bg-[#fbfaf7]",
+  "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/40 hover:bg-[#fbfaf7]",
+  "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/40 hover:bg-[#fbfaf7]",
 ];
 
+const PAGE_SIZE = 30;
+const IL_PAGE_SIZE = 24;
 
 function DictionaryPage() {
   const backTo = useLastArea();
@@ -300,15 +301,14 @@ function DictionaryPage() {
 
   const [section, setSection] = useState<Section>("ilustrado");
   const [ilCat, setIlCat] = useState<string>("numeros");
-  const [ilVisible, setIlVisible] = useState(60);
+  const [ilPage, setIlPage] = useState(1);
   const [query, setQuery] = useState("");
   const [letter, setLetter] = useState<string>("Todas");
   const [sort, setSort] = useState<"az" | "za">("az");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("Todas");
-  const [visibleCount, setVisibleCount] = useState(120);
+  const [page, setPage] = useState(1);
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const searchRef = useRef<HTMLInputElement | null>(null);
-
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedQuery(query.trim()), 200);
@@ -321,14 +321,19 @@ function DictionaryPage() {
 
   useEffect(() => {
     setLetter("Todas");
-    setVisibleCount(120);
+    setPage(1);
+    setIlPage(1);
     setQuery("");
     setCategory("Todas");
   }, [section]);
 
   useEffect(() => {
-    setVisibleCount(120);
-  }, [debouncedQuery, letter, sort]);
+    setPage(1);
+  }, [debouncedQuery, letter, sort, category]);
+
+  useEffect(() => {
+    setIlPage(1);
+  }, [ilCat, debouncedQuery]);
 
   // Busca: prioriza o campo do idioma de consulta, sem misturar dicionários.
   const filtered = useMemo<Verbete[]>(() => {
@@ -356,14 +361,17 @@ function DictionaryPage() {
     setSection((current) => (current === "pt-pat" ? "pat-pt" : "pt-pat"));
   }
 
-  const cap = isPremium ? visibleCount : Math.min(FREE_LIMIT, visibleCount);
-  const visibleFiltered = useMemo(() => filtered.slice(0, cap), [filtered, cap]);
-  const hasMore = isPremium ? filtered.length > visibleCount : filtered.length > FREE_LIMIT;
-  const lockedByFree = !isPremium && filtered.length > FREE_LIMIT;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pagedItems = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, page]);
+
+  const lockedByFree = !isPremium && page > 2;
 
   const grouped = useMemo(() => {
     const map = new Map<string, Verbete[]>();
-    for (const e of visibleFiltered) {
+    for (const e of pagedItems) {
       const arr = map.get(e._letter);
       if (arr) arr.push(e);
       else map.set(e._letter, [e]);
@@ -371,7 +379,7 @@ function DictionaryPage() {
     return Array.from(map.entries()).sort(([a], [b]) =>
       sort === "az" ? a.localeCompare(b) : b.localeCompare(a),
     );
-  }, [visibleFiltered, sort]);
+  }, [pagedItems, sort]);
 
   // Palavras e números: pesquisa dentro da própria seção, agrupada por tema (números primeiro).
   const numerosGroups = useMemo(() => {
@@ -445,39 +453,37 @@ function DictionaryPage() {
     return list;
   }, [ilCat, debouncedQuery]);
 
-  useEffect(() => {
-    setIlVisible(60);
-  }, [ilCat, debouncedQuery]);
+  const ilTotalPages = Math.max(1, Math.ceil(ilustradoItems.length / IL_PAGE_SIZE));
+  const pagedIlustrado = useMemo(() => {
+    const start = (ilPage - 1) * IL_PAGE_SIZE;
+    return ilustradoItems.slice(start, start + IL_PAGE_SIZE);
+  }, [ilustradoItems, ilPage]);
 
-  const ilCap = isPremium ? ilVisible : Math.min(FREE_LIMIT, ilVisible);
-  const ilVisibleItems = useMemo(() => ilustradoItems.slice(0, ilCap), [ilustradoItems, ilCap]);
-  const ilLockedByFree = !isPremium && ilustradoItems.length > FREE_LIMIT;
-  const ilHasMore = isPremium
-    ? ilustradoItems.length > ilVisible
-    : ilustradoItems.length > FREE_LIMIT;
+  const ilLockedByFree = !isPremium && ilPage > 2;
 
   return (
-    <div className="min-h-screen pb-24 md:pb-12">
-      <header className="sticky top-0 z-40 bg-[oklch(0.18_0.04_145/0.9)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 md:px-8">
+    <div className="min-h-screen pb-24 md:pb-12 bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3.5 md:px-8">
           <Link
             to={backTo as "/"}
             aria-label={t("common.voltar")}
-            className="grid h-10 w-10 place-items-center rounded-full border border-cream/25 text-cream transition hover:bg-cream/10"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[#e8e4dc] bg-white text-[#11231b] shadow-xs transition hover:border-[#1b4332] hover:bg-[#f4f2ec]"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div className="text-center">
-            <div className="font-display text-2xl font-black tracking-tight text-cream md:text-3xl">
+            <div className="font-display text-2xl font-black tracking-tight text-[#11231b] md:text-3xl">
               PATXÔHÃ
             </div>
-            <div className="text-[11px] font-semibold text-cream/70">Dicionário Digital</div>
+            <div className="text-[11px] font-semibold text-[#6b7280]">Dicionário Digital 2015</div>
           </div>
           <button
             type="button"
             onClick={() => searchRef.current?.focus()}
             aria-label="Buscar"
-            className="grid h-10 w-10 place-items-center rounded-full border border-cream/25 text-cream transition hover:bg-cream/10"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[#e8e4dc] bg-white text-[#11231b] shadow-xs transition hover:border-[#1b4332] hover:bg-[#f4f2ec]"
           >
             <Search className="h-4 w-4" />
           </button>
@@ -486,15 +492,15 @@ function DictionaryPage() {
 
       <main className="mx-auto max-w-5xl px-4 md:px-8">
         <section className="mt-5 space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
               onClick={() => setSection("pt-pat")}
               aria-pressed={section === "pt-pat"}
-              className={`flex-1 min-w-[220px] rounded-full px-6 py-4 text-center font-display text-base font-black transition md:text-lg ${
+              className={`flex-1 min-w-[140px] rounded-xl px-4 py-3 text-center font-display text-xs md:text-sm font-black transition shadow-xs ${
                 section === "pt-pat"
-                  ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
-                  : "bg-cream text-forest-deep hover:brightness-105"
+                  ? "bg-[#1b4332] text-white shadow-sm"
+                  : "border border-[#e8e4dc] bg-white text-[#1f2937] hover:border-[#1b4332]/50 hover:bg-[#f4f2ec]"
               }`}
             >
               Português <span className="mx-1 opacity-60">→</span> PATXÔHÃ
@@ -503,10 +509,10 @@ function DictionaryPage() {
               type="button"
               onClick={() => setSection("pat-pt")}
               aria-pressed={section === "pat-pt"}
-              className={`flex-1 min-w-[220px] rounded-full px-6 py-4 text-center font-display text-base font-black transition md:text-lg ${
+              className={`flex-1 min-w-[140px] rounded-xl px-4 py-3 text-center font-display text-xs md:text-sm font-black transition shadow-xs ${
                 section === "pat-pt"
-                  ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
-                  : "bg-cream text-forest-deep hover:brightness-105"
+                  ? "bg-[#1b4332] text-white shadow-sm"
+                  : "border border-[#e8e4dc] bg-white text-[#1f2937] hover:border-[#1b4332]/50 hover:bg-[#f4f2ec]"
               }`}
             >
               PATXÔHÃ <span className="mx-1 opacity-60">→</span> Português
@@ -515,18 +521,18 @@ function DictionaryPage() {
               type="button"
               onClick={invertDirection}
               aria-label="Inverter direção do dicionário"
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg transition hover:brightness-105"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[#e8e4dc] bg-white text-[#1b4332] shadow-xs transition hover:bg-[#1b4332] hover:text-white active:scale-95"
             >
-              <ArrowLeftRight className="h-5 w-5" />
+              <ArrowLeftRight className="h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={() => setSection("ilustrado")}
               aria-pressed={section === "ilustrado"}
-              className={`rounded-full px-5 py-3 font-display text-sm font-black transition ${
+              className={`rounded-xl px-4 py-3 font-display text-xs md:text-sm font-black transition shadow-xs ${
                 section === "ilustrado"
-                  ? "bg-cream text-forest-deep shadow-lg"
-                  : "border border-cream/30 text-cream hover:bg-cream/10"
+                  ? "bg-[#1b4332] text-white shadow-sm"
+                  : "border border-[#e8e4dc] bg-white text-[#1f2937] hover:border-[#1b4332]/50 hover:bg-[#f4f2ec]"
               }`}
             >
               🖼️ Ilustrado
@@ -535,18 +541,30 @@ function DictionaryPage() {
               type="button"
               onClick={() => setSection("numeros")}
               aria-pressed={section === "numeros"}
-              className={`rounded-full px-5 py-3 font-display text-sm font-black transition ${
+              className={`rounded-xl px-4 py-3 font-display text-xs md:text-sm font-black transition shadow-xs ${
                 section === "numeros"
-                  ? "bg-cream text-forest-deep shadow-lg"
-                  : "border border-cream/30 text-cream hover:bg-cream/10"
+                  ? "bg-[#1b4332] text-white shadow-sm"
+                  : "border border-[#e8e4dc] bg-white text-[#1f2937] hover:border-[#1b4332]/50 hover:bg-[#f4f2ec]"
               }`}
             >
               🔢 Palavras e Números
             </button>
+            <button
+              type="button"
+              onClick={() => setSection("gramatica")}
+              aria-pressed={section === "gramatica"}
+              className={`rounded-xl px-4 py-3 font-display text-xs md:text-sm font-black transition shadow-xs ${
+                section === "gramatica"
+                  ? "bg-[#1b4332] text-white shadow-sm"
+                  : "border border-[#e8e4dc] bg-white text-[#1f2937] hover:border-[#1b4332]/50 hover:bg-[#f4f2ec]"
+              }`}
+            >
+              📚 Gramática
+            </button>
           </div>
 
           <div className="relative">
-            <Search className="absolute left-5 top-1/2 h-4 w-4 -translate-y-1/2 text-forest-deep/50" />
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6b7280]" />
             <input
               ref={searchRef}
               value={query}
@@ -562,37 +580,39 @@ function DictionaryPage() {
                       ? "Buscar em palavras e números..."
                       : "Buscar na gramática..."
               }
-              className="w-full rounded-full bg-cream pl-12 pr-4 py-4 text-sm font-semibold text-forest-deep placeholder:text-forest-deep/45 focus:outline-none focus:ring-2 focus:ring-[oklch(0.80_0.16_135)]"
+              className="w-full rounded-2xl border border-[#e8e4dc] bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-[#11231b] placeholder:text-[#9ca3af] shadow-xs focus:border-[#1b4332] focus:outline-none focus:ring-1 focus:ring-[#1b4332]"
             />
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="text-xs font-semibold text-cream/70">
+            <div className="text-xs font-semibold text-[#4b5563]">
               {isWordList
-                ? `${visibleFiltered.length}${hasMore ? "+" : ""} ${
-                    visibleFiltered.length === 1 ? "verbete" : "verbetes"
-                  }`
+                ? `${filtered.length} ${filtered.length === 1 ? "verbete" : "verbetes"} (página ${page} de ${totalPages})`
                 : section === "ilustrado"
-                  ? `${ilustradoItems.length} palavras nesta categoria`
+                  ? `${ilustradoItems.length} palavras (página ${ilPage} de ${ilTotalPages})`
                   : section === "numeros"
                   ? `${numerosGroups.reduce((n, g) => n + g.items.length, 0)} palavras`
                   : `${gramaticaLines.length} linhas`}
-              <span className="ml-2 opacity-60">· {SOURCE_LABEL}</span>
+              <span className="ml-2 text-[#6b7280]">· {SOURCE_LABEL}</span>
             </div>
             {isWordList && (
-              <div className="flex gap-1">
+              <div className="flex gap-1.5">
                 <button
                   onClick={() => setSort("az")}
-                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold ${
-                    sort === "az" ? "bg-cream text-forest-deep" : "border border-cream/30 text-cream/70"
+                  className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition shadow-xs ${
+                    sort === "az"
+                      ? "bg-[#1b4332] text-white"
+                      : "border border-[#e8e4dc] bg-white text-[#4b5563] hover:bg-[#f4f2ec]"
                   }`}
                 >
                   <ArrowDownAZ className="h-3 w-3" /> A-Z
                 </button>
                 <button
                   onClick={() => setSort("za")}
-                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold ${
-                    sort === "za" ? "bg-cream text-forest-deep" : "border border-cream/30 text-cream/70"
+                  className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition shadow-xs ${
+                    sort === "za"
+                      ? "bg-[#1b4332] text-white"
+                      : "border border-[#e8e4dc] bg-white text-[#4b5563] hover:bg-[#f4f2ec]"
                   }`}
                 >
                   <ArrowUpAZ className="h-3 w-3" /> Z-A
@@ -602,9 +622,8 @@ function DictionaryPage() {
           </div>
         </section>
 
-
         {isWordList && (
-          <section className="mt-4 card-elev rounded-2xl p-3 space-y-3">
+          <section className="mt-4 rounded-2xl border border-[#e8e4dc] bg-white p-4 shadow-xs space-y-3">
             <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {CATEGORIES.map((item) => (
                 <button
@@ -612,10 +631,10 @@ function DictionaryPage() {
                   type="button"
                   onClick={() => setCategory(item)}
                   aria-pressed={category === item}
-                  className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-bold transition ${
+                  className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold transition ${
                     category === item
-                      ? "border-leaf bg-leaf text-forest-deep"
-                      : "border-gold/20 bg-card/50 text-foreground/70 hover:text-cream"
+                      ? "border-[#1b4332] bg-[#1b4332] text-white"
+                      : "border-[#e8e4dc] bg-[#f7f6f2] text-[#4b5563] hover:text-[#11231b] hover:bg-white"
                   }`}
                 >
                   {item}
@@ -625,10 +644,10 @@ function DictionaryPage() {
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setLetter("Todas")}
-                className={`rounded-lg px-2.5 py-1 text-[11px] font-black transition ${
+                className={`rounded-lg px-2.5 py-1 text-xs font-black transition ${
                   letter === "Todas"
-                    ? "bg-gold text-forest-deep"
-                    : "bg-card/60 text-foreground/70 hover:text-cream border border-gold/15"
+                    ? "bg-[#1b4332] text-white shadow-xs"
+                    : "bg-[#f7f6f2] text-[#4b5563] hover:text-[#11231b] border border-[#e8e4dc]"
                 }`}
               >
                 {t("dictionary.allLetters")}
@@ -643,8 +662,8 @@ function DictionaryPage() {
                     title={`${count} ${count === 1 ? "verbete" : "verbetes"}`}
                     className={`h-8 w-8 rounded-lg text-xs font-black transition ${
                       active
-                        ? "bg-leaf text-forest-deep shadow-lg shadow-leaf/30"
-                        : "bg-card/60 text-cream border border-gold/20 hover:border-gold/50"
+                        ? "bg-[#1b4332] text-white shadow-xs"
+                        : "bg-[#f7f6f2] text-[#11231b] border border-[#e8e4dc] hover:border-[#1b4332]"
                     }`}
                   >
                     {l}
@@ -657,8 +676,8 @@ function DictionaryPage() {
 
         {section === "ilustrado" && (
           <section className="mt-5">
-            <div className="flex flex-wrap gap-3">
-              {ILUSTRADO_CATEGORIAS.map((c, i) => {
+            <div className="flex flex-wrap gap-2.5">
+              {ILUSTRADO_CATEGORIAS.map((c) => {
                 const active = ilCat === c.key;
                 const count = ILUSTRADO_COUNTS.get(c.key) ?? 0;
                 return (
@@ -668,14 +687,17 @@ function DictionaryPage() {
                     onClick={() => setIlCat(c.key)}
                     aria-pressed={active}
                     title={`${count} palavras`}
-                    className={`rounded-[22px] px-5 py-4 text-left font-display text-base font-black transition ${
+                    className={`rounded-2xl border px-4 py-3 text-left font-display text-sm font-bold transition shadow-xs ${
                       active
-                        ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
-                        : CHIP_TONES[i % CHIP_TONES.length]
+                        ? "border-[#1b4332] bg-[#1b4332] text-white shadow-sm"
+                        : "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/50 hover:bg-[#fcfbf9]"
                     }`}
                   >
                     <span aria-hidden className="mr-2">{c.emoji}</span>
                     {c.label}
+                    <span className={`ml-2 text-xs font-semibold ${active ? "text-white/80" : "text-[#6b7280]"}`}>
+                      ({count})
+                    </span>
                   </button>
                 );
               })}
@@ -683,21 +705,19 @@ function DictionaryPage() {
                 type="button"
                 onClick={() => setIlCat("todas")}
                 aria-pressed={ilCat === "todas"}
-                className={`rounded-[22px] px-5 py-4 text-left font-display text-base font-black leading-tight transition ${
+                className={`rounded-2xl border px-4 py-3 text-left font-display text-sm font-bold transition shadow-xs ${
                   ilCat === "todas"
-                    ? "bg-[oklch(0.80_0.16_135)] text-forest-deep shadow-lg"
-                    : "bg-[oklch(0.88_0.12_135)] text-forest-deep hover:brightness-105"
+                    ? "border-[#1b4332] bg-[#1b4332] text-white shadow-sm"
+                    : "border-[#e8e4dc] bg-white text-[#374151] hover:border-[#1b4332]/50 hover:bg-[#fcfbf9]"
                 }`}
               >
                 <span aria-hidden className="mr-2">📖</span>
-                Todas
-                <br />
-                as Palavras
+                Todas as Palavras
               </button>
               <button
                 type="button"
                 onClick={() => setSection("gramatica")}
-                className="rounded-[22px] bg-[oklch(0.82_0.07_60)] px-5 py-4 text-left font-display text-base font-black text-forest-deep transition hover:brightness-105"
+                className="rounded-2xl border border-[#e8e4dc] bg-white px-4 py-3 text-left font-display text-sm font-bold text-[#374151] transition hover:border-[#1b4332]/50 hover:bg-[#fcfbf9] shadow-xs"
               >
                 <span aria-hidden className="mr-2">📚</span>
                 Gramática
@@ -706,34 +726,32 @@ function DictionaryPage() {
           </section>
         )}
 
-
         <section className="mt-5">
           {section === "ilustrado" ? (
             ilustradoItems.length === 0 ? (
-              <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
+              <div className="text-center text-[#6b7280] py-12">{t("dictionary.empty")}</div>
             ) : (
-              <div className="space-y-5">
+              <div className="space-y-6">
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {ilVisibleItems.map((e) => (
+                  {pagedIlustrado.map((e) => (
                     <PlayableCard key={`il-${e.id}`} text={e.patxoha} audioUrl={null} variant="light">
-                      <div className="grid h-32 place-items-center rounded-[22px] bg-[oklch(0.90_0.09_140)] text-6xl">
+                      <div className="grid h-32 place-items-center rounded-2xl bg-[#f4f2ec] text-5xl">
                         <span aria-hidden>{e.emoji}</span>
                       </div>
-                      <h3 className="mt-4 font-display text-2xl font-black leading-tight text-forest-deep break-words">
+                      <h3 className="mt-3.5 font-display text-xl font-black leading-tight text-[#11231b] break-words">
                         {e.head}
                       </h3>
                       <div className="mt-1 flex items-center justify-between gap-2">
-                        <p className="min-w-0 text-lg font-bold text-[oklch(0.38_0.10_140)] break-words">
+                        <p className="min-w-0 text-base font-bold text-[#1b4332] break-words">
                           {e.patxoha}
                         </p>
                         <PlayIndicator variant="light" />
-
                       </div>
-                      <div className="mt-3 flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-forest-deep/55">
+                      <div className="mt-3 flex items-center justify-between gap-2 border-t border-[#f0eee6] pt-2.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6b7280]">
                           Ouvir pronúncia
                         </span>
-                        <span className="rounded-full bg-forest-deep/10 px-2 py-0.5 text-[10px] font-bold text-forest-deep/70">
+                        <span className="rounded-full bg-[#1b4332]/10 px-2 py-0.5 text-[10px] font-bold text-[#1b4332]">
                           p. {e.pagina}
                         </span>
                       </div>
@@ -742,45 +760,48 @@ function DictionaryPage() {
                 </div>
 
                 {ilLockedByFree ? (
-                  <div className="card-elev rounded-3xl border border-gold/30 p-6 text-center">
-                    <h3 className="font-display text-xl font-black text-cream">
+                  <div className="rounded-3xl border border-[#b47e28]/30 bg-white p-6 text-center shadow-xs">
+                    <h3 className="font-display text-xl font-black text-[#11231b]">
                       {t("dictionary.freeLimitTitle", { count: FREE_LIMIT })}
                     </h3>
-                    <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
+                    <p className="mx-auto mt-1 max-w-md text-sm text-[#4b5563]">
                       {t("dictionary.freeLimitDescription")}
                     </p>
                     <Link
                       to="/planos"
-                      className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
+                      className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-[#1b4332] px-6 py-3 font-display text-sm font-black text-white shadow-sm transition hover:bg-[#2d6a4f]"
                     >
                       <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
                     </Link>
                   </div>
-                ) : ilHasMore ? (
-                  <div className="text-center">
-                    <button
-                      onClick={() => setIlVisible((n) => n + 60)}
-                      className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
-                    >
-                      {t("dictionary.showMore")}
-                    </button>
+                ) : ilTotalPages > 1 ? (
+                  <div className="pt-2">
+                    <Pagination
+                      currentPage={ilPage}
+                      totalPages={ilTotalPages}
+                      onPageChange={(p) => {
+                        setIlPage(p);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      mode="adulto"
+                    />
                   </div>
                 ) : null}
               </div>
             )
           ) : isWordList ? (
             filtered.length === 0 ? (
-              <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
+              <div className="text-center text-[#6b7280] py-12">{t("dictionary.empty")}</div>
             ) : (
               <div className="space-y-6">
                 {grouped.map(([ltr, items]) => (
                   <div key={ltr}>
-                    <div className="sticky top-[60px] z-10 mb-2 flex items-center gap-3 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl py-2">
-                      <div className="grid h-9 w-9 place-items-center rounded-lg bg-gold text-forest-deep font-display text-lg font-black">
+                    <div className="sticky top-[60px] z-10 mb-2 flex items-center gap-3 bg-[#f7f6f2]/95 backdrop-blur-xl py-2">
+                      <div className="grid h-8 w-8 place-items-center rounded-lg bg-[#1b4332] text-white font-display text-sm font-black shadow-xs">
                         {ltr}
                       </div>
-                      <div className="h-px flex-1 bg-gold/20" />
-                      <div className="text-[11px] font-bold text-foreground/60">{items.length}</div>
+                      <div className="h-px flex-1 bg-[#e8e4dc]" />
+                      <div className="text-[11px] font-bold text-[#6b7280]">{items.length}</div>
                     </div>
                     <div className="grid gap-3 md:grid-cols-2">
                       {items.map((e) => (
@@ -788,26 +809,26 @@ function DictionaryPage() {
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
                               <div className="flex items-center gap-2">
-                                <h3 className="font-display text-xl font-black text-cream group-hover:text-gold transition-colors break-words">
+                                <h3 className="font-display text-lg font-black text-[#11231b] group-hover:text-[#1b4332] transition-colors break-words">
                                   {e.head}
                                 </h3>
                                 <PlayIndicator />
                               </div>
-                              <div className="mt-1 text-sm text-foreground/80 break-words">
-                                <span className="text-gold">→</span> {e.gloss}
+                              <div className="mt-1 text-sm font-medium text-[#4b5563] break-words">
+                                <span className="text-[#b47e28]">→</span> {e.gloss}
                               </div>
                               {e.categoria !== "Geral" && (
-                                <span className="mt-2 inline-flex rounded-full border border-leaf/25 bg-leaf/10 px-2 py-0.5 text-[10px] font-bold text-leaf">
+                                <span className="mt-2 inline-flex rounded-md border border-[#2d6a4f]/25 bg-[#2d6a4f]/10 px-2 py-0.5 text-[10px] font-bold text-[#2d6a4f]">
                                   {e.categoria}
                                 </span>
                               )}
                             </div>
-                            <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
+                            <span className="shrink-0 rounded-full border border-[#b47e28]/30 bg-[#b47e28]/10 px-2 py-0.5 text-[10px] font-bold text-[#b47e28]">
                               p. {e.pagina}
                             </span>
                           </div>
                           {e.raw && (
-                            <div className="mt-2 rounded-lg border border-gold/15 bg-card/40 px-3 py-2 text-[11px] italic text-foreground/70 break-words">
+                            <div className="mt-2 rounded-xl border border-[#e8e4dc] bg-[#fbfaf7] px-3 py-2 text-xs italic text-[#6b7280] break-words">
                               {e.raw}
                             </div>
                           )}
@@ -817,46 +838,49 @@ function DictionaryPage() {
                   </div>
                 ))}
                 {lockedByFree ? (
-                  <div className="mt-4 card-elev rounded-3xl border border-gold/30 p-6 text-center">
-                    <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--gradient-leaf)] shadow-[var(--shadow-glow)]">
-                      <Lock className="h-6 w-6 text-cream" />
+                  <div className="mt-4 rounded-3xl border border-[#b47e28]/30 bg-white p-6 text-center shadow-xs">
+                    <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[#1b4332] text-white shadow-xs">
+                      <Lock className="h-6 w-6" />
                     </div>
-                    <h3 className="mt-4 font-display text-xl font-black text-cream">
+                    <h3 className="mt-4 font-display text-xl font-black text-[#11231b]">
                       {t("dictionary.freeLimitTitle", { count: FREE_LIMIT })}
                     </h3>
-                    <p className="mx-auto mt-1 max-w-md text-sm text-foreground/70">
+                    <p className="mx-auto mt-1 max-w-md text-sm text-[#4b5563]">
                       {t("dictionary.freeLimitDescription")}
                     </p>
                     <Link
                       to="/planos"
-                      className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gold px-6 py-3 font-display text-sm font-black text-forest-deep shadow-lg transition hover:brightness-110"
+                      className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-[#1b4332] px-6 py-3 font-display text-sm font-black text-white shadow-sm transition hover:bg-[#2d6a4f]"
                     >
                       <Crown className="h-4 w-4" /> {t("premium.verPlanos")}
                     </Link>
                   </div>
-                ) : hasMore ? (
-                  <div className="pt-2 text-center">
-                    <button
-                      onClick={() => setVisibleCount((n) => n + 120)}
-                      className="rounded-full border border-gold/30 bg-gold/10 px-5 py-2 text-sm font-black text-gold transition hover:bg-gold/20"
-                    >
-                      {t("dictionary.showMore")}
-                    </button>
+                ) : totalPages > 1 ? (
+                  <div className="pt-2">
+                    <Pagination
+                      currentPage={page}
+                      totalPages={totalPages}
+                      onPageChange={(p) => {
+                        setPage(p);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      mode="adulto"
+                    />
                   </div>
                 ) : null}
               </div>
             )
           ) : section === "numeros" ? (
             numerosGroups.length === 0 ? (
-              <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
+              <div className="text-center text-[#6b7280] py-12">{t("dictionary.empty")}</div>
             ) : (
               <div className="space-y-6">
                 {numerosGroups.map((g) => (
                   <div key={`${g.titulo}-${g.pagina}`}>
                     <div className="mb-2 flex items-center gap-3">
-                      <h2 className="font-display text-base font-black text-gold break-words">{g.titulo}</h2>
-                      <div className="h-px flex-1 bg-gold/20" />
-                      <span className="text-[11px] font-bold text-foreground/60">p. {g.pagina}</span>
+                      <h2 className="font-display text-base font-black text-[#1b4332] break-words">{g.titulo}</h2>
+                      <div className="h-px flex-1 bg-[#e8e4dc]" />
+                      <span className="text-[11px] font-bold text-[#6b7280]">p. {g.pagina}</span>
                     </div>
                     <div className="grid gap-3 md:grid-cols-2">
                       {g.items.map((item) => (
@@ -864,16 +888,16 @@ function DictionaryPage() {
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
                               <div className="flex items-center gap-2">
-                                <h3 className="font-display text-lg font-black text-cream break-words">
+                                <h3 className="font-display text-lg font-black text-[#11231b] break-words">
                                   {item.patxoha}
                                 </h3>
                                 <PlayIndicator />
                               </div>
-                              <div className="mt-1 text-sm text-foreground/80 break-words">
-                                <span className="text-gold">→</span> {item.portugues}
+                              <div className="mt-1 text-sm text-[#4b5563] break-words">
+                                <span className="text-[#b47e28]">→</span> {item.portugues}
                               </div>
                             </div>
-                            <span className="shrink-0 chip-gold rounded-full px-2 py-0.5 text-[10px] font-bold">
+                            <span className="shrink-0 rounded-full border border-[#b47e28]/30 bg-[#b47e28]/10 px-2 py-0.5 text-[10px] font-bold text-[#b47e28]">
                               p. {item.pagina}
                             </span>
                           </div>
@@ -885,23 +909,23 @@ function DictionaryPage() {
               </div>
             )
           ) : gramaticaLines.length === 0 ? (
-            <div className="text-center text-foreground/60 py-12">{t("dictionary.empty")}</div>
+            <div className="text-center text-[#6b7280] py-12">{t("dictionary.empty")}</div>
           ) : (
-            <div className="rounded-[28px] bg-cream p-5 md:p-8 shadow-xl">
-              <h2 className="font-display text-2xl font-black text-forest-deep md:text-3xl">
-                <span className="text-[oklch(0.42_0.09_45)]">Gramática</span> PATXÔHÃ
+            <div className="rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-8 shadow-xs">
+              <h2 className="font-display text-2xl font-black text-[#11231b] md:text-3xl">
+                <span className="text-[#1b4332]">Gramática</span> PATXÔHÃ
               </h2>
-              <p className="mt-1 text-[11px] font-semibold text-forest-deep/60">{SOURCE_LABEL}</p>
+              <p className="mt-1 text-[11px] font-semibold text-[#6b7280]">{SOURCE_LABEL}</p>
               <div className="mt-5 space-y-2 md:columns-2 md:gap-8 [&>p]:break-inside-avoid">
                 {gramaticaLines.map((l) => (
                   <p
                     key={l.id}
-                    className={`rounded-lg px-3 py-2 text-sm leading-relaxed break-words ${
+                    className={`rounded-xl px-3 py-2 text-sm leading-relaxed break-words ${
                       l.idioma === "patxoha"
-                        ? "border-l-4 border-[oklch(0.55_0.13_140)] bg-[oklch(0.55_0.13_140/0.12)] font-bold text-[oklch(0.35_0.10_140)]"
+                        ? "border-l-4 border-[#1b4332] bg-[#1b4332]/5 font-bold text-[#11231b]"
                         : l.idioma === "portugues"
-                          ? "border-l-4 border-[oklch(0.62_0.11_60)] bg-[oklch(0.62_0.11_60/0.14)] text-[oklch(0.40_0.09_50)]"
-                          : "text-forest-deep/80"
+                          ? "border-l-4 border-[#b47e28] bg-[#b47e28]/5 text-[#374151]"
+                          : "text-[#4b5563]"
                     }`}
                   >
                     {l.texto}
@@ -909,12 +933,12 @@ function DictionaryPage() {
                 ))}
               </div>
             </div>
-
           )}
         </section>
 
-        <p className="mt-8 text-center text-[11px] font-semibold text-foreground/50">{SOURCE_LABEL}</p>
+        <p className="mt-8 text-center text-[11px] font-semibold text-[#6b7280]">{SOURCE_LABEL}</p>
       </main>
+      <SiteFooter mode="adulto" />
     </div>
   );
 }
@@ -923,11 +947,7 @@ function PlayIndicator({ variant = "dark" }: { variant?: "dark" | "light" }) {
   return (
     <span
       aria-hidden
-      className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition group-hover:scale-110 ${
-        variant === "light"
-          ? "bg-cream text-[oklch(0.38_0.10_140)] shadow-md"
-          : "bg-leaf/20 text-leaf group-hover:bg-leaf/40"
-      }`}
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#1b4332]/10 text-[#1b4332] transition group-hover:scale-110 group-hover:bg-[#1b4332]/20"
     >
       <Volume2 className="h-4 w-4" />
     </span>
@@ -1003,15 +1023,10 @@ function PlayableCard({
       }}
       aria-label={`Ouvir ${text}`}
       aria-busy={busy}
-      className={`group cursor-pointer select-none transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf ${
-        variant === "light"
-          ? "rounded-[28px] bg-cream p-4 shadow-md"
-          : "card-elev rounded-2xl p-4 hover:border-leaf/40"
-      } ${busy ? "opacity-70" : ""}`}
-
+      className={`group cursor-pointer select-none transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none rounded-2xl border border-[#e8e4dc] bg-white p-4 hover:border-[#1b4332]/50 ${busy ? "opacity-70" : ""}`}
     >
       {busy && (
-        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-leaf">
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#1b4332]">
           <Loader2 className="h-3 w-3 animate-spin" /> Tocando…
         </div>
       )}

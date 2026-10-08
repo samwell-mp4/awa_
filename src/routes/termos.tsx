@@ -1,27 +1,33 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 
 export const Route = createFileRoute("/termos")({
   head: () => ({ meta: [{ title: "Termos de uso — AWÃ TECH" }] }),
   component: TermosPage,
 });
 
-function LegalShell({ title, children }: { title: string; children: ReactNode }) {
+export function LegalShell({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 md:px-8">
+          <Link to="/" className="inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]">
             <ArrowLeft className="h-4 w-4" /> Início
           </Link>
-          <div className="font-display text-sm font-black uppercase tracking-wider text-cream">{title}</div>
+          <div className="font-display text-sm font-black uppercase tracking-wider text-[#11231b]">{title}</div>
           <div className="w-16" />
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-4 py-10 md:px-8 md:py-14 text-foreground/85 text-[15px] leading-relaxed">
-        {children}
+      <main className="mx-auto max-w-4xl px-4 py-8 md:px-8 md:py-12">
+        <div className="rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs text-[#374151] text-[15px] leading-relaxed">
+          {children}
+        </div>
       </main>
+      <SiteFooter mode="adulto" />
     </div>
   );
 }
@@ -29,19 +35,19 @@ function LegalShell({ title, children }: { title: string; children: ReactNode })
 function TermosPage() {
   return (
     <LegalShell title="Termos de uso">
-      <h1 className="font-display text-3xl font-black text-cream">Termos de uso</h1>
-      <p className="mt-2 text-xs text-foreground/60">
+      <h1 className="font-display text-3xl font-black text-[#11231b]">Termos de uso</h1>
+      <p className="mt-2 text-xs text-[#6b7280]">
         Última atualização: {new Date().toLocaleDateString("pt-BR")}
       </p>
 
-      <h2 className="mt-8 font-display text-xl font-bold text-gold">1. Quem somos</h2>
+      <h2 className="mt-8 font-display text-xl font-bold text-[#1b4332]">1. Quem somos</h2>
       <p>
         O <b>AWÃ TECH</b> é uma plataforma sediada no Brasil ("nós", "nosso"). Ao criar uma conta ou
         assinar, você ("usuário") celebra um contrato conosco nos termos deste documento. Se não
         concordar, não use a plataforma.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">2. Serviço</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">2. Serviço</h2>
       <p>
         O AWÃ TECH é uma plataforma educacional dedicada ao ensino da língua Patxôhã (povo Pataxó) e das culturas
         indígenas brasileiras, oferecendo dicionário, trilhas, vídeos, músicas, jogos e um assistente de IA
@@ -49,7 +55,7 @@ function TermosPage() {
         responsável.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">3. Planos e cobrança</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">3. Planos e cobrança</h2>
       <ul className="mt-2 list-disc space-y-1 pl-6">
         <li><b>Básico</b> (grátis): saudações, home, planos e biografia.</li>
         <li><b>Premium Mensal</b>: R$ 29,90/mês, renovação automática mensal.</li>
@@ -59,7 +65,7 @@ function TermosPage() {
         A cobrança, faturamento, impostos e emissão de recibos são processados por <b>Paddle.com Market Limited</b>,
         nosso <b>Merchant of Record</b>. Ao comprar, você também aceita os{" "}
         <a
-          className="text-gold underline"
+          className="text-[#1b4332] underline hover:text-[#2d6a4f]"
           href="https://www.paddle.com/legal/checkout-buyer-terms"
         >
           Termos do Comprador da Paddle
@@ -67,20 +73,20 @@ function TermosPage() {
         , que regulam pagamento, cobrança, tributos, cancelamentos e reembolsos.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">4. Cancelamento e reembolso</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">4. Cancelamento e reembolso</h2>
       <p>
         Você pode cancelar a qualquer momento em <b>Minha conta → Gerenciar assinatura</b>. O acesso Premium
         permanece disponível até o fim do período já pago. Reembolsos seguem nossa{" "}
-        <Link to="/reembolso" className="text-gold underline">Política de Reembolso</Link> (garantia de 14 dias).
+        <Link to="/reembolso" className="text-[#1b4332] underline hover:text-[#2d6a4f]">Política de Reembolso</Link> (garantia de 14 dias).
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">5. Conta e segurança</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">5. Conta e segurança</h2>
       <p>
         Você é responsável por manter a confidencialidade das suas credenciais e por toda atividade realizada na
         sua conta. Deve fornecer informações verdadeiras e mantê-las atualizadas.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">6. Uso aceitável</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">6. Uso aceitável</h2>
       <p>Você concorda em não:</p>
       <ul className="mt-2 list-disc space-y-1 pl-6">
         <li>usar a plataforma para fins ilegais, fraudulentos ou de spam;</li>
@@ -90,7 +96,7 @@ function TermosPage() {
         <li>coletar dados de outros usuários sem consentimento (scraping, sondagem, etc.).</li>
       </ul>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">7. Propriedade intelectual</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">7. Propriedade intelectual</h2>
       <p>
         A plataforma AWÃ TECH — software, design, marca, logotipos, textos, áudios, vídeos e demais materiais
         produzidos por nós ou nossos licenciadores — é protegida por direitos autorais e demais leis aplicáveis, e
@@ -100,7 +106,7 @@ function TermosPage() {
         educacionais.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">8. Garantias e limitação de responsabilidade</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">8. Garantias e limitação de responsabilidade</h2>
       <p>
         O serviço é fornecido <b>"no estado em que se encontra" (as-is)</b>, sem garantia de funcionamento
         ininterrupto ou livre de erros. Na máxima extensão permitida por lei, afastamos garantias implícitas de
@@ -111,7 +117,7 @@ function TermosPage() {
         (por exemplo, dolo, morte ou dano pessoal).
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">9. Suspensão e encerramento</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">9. Suspensão e encerramento</h2>
       <p>
         Podemos suspender ou encerrar seu acesso, com ou sem aviso prévio, em caso de: (a) violação destes Termos
         ou da Política de Uso Aceitável; (b) inadimplência ou estorno de pagamento; (c) risco de fraude, abuso ou
@@ -119,29 +125,29 @@ function TermosPage() {
         seus dados podem ser retidos pelo período legalmente exigido e depois excluídos ou anonimizados.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">10. Conteúdo de IA (Professor Akuã)</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">10. Conteúdo de IA (Professor Akuã)</h2>
       <p>
         As respostas do assistente de IA são geradas automaticamente e podem conter imprecisões. Não substituem
         aconselhamento profissional. Você é responsável pelos prompts enviados e pelo uso que faz das respostas,
         e deve ter direitos sobre qualquer conteúdo que enviar.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">11. Alterações destes Termos</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">11. Alterações destes Termos</h2>
       <p>
         Podemos atualizar estes Termos periodicamente. Alterações materiais serão comunicadas por e-mail ou dentro
         da plataforma. O uso continuado após a data de vigência implica aceitação.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">12. Lei aplicável e foro</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">12. Lei aplicável e foro</h2>
       <p>
         Estes Termos são regidos pelas leis da <b>República Federativa do Brasil</b>. Fica eleito o foro do
         domicílio do consumidor para dirimir controvérsias.
       </p>
 
-      <h2 className="mt-6 font-display text-xl font-bold text-gold">13. Contato</h2>
+      <h2 className="mt-6 font-display text-xl font-bold text-[#1b4332]">13. Contato</h2>
       <p>
         Dúvidas:{" "}
-        <a className="text-gold underline" href="mailto:duvidas@awa-tech.store">
+        <a className="text-[#1b4332] underline hover:text-[#2d6a4f]" href="mailto:duvidas@awa-tech.store">
           duvidas@awa-tech.store
         </a>
         .
@@ -149,5 +155,3 @@ function TermosPage() {
     </LegalShell>
   );
 }
-
-export { LegalShell };

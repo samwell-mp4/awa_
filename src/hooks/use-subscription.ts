@@ -65,8 +65,12 @@ export function useSubscription() {
         window.localStorage.setItem('paddle_customer_id', paddleCustomerId);
       }
 
-      let hasInfantil = tiers.has("infantil") || tiers.has("premium");
-      let hasAdulto = tiers.has("adulto") || tiers.has("premium");
+      let hasInfantil = import.meta.env.DEV || isAdmin || tiers.has("infantil") || tiers.has("premium");
+      let hasAdulto = import.meta.env.DEV || isAdmin || tiers.has("adulto") || tiers.has("premium");
+
+      if (import.meta.env.DEV || isAdmin) {
+        return { subs: subs ?? [], hasInfantil: true, hasAdulto: true };
+      }
 
       // Acesso liberado manualmente pelo administrador (email/celular na lista
       // de liberação) também abre a área correspondente.

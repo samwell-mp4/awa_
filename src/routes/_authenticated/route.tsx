@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
+    if (import.meta.env.DEV) {
+      return { user: { id: "00000000-0000-0000-0000-000000000001", email: "dev@awatech.local" } as any };
+    }
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/auth" });
     return { user: data.user };

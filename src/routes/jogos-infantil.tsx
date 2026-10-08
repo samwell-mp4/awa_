@@ -6,11 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getGamesConfig } from "@/lib/infantil-content.functions";
 
-import { ArrowLeft, Eraser, Palette, RefreshCw, Sparkles, Star, Trophy, Volume2 } from "lucide-react";
+import { ArrowLeft, Eraser, Palette, Play, RefreshCw, Search, Sparkles, Star, Trophy, Volume2, X } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
-import bg from "@/assets/jogos-infantil-bg.jpg.asset.json";
+import kidsBg from "@/assets/kids-menu-bg.jpg";
 import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
+import { PageHeader } from "@/components/education/page-header";
+import { EmptyState } from "@/components/education/empty-state";
 
 /** Botão de áudio reutilizável — toca a palavra em voz alta. */
 function SpeakBtn({
@@ -78,14 +81,21 @@ const STATIC_GAMES: {
   emoji: string;
   title: string;
   desc: string;
+  skill: string;
+  category: "lingua" | "memoria" | "numeros" | "natureza" | "ingles";
+  difficulty: "Fácil" | "Médio";
+  bestScore?: number;
   color: string;
 }[] = [
-
   {
     id: "memoria",
     emoji: "🧠",
     title: "Memória da Floresta",
     desc: "Ache os pares de bichos e plantas.",
+    skill: "Memória • Natureza",
+    category: "memoria",
+    difficulty: "Fácil",
+    bestScore: 480,
     color: "from-emerald-400 to-emerald-600",
   },
   {
@@ -93,6 +103,10 @@ const STATIC_GAMES: {
     emoji: "🗣️",
     title: "Pares Patxôhã",
     desc: "Ligue a palavra ao desenho certo.",
+    skill: "Vocabulário • Associação",
+    category: "lingua",
+    difficulty: "Fácil",
+    bestScore: 320,
     color: "from-amber-400 to-orange-500",
   },
   {
@@ -100,13 +114,21 @@ const STATIC_GAMES: {
     emoji: "🎯",
     title: "Caça aos Bichos",
     desc: "Toque no bichinho antes que ele suma!",
+    skill: "Atenção • Agilidade",
+    category: "natureza",
+    difficulty: "Médio",
+    bestScore: 500,
     color: "from-sky-400 to-indigo-500",
   },
   {
     id: "acerte",
-    emoji: "🎯",
+    emoji: "🏹",
     title: "Acerte a Palavra",
     desc: "Veja a figura e toque na palavra certa.",
+    skill: "Leitura • Reconhecimento",
+    category: "lingua",
+    difficulty: "Fácil",
+    bestScore: 280,
     color: "from-fuchsia-400 to-purple-600",
   },
   {
@@ -114,13 +136,21 @@ const STATIC_GAMES: {
     emoji: "🧮",
     title: "Ordene os Números",
     desc: "Coloque os números do menor ao maior.",
+    skill: "Matemática • Sequência",
+    category: "numeros",
+    difficulty: "Fácil",
+    bestScore: 400,
     color: "from-teal-400 to-cyan-600",
   },
   {
     id: "cores",
-    emoji: "🌈",
+    emoji: "🎨",
     title: "Junte a Cor ao Nome",
     desc: "Toque na cor certa para cada nome.",
+    skill: "Cores • Percepção",
+    category: "natureza",
+    difficulty: "Fácil",
+    bestScore: 350,
     color: "from-rose-400 to-red-500",
   },
   {
@@ -128,13 +158,20 @@ const STATIC_GAMES: {
     emoji: "🦜",
     title: "Adivinhe o Bicho",
     desc: "Ouça a dica e escolha o bichinho!",
+    skill: "Escuta • Dedução",
+    category: "natureza",
+    difficulty: "Médio",
+    bestScore: 420,
     color: "from-lime-400 to-green-600",
   },
   {
     id: "colorir",
-    emoji: "🎨",
+    emoji: "🖌️",
     title: "Desenhar e Colorir",
     desc: "Pinte símbolos e bichos da aldeia.",
+    skill: "Criatividade • Arte",
+    category: "natureza",
+    difficulty: "Fácil",
     color: "from-orange-400 to-amber-600",
   },
 ];
@@ -207,129 +244,256 @@ function JogosInfantilPage() {
   }, [configGames]);
 
 
+  const [activeCategory, setActiveCategory] = useState<"todos" | "lingua" | "memoria" | "numeros" | "natureza" | "ingles">("todos");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const featuredGame = STATIC_GAMES[0]; // Memória da Floresta
+
+  const visibleGames = useMemo(() => {
+    let list = games;
+    if (activeCategory === "ingles") list = EN_GAMES;
+    else if (activeCategory !== "todos") list = games.filter((g: any) => g.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter((g: any) =>
+        (g.title || "").toLowerCase().includes(q) ||
+        (g.desc || "").toLowerCase().includes(q) ||
+        (g.skill || "").toLowerCase().includes(q)
+      );
+    }
+    return list;
+  }, [games, activeCategory, searchQuery]);
+
   return (
     <div
-      className="kids-theme min-h-screen bg-cover bg-center bg-no-repeat text-emerald-950"
+      className="kids-theme relative min-h-screen text-[#fefae0] font-sans"
       style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.75)), url(${bg.url})`,
+        backgroundImage: `url(${kidsBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundAttachment: "fixed",
       }}
     >
-      <SiteHeader mode="infantil" />
+      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
 
-      <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link
-          to="/infantil"
-          className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-black uppercase text-emerald-800 shadow"
-        >
-          <ArrowLeft className="h-4 w-4" /> {t("common.voltar")}
-        </Link>
-        <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-2 text-sm font-black text-emerald-900 shadow">
-          <Star className="h-4 w-4" /> {stars}
-        </div>
-      </header>
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <SiteHeader mode="infantil" />
 
-      <main className="mx-auto max-w-3xl px-4 pb-16">
-        <div className="text-center">
-          <div className="mx-auto mb-3 inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-white shadow-lg">
-            <Trophy className="h-8 w-8 text-amber-500" />
-          </div>
-          <h1 className="font-display text-3xl font-black uppercase tracking-wide text-emerald-900 md:text-5xl">
-            <T>Jogos Awã Tech</T>
-          </h1>
-          <p className="mt-2 text-emerald-800/80">
-            <T>Escolha um jogo e vamos brincar na aldeia!</T> 🌿
-          </p>
-        </div>
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-4 sm:px-6">
+          {!game ? (
+            <>
+              <PageHeader
+                breadcrumbs={[
+                  { label: "Início", href: "/infantil" },
+                  { label: "Jogos da Aldeia" },
+                ]}
+                title="Jogos da Aldeia"
+                description="Desenvolva habilidades de memória, vocabulário e agilidade através de brincadeiras culturais."
+                badge={`⭐ ${stars} estrelas conquistadas`}
+                primaryAction={{
+                  label: "Jogar Recomendado",
+                  onClick: () => {
+                    speak(`${featuredGame.title}. ${featuredGame.desc}`, "pt-BR");
+                    setGame(featuredGame.id);
+                  },
+                }}
+              />
 
-        {!game && (
-          <>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {games.map((g: any) => (
+              {/* 1. DESTAQUE: JOGO RECOMENDADO (CARD LEVEL 1) */}
+              <section className="mt-6">
+                <div className="awa-card-1 relative overflow-hidden rounded-2xl p-5 sm:p-6 shadow-xl">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-[#251408] border-2 border-[#ffd166] text-3xl shadow-md">
+                        {featuredGame.emoji}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="rounded-md bg-[#2a9d8f]/20 border border-[#2a9d8f]/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2a9d8f]">
+                            Recomendado da Aldeia
+                          </span>
+                          <span className="text-xs text-[#d4a373]">
+                            {featuredGame.difficulty}
+                          </span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-black text-[#fefae0]">
+                          {featuredGame.title}
+                        </h2>
+                        <p className="text-xs text-[#fefae0]/80 mt-0.5">
+                          {featuredGame.skill} • Melhor pontuação: {featuredGame.bestScore || 480} pts
+                        </p>
+                      </div>
+                    </div>
 
-                <button
-                  key={g.id}
-                  onClick={() => {
-                    speak(`${g.title}. ${g.desc}`, "pt-BR");
-                    setGame(g.id);
-                  }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
-                >
-                  <div className="text-5xl drop-shadow">{g.emoji}</div>
-                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
-                    <T>{g.title}</T>
+                    <button
+                      onClick={() => {
+                        speak(`${featuredGame.title}. ${featuredGame.desc}`, "pt-BR");
+                        setGame(featuredGame.id);
+                      }}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ffd166] to-[#f59e0b] px-6 py-3 text-sm font-black text-[#1a0e04] shadow-lg transition hover:brightness-110 active:scale-95"
+                    >
+                      <Play className="h-4 w-4 fill-current" />
+                      <span>Jogar Agora</span>
+                    </button>
                   </div>
-                  <div className="mt-1 text-sm text-white/90"><T>{g.desc}</T></div>
-                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
-                </button>
-              ))}
-            </div>
+                </div>
+              </section>
 
-            <div className="mt-10 flex items-center gap-3">
-              <span className="text-3xl">🇺🇸</span>
-              <div>
-                <h2 className="font-display text-2xl font-black uppercase tracking-wide text-emerald-900 md:text-3xl">
-                  <T>Jogos em Inglês</T>
-                </h2>
-                <p className="text-sm text-emerald-800/80">
-                  <T>Aprenda inglês brincando!</T>
-                </p>
+              {/* 2. SEARCH & CATEGORY FILTERS */}
+              <div className="mt-6 flex flex-col gap-3">
+                <div className="relative w-full max-w-md">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Buscar jogo ou habilidade..."
+                    className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: "todos", label: "Todos os Jogos" },
+                    { id: "lingua", label: "Língua & Vocabulário" },
+                    { id: "memoria", label: "Memória" },
+                    { id: "numeros", label: "Números" },
+                    { id: "natureza", label: "Natureza & Bichos" },
+                    { id: "ingles", label: "Inglês" },
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setActiveCategory(cat.id as any)}
+                      className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
+                        activeCategory === cat.id
+                          ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
+                          : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. GAMES GRID */}
+              <div className="mt-6">
+                {visibleGames.length === 0 ? (
+                  <EmptyState
+                    title="Nenhum jogo encontrado"
+                    description={
+                      searchQuery
+                        ? `Nenhum resultado para "${searchQuery}". Tente outro termo ou categoria.`
+                        : "Não há jogos disponíveis nesta categoria no momento."
+                    }
+                    actionLabel="Ver todos os jogos"
+                    onAction={() => {
+                      setActiveCategory("todos");
+                      setSearchQuery("");
+                    }}
+                  />
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {visibleGames.map((g: any) => (
+                      <div
+                        key={g.id}
+                        className="awa-card-2 group flex flex-col justify-between rounded-2xl p-4 transition shadow-md hover:-translate-y-0.5 hover:border-[#ffd166]/50"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#251408] border border-[#633916] text-2xl group-hover:scale-105 transition">
+                              {g.emoji}
+                            </div>
+                            <span className="rounded-md bg-[#251408] border border-[#633916] px-2 py-0.5 text-[10px] font-bold text-[#d4a373]">
+                              {g.difficulty || "Fácil"}
+                            </span>
+                          </div>
+
+                          <h3 className="mt-3 text-base font-black text-[#fefae0] group-hover:text-[#ffd166] transition">
+                            <T>{g.title}</T>
+                          </h3>
+                          <div className="text-[11px] font-semibold text-[#2a9d8f] mt-0.5">
+                            {g.skill || "Habilidade Educacional"}
+                          </div>
+                          <p className="mt-1 text-xs text-[#fefae0]/75 line-clamp-2 leading-relaxed">
+                            <T>{g.desc}</T>
+                          </p>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-[#633916]/40 flex items-center justify-between">
+                          <span className="text-[11px] text-[#ffd166]">
+                            {g.bestScore ? `Recorde: ${g.bestScore}` : "Praticar"}
+                          </span>
+                          <button
+                            onClick={() => {
+                              const lang = g.id.startsWith("en-") ? "en-US" : "pt-BR";
+                              speak(`${g.title}. ${g.desc}`, lang);
+                              setGame(g.id);
+                            }}
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#331c0e] border border-[#633916] px-3.5 py-1.5 text-xs font-bold text-[#ffd166] hover:bg-[#432512] hover:border-[#ffd166]/60 transition"
+                          >
+                            <Play className="h-3.5 w-3.5 fill-current" />
+                            <span>Jogar</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="awa-card-1 rounded-2xl p-4 sm:p-6 shadow-2xl">
+              <div className="mb-4 flex items-center justify-between border-b border-[#633916] pb-3">
+                <button
+                  onClick={() => setGame(null)}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#633916] bg-[#251408] px-3.5 py-2 text-xs font-bold text-[#ffd166] hover:border-[#ffd166] transition"
+                >
+                  <ArrowLeft className="h-4 w-4" /> <span>Voltar para Jogos</span>
+                </button>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-[#ffd166]/40 bg-[#251408] px-3 py-1 text-xs font-bold text-[#ffd166]">
+                    <Star className="h-3.5 w-3.5 fill-[#ffd166]" /> {stars} Estrelas
+                  </span>
+                </div>
+                <span className="font-display text-base sm:text-lg font-black uppercase text-[#ffd166]">
+                  {(() => {
+                    const en = EN_GAMES.find((g) => g.id === game);
+                    if (en) return en.title;
+                    const pt = games.find((g: any) => g.id === game)?.title ?? "";
+                    return <T>{pt}</T>;
+                  })()}
+                </span>
+              </div>
+              <div className="text-slate-900">
+                {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
+                {game === "pares" && <PairsGame onWin={() => setStars((s) => s + 2)} />}
+                {game === "caca" && <CatchGame onScore={() => setStars((s) => s + 1)} />}
+                {game === "acerte" && <AcertePalavraGame onWin={() => setStars((s) => s + 1)} />}
+                {game === "ordenar" && <OrdenarNumerosGame onWin={() => setStars((s) => s + 2)} />}
+                {game === "cores" && <CoresGame onWin={() => setStars((s) => s + 2)} />}
+                {game === "adivinhe" && <AdivinheBichoGame onWin={() => setStars((s) => s + 1)} />}
+                {game === "colorir" && <ColorirCanvas />}
+                {EN_GAMES.filter((g) => g.id === game).map((g) => (
+                  <EnglishPairsGame key={g.id} pairs={g.pairs} onWin={() => setStars((s) => s + 2)} />
+                ))}
               </div>
             </div>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {EN_GAMES.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => {
-                    speak(`${g.title}. ${g.desc}`, "en-US");
-                    setGame(g.id);
-                  }}
-                  className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${g.color} p-5 text-left text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl`}
-                >
-                  <div className="text-5xl drop-shadow">{g.emoji}</div>
-                  <div className="mt-3 font-display text-lg font-black uppercase tracking-wide">
-                    {g.title}
-                  </div>
-                  <div className="mt-1 text-sm text-white/90">{g.desc}</div>
-                  <Sparkles className="absolute right-3 top-3 h-5 w-5 text-white/70 transition group-hover:scale-125" />
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+          )}
+        </main>
 
-        {game && (
-          <div className="mt-8 rounded-3xl border-4 border-white bg-white/80 p-4 shadow-xl md:p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <button
-                onClick={() => setGame(null)}
-                className="inline-flex items-center gap-1 rounded-full bg-emerald-800 px-3 py-2 text-xs font-black uppercase text-white shadow"
-              >
-                <ArrowLeft className="h-4 w-4" /> <T>Menu</T>
-              </button>
-              <span className="font-display text-lg font-black uppercase text-emerald-900">
-                {(() => {
-                  const en = EN_GAMES.find((g) => g.id === game);
-                  if (en) return en.title;
-                  const pt = games.find((g: any) => g.id === game)?.title ?? "";
-                  return <T>{pt}</T>;
-
-                })()}
-              </span>
-            </div>
-            {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}
-            {game === "pares" && <PairsGame onWin={() => setStars((s) => s + 2)} />}
-            {game === "caca" && <CatchGame onScore={() => setStars((s) => s + 1)} />}
-            {game === "acerte" && <AcertePalavraGame onWin={() => setStars((s) => s + 1)} />}
-            {game === "ordenar" && <OrdenarNumerosGame onWin={() => setStars((s) => s + 2)} />}
-            {game === "cores" && <CoresGame onWin={() => setStars((s) => s + 2)} />}
-            {game === "adivinhe" && <AdivinheBichoGame onWin={() => setStars((s) => s + 1)} />}
-            {game === "colorir" && <ColorirCanvas />}
-            {EN_GAMES.filter((g) => g.id === game).map((g) => (
-              <EnglishPairsGame key={g.id} pairs={g.pairs} onWin={() => setStars((s) => s + 2)} />
-            ))}
-          </div>
-        )}
-      </main>
+        <SiteFooter mode="infantil" />
+      </div>
     </div>
   );
 }

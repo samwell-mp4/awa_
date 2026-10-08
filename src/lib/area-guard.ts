@@ -8,6 +8,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
  * Admins pass through (handled inside has_plan_access).
  */
 export async function requireArea(plan: "adulto" | "infantil") {
+  if (import.meta.env.DEV) return;
   const { data } = await supabase.auth.getUser();
   // `reloadDocument` avoids a hydration mismatch: these routes are client-only,
   // so the server sent a placeholder for them — a client-side swap to another

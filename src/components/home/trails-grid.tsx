@@ -23,10 +23,10 @@ export function translateTrailName(t: (k: string) => string, name: string) {
   return key ? t(key) : name;
 }
 
-function TrailCardInner({ trail, label }: { trail: HomeTrail; label: string }) {
+function TrailCardInner({ trail, label, isAdult }: { trail: HomeTrail; label: string; isAdult: boolean }) {
   return (
     <>
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-[#f4f2ec]">
         <img
           src={trail.img}
           alt={label}
@@ -37,7 +37,9 @@ function TrailCardInner({ trail, label }: { trail: HomeTrail; label: string }) {
         />
       </div>
       <div className="p-3">
-        <div className="text-sm font-bold text-cream">{label}</div>
+        <div className={`text-sm font-bold truncate ${isAdult ? "text-[#11231b]" : "text-cream"}`}>
+          {label}
+        </div>
         <ProgressBar value={trail.progress} className="mt-2" />
       </div>
     </>
@@ -46,12 +48,18 @@ function TrailCardInner({ trail, label }: { trail: HomeTrail; label: string }) {
 
 export function TrailsGrid({ trails, mode = "adulto" }: { trails: HomeTrail[]; mode?: "adulto" | "infantil" }) {
   const { t } = useTranslation();
+  const isAdult = mode === "adulto";
+
+  const cardClass = isAdult
+    ? "group overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white shadow-xs transition hover:-translate-y-1 hover:border-[#2d6a4f] hover:shadow-md"
+    : "group card-elev overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]";
+
   return (
     <section className="mt-8">
       <div className="mb-3 flex items-end justify-between gap-3">
         <div>
           <div className="tribal-border w-16 mb-2" />
-          <h2 className="font-display text-2xl font-black text-cream md:text-3xl">
+          <h2 className={`font-display text-2xl font-black md:text-3xl ${isAdult ? "text-[#11231b]" : "text-cream"}`}>
             {t("home.trailsTitle")}
           </h2>
         </div>
@@ -64,22 +72,21 @@ export function TrailsGrid({ trails, mode = "adulto" }: { trails: HomeTrail[]; m
           if (norm === "números" || norm === "numeros") {
             return (
               <Link key={trail.name} to="/aprender-numeros" search={{ area: mode }} className={cardClass}>
-                <TrailCardInner trail={trail} label={label} />
+                <TrailCardInner trail={trail} label={label} isAdult={isAdult} />
               </Link>
             );
           }
           return slug ? (
             <Link key={trail.name} to="/trilhas/$slug" params={{ slug }} search={{ area: mode }} className={cardClass}>
-              <TrailCardInner trail={trail} label={label} />
+              <TrailCardInner trail={trail} label={label} isAdult={isAdult} />
             </Link>
           ) : (
             <a key={trail.name} href="#aprender" className={cardClass}>
-              <TrailCardInner trail={trail} label={label} />
+              <TrailCardInner trail={trail} label={label} isAdult={isAdult} />
             </a>
           );
         })}
       </div>
-
     </section>
   );
 }

@@ -11,6 +11,7 @@ import { loadEnv } from "vite";
 // Load all env vars (including non-VITE_) into process.env for server routes
 const serverEnv = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
 Object.assign(process.env, serverEnv);
+process.env.LOVABLE_PREVIEW_HOST = process.env.LOVABLE_PREVIEW_HOST || "www.awa-tech.store";
 
 
 export default defineConfig({

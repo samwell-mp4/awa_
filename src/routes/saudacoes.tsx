@@ -2,12 +2,27 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
+import {
+  ArrowLeft,
+  Volume2,
+  Loader2,
+  Sparkles,
+  Play,
+  Pause,
+  SkipForward,
+  Radio,
+  Search,
+  Clock,
+  BookOpen,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
 import { toast } from "sonner";
 import { useLastArea } from "@/lib/last-area";
+import { Pagination } from "@/components/education/pagination";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 
 export const Route = createFileRoute("/saudacoes")({
   head: () => ({
@@ -39,11 +54,9 @@ export async function fetchSaudacoes(): Promise<Saudacao[]> {
     .eq("category", "Saudações")
     .order("term_pt");
   if (error) throw error;
-  
-  // Prefetch first few audios
-  data?.slice(0, 5).forEach(s => {
+
+  data?.slice(0, 5).forEach((s) => {
     if (s.audio_url) {
-      const img = new Image(); // Fake prefetch for audio? Better use Audio
       const a = new Audio();
       a.preload = "auto";
       a.src = s.audio_url;
@@ -71,177 +84,237 @@ export function parseExample(ex: string | null) {
   return { significado: sig, uso, variantes: var_ };
 }
 
+const CATEGORIES = ["Todas", "Cumprimentos", "Despedidas", "Agradecimentos"] as const;
+type CategoryFilter = (typeof CATEGORIES)[number];
+
+const PAGE_SIZE = 10;
+
 function SaudacoesPage() {
   const backTo = useLastArea();
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<CategoryFilter>("Todas");
+  const [page, setPage] = useState(1);
+
   const { data: list = [], isLoading } = useQuery({
     queryKey: ["saudacoes"],
     queryFn: fetchSaudacoes,
   });
 
+  const hourPick = useMemo(() => pickByHour(list), [list]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return list.filter((s) => {
+      const matchQ =
+        !q ||
+        s.term_indigenous.toLowerCase().includes(q) ||
+        s.term_pt.toLowerCase().includes(q) ||
+        (s.pronunciation && s.pronunciation.toLowerCase().includes(q));
+
+      if (!matchQ) return false;
+
+      if (category === "Todas") return true;
+      const pt = s.term_pt.toLowerCase();
+      if (category === "Cumprimentos") {
+        return (
+          pt.includes("bom dia") ||
+          pt.includes("boa tarde") ||
+          pt.includes("boa noite") ||
+          pt.includes("olá") ||
+          pt.includes("bem-vindo") ||
+          pt.includes("tudo bem")
+        );
+      }
+      if (category === "Despedidas") {
+        return (
+          pt.includes("adeus") ||
+          pt.includes("tchau") ||
+          pt.includes("até") ||
+          pt.includes("logo") ||
+          pt.includes("partir")
+        );
+      }
+      if (category === "Agradecimentos") {
+        return pt.includes("obrigad") || pt.includes("gratid") || pt.includes("agradec");
+      }
+      return true;
+    });
+  }, [list, query, category]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, category]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pagedList = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, page]);
+
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.18_0.04_145/0.75)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3.5 md:px-8">
+          <Link
+            to={backTo as "/"}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]"
+          >
             <ArrowLeft className="h-4 w-4" /> Voltar
           </Link>
-          <div className="flex items-center gap-2 font-display font-black text-cream">
-            <Sparkles className="h-5 w-5 text-leaf" /> Saudações
+          <div className="flex items-center gap-2 font-display font-black text-sm md:text-base text-[#11231b]">
+            <Sparkles className="h-4 w-4 text-[#1b4332]" /> Saudações em Patxôhã
           </div>
           <span className="w-14" />
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-10">
+      <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
+        {/* Hero Section */}
+        <section className="rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#1b4332]">
+                <Sparkles className="h-3 w-3 text-[#b47e28]" /> Vocabulário Ancestral
+              </span>
+              <h1 className="mt-3 font-display text-3xl md:text-4xl font-black text-[#11231b] tracking-tight">
+                Saudações e Cumprimentos
+              </h1>
+              <p className="mt-2 text-sm md:text-base text-[#4b5563] leading-relaxed">
+                Aprenda a cumprimentar, desejar bons momentos e agradecer no Patxôhã tradicional.
+                Toque nos cards para ouvir a pronúncia de cada palavra.
+              </p>
+            </div>
 
-        {/* Lista completa */}
+            {hourPick && (
+              <div className="rounded-2xl border border-[#1b4332]/20 bg-[#1b4332]/5 p-5 md:max-w-xs shrink-0">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1b4332]">
+                  <Clock className="h-3.5 w-3.5" /> Saudação para agora
+                </div>
+                <div className="mt-2 font-display text-xl font-black text-[#11231b]">
+                  {hourPick.term_indigenous}
+                </div>
+                <div className="text-sm font-medium text-[#4b5563]">{hourPick.term_pt}</div>
+                <div className="mt-3 flex items-center justify-between">
+                  {hourPick.pronunciation && (
+                    <span className="text-xs text-[#b47e28] font-semibold">🗣️ {hourPick.pronunciation}</span>
+                  )}
+                  <PlayBtn text={hourPick.term_indigenous} audioUrl={hourPick.audio_url} />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Busca e filtros */}
+          <div className="mt-8 space-y-3 pt-6 border-t border-[#f0eee6]">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9ca3af]" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar saudação por português ou Patxôhã..."
+                className="w-full rounded-2xl border border-[#e8e4dc] bg-[#fbfaf7] pl-11 pr-4 py-3 text-sm font-medium text-[#11231b] placeholder:text-[#9ca3af] focus:border-[#1b4332] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1b4332] shadow-xs"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap gap-1.5">
+                {CATEGORIES.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCategory(c)}
+                    className={`rounded-full border px-3.5 py-1.5 text-xs font-bold transition shadow-xs ${
+                      category === c
+                        ? "border-[#1b4332] bg-[#1b4332] text-white"
+                        : "border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+              <div className="text-xs font-medium text-[#6b7280]">
+                {filtered.length} {filtered.length === 1 ? "resultado" : "resultados"}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Lista completa paginada */}
         <section className="mt-8">
-          <h2 className="font-display text-xl md:text-2xl font-black text-cream mb-4">
-            Todas as saudações
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display text-xl md:text-2xl font-black text-[#11231b] tracking-tight">
+              Lista de saudações
+            </h2>
+            {totalPages > 1 && (
+              <span className="text-xs font-medium text-[#6b7280]">
+                Página {page} de {totalPages}
+              </span>
+            )}
+          </div>
+
           {isLoading ? (
-            <div className="flex items-center gap-2 text-foreground/60">
-              <Loader2 className="h-4 w-4 animate-spin" /> Carregando...
+            <div className="flex items-center justify-center gap-2 py-16 text-[#6b7280]">
+              <Loader2 className="h-5 w-5 animate-spin text-[#1b4332]" /> Carregando saudações...
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="rounded-2xl border border-[#e8e4dc] bg-white p-12 text-center text-[#6b7280]">
+              Nenhuma saudação encontrada com o termo "{query}".
             </div>
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {list.map((s) => (
-                <SaudacaoCard key={s.id} s={s} />
-              ))}
+            <div className="space-y-6">
+              <div className="grid gap-3.5 sm:grid-cols-2">
+                {pagedList.map((s) => (
+                  <SaudacaoCard key={s.id} s={s} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pt-4">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={(p) => {
+                      setPage(p);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    mode="adulto"
+                  />
+                </div>
+              )}
             </div>
           )}
         </section>
       </main>
+      <SiteFooter mode="adulto" />
     </div>
-  );
-}
-
-function LiveVideo({ list, loading }: { list: Saudacao[]; loading: boolean }) {
-  const [idx, setIdx] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const [source, setSource] = useState<"saudacoes" | "dicionario">("saudacoes");
-
-  const { data: full = [] } = useQuery({
-    queryKey: ["dict-patxoha-all"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("dictionary")
-        .select("id,term_pt,term_indigenous,pronunciation,example,audio_url")
-        .limit(2000);
-      if (error) throw error;
-      return (data ?? []) as Saudacao[];
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const pool = useMemo(() => {
-    const base = source === "saudacoes" ? list : full;
-    return base.filter((w) => w.term_indigenous && w.term_pt);
-  }, [source, list, full]);
-
-  useEffect(() => {
-    setIdx(0);
-  }, [source, pool.length]);
-
-  useEffect(() => {
-    if (!playing || pool.length === 0) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % pool.length), 3500);
-    return () => clearInterval(t);
-  }, [playing, pool.length]);
-
-  const current = pool[idx];
-
-  return (
-    <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-forest-deep via-bark/60 to-forest-deep shadow-2xl">
-      {/* Animated backdrop */}
-      <div className="pointer-events-none absolute inset-0 opacity-40">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-leaf/30 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gold/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-      </div>
-
-      <div className="relative p-6 md:p-10">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-red-300">
-            <Radio className="h-3.5 w-3.5 animate-pulse" /> Ao vivo — Patxôhã
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSource(source === "saudacoes" ? "dicionario" : "saudacoes")}
-              className="rounded-full border border-gold/30 bg-forest-deep/40 px-3 py-1 text-xs font-semibold text-cream hover:bg-forest-deep/70"
-            >
-              {source === "saudacoes" ? "Só saudações" : "Dicionário completo"}
-            </button>
-          </div>
-        </div>
-
-        {loading || !current ? (
-          <div className="flex h-56 items-center justify-center text-foreground/60">
-            <Loader2 className="h-6 w-6 animate-spin" />
-          </div>
-        ) : (
-          <div key={current.id} className="mt-6 min-h-[220px] animate-in fade-in zoom-in-95 duration-700">
-            <p className="text-xs uppercase tracking-widest text-leaf/80 mb-2">Palavra {idx + 1} de {pool.length}</p>
-            <h2 className="font-display text-5xl md:text-7xl font-black text-gold break-words leading-tight drop-shadow-lg">
-              {current.term_indigenous}
-            </h2>
-            <p className="mt-3 text-xl md:text-2xl text-cream/95 break-words">{current.term_pt}</p>
-            {current.pronunciation && (
-              <p className="mt-2 text-sm md:text-base text-foreground/70">🗣️ {current.pronunciation}</p>
-            )}
-          </div>
-        )}
-
-        <div className="mt-6 flex items-center justify-center gap-3">
-          <button
-            onClick={() => setPlaying((p) => !p)}
-            className="grid h-12 w-12 place-items-center rounded-full bg-gold text-forest-deep shadow-lg hover:scale-105 transition"
-            aria-label={playing ? "Pausar" : "Reproduzir"}
-          >
-            {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-          </button>
-          <button
-            onClick={() => setIdx((i) => (pool.length ? (i + 1) % pool.length : 0))}
-            className="grid h-12 w-12 place-items-center rounded-full bg-leaf/30 text-cream hover:bg-leaf/50 transition"
-            aria-label="Próxima"
-          >
-            <SkipForward className="h-5 w-5" />
-          </button>
-          {current && <PlayBtn text={current.term_indigenous} audioUrl={current.audio_url} />}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-forest-deep/60">
-          <div
-            key={`${current?.id}-${playing}`}
-            className="h-full bg-gradient-to-r from-leaf to-gold"
-            style={{
-              width: "100%",
-              animation: playing ? "shrink 3.5s linear" : "none",
-            }}
-          />
-        </div>
-        <style>{`@keyframes shrink { from { width: 0% } to { width: 100% } }`}</style>
-      </div>
-    </section>
   );
 }
 
 function SaudacaoCard({ s }: { s: Saudacao }) {
   return (
-    <div className="card-elev rounded-2xl p-4 border border-gold/15 min-w-0">
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0 flex-1">
-          <div className="font-display text-lg font-bold text-gold break-words">
-            {s.term_indigenous}
+    <div className="flex flex-col justify-between rounded-2xl border border-[#e8e4dc] bg-white p-5 shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-sm">
+      <div>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="font-display text-xl font-black text-[#1b4332] break-words">
+              {s.term_indigenous}
+            </div>
+            <div className="text-sm font-semibold text-[#11231b] break-words mt-0.5">
+              {s.term_pt}
+            </div>
+            {s.pronunciation && (
+              <div className="text-xs text-[#6b7280] mt-1.5 inline-flex items-center gap-1 font-medium">
+                <span>🗣️</span>
+                <span className="text-[#b47e28]">{s.pronunciation}</span>
+              </div>
+            )}
           </div>
-          <div className="text-sm text-cream/90 break-words">{s.term_pt}</div>
-          {s.pronunciation && (
-            <div className="text-xs text-foreground/60 mt-0.5 break-words">🗣️ {s.pronunciation}</div>
-          )}
+          <PlayBtn text={s.term_indigenous} audioUrl={s.audio_url} />
         </div>
-        <PlayBtn text={s.term_indigenous} audioUrl={s.audio_url} />
+        <AkuaCard s={s} />
       </div>
-      <AkuaCard s={s} />
     </div>
   );
 }
@@ -250,15 +323,24 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
   const { significado, uso, variantes } = parseExample(s.example);
   if (!significado && !uso && !variantes) return null;
   return (
-    <div className={`mt-3 rounded-xl border border-leaf/20 bg-forest-deep/30 p-3 ${big ? "text-sm" : "text-xs"}`}>
+    <div className={`mt-3.5 rounded-xl border border-[#e8e4dc] bg-[#fbfaf7] p-3.5 space-y-1.5 ${big ? "text-sm" : "text-xs"}`}>
       {significado && (
-        <p className="text-foreground/85"><span className="text-leaf font-bold">💡 Significado: </span>{significado}</p>
+        <p className="text-[#374151] leading-relaxed">
+          <span className="text-[#1b4332] font-bold">💡 Significado: </span>
+          {significado}
+        </p>
       )}
       {uso && (
-        <p className="text-foreground/75 mt-1"><span className="text-gold font-bold">📍 Quando usar: </span>{uso}</p>
+        <p className="text-[#4b5563] leading-relaxed">
+          <span className="text-[#b47e28] font-bold">📍 Quando usar: </span>
+          {uso}
+        </p>
       )}
       {variantes && (
-        <p className="text-foreground/75 mt-1"><span className="text-cream font-bold">🔄 Resposta/Variante: </span>{variantes}</p>
+        <p className="text-[#4b5563] leading-relaxed">
+          <span className="text-[#11231b] font-bold">🔄 Resposta/Variante: </span>
+          {variantes}
+        </p>
       )}
     </div>
   );
@@ -292,7 +374,6 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     }
   }
 
-  // Pre-load on hover/focus
   async function prefetch() {
     if (audioUrl || cacheRef.current || busy) return;
     try {
@@ -303,7 +384,6 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
     } catch {}
   }
 
-
   return (
     <button
       onClick={play}
@@ -311,7 +391,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
       onFocus={prefetch}
       disabled={busy}
       aria-label={`Ouvir ${text}`}
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+      className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#1b4332]/10 text-[#1b4332] transition hover:bg-[#1b4332] hover:text-white disabled:opacity-50 shadow-xs"
     >
       {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
     </button>

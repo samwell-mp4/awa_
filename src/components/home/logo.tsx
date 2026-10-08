@@ -38,16 +38,19 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
       </div>
 
       <div className="leading-none">
-        <div className="font-display text-xl font-black tracking-tight text-cream">
-          AWÃ <span className="text-gradient-gold">TECH</span>
+        <div className={`font-display text-xl font-black tracking-tight ${
+          mode === "infantil" ? "text-cream" : "text-[#11231b]"
+        }`}>
+          AWÃ <span className={mode === "infantil" ? "text-gradient-gold" : "text-[#2d6a4f]"}>TECH</span>
         </div>
         <div
-          className="mt-1 text-[10px] font-semibold tracking-[0.22em] text-gold/80 min-h-[1.2em]"
+          className={`mt-1 text-[10px] font-semibold tracking-[0.22em] ${
+            mode === "infantil" ? "text-gold/80" : "text-[#b47e28]"
+          } min-h-[1.2em]`}
           suppressHydrationWarning
         >
           {tagline}
         </div>
-
       </div>
     </div>
   );

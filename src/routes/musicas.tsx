@@ -11,11 +11,22 @@ import {
   ChevronRight,
   X,
   MapPin,
+  Sparkles,
+  Volume2,
 } from "lucide-react";
 import { PremiumGate } from "@/components/PremiumGate";
 import { pickLang, useLang } from "@/lib/pick-lang";
 import { useLastArea } from "@/lib/last-area";
 import { activeLineIndex, resolveDuration, resolveLyricBounds } from "@/lib/lyric-sync";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
+
+import danca from "@/assets/pataxo-danca.jpg";
+import aldeiaImg from "@/assets/pataxo-aldeia.jpg";
+import anciaoImg from "@/assets/pataxo-anciao.jpg";
+import artesanatoImg from "@/assets/pataxo-artesanato.jpg";
+import pascoalImg from "@/assets/pataxo-monte-pascoal.jpg";
+import heroWoman from "@/assets/hero-woman.jpg";
 
 export const Route = createFileRoute("/musicas")({
   ssr: false,
@@ -26,7 +37,10 @@ export const Route = createFileRoute("/musicas")({
     ],
   }),
   component: () => (
-    <PremiumGate title="Cânticos completos (Premium)" description="Assine para ouvir todos os cânticos com legendas bilíngues e vídeos imersivos.">
+    <PremiumGate
+      title="Cânticos completos (Premium)"
+      description="Assine para ouvir todos os cânticos com legendas bilíngues e vídeos imersivos."
+    >
       <MusicasPage />
     </PremiumGate>
   ),
@@ -56,13 +70,19 @@ type Song = {
   duration_seconds?: number | null;
   sync_offsets?: number[] | null;
   sync_times?: number[] | null;
-
 };
-
 
 type Ambient = { id: string; name: string; video_url: string };
 
 const ALDEIAS = ["Todas", "Aldeia Velha", "Barra Velha", "Coroa Vermelha", "Jaqueira", "Boca da Mata"] as const;
+
+const FALLBACK_COVERS = [danca, aldeiaImg, pascoalImg, anciaoImg, artesanatoImg, heroWoman];
+
+function getFallbackCover(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  return FALLBACK_COVERS[Math.abs(hash) % FALLBACK_COVERS.length];
+}
 
 function MusicasPage() {
   const backTo = useLastArea();
@@ -73,7 +93,9 @@ function MusicasPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("songs")
-        .select("id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets,sync_times")
+        .select(
+          "id,title,artist,language,audio_url,cover_url,video_url,ambient_video_id,lyrics_indigenous,lyrics_pt,description,aldeia,title_en,title_es,artist_en,artist_es,description_en,description_es,lyrics_pt_en,lyrics_pt_es,duration_seconds,sync_offsets,sync_times",
+        )
         .eq("is_active", true)
         .order("order_index")
         .order("created_at", { ascending: false });
@@ -81,14 +103,13 @@ function MusicasPage() {
       return data as Song[];
     },
   });
+
   const { data: ambients = [] } = useQuery({
     queryKey: ["ambient_videos"],
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 6,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("ambient_videos")
-        .select("id,name,video_url");
+      const { data, error } = await supabase.from("ambient_videos").select("id,name,video_url");
       if (error) throw error;
       return data as Ambient[];
     },
@@ -137,73 +158,71 @@ function MusicasPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(76,175,80,0.18),transparent_34%),linear-gradient(180deg,oklch(0.18_0.04_145),oklch(0.10_0.03_145))]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.18_0.04_145/0.9)] via-[oklch(0.15_0.04_145/0.7)] to-[oklch(0.10_0.03_145/0.95)]" />
-      </div>
-
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.15_0.04_145/0.6)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 md:px-8">
           <Link
             to={backTo as "/"}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]"
           >
             <ArrowLeft className="h-4 w-4" /> Voltar
           </Link>
-          <div className="flex items-center gap-2 text-cream font-display font-black">
-            <Music className="h-5 w-5 text-leaf" /> Cânticos
+          <div className="flex items-center gap-2 font-display font-black text-sm md:text-base text-[#11231b]">
+            <Music className="h-4 w-4 text-[#1b4332]" /> Cânticos Sagrados
           </div>
           <span className="w-14" />
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 md:px-8 py-10 md:py-16">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between border-b border-gold/20 pb-6 mb-10">
-          <div>
-            <span className="text-[10px] md:text-xs font-bold tracking-[0.35em] uppercase text-gold">
-              AWÃ TECH · Cantos Originários
+      <main className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
+        {/* Banner */}
+        <section className="rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs mb-8">
+          <div className="flex flex-col gap-4">
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#1b4332]">
+              <Sparkles className="h-3 w-3 text-[#b47e28]" /> Cantos Originários Pataxó
             </span>
-            <h1 className="mt-2 font-display text-3xl md:text-5xl font-black text-cream leading-tight">
-              Cânticos <span className="italic text-gold">Sagrados</span>
+            <h1 className="font-display text-3xl md:text-5xl font-black text-[#11231b] tracking-tight leading-tight">
+              Cânticos <span className="text-[#1b4332]">Sagrados</span>
             </h1>
-            <p className="mt-3 max-w-xl text-sm md:text-base text-foreground/70">
-              A floresta canta. Ouça em língua originária com tradução em português —
-              cada verso se acende quando chega a sua vez.
+            <p className="max-w-2xl text-sm md:text-base text-[#4b5563] leading-relaxed">
+              A floresta canta. Ouça em língua originária com tradução sincronizada em português —
+              cada verso se acende com a voz dos guerreiros e anciãos.
             </p>
+
+            {/* Aldeia Filter Pills */}
+            <div className="mt-4 flex flex-wrap gap-2 pt-4 border-t border-[#f0eee6]">
+              {ALDEIAS.map((a) => (
+                <button
+                  key={a}
+                  onClick={() => setAldeia(a)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-bold transition shadow-xs ${
+                    aldeia === a
+                      ? "border-[#1b4332] bg-[#1b4332] text-white"
+                      : "border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
+                  }`}
+                >
+                  <MapPin className="h-3 w-3" /> {a}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {ALDEIAS.map((a) => (
-            <button
-              key={a}
-              onClick={() => setAldeia(a)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition ${
-                aldeia === a
-                  ? "border-gold bg-gold text-emerald-950"
-                  : "border-gold/30 text-cream hover:bg-gold/10"
-              }`}
-            >
-              <MapPin className="h-3 w-3" /> {a}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Grid de Músicas */}
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredSongs.map((s) => (
-            <SongCard
-              key={s.id}
-              song={s}
-              onClick={() => openSong(s)}
-            />
+            <SongCard key={s.id} song={s} onClick={() => openSong(s)} />
           ))}
           {filteredSongs.length === 0 && (
-            <div className="col-span-full text-center text-foreground/60 py-12">
-              Nenhum cântico desta aldeia ainda.
+            <div className="col-span-full rounded-2xl border border-[#e8e4dc] bg-white py-16 text-center text-[#6b7280]">
+              Nenhum cântico desta aldeia disponível ainda.
             </div>
           )}
         </div>
       </main>
+
+      <SiteFooter mode="adulto" />
 
       <SoundCloudPreloads songs={songs} widgetsRef={soundCloudWidgetsRef} />
 
@@ -229,10 +248,7 @@ function SoundCloudPreloads({
   widgetsRef: { current: Record<string, any> };
 }) {
   const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
-  const soundCloudSongs = useMemo(
-    () => songs.filter((song) => scEmbed(song.audio_url)),
-    [songs],
-  );
+  const soundCloudSongs = useMemo(() => songs.filter((song) => scEmbed(song.audio_url)), [songs]);
 
   useEffect(() => {
     if (soundCloudSongs.length === 0) return;
@@ -279,7 +295,10 @@ function SoundCloudPreloads({
   if (soundCloudSongs.length === 0) return null;
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 h-px w-px overflow-hidden opacity-0">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute bottom-0 left-0 h-px w-px overflow-hidden opacity-0"
+    >
       {soundCloudSongs.map((song) => (
         <iframe
           key={song.id}
@@ -297,73 +316,65 @@ function SoundCloudPreloads({
   );
 }
 
-function SongCard({
-  song,
-  onClick,
-}: {
-  song: Song;
-  onClick: () => void;
-}) {
+function SongCard({ song, onClick }: { song: Song; onClick: () => void }) {
   const lang = useLang();
   const tTitle = pickLang(song, "title", lang);
   const tArtist = pickLang(song, "artist", lang);
+  const [imgError, setImgError] = useState(false);
+
+  const fallback = useMemo(() => getFallbackCover(song.id || song.title), [song.id, song.title]);
+  const coverSrc = (!imgError && song.cover_url) ? song.cover_url : fallback;
 
   return (
     <button
       onClick={onClick}
-      className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-gold/15 bg-card/30 text-left transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_20px_60px_-20px_rgba(249,168,37,0.35)]"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white text-left shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#1b4332]/50 hover:shadow-md"
     >
-      {/* media */}
-      <div className="absolute inset-0">
-        {song.cover_url ? (
-          <img
-            src={song.cover_url}
-            alt={tTitle || song.title}
-            loading="lazy"
-            decoding="async"
-            width={400}
-            height={500}
-            className="h-full w-full object-cover opacity-75 grayscale-[35%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
-          />
+      {/* Capa */}
+      <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#f4f2ec]">
+        <img
+          src={coverSrc}
+          alt={tTitle || song.title}
+          loading="lazy"
+          decoding="async"
+          onError={() => setImgError(true)}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
 
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-forest-deep via-bark to-leaf/40" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
-      </div>
-
-      {/* tribal corner ornament */}
-      <div className="absolute top-3 right-3 flex gap-1">
-        <span className="block h-1.5 w-1.5 rounded-full bg-gold/60" />
-        <span className="block h-1.5 w-1.5 rounded-full bg-gold/30" />
-        <span className="block h-1.5 w-1.5 rounded-full bg-gold/15" />
-      </div>
-
-      {/* play overlay */}
-      <div className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="grid h-16 w-16 place-items-center rounded-full bg-gold text-bark shadow-[0_0_40px_rgba(249,168,37,0.6)]">
-          <Play className="h-7 w-7 ml-1 fill-current" />
+        {/* Play Icon Badge */}
+        <div className="absolute inset-0 grid place-items-center opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100 bg-black/25">
+          <div className="grid h-12 w-12 place-items-center rounded-full bg-[#1b4332] text-white shadow-lg transition-transform group-hover:scale-110">
+            <Play className="h-5 w-5 ml-0.5 fill-current" />
+          </div>
         </div>
       </div>
 
-      {/* info */}
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="flex items-center gap-2 mb-1.5">
-          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">
-            {song.language}
-          </span>
-          {song.aldeia && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-gold/90">
-              <MapPin className="h-3 w-3" /> {song.aldeia}
+      {/* Detalhes */}
+      <div className="flex flex-1 flex-col justify-between p-4">
+        <div>
+          <div className="flex items-center gap-1.5 mb-2">
+            <span className="rounded-md border border-[#1b4332]/20 bg-[#1b4332]/5 px-2 py-0.5 text-[10px] font-bold text-[#1b4332] uppercase tracking-wider">
+              {song.language}
             </span>
+            {song.aldeia && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-[#e8e4dc] bg-[#fbfaf7] px-2 py-0.5 text-[10px] font-semibold text-[#6b7280]">
+                <MapPin className="h-2.5 w-2.5" /> {song.aldeia}
+              </span>
+            )}
+          </div>
+          <h3 className="font-display text-base font-black text-[#11231b] group-hover:text-[#1b4332] transition-colors line-clamp-1">
+            {tTitle || song.title}
+          </h3>
+          {song.artist && (
+            <p className="mt-1 text-xs text-[#6b7280] truncate">{tArtist || song.artist}</p>
           )}
         </div>
-        <h3 className="font-display text-xl font-black text-cream leading-tight">
-          {tTitle || song.title}
-        </h3>
-        {song.artist && (
-          <p className="mt-1 text-xs text-foreground/70 truncate">{tArtist || song.artist}</p>
-        )}
+
+        <div className="mt-3 flex items-center justify-between border-t border-[#f0eee6] pt-2 text-[11px] font-bold text-[#1b4332]">
+          <span>Ouvir cântico</span>
+          <Play className="h-3 w-3 fill-current" />
+        </div>
       </div>
     </button>
   );
@@ -399,6 +410,9 @@ function Player({
   const tArtist = pickLang(song, "artist", lang);
   const isSC = !!scEmbed(song.audio_url);
 
+  const fallback = useMemo(() => getFallbackCover(song.id || song.title), [song.id, song.title]);
+  const coverSrc = song.cover_url || fallback;
+
   const indLines = useMemo(
     () =>
       song.lyrics_indigenous
@@ -418,8 +432,6 @@ function Player({
   );
 
   const maxLen = Math.max(indLines.length, ptLines.length);
-  // Sincronização automática: a duração é distribuída proporcionalmente ao
-  // tamanho de cada verso (versos longos duram mais), com antecipação leve.
   const syncDuration = resolveDuration(duration, song.duration_seconds ?? null);
   const bounds = useMemo(
     () =>
@@ -468,7 +480,6 @@ function Player({
       });
   }, [song.id, isSC]);
 
-  // Acompanha o tempo do áudio de forma contínua para a letra seguir a voz.
   useEffect(() => {
     if (isSC) return;
     let raf = 0;
@@ -484,7 +495,6 @@ function Player({
     return () => cancelAnimationFrame(raf);
   }, [song.id, isSC]);
 
-  // SoundCloud Widget API — track progress + play/pause
   useEffect(() => {
     if (!isSC) return;
     let cancelled = false;
@@ -537,7 +547,7 @@ function Player({
           'script[src="https://w.soundcloud.com/player/api.js"]',
         );
         if (existing) {
-          existing.addEventListener("load", () => resolve());
+          existing.addEventListener("load", () => resolve(), { once: true });
           return;
         }
         const s = document.createElement("script");
@@ -582,7 +592,6 @@ function Player({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
   function toggle() {
@@ -607,17 +616,16 @@ function Player({
     }
   }
 
-
   return (
-    <div className="fixed inset-0 z-50">
-      {/* cinematic background */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex flex-col justify-between bg-black/95 text-white backdrop-blur-2xl">
+      {/* Background cinematic media */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {song.video_url ? (
           ytEmbed(song.video_url) ? (
             <iframe
               src={ytEmbed(song.video_url)!}
               allow="autoplay; encrypted-media"
-              className="absolute left-1/2 top-1/2 h-[120vh] w-[220vw] -translate-x-1/2 -translate-y-1/2 md:w-[160vw] pointer-events-none border-0"
+              className="absolute left-1/2 top-1/2 h-[120vh] w-[220vw] -translate-x-1/2 -translate-y-1/2 md:w-[160vw] pointer-events-none border-0 opacity-40"
             />
           ) : (
             <video
@@ -626,7 +634,7 @@ function Player({
               muted
               loop
               playsInline
-              className="h-full w-full object-cover scale-110"
+              className="h-full w-full object-cover scale-105 opacity-35"
             />
           )
         ) : ambient ? (
@@ -636,47 +644,43 @@ function Player({
             muted
             loop
             playsInline
-            className="h-full w-full object-cover scale-110"
-          />
-        ) : song.cover_url ? (
-          <img
-            src={song.cover_url}
-            alt=""
-            className="h-full w-full object-cover scale-110 blur-xl"
+            className="h-full w-full object-cover scale-105 opacity-35"
           />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-forest-deep via-bark to-leaf/40" />
+          <img src={coverSrc} alt="" className="h-full w-full object-cover scale-110 blur-2xl opacity-30" />
         )}
-        {/* vignette + grain */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.85)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
       </div>
 
-      {/* header */}
-      <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-5 md:p-8">
-        <div className="space-y-1">
-          <div className="text-[10px] md:text-xs font-bold tracking-[0.35em] uppercase text-gold">
-            Ouvindo agora · {song.language}
+      {/* Top Header */}
+      <div className="relative z-10 flex items-center justify-between border-b border-white/10 p-4 md:p-6 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-white/20">
+            <img src={coverSrc} alt="" className="h-full w-full object-cover" />
           </div>
-          <h2 className="font-display text-2xl md:text-4xl font-black text-cream drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-            {tTitle || song.title}
-          </h2>
-          {song.artist && (
-            <div className="text-sm text-foreground/80 italic">{tArtist || song.artist}</div>
-          )}
+          <div>
+            <div className="text-[10px] md:text-xs font-bold tracking-widest uppercase text-emerald-400">
+              Ouvindo agora · {song.language}
+            </div>
+            <h2 className="font-display text-lg md:text-xl font-black text-white leading-tight">
+              {tTitle || song.title}
+            </h2>
+            {song.artist && <div className="text-xs text-white/70">{tArtist || song.artist}</div>}
+          </div>
         </div>
+
         <button
           onClick={onClose}
-          className="grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-black/50 text-gold backdrop-blur-md hover:bg-gold/10"
+          className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
           aria-label="Fechar"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
-      {/* lyrics theater - static bilingual text */}
-      <div className="absolute inset-0 z-[5] overflow-y-auto px-4 md:px-8 pt-32 md:pt-40 pb-44 scroll-smooth">
-        <div className="mx-auto max-w-5xl space-y-12 md:space-y-16">
+      {/* Center Lyrics Theater */}
+      <div className="relative z-10 flex-1 overflow-y-auto px-4 md:px-8 py-10 scroll-smooth">
+        <div className="mx-auto max-w-4xl space-y-10 md:space-y-14">
           {Array.from({ length: maxLen }).map((_, i) => {
             const active = i === activeIdx;
             return (
@@ -685,19 +689,23 @@ function Player({
                 ref={(el) => {
                   lineRefs.current[i] = el;
                 }}
-                className={`text-center transition-all duration-500 ${
-                  active ? "scale-110" : "opacity-40"
+                className={`text-center transition-all duration-300 ${
+                  active ? "scale-105 opacity-100" : "opacity-35 hover:opacity-70"
                 }`}
               >
                 <p
-                  className={`font-display text-3xl md:text-6xl lg:text-7xl font-black leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.75)] ${
-                    active ? "text-gold" : "text-cream"
+                  className={`font-display text-2xl md:text-4xl lg:text-5xl font-black leading-tight drop-shadow-md ${
+                    active ? "text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.4)]" : "text-white"
                   }`}
                 >
                   {indLines[i] || "\u00A0"}
                 </p>
                 {ptLines[i] && (
-                  <p className="mt-3 md:mt-5 text-lg md:text-2xl lg:text-3xl italic text-foreground/80">
+                  <p
+                    className={`mt-2 md:mt-3 text-base md:text-xl italic ${
+                      active ? "text-white font-medium" : "text-white/70"
+                    }`}
+                  >
                     {ptLines[i]}
                   </p>
                 )}
@@ -705,21 +713,21 @@ function Player({
             );
           })}
           {maxLen === 0 && (
-            <p className="text-center text-foreground/60">Esta música ainda não tem letra cadastrada.</p>
+            <p className="text-center text-white/60 py-20">Esta música não tem letra sincronizada.</p>
           )}
         </div>
       </div>
 
-      {/* controls */}
-      <div className="absolute inset-x-0 bottom-0 z-10 border-t border-gold/15 bg-gradient-to-t from-black/95 via-black/80 to-black/40 backdrop-blur-xl">
-        <div className="mx-auto max-w-3xl px-4 md:px-8 py-4 md:py-6">
-          {/* progress */}
+      {/* Bottom Floating Control Bar */}
+      <div className="relative z-10 border-t border-white/10 bg-black/90 p-4 md:p-6 backdrop-blur-2xl">
+        <div className="mx-auto max-w-3xl">
+          {/* Barra de Progresso */}
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
+            <span className="text-[11px] font-semibold text-white/60 tabular-nums">
               {fmt(progress)}
             </span>
             <div
-              className="group relative flex-1 h-1.5 cursor-pointer rounded-full bg-gold/15"
+              className="group relative flex-1 h-2 cursor-pointer rounded-full bg-white/15"
               onClick={(e) => {
                 if (!duration) return;
                 const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
@@ -732,36 +740,36 @@ function Player({
               }}
             >
               <div
-                className="h-full rounded-full bg-gradient-to-r from-gold to-[oklch(0.78_0.16_70)] shadow-[0_0_12px_rgba(249,168,37,0.6)]"
+                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-300 shadow-[0_0_12px_rgba(52,211,153,0.5)]"
                 style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
               />
               <div
-                className="absolute top-1/2 h-3 w-3 -translate-y-1/2 -translate-x-1/2 rounded-full bg-cream opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ left: `${duration ? (progress / duration) * 100 : 0}%` }}
               />
             </div>
-            <span className="text-[10px] font-bold tracking-widest text-foreground/60 tabular-nums">
+            <span className="text-[11px] font-semibold text-white/60 tabular-nums">
               {fmt(duration)}
             </span>
           </div>
 
-          {/* buttons */}
+          {/* Botões de Ação */}
           <div className="mt-4 flex items-center justify-center gap-6 md:gap-10">
             <button
               disabled={!prev}
               onClick={() => prev && onChange(prev)}
-              className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
+              className="text-white/70 transition hover:text-white disabled:opacity-20"
               aria-label="Anterior"
             >
               <ChevronLeft className="h-7 w-7" />
             </button>
             <button
               onClick={toggle}
-              className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-[oklch(0.62_0.16_55)] text-bark shadow-[0_10px_40px_-5px_rgba(249,168,37,0.6)] transition-transform hover:scale-105"
+              className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-tr from-[#1b4332] to-[#2d6a4f] text-white shadow-[0_0_30px_rgba(45,106,79,0.5)] transition hover:scale-105 active:scale-95"
               aria-label={loadingAudio ? "Carregando" : playing ? "Pausar" : "Tocar"}
             >
               {loadingAudio ? (
-                <span className="h-7 w-7 animate-spin rounded-full border-2 border-bark/30 border-t-bark" />
+                <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/30 border-t-white" />
               ) : playing ? (
                 <Pause className="h-7 w-7 fill-current" />
               ) : (
@@ -771,7 +779,7 @@ function Player({
             <button
               disabled={!next}
               onClick={() => next && onChange(next)}
-              className="text-cream/70 transition-colors hover:text-gold disabled:opacity-25"
+              className="text-white/70 transition hover:text-white disabled:opacity-20"
               aria-label="Próxima"
             >
               <ChevronRight className="h-7 w-7" />
@@ -812,7 +820,6 @@ function Player({
           }}
         />
       )}
-
     </div>
   );
 }
@@ -833,7 +840,5 @@ function ytEmbed(url: string): string | null {
 
 function scEmbed(url: string): string | null {
   if (!/soundcloud\.com/.test(url)) return null;
-  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%23f9a825`;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false&color=%231b4332`;
 }
-
-

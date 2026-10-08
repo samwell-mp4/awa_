@@ -17,6 +17,8 @@ import v9 from "@/assets/videos/VID-20260701-WA0090.mp4.asset.json";
 import v10 from "@/assets/videos/VID-20260701-WA0092.mp4.asset.json";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useLastArea } from "@/lib/last-area";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
@@ -83,20 +85,24 @@ function VideosPage() {
   void t;
 
   return (
-    <div className="min-h-screen text-foreground">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.18_0.04_145/0.7)] border-b border-gold/20">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="inline-flex items-center gap-2 rounded-full border border-gold/30 px-3 py-1.5 text-sm text-cream hover:bg-gold/10">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
+
+      <main className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-10">
+        <div className="mb-6">
+          <Link
+            to={backTo as "/"}
+            className="mb-3 inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]"
+          >
             <ArrowLeft className="h-4 w-4" /> {tHome}
           </Link>
-          <h1 className="font-display text-lg font-black text-cream flex-1">{tTitle}</h1>
+          <h1 className="font-display text-3xl md:text-4xl font-black text-[#11231b] tracking-tight">
+            {tTitle}
+          </h1>
+          <p className="mt-2 text-sm text-[#4b5563] max-w-2xl leading-relaxed">{tIntro}</p>
         </div>
-      </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
-        <p className="mb-6 max-w-2xl text-sm text-foreground/70">{tIntro}</p>
-
-        <section className="mb-8 overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur">
+        <section className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs">
           <div className="relative aspect-[9/16] max-h-[720px] w-full overflow-hidden bg-black sm:aspect-video">
             <iframe
               src="https://www.instagram.com/reel/DZa2jUGOYDi/embed"
@@ -112,18 +118,15 @@ function VideosPage() {
           </div>
         </section>
 
-
-
-
         <div className="mb-6 flex flex-wrap gap-2">
           {ALDEIAS.map((a) => (
             <button
               key={a}
               onClick={() => setAldeia(a)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition ${
+              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition shadow-xs ${
                 aldeia === a
-                  ? "border-gold bg-gold text-emerald-950"
-                  : "border-gold/30 text-cream hover:bg-gold/10"
+                  ? "bg-[#1b4332] text-white"
+                  : "border border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
               }`}
             >
               <MapPin className="h-3 w-3" /> {a}
@@ -135,7 +138,7 @@ function VideosPage() {
           {filteredVideos.map((v) => {
             const i = videos.indexOf(v);
             return (
-              <article key={i} className="group overflow-hidden rounded-2xl border border-gold/25 bg-card/50 backdrop-blur transition hover:border-gold/50">
+              <article key={i} className="group overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-md">
                 <div className="relative aspect-video bg-black">
                   <video
                     src={v.url}
@@ -146,25 +149,26 @@ function VideosPage() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="p-4 space-y-3">
+                <div className="p-5 space-y-3">
                   <div>
-                    <div className="mb-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-gold/80">
+                    <div className="mb-1.5 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#b47e28]">
                       <MapPin className="h-3 w-3" /> {v.aldeia}
                     </div>
-                    <h2 className="font-display text-base font-black text-cream">{tVideos[i * 3] ?? v.title}</h2>
-                    <p className="text-xs text-gold/90 italic">{tVideos[i * 3 + 1] ?? v.short}</p>
+                    <h2 className="font-display text-lg font-black text-[#11231b] leading-tight">{tVideos[i * 3] ?? v.title}</h2>
+                    <p className="mt-1 text-xs text-[#2d6a4f] font-medium italic">{tVideos[i * 3 + 1] ?? v.short}</p>
                   </div>
-                  <p className="text-sm text-foreground/80 leading-relaxed">{tVideos[i * 3 + 2] ?? v.story}</p>
+                  <p className="text-sm text-[#4b5563] leading-relaxed">{tVideos[i * 3 + 2] ?? v.story}</p>
                 </div>
               </article>
             );
           })}
           {filteredVideos.length === 0 && (
-            <p className="col-span-full text-center text-sm text-foreground/70">Nenhum vídeo desta aldeia ainda.</p>
+            <p className="col-span-full text-center text-sm text-[#6b7280] py-12">Nenhum vídeo desta aldeia ainda.</p>
           )}
         </div>
-
       </main>
+
+      <SiteFooter mode="adulto" />
     </div>
   );
 }

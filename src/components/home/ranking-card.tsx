@@ -16,9 +16,10 @@ function initials(name: string | null | undefined) {
 }
 
 
-export function RankingCard() {
+export function RankingCard({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
   const { t } = useTranslation();
   const qc = useQueryClient();
+  const isAdult = mode === "adulto";
   const fetchTopLearners = useServerFn(getWeeklyTopLearners);
   const { data = [] as TopLearner[], isLoading, isError } = useQuery<TopLearner[]>({
     queryKey: ["weekly-top-learners"],
@@ -43,29 +44,31 @@ export function RankingCard() {
   }, [qc]);
 
   return (
-    <div className="card-elev rounded-2xl p-5">
+    <div className={isAdult ? "awa-adult-card-static p-6" : "card-elev rounded-2xl p-5"}>
       <div className="flex items-center gap-2">
-        <div className="grid h-9 w-9 place-items-center rounded-lg bg-gold/15 text-gold">
+        <div className={`grid h-9 w-9 place-items-center rounded-lg ${isAdult ? "bg-[#b47e28]/15 text-[#b47e28]" : "bg-gold/15 text-gold"}`}>
           <Award className="h-5 w-5" />
         </div>
-        <h3 className="font-display text-lg font-black text-cream">
+        <h3 className={`font-display text-lg font-black ${isAdult ? "text-[#11231b]" : "text-cream"}`}>
           {t("home.rankingTitle")}
         </h3>
-        <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-300">
-          <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" /> {t("home.rankingLive")}
+        <span className={`ml-auto inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+          isAdult ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-500/15 text-red-300"
+        }`}>
+          <span className={`h-1.5 w-1.5 rounded-full ${isAdult ? "bg-emerald-500" : "bg-red-400"} animate-pulse`} /> {t("home.rankingLive")}
         </span>
       </div>
 
       {isLoading ? (
-        <div className="mt-4 flex items-center gap-2 text-sm text-foreground/60">
-          <Loader2 className="h-4 w-4 animate-spin" /> {t("home.rankingLoading")}
+        <div className={`mt-4 flex items-center gap-2 text-sm ${isAdult ? "text-[#6b7280]" : "text-foreground/60"}`}>
+          <Loader2 className="h-4 w-4 animate-spin text-[#1b4332]" /> {t("home.rankingLoading")}
         </div>
       ) : isError ? (
-        <p className="mt-4 text-sm text-foreground/70">
+        <p className={`mt-4 text-sm ${isAdult ? "text-[#6b7280]" : "text-foreground/70"}`}>
           {t("home.rankingError")}
         </p>
       ) : data.length === 0 ? (
-        <p className="mt-4 text-sm text-foreground/70">
+        <p className={`mt-4 text-sm ${isAdult ? "text-[#6b7280]" : "text-foreground/70"}`}>
           {t("home.rankingEmpty")}
         </p>
       ) : (
@@ -73,23 +76,39 @@ export function RankingCard() {
           {data.map((u, i) => (
             <li
               key={u.user_id}
-              className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-gold/20 bg-card/60 px-3 py-2.5"
+              className={`grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border px-3 py-2.5 transition ${
+                isAdult
+                  ? "border-[#e8e4dc] bg-[#faf9f6] hover:bg-white hover:border-[#1b4332]/40"
+                  : "border-gold/20 bg-card/60"
+              }`}
             >
-              <span className={`w-5 text-center text-xs font-bold ${i === 0 ? "text-gold" : "text-foreground/60"}`}>
+              <span className={`w-5 text-center text-xs font-bold ${
+                i === 0
+                  ? isAdult ? "text-[#b47e28]" : "text-gold"
+                  : isAdult ? "text-[#6b7280]" : "text-foreground/60"
+              }`}>
                 {i === 0 ? <Crown className="mx-auto h-4 w-4" /> : i + 1}
               </span>
               {u.photo_url ? (
                 <img loading="lazy" decoding="async" src={u.photo_url} alt="" className="h-9 w-9 rounded-full object-cover" />
               ) : (
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/25 text-xs font-bold text-cream">
+                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-xs font-bold ${
+                  isAdult ? "bg-[#1b4332]/10 text-[#1b4332]" : "bg-leaf/25 text-cream"
+                }`}>
                   {initials(u.name)}
                 </span>
               )}
               <span className="min-w-0">
-                <span className="block truncate text-sm font-semibold text-cream">{u.name}</span>
-                {i === 0 ? <span className="block text-[10px] font-bold uppercase tracking-wider text-gold">{t("home.rankingTop")}</span> : null}
+                <span className={`block truncate text-sm font-semibold ${isAdult ? "text-[#1f2937]" : "text-cream"}`}>{u.name}</span>
+                {i === 0 ? (
+                  <span className={`block text-[10px] font-bold uppercase tracking-wider ${isAdult ? "text-[#b47e28]" : "text-gold"}`}>
+                    {t("home.rankingTop")}
+                  </span>
+                ) : null}
               </span>
-              <span className="whitespace-nowrap text-xs font-bold text-gold">{u.points} {t("home.rankingPts")}</span>
+              <span className={`whitespace-nowrap text-xs font-bold ${isAdult ? "text-[#1b4332]" : "text-gold"}`}>
+                {u.points} {t("home.rankingPts")}
+              </span>
             </li>
           ))}
         </ul>

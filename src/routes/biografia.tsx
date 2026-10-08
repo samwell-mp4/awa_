@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Leaf, Heart, Globe, Target, Sparkles, Users } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PageListenButton } from "@/components/PageListenButton";
+import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import heroWoman from "@/assets/hero-woman.jpg";
@@ -32,58 +34,40 @@ export const Route = createFileRoute("/biografia")({
 function BiografiaPage() {
   const backTo = useLastArea();
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.85)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-8">
-          <Link to={backTo as "/"} className="flex items-center gap-2.5">
-            <img
-              loading="lazy"
-              decoding="async"
-              src={logoSrc}
-              alt="AWÃ TECH"
-              className="h-10 w-10 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
-            />
-            <div className="leading-none">
-              <div className="font-display text-lg font-black tracking-tight text-cream">
-                AWÃ <span className="text-leaf">TECH</span>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to={backTo as "/"}
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
+      <SiteHeader mode="adulto" />
 
-      <main className="mx-auto max-w-5xl px-4 py-10 md:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-10">
+        <Link
+          to={backTo as "/"}
+          className="mb-4 inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]"
+        >
+          <ArrowLeft className="h-4 w-4" /> Voltar
+        </Link>
         <div className="mb-6 flex justify-center"><PageListenButton /></div>
+
         {/* Hero */}
-        <section className="relative overflow-hidden rounded-3xl border border-gold/20 bg-card/40">
+        <section className="relative overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs">
           <div className="absolute inset-0">
             <img
               loading="lazy"
               decoding="async"
               src={heroWoman}
               alt="Mulher indígena na floresta"
-              className="h-full w-full object-cover opacity-25"
+              className="h-full w-full object-cover opacity-15"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.12_0.03_145/0.95)] via-[oklch(0.12_0.03_145/0.75)] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent" />
           </div>
-          <div className="relative px-6 py-12 md:px-12 md:py-16">
+          <div className="relative px-6 py-10 md:px-12 md:py-14">
             <div className="max-w-2xl">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-semibold text-gold">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#1b4332]/20 bg-[#1b4332]/10 px-3.5 py-1 text-xs font-bold text-[#1b4332]">
                 <Sparkles className="h-3.5 w-3.5" />
                 Nossa história
               </div>
-              <h1 className="font-display text-3xl font-extrabold leading-tight text-cream md:text-5xl">
+              <h1 className="font-display text-3xl font-black leading-tight text-[#11231b] md:text-5xl tracking-tight">
                 AWÃ TECH
               </h1>
-              <p className="mt-4 text-lg text-foreground/80 md:text-xl">
+              <p className="mt-3 text-base text-[#4b5563] md:text-lg leading-relaxed">
                 Tecnologia que preserva a memória, fortalece as raízes e conecta o futuro à
                 sabedoria ancestral.
               </p>
@@ -92,20 +76,20 @@ function BiografiaPage() {
         </section>
 
         {/* Intro */}
-        <section className="mt-10 space-y-4 text-foreground/85">
-          <p className="text-lg leading-relaxed">
-            O <strong className="text-cream">Awã Tech</strong> nasceu com a missão de unir a
+        <section className="mt-10 space-y-4 text-[#4b5563] text-base md:text-lg leading-relaxed">
+          <p>
+            O <strong className="text-[#11231b] font-bold">Awã Tech</strong> nasceu com a missão de unir a
             tecnologia à sabedoria ancestral dos povos indígenas. Criado para preservar, valorizar e
             ensinar as línguas e culturas originárias do Brasil, o projeto busca garantir que esses
             conhecimentos continuem vivos e sejam compartilhados com as futuras gerações.
           </p>
-          <p className="leading-relaxed">
+          <p>
             Por meio de um aplicativo moderno e acessível, o Awã Tech oferece aulas de idiomas
             indígenas, áudios com pronúncia de falantes nativos, histórias tradicionais, músicas,
             vídeos, jogos educativos e conteúdos culturais. A plataforma conecta tradição e inovação,
             tornando o aprendizado envolvente para crianças, jovens e adultos.
           </p>
-          <p className="leading-relaxed">
+          <p>
             Mais do que um aplicativo, o Awã Tech é um movimento de valorização da identidade, da
             memória e do patrimônio cultural dos povos originários. Seu propósito é fortalecer as
             comunidades indígenas, promover o respeito à diversidade cultural e aproximar pessoas de
@@ -115,7 +99,7 @@ function BiografiaPage() {
 
         {/* Values */}
         <section className="mt-12">
-          <h2 className="mb-6 font-display text-2xl font-bold text-cream">Nossos pilares</h2>
+          <h2 className="mb-6 font-display text-2xl font-black text-[#11231b] tracking-tight">Nossos pilares</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Pillar
               icon={Heart}
@@ -152,8 +136,8 @@ function BiografiaPage() {
 
         {/* Timeline / Story */}
         <section className="mt-14">
-          <h2 className="mb-6 font-display text-2xl font-bold text-cream">Caminho da AWÃ TECH</h2>
-          <div className="space-y-6 border-l-2 border-gold/30 pl-6">
+          <h2 className="mb-6 font-display text-2xl font-black text-[#11231b] tracking-tight">Caminho da AWÃ TECH</h2>
+          <div className="space-y-6 border-l-2 border-[#1b4332]/30 pl-6">
             <Milestone
               year="Origem"
               title="O sonho de uma língua viva"
@@ -162,12 +146,12 @@ function BiografiaPage() {
             <Milestone
               year="Construção"
               title="Dicionário, trilhas e Professor Akuã"
-              text="Organizamos milhares de palavras, criamos trilhas de aprendizado e desenvolvemos o assistente virtual com base no dicionário Pataxôhã."
+              text="Organizamos milhares de palavras, criamos trilhas de aprendizado e desenvolvemos o assistente virtual com base no dicionário Pataxó."
             />
             <Milestone
               year="Hoje"
               title="Músicas, vídeos e histórias"
-              text="A plataforma cresce com galeria de músicas bilingues, vídeos da aldeia e narrativas sobre cosmovisão, grafismos e resistência Pataxó."
+              text="A plataforma cresce com galeria de músicas bilíngues, vídeos da aldeia e narrativas sobre cosmovisão, grafismos e resistência Pataxó."
             />
             <Milestone
               year="Futuro"
@@ -178,28 +162,28 @@ function BiografiaPage() {
         </section>
 
         {/* CTA */}
-        <section className="mt-14 rounded-2xl border border-gold/20 bg-gradient-to-br from-leaf/20 to-forest-deep/20 p-6 text-center md:p-10">
-          <h2 className="font-display text-2xl font-bold text-cream">Faça parte da jornada</h2>
-          <p className="mx-auto mt-3 max-w-xl text-foreground/80">
+        <section className="mt-14 rounded-3xl border border-[#e8e4dc] bg-white p-6 text-center md:p-10 shadow-xs">
+          <h2 className="font-display text-2xl md:text-3xl font-black text-[#11231b] tracking-tight">Faça parte da jornada</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm md:text-base text-[#4b5563]">
             Explore o dicionário, ouça as músicas, converse com o Professor Akuã e descubra as
             histórias que tornam a AWÃ TECH uma ponte entre mundos.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
               to="/dicionario"
-              className="inline-flex items-center justify-center rounded-full bg-gold px-6 py-2.5 text-sm font-bold text-forest-deep transition hover:bg-gold/90"
+              className="inline-flex items-center justify-center rounded-xl bg-[#1b4332] px-6 py-2.5 text-xs font-bold text-white shadow-xs transition hover:bg-[#2d6a4f]"
             >
               Dicionário
             </Link>
             <Link
               to="/musicas"
-              className="inline-flex items-center justify-center rounded-full border border-gold/40 bg-card/60 px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-gold/10"
+              className="inline-flex items-center justify-center rounded-xl border border-[#e8e4dc] bg-[#faf9f6] px-6 py-2.5 text-xs font-bold text-[#1b4332] shadow-xs transition hover:border-[#1b4332]"
             >
               Músicas
             </Link>
             <Link
               to="/professor"
-              className="inline-flex items-center justify-center rounded-full border border-gold/40 bg-card/60 px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-gold/10"
+              className="inline-flex items-center justify-center rounded-xl border border-[#e8e4dc] bg-[#faf9f6] px-6 py-2.5 text-xs font-bold text-[#1b4332] shadow-xs transition hover:border-[#1b4332]"
             >
               Professor Akuã
             </Link>
@@ -207,8 +191,7 @@ function BiografiaPage() {
         </section>
       </main>
 
-      <PublicFooter />
-
+      <SiteFooter mode="adulto" />
     </div>
   );
 }
@@ -223,12 +206,12 @@ function Pillar({
   text: string;
 }) {
   return (
-    <div className="rounded-2xl border border-gold/15 bg-card/40 p-5 transition hover:border-gold/30">
-      <div className="grid h-10 w-10 place-items-center rounded-full bg-leaf/15 text-leaf">
+    <div className="rounded-2xl border border-[#e8e4dc] bg-white p-5 shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-md">
+      <div className="grid h-10 w-10 place-items-center rounded-full bg-[#1b4332]/10 text-[#1b4332]">
         <Icon className="h-5 w-5" />
       </div>
-      <h3 className="mt-4 font-semibold text-cream">{title}</h3>
-      <p className="mt-1 text-sm leading-relaxed text-foreground/75">{text}</p>
+      <h3 className="mt-4 font-bold text-base text-[#11231b]">{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-[#4b5563]">{text}</p>
     </div>
   );
 }
@@ -236,10 +219,10 @@ function Pillar({
 function Milestone({ year, title, text }: { year: string; title: string; text: string }) {
   return (
     <div className="relative">
-      <span className="absolute -left-[31px] top-1 grid h-4 w-4 place-items-center rounded-full bg-gold" />
-      <div className="text-xs font-bold uppercase tracking-wider text-gold">{year}</div>
-      <h3 className="mt-1 font-semibold text-cream">{title}</h3>
-      <p className="mt-1 text-sm leading-relaxed text-foreground/75">{text}</p>
+      <span className="absolute -left-[31px] top-1 grid h-4 w-4 place-items-center rounded-full bg-[#1b4332]" />
+      <div className="text-xs font-bold uppercase tracking-wider text-[#b47e28]">{year}</div>
+      <h3 className="mt-1 font-bold text-base text-[#11231b]">{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-[#4b5563]">{text}</p>
     </div>
   );
 }

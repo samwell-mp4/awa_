@@ -397,7 +397,7 @@ function NarratablePhoto({
   const { speaking, loading, toggle, prefetch } = useNarration(text);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-gold/30 shadow-2xl shadow-black/50">
+    <div className="relative overflow-hidden rounded-3xl border border-[#e8e4dc] shadow-md">
       <button
         type="button"
         onClick={toggle}
@@ -405,7 +405,7 @@ function NarratablePhoto({
         onTouchStart={prefetch}
         onFocus={prefetch}
         disabled={loading}
-        className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60"
+        className="group relative block w-full cursor-pointer text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1b4332]/40"
         aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
       >
         <img
@@ -575,7 +575,7 @@ function NarratableVideo({
 
   const mediaStack = (
     <div
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-none border-y border-gold/30 bg-cover bg-center shadow-2xl shadow-black/50 sm:aspect-video sm:rounded-3xl sm:border"
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-none border-y border-[#e8e4dc] bg-cover bg-center shadow-md sm:aspect-video sm:rounded-3xl sm:border"
       style={{ backgroundImage: `url(${poster})`, backgroundColor: "#1a0f0a", isolation: "isolate" }}
     >
       <video
@@ -633,7 +633,7 @@ function NarratableVideo({
           onFocus={prefetch}
           disabled={loading}
           aria-label={speaking ? "Parar narração" : "Tocar história em áudio"}
-          className="block w-full rounded-none focus:outline-none focus-visible:ring-4 focus-visible:ring-gold/60 sm:rounded-3xl"
+          className="block w-full rounded-none focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1b4332]/40 sm:rounded-3xl"
         >
           {mediaStack}
         </button>
@@ -692,44 +692,31 @@ function HistoriasPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[oklch(0.16_0.04_145)] text-amber-50">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
       {/* Hero */}
-      <header className="relative overflow-visible">
-        <div className="absolute inset-0">
-          <img
-            loading="lazy"
-            decoding="async"
-            src={danca}
-            alt="Dança ritual Pataxó na floresta"
-            width={1920}
-            height={1080}
-            className="h-full w-full object-cover opacity-60"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_145/0.5)] via-[oklch(0.16_0.04_145/0.75)] to-[oklch(0.16_0.04_145)]" />
-        </div>
-
-        <SiteHeader showBackButton />
-        <div className="relative mx-auto max-w-5xl px-5 pt-8 pb-20 md:pt-12 md:pb-28">
-          <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gold">
+      <header className="relative border-b border-[#e8e4dc] bg-white">
+        <SiteHeader mode="adulto" showBackButton />
+        <div className="relative mx-auto max-w-5xl px-5 py-12 md:py-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1b4332]">
             🪶 <T>Histórias do Povo</T>
-          </p>
-          <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">
+          </div>
+          <h1 className="mt-4 font-serif text-3xl sm:text-4xl leading-tight text-[#11231b] md:text-5xl lg:text-6xl font-black">
             <T>Pataxó</T> —{" "}
-            <span className="text-gold"><T>guardiões da Mata Atlântica</T></span>
+            <span className="text-[#1b4332]"><T>guardiões da Mata Atlântica</T></span>
           </h1>
-          <p className="mt-5 max-w-2xl text-base text-amber-100/85 md:text-lg">
+          <p className="mt-4 max-w-2xl text-base text-[#4b5563] md:text-lg leading-relaxed">
             <T>Origem, território, língua, espiritualidade, arte e resistência de um povo que faz da cultura sua arma mais bonita.</T>
           </p>
         </div>
       </header>
 
       {/* Sections */}
-      <main className="mx-auto max-w-5xl px-5 pb-32">
+      <main className="mx-auto max-w-5xl px-5 pt-10 pb-32">
         {/* História Narrativa — Aldeia Velha */}
-        <section className="mb-16 md:mb-24 -mt-10 md:-mt-14">
+        <section className="mb-14 md:mb-20">
           <Link
             to="/aldeia-velha"
-            className="group grid overflow-hidden rounded-3xl border border-gold/30 bg-black/40 shadow-[var(--shadow-gold)] transition hover:-translate-y-1 md:grid-cols-2"
+            className="group grid overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-md md:grid-cols-2"
           >
             <div className="relative min-h-[220px] md:min-h-[320px]">
               <img
@@ -739,19 +726,21 @@ function HistoriasPage() {
                 decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
-            <div className="p-6 md:p-9">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold">
-                🪶 <T>História Narrativa</T>
-              </p>
-              <h2 className="mt-3 font-serif text-2xl leading-tight text-amber-50 md:text-4xl">
-                <T>Somos Todos</T> <span className="text-gold"><T>Aldeia Velha</T></span>
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-amber-100/85 md:text-base">
-                <T>A história completa do território ancestral Pataxó contada pelos próprios moradores: memória, retomada, território, escola, língua Patxôhã, cultura, saúde e projetos — com fotos e documentários da comunidade.</T>
-              </p>
-              <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold">
+            <div className="p-6 md:p-9 flex flex-col justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.25em] font-bold text-[#1b4332]">
+                  🪶 <T>História Narrativa</T>
+                </p>
+                <h2 className="mt-2 font-serif text-2xl leading-tight text-[#11231b] md:text-3xl font-black">
+                  <T>Somos Todos</T> <span className="text-[#1b4332]"><T>Aldeia Velha</T></span>
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[#4b5563] md:text-base">
+                  <T>A história completa do território ancestral Pataxó contada pelos próprios moradores: memória, retomada, território, escola, língua Patxôhã, cultura, saúde e projetos — com fotos e documentários da comunidade.</T>
+                </p>
+              </div>
+              <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-[#1b4332] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-xs transition group-hover:bg-[#2d6a4f]">
                 <T>Ler a história</T> →
               </span>
             </div>
@@ -759,10 +748,10 @@ function HistoriasPage() {
         </section>
 
         {/* Intercâmbio Cultural e Territorial */}
-        <section className="mb-16 md:mb-24">
+        <section className="mb-14 md:mb-20">
           <Link
             to="/intercambio"
-            className="group grid overflow-hidden rounded-3xl border border-gold/25 bg-black/40 transition hover:-translate-y-1 md:grid-cols-2"
+            className="group grid overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-md md:grid-cols-2"
           >
             <div className="relative min-h-[200px] md:min-h-[280px]">
               <img
@@ -772,19 +761,21 @@ function HistoriasPage() {
                 decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
-            <div className="p-6 md:p-9">
-              <p className="text-xs uppercase tracking-[0.3em] text-gold">
-                🌿 <T>Categoria de histórias</T>
-              </p>
-              <h2 className="mt-3 font-serif text-2xl leading-tight text-amber-50 md:text-4xl">
-                <T>Intercâmbio</T> <span className="text-gold"><T>Cultural e Territorial</T></span>
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-amber-100/85 md:text-base">
-                <T>Relatos dos estudantes, visitas às comunidades, experiências culturais, territórios visitados, depoimentos, fotos e vídeos do intercâmbio da Escola Indígena Pataxó Aldeia Velha.</T>
-              </p>
-              <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold">
+            <div className="p-6 md:p-9 flex flex-col justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.25em] font-bold text-[#1b4332]">
+                  🌿 <T>Categoria de histórias</T>
+                </p>
+                <h2 className="mt-2 font-serif text-2xl leading-tight text-[#11231b] md:text-3xl font-black">
+                  <T>Intercâmbio</T> <span className="text-[#1b4332]"><T>Cultural e Territorial</T></span>
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[#4b5563] md:text-base">
+                  <T>Relatos dos estudantes, visitas às comunidades, experiências culturais, territórios visitados, depoimentos, fotos e vídeos do intercâmbio da Escola Indígena Pataxó Aldeia Velha.</T>
+                </p>
+              </div>
+              <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-[#1b4332] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-xs transition group-hover:bg-[#2d6a4f]">
                 <T>Abrir intercâmbio</T> →
               </span>
             </div>
@@ -792,11 +783,13 @@ function HistoriasPage() {
         </section>
 
         {/* Ancião Josa — destaque no topo */}
-        <section className="mb-16 md:mb-24">
+        <section className="mb-14 md:mb-20 rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🪶 <T>Guardião da Memória</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-5xl">
-              <T>Ancião</T> <span className="text-gold">Josa</span> — <T>a história de quem nunca desistiu de sua aldeia</T>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#1b4332]">
+              🪶 <T>Guardião da Memória</T>
+            </span>
+            <h2 className="mt-3 font-serif text-3xl text-[#11231b] md:text-4xl font-black">
+              <T>Ancião</T> <span className="text-[#1b4332]">Josa</span> — <T>a história de quem nunca desistiu de sua aldeia</T>
             </h2>
           </div>
 
@@ -809,11 +802,11 @@ function HistoriasPage() {
               captionBelow
             />
 
-            <div className="space-y-4 text-amber-100/90 leading-relaxed">
+            <div className="space-y-4 text-[#374151] leading-relaxed">
               <p><T>Desde jovem, Josa aprendeu com os antepassados que a terra não é apenas chão onde se pisa: é a mãe que alimenta, que guarda os mortos e que ensina os vivos.</T></p>
               <p><T>Por toda a sua vida, esteve na linha de frente da luta — defendeu o território contra invasões, denunciou danos às matas e aos rios, e lutou para que a língua Patxôhã, as pinturas, as cantigas e os saberes não desaparecessem com o tempo.</T></p>
               <p><T>Muitas vezes enfrentou dificuldades, mas nunca recuou. Sabia que lutava não só por si, mas por todos os que vieram antes e por todos os que viriam depois.</T></p>
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+              <blockquote className="rounded-2xl border-l-4 border-[#1b4332] bg-[#fbfaf7] p-5 font-serif text-lg italic text-[#11231b]">
                 <T>“Nossa tradição não é coisa do passado. É o que mantém viva a nossa identidade, a nossa ligação com a natureza e o nosso direito de estar aqui, na terra que é nossa.”</T>
               </blockquote>
 
@@ -824,31 +817,30 @@ function HistoriasPage() {
                   { t: "Sabedoria", d: "Os mais velhos são livros vivos do povo." },
                   { t: "Resistência", d: "Enquanto houver quem guarde, a aldeia segue viva." },
                 ].map((b) => (
-                  <div key={b.t} className="rounded-2xl border border-gold/25 bg-black/30 p-3">
-                    <p className="font-serif text-gold"><T>{b.t}</T></p>
-                    <p className="mt-1 text-amber-100/80"><T>{b.d}</T></p>
+                  <div key={b.t} className="rounded-2xl border border-[#e8e4dc] bg-[#fbfaf7] p-3.5">
+                    <p className="font-serif font-bold text-[#1b4332]"><T>{b.t}</T></p>
+                    <p className="mt-1 text-xs text-[#4b5563]"><T>{b.d}</T></p>
                   </div>
                 ))}
               </div>
 
-              <p className="pt-2 text-center font-serif text-sm uppercase tracking-[0.3em] text-gold">
+              <p className="pt-2 text-center font-serif text-xs uppercase tracking-[0.25em] text-[#1b4332] font-bold">
                 <T>Aldeia Velha · Povo Pataxó · Nossa terra, nossa vida</T>
               </p>
             </div>
-
           </div>
         </section>
 
-
         {/* In memoriam — ancião João */}
-        <section className="mb-16 md:mb-24">
+        <section className="mb-14 md:mb-20 rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">🕯️ <T>In memoriam</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
-              <T>A história de quem</T> <span className="text-gold"><T>nunca desistiu</T></span> <T>de sua aldeia</T>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#b47e28]">
+              🕯️ <T>In memoriam</T>
+            </span>
+            <h2 className="mt-3 font-serif text-3xl text-[#11231b] md:text-4xl font-black">
+              <T>A história de quem</T> <span className="text-[#1b4332]"><T>nunca desistiu</T></span> <T>de sua aldeia</T>
             </h2>
           </div>
-
 
           <div className="flex flex-col gap-8">
             <NarratableVideo
@@ -859,22 +851,20 @@ function HistoriasPage() {
               captionBelow
             />
 
-            <div className="space-y-4 text-amber-100/90 leading-relaxed">
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-black/30 p-5 font-serif text-lg italic text-amber-50">
+            <div className="space-y-4 text-[#374151] leading-relaxed">
+              <blockquote className="rounded-2xl border-l-4 border-[#1b4332] bg-[#fbfaf7] p-5 font-serif text-lg italic text-[#11231b]">
                 <T>“Enquanto houver respeito e união, nosso povo seguirá forte. Essa é a nossa cultura, essa é a nossa vida.”</T>
               </blockquote>
-              <p><T>Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixou a cabeça. Lutou pela terra, pela língua, pela cultura — e por cada criança que sonha com um futuro melhor.</T></p>
+              <p><T>Ele foi ancião do povo Pataxó. Viu a aldeia mudar, enfrentou muitas lutas, mas nunca baixei a cabeça. Lutou pela terra, pela língua, pela cultura — e por cada criança que sonha com um futuro melhor.</T></p>
               <p><T>Ser ancião, dizia ele, é mais que ter cabelos brancos: é guardar as histórias, ensinar com o exemplo, e plantar hoje para que a aldeia floresça amanhã. Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê.</T></p>
-              <p className="font-serif text-gold">
+              <p className="font-serif text-[#1b4332] font-bold text-center pt-2">
                 <T>Somos povo Pataxó · Somos natureza · Somos memória · Somos futuro.</T>
               </p>
             </div>
-
           </div>
         </section>
 
-
-        <div className="space-y-16 md:space-y-24">
+        <div className="space-y-14 md:space-y-20">
           {translatedSections.map((s, i) => {
             const Icon = s.icon;
             const reverse = i % 2 === 1;
@@ -882,30 +872,30 @@ function HistoriasPage() {
               <section
                 key={s.id}
                 id={s.id}
-                className={`grid items-center gap-8 md:grid-cols-2 ${
+                className={`grid items-center gap-8 rounded-3xl border border-[#e8e4dc] bg-white p-6 md:p-10 shadow-xs md:grid-cols-2 ${
                   reverse ? "md:[&>*:first-child]:order-2" : ""
                 }`}
               >
-                <div className="relative">
+                <div className="relative overflow-hidden rounded-2xl border border-[#e8e4dc]">
                   <NarratablePhoto
                     src={s.image}
                     alt={s.title}
                     text={`${s.title}. ${s.body.join(" ")}`}
                   />
-                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs text-amber-100 backdrop-blur">
-                    <Icon className="h-3.5 w-3.5 text-gold" />
+                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs text-[#11231b] backdrop-blur font-bold shadow-xs">
+                    <Icon className="h-3.5 w-3.5 text-[#1b4332]" />
                     {s.title}
                   </div>
                 </div>
 
                 <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    <Icon className="h-3.5 w-3.5" /> <T>Capítulo</T> {i + 1}
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3 py-1 text-xs uppercase tracking-widest text-[#1b4332] font-bold">
+                    <Icon className="h-3.5 w-3.5 text-[#1b4332]" /> <T>Capítulo</T> {i + 1}
                   </div>
-                  <h2 className="mt-3 font-serif text-3xl text-amber-50 md:text-4xl">
+                  <h2 className="mt-3 font-serif text-2xl md:text-3xl font-black text-[#11231b]">
                     {s.title}
                   </h2>
-                  <div className="mt-4 space-y-3 text-amber-100/85 leading-relaxed">
+                  <div className="mt-4 space-y-3 text-sm md:text-base text-[#4b5563] leading-relaxed">
                     {s.body.map((p, idx) => (
                       <p key={idx}>{p}</p>
                     ))}
@@ -917,44 +907,45 @@ function HistoriasPage() {
         </div>
 
         {/* Álbum cultural */}
-        <section className="mt-20">
+        <section className="mt-16 md:mt-24">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-gold">📸 <T>Álbum do Povo</T></p>
-            <h2 className="mt-2 font-serif text-3xl text-amber-50 md:text-4xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#1b4332] shadow-xs">
+              📸 <T>Álbum do Povo</T>
+            </span>
+            <h2 className="mt-3 font-serif text-3xl text-[#11231b] md:text-4xl font-black">
               <T>Rostos, pinturas e rituais Pataxó</T>
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-amber-100/80">
+            <p className="mx-auto mt-2 max-w-2xl text-sm md:text-base text-[#4b5563]">
               <T>Cada foto é um pedaço vivo da cultura — pinturas, cocares e gerações que caminham juntas.</T>
             </p>
           </div>
 
           <AldeiaFilterAndAlbum items={translatedAlbum} />
-
         </section>
 
         {/* Closing */}
-        <div className="mt-20 rounded-3xl border border-gold/25 bg-gradient-to-br from-black/40 to-emerald-950/40 p-8 text-center backdrop-blur">
-          <p className="font-serif text-2xl text-gold">Ahuanã!</p>
-          <p className="mt-2 text-amber-100/85">
+        <div className="mt-16 md:mt-24 rounded-3xl border border-[#e8e4dc] bg-white p-8 md:p-12 text-center shadow-xs">
+          <p className="font-serif text-3xl font-black text-[#1b4332]">Ahuanã!</p>
+          <p className="mt-2 text-sm md:text-base text-[#4b5563] max-w-lg mx-auto">
             <T>Que estas histórias caminhem com você. Aprenda a língua, ouça os cantos e ajude a manter viva a memória Pataxó.</T>
           </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
               to="/professor"
-              className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-emerald-950 hover:brightness-110"
+              className="rounded-full bg-[#1b4332] px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-[#2d6a4f] transition"
             >
               <T>Conversar com Professor Akuã</T>
             </Link>
             <Link
               to="/musicas"
-              className="rounded-full border border-gold/40 px-5 py-2 text-sm text-amber-100 hover:bg-white/5"
+              className="rounded-full border border-[#e8e4dc] bg-white px-6 py-3 text-sm font-bold text-[#11231b] hover:border-[#1b4332] transition shadow-xs"
             >
               <T>Ouvir cantos Pataxó</T>
             </Link>
           </div>
         </div>
-
       </main>
+      <SiteFooter mode="adulto" />
     </div>
   );
 }
@@ -969,10 +960,10 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
           <button
             key={a}
             onClick={() => setAldeia(a)}
-            className={`rounded-full border px-3 py-1.5 text-xs transition ${
+            className={`rounded-full border px-3.5 py-1.5 text-xs font-bold transition shadow-xs ${
               aldeia === a
-                ? "border-gold bg-gold text-emerald-950"
-                : "border-gold/30 text-amber-100 hover:bg-white/5"
+                ? "border-[#1b4332] bg-[#1b4332] text-white"
+                : "border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
             }`}
           >
             <MapPin className="mr-1 inline h-3 w-3" /> <T>{a}</T>
@@ -983,7 +974,7 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
         {filtered.map((item) => (
           <figure
             key={item.title}
-            className="group overflow-hidden rounded-3xl border border-gold/25 bg-black/30 shadow-xl shadow-black/40 backdrop-blur"
+            className="group overflow-hidden rounded-3xl border border-[#e8e4dc] bg-white shadow-xs transition hover:shadow-md hover:border-[#1b4332]/50"
           >
             <div className="aspect-[4/5] overflow-hidden">
               <img
@@ -994,16 +985,16 @@ function AldeiaFilterAndAlbum({ items }: { items: typeof album }) {
               />
             </div>
             <figcaption className="p-5">
-              <div className="mb-1 inline-flex items-center gap-1 text-xs text-gold/80">
+              <div className="mb-1 inline-flex items-center gap-1 text-xs font-semibold text-[#1b4332]">
                 <MapPin className="h-3 w-3" /> {item.aldeia}
               </div>
-              <h3 className="font-serif text-lg text-gold">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-amber-100/85">{item.text}</p>
+              <h3 className="font-serif text-lg font-bold text-[#11231b]">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[#4b5563]">{item.text}</p>
             </figcaption>
           </figure>
         ))}
         {filtered.length === 0 && (
-          <p className="col-span-full text-center text-sm text-amber-100/70">
+          <p className="col-span-full text-center text-sm text-[#6b7280]">
             <T>Nenhuma foto desta aldeia ainda.</T>
           </p>
         )}
