@@ -208,7 +208,6 @@ function AdultoHome() {
           data: {
             text: saudacao.term_indigenous,
             voice: "onyx",
-            environment: getPaddleEnvironment(),
           },
         });
         if (res.error || !res.audio_base64) {
@@ -697,7 +696,8 @@ function AdultoHome() {
                         </Link>
                       ) : (
                         <Link
-                          to="/trilhas/saudacoes"
+                          to="/trilhas/$slug"
+                          params={{ slug: "saudacoes" }}
                           search={{ area: "adulto" }}
                           className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#e2ded5] bg-[#faf9f6] py-2 text-xs font-bold text-[#1b4332] hover:bg-[#1b4332] hover:text-white transition"
                         >
