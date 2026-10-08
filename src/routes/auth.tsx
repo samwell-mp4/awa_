@@ -55,19 +55,42 @@ function AuthPage() {
 
   async function handleGoogle() {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-      extraParams: {
-        prompt: "select_account",
-      },
-    });
-    if (result.error) {
-      toast.error("Não foi possível entrar com o Google. Tente novamente.");
+    try {
+      const redirectUri = typeof window !== "undefined" ? `${window.location.origin}/` : undefined;
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectUri,
+          queryParams: {
+            prompt: "select_account",
+          },
+        },
+      });
+      if (error) {
+        console.warn("Supabase Google OAuth direct error, trying fallback:", error.message);
+        const result = await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: window.location.origin,
+          extraParams: {
+            prompt: "select_account",
+          },
+        });
+        if (result.error) {
+          toast.error("Erro ao autenticar com o Google. Verifique se o provedor Google está ativo no Supabase.");
+          setBusy(false);
+          return;
+        }
+        if (result.redirected) return;
+      }
+      if (data?.url) {
+        window.location.href = data.url;
+        return;
+      }
+    } catch (err: any) {
+      console.error("Google OAuth error:", err);
+      toast.error(err?.message || "Não foi possível iniciar o login com o Google.");
+    } finally {
       setBusy(false);
-      return;
     }
-    if (result.redirected) return;
-    navigate({ to: "/" });
   }
 
   async function sendCode(e?: React.FormEvent) {

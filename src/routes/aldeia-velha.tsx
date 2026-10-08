@@ -24,7 +24,7 @@ import {
 
 import { AudioHotspot } from "@/components/AudioHotspot";
 import { stopHotspotAudio, type HotspotId } from "@/lib/audio-hotspots";
-import { PublicFooter } from "@/components/PublicFooter";
+import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { Button } from "@/components/ui/button";
 import { useLastArea } from "@/lib/last-area";
@@ -268,8 +268,8 @@ function CleanEmbed({
       await stage.requestFullscreen();
       const w = crop.clientWidth || 1;
       const h = mediaH ?? (crop.clientHeight || 1);
-      const orientation: OrientationLockType = h > w ? "portrait" : "landscape";
-      await screen.orientation.lock(orientation).catch(() => undefined);
+      const orientation = h > w ? "portrait" : "landscape";
+      await (screen.orientation as any)?.lock?.(orientation)?.catch(() => undefined);
     } catch {
       /* aparelhos que não suportam fullscreen/orientation: segue sem travar */
     }
@@ -283,7 +283,7 @@ function CleanEmbed({
       setIsFullscreen(active);
       if (!active) {
         try {
-          screen.orientation.unlock();
+          (screen.orientation as any)?.unlock?.();
         } catch {
           /* noop */
         }
@@ -1362,7 +1362,7 @@ function AldeiaVelhaPage() {
       </main>
 
 
-      <PublicFooter />
+      <SiteFooter mode="adulto" />
 
       {zoom && <Lightbox photo={zoom} onClose={() => setZoom(null)} />}
     </div>

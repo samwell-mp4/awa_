@@ -30,11 +30,19 @@ export function useHomeTrails(): HomeTrail[] {
 
   return data
     .filter((t: any) => t.name?.trim().toLowerCase() !== "cultura")
-    .map((t: any) => ({
-      name: t.name,
-      img: t.image_url || fallbackTrailImages[t.name] || trailSaudacoes,
-      progress: t.default_progress ?? 0,
-    }));
+    .map((t: any) => {
+      const norm = (t.name ?? "").trim().toLowerCase();
+      const localFallback = fallbackTrailImages[t.name] || fallbackTrailImages[norm];
+      let img = localFallback;
+      if (!img && t.image_url) {
+        img = t.image_url.startsWith("http") ? t.image_url : `/${t.image_url.replace(/^\//, "")}`;
+      }
+      return {
+        name: t.name,
+        img: img || trailSaudacoes,
+        progress: t.default_progress ?? 0,
+      };
+    });
 }
 
 export function useDailyVideo() {

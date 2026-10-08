@@ -18,21 +18,38 @@ import trailSaudacoes from "@/assets/trail-saudacoes.jpg";
 import trailFamilia from "@/assets/trail-familia.jpg";
 import trailNatureza from "@/assets/trail-natureza.jpg";
 import trailAnimais from "@/assets/trail-animais.jpg";
+import trailNumeros from "@/assets/trail-numeros.jpg";
 
 export const fallbackTrailImages: Record<string, string> = {
   Saudações: trailSaudacoes,
   Família: trailFamilia,
   Natureza: trailNatureza,
   Animais: trailAnimais,
+  Números: trailNumeros,
+  Numeros: trailNumeros,
+  saudacoes: trailSaudacoes,
+  "saudações": trailSaudacoes,
+  familia: trailFamilia,
+  "família": trailFamilia,
+  natureza: trailNatureza,
+  animais: trailAnimais,
+  numeros: trailNumeros,
+  "números": trailNumeros,
 };
 
 export type TrailSlug = "saudacoes" | "familia" | "natureza" | "animais";
 
 export const trailSlugMap: Record<string, TrailSlug> = {
   Saudações: "saudacoes",
+  saudacoes: "saudacoes",
+  "saudações": "saudacoes",
   Família: "familia",
+  familia: "familia",
+  "família": "familia",
   Natureza: "natureza",
+  natureza: "natureza",
   Animais: "animais",
+  animais: "animais",
 };
 
 export const rankingSeed = [

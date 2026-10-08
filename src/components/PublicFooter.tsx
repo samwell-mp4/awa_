@@ -87,18 +87,18 @@ export function PublicFooter() {
   const year = new Date().getFullYear();
   const d = useFooterDict();
   return (
-    <footer className="mt-16 border-t border-gold/20 bg-[oklch(0.10_0.03_145/0.9)] backdrop-blur-sm">
+    <footer className="mt-16 border-t border-[#e8e4dc] bg-[#f7f6f2] text-[#1f2937]">
       <div className="mx-auto max-w-6xl px-4 py-10 md:px-8">
         <div className="grid gap-8 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
-            <div className="font-display text-lg font-black uppercase tracking-wide text-cream">
-              AWÃ <span className="text-gradient-gold">TECH</span>
+            <div className="font-display text-lg font-black uppercase tracking-wide text-[#11231b]">
+              AWÃ <span className="text-[#2d6a4f]">TECH</span>
             </div>
-            <p className="mt-2 max-w-sm text-xs leading-relaxed text-foreground/65">
+            <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#4b5563]">
               {d.desc}
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/20 bg-forest-deep/50 px-3 py-1.5 text-[11px] font-semibold text-foreground/75">
-              <ShieldCheck className="h-3.5 w-3.5 text-gold" />
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#e8e4dc] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#374151] shadow-xs">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#2d6a4f]" />
               {d.paddle}
             </div>
           </div>
@@ -116,9 +116,9 @@ export function PublicFooter() {
           </FooterCol>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-gold/15 pt-6 text-[11px] text-foreground/55 md:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-[#e8e4dc] pt-6 text-[11px] text-[#6b7280] md:flex-row">
           <span>© {year} AWÃ TECH — Adler Magno Santos. {d.rights}</span>
-          <span className="tracking-wider uppercase">{d.motto}</span>
+          <span className="tracking-wider uppercase font-semibold text-[#8c5e18]">{d.motto}</span>
         </div>
       </div>
     </footer>
@@ -128,7 +128,7 @@ export function PublicFooter() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-gold/90">
+      <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1b4332]">
         {title}
       </div>
       <ul className="flex flex-col gap-2">{children}</ul>
@@ -141,7 +141,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
     <li>
       <Link
         to={to}
-        className="text-xs font-medium text-foreground/75 transition hover:text-gold"
+        className="text-xs font-medium text-[#4b5563] transition hover:text-[#1b4332]"
       >
         {children}
       </Link>

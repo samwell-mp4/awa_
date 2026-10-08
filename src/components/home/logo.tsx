@@ -31,6 +31,9 @@ export function Logo({ mode = "adulto" }: { mode?: "adulto" | "infantil" }) {
           alt="AWÃ TECH"
           width={48}
           height={48}
+          onError={(e) => {
+            e.currentTarget.src = logoSrc;
+          }}
           className="relative h-12 w-12 rounded-full bg-cream/95 p-0.5 ring-2 ring-gold/50 object-contain shadow-[var(--shadow-gold)]"
           fetchPriority="high"
           loading="eager"

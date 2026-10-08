@@ -33,6 +33,12 @@ function TrailCardInner({ trail, label, isAdult }: { trail: HomeTrail; label: st
           width={640}
           height={640}
           loading="lazy"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (!target.src.includes("trail-saudacoes.jpg")) {
+              target.src = "/trail-saudacoes.jpg";
+            }
+          }}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
       </div>
