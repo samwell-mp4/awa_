@@ -80,6 +80,7 @@ if (typeof window !== "undefined") {
 // Voz padrão do site: narração natural (IA) com a mesma voz em todas as telas.
 const SITE_VOICE = "onyx";
 let playToken = 0;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
 
 /**
  * Fala um texto com a voz oficial do site.
@@ -87,16 +88,32 @@ let playToken = 0;
  * cai para a voz do navegador. Quando `onBoundary` é pedido (legendas
  * palavra por palavra), usa direto a voz do navegador.
  */
-export function speak(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void, onBoundary?: (charIndex: number) => void) {
+export function speak(
+  text: string,
+  lang: string = "pt-BR",
+  rate: number = 1,
+  onStart?: () => void,
+  onEnd?: () => void,
+  onBoundary?: (charIndex: number) => void
+) {
   if (!text) return;
 
   if (!onBoundary && typeof window !== "undefined") {
     const token = ++playToken;
     stopSpeak();
-    void import("@/lib/narration-cache")
+
+    // Rápido fallback: se a narração de IA demorar mais de 1.2s ou falhar, usa voz do navegador
+    const timeoutPromise = new Promise<null>((resolve) =>
+      setTimeout(() => resolve(null), 1200)
+    );
+
+    const narrationPromise = import("@/lib/narration-cache")
       .then(({ getNarrationUrl }) =>
-        getNarrationUrl({ text, lang, mode: "story", voice: SITE_VOICE }),
+        getNarrationUrl({ text, lang, mode: "story", voice: SITE_VOICE })
       )
+      .catch(() => null);
+
+    Promise.race([narrationPromise, timeoutPromise])
       .then(async (url) => {
         if (token !== playToken) return;
         if (!url) {
@@ -116,6 +133,7 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
       .catch(() => {
         if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd);
       });
+
     registerStopOnPointerDown();
     return;
   }
@@ -125,22 +143,36 @@ export function speak(text: string, lang: string = "pt-BR", rate: number = 1, on
 
 function registerStopOnPointerDown() {
   if (typeof window === "undefined") return;
-  const stopHandler = () => {
+  const startTime = Date.now();
+  const stopHandler = (e: Event) => {
+    // Não cancela se o toque foi imediato (mesmo clique do botão) ou se clicou em controle de áudio
+    if (Date.now() - startTime < 350) return;
+    const target = e.target as HTMLElement | null;
+    if (target?.closest("button") || target?.closest("[data-speech-control]")) return;
     stopSpeak();
     window.removeEventListener("pointerdown", stopHandler);
   };
   window.addEventListener("pointerdown", stopHandler, { once: true });
 }
 
-function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1, onStart?: () => void, onEnd?: () => void, onBoundary?: (charIndex: number) => void) {
+function speakWithBrowser(
+  text: string,
+  lang: string = "pt-BR",
+  rate: number = 1,
+  onStart?: () => void,
+  onEnd?: () => void,
+  onBoundary?: (charIndex: number) => void
+) {
   const s = synth();
   if (!s || !text) return;
   try {
     ensureVoicesLoaded();
-    
-    
-    // Cancela qualquer áudio em execução antes de iniciar o novo
+
+    // Cancela qualquer fala em andamento e acorda motor Chrome
     s.cancel();
+    if ("resume" in s) {
+      s.resume();
+    }
 
     const start = () => {
       const u = new SpeechSynthesisUtterance(text);
@@ -150,8 +182,22 @@ function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1
       u.volume = 1;
       const v = pickVoice(lang);
       if (v) u.voice = v;
-      if (onStart) u.onstart = onStart;
-      if (onEnd) u.onend = onEnd;
+
+      activeUtterance = u;
+      (window as any).__awa_active_utterance = u;
+
+      u.onstart = () => {
+        onStart?.();
+      };
+      u.onend = () => {
+        activeUtterance = null;
+        onEnd?.();
+      };
+      u.onerror = () => {
+        activeUtterance = null;
+        onEnd?.();
+      };
+
       if (onBoundary) {
         u.onboundary = (event) => {
           if (event.name === "word") {
@@ -161,14 +207,9 @@ function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1
       }
       s.speak(u);
     };
-    start();
 
-    // Adiciona listener global para parar o áudio ao clicar em qualquer lugar da tela
-    const stopHandler = () => {
-      stopSpeak();
-      window.removeEventListener("pointerdown", stopHandler);
-    };
-    window.addEventListener("pointerdown", stopHandler, { once: true });
+    // Pequeno delay para contornar bug do Chromium com s.cancel() síncrono
+    setTimeout(start, 20);
   } catch {
     /* ignore */
   }
@@ -176,7 +217,9 @@ function speakWithBrowser(text: string, lang: string = "pt-BR", rate: number = 1
 
 export function stopSpeak() {
   playToken++;
+  activeUtterance = null;
   if (typeof window !== "undefined") {
+    (window as any).__awa_active_utterance = null;
     void import("@/lib/audio-play").then(({ stopFast }) => stopFast());
   }
   const s = synth();

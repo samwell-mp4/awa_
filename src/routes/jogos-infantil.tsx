@@ -6,13 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getGamesConfig } from "@/lib/infantil-content.functions";
 
-import { ArrowLeft, Eraser, Palette, Play, RefreshCw, Search, Sparkles, Star, Trophy, Volume2, X } from "lucide-react";
+import { ArrowLeft, Eraser, Gamepad2, Palette, Play, RefreshCw, Search, Sparkles, Star, Trophy, Volume2, X } from "lucide-react";
 import { T } from "@/components/T";
 import { speak } from "@/lib/speak";
-import kidsBg from "@/assets/kids-menu-bg.jpg";
+import kidsCharacter from "@/assets/kids-menu-character.png";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
-import { PageHeader } from "@/components/education/page-header";
 import { EmptyState } from "@/components/education/empty-state";
 
 /** Botão de áudio reutilizável — toca a palavra em voz alta. */
@@ -266,61 +265,138 @@ function JogosInfantilPage() {
   }, [games, activeCategory, searchQuery]);
 
   return (
-    <div
-      className="kids-theme relative min-h-screen text-[#fefae0] font-sans"
-      style={{
-        backgroundImage: `url(${kidsBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
+    <div className="kids-theme relative min-h-screen bg-[#fbf9f4] text-slate-800 font-sans overflow-x-clip selection:bg-amber-300 selection:text-amber-950">
+      {/* Soft warm ambient lighting for kids */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,243,199,0.5),rgba(255,255,255,0))]"
+      />
+
+      {/* Floating Animated Emojis in Background */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0 opacity-40"
+      >
+        <span
+          className="absolute left-[5%] top-[130px] text-3xl"
+          style={{ animation: "music-float 6s ease-in-out infinite" }}
+        >
+          🎮
+        </span>
+        <span
+          className="absolute right-[8%] top-[190px] text-4xl"
+          style={{ animation: "music-float 7s ease-in-out infinite 1.5s" }}
+        >
+          🎲
+        </span>
+        <span
+          className="absolute left-[11%] top-[480px] text-3xl"
+          style={{ animation: "music-float 8s ease-in-out infinite 0.7s" }}
+        >
+          🧠
+        </span>
+        <span
+          className="absolute right-[14%] top-[540px] text-2xl"
+          style={{ animation: "music-float 5.5s ease-in-out infinite 2s" }}
+        >
+          ✨
+        </span>
+        <span
+          className="absolute left-[3%] top-[780px] text-3xl"
+          style={{ animation: "music-float 9s ease-in-out infinite 1s" }}
+        >
+          🎨
+        </span>
+        <span
+          className="absolute right-[5%] top-[860px] text-3xl"
+          style={{ animation: "music-float 6.5s ease-in-out infinite 2.5s" }}
+        >
+          ⭐
+        </span>
+      </div>
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <SiteHeader mode="infantil" />
 
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-4 sm:px-6">
+        <main className="mx-auto w-full max-w-5xl flex-1 px-3 sm:px-6 pb-28 pt-4">
           {!game ? (
             <>
-              <PageHeader
-                breadcrumbs={[
-                  { label: "Início", href: "/infantil" },
-                  { label: "Jogos da Aldeia" },
-                ]}
-                title="Jogos da Aldeia"
-                description="Desenvolva habilidades de memória, vocabulário e agilidade através de brincadeiras culturais."
-                badge={`⭐ ${stars} estrelas conquistadas`}
-                primaryAction={{
-                  label: "Jogar Recomendado",
-                  onClick: () => {
-                    speak(`${featuredGame.title}. ${featuredGame.desc}`, "pt-BR");
-                    setGame(featuredGame.id);
-                  },
-                }}
-              />
+              {/* ========================================================
+                  HERO BANNER DE JOGOS DA ALDEIA
+                 ======================================================== */}
+              <section className="relative mb-6 overflow-hidden rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-r from-[#fffef5] via-[#fef7e6] to-[#f5edd2] p-5 sm:p-7 shadow-lg">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
+                  <div className="flex items-center gap-4">
+                    {/* Mascote */}
+                    <div className="relative shrink-0">
+                      <img
+                        src={kidsCharacter}
+                        alt="Mascote da Aldeia"
+                        className="h-16 w-16 sm:h-20 sm:w-20 object-contain drop-shadow-[0_8px_12px_rgba(0,0,0,0.18)] transform hover:scale-105 transition"
+                        style={{ animation: "music-float 4s ease-in-out infinite" }}
+                      />
+                      <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs text-amber-950 font-black shadow-md border-2 border-white">
+                        🎮
+                      </span>
+                    </div>
 
-              {/* 1. DESTAQUE: JOGO RECOMENDADO (CARD LEVEL 1) */}
-              <section className="mt-6">
-                <div className="awa-card-1 relative overflow-hidden rounded-2xl p-5 sm:p-6 shadow-xl">
+                    <div>
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 border border-amber-300 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-amber-900">
+                        <Gamepad2 className="h-3.5 w-3.5 text-emerald-800" />
+                        ✦ Jogos da Aldeia • Brincar e Aprender ✦
+                      </div>
+                      <h1
+                        className="mt-1.5 font-display text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight"
+                        style={{ color: "#064e3b" }}
+                      >
+                        Jogos e Brincadeiras
+                      </h1>
+                      <p className="mt-1 text-xs sm:text-sm text-slate-700 max-w-xl font-semibold leading-relaxed">
+                        Desenvolva memória, agilidade e vocabulário Patxôhã através de jogos divertidos e culturais!
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Stars Pill */}
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between gap-2 bg-white/95 border-2 border-amber-300 rounded-2xl px-4 py-3 shrink-0 shadow-sm">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 flex items-center gap-1">
+                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                      Pontuação Geral
+                    </span>
+                    <span className="font-display text-xl sm:text-2xl font-black text-emerald-950">
+                      ⭐ {stars}{" "}
+                      <span className="text-xs font-sans text-amber-800 font-bold">
+                        estrelas
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </section>
+
+              {/* 1. DESTAQUE: JOGO RECOMENDADO */}
+              <section className="mb-6">
+                <div className="relative overflow-hidden rounded-3xl border-3 border-amber-300 bg-white p-5 sm:p-6 shadow-md hover:shadow-lg transition">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-[#251408] border-2 border-[#ffd166] text-3xl shadow-md">
+                      <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-amber-100 border-2 border-amber-300 text-3xl shadow-inner">
                         {featuredGame.emoji}
                       </div>
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="rounded-md bg-[#2a9d8f]/20 border border-[#2a9d8f]/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2a9d8f]">
+                          <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-900">
                             Recomendado da Aldeia
                           </span>
-                          <span className="text-xs text-[#d4a373]">
+                          <span className="text-xs font-bold text-amber-800">
                             {featuredGame.difficulty}
                           </span>
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-black text-[#fefae0]">
+                        <h2
+                          className="font-display text-xl sm:text-2xl font-black tracking-tight"
+                          style={{ color: "#064e3b" }}
+                        >
                           {featuredGame.title}
                         </h2>
-                        <p className="text-xs text-[#fefae0]/80 mt-0.5">
+                        <p className="text-xs text-slate-600 font-medium mt-0.5">
                           {featuredGame.skill} • Melhor pontuação: {featuredGame.bestScore || 480} pts
                         </p>
                       </div>
@@ -331,7 +407,7 @@ function JogosInfantilPage() {
                         speak(`${featuredGame.title}. ${featuredGame.desc}`, "pt-BR");
                         setGame(featuredGame.id);
                       }}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ffd166] to-[#f59e0b] px-6 py-3 text-sm font-black text-[#1a0e04] shadow-lg transition hover:brightness-110 active:scale-95"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-6 py-3 text-sm font-black text-amber-950 shadow-[0_4px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer"
                     >
                       <Play className="h-4 w-4 fill-current" />
                       <span>Jogar Agora</span>
@@ -341,48 +417,52 @@ function JogosInfantilPage() {
               </section>
 
               {/* 2. SEARCH & CATEGORY FILTERS */}
-              <div className="mt-6 flex flex-col gap-3">
-                <div className="relative w-full max-w-md">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+              <div className="mt-6 flex flex-col gap-4">
+                <div className="relative w-full max-w-lg">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-amber-500" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Buscar jogo ou habilidade..."
-                    className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+                    className="w-full rounded-2xl border-2 border-amber-300 bg-white pl-11 pr-10 py-3 text-sm text-slate-800 placeholder-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-100 shadow-sm transition"
                   />
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-800 p-1"
                     >
                       <X className="h-4 w-4" />
                     </button>
                   )}
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5">
                   {[
-                    { id: "todos", label: "Todos os Jogos" },
-                    { id: "lingua", label: "Língua & Vocabulário" },
-                    { id: "memoria", label: "Memória" },
-                    { id: "numeros", label: "Números" },
-                    { id: "natureza", label: "Natureza & Bichos" },
-                    { id: "ingles", label: "Inglês" },
-                  ].map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setActiveCategory(cat.id as any)}
-                      className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
-                        activeCategory === cat.id
-                          ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
-                          : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
+                    { id: "todos", label: "Todos os Jogos", icon: "🌟" },
+                    { id: "lingua", label: "Língua & Vocabulário", icon: "🏹" },
+                    { id: "memoria", label: "Memória", icon: "🧠" },
+                    { id: "numeros", label: "Números", icon: "🔢" },
+                    { id: "natureza", label: "Natureza & Bichos", icon: "🌿" },
+                    { id: "ingles", label: "Inglês", icon: "🌍" },
+                  ].map((cat) => {
+                    const isActive = activeCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => setActiveCategory(cat.id as any)}
+                        className={`inline-flex items-center gap-1.5 rounded-2xl px-4 py-2 text-xs sm:text-sm font-black transition-all transform active:translate-y-0.5 cursor-pointer shadow-sm ${
+                          isActive
+                            ? "bg-amber-400 text-amber-950 border-b-[4px] border-amber-600 shadow-md scale-105"
+                            : "bg-white text-slate-700 border-2 border-amber-200 hover:border-amber-400 hover:bg-amber-50"
+                        }`}
+                      >
+                        <span>{cat.icon}</span>
+                        <span>{cat.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -405,34 +485,37 @@ function JogosInfantilPage() {
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {visibleGames.map((g: any) => (
-                      <div
+                      <article
                         key={g.id}
-                        className="awa-card-2 group flex flex-col justify-between rounded-2xl p-4 transition shadow-md hover:-translate-y-0.5 hover:border-[#ffd166]/50"
+                        className="group flex flex-col justify-between rounded-3xl border-2 border-amber-200/90 bg-white p-5 shadow-md transition-all hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"
                       >
                         <div>
                           <div className="flex items-center justify-between">
-                            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#251408] border border-[#633916] text-2xl group-hover:scale-105 transition">
+                            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-100 border border-amber-200 text-3xl group-hover:scale-105 transition shadow-inner">
                               {g.emoji}
                             </div>
-                            <span className="rounded-md bg-[#251408] border border-[#633916] px-2 py-0.5 text-[10px] font-bold text-[#d4a373]">
+                            <span className="rounded-full bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-900">
                               {g.difficulty || "Fácil"}
                             </span>
                           </div>
 
-                          <h3 className="mt-3 text-base font-black text-[#fefae0] group-hover:text-[#ffd166] transition">
+                          <h3
+                            className="mt-3 font-display text-lg font-black tracking-tight group-hover:text-emerald-700 transition"
+                            style={{ color: "#064e3b" }}
+                          >
                             <T>{g.title}</T>
                           </h3>
-                          <div className="text-[11px] font-semibold text-[#2a9d8f] mt-0.5">
+                          <div className="text-[11px] font-bold text-amber-800 mt-0.5">
                             {g.skill || "Habilidade Educacional"}
                           </div>
-                          <p className="mt-1 text-xs text-[#fefae0]/75 line-clamp-2 leading-relaxed">
+                          <p className="mt-1 text-xs text-slate-600 font-medium line-clamp-2 leading-relaxed">
                             <T>{g.desc}</T>
                           </p>
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-[#633916]/40 flex items-center justify-between">
-                          <span className="text-[11px] text-[#ffd166]">
-                            {g.bestScore ? `Recorde: ${g.bestScore}` : "Praticar"}
+                        <div className="mt-5 pt-3 border-t border-amber-100 flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-500">
+                            {g.bestScore ? `Recorde: ${g.bestScore}` : "Praticar 🌟"}
                           </span>
                           <button
                             onClick={() => {
@@ -440,40 +523,44 @@ function JogosInfantilPage() {
                               speak(`${g.title}. ${g.desc}`, lang);
                               setGame(g.id);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#331c0e] border border-[#633916] px-3.5 py-1.5 text-xs font-bold text-[#ffd166] hover:bg-[#432512] hover:border-[#ffd166]/60 transition"
+                            className="inline-flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-xs font-black text-amber-950 shadow-[0_3px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer"
                           >
                             <Play className="h-3.5 w-3.5 fill-current" />
                             <span>Jogar</span>
                           </button>
                         </div>
-                      </div>
+                      </article>
                     ))}
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <div className="awa-card-1 rounded-2xl p-4 sm:p-6 shadow-2xl">
-              <div className="mb-4 flex items-center justify-between border-b border-[#633916] pb-3">
+            /* TELA DO JOGO ATIVO */
+            <div className="rounded-[2.5rem] border-4 border-amber-300 bg-white p-5 sm:p-8 shadow-xl text-slate-800">
+              <div className="mb-6 flex items-center justify-between border-b-2 border-amber-200 pb-4">
                 <button
                   onClick={() => setGame(null)}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#633916] bg-[#251408] px-3.5 py-2 text-xs font-bold text-[#ffd166] hover:border-[#ffd166] transition"
+                  className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-amber-300 bg-amber-100 px-4 py-2 text-xs font-black text-amber-900 shadow-sm hover:bg-amber-200 active:translate-y-0.5 transition cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4" /> <span>Voltar para Jogos</span>
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full border border-[#ffd166]/40 bg-[#251408] px-3 py-1 text-xs font-bold text-[#ffd166]">
-                    <Star className="h-3.5 w-3.5 fill-[#ffd166]" /> {stars} Estrelas
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-3 py-1 text-xs font-black text-amber-900">
+                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" /> {stars} Estrelas
                   </span>
                 </div>
-                <span className="font-display text-base sm:text-lg font-black uppercase text-[#ffd166]">
+                <h2
+                  className="font-display text-base sm:text-xl font-black uppercase"
+                  style={{ color: "#064e3b" }}
+                >
                   {(() => {
                     const en = EN_GAMES.find((g) => g.id === game);
                     if (en) return en.title;
                     const pt = games.find((g: any) => g.id === game)?.title ?? "";
                     return <T>{pt}</T>;
                   })()}
-                </span>
+                </h2>
               </div>
               <div className="text-slate-900">
                 {game === "memoria" && <MemoryGame onWin={() => setStars((s) => s + 3)} />}

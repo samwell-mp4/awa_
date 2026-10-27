@@ -118,6 +118,8 @@ const ADULT_HREFS = new Set([
   "/historias",
   "/musicas",
   "/videos",
+  "/jogos",
+  "/saudacoes",
   "/biografia",
   "/aldeia-velha",
   "/intercambio",
@@ -156,9 +158,13 @@ function filterByMode<T extends { href: string }>(items: T[], mode: NavMode): T[
   if (mode === "all") return items;
   const allowed = mode === "adulto" ? ADULT_HREFS : CHILD_HREFS;
   const filtered = items.filter(
-    (it) => allowed.has(it.href) || (mode === "infantil" && it.href === "/professor"),
+    (it) => allowed.has(it.href.split("?")[0]) || (mode === "infantil" && it.href === "/professor"),
   );
-  if (mode !== "infantil") return filtered;
+  if (mode === "adulto") {
+    return filtered.map((it) =>
+      it.href === "/aprender-numeros" ? { ...it, href: "/aprender-numeros?area=adulto" } : it,
+    );
+  }
   return filtered.map((it) =>
     CHILD_HREF_MAP[it.href] ? { ...it, href: CHILD_HREF_MAP[it.href] } : it,
   );
@@ -172,7 +178,9 @@ export function useNavContent(mode: NavMode = "all") {
       title: t("nav.groups.lingua"),
       items: [
         { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
+        { label: "Tradutor Patxôhã", href: "/traduzir", icon: Sparkles },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
+        { label: "Saudações", href: "/saudacoes", icon: Sparkles },
         { label: "Professor Awã", href: "/professor-infantil", icon: GraduationCap },
       ],
     },

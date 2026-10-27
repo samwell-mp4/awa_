@@ -606,6 +606,96 @@ body:has(.adulto-theme)::before {
   border-radius: 1rem;
 }
 
+/* Kids Theme Global Text Contrast & Heading Color Fix */
+.kids-theme {
+  --color-foreground: #1e293b;
+  color: #1e293b;
+}
+
+.kids-theme h1:not(.text-white):not(.text-amber-200):not(.text-cream),
+.kids-theme h2:not(.text-white):not(.text-amber-200):not(.text-cream),
+.kids-theme h3:not(.text-white):not(.text-amber-200):not(.text-cream),
+.kids-theme h4:not(.text-white):not(.text-amber-200):not(.text-cream) {
+  color: #064e3b;
+}
+
+.kids-theme .text-white {
+  color: #ffffff !important;
+}
+
+.kids-theme .text-amber-200 {
+  color: #fde68a !important;
+}
+
+.kids-theme .text-amber-300 {
+  color: #fcd34d !important;
+}
+
+.kids-theme .text-emerald-100 {
+  color: #d1fae5 !important;
+}
+
+/* Explicit colors for Tailwind utility classes in kids context */
+.kids-theme .text-emerald-950,
+.text-emerald-950 {
+  color: #064e3b !important;
+}
+
+.kids-theme .text-emerald-900,
+.text-emerald-900 {
+  color: #065f46 !important;
+}
+
+.kids-theme .text-emerald-800,
+.text-emerald-800 {
+  color: #047857 !important;
+}
+
+.kids-theme .text-amber-950,
+.text-amber-950 {
+  color: #451a03 !important;
+}
+
+.kids-theme .text-amber-900,
+.text-amber-900 {
+  color: #78350f !important;
+}
+
+.kids-theme .text-slate-800,
+.text-slate-800 {
+  color: #1e293b !important;
+}
+
+.kids-theme .text-slate-900,
+.text-slate-900 {
+  color: #0f172a !important;
+}
+
+/* Floating animation for kids music and trails */
+@keyframes music-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(4deg);
+  }
+}
+
+@keyframes kids-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+/* Ensure mobile kids sticky header sticks cleanly to viewport */
+header.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
 #lovable-badge {
   display: none !important;
 }
+

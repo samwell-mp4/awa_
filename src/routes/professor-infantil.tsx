@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
-import { Loader2, Mic, Pause, Play, Send, Square, Volume2 } from "lucide-react";
+import { Loader2, Mic, Pause, Play, Send, Square, Volume2, Sparkles, MessageCircle, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
@@ -11,8 +11,7 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 import { SiteHeader } from "@/components/home/site-header";
-import { PageHeader } from "@/components/education/page-header";
-import kidsBg from "@/assets/kids-menu-bg.jpg";
+import kidsCharacter from "@/assets/kids-menu-character.png";
 
 export const Route = createFileRoute("/professor-infantil")({
   ssr: false,
@@ -193,42 +192,117 @@ function ProfessorInfantilPage() {
   }
 
   return (
-    <div
-      className="relative min-h-screen text-[#fefae0] font-sans flex flex-col justify-between"
-      style={{
-        backgroundImage: `url(${kidsBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
+    <div className="kids-theme relative min-h-screen bg-[#fbf9f4] text-slate-800 font-sans flex flex-col justify-between overflow-x-clip selection:bg-amber-300 selection:text-amber-950">
+      {/* Soft warm ambient lighting */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,243,199,0.5),rgba(255,255,255,0))]"
+      />
+
+      {/* Floating Animated Background Icons */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0 opacity-40"
+      >
+        <span
+          className="absolute left-[6%] top-[140px] text-3xl"
+          style={{ animation: "music-float 6s ease-in-out infinite" }}
+        >
+          🦜
+        </span>
+        <span
+          className="absolute right-[8%] top-[190px] text-4xl"
+          style={{ animation: "music-float 7s ease-in-out infinite 1.5s" }}
+        >
+          🌿
+        </span>
+        <span
+          className="absolute left-[12%] top-[450px] text-3xl"
+          style={{ animation: "music-float 8s ease-in-out infinite 0.7s" }}
+        >
+          ✨
+        </span>
+        <span
+          className="absolute right-[14%] top-[520px] text-3xl"
+          style={{ animation: "music-float 5.5s ease-in-out infinite 2s" }}
+        >
+          ⭐
+        </span>
+        <span
+          className="absolute left-[4%] top-[780px] text-3xl"
+          style={{ animation: "music-float 9s ease-in-out infinite 1s" }}
+        >
+          📚
+        </span>
+        <span
+          className="absolute right-[6%] top-[860px] text-3xl"
+          style={{ animation: "music-float 6.5s ease-in-out infinite 2.5s" }}
+        >
+          🌞
+        </span>
+      </div>
 
       <div className="relative z-10 flex flex-col flex-1">
         <SiteHeader mode="infantil" />
 
-        <main className="mx-auto w-full max-w-4xl flex-1 px-4 pb-48 pt-4 sm:px-6">
-          <PageHeader
-            breadcrumbs={[
-              { label: "Início", href: "/infantil" },
-              { label: "Professor Awã" },
-            ]}
-            title="Professor Awã"
-            description="Seu tutor de Patxôhã e cultura indígena. Fale no microfone ou digite suas perguntas."
-          />
+        <main className="mx-auto w-full max-w-4xl flex-1 px-3 sm:px-6 pb-48 pt-4">
+          {/* ========================================================= */}
+          {/* 1. HERO PARCHMENT BANNER                                  */}
+          {/* ========================================================= */}
+          <section className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-r from-[#fffef5] via-[#fef7e6] to-[#f5edd2] p-5 sm:p-7 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-md">
+                <img
+                  src={kidsCharacter}
+                  alt="Professor Awã"
+                  className="h-full w-full object-cover object-top transform hover:scale-105 transition"
+                  style={{ animation: "music-float 4s ease-in-out infinite" }}
+                />
+                <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs text-amber-950 font-black shadow-md border-2 border-white">
+                  🦜
+                </span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1
+                    className="font-display text-xl sm:text-2xl md:text-3xl font-black tracking-tight"
+                    style={{ color: "#064e3b" }}
+                  >
+                    Professor Awã
+                  </h1>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-0.5">
+                  Seu tutor de Patxôhã e cultura indígena. Fale no microfone ou digite suas perguntas!
+                </p>
+              </div>
+            </div>
 
-          {/* Tutor Welcome & Question Suggestions */}
-          <div className="mt-5 awa-card-1 rounded-2xl p-5 shadow-xl border border-[#633916]">
+            {/* Status Pill Badge */}
+            <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-400/80 bg-emerald-100/90 px-3.5 py-1.5 shadow-sm self-start md:self-auto">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-black text-emerald-950">
+                Tutor Online
+              </span>
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* 2. WELCOME & QUESTION SUGGESTIONS CARD                    */}
+          {/* ========================================================= */}
+          <section className="mb-6 rounded-3xl border-2 border-amber-200/90 bg-white p-5 shadow-md">
             <div className="flex items-center gap-3.5">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#251408] border border-[#ffd166] text-2xl shadow-md">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-100 border-2 border-amber-300 text-2xl shadow-inner">
                 🦜
               </div>
               <div>
-                <h2 className="text-base font-black text-[#ffd166]">
+                <h2
+                  className="font-display text-base font-black tracking-tight"
+                  style={{ color: "#064e3b" }}
+                >
                   "Awê! O que vamos aprender hoje?"
                 </h2>
-                <p className="text-xs text-[#fefae0]/80">
-                  Toque em uma das sugestões abaixo ou faça sua própria pergunta:
+                <p className="text-xs text-slate-600 font-semibold mt-0.5">
+                  Toque em uma das perguntas abaixo ou crie a sua própria:
                 </p>
               </div>
             </div>
@@ -239,16 +313,18 @@ function ProfessorInfantilPage() {
                   key={sug}
                   onClick={() => send(sug, true)}
                   disabled={state === "thinking"}
-                  className="rounded-xl border border-[#633916] bg-[#251408] px-3.5 py-1.5 text-xs font-semibold text-[#ffd166] hover:border-[#ffd166] hover:bg-[#331c0e] transition shadow active:scale-95 disabled:opacity-50"
+                  className="rounded-2xl border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
                 >
-                  {sug}
+                  ✨ {sug}
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* Chat Messages List */}
-          <div className="mt-6 flex flex-col gap-3.5">
+          {/* ========================================================= */}
+          {/* 3. CHAT MESSAGES LIST                                      */}
+          {/* ========================================================= */}
+          <div className="flex flex-col gap-4">
             {messages.map((m, i) => (
               <div
                 key={i}
@@ -256,8 +332,8 @@ function ProfessorInfantilPage() {
               >
                 {m.role === "assistant" && (
                   <div
-                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#633916] bg-[#251408] text-xl shadow ${
-                      state === "speaking" ? "border-[#ffd166] animate-pulse" : ""
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl border-2 border-amber-300 bg-amber-100 text-2xl shadow-sm ${
+                      state === "speaking" ? "ring-2 ring-emerald-400 animate-pulse" : ""
                     }`}
                   >
                     🦜
@@ -266,8 +342,8 @@ function ProfessorInfantilPage() {
                 <div
                   className={
                     m.role === "user"
-                      ? "max-w-[85%] rounded-2xl rounded-br-sm border border-[#2a9d8f] bg-gradient-to-b from-[#1b382b] to-[#12241c] p-3.5 text-sm font-medium text-[#fefae0] shadow"
-                      : "awa-card-2 max-w-[85%] rounded-2xl rounded-bl-sm p-4 text-sm font-medium text-[#fefae0] shadow border border-[#633916]"
+                      ? "max-w-[85%] rounded-3xl rounded-br-sm bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-4 font-semibold shadow-md text-sm sm:text-base leading-relaxed"
+                      : "max-w-[85%] rounded-3xl rounded-bl-sm bg-white border-2 border-amber-200/90 text-slate-800 p-4 font-medium shadow-md text-sm sm:text-base leading-relaxed"
                   }
                 >
                   <p className="whitespace-pre-wrap leading-relaxed">{clean(m.content)}</p>
@@ -275,10 +351,10 @@ function ProfessorInfantilPage() {
                     <button
                       type="button"
                       onClick={() => playReply(m.content)}
-                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-[#633916] bg-[#251408] px-2.5 py-1 text-xs font-bold text-[#ffd166] hover:border-[#ffd166] transition"
+                      className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3.5 py-1 text-xs font-black text-amber-950 shadow-[0_2px_0_#b45309] hover:brightness-105 active:translate-y-0.5 active:shadow-none transition cursor-pointer"
                     >
                       <Volume2 className="h-3.5 w-3.5" />
-                      <span>Ouvir</span>
+                      <span>Ouvir com voz</span>
                     </button>
                   )}
                 </div>
@@ -286,9 +362,9 @@ function ProfessorInfantilPage() {
             ))}
 
             {state === "thinking" && (
-              <div className="flex items-center gap-2 text-sm font-bold text-[#ffd166]">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>O Professor Awã está pensando...</span>
+              <div className="flex items-center gap-2.5 rounded-2xl bg-amber-100/80 border border-amber-300 px-4 py-2.5 text-xs font-black text-amber-950 w-fit">
+                <Loader2 className="h-4 w-4 animate-spin text-emerald-700" />
+                <span>O Professor Awã está pensando na sua resposta...</span>
               </div>
             )}
             <div ref={endRef} />
@@ -296,18 +372,25 @@ function ProfessorInfantilPage() {
         </main>
       </div>
 
-      {/* Fixed Bottom Dock with Safe Area Support */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#633916]/80 bg-[#180e07]/95 px-4 pb-5 pt-3 shadow-2xl backdrop-blur-md pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+      {/* ========================================================= */}
+      {/* 4. FIXED BOTTOM DOCK (Clean, High-Contrast Children's Dock)*/}
+      {/* ========================================================= */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t-4 border-amber-300 bg-white/95 px-4 pb-5 pt-3 shadow-2xl backdrop-blur-md pb-[max(1.25rem,env(safe-area-inset-bottom))]">
         <div className="mx-auto max-w-3xl">
           <div className="flex items-center justify-between gap-2 mb-2 px-1">
-            <span className="text-xs font-bold text-[#d4a373]">
-              {state === "listening"
-                ? "🎙️ Ouvindo você falar..."
-                : state === "thinking"
-                ? "🧠 Pensando na resposta..."
-                : state === "speaking"
-                ? "🗣️ Professor Awã falando..."
-                : "Fale pelo microfone ou digite abaixo:"}
+            <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+              {state === "listening" ? (
+                <span className="text-rose-600 flex items-center gap-1">
+                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
+                  🎙️ Ouvindo você falar...
+                </span>
+              ) : state === "thinking" ? (
+                <span className="text-amber-800">🧠 Pensando na resposta...</span>
+              ) : state === "speaking" ? (
+                <span className="text-emerald-700">🗣️ Professor Awã falando...</span>
+              ) : (
+                <span>Fale pelo microfone ou digite abaixo:</span>
+              )}
             </span>
 
             {state === "speaking" && (
@@ -323,14 +406,14 @@ function ProfessorInfantilPage() {
                       setPaused(true);
                     }
                   }}
-                  className="text-xs font-bold text-[#ffd166] hover:underline"
+                  className="text-xs font-black text-amber-900 hover:underline cursor-pointer"
                 >
                   {paused ? "Continuar" : "Pausar"}
                 </button>
                 <button
                   type="button"
                   onClick={stopVoice}
-                  className="text-xs font-bold text-red-400 hover:underline"
+                  className="text-xs font-black text-rose-600 hover:underline cursor-pointer"
                 >
                   Parar
                 </button>
@@ -338,16 +421,16 @@ function ProfessorInfantilPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Big Mic Action Button */}
+          <div className="flex items-center gap-2.5">
+            {/* Big Mic Action Button with 3D press effect */}
             <button
               type="button"
               onClick={handleMic}
               disabled={state === "thinking"}
-              className={`flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl px-4 text-xs font-black uppercase text-white shadow transition active:scale-95 disabled:opacity-50 ${
+              className={`flex h-12 shrink-0 items-center justify-center gap-2 rounded-2xl px-4 text-xs font-black uppercase shadow transition active:translate-y-1 active:shadow-none disabled:opacity-50 cursor-pointer ${
                 recorder.isRecording
-                  ? "bg-red-600 animate-pulse"
-                  : "bg-gradient-to-r from-[#ffd166] to-[#f59e0b] text-[#1a0e04]"
+                  ? "bg-rose-500 text-white shadow-[0_4px_0_#9f1239] animate-pulse"
+                  : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-[0_4px_0_#b45309]"
               }`}
               title="Falar no microfone"
             >
@@ -375,13 +458,13 @@ function ProfessorInfantilPage() {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Digite ou pergunte algo ao professor..."
-                className="w-full rounded-xl border border-[#633916] bg-[#251408] px-4 py-2.5 text-sm text-[#fefae0] placeholder:text-[#d4a373]/50 focus:border-[#ffd166] focus:outline-none"
+                placeholder="Pergunte algo ao professor..."
+                className="w-full rounded-2xl border-2 border-amber-300 bg-amber-50/50 focus:bg-white px-4 py-3 text-sm font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 transition"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || state === "thinking"}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#331c0e] border border-[#633916] text-[#ffd166] hover:border-[#ffd166] transition disabled:opacity-40"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-[0_3px_0_#064e3b] active:translate-y-0.5 active:shadow-none transition disabled:opacity-40 cursor-pointer"
                 aria-label="Enviar mensagem"
               >
                 <Send className="h-4 w-4" />

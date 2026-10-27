@@ -20,7 +20,7 @@ import {
 
 import logoSrc from "@/assets/awa-tech-logo.png";
 import appPreviewAsset from "@/assets/app-preview.png.asset.json";
-import { useLastArea } from "@/lib/last-area";
+import { useLastArea, setLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/instalar")({
   head: () => ({
@@ -49,6 +49,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 function InstalarPage() {
   const backTo = useLastArea();
+  useEffect(() => setLastArea("/adulto"), []);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | "other">("other");

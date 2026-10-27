@@ -32,10 +32,10 @@ export function MobileBottomNav() {
     pathname.startsWith("/trilhas-infantil") ||
     pathname.startsWith("/musicas-infantil") ||
     pathname.startsWith("/jogos-infantil") ||
-    pathname.startsWith("/aprender-numeros") ||
     pathname.startsWith("/historias-infantil") ||
     pathname.startsWith("/amizade") ||
-    (pathname.startsWith("/trilhas/") && typeof window !== "undefined" && window.location.search.includes("area=infantil"));
+    (pathname.startsWith("/aprender-numeros") && typeof window !== "undefined" && !window.location.search.includes("area=adulto")) ||
+    (pathname.startsWith("/trilhas") && typeof window !== "undefined" && window.location.search.includes("area=infantil"));
 
   const navItems = isInfantil
     ? [
@@ -48,7 +48,7 @@ export function MobileBottomNav() {
     : [
         { label: "Início", to: "/adulto", icon: Home },
         { label: "Dicionário", to: "/dicionario", icon: BookOpen },
-        { label: "Trilhas", to: "/trilhas/saudacoes", icon: Compass },
+        { label: "Trilhas", to: "/trilhas", icon: Compass },
         { label: "Cultura", to: "/aldeia-velha", icon: TreePine },
         { label: "Professor", to: "/professor", icon: GraduationCap },
       ];
@@ -67,7 +67,8 @@ export function MobileBottomNav() {
           const Icon = item.icon;
           const isActive =
             pathname === item.to ||
-            (item.to === "/trilhas-infantil" && pathname.startsWith("/trilhas")) ||
+            (item.to === "/trilhas-infantil" && (pathname.startsWith("/trilhas-infantil") || (pathname.startsWith("/trilhas") && isInfantil))) ||
+            (item.to === "/trilhas" && pathname.startsWith("/trilhas") && !isInfantil) ||
             (item.to === "/dicionario" && pathname.startsWith("/dicionario"));
 
           return (

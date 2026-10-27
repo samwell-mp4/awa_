@@ -2,10 +2,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle, Eye, EyeOff, Layers } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Music, Loader2, Sparkles, CheckCircle2, AlertCircle, XCircle, Eye, EyeOff, Layers, Clock } from "lucide-react";
 import { Field, Input, Textarea, Btn, Card } from "./ui";
 import { MiniPlayer } from "../kids/MiniPlayer";
 import { TemplatesAdmin } from "./templates-admin";
+import { SongTimelineModal, SongTimelineSyncEditor } from "../music/SongTimelineSyncEditor";
 import { checkPermission } from "@/lib/permissions.functions";
 import { useServerFn } from "@tanstack/react-start";
 
@@ -68,8 +69,10 @@ export function SongsAdmin() {
   const [draft, setDraft] = useState(defaultDraft);
   const [uploading, setUploading] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [mode, setMode] = useState<"list" | "review" | "templates">("list");
+  const [mode, setMode] = useState<"list" | "timeline" | "review" | "templates">("list");
   const [previewing, setPreviewing] = useState<Song | null>(null);
+  const [timelineSong, setTimelineSong] = useState<Song | null>(null);
+  const [selectedTimelineSongId, setSelectedTimelineSongId] = useState<string | null>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [permissions, setPermissions] = useState<Record<string, boolean>>({});
   
@@ -152,7 +155,7 @@ export function SongsAdmin() {
         <h2 className="font-display text-xl font-black text-cream flex items-center gap-2">
           <Music className="h-6 w-6 text-gold" /> Música & Design
         </h2>
-        <div className="flex gap-2 p-1 bg-black/20 rounded-xl">
+        <div className="flex gap-2 p-1 bg-black/20 rounded-xl flex-wrap">
           <button
             onClick={() => setMode("list")}
             className={`px-4 py-1.5 rounded-lg text-sm font-bold transition ${
@@ -160,6 +163,14 @@ export function SongsAdmin() {
             }`}
           >
             Lista & Cadastro
+          </button>
+          <button
+            onClick={() => setMode("timeline")}
+            className={`px-4 py-1.5 rounded-lg text-sm font-bold transition flex items-center gap-1.5 ${
+              mode === "timeline" ? "bg-amber-400 text-forest-deep shadow-lg" : "text-foreground/60 hover:text-amber-300"
+            }`}
+          >
+            <Clock className="h-4 w-4" /> Timeline & Sincronização
           </button>
           <button
             onClick={() => setMode("review")}
@@ -281,6 +292,7 @@ export function SongsAdmin() {
                 ambients={ambients} 
                 permissions={permissions}
                 onPreview={() => setPreviewing(s)}
+                onOpenTimeline={() => setTimelineSong(s)}
               />
             ))}
             {songs.length === 0 && (
@@ -288,12 +300,62 @@ export function SongsAdmin() {
             )}
           </div>
         </>
+      ) : mode === "timeline" ? (
+        <div className="space-y-4">
+          <Card>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="space-y-1">
+                <h3 className="font-display text-base font-black text-cream flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-gold" /> Escolha a música para sincronizar na linha do tempo
+                </h3>
+                <p className="text-xs text-foreground/60">
+                  Configure o início e fim de cada verso em segundos (ex: 2.0s a 5.0s) ouvindo o áudio.
+                </p>
+              </div>
+              <select
+                value={selectedTimelineSongId || songs[0]?.id || ""}
+                onChange={(e) => setSelectedTimelineSongId(e.target.value)}
+                className="rounded-xl border border-gold/30 bg-card/80 px-4 py-2.5 text-sm text-cream font-bold min-w-[280px]"
+              >
+                {songs.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.title} {s.artist ? `— ${s.artist}` : ""} ({s.language})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Card>
+
+          {(() => {
+            const currentSong = songs.find((s) => s.id === (selectedTimelineSongId || songs[0]?.id));
+            if (!currentSong) {
+              return (
+                <Card>
+                  <p className="text-foreground/50 py-8 text-center">Nenhuma música cadastrada ainda.</p>
+                </Card>
+              );
+            }
+            return (
+              <div className="h-[750px] shadow-2xl rounded-2xl overflow-hidden">
+                <SongTimelineSyncEditor
+                  song={currentSong}
+                  onSaved={() => {
+                    qc.invalidateQueries({ queryKey: ["songs_admin"] });
+                    qc.invalidateQueries({ queryKey: ["songs_public"] });
+                    qc.invalidateQueries({ queryKey: ["songs_infantil"] });
+                  }}
+                />
+              </div>
+            );
+          })()}
+        </div>
       ) : mode === "review" ? (
         <ReviewMode 
           songs={songs} 
           ambients={ambients} 
           permissions={permissions}
           setPreviewing={setPreviewing}
+          onOpenTimeline={(s) => setTimelineSong(s)}
         />
       ) : (
         <Card>
@@ -315,6 +377,18 @@ export function SongsAdmin() {
           onToggleMaximize={() => setIsMaximized(!isMaximized)}
         />
       )}
+
+      {timelineSong && (
+        <SongTimelineModal
+          song={timelineSong}
+          onClose={() => setTimelineSong(null)}
+          onSaved={() => {
+            qc.invalidateQueries({ queryKey: ["songs_admin"] });
+            qc.invalidateQueries({ queryKey: ["songs_public"] });
+            qc.invalidateQueries({ queryKey: ["songs_infantil"] });
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -324,12 +398,14 @@ function ReviewMode({
   songs, 
   ambients,
   permissions,
-  setPreviewing
+  setPreviewing,
+  onOpenTimeline,
 }: { 
   songs: Song[]; 
   ambients: Ambient[];
   permissions: Record<string, boolean>;
   setPreviewing: (s: Song | null) => void;
+  onOpenTimeline: (s: Song) => void;
 }) {
   const [filter, setFilter] = useState<"all" | "missing" | "sync">("missing");
   const qc = useQueryClient();
@@ -513,6 +589,7 @@ function ReviewMode({
                     ambients={ambients} 
                     permissions={permissions}
                     onPreview={() => setPreviewing(s)}
+                    onOpenTimeline={() => onOpenTimeline(s)}
                   />
                 </div>
               </div>
@@ -572,12 +649,14 @@ function SongRow({
   song, 
   ambients, 
   permissions,
-  onPreview 
+  onPreview,
+  onOpenTimeline,
 }: { 
   song: Song; 
   ambients: Ambient[]; 
   permissions: Record<string, boolean>;
   onPreview: () => void;
+  onOpenTimeline: () => void;
 }) {
   const qc = useQueryClient();
   const [s, setS] = useState(song);
@@ -716,6 +795,13 @@ function SongRow({
             </p>
           )}
           <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={onOpenTimeline}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gold text-forest-deep text-xs font-black uppercase tracking-wider hover:brightness-110 transition shadow-md"
+            >
+              <Clock className="h-4 w-4" /> Abrir Editor de Linha do Tempo (2-5s)
+            </button>
             <Btn
               variant="outline"
               className="text-[10px] py-1 h-auto"
@@ -790,7 +876,10 @@ function SongRow({
           <input type="checkbox" checked={s.is_active} onChange={(e) => setS({ ...s, is_active: e.target.checked })} />
           Música ativa (visível ao público)
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <Btn onClick={onOpenTimeline} variant="outline" className="border-gold/60 text-gold hover:bg-gold/15">
+            <Clock className="h-4 w-4 text-gold" /> Timeline (2-5s)
+          </Btn>
           <Btn onClick={onPreview} variant="outline"><Eye className="h-4 w-4" /> Prévia</Btn>
           <Btn onClick={save}><Save className="h-4 w-4" /> Salvar</Btn>
           <Btn variant="danger" onClick={remove}><Trash2 className="h-4 w-4" /></Btn>

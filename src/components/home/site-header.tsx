@@ -21,7 +21,7 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { t } = useTranslation();
-
+  const { top: topNavLinks } = useNavContent(mode);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -36,82 +36,139 @@ export function SiteHeader({ mode = "all", showBackButton = false }: { mode?: Na
     <header
       className={
         isKids
-          ? "lg:hidden sticky top-0 z-40 backdrop-blur-md bg-[#221206]/85 border-b border-[#8d5b2d]/60 shadow-[0_6px_25px_rgba(0,0,0,0.5)] transition-all"
-          : "lg:hidden sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-[#e8e4dc] shadow-[0_2px_12px_rgba(0,0,0,0.04)] text-[#1f2937]"
+          ? "lg:hidden sticky top-0 z-40 backdrop-blur-md bg-[#fffdf7]/95 border-b-2 border-amber-300 shadow-[0_4px_16px_rgba(245,158,11,0.12)] transition-all"
+          : "sticky top-0 z-40 backdrop-blur-xl bg-[oklch(0.14_0.04_145/0.88)] border-b border-gold/30 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.6)]"
       }
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-2.5 sm:px-4 md:px-8">
-        {showBackButton ? (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => window.history.back()}
-              className={
-                isKids
-                  ? "relative group grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-[#d4a373] bg-gradient-to-b from-[#4a2e18] to-[#251408] text-[#fefae0] shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 active:scale-95"
-                  : "grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#e2ded5] bg-white text-[#1b4332] shadow-xs hover:border-[#1b4332]"
-              }
-              aria-label={t("common.voltar")}
-            >
-              <ArrowLeft className={isKids ? "h-6 w-6 text-[#fefae0]" : "h-5 w-5 text-[#1b4332]"} strokeWidth={isKids ? 2.5 : 2} />
-            </button>
-            <span
-              className={
-                isKids
-                  ? "font-display text-sm font-black uppercase tracking-wider text-[#fefae0] drop-shadow"
-                  : "font-display text-sm font-bold uppercase tracking-widest text-[#1b4332]"
-              }
-            >
-              {t("common.voltar")}
-            </span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsMobileOpen(true)}
-              className={
-                isKids
-                  ? "relative group grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 border-[#d4a373] bg-gradient-to-b from-[#4a2e18] to-[#251408] text-[#fefae0] shadow-[0_4px_14px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:border-[#ffd166] active:scale-95"
-                  : "grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#e2ded5] bg-white text-[#1f2937] shadow-xs hover:border-[#1b4332]"
-              }
-              aria-label={t("nav.menu")}
-            >
-              {isKids ? (
-                <div className="flex flex-col items-center justify-center gap-1.5 w-5">
-                  <span className="block h-0.5 w-5 rounded-full bg-[#fefae0] transition-all group-hover:bg-[#ffd166]" />
-                  <span className="block h-0.5 w-5 rounded-full bg-[#fefae0] transition-all group-hover:bg-[#ffd166]" />
-                  <span className="block h-0.5 w-5 rounded-full bg-[#fefae0] transition-all group-hover:bg-[#ffd166]" />
-                </div>
-              ) : (
-                <Menu className="h-5 w-5" strokeWidth={2} />
-              )}
-            </button>
-            {!isKids && (
-              <span className="font-display text-sm font-bold uppercase tracking-widest text-[#1b4332]">
-                {t("nav.menu")}
+      {isKids ? (
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-2 sm:px-4 md:px-8">
+          {showBackButton ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => window.history.back()}
+                className="group grid h-11 w-11 shrink-0 place-items-center rounded-2xl border-2 border-amber-300 bg-amber-100/90 hover:bg-amber-200 text-amber-950 shadow-[0_3px_0_#b45309] active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                aria-label={t("common.voltar")}
+              >
+                <ArrowLeft className="h-5 w-5 text-amber-950 transition-transform group-hover:-translate-x-0.5" strokeWidth={2.5} />
+              </button>
+              <span
+                className="font-display text-xs font-black uppercase tracking-wider hidden xs:inline"
+                style={{ color: "#064e3b" }}
+              >
+                {t("common.voltar")}
               </span>
-            )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsMobileOpen(true)}
+                className="group grid h-11 w-11 shrink-0 place-items-center rounded-2xl border-2 border-amber-300 bg-amber-100/90 hover:bg-amber-200 text-amber-950 shadow-[0_3px_0_#b45309] active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                aria-label={t("nav.menu")}
+              >
+                <div className="flex flex-col items-center justify-center gap-1 w-5">
+                  <span className="block h-0.5 w-5 rounded-full bg-amber-950 transition-all group-hover:bg-amber-800" />
+                  <span className="block h-0.5 w-4 rounded-full bg-amber-950 transition-all group-hover:bg-amber-800 group-hover:w-5" />
+                  <span className="block h-0.5 w-5 rounded-full bg-amber-950 transition-all group-hover:bg-amber-800" />
+                </div>
+              </button>
+            </div>
+          )}
+
+          <div className="min-w-0 flex items-center justify-center">
+            <Logo mode="infantil" variant="light" />
           </div>
-        )}
 
-        <div className="min-w-0 flex items-center justify-center">
-          <Logo mode={isKids ? "infantil" : "adulto"} />
-        </div>
-
-        <div className="flex items-center gap-2">
-          {isKids && (
+          <div className="flex items-center gap-2">
             <Link
               to="/adulto"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[#8d5b2d] bg-[#3a2212]/80 px-3 py-1.5 text-xs font-bold text-[#fefae0] shadow transition hover:border-[#ffd166] hover:bg-[#4a2e18]"
+              className="inline-flex items-center gap-1 rounded-full border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 text-xs font-black text-amber-950 shadow-xs transition active:translate-y-0.5"
             >
-              <span>Área Adulto</span>
-              <ChevronRight className="h-3.5 w-3.5 text-[#d4a373]" />
+              <span className="hidden xs:inline">Área</span>
+              <span>Adulto</span>
+              <ChevronRight className="h-3.5 w-3.5 text-amber-800" />
             </Link>
-          )}
-          <LanguageSwitcher compact={isKids} />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-3 py-3 sm:px-4 md:px-8">
+          {showBackButton ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => window.history.back()}
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold hover:border-gold hover:bg-gold/10"
+                aria-label={t("common.voltar")}
+              >
+                <ArrowLeft className="h-5 w-5 text-gold" strokeWidth={2} />
+              </button>
+              <span className="font-display text-sm font-bold uppercase tracking-widest text-gold">
+                {t("common.voltar")}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 xl:hidden">
+              <button
+                onClick={() => setOpen((v) => !v)}
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold hover:bg-gold/10"
+                aria-label={t("nav.menu")}
+              >
+                <Menu className="h-5 w-5" strokeWidth={2} />
+              </button>
+              <span className="font-display text-sm font-bold uppercase tracking-widest text-gold">
+                {t("nav.menu")}
+              </span>
+            </div>
+          )}
 
-      {mounted && open && createPortal(
+          <div className="min-w-0 flex-1 flex justify-center xl:flex-none xl:justify-start">
+            <Logo mode="adulto" variant="dark" />
+          </div>
+
+          <nav className="hidden xl:flex items-center gap-1 ml-auto">
+            {topNavLinks.map((n) => (
+              <Link
+                key={n.href}
+                to={n.href}
+                className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
+              >
+                {n.label}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-2 text-sm font-semibold text-gold hover:bg-gold/30"
+              >
+                <Settings className="h-4 w-4" /> {t("nav.painel")}
+              </Link>
+            )}
+            {user ? (
+              <>
+                <Link
+                  to="/minha-conta"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/85 hover:bg-gold/10"
+                >
+                  <UserCircle2 className="h-4 w-4 text-gold" /> {t("nav.minhaConta")}
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/30 px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-gold/10"
+                >
+                  <LogOut className="h-4 w-4 text-gold" /> {t("nav.sair")}
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--gradient-leaf)] px-4 py-2 text-sm font-bold text-cream shadow-[var(--shadow-glow)]"
+              >
+                <LogIn className="h-4 w-4" /> {t("nav.entrar")}
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
+
+      {mounted && open && !isKids && createPortal(
         <MobileDrawer onClose={() => setOpen(false)} onSignOut={signOut} user={user} isAdmin={isAdmin} mode={mode} />,
         document.body
       )}
@@ -323,7 +380,7 @@ function MobileDrawer({
       {/* Drawer slide-over */}
       <div className="relative z-50 flex h-full w-full max-w-sm flex-col border-r border-gold/30 bg-[oklch(0.14_0.04_145)] p-5 shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-300">
         <div className="flex items-center justify-between pb-4 border-b border-gold/20">
-          <Logo mode="adulto" />
+          <Logo mode="adulto" variant="dark" />
           <button
             onClick={onClose}
             className="grid h-9 w-9 place-items-center rounded-full border border-gold/40 bg-card/60 text-gold hover:bg-gold/20 hover:rotate-90 transition-all duration-200"

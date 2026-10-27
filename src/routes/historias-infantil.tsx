@@ -1,20 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
 import { useEffect, useRef, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getStoriesConfig } from "@/lib/infantil-content.functions";
 import { SiteHeader } from "@/components/home/site-header";
 import { SiteFooter } from "@/components/home/site-footer";
-import { PageHeader } from "@/components/education/page-header";
 import { EmptyState } from "@/components/education/empty-state";
 import { Pagination } from "@/components/education/pagination";
 import { LessonNavigation } from "@/components/education/lesson-navigation";
 import { getNarrationUrl } from "@/lib/narration-cache";
 import { setLastArea } from "@/lib/last-area";
-import kidsBg from "@/assets/kids-menu-bg.jpg";
-import { BookOpen, Clock, CheckCircle2, ChevronRight, ChevronLeft, Search, X, Volume2, Pause, ArrowLeft } from "lucide-react";
+import kidsCharacter from "@/assets/kids-menu-character.png";
+import {
+  BookOpen,
+  Clock,
+  CheckCircle2,
+  ChevronRight,
+  ChevronLeft,
+  Search,
+  X,
+  Volume2,
+  Pause,
+  ArrowLeft,
+  Sparkles,
+  Star,
+  Compass,
+} from "lucide-react";
 
 import josaImg from "@/assets/kids-stories/josa.jpg.asset.json";
 import joaoImg from "@/assets/kids-stories/joao.jpg.asset.json";
@@ -98,154 +112,157 @@ const STATIC_STORIES: Story[] = [
       "Ele dizia que ser ancião é mais que ter cabelos brancos: é guardar as histórias e plantar hoje para que a aldeia floresça amanhã.",
       "Seu maracá silenciou, mas seu canto segue vivo em cada roda de Awê e em cada criança que aprende Patxôhã.",
     ],
-    quote: "Enquanto houver respeito e união, nosso povo seguirá forte.",
-    color: "#ef476f",
-    accent: "#118ab2",
-  },
-  {
-    id: "origem",
-    chip: "Origem e território",
-    category: "natureza",
-    chipEmoji: "🗺️",
-    title: "A casa Pataxó",
-    highlight: "é a Mata Atlântica",
-    readTime: "2 min de leitura",
-    image: monte,
-    paragraphs: [
-      "Os Pataxó vivem no sul da Bahia há muitos e muitos luares, guardando as praias, as matas e o sagrado Monte Pascoal.",
-      "São quase 50 aldeias espalhadas pela Bahia e Minas Gerais — cada uma com sua história, seu cacique e seu jeito de cuidar da terra.",
-    ],
-    color: "#06d6a0",
+    quote: "A voz que ensina é a mesma que aprende com os que estão chegando.",
+    color: "#e76f51",
     accent: "#264653",
   },
   {
-    id: "lingua",
-    chip: "Língua Patxôhã",
+    id: "monte-pascoal",
+    chip: "Terra Sagrada",
+    category: "natureza",
+    chipEmoji: "⛰️",
+    title: "Monte Pascoal",
+    highlight: "o guardião de pedra da aldeia",
+    readTime: "4 min de leitura",
+    image: monte,
+    paragraphs: [
+      "No coração da terra Pataxó ergue-se o Monte Pascoal — para nós, montanha sagrada onde habitam os espíritos da mata.",
+      "Os mais velhos dizem que o monte vê tudo: viu os primeiros barcos chegarem e viu o povo resistir por séculos sem perder a raiz.",
+      "Para a criança Pataxó, olhar o monte é lembrar de onde veio e quem é. Uma montanha não se curva ao vento — e nós também não.",
+    ],
+    quote: "O monte não fala português nem Patxôhã. Mas todo índio entende o que ele diz.",
+    color: "#2a9d8f",
+    accent: "#1b4332",
+  },
+  {
+    id: "lingua-patxoha",
+    chip: "Voz dos Antepassados",
     category: "lingua",
     chipEmoji: "🗣️",
-    title: "A língua do guerreiro",
-    highlight: "está voltando a falar",
-    readTime: "2 min de leitura",
+    title: "A Língua Patxôhã",
+    highlight: "as palavras que renasceram",
+    readTime: "3 min de leitura",
     image: ancianoImg,
     paragraphs: [
-      "O Patxôhã quase foi silenciado pelo tempo, mas os anciãos e os professores estão trazendo cada palavra de volta.",
-      "Cada nova palavra aprendida é um ancestral que volta a falar — e é assim que a língua fica viva no coração das crianças.",
+      "Houve um tempo em que quiseram calar o Patxôhã. Disseram que era língua esquecida, coisa que já tinha passado.",
+      "Mas a língua dos guerreiros não morre tão fácil. Ficou guardada no coração dos mais velhos, nas cantigas e nos nomes das plantas.",
+      "Hoje, nas escolas da aldeia, as crianças voltam a falar Patxôhã bem alto — porque um povo que perde a língua perde a alma.",
     ],
-    color: "#ffd166",
-    accent: "#8b5a2b",
+    quote: "Cada palavra em Patxôhã que você aprende é uma semente que os antigos plantaram em você.",
+    color: "#e9c46a",
+    accent: "#582f0e",
   },
   {
-    id: "aldeia",
-    chip: "Vida na aldeia",
-    category: "natureza",
-    chipEmoji: "🏡",
-    title: "Nossa casa de palha",
-    highlight: "vive em roda",
-    readTime: "2 min de leitura",
+    id: "aldeia-velha",
+    chip: "Coração Pataxó",
+    category: "tradicoes",
+    chipEmoji: "🏕️",
+    title: "A Vida na Aldeia Velha",
+    highlight: "onde a terra é sagrada",
+    readTime: "4 min de leitura",
     image: aldeiaImg,
     paragraphs: [
-      "Na aldeia, todo mundo se cuida: os mais velhos ensinam, as crianças brincam e a comida vem da terra, do rio e do mar.",
-      "No pátio central acontecem os conselhos, as danças e as festas — porque tudo o que é bonito, a gente vive junto.",
+      "Na Aldeia Velha, o dia começa antes do sol — com o cheiro da lenha queimando e o som dos pássaros anunciando a manhã.",
+      "As crianças correm livres entre as mangueiras, aprendem a cuidar da horta com as mães e a ouvir os mais velhos com respeito.",
+      "Ali o tempo tem outro ritmo: não é o relógio que manda, é o ciclo das águas, das frutas e das luas cheias de celebração.",
     ],
-    color: "#8ecae6",
-    accent: "#023047",
+    quote: "A aldeia não é só o lugar onde a gente mora. É o lugar que mora dentro da gente.",
+    color: "#84a98c",
+    accent: "#1f3a24",
   },
   {
-    id: "ritual",
-    chip: "Espiritualidade e dança",
+    id: "danca-awe",
+    chip: "Ritual Sagrado",
     category: "tradicoes",
-    chipEmoji: "🔥",
-    title: "O Awê é o canto",
-    highlight: "que abraça a floresta",
+    chipEmoji: "🪇",
+    title: "O Sagrado Awê",
+    highlight: "quando a aldeia inteira vira um só coração",
     readTime: "3 min de leitura",
     image: dancaImg,
     paragraphs: [
-      "No Awê, os corpos pintados de urucum e jenipapo dançam em roda, ao som do maracá, unindo o povo aos encantados da mata.",
-      "É um agradecimento cantado: à floresta, aos animais e a cada estrela que vela a aldeia à noite.",
+      "Quando o maracá começa a tocar e a poeira sobe do chão batido, ninguém fica de fora: velhos, moços e curumins entram na roda.",
+      "O Awê não é dança para turista ver. É oração cantada, é agradecimento pela chuva, pela cura e pela força da comunidade.",
+      "Os pés batem firmes na terra para avisar os espíritos: nós estamos aqui, juntos, vivos e cantando.",
     ],
-    color: "#e76f51",
-    accent: "#2a9d8f",
+    quote: "No Awê não tem quem dança melhor. Tem quem dança com mais coração.",
+    color: "#f4a261",
+    accent: "#78350f",
   },
   {
-    id: "arte",
-    chip: "Arte e sabedoria",
+    id: "artesanato",
+    chip: "Mãos que criam",
     category: "arte",
-    chipEmoji: "🎨",
-    title: "Grafismos e sementes",
-    highlight: "contam quem nós somos",
-    readTime: "2 min de leitura",
+    chipEmoji: "🪵",
+    title: "Arte em Madeira e Sementes",
+    highlight: "histórias que a floresta esculpe",
+    readTime: "3 min de leitura",
     image: artesanatoImg,
     paragraphs: [
-      "Com sementes de tento, pau-brasil e açaí, mãos pacientes tecem colares que protegem e enfeitam o corpo de quem canta.",
-      "Cada risquinho, cada grafismo é uma palavra antiga — arte que também é escrita ancestral.",
+      "Um pedaço de madeira caído na mata não é lixo: para o artesão Pataxó, é o corpo de um animal esperando para nascer.",
+      "Com faca e paciência, as mãos vão descobrindo a tartaruga, o gavião, o tamanduá. Cada peça traz um espírito da mata.",
+      "Colares de tento, sementes de açaí e folhas secas — nossa arte é feita daquilo que a terra nos dá, sem tirar mais do que precisa.",
     ],
-    color: "#c77dff",
-    accent: "#5a189a",
+    quote: "A floresta dá a madeira, a gente só ajuda ela a virar arte.",
+    color: "#a37081",
+    accent: "#3a1f28",
   },
 ];
 
 let currentAudio: HTMLAudioElement | null = null;
-let currentSetter: ((s: "idle") => void) | null = null;
+let currentSetter: ((s: "idle" | "playing") => void) | null = null;
 
 function useStoryNarrator(text: string) {
-  const { i18n } = useTranslation();
-  const [state, setState] = useState<"idle" | "loading" | "playing">("idle");
+  const [state, setState] = useState<"idle" | "playing">("idle");
   const [progress, setProgress] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const urlRef = useRef<string | null>(null);
-  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
-
-  useEffect(() => {
-    stop();
-    audioRef.current = null;
-    urlRef.current = null;
-  }, [text, lang]);
 
   useEffect(() => {
     return () => {
-      audioRef.current?.pause();
-      audioRef.current = null;
-      urlRef.current = null;
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      if (currentSetter) {
+        currentSetter("idle");
+        currentSetter = null;
+      }
     };
   }, []);
 
   const stop = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
     }
     setState("idle");
     setProgress(0);
   };
 
   const play = async () => {
-    if (state === "playing") return stop();
-    if (currentAudio && currentAudio !== audioRef.current) {
-      try {
-        currentAudio.pause();
-      } catch {}
-      currentSetter?.("idle");
+    if (state === "playing") {
+      stop();
+      return;
     }
-    setState("loading");
-    try {
-      let url = urlRef.current;
-      if (!url) {
-        url = await getNarrationUrl({ text, lang, mode: "story", voice: "onyx" });
-        if (!url) {
-          setState("idle");
-          return;
-        }
-        urlRef.current = url;
-      }
+    if (!text.trim()) return;
 
-      const a = audioRef.current ?? new Audio();
-      audioRef.current = a;
-      a.src = url;
-      a.currentTime = 0;
-      a.ontimeupdate = () => {
-        if (a.duration > 0) setProgress(a.currentTime / a.duration);
-      };
+    try {
+      if (currentAudio) {
+        currentAudio.pause();
+        if (currentSetter) currentSetter("idle");
+      }
+      const url = await getNarrationUrl({ text, lang: "pt", mode: "story" });
+      if (!url) return;
+
+      const a = new Audio(url);
       a.onended = () => {
+        setState("idle");
+        setProgress(0);
+      };
+      a.ontimeupdate = () => {
+        if (a.duration && Number.isFinite(a.duration) && a.duration > 0) {
+          setProgress(a.currentTime / a.duration);
+        }
+      };
+      a.onerror = () => {
         setState("idle");
         setProgress(0);
       };
@@ -332,13 +349,13 @@ function HistoriasInfantilPage() {
     return filteredStories.slice(start, start + STORIES_PER_PAGE);
   }, [filteredStories, currentPage]);
 
-  const categories: { id: Category; label: string }[] = [
-    { id: "todas", label: `Todas (${stories.length})` },
-    { id: "memoria", label: "Memória" },
-    { id: "natureza", label: "Natureza" },
-    { id: "lingua", label: "Língua" },
-    { id: "arte", label: "Arte" },
-    { id: "tradicoes", label: "Tradições" },
+  const categories: { id: Category; label: string; icon: string }[] = [
+    { id: "todas", label: `Todas (${stories.length})`, icon: "✨" },
+    { id: "memoria", label: "Memória", icon: "🪶" },
+    { id: "natureza", label: "Natureza", icon: "🌿" },
+    { id: "lingua", label: "Língua", icon: "🏹" },
+    { id: "arte", label: "Arte", icon: "🪵" },
+    { id: "tradicoes", label: "Tradições", icon: "🔥" },
   ];
 
   const currentStoryIndex = selectedStory
@@ -376,55 +393,130 @@ function HistoriasInfantilPage() {
   };
 
   return (
-    <div
-      className="kids-theme relative min-h-screen text-[#fefae0] font-sans"
-      style={{
-        backgroundImage: `url(${kidsBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
+    <div className="kids-theme relative min-h-screen bg-[#fbf9f4] text-slate-800 font-sans overflow-x-clip selection:bg-amber-300 selection:text-amber-950">
+      {/* Soft warm ambient lighting */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,243,199,0.5),rgba(255,255,255,0))]"
+      />
+
+      {/* Floating Animated Emojis in Background */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0 opacity-40"
+      >
+        <span
+          className="absolute left-[6%] top-[140px] text-3xl"
+          style={{ animation: "music-float 6s ease-in-out infinite" }}
+        >
+          📖
+        </span>
+        <span
+          className="absolute right-[8%] top-[190px] text-4xl"
+          style={{ animation: "music-float 7s ease-in-out infinite 1.5s" }}
+        >
+          🪶
+        </span>
+        <span
+          className="absolute left-[12%] top-[450px] text-3xl"
+          style={{ animation: "music-float 8s ease-in-out infinite 0.7s" }}
+        >
+          ✨
+        </span>
+        <span
+          className="absolute right-[14%] top-[520px] text-3xl"
+          style={{ animation: "music-float 5.5s ease-in-out infinite 2s" }}
+        >
+          🌿
+        </span>
+        <span
+          className="absolute left-[4%] top-[780px] text-3xl"
+          style={{ animation: "music-float 9s ease-in-out infinite 1s" }}
+        >
+          🪵
+        </span>
+        <span
+          className="absolute right-[6%] top-[860px] text-3xl"
+          style={{ animation: "music-float 6.5s ease-in-out infinite 2.5s" }}
+        >
+          ⭐
+        </span>
+      </div>
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <SiteHeader mode="infantil" />
 
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-4 sm:px-6">
-          <PageHeader
-            breadcrumbs={[
-              { label: "Início", href: "/infantil" },
-              { label: "Histórias da Aldeia" },
-            ]}
-            title="Histórias da Aldeia"
-            description="Histórias sobre cultura, sabedoria dos mais velhos e os mistérios da floresta viva."
-            badge={`${completedStories.size} de ${stories.length} histórias lidas`}
-            primaryAction={
-              stories.length > 0
-                ? {
-                    label: "Começar Primeira História",
-                    onClick: () => handleOpenStory(stories[0]),
-                  }
-                : undefined
-            }
-          />
+        <main className="mx-auto w-full max-w-5xl flex-1 px-3 sm:px-6 pb-28 pt-4">
+          {/* ========================================================= */}
+          {/* 1. HERO PARCHMENT BANNER                                  */}
+          {/* ========================================================= */}
+          <section className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-r from-[#fffef5] via-[#fef7e6] to-[#f5edd2] p-5 sm:p-7 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-md">
+                <img
+                  src={kidsCharacter}
+                  alt="Mascote Awã"
+                  className="h-full w-full object-cover object-top transform hover:scale-105 transition"
+                  style={{ animation: "music-float 4s ease-in-out infinite" }}
+                />
+                <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs text-amber-950 font-black shadow-md border-2 border-white">
+                  🪶
+                </span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1
+                    className="font-display text-xl sm:text-2xl md:text-3xl font-black tracking-tight"
+                    style={{ color: "#064e3b" }}
+                  >
+                    Histórias da Aldeia Pataxó
+                  </h1>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-0.5">
+                  Aprenda com os anciãos, os cantos sagrados e a sabedoria viva da floresta.
+                </p>
+              </div>
+            </div>
 
-          {/* Search Bar & Category Filters */}
-          <div className="mt-6 flex flex-col gap-3">
+            {/* Badges and Quick Start */}
+            <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
+              <div className="flex items-center gap-1.5 rounded-2xl border-2 border-amber-300 bg-white/95 px-3.5 py-2 text-xs font-black text-amber-900 shadow-sm">
+                <BookOpen className="h-4 w-4 text-emerald-700" />
+                <span>
+                  {completedStories.size} de {stories.length} lidas
+                </span>
+              </div>
+
+              {stories.length > 0 && (
+                <button
+                  onClick={() => handleOpenStory(stories[0])}
+                  className="rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-xs font-black text-amber-950 shadow-[0_3px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer flex items-center gap-1.5"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Começar Primeira</span>
+                </button>
+              )}
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* 2. SEARCH BAR & BOUNCY 3D CATEGORY PILLS                  */}
+          {/* ========================================================= */}
+          <div className="mb-6 flex flex-col gap-3.5">
             <div className="relative w-full max-w-md">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4a373]" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-amber-700" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar história ou personagem..."
-                className="w-full rounded-xl border border-[#633916] bg-[#1a0e05]/95 pl-10 pr-9 py-2.5 text-xs text-[#fefae0] placeholder-[#d4a373]/60 focus:border-[#ffd166] focus:outline-none focus:ring-1 focus:ring-[#ffd166]"
+                className="w-full rounded-2xl border-2 border-amber-300 bg-white pl-10 pr-9 py-2.5 text-xs font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 shadow-sm transition"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#d4a373] hover:text-[#fefae0]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -432,35 +524,41 @@ function HistoriasInfantilPage() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setActiveCategory(c.id)}
-                  className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
-                    activeCategory === c.id
-                      ? "bg-[#ffd166] text-[#1a0e04] shadow-md"
-                      : "awa-card-3 text-[#fefae0]/80 hover:text-[#ffd166] hover:border-[#ffd166]/40"
-                  }`}
-                >
-                  {c.label}
-                </button>
-              ))}
+              {categories.map((c) => {
+                const isActive = activeCategory === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => setActiveCategory(c.id)}
+                    className={`flex items-center gap-1.5 rounded-2xl px-4 py-2 text-xs font-black transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-amber-400 text-amber-950 border-2 border-amber-400 shadow-[0_3px_0_#b45309] scale-105"
+                        : "bg-white text-slate-700 border-2 border-amber-200/90 hover:bg-amber-50 shadow-sm hover:border-amber-300"
+                    }`}
+                  >
+                    <span>{c.icon}</span>
+                    <span>{c.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Status & Counter */}
-          <div className="mt-4 flex items-center justify-between text-xs text-[#d4a373] px-1">
+          <div className="mb-4 flex items-center justify-between text-xs font-bold text-slate-600 px-1">
             <span>
               Mostrando {filteredStories.length > 0 ? (currentPage - 1) * STORIES_PER_PAGE + 1 : 0}–
               {Math.min(currentPage * STORIES_PER_PAGE, filteredStories.length)} de {filteredStories.length} histórias
             </span>
             {searchQuery && (
-              <span className="text-[#ffd166]">Filtro de busca ativo: "{searchQuery}"</span>
+              <span className="text-amber-800 font-black">Filtro ativo: "{searchQuery}"</span>
             )}
           </div>
 
-          {/* Stories Grid */}
-          <div className="mt-3">
+          {/* ========================================================= */}
+          {/* 3. STORIES GRID (Clean, Bright White 3D Cards)             */}
+          {/* ========================================================= */}
+          <div className="mt-2">
             {filteredStories.length === 0 ? (
               <EmptyState
                 title="Nenhuma história encontrada"
@@ -476,59 +574,63 @@ function HistoriasInfantilPage() {
                 }}
               />
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {paginatedStories.map((story) => {
                   const isRead = completedStories.has(story.id);
 
                   return (
-                    <div
+                    <article
                       key={story.id}
                       onClick={() => handleOpenStory(story)}
-                      className="awa-card-2 group flex flex-col justify-between overflow-hidden rounded-2xl transition shadow-md hover:-translate-y-1 hover:border-[#ffd166]/50 cursor-pointer"
+                      className="group flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-amber-200/90 bg-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                     >
                       <div>
-                        {/* Cover Image */}
-                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
+                        {/* Cover Image with Chip */}
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-amber-50">
                           <img
                             src={story.image}
                             alt={story.title}
                             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                           />
-                          <div className="absolute top-2.5 left-2.5 rounded-md bg-[#180e07]/85 px-2 py-0.5 text-[10px] font-bold text-[#ffd166] border border-[#633916]">
-                            {story.chip}
+                          <div className="absolute top-3 left-3 rounded-xl bg-white/95 backdrop-blur-md px-2.5 py-1 text-[11px] font-black text-amber-950 border border-amber-300 shadow-sm flex items-center gap-1">
+                            <span>{story.chipEmoji}</span>
+                            <span>{story.chip}</span>
                           </div>
                           {isRead && (
-                            <div className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-md bg-[#1b4332]/90 px-2 py-0.5 text-[10px] font-bold text-[#4ade80] border border-[#4ade80]/40">
-                              <CheckCircle2 className="h-3 w-3" /> Lida
+                            <div className="absolute top-3 right-3 flex items-center gap-1 rounded-xl bg-emerald-600 px-2.5 py-1 text-[11px] font-black text-white shadow-sm border border-emerald-400">
+                              <CheckCircle2 className="h-3.5 w-3.5" /> Lida
                             </div>
                           )}
                         </div>
 
                         {/* Card Content */}
-                        <div className="p-4">
-                          <h3 className="text-base font-black text-[#fefae0] group-hover:text-[#ffd166] transition">
+                        <div className="p-4 sm:p-5">
+                          <h3
+                            className="font-display text-lg font-black tracking-tight group-hover:text-emerald-700 transition"
+                            style={{ color: "#064e3b" }}
+                          >
                             {story.title}
                           </h3>
-                          <div className="text-xs text-[#d4a373] mt-0.5">
+                          <div className="text-xs font-bold text-amber-800 mt-0.5">
                             {story.highlight}
                           </div>
-                          <p className="mt-2 text-xs text-[#fefae0]/75 line-clamp-2 leading-relaxed">
+                          <p className="mt-2 text-xs text-slate-600 font-medium line-clamp-2 leading-relaxed">
                             {story.paragraphs[0]}
                           </p>
                         </div>
                       </div>
 
                       {/* Card Footer */}
-                      <div className="px-4 pb-4 pt-2 flex items-center justify-between border-t border-[#633916]/30">
-                        <span className="flex items-center gap-1 text-[11px] text-[#d4a373]">
-                          <Clock className="h-3 w-3" /> {story.readTime}
+                      <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 flex items-center justify-between border-t border-amber-100">
+                        <span className="flex items-center gap-1 text-xs font-semibold text-slate-500">
+                          <Clock className="h-3.5 w-3.5 text-amber-600" /> {story.readTime}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#ffd166] group-hover:translate-x-0.5 transition">
-                          <span>Ler</span>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3.5 py-1 text-xs font-black text-amber-950 shadow-sm group-hover:brightness-105 transition">
+                          <span>Ler História</span>
                           <ChevronRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
-                    </div>
+                    </article>
                   );
                 })}
               </div>
@@ -544,133 +646,145 @@ function HistoriasInfantilPage() {
           />
         </main>
 
-        {/* Dedicated Story Reader Modal */}
-        {selectedStory && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
-            <div
-              onClick={handleCloseStory}
-              className="fixed inset-0 bg-black/85 backdrop-blur-sm"
-              aria-hidden
-            />
+        {/* ========================================================= */}
+        {/* 4. DEDICATED STORY READER MODAL (Portaled to Body)         */}
+        {/* ========================================================= */}
+        {selectedStory && typeof document !== "undefined" &&
+          createPortal(
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+              <div
+                onClick={handleCloseStory}
+                className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+                aria-hidden
+              />
 
-            <div className="relative z-10 w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl border border-[#ffd166]/50 bg-[#1e1107] text-[#fefae0] shadow-2xl p-5 sm:p-7">
-              {/* Top Navigation bar */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#633916]">
-                <div className="flex items-center gap-2 text-xs text-[#d4a373]">
-                  <span className="cursor-pointer hover:underline" onClick={handleCloseStory}>
-                    Histórias
-                  </span>
-                  <span>/</span>
-                  <span className="text-[#ffd166] font-bold truncate max-w-[200px]">
-                    {selectedStory.title}
-                  </span>
-                </div>
-
-                <button
-                  onClick={handleCloseStory}
-                  className="grid h-8 w-8 place-items-center rounded-full bg-[#251408] border border-[#633916] text-[#ffd166] hover:bg-[#331c0e] transition"
-                  aria-label="Fechar"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Story Header */}
-              <div className="mt-4">
-                <span className="rounded-md bg-[#251408] border border-[#633916] px-2 py-0.5 text-[10px] font-bold text-[#ffd166]">
-                  {selectedStory.chip}
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-[#ffd166] mt-2">
-                  {selectedStory.title}
-                </h2>
-                <div className="text-xs text-[#d4a373] mt-0.5">
-                  {selectedStory.highlight} • {selectedStory.readTime}
-                </div>
-              </div>
-
-              {/* Story Image with Audio Play Bar */}
-              <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-2xl border border-[#633916] bg-black/40">
-                <img
-                  src={selectedStory.image}
-                  alt={selectedStory.title}
-                  className="h-full w-full object-cover"
-                />
-
-                <div className="absolute bottom-3 left-3 right-3 flex items-center gap-3 rounded-xl bg-[#180e07]/90 backdrop-blur-md p-2.5 border border-[#633916]">
-                  <button
-                    onClick={playAudio}
-                    className="flex items-center gap-1.5 rounded-lg bg-[#ffd166] px-3 py-1.5 text-xs font-black text-[#1a0e04] shadow hover:brightness-110 transition"
-                  >
-                    {audioState === "playing" ? (
-                      <>
-                        <Pause className="h-3.5 w-3.5 fill-current" />
-                        <span>Pausar</span>
-                      </>
-                    ) : (
-                      <>
-                        <Volume2 className="h-3.5 w-3.5" />
-                        <span>Ouvir História</span>
-                      </>
-                    )}
-                  </button>
-
-                  <div className="flex-1 h-2 rounded-full bg-black/60 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#2a9d8f] to-[#4ade80] transition-all"
-                      style={{ width: `${Math.round(audioProgress * 100)}%` }}
-                    />
+              <div className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] border-4 border-amber-300 bg-white text-slate-800 shadow-2xl p-5 sm:p-7">
+                {/* Top Navigation Bar */}
+                <div className="flex items-center justify-between pb-3.5 border-b-2 border-amber-200">
+                  <div className="flex items-center gap-2 text-xs font-bold text-amber-800">
+                    <span className="cursor-pointer hover:underline" onClick={handleCloseStory}>
+                      Histórias
+                    </span>
+                    <span>/</span>
+                    <span
+                      className="font-black truncate max-w-[200px]"
+                      style={{ color: "#064e3b" }}
+                    >
+                      {selectedStory.title}
+                    </span>
                   </div>
 
-                  <span className="text-[11px] font-bold text-[#ffd166]">
-                    {Math.round(audioProgress * 100)}%
+                  <button
+                    onClick={handleCloseStory}
+                    className="grid h-9 w-9 place-items-center rounded-full border-2 border-amber-300 bg-amber-50 text-amber-950 hover:bg-amber-100 hover:scale-105 active:scale-95 transition shadow-sm cursor-pointer"
+                    aria-label="Fechar"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Story Header */}
+                <div className="mt-4">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 border border-amber-300 px-3 py-0.5 text-[11px] font-black text-amber-950 shadow-xs">
+                    <span>{selectedStory.chipEmoji}</span>
+                    <span>{selectedStory.chip}</span>
                   </span>
+                  <h2
+                    className="font-display text-2xl sm:text-3xl font-black mt-2 tracking-tight"
+                    style={{ color: "#064e3b" }}
+                  >
+                    {selectedStory.title}
+                  </h2>
+                  <div className="text-xs sm:text-sm font-bold text-amber-800 mt-0.5">
+                    {selectedStory.highlight} • {selectedStory.readTime}
+                  </div>
+                </div>
+
+                {/* Story Image with Audio Play Bar */}
+                <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-2xl border-2 border-amber-300 bg-amber-50 shadow-md">
+                  <img
+                    src={selectedStory.image}
+                    alt={selectedStory.title}
+                    className="h-full w-full object-cover"
+                  />
+
+                  {/* Audio Narrator Bar */}
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center gap-3 rounded-2xl bg-white/95 backdrop-blur-md p-2.5 border-2 border-amber-300 shadow-lg">
+                    <button
+                      onClick={playAudio}
+                      className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-3.5 py-1.5 text-xs font-black text-amber-950 shadow-[0_2px_0_#b45309] hover:brightness-105 active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                    >
+                      {audioState === "playing" ? (
+                        <>
+                          <Pause className="h-3.5 w-3.5 fill-current" />
+                          <span>Pausar</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="h-3.5 w-3.5" />
+                          <span>Ouvir História</span>
+                        </>
+                      )}
+                    </button>
+
+                    <div className="flex-1 h-2 rounded-full bg-amber-100 border border-amber-200 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-500 transition-all"
+                        style={{ width: `${Math.round(audioProgress * 100)}%` }}
+                      />
+                    </div>
+
+                    <span className="text-xs font-black text-amber-950">
+                      {Math.round(audioProgress * 100)}%
+                    </span>
+                  </div>
+                </div>
+
+                {/* Story Reading Content */}
+                <div className="mt-5 space-y-3.5 text-sm sm:text-base leading-relaxed text-slate-700 font-medium">
+                  {selectedStory.paragraphs.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+
+                  {selectedStory.quote && (
+                    <blockquote className="mt-4 rounded-2xl border-l-4 border-amber-400 bg-amber-50/80 p-4 italic text-sm sm:text-base text-amber-950 font-bold shadow-xs">
+                      “{selectedStory.quote}”
+                    </blockquote>
+                  )}
+                </div>
+
+                {/* Mark as read button */}
+                <div className="mt-6 pt-4 border-t-2 border-amber-100 flex items-center justify-between">
+                  <button
+                    onClick={() => toggleCompleted(selectedStory.id)}
+                    className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-xs font-black transition-all shadow cursor-pointer active:translate-y-0.5 ${
+                      completedStories.has(selectedStory.id)
+                        ? "bg-emerald-600 text-white shadow-[0_3px_0_#064e3b]"
+                        : "bg-white border-2 border-amber-300 text-amber-950 hover:bg-amber-50 shadow-[0_3px_0_#b45309]"
+                    }`}
+                  >
+                    <CheckCircle2 className="h-4 w-4" />
+                    <span>
+                      {completedStories.has(selectedStory.id)
+                        ? "✓ História Concluída"
+                        : "Marcar como Concluída"}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Reader Previous / Next Navigation */}
+                <div className="mt-4">
+                  <LessonNavigation
+                    previousLabel="História Anterior"
+                    onPrevious={currentStoryIndex > 0 ? handlePrevStory : undefined}
+                    continueLabel="Próxima História"
+                    onContinue={currentStoryIndex < stories.length - 1 ? handleNextStory : undefined}
+                  />
                 </div>
               </div>
-
-              {/* Story Reading Content */}
-              <div className="mt-5 space-y-3.5 text-sm sm:text-base leading-relaxed text-[#fefae0]/90">
-                {selectedStory.paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-
-                {selectedStory.quote && (
-                  <blockquote className="mt-4 rounded-xl border-l-4 border-[#ffd166] bg-[#251408] p-4 italic text-sm text-[#ffd166]">
-                    “{selectedStory.quote}”
-                  </blockquote>
-                )}
-              </div>
-
-              {/* Mark as read button */}
-              <div className="mt-6 pt-4 border-t border-[#633916] flex items-center justify-between">
-                <button
-                  onClick={() => toggleCompleted(selectedStory.id)}
-                  className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition shadow ${
-                    completedStories.has(selectedStory.id)
-                      ? "bg-[#2a9d8f] text-white"
-                      : "bg-[#251408] border border-[#633916] text-[#ffd166] hover:border-[#ffd166]"
-                  }`}
-                >
-                  <CheckCircle2 className="h-4 w-4" />
-                  <span>
-                    {completedStories.has(selectedStory.id)
-                      ? "✓ História Concluída"
-                      : "Marcar como Concluída"}
-                  </span>
-                </button>
-              </div>
-
-              {/* Reader Previous / Next Navigation */}
-              <div className="mt-4">
-                <LessonNavigation
-                  previousLabel="História Anterior"
-                  onPrevious={currentStoryIndex > 0 ? handlePrevStory : undefined}
-                  nextLabel="Próxima História"
-                  onNext={currentStoryIndex < stories.length - 1 ? handleNextStory : undefined}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+            </div>,
+            document.body
+          )}
 
         <SiteFooter mode="infantil" />
       </div>

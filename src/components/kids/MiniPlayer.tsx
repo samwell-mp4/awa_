@@ -1,7 +1,17 @@
 import { useRef, useState, useEffect, useMemo } from "react";
-import { X } from "lucide-react";
+import { X, Maximize2, Clock } from "lucide-react";
 import { useLang, pickLang } from "@/lib/pick-lang";
-import { splitLyrics, resolveDuration, resolveLyricBounds, activeLineIndex } from "@/lib/lyric-sync";
+import {
+  splitLyrics,
+  resolveDuration,
+  resolveLyricBounds,
+  activeLineIndex,
+  resolveLyricRanges,
+  activeLineFromRanges,
+} from "@/lib/lyric-sync";
+import { KidsSongPlayerModal } from "./KidsSongPlayerModal";
+import { SongTimelineModal } from "@/components/music/SongTimelineSyncEditor";
+import { useSidebar } from "@/components/navigation/site-sidebar";
 
 /** Aparência escolhida no painel para cada cantiga. */
 export type SongStyle = {
@@ -44,6 +54,17 @@ export function MiniPlayer({
   isMaximized: boolean;
   onToggleMaximize: () => void;
 }) {
+  if (isMaximized) {
+    return (
+      <KidsSongPlayerModal
+        song={song}
+        onClose={onClose}
+        onMinimize={onToggleMaximize}
+      />
+    );
+  }
+
+  const { isCollapsed } = useSidebar();
   const ref = useRef<HTMLAudioElement>(null);
   const lang = useLang();
   const [progress, setProgress] = useState(0);
@@ -76,11 +97,54 @@ export function MiniPlayer({
     return () => cancelAnimationFrame(raf);
   }, [song.id]);
 
-  const indLines = splitLyrics(song.lyrics_indigenous || "");
-  const transLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang) || "");
-  const maxLen = Math.max(indLines.length, transLines.length);
+  const rawIndLines = splitLyrics(song.lyrics_indigenous || "");
+  const rawTransLines = splitLyrics(pickLang(song as any, "lyrics_pt", lang) || "");
   const duration = resolveDuration(audioDuration, song.duration_seconds);
   
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [localRangesVersion, setLocalRangesVersion] = useState(0);
+
+  useEffect(() => {
+    const handleSyncUpdate = (e: any) => {
+      if (!e.detail?.songId || e.detail.songId === song.id) {
+        setLocalRangesVersion((v) => v + 1);
+      }
+    };
+    window.addEventListener("awa:song-sync-updated", handleSyncUpdate);
+    return () => window.removeEventListener("awa:song-sync-updated", handleSyncUpdate);
+  }, [song.id]);
+
+  const ranges = useMemo(
+    () =>
+      resolveLyricRanges({
+        songId: song.id,
+        songTitle: song.title,
+        indLines: rawIndLines,
+        ptLines: rawTransLines,
+        duration,
+        styleRanges: (song as any).style?.sync_ranges,
+        syncTimes: song.sync_times ?? null,
+        offsets: song.sync_offsets ?? null,
+      }),
+    [rawIndLines, rawTransLines, duration, song.id, song.title, lang, song.sync_offsets, song.sync_times, (song as any).style, localRangesVersion]
+  );
+
+  const indLines = useMemo(() => {
+    if (ranges && ranges.length > 0 && ranges.some((r) => r.text)) {
+      return ranges.map((r) => r.text || "");
+    }
+    return rawIndLines;
+  }, [ranges, rawIndLines]);
+
+  const transLines = useMemo(() => {
+    if (ranges && ranges.length > 0 && ranges.some((r) => r.translation)) {
+      return ranges.map((r) => r.translation || "");
+    }
+    return rawTransLines;
+  }, [ranges, rawTransLines]);
+
+  const maxLen = Math.max(indLines.length, transLines.length);
+
   const bounds = useMemo(
     () =>
       resolveLyricBounds({
@@ -93,8 +157,12 @@ export function MiniPlayer({
     [indLines, transLines, duration, song.id, lang, song.sync_offsets, song.sync_times]
   );
 
-
-  const activeIdx = useMemo(() => activeLineIndex(bounds, progress), [progress, bounds]);
+  const activeIdx = useMemo(() => {
+    if (ranges && ranges.length > 0) {
+      return activeLineFromRanges(ranges, progress, 0.25);
+    }
+    return activeLineIndex(bounds, progress);
+  }, [ranges, bounds, progress]);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -119,11 +187,9 @@ export function MiniPlayer({
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-[60] transition-all duration-500 ease-in-out ${
-        isMaximized
-          ? "top-0 h-screen flex flex-col bg-[#4a2c13] p-4 md:p-6"
-          : "border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl"
-      }`}
+      className={`fixed ${
+        isCollapsed ? "lg:left-16" : "lg:left-60"
+      } left-0 right-0 bottom-16 lg:bottom-0 z-[60] transition-all duration-300 ease-in-out border-t-[6px] border-dashed border-amber-300 bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 p-3 shadow-2xl`}
       style={isMaximized && st.bg_color ? { background: st.bg_color } : undefined}
     >
       {isMaximized ? (
@@ -282,12 +348,36 @@ export function MiniPlayer({
           )}
         </div>
         <button
+          onClick={() => setShowTimeline(true)}
+          title="Ajustar Linha do Tempo (Timeline dos Versos)"
+          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-gold text-forest-deep shadow-lg active:translate-y-0.5 hover:scale-105 transition"
+        >
+          <Clock className="h-5 w-5" />
+        </button>
+        <button
+          onClick={onToggleMaximize}
+          title="Expandir Cantiga"
+          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-amber-400 text-amber-950 shadow-lg active:translate-y-0.5 hover:scale-105 transition"
+        >
+          <Maximize2 className="h-5 w-5" />
+        </button>
+        <button
           onClick={onClose}
-          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-lg active:translate-y-0.5"
+          className="grid h-10 w-10 place-items-center rounded-full border-2 border-white bg-rose-500 text-white shadow-lg active:translate-y-0.5 hover:scale-105 transition"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
+
+      {showTimeline && (
+        <SongTimelineModal
+          song={song as any}
+          onClose={() => setShowTimeline(false)}
+          onSaved={() => {
+            setLocalRangesVersion((v) => v + 1);
+          }}
+        />
+      )}
     </div>
   );
 }

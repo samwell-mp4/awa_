@@ -1,35 +1,38 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-import { SiteFooter } from "@/components/home/site-footer";
+import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
 import { SiteHeader } from "@/components/home/site-header";
+import { SiteFooter } from "@/components/home/site-footer";
 import { TrailsGrid } from "@/components/home/trails-grid";
 import { useHomeTrails } from "@/hooks/use-home-data";
+import { setLastArea } from "@/lib/last-area";
 
 export const Route = createFileRoute("/trilhas/")({
   head: () => ({
     meta: [
-      { title: "Trilhas de aprendizado — Awã Tech" },
+      { title: "Trilhas de Estudo — Awã Tech Adulto" },
       {
         name: "description",
         content:
-          "Escolha uma trilha para aprender línguas indígenas: saudações, família, natureza e animais.",
+          "Trilhas de Estudo Patxôhã: saudações, família, natureza e cultura indígena para adultos.",
       },
-      { property: "og:title", content: "Trilhas de aprendizado — Awã Tech" },
+      { property: "og:title", content: "Trilhas de Estudo — Awã Tech Adulto" },
       {
         property: "og:description",
         content:
-          "Trilhas de aprendizado do Awã Tech para explorar línguas e culturas indígenas.",
+          "Aprofunde seu vocabulário e pronúncia em Patxôhã através de trilhas temáticas.",
       },
     ],
   }),
-  component: TrilhasPage,
+  component: TrilhasAdultoPage,
 });
 
-function TrilhasPage() {
+function TrilhasAdultoPage() {
   const { t } = useTranslation();
   const trails = useHomeTrails();
+  useEffect(() => setLastArea("/adulto"), []);
+
   return (
     <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
       <SiteHeader mode="adulto" />

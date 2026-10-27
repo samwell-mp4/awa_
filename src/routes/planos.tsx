@@ -84,8 +84,8 @@ function PlanosPage() {
       <SiteHeader mode="adulto" />
       <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 md:px-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]">
-            <ArrowLeft className="h-4 w-4" /> Início
+          <Link to="/adulto" className="inline-flex items-center gap-2 text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]">
+            <ArrowLeft className="h-4 w-4" /> Início Adulto
           </Link>
           <img src={logoSrc} alt="AWÃ TECH" className="h-8 w-auto" />
           <Link to="/minha-conta" className="text-xs font-bold text-[#1b4332] hover:text-[#2d6a4f]">

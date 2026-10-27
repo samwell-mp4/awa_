@@ -168,6 +168,7 @@ export function SiteSidebar() {
         { label: "Tradutor Patxôhã", href: "/traduzir", icon: Languages },
         { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
         { label: "Saudações", href: "/saudacoes", icon: Sun },
+        { label: "Aprender Números", href: "/aprender-numeros", icon: Sparkles, search: { area: "adulto" } },
       ],
     },
     {
@@ -176,6 +177,7 @@ export function SiteSidebar() {
         { label: "Histórias Ancestrais", href: "/historias", icon: ScrollText },
         { label: "Músicas & Cânticos", href: "/musicas", icon: Play },
         { label: "Vídeos & Registros", href: "/videos", icon: Video },
+        { label: "Jogos Culturais", href: "/jogos", icon: Gamepad2 },
         { label: "Aldeia Velha", href: "/aldeia-velha", icon: TreePine },
         { label: "Intercâmbio Cultural", href: "/intercambio", icon: Globe },
       ],
@@ -249,7 +251,7 @@ export function SiteSidebar() {
             )}
 
             <Link to={isKids ? "/infantil" : "/adulto"} className="flex items-center gap-2.5 min-w-0 flex-1">
-              <Logo mode={isKids ? "infantil" : "adulto"} />
+              <Logo mode={isKids ? "infantil" : "adulto"} variant={isKids ? "dark" : "light"} />
             </Link>
 
             {!isMobileView && (
@@ -313,7 +315,7 @@ export function SiteSidebar() {
                       <Link
                         key={item.href}
                         to={item.href as any}
-                        search={item.search}
+                        search={item.search as any}
                         title={item.label}
                         aria-label={item.label}
                         className={`group relative flex h-10 w-10 mx-auto items-center justify-center rounded-xl border transition hover:scale-105 active:scale-95 ${
@@ -344,7 +346,7 @@ export function SiteSidebar() {
                     <Link
                       key={item.href}
                       to={item.href as any}
-                      search={item.search}
+                      search={item.search as any}
                       className={`flex items-center gap-3 rounded-xl border border-transparent px-3 py-2 text-sm font-semibold transition ${
                         active ? sidebarStyles.activeItem : sidebarStyles.idleItem
                       }`}
@@ -533,34 +535,22 @@ export function SidebarLayoutWrapper({ children }: { children: React.ReactNode }
     return false;
   }, [pathname, search]);
 
-  const isAdultMode = !isAuthRoute && !isKids && pathname !== "/";
-
+  // Ensure any stray adulto-theme class is completely removed from document
   useEffect(() => {
     if (typeof document !== "undefined") {
-      if (isAdultMode) {
-        document.documentElement.classList.add("adulto-theme");
-        document.body.classList.add("adulto-theme");
-      } else {
-        document.documentElement.classList.remove("adulto-theme");
-        document.body.classList.remove("adulto-theme");
-      }
+      document.documentElement.classList.remove("adulto-theme");
+      document.body.classList.remove("adulto-theme");
     }
-    return () => {
-      if (typeof document !== "undefined") {
-        document.documentElement.classList.remove("adulto-theme");
-        document.body.classList.remove("adulto-theme");
-      }
-    };
-  }, [isAdultMode]);
+  }, []);
 
-  const isLanding = pathname === "/";
-
-  if (isAuthRoute || isLanding) {
+  // Adult, auth, and landing pages do NOT use the sidebar layout
+  if (isAuthRoute || pathname === "/" || !isKids) {
     return <>{children}</>;
   }
 
+  // Only infantil pages retain the sidebar & bottom mobile navigation
   return (
-    <div className={`min-h-screen ${isAdultMode ? "adulto-theme bg-[#f7f6f2] text-[#1f2937]" : ""}`}>
+    <div className="min-h-screen">
       <SiteSidebar />
       <div
         className={`min-h-screen pb-16 lg:pb-0 transition-[padding] duration-300 ${

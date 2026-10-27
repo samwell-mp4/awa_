@@ -64,7 +64,7 @@ export function SiteFooter({ mode = "all" }: { mode?: "all" | "adulto" | "infant
       <footer className="mt-16 border-t-2 border-[#8d5b2d]/70 bg-gradient-to-b from-[#221206] via-[#1a0d04] to-[#100702] text-[#fefae0]">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 md:grid-cols-4 md:px-8">
           <div>
-            <Logo mode="infantil" />
+            <Logo mode="infantil" variant="dark" />
             <p className="mt-3 max-w-sm text-xs leading-relaxed text-[#fefae0]/80">
               Espaço educativo dedicado a conectar crianças com as línguas, cânticos e saberes vivos dos povos indígenas.
             </p>
@@ -113,18 +113,14 @@ export function SiteFooter({ mode = "all" }: { mode?: "all" | "adulto" | "infant
     );
   }
 
-  const isAdult = mode === "adulto";
+  const isAdult = false;
 
   return (
-    <footer className={
-      isAdult
-        ? "mt-16 border-t border-[#e8e4dc] bg-white text-[#1f2937]"
-        : "mt-16 border-t border-gold/25 bg-[oklch(0.12_0.03_145/0.85)]"
-    }>
-      {!isAdult && <div className="tribal-border mx-auto max-w-6xl" />}
+    <footer className="mt-16 border-t border-gold/25 bg-[oklch(0.12_0.03_145/0.85)]">
+      <div className="tribal-border mx-auto max-w-6xl" />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 md:grid-cols-4 md:px-8">
         <div>
-          <Logo mode={isAdult ? "adulto" : "adulto"} />
+          <Logo mode="adulto" variant="dark" />
           <p className={`mt-4 max-w-sm text-sm leading-relaxed ${isAdult ? "text-[#4b5563]" : "text-foreground/70"}`}>
             {t("footer.tagline")}
           </p>

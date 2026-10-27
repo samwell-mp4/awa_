@@ -24,10 +24,8 @@ import {
 
 import { AudioHotspot } from "@/components/AudioHotspot";
 import { stopHotspotAudio, type HotspotId } from "@/lib/audio-hotspots";
-import { SiteFooter } from "@/components/home/site-footer";
-import { SiteHeader } from "@/components/home/site-header";
-import { Button } from "@/components/ui/button";
-import { useLastArea } from "@/lib/last-area";
+import { PublicFooter } from "@/components/PublicFooter";
+import { useLastArea, setLastArea } from "@/lib/last-area";
 import logoSrc from "@/assets/awa-tech-logo.png";
 import {
   AUTHOR_NOTE,
@@ -90,16 +88,16 @@ function SectionTitle({
   return (
     <header className="mb-7">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1b4332] shadow-xs">
+        <span className="chip-gold inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
           {icon} {eyebrow}
         </span>
         {audioId && <AudioHotspot id={audioId} />}
       </div>
-      <h2 className="mt-4 font-display text-2xl font-black leading-tight text-[#11231b] md:text-4xl">
+      <h2 className="mt-4 font-display text-2xl font-black leading-tight text-cream md:text-4xl">
         {title}
       </h2>
-      <div className="my-4 h-1 w-20 rounded-full bg-[#1b4332]" />
-      {desc && <p className="max-w-3xl text-[15px] leading-relaxed text-[#4b5563]">{desc}</p>}
+      <div className="divider-gold my-4 w-24" />
+      {desc && <p className="max-w-3xl text-[15px] leading-relaxed text-foreground/80">{desc}</p>}
     </header>
   );
 }
@@ -130,7 +128,7 @@ function Figure({
           decoding="async"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
-        <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-white/60 bg-black/60 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
+        <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-gold/40 bg-[oklch(0.14_0.04_145/0.75)] text-gold opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
           <ZoomIn className="h-4 w-4" />
         </span>
       </button>
@@ -269,7 +267,7 @@ function CleanEmbed({
       const w = crop.clientWidth || 1;
       const h = mediaH ?? (crop.clientHeight || 1);
       const orientation = h > w ? "portrait" : "landscape";
-      await (screen.orientation as any)?.lock?.(orientation)?.catch(() => undefined);
+      await (screen.orientation as any)?.lock?.(orientation)?.catch?.(() => undefined);
     } catch {
       /* aparelhos que não suportam fullscreen/orientation: segue sem travar */
     }
@@ -486,7 +484,7 @@ function DocumentaryCard({
   }, [ready]);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white shadow-xs transition hover:border-[#1b4332]/50 hover:shadow-md">
+    <article className="overflow-hidden rounded-2xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] transition hover:border-gold/50">
       <div ref={ref} className="relative w-full bg-black">
         {ready ? (
           <CleanEmbed
@@ -497,15 +495,15 @@ function DocumentaryCard({
           />
         ) : (
           <div className="grid w-full place-items-center bg-black" style={{ aspectRatio: "100 / 104" }}>
-            <Play className="h-8 w-8 fill-current text-white/60" />
+            <Play className="h-8 w-8 fill-current text-gold/60" />
           </div>
         )}
       </div>
-      <div className="flex items-center gap-3 px-4 py-3 bg-[#faf9f6] border-t border-[#e8e4dc]">
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#1b4332] text-[11px] font-black text-white">
+      <div className="flex items-center gap-3 px-4 py-3">
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--gradient-gold)] text-[11px] font-black text-forest-deep">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <span className="truncate text-[13.5px] font-bold text-[#11231b]">{label}</span>
+        <span className="truncate text-[13.5px] font-bold text-cream">{label}</span>
       </div>
     </article>
   );
@@ -514,8 +512,8 @@ function DocumentaryCard({
 /* -------------------------------- Página -------------------------------- */
 
 function AldeiaVelhaPage() {
-
   const backTo = useLastArea();
+  useEffect(() => setLastArea("/adulto"), []);
   const [zoom, setZoom] = useState<Photo | null>(null);
   // Índice do documentário em reprodução. Só um toca por vez: ao tocar em outro,
   // o ativo anterior é remontado (e portanto parado).
@@ -544,35 +542,42 @@ function AldeiaVelhaPage() {
 
 
   return (
-    <div className="min-h-screen bg-[#f7f6f2] text-[#1f2937]">
-      <SiteHeader mode="adulto" />
-      {/* Sub-menu fixo com temas */}
-      <header className="sticky top-0 z-30 border-b border-[#e8e4dc] bg-white/95 backdrop-blur-xl shadow-xs">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Menu fixo */}
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.88)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-8">
+          <Link to={backTo as "/"} className="flex shrink-0 items-center gap-2.5">
+            <img
+              src={logoSrc}
+              alt="AWÃ TECH"
+              loading="lazy"
+              decoding="async"
+              className="h-9 w-9 shrink-0 rounded-full bg-cream/95 p-0.5 object-contain"
+            />
+            <span className="font-display text-base font-black tracking-tight text-cream">
+              AWÃ <span className="text-leaf">TECH</span>
+            </span>
+          </Link>
           <Link
             to={backTo as "/"}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-white px-3.5 py-1.5 text-xs font-bold text-[#1b4332] transition hover:border-[#1b4332] hover:bg-[#faf9f6] shadow-xs"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition hover:bg-leaf/15 hover:text-cream"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Link>
-          <div className="font-display text-sm font-bold text-[#11231b] truncate">
-            Aldeia Velha <span className="text-[#6b7280] font-normal hidden sm:inline">· Território Ancestral Pataxó</span>
-          </div>
-          <div className="w-16 hidden sm:block" />
         </div>
         <nav
           aria-label="Temas da história"
-          className="border-t border-[#e8e4dc] bg-[#f4f2ec]"
+          className="border-t border-gold/15 bg-[oklch(0.12_0.03_145/0.6)]"
         >
           <div className="mx-auto flex max-w-6xl gap-1.5 overflow-x-auto px-3 py-2 md:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <Link
               to="/aldeia-velha"
               search={{}}
-              className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition ${
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
                 !active
-                  ? "border-[#1b4332] bg-[#1b4332] text-white shadow-xs"
-                  : "border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
+                  ? "border-gold/50 bg-gold/15 text-gold"
+                  : "border-transparent text-foreground/65 hover:border-gold/25 hover:bg-gold/8 hover:text-cream"
               }`}
             >
               Todos os temas
@@ -582,10 +587,10 @@ function AldeiaVelhaPage() {
                 key={s.id}
                 to="/aldeia-velha"
                 search={{ tema: s.id }}
-                className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition ${
+                className={`shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition ${
                   active === s.id
-                    ? "border-[#1b4332] bg-[#1b4332] text-white shadow-xs"
-                    : "border-[#e8e4dc] bg-white text-[#4b5563] hover:border-[#1b4332]/50 hover:text-[#11231b]"
+                    ? "border-gold/50 bg-gold/15 text-gold"
+                    : "border-transparent text-foreground/65 hover:border-gold/25 hover:bg-gold/8 hover:text-cream"
                 }`}
               >
                 {s.label}
@@ -593,47 +598,62 @@ function AldeiaVelhaPage() {
             ))}
           </div>
         </nav>
+
       </header>
 
       {/* Capa (apenas na tela de temas) */}
       {!current && (
-      <section className="relative isolate overflow-hidden border-b border-[#e8e4dc] bg-white">
-        <div className="relative mx-auto flex max-w-6xl flex-col justify-end px-4 py-12 md:py-16 md:px-8">
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#e8e4dc] bg-[#fbfaf7] px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1b4332]">
-            <Sparkles className="h-3.5 w-3.5 text-[#b47e28]" /> Somos Todos Aldeia Velha
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={PHOTOS.capa.src}
+          alt={PHOTOS.capa.alt}
+          width={1280}
+          height={720}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_145)] via-[oklch(0.12_0.03_145/0.72)] to-[oklch(0.12_0.03_145/0.45)]"
+        />
+        <div className="relative mx-auto flex min-h-[68vh] max-w-6xl flex-col justify-end px-4 py-12 md:min-h-[80vh] md:px-8 md:py-16">
+          <span className="chip-gold inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
+            <Sparkles className="h-3.5 w-3.5" /> Somos Todos Aldeia Velha
           </span>
-          <h1 className="mt-4 max-w-4xl font-display text-[2.1rem] font-black leading-[1.05] text-[#11231b] sm:text-5xl md:text-6xl">
-            Aldeia Velha — <span className="text-[#1b4332]">Território Ancestral</span> Pataxó
+          <h1 className="mt-5 max-w-4xl font-display text-[2.1rem] font-black leading-[1.03] text-cream sm:text-5xl md:text-6xl">
+            Aldeia Velha — <span className="text-gradient-gold">Território Ancestral</span> Pataxó
           </h1>
-          <div className="my-5 h-1 w-24 rounded-full bg-[#1b4332]" />
-          <p className="max-w-2xl text-[15px] leading-relaxed text-[#4b5563] md:text-lg">
+          <div className="divider-gold my-5 w-28" />
+          <p className="max-w-2xl text-[15px] leading-relaxed text-cream/85 md:text-lg">
             Comunidade Indígena Pataxó Aldeia Velha (C.I.P.A.V.) — Arraial d'Ajuda, Porto Seguro,
             Bahia. Uma história de memória, resistência e luta contada pelos próprios moradores.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2.5">
+          <div className="mt-7 flex flex-wrap gap-2">
             <Link
               to="/aldeia-velha"
               search={{ tema: "relatos" }}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1b4332] px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-xs transition hover:bg-[#2d6a4f]"
+              className="inline-flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/12 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gold backdrop-blur-sm transition hover:bg-gold/22"
             >
               <Quote className="h-4 w-4" /> Ouvir os anciãos
             </Link>
             <Link
               to="/aldeia-velha"
               search={{ tema: "retomada" }}
-              className="inline-flex items-center gap-2 rounded-xl border border-[#e8e4dc] bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#11231b] shadow-xs transition hover:border-[#1b4332]"
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 bg-cream/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-cream backdrop-blur-sm transition hover:bg-cream/18"
             >
-              <Flame className="h-4 w-4 text-[#b47e28]" /> A retomada
+              <Flame className="h-4 w-4" /> A retomada
             </Link>
           </div>
         </div>
+        <div className="tribal-border absolute bottom-0 left-0 right-0" />
       </section>
       )}
 
       <main className="mx-auto max-w-6xl px-4 md:px-8">
         {/* Índice de temas (pastas) */}
         {!current && (
-          <section className="pt-10 md:pt-14">
+          <section className="pt-12 md:pt-16">
             <SectionTitle
               icon={<Sparkles className="h-3.5 w-3.5" />}
               eyebrow="Conteúdos organizados"
@@ -646,7 +666,7 @@ function AldeiaVelhaPage() {
                   key={t.id}
                   to="/aldeia-velha"
                   search={{ tema: t.id }}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-[#e8e4dc] bg-white shadow-xs transition hover:-translate-y-1 hover:border-[#1b4332]/50 hover:shadow-md"
+                  className="card-elev group flex flex-col overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
                 >
                   {t.photo && (
                     <div className="relative aspect-[16/9] overflow-hidden">
@@ -657,24 +677,28 @@ function AldeiaVelhaPage() {
                         decoding="async"
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_145/0.85)] to-transparent"
+                      />
                     </div>
                   )}
                   <div className="flex flex-1 flex-col p-5">
-                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#1b4332]">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold/85">
                       {t.eyebrow}
                     </span>
-                    <h3 className="mt-2 font-display text-xl font-black text-[#11231b] group-hover:text-[#1b4332] transition-colors">{t.label}</h3>
-                    <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-[#4b5563]">
+                    <h3 className="mt-2 font-display text-xl font-black text-cream">{t.label}</h3>
+                    <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-foreground/75">
                       {t.summary}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-[#1b4332]">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-gold">
                       Abrir tema <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
                 </Link>
               ))}
             </div>
-            <p className="mt-8 pb-16 text-[13px] text-[#6b7280]">
+            <p className="mt-8 pb-16 text-[13px] text-foreground/60">
               Fonte: relatório “Somos Todos Aldeia Velha” — Comunidade Indígena Pataxó Aldeia Velha
               (C.I.P.A.V.), Porto Seguro.
             </p>
@@ -719,10 +743,10 @@ function AldeiaVelhaPage() {
                 saberes e fazeres sempre foram repassados de geração a geração. Foi assim que os
                 Pataxó da Terra Indígena Aldeia Velha resistiram.
               </p>
-              <blockquote className="mt-5 rounded-xl border-l-4 border-[#b47e28] bg-[#fbfaf7] p-4 text-[14px] italic leading-relaxed text-[#11231b]">
+              <blockquote className="mt-5 rounded-xl border-l-2 border-gold/60 bg-gold/5 p-4 text-[14px] italic leading-relaxed text-cream/85">
                 “Os pataxós dominavam toda a faixa do extremo sul baiano... entre as quais a Aldeia
                 de Santo Amaro (atual Aldeia Velha).”
-                <footer className="mt-2 not-italic text-[12.5px] text-[#4b5563]">
+                <footer className="mt-2 not-italic text-[12.5px] text-foreground/60">
                   Relatório das terras de Aldeia Velha, antropóloga Leila Silvia Burger
                   Sotto-Maior, Diário Oficial da União, 17/06/2008.
                 </footer>
@@ -763,19 +787,19 @@ function AldeiaVelhaPage() {
                       decoding="async"
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
-                    <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-white/60 bg-black/60 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
+                    <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full border border-gold/40 bg-[oklch(0.14_0.04_145/0.75)] text-gold opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
                       <ZoomIn className="h-4 w-4" />
                     </span>
                   </button>
                 )}
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-display text-lg font-black leading-tight text-[#11231b]">
+                  <h3 className="font-display text-lg font-black leading-tight text-cream">
                     {e.name}
                   </h3>
-                  <p className="mt-1 text-[12.5px] uppercase tracking-wider text-[#b47e28] font-bold">
+                  <p className="mt-1 text-[12.5px] uppercase tracking-wider text-gold/85">
                     {e.role}
                   </p>
-                  <blockquote className="mt-4 border-l-2 border-[#b47e28] bg-[#fbfaf7] p-3 rounded-r-lg text-[14.5px] italic leading-relaxed text-[#11231b]">
+                  <blockquote className="mt-4 border-l-2 border-gold/50 pl-3 text-[14.5px] italic leading-relaxed text-cream/85">
                     “{e.quote}”
                   </blockquote>
                   <p className="mt-4 text-[13.5px] leading-relaxed text-foreground/75">
@@ -823,30 +847,30 @@ function AldeiaVelhaPage() {
                 <div
                   className={`rounded-2xl p-4 md:p-5 ${
                     item.highlight
-                      ? "border border-[#b47e28]/40 bg-[#fbfaf7] shadow-xs"
-                      : "border border-[#e8e4dc] bg-white shadow-xs"
+                      ? "card-elev border border-gold/45 bg-gold/8"
+                      : "border border-gold/12 bg-[oklch(0.14_0.04_145/0.55)]"
                   }`}
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[12px] font-black tracking-wider ${
                         item.highlight
-                          ? "bg-[#b47e28] text-white"
-                          : "bg-[#1b4332]/10 text-[#1b4332]"
+                          ? "bg-[var(--gradient-gold)] text-forest-deep"
+                          : "chip-gold"
                       }`}
                     >
                       {item.year}
                     </span>
                     {item.highlight && (
-                      <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#b47e28]">
+                      <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold">
                         Marco da comunidade
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-2.5 font-display text-lg font-black text-[#11231b] md:text-xl">
+                  <h3 className="mt-2.5 font-display text-lg font-black text-cream md:text-xl">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-[14.5px] leading-relaxed text-[#4b5563]">
+                  <p className="mt-2 text-[14.5px] leading-relaxed text-foreground/80">
                     {item.text}
                   </p>
                 </div>
@@ -870,11 +894,11 @@ function AldeiaVelhaPage() {
             {TERRITORY_FACTS.map((f) => (
               <div
                 key={f.label}
-                className="rounded-2xl border border-[#e8e4dc] bg-white p-4 shadow-xs"
+                className="rounded-2xl border border-gold/20 bg-[oklch(0.14_0.04_145/0.7)] p-4"
               >
-                <div className="font-display text-xl font-black text-[#1b4332]">{f.value}</div>
-                <div className="mt-1 text-[13px] font-bold text-[#11231b]">{f.label}</div>
-                <div className="mt-0.5 text-[12.5px] text-[#6b7280]">{f.sub}</div>
+                <div className="font-display text-xl font-black text-gradient-gold">{f.value}</div>
+                <div className="mt-1 text-[13px] font-bold text-cream">{f.label}</div>
+                <div className="mt-0.5 text-[12.5px] text-foreground/65">{f.sub}</div>
               </div>
             ))}
           </div>
@@ -886,10 +910,10 @@ function AldeiaVelhaPage() {
 
           <div className="mt-6 grid gap-5 md:grid-cols-2">
             <div className="card-elev rounded-2xl p-5">
-              <h3 className="flex items-center gap-2 font-display text-lg font-black text-[#11231b]">
-                <Home className="h-4 w-4 text-[#1b4332]" /> A vida na aldeia
+              <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream">
+                <Home className="h-4 w-4 text-gold" /> A vida na aldeia
               </h3>
-              <p className="mt-3 text-[14.5px] leading-relaxed text-[#4b5563]">
+              <p className="mt-3 text-[14.5px] leading-relaxed text-foreground/80">
                 O território possui área de preservação ambiental, com três sítios arqueológicos, um
                 sambaqui e uma área de manguezal banhada pelo rio Buranhém. Há espaços de vegetação
                 rasteira e frutífera onde se distribuem as principais moradias, a escola, o posto de
@@ -899,10 +923,10 @@ function AldeiaVelhaPage() {
               </p>
             </div>
             <div className="card-elev rounded-2xl p-5">
-              <h3 className="flex items-center gap-2 font-display text-lg font-black text-[#11231b]">
-                <Droplets className="h-4 w-4 text-[#1b4332]" /> Água e infraestrutura
+              <h3 className="flex items-center gap-2 font-display text-lg font-black text-cream">
+                <Droplets className="h-4 w-4 text-gold" /> Água e infraestrutura
               </h3>
-              <p className="mt-3 text-[14.5px] leading-relaxed text-[#4b5563]">
+              <p className="mt-3 text-[14.5px] leading-relaxed text-foreground/80">
                 O abastecimento principal vem de encanações ligadas a um poço mantido pela SESAI, e
                 outros poços ajudam na distribuição — ainda precária. Há um poço cavado da CERB e um
                 projeto aprovado para ampliar a rede na comunidade. Em 2002 foi conquistado o
@@ -918,8 +942,8 @@ function AldeiaVelhaPage() {
           </div>
 
           <div className="mt-6 card-elev rounded-2xl p-5">
-            <h3 className="font-display text-lg font-black text-[#11231b]">População</h3>
-            <p className="mt-2 text-[13.5px] leading-relaxed text-[#4b5563]">
+            <h3 className="font-display text-lg font-black text-cream">População</h3>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/70">
               Os dados divergem entre as instituições: nenhuma delas tem um sistema com dados
               atualizados diante do fluxo de pessoas.
             </p>
@@ -927,15 +951,15 @@ function AldeiaVelhaPage() {
               {POPULATION.map((pop) => (
                 <div
                   key={pop.source}
-                  className="rounded-xl border border-[#e8e4dc] bg-[#faf9f6] p-4"
+                  className="rounded-xl border border-gold/20 bg-[oklch(0.14_0.04_145/0.6)] p-4"
                 >
-                  <div className="text-[12px] uppercase tracking-wider text-[#b47e28] font-bold">
+                  <div className="text-[12px] uppercase tracking-wider text-gold/85">
                     {pop.source}
                   </div>
-                  <div className="mt-2 font-display text-lg font-black text-[#11231b]">
+                  <div className="mt-2 font-display text-lg font-black text-cream">
                     {pop.families}
                   </div>
-                  <div className="text-[14px] text-[#4b5563]">{pop.people}</div>
+                  <div className="text-[14px] text-foreground/75">{pop.people}</div>
                 </div>
               ))}
             </div>
@@ -996,12 +1020,12 @@ function AldeiaVelhaPage() {
           <div className="mt-6 grid gap-5 md:grid-cols-2">
             <Figure photo={PHOTOS.jogosInfanto} onZoom={setZoom} ratio="aspect-[16/10]" />
             <div className="card-elev rounded-2xl p-5">
-              <h3 className="font-display text-lg font-black text-[#11231b]">
+              <h3 className="font-display text-lg font-black text-cream">
                 Dois eixos de uma pedagogia indígena
               </h3>
               <div className="mt-4 space-y-4">
                 <div>
-                  <div className="text-[12px] uppercase tracking-wider text-[#b47e28] font-bold">
+                  <div className="text-[12px] uppercase tracking-wider text-gold/85">
                     Jogos Infanto-Juvenis
                   </div>
                   <p className="mt-1 text-[14px] leading-relaxed text-foreground/80">
@@ -1012,7 +1036,7 @@ function AldeiaVelhaPage() {
                   </p>
                 </div>
                 <div>
-                  <div className="text-[12px] uppercase tracking-wider text-[#b47e28] font-bold">
+                  <div className="text-[12px] uppercase tracking-wider text-gold/85">
                     Intercâmbio Cultural e Intercultural
                   </div>
                   <p className="mt-1 text-[14px] leading-relaxed text-foreground/80">
@@ -1047,8 +1071,8 @@ function AldeiaVelhaPage() {
               className="md:col-span-3"
             />
             <div className="card-elev rounded-2xl p-5 md:col-span-2">
-              <div className="font-display text-3xl font-black text-[#b47e28]">2023</div>
-              <h3 className="mt-1 font-display text-lg font-black text-[#11231b]">
+              <div className="font-display text-3xl font-black text-gradient-gold">2023</div>
+              <h3 className="mt-1 font-display text-lg font-black text-cream">
                 Cooficialização no município
               </h3>
               <p className="mt-3 text-[14.5px] leading-relaxed text-foreground/80">
@@ -1059,7 +1083,7 @@ function AldeiaVelhaPage() {
               </p>
               <Link
                 to="/dicionario"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#1b4332] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs transition hover:bg-[#2d6a4f]"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl border border-gold/35 bg-gold/12 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gold transition hover:bg-gold/22"
               >
                 <BookOpen className="h-4 w-4" /> Dicionário Patxôhã
               </Link>
@@ -1105,10 +1129,10 @@ function AldeiaVelhaPage() {
                 com os parentes de Barra Velha e da Reserva da Jaqueira. Mangaga conta que tudo
                 começou em 2000, com um grupo pequeno.
               </p>
-              <blockquote className="mt-5 rounded-xl border-l-4 border-[#b47e28] bg-[#fbfaf7] p-4 text-[14px] italic leading-relaxed text-[#11231b]">
+              <blockquote className="mt-5 rounded-xl border-l-2 border-gold/60 bg-gold/5 p-4 text-[14px] italic leading-relaxed text-cream/85">
                 “Uma aldeia sem cultura, sem um grupo que mantenha viva a tradição, os cantos e as
                 rezas, acaba não sendo uma aldeia, tornando-se apenas um ‘bairro’ não indígena.”
-                <footer className="mt-2 not-italic text-[12.5px] text-[#4b5563]">
+                <footer className="mt-2 not-italic text-[12.5px] text-foreground/60">
                   Romã, membro do Grupo de Cultura da Aldeia Velha
                 </footer>
               </blockquote>
@@ -1196,14 +1220,14 @@ function AldeiaVelhaPage() {
                   <Figure photo={PHOTOS.postoSaude} onZoom={setZoom} ratio="aspect-[4/3]" />
                   <Figure photo={PHOTOS.potiraBuriti} onZoom={setZoom} ratio="aspect-[4/3]" />
                 </div>
-                <div className="mt-5 rounded-xl border border-[#e8e4dc] bg-[#faf9f6] p-4">
-                  <div className="text-[12px] uppercase tracking-wider text-[#b47e28] font-bold">
+                <div className="mt-5 rounded-xl border border-gold/20 bg-[oklch(0.14_0.04_145/0.6)] p-4">
+                  <div className="text-[12px] uppercase tracking-wider text-gold/85">
                     Perfil demográfico da saúde
                   </div>
                   <ul className="mt-3 grid gap-2 sm:grid-cols-2">
                     {HEALTH_DEMOGRAPHICS.map((h) => (
                       <li key={h.label} className="flex items-baseline gap-2">
-                        <span className="font-display text-lg font-black text-[#1b4332]">
+                        <span className="font-display text-lg font-black text-gradient-gold">
                           {h.value}
                         </span>
                         <span className="text-[13px] text-foreground/75">{h.label}</span>
@@ -1231,24 +1255,24 @@ function AldeiaVelhaPage() {
             {PROJECTS.map((pr) => (
               <article
                 key={pr.name}
-                className="card-elev flex flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:shadow-md"
+                className="card-elev flex flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="rounded-full px-2.5 py-0.5 text-[12px] font-black bg-[#1b4332]/10 text-[#1b4332]">
+                  <span className="chip-gold rounded-full px-2.5 py-0.5 text-[12px] font-black">
                     {pr.year}
                   </span>
                   <span className="text-[11px] uppercase tracking-wider text-foreground/55">
                     {pr.org}
                   </span>
                 </div>
-                <h3 className="mt-3 font-display text-[17px] font-black leading-snug text-[#11231b]">
+                <h3 className="mt-3 font-display text-[17px] font-black leading-snug text-cream">
                   {pr.name}
                 </h3>
                 <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-foreground/75">
                   {pr.audience}
                 </p>
                 {pr.support !== "—" && (
-                  <p className="mt-3 border-t border-[#e8e4dc] pt-3 text-[12.5px] text-[#b47e28] font-medium">
+                  <p className="mt-3 border-t border-gold/15 pt-3 text-[12.5px] text-gold/80">
                     {pr.support}
                   </p>
                 )}
@@ -1313,14 +1337,14 @@ function AldeiaVelhaPage() {
             {REFERENCES.map((r) => (
               <li
                 key={r}
-                className="border-b border-[#e8e4dc] pb-3 text-[13.5px] leading-relaxed text-foreground/78 last:border-0 last:pb-0"
+                className="border-b border-gold/10 pb-3 text-[13.5px] leading-relaxed text-foreground/78 last:border-0 last:pb-0"
               >
                 {r}
               </li>
             ))}
           </ol>
-          <div className="mt-5 rounded-2xl border border-[#e8e4dc] bg-[#faf9f6] p-5">
-            <div className="text-[12px] uppercase tracking-wider text-[#b47e28] font-bold">
+          <div className="mt-5 rounded-2xl border border-gold/20 bg-[oklch(0.14_0.04_145/0.6)] p-5">
+            <div className="text-[12px] uppercase tracking-wider text-gold/85">
               Sistematização dos relatos
             </div>
             <p className="mt-2 text-[14px] leading-relaxed text-foreground/80">{AUTHOR_NOTE}</p>
@@ -1335,15 +1359,15 @@ function AldeiaVelhaPage() {
         {current && (
           <nav
             aria-label="Navegar entre temas"
-            className="flex flex-wrap items-center justify-between gap-3 border-t border-[#e8e4dc] py-8 md:py-10"
+            className="flex flex-wrap items-center justify-between gap-3 border-t border-gold/15 py-8 md:py-10"
           >
             {prev ? (
               <Link
                 to="/aldeia-velha"
                 search={{ tema: prev.id }}
-                className="inline-flex items-center gap-2 rounded-xl border border-[#e8e4dc] bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-[#1b4332] shadow-xs transition hover:border-[#1b4332] hover:bg-[#faf9f6]"
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
               >
-                <ArrowLeft className="h-4 w-4" /> {prev.label}
+                <ArrowLeft className="h-4 w-4 text-gold" /> {prev.label}
               </Link>
             ) : (
               <span />
@@ -1352,9 +1376,9 @@ function AldeiaVelhaPage() {
               <Link
                 to="/aldeia-velha"
                 search={{ tema: next.id }}
-                className="inline-flex items-center gap-2 rounded-xl border border-[#e8e4dc] bg-white px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-[#1b4332] shadow-xs transition hover:border-[#1b4332] hover:bg-[#faf9f6]"
+                className="inline-flex items-center gap-2 rounded-xl border border-gold/25 bg-[oklch(0.14_0.04_145/0.7)] px-4 py-2.5 text-[12px] font-bold uppercase tracking-wider text-cream transition hover:border-gold/50 hover:bg-gold/10"
               >
-                {next.label} <ArrowRight className="h-4 w-4" />
+                {next.label} <ArrowRight className="h-4 w-4 text-gold" />
               </Link>
             )}
           </nav>
@@ -1362,7 +1386,7 @@ function AldeiaVelhaPage() {
       </main>
 
 
-      <SiteFooter mode="adulto" />
+      <PublicFooter />
 
       {zoom && <Lightbox photo={zoom} onClose={() => setZoom(null)} />}
     </div>

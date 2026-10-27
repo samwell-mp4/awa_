@@ -10,6 +10,8 @@ import {
   Play,
   Star,
   Volume2,
+  VolumeX,
+  Maximize2,
   Mic,
   Music,
   GraduationCap,
@@ -148,6 +150,8 @@ function InfantilHome() {
   const { points, level, streak } = useUserStats();
   const [playingWord, setPlayingWord] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const videoCardRef = useRef<HTMLVideoElement>(null);
   const [tipIndex, setTipIndex] = useState(0);
   const [natureAudio, setNatureAudio] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -168,7 +172,7 @@ function InfantilHome() {
   const toggleNatureSound = () => {
     if (natureAudio) {
       if (audioCtxRef.current) {
-        audioCtxRef.current.close().catch(() => {});
+        audioCtxRef.current.close().catch(() => { });
         audioCtxRef.current = null;
       }
       setNatureAudio(false);
@@ -221,103 +225,150 @@ function InfantilHome() {
   };
 
   return (
-    <div
-      className="kids-theme relative min-h-screen text-foreground font-sans"
-      style={{
-        backgroundImage: `url(${kidsBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      {/* Visual control scrim over the forest background so it functions as atmosphere */}
-      <div aria-hidden className="awa-bg-scrim pointer-events-none fixed inset-0" />
+    <div className="kids-theme relative min-h-screen bg-[#fbf9f4] text-slate-800 font-sans overflow-x-clip selection:bg-amber-300 selection:text-amber-950">
+      {/* Soft warm ambient lighting for kids */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,243,199,0.5),rgba(255,255,255,0))]"
+      />
+
+      {/* Floating Animated Emojis in Background */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0 opacity-40"
+      >
+        <span
+          className="absolute left-[5%] top-[120px] text-3xl"
+          style={{ animation: "music-float 6s ease-in-out infinite" }}
+        >
+          ✨
+        </span>
+        <span
+          className="absolute right-[8%] top-[170px] text-4xl"
+          style={{ animation: "music-float 7s ease-in-out infinite 1.5s" }}
+        >
+          🦜
+        </span>
+        <span
+          className="absolute left-[11%] top-[450px] text-3xl"
+          style={{ animation: "music-float 8s ease-in-out infinite 0.7s" }}
+        >
+          🪘
+        </span>
+        <span
+          className="absolute right-[13%] top-[520px] text-3xl"
+          style={{ animation: "music-float 5.5s ease-in-out infinite 2s" }}
+        >
+          🏹
+        </span>
+        <span
+          className="absolute left-[3%] top-[780px] text-3xl"
+          style={{ animation: "music-float 9s ease-in-out infinite 1s" }}
+        >
+          ☀️
+        </span>
+        <span
+          className="absolute right-[5%] top-[860px] text-3xl"
+          style={{ animation: "music-float 6.5s ease-in-out infinite 2.5s" }}
+        >
+          🌿
+        </span>
+      </div>
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <SiteHeader mode="infantil" />
 
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-4 sm:px-6">
+        <main className="mx-auto w-full max-w-5xl flex-1 px-3 sm:px-6 pb-24 pt-4">
           {/* ========================================================= */}
           {/* 1. SAUDAÇÃO AO ALUNO & RESUMO RÁPIDO                      */}
           {/* ========================================================= */}
-          <section className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl border border-[#633916]/50 bg-[#1e1107]/90 p-4 sm:p-5 backdrop-blur-md shadow-lg">
+          <section className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-r from-[#fffef5] via-[#fef7e6] to-[#f5edd2] p-5 sm:p-7 shadow-lg">
             <div className="flex items-center gap-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border-2 border-[#ffd166] bg-[#1b4332] shadow-md">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-md">
                 <img
                   src={kidsCharacter}
                   alt="Akuá Pataxó"
-                  className="h-full w-full object-cover object-top"
+                  className="h-full w-full object-cover object-top transform hover:scale-105 transition"
+                  style={{ animation: "music-float 4s ease-in-out infinite" }}
                 />
+                <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs text-amber-950 font-black shadow-md border-2 border-white">
+                  ✨
+                </span>
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-black text-[#ffd166] tracking-tight">
+                  <h1
+                    className="font-display text-xl sm:text-2xl md:text-3xl font-black tracking-tight"
+                    style={{ color: "#064e3b" }}
+                  >
                     Awê, Pequeno Aprendiz!
                   </h1>
                 </div>
-                <p className="text-xs sm:text-sm text-[#fefae0]/80">
-                  Pronto para continuar explorando as línguas e saberes da Aldeia?
+                <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-0.5">
+                  Pronto para continuar explorando as línguas e saberes sagrados da Aldeia?
                 </p>
               </div>
             </div>
 
             {/* Quick stats & sound toggle */}
-            <div className="flex items-center gap-2 self-start md:self-auto">
+            <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
               <button
                 onClick={toggleNatureSound}
                 type="button"
-                className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition ${
-                  natureAudio
-                    ? "border-[#2a9d8f] bg-[#2a9d8f]/20 text-[#2a9d8f]"
-                    : "border-[#633916] bg-[#251408] text-[#fefae0]/70 hover:text-[#ffd166]"
-                }`}
+                className={`flex items-center gap-1.5 rounded-2xl border-2 px-3.5 py-2 text-xs font-black shadow-sm transition active:translate-y-0.5 ${natureAudio
+                  ? "border-emerald-500 bg-emerald-100 text-emerald-900"
+                  : "border-amber-300 bg-white text-slate-700 hover:bg-amber-50"
+                  }`}
                 title={natureAudio ? "Pausar som da mata" : "Ouvir som suave da mata"}
               >
-                <Volume2 className={`h-4 w-4 ${natureAudio ? "animate-pulse" : ""}`} />
-                <span className="hidden sm:inline">{natureAudio ? "Mata Ativa" : "Sons da Mata"}</span>
+                <Volume2 className={`h-4 w-4 ${natureAudio ? "animate-pulse text-emerald-600" : ""}`} />
+                <span>{natureAudio ? "Mata Ativa" : "Sons da Mata"}</span>
               </button>
 
-              <div className="flex items-center gap-1.5 rounded-xl border border-[#633916] bg-[#251408] px-3 py-1.5 text-xs font-bold text-[#ffd166]">
-                <Flame className="h-4 w-4 fill-[#ffd166] text-[#ffd166]" />
+              <div className="flex items-center gap-1.5 rounded-2xl border-2 border-amber-300 bg-white/95 px-3.5 py-2 text-xs font-black text-amber-900 shadow-sm">
+                <Flame className="h-4 w-4 fill-amber-500 text-orange-500" />
                 <span>{currentStreak} dias</span>
               </div>
 
-              <div className="flex items-center gap-1.5 rounded-xl border border-[#633916] bg-[#251408] px-3 py-1.5 text-xs font-bold text-[#ffd166]">
-                <Star className="h-4 w-4 fill-[#ffd166] text-[#ffd166]" />
+              <div className="flex items-center gap-1.5 rounded-2xl border-2 border-amber-300 bg-white/95 px-3.5 py-2 text-xs font-black text-amber-900 shadow-sm">
+                <Star className="h-4 w-4 fill-amber-400 text-amber-500" />
                 <span>{currentPoints} pts</span>
               </div>
             </div>
           </section>
 
           {/* ========================================================= */}
-          {/* 2. CONTINUAR APRENDENDO (DESTAQUE HERO - CARD LEVEL 1)     */}
+          {/* 2. CONTINUAR APRENDENDO (DESTAQUE HERO)                    */}
           {/* ========================================================= */}
           <section className="mb-6">
-            <div className="awa-card-1 relative overflow-hidden rounded-2xl p-5 sm:p-6 shadow-xl">
+            <div className="relative overflow-hidden rounded-3xl border-3 border-amber-300 bg-white p-5 sm:p-6 shadow-md hover:shadow-lg transition">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1 rounded-md bg-[#ffd166]/20 px-2 py-0.5 text-[11px] font-black uppercase tracking-wider text-[#ffd166] border border-[#ffd166]/40">
-                      <Sparkles className="h-3 w-3" /> Continue de onde parou
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-amber-900 border border-amber-300">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-800" /> Continue de onde parou
                     </span>
-                    <span className="text-xs text-[#d4a373]">Última atividade</span>
+                    <span className="text-xs font-bold text-amber-800">Última atividade</span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#fefae0] tracking-tight">
+                  <h2
+                    className="font-display text-xl sm:text-2xl md:text-3xl font-black tracking-tight"
+                    style={{ color: "#064e3b" }}
+                  >
                     Saudações em Patxôhã
                   </h2>
-                  <p className="mt-1 text-sm text-[#fefae0]/80">
+                  <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium">
                     Lição 3 de 8 • Expressões de boas-vindas e respeito ancestral
                   </p>
 
                   <div className="mt-4 max-w-md">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#d4a373] mb-1.5">
+                    <div className="flex items-center justify-between text-xs font-bold text-slate-600 mb-1.5">
                       <span>Progresso da Trilha</span>
-                      <span className="text-[#ffd166]">38% concluído</span>
+                      <span className="text-amber-800 font-extrabold">38% concluído</span>
                     </div>
-                    <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#180e07] border border-[#633916]/40">
+                    <div className="h-3 w-full overflow-hidden rounded-full bg-amber-100 border border-amber-300">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[#2a9d8f] to-[#4ade80] transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-500 transition-all duration-500"
                         style={{ width: "38%" }}
                       />
                     </div>
@@ -329,7 +380,7 @@ function InfantilHome() {
                     to="/trilhas/$slug"
                     params={{ slug: "saudacoes" }}
                     search={{ area: "infantil" }}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ffd166] to-[#f59e0b] px-6 py-3.5 text-base font-black text-[#1a0e04] shadow-lg transition hover:brightness-110 active:scale-95"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-6 py-3.5 text-base font-black text-amber-950 shadow-[0_4px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer"
                   >
                     <span>Continuar aprendendo</span>
                     <ChevronRight className="h-5 w-5" />
@@ -342,44 +393,53 @@ function InfantilHome() {
           {/* ========================================================= */}
           {/* 3. RESUMO DO APRENDIZADO & NÍVEL                           */}
           {/* ========================================================= */}
-          <section className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="awa-card-3 flex items-center gap-3.5 rounded-xl p-3.5">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#2a9d8f]/20 text-[#2a9d8f] border border-[#2a9d8f]/40">
-                <CheckCircle2 className="h-5 w-5" />
+          <section className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="flex items-center gap-3.5 rounded-2xl border-2 border-amber-200/90 bg-white p-4 shadow-sm hover:shadow-md transition">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <CheckCircle2 className="h-6 w-6" />
               </div>
               <div className="min-w-0">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4a373]">
+                <div className="text-[11px] font-black uppercase tracking-wider text-amber-800">
                   Lições Completas
                 </div>
-                <div className="text-lg font-black text-[#fefae0]">
+                <div
+                  className="font-display text-lg sm:text-xl font-black"
+                  style={{ color: "#064e3b" }}
+                >
                   12 atividades
                 </div>
               </div>
             </div>
 
-            <div className="awa-card-3 flex items-center gap-3.5 rounded-xl p-3.5">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#ffd166]/20 text-[#ffd166] border border-[#ffd166]/40">
-                <Award className="h-5 w-5" />
+            <div className="flex items-center gap-3.5 rounded-2xl border-2 border-amber-200/90 bg-white p-4 shadow-sm hover:shadow-md transition">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-100 text-amber-800 border border-amber-200">
+                <Award className="h-6 w-6" />
               </div>
               <div className="min-w-0">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4a373]">
+                <div className="text-[11px] font-black uppercase tracking-wider text-amber-800">
                   Nível do Aprendiz
                 </div>
-                <div className="text-lg font-black text-[#ffd166]">
+                <div
+                  className="font-display text-lg sm:text-xl font-black text-amber-900"
+                  style={{ color: "#78350f" }}
+                >
                   Nível {currentLevel} • Curioso da Mata
                 </div>
               </div>
             </div>
 
-            <div className="awa-card-3 flex items-center gap-3.5 rounded-xl p-3.5">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/40">
-                <Compass className="h-5 w-5" />
+            <div className="flex items-center gap-3.5 rounded-2xl border-2 border-amber-200/90 bg-white p-4 shadow-sm hover:shadow-md transition">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-orange-100 text-orange-800 border border-orange-200">
+                <Compass className="h-6 w-6" />
               </div>
               <div className="min-w-0">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#d4a373]">
+                <div className="text-[11px] font-black uppercase tracking-wider text-amber-800">
                   Trilhas Ativas
                 </div>
-                <div className="text-lg font-black text-[#fefae0]">
+                <div
+                  className="font-display text-lg sm:text-xl font-black"
+                  style={{ color: "#064e3b" }}
+                >
                   3 em andamento
                 </div>
               </div>
@@ -390,58 +450,64 @@ function InfantilHome() {
           {/* 4. TRILHAS DA ALDEIA (PERCURSO EDUCACIONAL)               */}
           {/* ========================================================= */}
           <section className="mb-8">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
               <div>
-                <h2 className="text-xl sm:text-2xl font-black text-[#fefae0] tracking-tight">
+                <h2
+                  className="font-display text-xl sm:text-2xl font-black tracking-tight"
+                  style={{ color: "#064e3b" }}
+                >
                   Trilhas da Aldeia
                 </h2>
-                <p className="text-xs text-[#d4a373]">
+                <p className="text-xs sm:text-sm text-slate-600 font-semibold">
                   Seu caminho de aprendizado passo a passo
                 </p>
               </div>
               <Link
                 to="/trilhas-infantil"
-                className="flex items-center gap-1 text-xs font-bold text-[#ffd166] hover:underline"
+                className="inline-flex items-center gap-1 rounded-2xl bg-amber-100 border border-amber-300 px-3.5 py-1.5 text-xs font-black text-amber-900 shadow-sm hover:bg-amber-200 transition"
               >
-                <span>Ver todas as 5 trilhas</span>
+                <span>Ver Mapa Completo</span>
                 <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
               {TRAIL_CARDS.map((c) => (
                 <Link
                   key={c.label}
                   to={c.to as any}
                   params={(c.slug ? { slug: c.slug } : {}) as any}
                   search={(c.slug ? { area: c.area } : {}) as any}
-                  className="awa-card-2 group flex flex-col overflow-hidden rounded-xl transition hover:-translate-y-1 hover:border-[#ffd166]/60 shadow-md"
+                  className="group flex flex-col overflow-hidden rounded-3xl border-2 border-amber-200/90 bg-white shadow-md transition-all hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"
                 >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/40">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                     <img
                       src={c.img}
                       alt={c.label}
                       loading="lazy"
                       className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute top-2 left-2 rounded-md bg-[#180e07]/80 px-1.5 py-0.5 text-[10px] font-bold text-[#ffd166] border border-[#633916]">
+                    <div className="absolute top-2 left-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-black text-amber-950 border border-amber-300 shadow">
                       #{c.n}
                     </div>
                   </div>
 
-                  <div className="flex flex-1 flex-col justify-between p-2.5">
+                  <div className="flex flex-1 flex-col justify-between p-3">
                     <div>
-                      <div className="font-bold text-sm text-[#fefae0] truncate">
+                      <div
+                        className="font-display font-black text-sm truncate group-hover:text-emerald-700 transition"
+                        style={{ color: "#064e3b" }}
+                      >
                         {c.label}
                       </div>
-                      <div className="text-[11px] text-[#d4a373] mt-0.5">
+                      <div className="text-[11px] font-bold text-amber-800 mt-0.5">
                         {c.progress}% concluído
                       </div>
                     </div>
 
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#180e07]">
+                    <div className="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-amber-100 border border-amber-200">
                       <div
-                        className="h-full rounded-full bg-[#2a9d8f]"
+                        className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-500"
                         style={{ width: `${c.progress}%` }}
                       />
                     </div>
@@ -456,96 +522,144 @@ function InfantilHome() {
           {/* ========================================================= */}
           <section className="mb-8 grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* Atividade Recomendada (Vídeo do Dia) */}
-            <div className="awa-card-2 md:col-span-7 rounded-2xl p-4 sm:p-5 flex flex-col justify-between">
+            <div className="md:col-span-7 rounded-3xl border-2 border-amber-200/90 bg-white p-5 flex flex-col justify-between shadow-md hover:shadow-lg transition">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="rounded-md bg-[#2a9d8f]/20 border border-[#2a9d8f]/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2a9d8f]">
+                  <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-900">
                     Atividade Recomendada
                   </span>
-                  <span className="text-xs text-[#d4a373]">Vídeo Bilíngue</span>
+                  <span className="text-xs font-bold text-amber-800">Vídeo Bilíngue</span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-black text-[#fefae0]">
+                <h3
+                  className="font-display text-lg sm:text-xl font-black tracking-tight"
+                  style={{ color: "#064e3b" }}
+                >
                   Saudações em Pataxó com Professor Awuá
                 </h3>
-                <p className="mt-1 text-xs text-[#fefae0]/80">
+                <p className="mt-1 text-xs text-slate-600 font-medium">
                   Aprenda as primeiras palavras de cumprimento da floresta de forma interativa.
                 </p>
 
-                <div
-                  onClick={() => setShowVideoModal(true)}
-                  className="group relative mt-3 aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-[#633916] bg-black/60 shadow"
-                >
-                  <img
-                    src={kidsCharacter}
-                    alt="Vídeo Saudações"
-                    className="h-full w-full object-cover object-top brightness-90 group-hover:scale-105 transition duration-300"
+                <div className="relative mt-3 aspect-video w-full overflow-hidden rounded-2xl border-2 border-amber-300 bg-black shadow-md group">
+                  <video
+                    ref={videoCardRef}
+                    src={videoUrl}
+                    autoPlay
+                    loop
+                    muted={isVideoMuted}
+                    playsInline
+                    className="h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[#ffd166] text-[#180e07] shadow-lg group-hover:scale-110 transition">
-                      <Play className="ml-0.5 h-6 w-6 fill-current" />
-                    </div>
+                  {/* Overlay Controls */}
+                  <div className="absolute bottom-2.5 right-2.5 flex items-center gap-2 z-10">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsVideoMuted((prev) => !prev);
+                        if (videoCardRef.current) {
+                          videoCardRef.current.muted = !videoCardRef.current.muted;
+                        }
+                      }}
+                      className="flex items-center gap-1.5 rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md px-3 py-1 text-xs font-black text-amber-200 border border-amber-400/60 shadow transition active:scale-95 cursor-pointer"
+                      title={isVideoMuted ? "Ativar som do vídeo" : "Silenciar vídeo"}
+                    >
+                      {isVideoMuted ? (
+                        <>
+                          <VolumeX className="h-3.5 w-3.5 text-amber-300" />
+                          <span>Ativar Som</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="h-3.5 w-3.5 text-emerald-400" />
+                          <span className="text-emerald-300">Com Som</span>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowVideoModal(true)}
+                      className="grid h-7 w-7 place-items-center rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md text-amber-200 border border-amber-400/60 shadow transition active:scale-95 cursor-pointer"
+                      title="Abrir em tela cheia"
+                    >
+                      <Maximize2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Badge: Em Loop */}
+                  <div className="pointer-events-none absolute top-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-emerald-950/85 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-300 border border-emerald-500/50 shadow">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Em Loop • Professor Awuá</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#633916]/50">
-                <div className="text-xs text-[#ffd166] font-semibold">
+              <div className="mt-4 flex items-center justify-between pt-3 border-t border-amber-100">
+                <div className="text-xs text-amber-900 font-bold">
                   Awê! = Olá! Seja bem-vindo!
                 </div>
                 <button
                   onClick={() => setShowVideoModal(true)}
-                  className="rounded-lg bg-[#331c0e] border border-[#ffd166]/50 px-3.5 py-1.5 text-xs font-bold text-[#ffd166] hover:bg-[#432512] transition"
+                  className="rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 text-xs font-black text-amber-950 shadow-[0_3px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer"
                 >
-                  Assistir agora
+                  Ver em Tela Cheia ⛶
                 </button>
               </div>
             </div>
 
             {/* Palavra do Dia & Sabedoria Cultural */}
-            <div className="md:col-span-5 flex flex-col gap-3">
+            <div className="md:col-span-5 flex flex-col gap-4">
               {/* Palavra do Dia */}
-              <div className="awa-card-2 flex-1 rounded-2xl p-4 flex flex-col justify-between">
+              <div className="flex-1 rounded-3xl border-2 border-amber-200/90 bg-white p-5 flex flex-col justify-between shadow-md">
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-[#d4a373] mb-1">
+                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-amber-800 mb-1">
                     <span>Palavra do Dia</span>
-                    <span className="text-[#2a9d8f]">Patxôhã</span>
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-900 border border-emerald-200">
+                      Patxôhã
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-[#ffd166]">
+                  <div
+                    className="font-display text-3xl font-black"
+                    style={{ color: "#064e3b" }}
+                  >
                     Kaimbé
                   </div>
-                  <div className="text-xs text-[#fefae0]/90 mt-0.5">
-                    Significado: <strong className="text-[#4ade80]">rio, correnteza d'água</strong>
+                  <div className="text-xs text-slate-700 font-semibold mt-1">
+                    Significado: <strong className="text-emerald-800 font-black">rio, correnteza d'água</strong>
                   </div>
                 </div>
 
                 <button
                   onClick={playPronunciation}
                   disabled={playingWord}
-                  className="mt-3 flex items-center justify-center gap-2 rounded-xl border border-[#633916] bg-[#251408] px-3 py-2 text-xs font-bold text-[#ffd166] hover:border-[#ffd166]/60 transition"
+                  className="mt-4 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2.5 text-xs font-black text-amber-950 shadow-[0_3px_0_#b45309] hover:brightness-105 active:translate-y-1 active:shadow-none transition cursor-pointer"
                 >
-                  <Volume2 className={`h-4 w-4 ${playingWord ? "animate-pulse text-[#4ade80]" : ""}`} />
+                  <Volume2 className={`h-4 w-4 ${playingWord ? "animate-pulse" : ""}`} />
                   <span>{playingWord ? "Ouvindo..." : "Ouvir Pronúncia"}</span>
                 </button>
               </div>
 
               {/* Sabedoria Cultural */}
-              <div className="awa-card-3 rounded-2xl p-4">
+              <div className="rounded-3xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-emerald-50 p-5 shadow-sm">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#d4a373]">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
                     {CULTURAL_TIPS[tipIndex].badge}
                   </span>
                   <button
                     onClick={() => setTipIndex((prev) => (prev + 1) % CULTURAL_TIPS.length)}
-                    className="text-[11px] font-bold text-[#ffd166] hover:underline"
+                    className="text-xs font-black text-emerald-800 hover:underline"
                   >
-                    Próxima dica
+                    Próxima dica →
                   </button>
                 </div>
-                <div className="font-bold text-xs text-[#ffd166]">
+                <div
+                  className="font-display font-black text-sm mt-2"
+                  style={{ color: "#064e3b" }}
+                >
                   {CULTURAL_TIPS[tipIndex].title}
                 </div>
-                <p className="text-[11px] text-[#fefae0]/80 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-700 font-medium mt-1 leading-relaxed">
                   "{CULTURAL_TIPS[tipIndex].text}"
                 </p>
               </div>
@@ -556,27 +670,33 @@ function InfantilHome() {
           {/* 6. EXPLORAR A ALDEIA (CENTRAL DE ATIVIDADES)               */}
           {/* ========================================================= */}
           <section className="mb-8">
-            <div className="mb-3">
-              <h2 className="text-xl sm:text-2xl font-black text-[#fefae0] tracking-tight">
+            <div className="mb-4">
+              <h2
+                className="font-display text-xl sm:text-2xl font-black tracking-tight"
+                style={{ color: "#064e3b" }}
+              >
                 Explorar a Aldeia
               </h2>
-              <p className="text-xs text-[#d4a373]">
-                Atividades educativas complementares
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold">
+                Atividades educativas complementares para todas as idades
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5">
               {EXPLORE_ICONS.map((item) => (
                 <Link
                   key={item.label}
                   to={item.to as any}
                   search={(item as any).search}
-                  className="awa-card-2 group flex flex-col items-center gap-2 rounded-xl p-3 text-center transition hover:-translate-y-1 hover:border-[#ffd166]/60"
+                  className="group flex flex-col items-center gap-2.5 rounded-3xl border-2 border-amber-200/90 bg-white p-4 text-center shadow-md transition-all hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"
                 >
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#251408] border border-[#633916] text-[#ffd166] group-hover:border-[#ffd166] group-hover:scale-105 transition">
-                    <item.icon className="h-6 w-6" />
+                  <div className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-100 border border-amber-200 text-amber-900 group-hover:scale-110 transition shadow-inner">
+                    <item.icon className="h-7 w-7" />
                   </div>
-                  <span className="text-xs font-bold text-[#fefae0] group-hover:text-[#ffd166] leading-tight">
+                  <span
+                    className="text-xs font-black group-hover:text-emerald-700 transition leading-tight"
+                    style={{ color: "#064e3b" }}
+                  >
                     {item.label}
                   </span>
                 </Link>
@@ -585,47 +705,49 @@ function InfantilHome() {
           </section>
 
           {/* ========================================================= */}
-          {/* 7. CONQUISTAS DA ALDEIA (MURAL EDUCACIONAL)               */}
+          {/* 7. CONQUISTAS DA ALDEIA                                   */}
           {/* ========================================================= */}
           <section id="conquistas" className="mb-8">
-            <div className="mb-3 flex items-center justify-between">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-[#fefae0] tracking-tight">
-                  Conquistas do Aprendiz
-                </h2>
-                <p className="text-xs text-[#d4a373]">
-                  5 de 6 medalhas desbloqueadas
-                </p>
-              </div>
+            <div className="mb-4">
+              <h2
+                className="font-display text-xl sm:text-2xl font-black tracking-tight"
+                style={{ color: "#064e3b" }}
+              >
+                Conquistas do Aprendiz
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 font-semibold">
+                Medalhas sagradas desbloqueadas na aldeia
+              </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
               {ACHIEVEMENTS.map((ach) => (
                 <div
                   key={ach.title}
-                  className={`flex items-center gap-3 rounded-xl p-3 border transition ${
-                    ach.unlocked
-                      ? "awa-card-2 border-[#633916]"
-                      : "awa-card-3 opacity-60"
-                  }`}
+                  className={`flex items-center gap-3.5 rounded-3xl p-3.5 border-2 transition shadow-sm ${ach.unlocked
+                    ? "border-emerald-300 bg-emerald-50/60"
+                    : "border-slate-200 bg-white opacity-60"
+                    }`}
                 >
                   <div
-                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border text-base ${
-                      ach.unlocked
-                        ? "border-[#ffd166]/50 bg-[#331c0e] text-[#ffd166]"
-                        : "border-white/10 bg-black/40 text-gray-500"
-                    }`}
+                    className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-2 text-base shadow-sm ${ach.unlocked
+                      ? "border-amber-400 bg-amber-100 text-amber-900"
+                      : "border-slate-200 bg-slate-100 text-slate-400"
+                      }`}
                   >
-                    <Award className="h-5 w-5" />
+                    <Award className="h-6 w-6" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-xs font-bold text-[#fefae0]">
+                    <div
+                      className="truncate text-xs font-black"
+                      style={{ color: ach.unlocked ? "#064e3b" : "#64748b" }}
+                    >
                       {ach.title}
                     </div>
-                    <div className="truncate text-[10px] text-[#d4a373]">
+                    <div className="truncate text-[10px] text-slate-500 font-medium">
                       {ach.desc}
                     </div>
-                    <div className="text-[10px] font-bold text-[#2a9d8f] mt-0.5">
+                    <div className="text-[10px] font-black text-emerald-800 mt-0.5">
                       {ach.unlocked ? "✓ Desbloqueada" : "Bloqueada"}
                     </div>
                   </div>
@@ -647,14 +769,19 @@ function InfantilHome() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               onClick={() => setShowVideoModal(false)}
-              className="fixed inset-0 bg-black/85 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/75 backdrop-blur-sm"
             />
-            <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-3xl border-2 border-[#ffd166] bg-[#241307] shadow-2xl">
-              <div className="flex items-center justify-between border-b border-[#8d5b2d] px-4 py-3">
-                <div className="font-display font-black text-[#ffd166]">Saudações em Pataxó</div>
+            <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-[2.5rem] border-4 border-amber-300 bg-white shadow-2xl">
+              <div className="flex items-center justify-between border-b-2 border-amber-200 px-5 py-4 bg-amber-50">
+                <div
+                  className="font-display font-black text-lg"
+                  style={{ color: "#064e3b" }}
+                >
+                  Saudações em Pataxó
+                </div>
                 <button
                   onClick={() => setShowVideoModal(false)}
-                  className="grid h-8 w-8 place-items-center rounded-full border border-[#ffd166] bg-[#3a2212] text-[#fefae0] hover:scale-105"
+                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-amber-300 bg-white text-slate-800 hover:scale-105 shadow-sm"
                 >
                   ✕
                 </button>
