@@ -395,11 +395,7 @@ function TrilhaPage() {
       }`}
     >
       {/* Header */}
-      {isKids ? (
-        <SiteHeader mode="infantil" />
-      ) : (
-        <SiteHeader mode="adulto" />
-      )}
+      {isKids ? <SiteHeader mode="infantil" /> : <SiteHeader mode="adulto" />}
 
       {/* Sticky Sub-Header Bar */}
       <header

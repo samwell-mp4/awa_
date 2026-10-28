@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { requireArea } from "@/lib/area-guard";
+import { SiteHeader } from "@/components/home/site-header";
 import { KidsTrailsAdventureMap } from "@/components/kids/KidsTrailsAdventureMap";
 
 export const Route = createFileRoute("/trilhas-infantil")({
@@ -16,9 +17,14 @@ export const Route = createFileRoute("/trilhas-infantil")({
       { property: "og:title", content: "Trilhas da Aldeia — Awã Tech" },
       {
         property: "og:description",
-        content: "Mapa mágico e divertido das trilhas de aprendizado Awã Tech.",
+        content: "Trilhas de aprendizado infantil na Awã Tech.",
       },
     ],
   }),
-  component: () => <KidsTrailsAdventureMap backHref="/infantil" />,
+  component: () => (
+    <div className="kids-theme">
+      {/* <SiteHeader mode="infantil" /> */}
+      <KidsTrailsAdventureMap backHref="/infantil" />
+    </div>
+  ),
 });

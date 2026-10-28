@@ -31,7 +31,6 @@ import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
-import { KidsWordQuiz } from "@/components/kids/KidsWordQuiz";
 import { isTestModeActive } from "@/hooks/use-auth";
 
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
@@ -756,12 +755,6 @@ function InfantilHome() {
             </div>
           </section>
 
-          {/* ========================================================= */}
-          {/* 8. QUIZ DA PALAVRA DO DIA                                  */}
-          {/* ========================================================= */}
-          <section id="quiz" className="mb-8">
-            <KidsWordQuiz />
-          </section>
         </main>
 
         {/* Modal de Vídeo Leve e Otimizado */}

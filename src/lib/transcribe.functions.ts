@@ -18,8 +18,39 @@ export const transcribeAudio = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }): Promise<{ text: string; error?: "PAYMENT_REQUIRED" | "STT_FAILED"; message?: string }> => {
     await assertPremium(context, data.environment, data.area);
+    const openAiKey = process.env.OPENAI_API_KEY?.trim();
     const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
+    if (!openAiKey && !apiKey) throw new Error("Chave de IA ausente");
+
+    // 1. Prioridade: OpenAI Whisper oficial
+    if (openAiKey) {
+      try {
+        const fd = new FormData();
+        fd.append("model", "whisper-1");
+        fd.append("file", data.file, data.file.name || "audio.webm");
+        if (data.language) fd.append("language", data.language);
+
+        const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${openAiKey}` },
+          body: fd,
+        });
+        if (res.ok) {
+          const json = await readJsonSafe<{ text?: string }>(res);
+          return { text: json?.text ?? "" };
+        }
+      } catch {
+        /* fallback para gateway se falhar */
+      }
+    }
+
+    if (!apiKey) {
+      return {
+        text: "",
+        error: "STT_FAILED",
+        message: "Não foi possível transcrever o áudio com a chave OpenAI. Verifique os créditos da conta.",
+      };
+    }
 
     const fd = new FormData();
     fd.append("model", "openai/gpt-4o-mini-transcribe");

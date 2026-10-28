@@ -41,10 +41,13 @@ describe('Speech System (speak.ts)', () => {
   });
 
   it('deve cancelar áudio anterior antes de começar um novo', () => {
+    vi.useFakeTimers();
     // Com onBoundary (legendas palavra por palavra) usa a voz do navegador.
     speakModule.speak('Teste', 'pt-BR', 1, undefined, undefined, () => {});
     expect(mockSynth.cancel).toHaveBeenCalled();
+    vi.advanceTimersByTime(50);
     expect(mockSynth.speak).toHaveBeenCalled();
+    vi.useRealTimers();
   });
 
   it('deve registrar listener para parar áudio ao clicar na tela', () => {

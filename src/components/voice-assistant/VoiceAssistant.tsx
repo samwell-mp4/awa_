@@ -48,7 +48,10 @@ function pickMime() {
 }
 
 export function VoiceAssistant() {
-  const { session } = useAuth();
+  return null;
+}
+
+export function _DisabledVoiceAssistant() {
   const { data: cfg } = useAssistantConfig();
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");

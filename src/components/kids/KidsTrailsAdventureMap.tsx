@@ -395,215 +395,40 @@ export function KidsTrailsAdventureMap({
           </div>
         </section>
 
-        {/* 2-Column Responsive Layout: Left = Magical Map, Right = Trail Quest Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-          {/* ========================================================
-              LEFT COLUMN: Interactive Adventure Map (Parchment Board)
-             ======================================================== */}
-          <div className="lg:col-span-5 xl:col-span-5">
-            <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-[#ffd166] bg-gradient-to-b from-[#fffef7] via-[#fffdf0] to-[#faedd0] p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
-              {/* Back Button & Map Label */}
-              <div className="relative z-10 flex items-center justify-between pb-3 border-b border-amber-200/60">
-                <Link
-                  to={backHref as "/"}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-black text-[#0284c7] shadow-sm border border-sky-100 hover:bg-sky-50 active:scale-95 transition-all"
-                  aria-label="Voltar para o Menu"
-                >
-                  <span aria-hidden>←</span> Menu Infantil
-                </Link>
+        {/* Trail Quest Cards (Layout Limpo e Centrado) */}
+        <div className="mx-auto max-w-4xl space-y-4">
+          <div className="flex items-center justify-between px-1 mb-2">
+            <Link
+              to={backHref as "/"}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-black text-[#0284c7] shadow-sm border border-sky-100 hover:bg-sky-50 active:scale-95 transition-all"
+              aria-label="Voltar para o Menu"
+            >
+              <span aria-hidden>←</span> Menu Infantil
+            </Link>
 
-                <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-                  <Sparkles className="h-3 w-3 text-amber-500" />
-                  Mapa Interativo
-                </span>
-              </div>
+            <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+              <Sparkles className="h-3 w-3 text-amber-500" />
+              Missões da Aldeia
+            </span>
+          </div>
 
-              {/* Decorative Floating Clouds and Sun */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-12 h-32 opacity-80"
+          <div className="flex items-center justify-between px-1">
+            <div>
+              <h2
+                className="font-display text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2"
+                style={{ color: "#064e3b" }}
               >
-                <div
-                  className="absolute left-6 top-6 text-3xl select-none"
-                  style={{ animation: "kids-cloud 11s ease-in-out infinite" }}
-                >
-                  ☁️
-                </div>
-                <div
-                  className="absolute right-16 top-10 text-2xl select-none"
-                  style={{ animation: "kids-cloud 15s ease-in-out infinite reverse" }}
-                >
-                  ☁️
-                </div>
-                <div
-                  className="absolute right-6 top-3 text-3xl select-none"
-                  style={{ animation: "kids-sun-spin 26s linear infinite" }}
-                >
-                  ☀️
-                </div>
-              </div>
-
-              {/* Adventure Map Canvas with Winding Trail Path */}
-              <div className="relative mx-auto my-3 h-[500px] w-full max-w-[340px]">
-                {/* SVG Winding Golden Dashed Trail with Footprints */}
-                <svg
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 h-full w-full"
-                  viewBox="0 0 320 500"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M 230 65 C 240 135, 75 145, 75 210 C 75 285, 235 295, 235 360 C 235 430, 80 440, 80 480"
-                    stroke="#ffd166"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeDasharray="11 15"
-                    style={{ animation: "kids-dash 6s linear infinite" }}
-                  />
-                  {/* Footprints along the trail */}
-                  {[
-                    [155, 120],
-                    [95, 180],
-                    [155, 245],
-                    [215, 310],
-                    [155, 380],
-                    [95, 445],
-                  ].map(([x, y], i) => (
-                    <text
-                      key={i}
-                      x={x}
-                      y={y}
-                      fontSize="14"
-                      textAnchor="middle"
-                      opacity="0.85"
-                      className="select-none"
-                    >
-                      {i % 2 ? "🐾" : "👣"}
-                    </text>
-                  ))}
-                </svg>
-
-                {/* 4 Interactive Totems */}
-                {slugs.map((slug, i) => {
-                  const cfg = TOTEMS_CONFIG[slug];
-                  const isPlaying = playingSlug === slug;
-                  const prog = progressMap[slug] || { percent: 0 };
-
-                  return (
-                    <div
-                      key={slug}
-                      className={`kids-totem group absolute ${cfg.position} transition-transform hover:scale-105 active:scale-95`}
-                      style={{ animationDelay: `${i * 150}ms` }}
-                    >
-                      <div className="relative block">
-                        {/* Audio Wave Pulsing Halo when Playing */}
-                        {isPlaying && (
-                          <span
-                            aria-hidden
-                            className="absolute -inset-4 rounded-full border-4 border-amber-400 opacity-80"
-                            style={{ animation: "kids-pulse-ring 1.5s ease-out infinite" }}
-                          />
-                        )}
-
-                        {/* Atmospheric Halo Glow */}
-                        <span
-                          aria-hidden
-                          className="absolute -inset-3 rounded-full opacity-60 blur-xl transition group-hover:opacity-100"
-                          style={{ background: cfg.btnBg }}
-                        />
-
-                        {/* Clickable Totem Bubble to Enter Trail */}
-                        <Link
-                          to="/trilhas/$slug"
-                          params={{ slug }}
-                          search={{ area: "infantil" }}
-                          aria-label={`Entrar na Trilha ${cfg.label}`}
-                          className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 border-white text-white transition-all shadow-xl focus:outline-none"
-                          style={{
-                            background: cfg.color,
-                            boxShadow: `0 10px 0 -2px ${cfg.shadow}, 0 20px 25px -8px ${cfg.shadow}`,
-                            transform: `rotate(${cfg.rotate})`,
-                          }}
-                        >
-                          <span className="text-3xl drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)]">
-                            {cfg.emoji}
-                          </span>
-                          <span
-                            className="mt-0.5 text-[9.5px] font-black uppercase tracking-widest text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
-                            style={{ fontFamily: "'Fredoka', 'Archivo Black', sans-serif" }}
-                          >
-                            {cfg.label}
-                          </span>
-
-                          {/* Mini Progress Star Badge */}
-                          {prog.percent > 0 && (
-                            <span className="absolute -top-1.5 -left-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-300 text-amber-950 font-black text-[10px] shadow border-2 border-white">
-                              {prog.percent === 100 ? "✓" : `${prog.percent}%`}
-                            </span>
-                          )}
-                        </Link>
-
-                        {/* Direct Audio Button attached to the Totem */}
-                        <button
-                          type="button"
-                          onClick={(e) => toggleNarration(slug, e)}
-                          title={isPlaying ? "Pausar som" : `Ouvir ${cfg.label}`}
-                          aria-label={`Ouvir sobre ${cfg.label}`}
-                          data-speech-control
-                          className={`absolute -top-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-md border-2 border-white transition-all transform hover:scale-110 active:scale-90 ${
-                            isPlaying
-                              ? "bg-rose-600 animate-bounce"
-                              : "bg-emerald-600 hover:bg-emerald-500"
-                          }`}
-                        >
-                          {isPlaying ? (
-                            <Pause className="h-3.5 w-3.5" />
-                          ) : (
-                            <Volume2 className="h-3.5 w-3.5" />
-                          )}
-                        </button>
-
-                        {/* Cute Smiling Island with Happy Eyes ^ ^ beneath */}
-                        <SmilingIsland
-                          top={cfg.islandTop}
-                          bottom={cfg.islandBottom}
-                          eyeColor={cfg.eyeColor}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Map Footer helper note */}
-              <div className="mt-2 text-center text-xs font-bold text-emerald-800/80 bg-amber-100/60 rounded-xl py-2 px-3 border border-amber-200/50">
-                🌱 Toque no Totem para jogar ou no alto-falante 🔊 para ouvir a história!
-              </div>
+                <Award className="h-6 w-6 text-amber-500" />
+                Missões da Aldeia
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-700 font-semibold">
+                Complete cada etapa para liberar novos desafios sagrados!
+              </p>
             </div>
           </div>
 
-          {/* ========================================================
-              RIGHT COLUMN: Trail Quest Cards with Rich Visuals
-             ======================================================== */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-4">
-            <div className="flex items-center justify-between px-1">
-              <div>
-                <h2
-                  className="font-display text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2"
-                  style={{ color: "#064e3b" }}
-                >
-                  <Award className="h-6 w-6 text-amber-500" />
-                  Missões da Aldeia
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-700 font-semibold">
-                  Complete cada etapa para liberar novos desafios sagrados!
-                </p>
-              </div>
-            </div>
-
-            {/* Trail Cards Grid */}
-            <div className="space-y-4">
+          {/* Trail Cards Grid */}
+          <div className="space-y-4">
               {slugs.map((slug) => {
                 const cfg = TOTEMS_CONFIG[slug];
                 const prog = progressMap[slug] || { count: 0, total: cfg.totalEst, percent: 0 };
@@ -732,8 +557,7 @@ export function KidsTrailsAdventureMap({
               </p>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
       {/* Footer Infantil */}
       <SiteFooter mode="infantil" />

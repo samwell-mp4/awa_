@@ -186,13 +186,11 @@ function ProfessorInfantilPage() {
     // 1. Se estiver ouvindo no navegador via Web Speech API (zero tokens de IA):
     if (browserSpeech.isListening) {
       const finalRecorded = browserSpeech.stop();
-      const textToSend = (finalRecorded || input).trim();
-      if (!textToSend) {
-        setState("idle");
-        toast.error("Não consegui ouvir. Fale um pouquinho mais perto! 🎤");
-        return;
+      const textToKeep = (finalRecorded || input).trim();
+      setState("idle");
+      if (textToKeep) {
+        setInput(textToKeep);
       }
-      await send(textToSend, true);
       return;
     }
 
@@ -213,12 +211,12 @@ function ProfessorInfantilPage() {
         fd.append("environment", getPaddleEnvironment());
         const r = await transcribe({ data: fd });
         const text = (r?.text ?? "").trim();
-        if (r?.error || !text) {
-          setState("idle");
+        setState("idle");
+        if (text) {
+          setInput(text);
+        } else if (r?.error) {
           toast.error("Não entendi direitinho. Vamos tentar de novo? 🌿");
-          return;
         }
-        await send(text, true);
       } catch {
         setState("idle");
         toast.error("Não entendi direitinho. Vamos tentar de novo? 🌿");
@@ -346,51 +344,35 @@ function ProfessorInfantilPage() {
             <div className="flex items-center gap-2">
               {messages.length > 1 && (
                 <button
-                  type="button"
-                  onClick={() => setShowHistory((h) => !h)}
-                  className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-black transition active:scale-95 ${
-                    showHistory
-                      ? "border-amber-400 bg-amber-400 text-amber-950"
-                      : "border-amber-300 bg-amber-50 text-amber-950 hover:bg-amber-100"
-                  }`}
-                  title={showHistory ? "Voltar ao Professor" : "Ver histórico da conversa"}
+                  onClick={resetConversation}
+                  className="inline-flex items-center gap-1.5 rounded-full border-2 border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-950 transition hover:bg-amber-100 active:scale-95 cursor-pointer shadow-sm"
+                  title="Nova conversa"
                 >
-                  <MessageSquare className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{showHistory ? "Voz Direta" : "Histórico"}</span>
-                  <span className="grid h-4 w-4 place-items-center rounded-full bg-amber-200 text-[9px]">
-                    {messages.length}
-                  </span>
+                  <RefreshCcw className="h-3.5 w-3.5" />
+                  <span>Recomeçar</span>
                 </button>
               )}
-
-              <button
-                onClick={resetConversation}
-                className="inline-flex items-center gap-1.5 rounded-full border-2 border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-950 transition hover:bg-amber-100 active:scale-95 cursor-pointer"
-                title="Nova conversa"
-              >
-                <RefreshCcw className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Recomeçar</span>
-              </button>
             </div>
           </div>
         </header>
 
         {/* Main Content Area */}
         <main className="mx-auto w-full max-w-4xl flex-1 px-3 sm:px-6 pb-36 pt-4 flex flex-col justify-between">
-          {showHistory ? (
-            /* Full History Bubble View */
-            <div className="flex flex-col gap-4 animate-in fade-in duration-300">
+          {messages.length > 1 ? (
+            /* Full Chat History Bubble View */
+            <div className="flex flex-col gap-4 animate-in fade-in duration-300 w-full flex-1">
               <div className="flex items-center justify-between pb-2 border-b-2 border-amber-200">
-                <span className="text-xs font-black text-amber-950 uppercase">
-                  Conversas Anteriores ({messages.length})
+                <span className="text-xs font-black text-amber-950 uppercase flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Conversa com Professor Awã ({messages.length})
                 </span>
                 <button
                   type="button"
-                  onClick={() => setShowHistory(false)}
-                  className="text-xs font-black text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
+                  onClick={resetConversation}
+                  className="text-xs font-black text-amber-900 hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
-                  <span>Voltar ao Professor</span>
+                  <RefreshCcw className="h-3 w-3" />
+                  <span>Nova conversa</span>
                 </button>
               </div>
 
@@ -444,7 +426,7 @@ function ProfessorInfantilPage() {
               <div ref={endRef} />
             </div>
           ) : (
-            /* Direct Voice Orb View (THE DEFAULT SCREEN) */
+            /* Direct Voice Orb & Suggestions View (Welcome Screen) */
             <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
               {/* Central Fluid Rotating Orb */}
               <div className="relative my-2 sm:my-4">
@@ -491,86 +473,30 @@ function ProfessorInfantilPage() {
                 </span>
               </div>
 
-              {/* Latest Answer Card or Welcome Card */}
-              <div className="mt-5 w-full max-w-xl">
-                {latestAssistantMessage && messages.length > 1 ? (
-                  <div className="rounded-3xl border-3 border-amber-300 bg-white p-5 shadow-xl animate-in fade-in duration-300">
-                    <div className="flex items-center justify-between pb-3 mb-3 border-b-2 border-amber-200">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">🦜</span>
-                        <div>
-                          <span className="text-xs font-black text-[#064e3b]">Professor Awã</span>
-                          <span className="block text-[10px] text-slate-500 font-semibold">Resposta</span>
-                        </div>
-                      </div>
+              {/* Welcome Card and Suggestions */}
+              <div className="mt-5 w-full max-w-xl rounded-3xl border-3 border-amber-300 bg-gradient-to-r from-[#fffef5] to-[#fef7e6] p-5 shadow-lg text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="text-3xl">🦜</span>
+                  <h2 className="font-display text-base sm:text-lg font-black text-[#064e3b]">
+                    "Awê, pequeno parente!"
+                  </h2>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 font-semibold max-w-md mx-auto mb-4">
+                  Eu sou o Professor Awã. Toque no microfone para falar comigo ou escolha uma das perguntas:
+                </p>
 
-                      <div className="flex items-center gap-2">
-                        {/* Audio playback button with spinning orb */}
-                        <button
-                          type="button"
-                          onClick={() => playReply(latestAssistantMessage.content)}
-                          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-black transition cursor-pointer active:scale-95 shadow-sm ${
-                            state === "speaking"
-                              ? "bg-sky-500 text-white"
-                              : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 hover:brightness-105"
-                          }`}
-                        >
-                          {state === "speaking" ? (
-                            <>
-                              <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
-                              <span>Ouvindo...</span>
-                            </>
-                          ) : (
-                            <>
-                              <Volume2 className="h-3.5 w-3.5" />
-                              <span>Ouvir</span>
-                            </>
-                          )}
-                        </button>
-
-                        {messages.length > 2 && (
-                          <button
-                            type="button"
-                            onClick={() => setShowHistory(true)}
-                            className="text-xs font-black text-amber-900 hover:underline cursor-pointer"
-                          >
-                            Histórico ({messages.length})
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-medium text-slate-800 max-h-56 overflow-y-auto pr-1">
-                      {clean(latestAssistantMessage.content)}
-                    </p>
-                  </div>
-                ) : (
-                  /* Welcome Card and Suggestions */
-                  <div className="rounded-3xl border-3 border-amber-300 bg-gradient-to-r from-[#fffef5] to-[#fef7e6] p-5 shadow-lg text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <span className="text-3xl">🦜</span>
-                      <h2 className="font-display text-base sm:text-lg font-black text-[#064e3b]">
-                        "Awê, pequeno parente!"
-                      </h2>
-                    </div>
-                    <p className="text-xs sm:text-sm text-slate-700 font-semibold max-w-md mx-auto mb-4">
-                      Eu sou o Professor Awã. Toque no microfone para falar comigo ou escolha uma das perguntas:
-                    </p>
-
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {SUGGESTIONS.map((sug) => (
-                        <button
-                          key={sug}
-                          onClick={() => send(sug, true)}
-                          disabled={state === "thinking"}
-                          className="rounded-2xl border-2 border-amber-300 bg-white hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
-                        >
-                          ✨ {sug}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <div className="flex flex-wrap justify-center gap-2">
+                  {SUGGESTIONS.map((sug) => (
+                    <button
+                      key={sug}
+                      onClick={() => send(sug, true)}
+                      disabled={state === "thinking"}
+                      className="rounded-2xl border-2 border-amber-300 bg-white hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
+                    >
+                      ✨ {sug}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -641,11 +567,11 @@ function ProfessorInfantilPage() {
                 ? "bg-rose-500 text-white shadow-[0_0_30px_rgba(244,63,94,0.6)] animate-pulse"
                 : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-[0_4px_0_#b45309]"
             }`}
-            title={browserSpeech.isListening || recorder.isRecording ? "Parar e enviar" : "Falar no microfone"}
-            aria-label={browserSpeech.isListening || recorder.isRecording ? "Parar e enviar" : "Falar no microfone"}
+            title={browserSpeech.isListening || recorder.isRecording ? "Pausar fala (manter texto para editar)" : "Falar no microfone"}
+            aria-label={browserSpeech.isListening || recorder.isRecording ? "Pausar fala (manter texto para editar)" : "Falar no microfone"}
           >
             {browserSpeech.isListening || recorder.isRecording ? (
-              <Square className="h-5 w-5 fill-current" />
+              <Pause className="h-5 w-5 fill-current" />
             ) : (
               <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
             )}

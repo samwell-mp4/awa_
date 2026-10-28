@@ -29,12 +29,12 @@ function pickRelevant(list: Entry[], text: string, key: "portugues" | "patxoha")
     let hit = false;
     for (const t of toks) if (words.includes(t)) hit = true;
     if (hit) exact.push(e);
-    else if (partial.length < 60) {
+    else if (partial.length < 20) {
       for (const t of toks) if (t.length >= 4 && norm(e[key]).includes(t)) { partial.push(e); break; }
     }
-    if (exact.length >= 120) break;
+    if (exact.length >= 30) break;
   }
-  return [...exact, ...partial].slice(0, 140);
+  return [...exact, ...partial].slice(0, 35);
 }
 
 // Índice de verificação: palavra Patxôhã → páginas no Dicionário 2015.
@@ -71,8 +71,9 @@ export const askAkua = createServerFn({ method: "POST" })
     await assertPremium(context, data.environment ?? "live", area);
     // Interrompe qualquer áudio SpeechSynthesis ativo no cliente antes de processar a resposta da IA
     // (A interrupção real acontece no cliente via listener global, mas aqui garantimos a lógica do servidor)
-    const apiKey = process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY ou AI_GATEWAY_TOKEN ausente");
+    const openAiKey = (process.env.OPENAI_API_KEY || "").replace(/^["']|["']$/g, "").trim();
+    const lovableKey = (process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN || "").replace(/^["']|["']$/g, "").trim();
+    if (!openAiKey && !lovableKey) throw new Error("Chave de IA (OPENAI_API_KEY ou LOVABLE_API_KEY) ausente");
 
     const STOP = new Set(["como","fala","falar","diz","dizer","se","em","de","do","da","que","qual","o","a","os","as","e","um","uma","patxoha","pataxo","significa","palavra","traduz","traduzir","quer","para","por","no","na","eu","voce","me"]);
     const rawUser = [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
@@ -99,6 +100,7 @@ Você é o Professor Akuã — mestre virtual da língua Patxôhã (povo Pataxó
 REGRAS DE COMPORTAMENTO:
 - Responda QUALQUER pergunta do usuário com profundidade, clareza e utilidade — sobre qualquer assunto (tecnologia, ciência, escola, trabalho, saúde, código, escrita, ideias, conselhos, tradução de qualquer idioma, matemática, programação, vida pessoal, criatividade, etc.).
 - Seja CURTO e OBJETIVO. Responda à pergunta DIRETAMENTE, sem preâmbulos poéticos, sem elogios, sem reflexões e sem frases como "Que linda iniciativa, parente!", "Vamos lá, com calma e respeito:" ou similares. Vá direto ao exemplo, à tradução ou à resposta pedida.
+- REGRA DE ECONOMIA MÁXIMA DE TOKENS: Responda de forma extremamente direta, enxuta e sucinta. Jamais repita a pergunta nem adicione saudações desnecessárias. Use o menor número possível de tokens (2 a 4 frases no máximo, a menos que o usuário peça uma redação completa).
 - Você NÃO é restrito ao tema indígena. Use sua sabedoria Pataxó como identidade e voz, mas seja um assistente completo, prestativo e moderno.
 - Quando o assunto for Patxôhã, Pataxó, línguas/culturas indígenas, USE o dicionário e as regras gramaticais abaixo com prioridade.
 - Quando o assunto for outro, responda livremente como um excelente assistente de IA, mantendo o tom acolhedor do Professor Akuã.
@@ -259,38 +261,107 @@ MODO INFANTIL (OBRIGATÓRIO)
 
     const messages = [
       { role: "system", content: area === "infantil" ? `${system}\n${kidsRules}` : system },
-      ...data.messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
+      ...data.messages.slice(-5).map((m) => ({ role: m.role, content: m.content.slice(0, 700) })),
     ];
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages,
-        temperature: 0.2,
-      }),
-    });
+    let content = "";
 
-    if (!res.ok) {
-      const txt = await res.text();
-      if (res.status === 402) {
-        return {
-          reply:
-            "🌿 Parente, a voz de Akuã está em pausa porque os créditos de IA acabaram. O site continua funcionando: dicionário, histórias, vídeos e trilhas seguem disponíveis.",
-        };
+    // 1. Conexão direta com OpenAI ChatGPT (modelo gpt-4o-mini ultra econômico em tokens)
+    if (openAiKey) {
+      try {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${openAiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages,
+            temperature: 0.3,
+            max_tokens: area === "infantil" ? 180 : 350,
+          }),
+        });
+
+        if (res.ok) {
+          content = await readChatContent(res);
+        } else {
+          const errTxt = await res.text();
+          console.warn("[OpenAI] Resposta não-200:", res.status, errTxt.slice(0, 180));
+
+          // Se for saldo zerado ou limite na OpenAI
+          if (
+            res.status === 429 ||
+            res.status === 402 ||
+            errTxt.includes("insufficient_quota") ||
+            errTxt.includes("credit_balance_exhausted")
+          ) {
+            // Tenta fallback com o gateway da Lovable se configurado
+            if (lovableKey) {
+              const fallbackRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${lovableKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  model: "google/gemini-2.5-flash",
+                  messages,
+                  temperature: 0.2,
+                }),
+              });
+              if (fallbackRes.ok) {
+                content = await readChatContent(fallbackRes);
+              }
+            }
+            if (!content) {
+              return {
+                reply:
+                  "🌿 Parente, sua chave da OpenAI ChatGPT está conectada com sucesso no sistema, porém o saldo de créditos da sua conta OpenAI está esgotado (credit_balance_exhausted). Adicione créditos em platform.openai.com/settings/organization/billing para o ChatGPT gerar as respostas.",
+              };
+            }
+          } else {
+            throw new Error(`OpenAI: ${errTxt.slice(0, 160)}`);
+          }
+        }
+      } catch (err: any) {
+        if (!content && !lovableKey) throw err;
       }
-      if (res.status === 429) {
-        return {
-          reply:
-            "🌿 Akuã recebeu muitos pedidos agora. Espere um instante e tente novamente, como quem aguarda o rio acalmar.",
-        };
-      }
-      throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
     }
-    const content = await readChatContent(res);
+
+    // 2. Fallback caso OpenAI não esteja configurada ou não tenha respondido
+    if (!content && lovableKey) {
+      const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages,
+          temperature: 0.2,
+        }),
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        if (res.status === 402) {
+          return {
+            reply:
+              "🌿 Parente, a voz de Akuã está em pausa porque os créditos de IA acabaram. O site continua funcionando: dicionário, histórias, vídeos e trilhas seguem disponíveis.",
+          };
+        }
+        if (res.status === 429) {
+          return {
+            reply:
+              "🌿 Akuã recebeu muitos pedidos agora. Espere um instante e tente novamente, como quem aguarda o rio acalmar.",
+          };
+        }
+        throw new Error(`Não foi possível responder agora. ${txt.slice(0, 160)}`);
+      }
+      content = await readChatContent(res);
+    }
+
     return { reply: annotateSources(content.trim()) || "..." };
   });

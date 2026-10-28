@@ -335,13 +335,11 @@ function ProfessorPage() {
     // 1. Se estiver escutando no navegador via Web Speech API nativa (zero tokens):
     if (browserSpeech.isListening) {
       const finalRecorded = browserSpeech.stop();
-      const textToSend = (finalRecorded || input).trim();
-      if (!textToSend) {
-        setVoiceState("idle");
-        toast.error(v.tooShort);
-        return;
+      const textToKeep = (finalRecorded || input).trim();
+      setVoiceState("idle");
+      if (textToKeep) {
+        setInput(textToKeep);
       }
-      await send(textToSend, true);
       return;
     }
 
@@ -361,12 +359,12 @@ function ProfessorPage() {
         fd.append("environment", getPaddleEnvironment());
         const r = await transcribe({ data: fd });
         const text = (r?.text ?? "").trim();
-        if (r?.error || !text) {
-          setVoiceState("idle");
+        setVoiceState("idle");
+        if (text) {
+          setInput(text);
+        } else if (r?.error) {
           toast.error(r?.message ?? v.sttFail);
-          return;
         }
-        await send(text, true);
       } catch {
         setVoiceState("idle");
         toast.error(v.sttFail);
@@ -601,52 +599,35 @@ function ProfessorPage() {
           <div className="flex items-center gap-2">
             {messages.length > 0 && (
               <button
-                type="button"
-                onClick={() => setShowHistory((h) => !h)}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition active:scale-95 ${
-                  showHistory
-                    ? "border-gold bg-gold text-forest-deep"
-                    : "border-gold/30 bg-card/60 text-gold hover:border-gold/60"
-                }`}
-                title={showHistory ? "Voltar ao modo direto" : "Ver histórico de mensagens"}
+                onClick={resetConversation}
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/15 px-3.5 py-1.5 text-xs font-bold text-gold transition hover:border-gold hover:bg-gold/25 hover:text-cream active:scale-95 cursor-pointer shadow-sm"
+                title={t.newChat}
               >
-                <MessageSquare className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{showHistory ? "Voz Direta" : "Histórico"}</span>
-                <span className="grid h-4 w-4 place-items-center rounded-full bg-gold/20 text-[9px] font-black">
-                  {messages.length}
-                </span>
+                <RefreshCcw className="h-3.5 w-3.5" />
+                <span>{t.newChat}</span>
               </button>
             )}
-
-            <button
-              onClick={resetConversation}
-              disabled={isEmpty && !loading}
-              className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40 active:scale-95 cursor-pointer"
-              title={t.newChat}
-            >
-              <RefreshCcw className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t.newChat}</span>
-            </button>
           </div>
         </div>
       </header>
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 mx-auto w-full max-w-3xl px-4 pb-36 pt-4 md:px-8 flex flex-col justify-between">
-        {showHistory ? (
-          /* Full Chat History View (when user explicitly opens history) */
-          <div className="space-y-5 animate-in fade-in duration-300">
+        {messages.length > 0 ? (
+          /* Full Chat History Stream (Active Chat Mode) */
+          <div className="space-y-4 animate-in fade-in duration-300 w-full flex-1">
             <div className="flex items-center justify-between pb-2 border-b border-gold/20">
-              <span className="text-xs font-bold uppercase tracking-wider text-gold/80">
-                Histórico da Conversa ({messages.length})
+              <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                Conversa com Professor Akuã ({messages.length})
               </span>
               <button
                 type="button"
-                onClick={() => setShowHistory(false)}
-                className="text-xs font-bold text-sky-300 hover:underline flex items-center gap-1 cursor-pointer"
+                onClick={resetConversation}
+                className="text-xs font-bold text-gold/80 hover:text-gold flex items-center gap-1 cursor-pointer"
               >
-                <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
-                <span>Voltar ao Professor</span>
+                <RefreshCcw className="h-3 w-3" />
+                <span>Nova conversa</span>
               </button>
             </div>
 
@@ -664,7 +645,7 @@ function ProfessorPage() {
             <div ref={endRef} />
           </div>
         ) : (
-          /* Direct Conversational & Voice Orb View (THE DEFAULT SCREEN) */
+          /* Initial Welcome & Voice Orb Screen with Suggestions */
           <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
             {/* The Central Rotating Fluid Sphere */}
             <div className="relative my-2 sm:my-4">
@@ -711,106 +692,24 @@ function ProfessorPage() {
               </span>
             </div>
 
-            {/* Latest Answer or Welcome Stage */}
-            <div className="mt-5 w-full max-w-lg">
-              {latestAssistantMessage ? (
-                <div className="rounded-3xl border border-gold/30 bg-card/85 p-5 shadow-2xl backdrop-blur-md animate-in fade-in duration-300">
-                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-gold/20">
-                    <div className="flex items-center gap-2">
-                      <div className="grid h-7 w-7 place-items-center rounded-full bg-gold/20 text-gold text-xs font-black">
-                        Akuã
-                      </div>
-                      <span className="text-xs font-black text-cream">Resposta do Professor</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {/* Repeat Audio Button with spinning orb */}
-                      <button
-                        type="button"
-                        onClick={() => toggleAudio(latestAssistantMessage.content, "latest")}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition cursor-pointer active:scale-95 ${
-                          voiceState === "speaking" || audioBusyKey
-                            ? "bg-sky-500/30 border border-sky-400/50 text-sky-200"
-                            : "bg-gold/20 border border-gold/30 text-gold hover:bg-gold/30"
-                        }`}
-                      >
-                        {voiceState === "speaking" || audioBusyKey ? (
-                          <>
-                            <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
-                            <span>Ouvindo...</span>
-                          </>
-                        ) : (
-                          <>
-                            <Volume2 className="h-3.5 w-3.5" />
-                            <span>Ouvir</span>
-                          </>
-                        )}
-                      </button>
-
-                      {messages.length > 2 && (
-                        <button
-                          type="button"
-                          onClick={() => setShowHistory(true)}
-                          className="text-[11px] font-bold text-foreground/60 hover:text-gold transition cursor-pointer"
-                        >
-                          Histórico ({messages.length})
-                        </button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Render formatted blocks for latest reply */}
-                  <div className="space-y-2 text-xs sm:text-sm text-foreground/90 leading-relaxed max-h-60 overflow-y-auto pr-1">
-                    {parseBlocks(latestAssistantMessage.content).map((b, i) => {
-                      if (b.type === "paragraph") {
-                        return (
-                          <p key={i} className="whitespace-pre-wrap leading-relaxed">
-                            {renderInline(b.text, `latest-p${i}`)}
-                          </p>
-                        );
-                      }
-                      if (b.type === "bullets") {
-                        return (
-                          <ul key={i} className="ml-1 space-y-1">
-                            {b.items.map((item: string, j: number) => (
-                              <li key={j} className="flex gap-2">
-                                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
-                                <span>{renderInline(item, `latest-b${i}-${j}`)}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        );
-                      }
-                      return (
-                        <div key={i} className="my-1.5 rounded-xl border border-gold/30 bg-forest-deep/60 px-3 py-2">
-                          <div className="font-display text-sm font-black text-gold">{b.pat}</div>
-                          <div className="text-xs text-foreground/75 mt-0.5">{b.pt}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                /* Empty state suggestions */
-                <div className="flex flex-col items-center text-center">
-                  <p className="text-xs sm:text-sm text-cream/70 max-w-sm leading-relaxed mb-4">
-                    Kanhgág! Sou o Professor Akuã. Fale pelo microfone ou toque em uma das sugestões abaixo:
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full text-left">
-                    {t.suggestions.map((s, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => void send(s.prompt, false)}
-                        className="rounded-2xl border border-gold/25 bg-card/60 p-3 hover:border-gold/60 hover:bg-card/90 transition text-xs font-medium text-cream/90 shadow-sm flex flex-col gap-1 active:scale-[0.98] cursor-pointer"
-                      >
-                        <span className="font-bold text-gold text-[11px] uppercase">✨ {s.label}</span>
-                        <span className="line-clamp-2 text-foreground/80">{s.prompt}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+            {/* Empty state suggestions */}
+            <div className="mt-5 w-full max-w-lg flex flex-col items-center text-center">
+              <p className="text-xs sm:text-sm text-cream/70 max-w-sm leading-relaxed mb-4">
+                Kanhgág! Sou o Professor Akuã. Fale pelo microfone ou toque em uma das sugestões abaixo:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
+                {t.suggestions.map((s, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => void send(s.prompt, false)}
+                    className="rounded-2xl border border-gold/25 bg-card/60 p-3 hover:border-gold/60 hover:bg-card/90 transition text-xs font-medium text-cream/90 shadow-sm flex flex-col gap-1 active:scale-[0.98] cursor-pointer"
+                  >
+                    <span className="font-bold text-gold text-[11px] uppercase">✨ {s.label}</span>
+                    <span className="line-clamp-2 text-foreground/80">{s.prompt}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -872,11 +771,11 @@ function ProfessorPage() {
                 ? "bg-rose-500 text-white shadow-[0_0_30px_rgba(244,63,94,0.6)] animate-pulse"
                 : "bg-white text-forest-deep hover:bg-sky-50 shadow-[0_0_20px_rgba(255,255,255,0.35)]"
             }`}
-            title={browserSpeech.isListening || recorder.isRecording ? v.stopRec : v.talk}
-            aria-label={browserSpeech.isListening || recorder.isRecording ? v.stopRec : v.talk}
+            title={browserSpeech.isListening || recorder.isRecording ? "Pausar fala (manter texto para editar)" : v.talk}
+            aria-label={browserSpeech.isListening || recorder.isRecording ? "Pausar fala (manter texto para editar)" : v.talk}
           >
             {browserSpeech.isListening || recorder.isRecording ? (
-              <Square className="h-5 w-5 fill-current" />
+              <Pause className="h-5 w-5 fill-current" />
             ) : (
               <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
             )}
@@ -889,11 +788,15 @@ function ProfessorPage() {
 
 function TypingIndicator() {
   return (
-    <div className="flex justify-start">
-      <div className="flex items-center gap-2 rounded-2xl border border-leaf/20 bg-card/50 px-4 py-3">
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.3s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf [animation-delay:-0.15s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-leaf" />
+    <div className="flex items-start gap-2.5 justify-start animate-in fade-in duration-200">
+      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold/20 text-gold border border-gold/30 mt-0.5 overflow-hidden shadow">
+        <img src={logoSrc} alt="Akuã" className="h-full w-full object-cover" />
+      </div>
+      <div className="flex items-center gap-2 rounded-2xl border border-gold/25 bg-[oklch(0.18_0.03_145/0.88)] px-4 py-3 text-xs text-cream/90 shadow-md">
+        <span className="h-2 w-2 animate-bounce rounded-full bg-gold [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-gold [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-gold" />
+        <span className="ml-1 text-[11px] text-gold/90 font-semibold">Professor Akuã está respondendo...</span>
       </div>
     </div>
   );
@@ -1047,13 +950,18 @@ function Bubble({
   const isFullPlaying = audioBusy === "full" || (isLast && activeBusyKey === "full");
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[88%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
+    <div className={`flex items-start gap-2.5 ${isUser ? "justify-end" : "justify-start"} animate-in fade-in duration-200`}>
+      {!isUser && (
+        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold/20 text-gold border border-gold/30 mt-0.5 overflow-hidden shadow">
+          <img src={logoSrc} alt="Akuã" className="h-full w-full object-cover" />
+        </div>
+      )}
+      <div className={`flex max-w-[85%] sm:max-w-[78%] flex-col gap-1 ${isUser ? "items-end" : "items-start"}`}>
         <div
-          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md ${
             isUser
-              ? "border border-gold/40 bg-gold/15 text-cream"
-              : "border border-leaf/25 bg-card/70 text-foreground/90"
+              ? "border border-emerald-500/40 bg-gradient-to-br from-emerald-700/90 to-emerald-800/95 text-white rounded-tr-xs"
+              : "border border-gold/30 bg-[oklch(0.18_0.03_145/0.92)] text-cream rounded-tl-xs backdrop-blur-md"
           }`}
         >
           <div className="space-y-2.5">
