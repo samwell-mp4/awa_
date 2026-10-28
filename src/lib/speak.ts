@@ -127,6 +127,7 @@ export function speak(
   // 2. Para palavras individuais fora do catálogo, usa a voz do navegador sem gastar tokens de IA
   const isShortWord = text.trim().split(/\s+/).length <= 3;
   if (isShortWord) {
+    registerStopOnPointerDown();
     speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
     return;
   }

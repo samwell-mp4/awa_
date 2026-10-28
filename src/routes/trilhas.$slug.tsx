@@ -164,10 +164,10 @@ function AudioPlayBtn({
     if (timerRef.current) clearTimeout(timerRef.current);
     setStatus("loading");
 
-    // Trava de segurança: reseta estado caso a requisição demore demais
+    // Trava de segurança reduzida para 4s: reseta estado caso ocorra falha no decodificador
     timerRef.current = setTimeout(() => {
       setStatus("idle");
-    }, 8000);
+    }, 4000);
 
     // Prioridade total: áudio oficial baixado da trilha (0 tokens de IA)
     const effectiveUrl = audioUrl || getTrilhaAudioUrl(text);
@@ -186,7 +186,7 @@ function AudioPlayBtn({
       }
     }
 
-    // Sem áudio disponível ou fallback: reseta estado sem disparar IA paga
+    // Sem áudio disponível ou falha: reseta estado imediatamente
     setStatus("idle");
     if (timerRef.current) clearTimeout(timerRef.current);
   }

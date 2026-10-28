@@ -15,71 +15,85 @@ export function base64ToBlobUrl(base64: string, mime = "audio/mpeg"): string {
 // a fresh HTMLAudioElement per playback on mobile.
 let sharedAudio: HTMLAudioElement | null = null;
 let unlocked = false;
+let isSwitchingTrack = false;
+let activeEndCallback: (() => void) | null = null;
+
+function notifyActiveEnded() {
+  if (activeEndCallback) {
+    const cb = activeEndCallback;
+    activeEndCallback = null;
+    try {
+      cb();
+    } catch (e) {
+      console.warn("[audio-play] Error in end callback:", e);
+    }
+  }
+}
+
+function getSharedAudio(): HTMLAudioElement {
+  if (!sharedAudio) {
+    sharedAudio = new Audio();
+    sharedAudio.preload = "auto";
+
+    const handleEnd = () => {
+      if (isSwitchingTrack) return;
+      notifyActiveEnded();
+    };
+
+    sharedAudio.addEventListener("ended", handleEnd);
+    sharedAudio.addEventListener("pause", handleEnd);
+    sharedAudio.addEventListener("error", handleEnd);
+  }
+  return sharedAudio;
+}
 
 /** Desbloqueia o pipeline de áudio no clique do usuário (necessário para iOS/Safari/Chrome mobile) */
 export function primeAudio() {
   if (typeof window === "undefined") return;
-  if (!sharedAudio) {
-    sharedAudio = new Audio();
-    sharedAudio.preload = "auto";
-  }
+  const a = getSharedAudio();
   if (!unlocked) {
     try {
-      sharedAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
-      sharedAudio.play().then(() => {
+      a.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+      a.play().then(() => {
         unlocked = true;
       }).catch(() => {});
     } catch {}
   }
 }
 
-let endHandler: (() => void) | null = null;
-
-function clearSharedListeners(a: HTMLAudioElement) {
-  if (endHandler) {
-    a.removeEventListener("ended", endHandler);
-    a.removeEventListener("pause", endHandler);
-    a.removeEventListener("error", endHandler);
-    endHandler = null;
-  }
+/** Registra um callback para quando o áudio compartilhado terminar, pausar ou falhar. */
+export function attachEndHandler(fn: () => void) {
+  notifyActiveEnded();
+  activeEndCallback = fn;
+  getSharedAudio();
 }
 
-export function playFast(url: string): Promise<void> {
-  if (!sharedAudio) {
-    sharedAudio = new Audio();
-    sharedAudio.preload = "auto";
+export async function playFast(url: string, onEnd?: () => void): Promise<void> {
+  const a = getSharedAudio();
+
+  if (onEnd) {
+    notifyActiveEnded();
+    activeEndCallback = onEnd;
   }
-  const a = sharedAudio;
-  clearSharedListeners(a);
+
+  isSwitchingTrack = true;
   try {
     a.pause();
   } catch {}
+
   a.src = url;
-  a.currentTime = 0;
-  return a.play();
-}
+  try {
+    a.currentTime = 0;
+  } catch {}
 
-/** Registra um callback para quando o áudio compartilhado terminar, pausar ou falhar. */
-export function attachEndHandler(fn: () => void) {
-  if (!sharedAudio) {
-    sharedAudio = new Audio();
-    sharedAudio.preload = "auto";
+  isSwitchingTrack = false;
+
+  try {
+    await a.play();
+  } catch (err) {
+    notifyActiveEnded();
+    throw err;
   }
-  const a = sharedAudio;
-  clearSharedListeners(a);
-
-  let done = false;
-  const onDone = () => {
-    if (done) return;
-    done = true;
-    clearSharedListeners(a);
-    fn();
-  };
-
-  endHandler = onDone;
-  a.addEventListener("ended", onDone, { once: true });
-  a.addEventListener("pause", onDone, { once: true });
-  a.addEventListener("error", onDone, { once: true });
 }
 
 export function stopFast() {
@@ -89,4 +103,5 @@ export function stopFast() {
       sharedAudio.currentTime = 0;
     } catch {}
   }
+  notifyActiveEnded();
 }

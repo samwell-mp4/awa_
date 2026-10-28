@@ -7,6 +7,7 @@ import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { transcribeAudio } from "@/lib/transcribe.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
@@ -124,27 +125,43 @@ function ProfessorInfantilPage() {
   async function playReply(text: string) {
     try {
       setState("speaking");
-      const r = await speak({
-        data: {
-          text: clean(text).slice(0, 600),
-          environment: getPaddleEnvironment(),
-          lang: "pt",
-          area: "infantil",
-        },
-      });
-      if (r.error || !r.audio_base64) {
-        setState("idle");
-        return;
+      const cleaned = clean(text).slice(0, 600);
+
+      // Prioridade: áudio oficial baixado da trilha (zero tokens)
+      const localAudioUrl = getTrilhaAudioUrl(cleaned);
+      let audioUrl = localAudioUrl;
+
+      if (!audioUrl) {
+        const r = await speak({
+          data: {
+            text: cleaned,
+            environment: getPaddleEnvironment(),
+            lang: "pt",
+            area: "infantil",
+          },
+        });
+        if (r.error || !r.audio_base64) {
+          setState("idle");
+          return;
+        }
+        audioUrl = base64ToBlobUrl(r.audio_base64, r.mime);
       }
+
       const audio = audioRef.current ?? new Audio();
       audioRef.current = audio;
-      audio.src = base64ToBlobUrl(r.audio_base64, r.mime);
-      audio.onended = () => {
+      audio.src = audioUrl;
+
+      const onDone = () => {
         setPaused(false);
         setState("idle");
       };
+
+      audio.onended = onDone;
+      audio.onerror = onDone;
       setPaused(false);
-      await audio.play().catch(() => {});
+      await audio.play().catch(() => {
+        onDone();
+      });
     } catch {
       setState("idle");
     }
@@ -489,7 +506,7 @@ function ProfessorInfantilPage() {
                   {SUGGESTIONS.map((sug) => (
                     <button
                       key={sug}
-                      onClick={() => send(sug, true)}
+                      onClick={() => send(sug, false)}
                       disabled={state === "thinking"}
                       className="rounded-2xl border-2 border-amber-300 bg-white hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
                     >

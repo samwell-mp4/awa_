@@ -20,6 +20,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useSubscription } from "@/hooks/use-subscription";
 
 import { playFast } from "@/lib/audio-play";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import { useLastArea, setLastArea } from "@/lib/last-area";
 
 import ptPatData from "@/data/dic-pt-pat.json";
@@ -954,8 +955,9 @@ function PlayableCard({
     if (busy || !text) return;
     try {
       setBusy(true);
-      if (audioUrl) {
-        await playFast(audioUrl);
+      const effectiveAudio = audioUrl || getTrilhaAudioUrl(text);
+      if (effectiveAudio) {
+        await playFast(effectiveAudio);
         return;
       }
       if (cacheRef.current) {

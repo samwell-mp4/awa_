@@ -289,7 +289,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
 
     timerRef.current = setTimeout(() => {
       setStatus("idle");
-    }, 8000);
+    }, 4000);
 
     const effectiveUrl = audioUrl || getTrilhaAudioUrl(text);
 

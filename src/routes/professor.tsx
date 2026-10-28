@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
 import { base64ToBlobUrl } from "@/lib/audio-play";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import {
   ArrowLeft,
   Send,
@@ -424,89 +425,114 @@ function ProfessorPage() {
 
   async function toggleAudio(text: string, key: string) {
     if (audioBusyKey === key) {
-      currentAudioRef.current?.pause();
+      if (currentAudioRef.current) {
+        try {
+          currentAudioRef.current.pause();
+          currentAudioRef.current.currentTime = 0;
+        } catch {}
+      }
       setActiveAssistantAudio(null);
       setAudioBusyKey(null);
       return;
     }
     
     try {
+      // Interrompe imediatamente qualquer áudio anterior
+      if (currentAudioRef.current) {
+        try {
+          currentAudioRef.current.pause();
+          currentAudioRef.current.currentTime = 0;
+        } catch {}
+      }
+
       setAudioBusyKey(key);
-      const clean = text.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
-      if (r.error || !r.audio_base64) {
-        setAudioBusyKey(null);
-        return;
+      const clean = text
+        .replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]")
+        .replace(/\[\/?ex\]/g, "")
+        .replace(/\|\|/g, ", ")
+        .replace(/\*\*/g, "")
+        .trim();
+
+      // 1. Prioridade: Áudio oficial das Trilhas (zero tokens de IA, resposta instantânea)
+      const localAudioUrl = getTrilhaAudioUrl(clean);
+      let url = localAudioUrl;
+
+      if (!url) {
+        const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
+        if (r.error || !r.audio_base64) {
+          setAudioBusyKey((curr) => (curr === key ? null : curr));
+          return;
+        }
+        url = base64ToBlobUrl(r.audio_base64, r.mime);
       }
       
-      const url = base64ToBlobUrl(r.audio_base64, r.mime);
-      currentAudioRef.current?.pause();
       const audio = new Audio(url);
       currentAudioRef.current = audio;
       setActiveAssistantAudio(audio);
 
-      await audio.play().catch(() => {});
-      
-      audio.onended = () => {
-        if (audioBusyKey === key) {
-          setAudioBusyKey(null);
-          setActiveAssistantAudio(null);
-        }
+      const resetState = () => {
+        setAudioBusyKey((curr) => (curr === key ? null : curr));
+        setActiveAssistantAudio((curr) => (curr === audio ? null : curr));
       };
 
-      const stopHandler = () => {
-        audio.pause();
-        window.removeEventListener("pointerdown", stopHandler);
+      audio.onended = resetState;
+      audio.onerror = resetState;
+      audio.onpause = () => {
+        setAudioBusyKey((curr) => (curr === key ? null : curr));
       };
-      window.addEventListener("pointerdown", stopHandler, { once: true });
+
+      await audio.play().catch(() => {
+        resetState();
+      });
     } catch {
-      setAudioBusyKey(null);
+      setAudioBusyKey((curr) => (curr === key ? null : curr));
+      setActiveAssistantAudio(null);
     }
   }
 
   async function autoSpeak(audio: HTMLAudioElement, text: string, voiceMode = false) {
+    if (!voiceMode) return;
     try {
-      const clean = text.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "");
-      const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
-      if (r.error || !r.audio_base64) {
-        if (voiceMode) setVoiceState("idle");
-        setAudioBusyKey(null);
-        return;
+      const clean = text.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, "").trim();
+
+      // 1. Prioridade: Áudio oficial das Trilhas (zero tokens de IA)
+      const localAudioUrl = getTrilhaAudioUrl(clean);
+      let url = localAudioUrl;
+
+      if (!url) {
+        const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
+        if (r.error || !r.audio_base64) {
+          setVoiceState("idle");
+          setAudioBusyKey(null);
+          return;
+        }
+        url = base64ToBlobUrl(r.audio_base64, r.mime);
       }
 
-      const url = base64ToBlobUrl(r.audio_base64, r.mime);
       currentAudioRef.current?.pause();
       audio.src = url;
       currentAudioRef.current = audio;
       setActiveAssistantAudio(audio);
       setAudioBusyKey("full");
 
-      if (voiceMode) {
-        setVoicePaused(false);
-        setVoiceState("speaking");
-        audio.onended = () => {
-          setVoiceState("idle");
-          setAudioBusyKey(null);
-        };
-      } else {
-        audio.onended = () => {
-          setAudioBusyKey(null);
-          setActiveAssistantAudio(null);
-        };
-      }
+      setVoicePaused(false);
+      setVoiceState("speaking");
 
-      await audio.play().catch(() => {});
-
-      if (voiceMode) return;
-      const stopHandler = () => {
-        audio.pause();
+      const onDone = () => {
+        setVoiceState("idle");
         setAudioBusyKey(null);
-        window.removeEventListener("pointerdown", stopHandler);
+        setActiveAssistantAudio(null);
       };
-      window.addEventListener("pointerdown", stopHandler, { once: true });
+
+      audio.onended = onDone;
+      audio.onerror = onDone;
+
+      await audio.play().catch(() => {
+        onDone();
+      });
     } catch {
       setAudioBusyKey(null);
-      if (voiceMode) setVoiceState("idle");
+      setVoiceState("idle");
     }
   }
 
@@ -524,7 +550,11 @@ function ProfessorPage() {
     try {
       const { reply } = await ask({ data: { messages: next, environment: getPaddleEnvironment(), lang } });
       setMessages([...next, { role: "assistant", content: reply, at: Date.now() }]);
-      void autoSpeak(audio, reply, voiceMode);
+      // Economia de tokens: Somente fala em áudio se o usuário estava no modo de voz via microfone
+      // Se digitou ou clicou em sugestão, a resposta é entregue instantaneamente sem falar por cima
+      if (voiceMode) {
+        void autoSpeak(audio, reply, true);
+      }
     } catch (e: any) {
       if (voiceMode) setVoiceState("idle");
       toast.error(e.message ?? t.errorSpeak);
@@ -1026,11 +1056,6 @@ function Bubble({
                     </button>
                   </div>
                   <div className="mt-0.5 text-xs text-foreground/70">{b.pt}</div>
-                  {b.src && (
-                    <div className={`mt-1 text-[10px] font-semibold uppercase tracking-wide ${b.src.startsWith("⚠") ? "text-destructive" : "text-leaf"}`}>
-                      {b.src}
-                    </div>
-                  )}
                 </div>
               );
             })}
