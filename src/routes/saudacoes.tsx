@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward } from "lucide-react";
+import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { playFast, primeAudio, attachEndHandler } from "@/lib/audio-play";
 import { speak, stopSpeak } from "@/lib/speak";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import { toast } from "sonner";
 import { useLastArea, setLastArea } from "@/lib/last-area";
 
@@ -38,18 +39,11 @@ export async function fetchSaudacoes(): Promise<Saudacao[]> {
     .eq("category", "Saudações")
     .order("term_pt");
   if (error) throw error;
-  
-  // Prefetch first few audios
-  data?.slice(0, 5).forEach(s => {
-    if (s.audio_url) {
-      const img = new Image(); // Fake prefetch for audio? Better use Audio
-      const a = new Audio();
-      a.preload = "auto";
-      a.src = s.audio_url;
-    }
-  });
 
-  return (data ?? []) as Saudacao[];
+  return (data ?? []).map((s) => ({
+    ...s,
+    audio_url: s.audio_url || getTrilhaAudioUrl(s),
+  })) as Saudacao[];
 }
 
 export function pickByHour(list: Saudacao[]): Saudacao | null {
@@ -297,32 +291,24 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
       setStatus("idle");
     }, 8000);
 
-    if (audioUrl) {
+    const effectiveUrl = audioUrl || getTrilhaAudioUrl(text);
+
+    if (effectiveUrl) {
       try {
         attachEndHandler(() => {
           setStatus("idle");
           if (timerRef.current) clearTimeout(timerRef.current);
         });
         setStatus("playing");
-        await playFast(audioUrl);
+        await playFast(effectiveUrl);
         return;
-      } catch {
-        // Fallback para speak
+      } catch (err) {
+        console.warn("Falha ao tocar áudio da saudação:", err);
       }
     }
 
-    speak(
-      text,
-      "pt-BR",
-      0.92,
-      () => {
-        setStatus("playing");
-      },
-      () => {
-        setStatus("idle");
-        if (timerRef.current) clearTimeout(timerRef.current);
-      }
-    );
+    setStatus("idle");
+    if (timerRef.current) clearTimeout(timerRef.current);
   }
 
   return (

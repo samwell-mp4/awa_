@@ -9,6 +9,7 @@ import { translateText } from "@/lib/translate.functions";
 import { useLastArea, setLastArea } from "@/lib/last-area";
 import { PremiumGate } from "@/components/PremiumGate";
 import { speak } from "@/lib/speak";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import { TTSSubtitles } from "@/components/TTSSubtitles";
 
 import { CaptionPlayer } from "@/components/CaptionPlayer";
@@ -43,8 +44,11 @@ function TraduzirPage() {
 
   useEffect(() => {
     if (m.data?.traducao && direction === "pt-pat") {
-      // Quando traduz para Patxôhã, fala o resultado automaticamente
-      speak(m.data.traducao, "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
+      // Toca apenas se houver áudio nativo oficial baixado (economiza tokens de IA)
+      const localAudio = getTrilhaAudioUrl(m.data.traducao);
+      if (localAudio) {
+        speak(m.data.traducao, "pt-BR", 0.9, () => setActiveCharIndex(0), () => setActiveCharIndex(-1), (idx) => setActiveCharIndex(idx));
+      }
     }
   }, [m.data, direction]);
 

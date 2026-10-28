@@ -20,6 +20,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { playFast, primeAudio, attachEndHandler } from "@/lib/audio-play";
 import { speak, stopSpeak } from "@/lib/speak";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 import {
   TRAILS,
   type TrailSlug,
@@ -168,34 +169,26 @@ function AudioPlayBtn({
       setStatus("idle");
     }, 8000);
 
-    // Se tiver áudio nativo gravado, tenta tocar
-    if (audioUrl) {
+    // Prioridade total: áudio oficial baixado da trilha (0 tokens de IA)
+    const effectiveUrl = audioUrl || getTrilhaAudioUrl(text);
+
+    if (effectiveUrl) {
       try {
         attachEndHandler(() => {
           setStatus("idle");
           if (timerRef.current) clearTimeout(timerRef.current);
         });
         setStatus("playing");
-        await playFast(audioUrl);
+        await playFast(effectiveUrl);
         return;
-      } catch {
-        // Fallback para síntese de fala
+      } catch (err) {
+        console.warn("Falha ao tocar áudio da trilha:", err);
       }
     }
 
-    // Narração por IA (ou fallback browser)
-    speak(
-      text,
-      "pt-BR",
-      0.92,
-      () => {
-        setStatus("playing");
-      },
-      () => {
-        setStatus("idle");
-        if (timerRef.current) clearTimeout(timerRef.current);
-      }
-    );
+    // Sem áudio disponível ou fallback: reseta estado sem disparar IA paga
+    setStatus("idle");
+    if (timerRef.current) clearTimeout(timerRef.current);
   }
 
   if (variant === "kids-pill") {
@@ -309,7 +302,10 @@ function TrilhaPage() {
         .in("category", trail.categories)
         .order("term_pt");
       if (error) throw error;
-      return (data ?? []) as Word[];
+      return (data ?? []).map((w) => ({
+        ...w,
+        audio_url: w.audio_url || getTrilhaAudioUrl(w),
+      })) as Word[];
     },
   });
 
@@ -928,8 +924,11 @@ function QuizModal({
   function pick(opt: string) {
     if (picked) return;
     setPicked(opt);
-    // Fala a palavra escolhida
-    speak(opt, "pt-BR");
+    // Toca o áudio oficial baixado da palavra (0 tokens de IA)
+    const optAudio = getTrilhaAudioUrl(opt);
+    if (optAudio) {
+      void playFast(optAudio);
+    }
 
     if (opt === question.correct.term_indigenous) {
       setScore((s) => s + 1);
@@ -978,9 +977,10 @@ function QuizModal({
             {localize(question.correct, "term_pt")}
           </h3>
 
-          {/* Botão de áudio para a pergunta */}
+          {/* Botão de áudio para a pergunta com áudio nativo */}
           <AudioPlayBtn
-            text={localize(question.correct, "term_pt")}
+            text={question.correct.term_indigenous}
+            audioUrl={question.correct.audio_url || getTrilhaAudioUrl(question.correct)}
             variant={isKids ? "kids" : "normal"}
             className="h-9 w-9"
           />
@@ -1098,14 +1098,17 @@ function MatchModal({
   function selectLeft(id: string) {
     if (matched.has(id)) return;
     setSelectedLeft(id);
-    const item = pairs.find((p) => p.id === id);
-    if (item) speak(localize(item, "term_pt"), "pt-BR");
   }
 
   function selectRight(id: string) {
     if (matched.has(id) || !selectedLeft) return;
     const item = rights.find((p) => p.id === id);
-    if (item) speak(item.term_indigenous, "pt-BR");
+    if (item) {
+      const audio = item.audio_url || getTrilhaAudioUrl(item);
+      if (audio) {
+        void playFast(audio);
+      }
+    }
 
     if (id === selectedLeft) {
       const next = new Set(matched);

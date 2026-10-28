@@ -78,6 +78,7 @@ if (typeof window !== "undefined") {
 }
 
 import { cleanTextForSpeech } from "@/lib/clean-speech-text";
+import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
 
 // Voz padrão do site: narração natural (IA) com a mesma voz em todas as telas.
 // "alloy" é a voz oficial equilibrada e mais clara em alto-falantes de celular e desktop.
@@ -86,10 +87,8 @@ let playToken = 0;
 let activeUtterance: SpeechSynthesisUtterance | null = null;
 
 /**
- * Fala um texto com a voz oficial do site.
- * Usa a narração natural (mais real e profissional) e, se ela falhar,
- * cai para a voz do navegador. Quando `onBoundary` é pedido (legendas
- * palavra por palavra), usa direto a voz do navegador.
+ * Fala um texto com áudio oficial das trilhas prioritariamente (0 tokens de IA).
+ * Se não houver áudio pré-gravado, utiliza síntese offline ou narração de histórias.
  */
 export function speak(
   rawText: string,
@@ -103,17 +102,45 @@ export function speak(
   const text = cleanTextForSpeech(rawText);
   if (!text) return;
 
+  // 1. Áudio Oficial das Trilhas (Pataxó nativo): prioridade total e 0 tokens de IA
+  const localUrl = getTrilhaAudioUrl(text);
+  if (localUrl && typeof window !== "undefined") {
+    stopSpeak();
+    const token = ++playToken;
+    void import("@/lib/audio-play").then(async ({ playFast, attachEndHandler }) => {
+      if (token !== playToken) return;
+      attachEndHandler(() => {
+        if (token === playToken) onEnd?.();
+      });
+      onStart?.();
+      try {
+        await playFast(localUrl);
+      } catch (err) {
+        console.warn("Falha ao tocar áudio local da trilha:", err);
+        if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
+      }
+    });
+    registerStopOnPointerDown();
+    return;
+  }
+
+  // 2. Para palavras individuais fora do catálogo, usa a voz do navegador sem gastar tokens de IA
+  const isShortWord = text.trim().split(/\s+/).length <= 3;
+  if (isShortWord) {
+    speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
+    return;
+  }
+
   if (!onBoundary && typeof window !== "undefined") {
     stopSpeak();
     const token = ++playToken;
 
-    // Rápido fallback: se a narração de IA demorar mais de 3.5s ou falhar, usa voz do navegador
+    // Rápido fallback: se a narração demorar mais de 3.5s ou falhar, usa voz do navegador
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => resolve(null), 3500)
     );
 
-    const isShortWord = text.trim().split(/\s+/).length <= 3;
-    const mode = isShortWord ? "word" : "story";
+    const mode = "story";
 
     const narrationPromise = import("@/lib/narration-cache")
       .then(({ getNarrationUrl }) =>

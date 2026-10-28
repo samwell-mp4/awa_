@@ -52,6 +52,7 @@ export function VoiceAssistant() {
 }
 
 export function _DisabledVoiceAssistant() {
+  const { session } = useAuth();
   const { data: cfg } = useAssistantConfig();
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");
