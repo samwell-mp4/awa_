@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Loader2, Mic, Pause, Play, Send, Square, Volume2, Sparkles, MessageCircle, Heart } from "lucide-react";
+import { Loader2, Mic, Pause, Play, Send, Square, Volume2, Sparkles, RefreshCcw, ArrowLeft, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { askAkua } from "@/lib/akua-chat.functions";
 import { speakText } from "@/lib/tts.functions";
@@ -10,10 +10,9 @@ import { base64ToBlobUrl } from "@/lib/audio-play";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
-import { SiteHeader } from "@/components/home/site-header";
+import { useBrowserSpeech, isBrowserSpeechSupported } from "@/lib/web-speech";
 import kidsCharacter from "@/assets/kids-menu-character.png";
 import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
-import { GptVoiceModal } from "@/components/chat/GptVoiceModal";
 
 export const Route = createFileRoute("/professor-infantil")({
   ssr: false,
@@ -65,6 +64,7 @@ function ProfessorInfantilPage() {
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
   const transcribe = useServerFn(transcribeAudio);
+  const browserSpeech = useBrowserSpeech("pt-BR");
   const recorder = useVoiceRecorder();
 
   const [messages, setMessages] = useState<Msg[]>([{ role: "assistant", content: WELCOME }]);
@@ -72,25 +72,35 @@ function ProfessorInfantilPage() {
   const [state, setState] = useState<VoiceState>("idle");
   const [paused, setPaused] = useState(false);
   const [micReady, setMicReady] = useState(false);
-  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
-  const lastUserMessage = useMemo(() => {
+  const latestAssistantMessage = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "user") return messages[i].content;
+      if (messages[i].role === "assistant") return messages[i];
     }
     return undefined;
   }, [messages]);
 
-  const lastAssistantMessage = useMemo(() => {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "assistant") return messages[i].content;
-    }
-    return undefined;
-  }, [messages]);
+  function resetConversation() {
+    stopVoice();
+    browserSpeech.cancel();
+    recorder.cancel();
+    setMessages([{ role: "assistant", content: WELCOME }]);
+    setInput("");
+    setShowHistory(false);
+  }
 
-  useEffect(() => setMicReady(isRecordingSupported()), []);
+  useEffect(() => {
+    setMicReady(isBrowserSpeechSupported() || isRecordingSupported());
+  }, []);
+
+  useEffect(() => {
+    if (!browserSpeech.isListening && !recorder.isRecording && state === "listening") {
+      setState("idle");
+    }
+  }, [browserSpeech.isListening, recorder.isRecording, state]);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, state]);
@@ -141,6 +151,8 @@ function ProfessorInfantilPage() {
   }
 
   async function send(text: string, withVoice: boolean) {
+    if (browserSpeech.isListening) browserSpeech.stop();
+    if (recorder.isRecording) recorder.cancel();
     const content = text.trim();
     if (!content || state === "thinking") return;
     const next: Msg[] = [...messages, { role: "user", content }];
@@ -170,6 +182,21 @@ function ProfessorInfantilPage() {
       toast.error("Este aparelho não deixa gravar a voz. Você pode escrever sua pergunta! ✏️");
       return;
     }
+
+    // 1. Se estiver ouvindo no navegador via Web Speech API (zero tokens de IA):
+    if (browserSpeech.isListening) {
+      const finalRecorded = browserSpeech.stop();
+      const textToSend = (finalRecorded || input).trim();
+      if (!textToSend) {
+        setState("idle");
+        toast.error("Não consegui ouvir. Fale um pouquinho mais perto! 🎤");
+        return;
+      }
+      await send(textToSend, true);
+      return;
+    }
+
+    // 2. Se estiver no fallback de gravação por servidor (MediaRecorder):
     if (recorder.isRecording) {
       const file = await recorder.stop();
       if (!file) {
@@ -198,7 +225,28 @@ function ProfessorInfantilPage() {
       }
       return;
     }
+
     stopVoice();
+
+    // 3. Iniciar escuta nativa no navegador (sem custos de API, preenche a caixa de texto ao vivo)
+    if (browserSpeech.isSupported) {
+      const ok = await browserSpeech.start({
+        lang: "pt-BR",
+        initialText: input,
+        onLiveText: (liveText) => {
+          setInput(liveText);
+        },
+      });
+      if (!ok) {
+        setState("idle");
+        toast.error("Preciso da sua permissão do microfone para te ouvir. 🎤");
+        return;
+      }
+      setState("listening");
+      return;
+    }
+
+    // Fallback para navegadores sem Web Speech API
     const ok = await recorder.start();
     if (!ok) {
       setState("idle");
@@ -260,340 +308,350 @@ function ProfessorInfantilPage() {
       </div>
 
       <div className="relative z-10 flex flex-col flex-1">
-        <SiteHeader mode="infantil" />
+        {/* Kids Header */}
+        <header className="sticky top-0 z-40 border-b-2 border-amber-300 bg-white/95 backdrop-blur-md px-4 py-3 shadow-sm">
+          <div className="mx-auto flex max-w-4xl items-center justify-between gap-3">
+            <Link
+              to="/infantil"
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-950 transition hover:bg-amber-100 active:scale-95"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Voltar</span>
+            </Link>
 
-        <main className="mx-auto w-full max-w-4xl flex-1 px-3 sm:px-6 pb-48 pt-4">
-          {/* ========================================================= */}
-          {/* 1. HERO PARCHMENT BANNER                                  */}
-          {/* ========================================================= */}
-          <section className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 rounded-[2.5rem] border-4 border-amber-300 bg-gradient-to-r from-[#fffef5] via-[#fef7e6] to-[#f5edd2] p-5 sm:p-7 shadow-lg">
-            <div className="flex items-center gap-4">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-md">
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-sm">
                 <img
                   src={kidsCharacter}
                   alt="Professor Awã"
-                  className="h-full w-full object-cover object-top transform hover:scale-105 transition"
-                  style={{ animation: "music-float 4s ease-in-out infinite" }}
+                  className="h-full w-full object-cover object-top"
                 />
-                <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs text-amber-950 font-black shadow-md border-2 border-white">
+                <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 text-[10px]">
                   🦜
                 </span>
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h1
-                    className="font-display text-xl sm:text-2xl md:text-3xl font-black tracking-tight"
-                    style={{ color: "#064e3b" }}
-                  >
+                <div className="flex items-center gap-1.5">
+                  <h1 className="font-display text-sm sm:text-base font-black text-[#064e3b]">
                     Professor Awã
                   </h1>
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-0.5">
-                  Seu tutor de Patxôhã e cultura indígena. Fale no microfone ou digite suas perguntas!
+                <p className="text-[10px] sm:text-xs font-bold text-amber-900/80">
+                  Tutor de Patxôhã Infantil · Online
                 </p>
               </div>
             </div>
 
-            {/* Status Pill Badge & ChatGPT Voice Mode Button */}
-            <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsVoiceModalOpen(true);
-                  if (!recorder.isRecording && state === "idle") {
-                    void handleMic();
-                  }
-                }}
-                className="flex items-center gap-2 rounded-2xl border-2 border-sky-400 bg-sky-100 hover:bg-sky-200 px-3.5 py-2 shadow-sm text-xs font-black text-sky-950 transition active:translate-y-0.5 cursor-pointer"
-                title="Abrir Modo Voz Mágico (Estilo ChatGPT)"
-              >
-                <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
-                <span>Modo Voz Mágico</span>
-              </button>
+            <div className="flex items-center gap-2">
+              {messages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setShowHistory((h) => !h)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-black transition active:scale-95 ${
+                    showHistory
+                      ? "border-amber-400 bg-amber-400 text-amber-950"
+                      : "border-amber-300 bg-amber-50 text-amber-950 hover:bg-amber-100"
+                  }`}
+                  title={showHistory ? "Voltar ao Professor" : "Ver histórico da conversa"}
+                >
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{showHistory ? "Voz Direta" : "Histórico"}</span>
+                  <span className="grid h-4 w-4 place-items-center rounded-full bg-amber-200 text-[9px]">
+                    {messages.length}
+                  </span>
+                </button>
+              )}
 
-              <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-400/80 bg-emerald-100/90 px-3.5 py-2 shadow-sm">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-black text-emerald-950">
-                  Tutor Online
+              <button
+                onClick={resetConversation}
+                className="inline-flex items-center gap-1.5 rounded-full border-2 border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-950 transition hover:bg-amber-100 active:scale-95 cursor-pointer"
+                title="Nova conversa"
+              >
+                <RefreshCcw className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Recomeçar</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="mx-auto w-full max-w-4xl flex-1 px-3 sm:px-6 pb-36 pt-4 flex flex-col justify-between">
+          {showHistory ? (
+            /* Full History Bubble View */
+            <div className="flex flex-col gap-4 animate-in fade-in duration-300">
+              <div className="flex items-center justify-between pb-2 border-b-2 border-amber-200">
+                <span className="text-xs font-black text-amber-950 uppercase">
+                  Conversas Anteriores ({messages.length})
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowHistory(false)}
+                  className="text-xs font-black text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
+                  <span>Voltar ao Professor</span>
+                </button>
+              </div>
+
+              {messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={m.role === "user" ? "flex justify-end" : "flex items-start gap-3"}
+                >
+                  {m.role === "assistant" && (
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border-2 border-amber-300 bg-amber-100 text-xl shadow-sm">
+                      🦜
+                    </div>
+                  )}
+                  <div
+                    className={
+                      m.role === "user"
+                        ? "max-w-[85%] rounded-3xl rounded-br-sm bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-4 font-semibold shadow-md text-sm sm:text-base leading-relaxed"
+                        : "max-w-[85%] rounded-3xl rounded-bl-sm bg-white border-2 border-amber-200/90 text-slate-800 p-4 font-medium shadow-md text-sm sm:text-base leading-relaxed"
+                    }
+                  >
+                    <p className="whitespace-pre-wrap leading-relaxed">{clean(m.content)}</p>
+                    {m.role === "assistant" && (
+                      <button
+                        type="button"
+                        onClick={() => playReply(m.content)}
+                        className="mt-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3.5 py-1 text-xs font-black text-amber-950 shadow-[0_2px_0_#b45309] hover:brightness-105 active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                      >
+                        {state === "speaking" ? (
+                          <>
+                            <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
+                            <span>Falando...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="h-3.5 w-3.5" />
+                            <span>Ouvir com voz</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {state === "thinking" && (
+                <div className="flex items-center gap-2.5 rounded-2xl bg-amber-100/80 border border-amber-300 px-4 py-2.5 text-xs font-black text-amber-950 w-fit">
+                  <Loader2 className="h-4 w-4 animate-spin text-emerald-700" />
+                  <span>O Professor Awã está pensando na sua resposta...</span>
+                </div>
+              )}
+              <div ref={endRef} />
+            </div>
+          ) : (
+            /* Direct Voice Orb View (THE DEFAULT SCREEN) */
+            <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
+              {/* Central Fluid Rotating Orb */}
+              <div className="relative my-2 sm:my-4">
+                <GptVoiceOrb
+                  size="lg"
+                  state={state}
+                  theme="kids-magic"
+                  onClick={handleMic}
+                  showRipple={true}
+                />
+              </div>
+
+              {/* Status Indicator Pill */}
+              <div
+                className={`mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black transition-all ${
+                  state === "listening"
+                    ? "bg-rose-100 text-rose-700 border-2 border-rose-400 animate-pulse"
+                    : state === "thinking"
+                    ? "bg-amber-100 text-amber-900 border-2 border-amber-400"
+                    : state === "speaking"
+                    ? "bg-emerald-100 text-emerald-950 border-2 border-emerald-400"
+                    : "bg-white text-slate-800 border-2 border-amber-300 shadow-sm"
+                }`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full ${
+                    state === "listening"
+                      ? "bg-rose-500 animate-ping"
+                      : state === "thinking"
+                      ? "bg-amber-500 animate-spin"
+                      : state === "speaking"
+                      ? "bg-emerald-500 animate-pulse"
+                      : "bg-emerald-400"
+                  }`}
+                />
+                <span>
+                  {state === "listening"
+                    ? (browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : "🎙️ Ouvindo você falar...")
+                    : state === "thinking"
+                    ? "🧠 Pensando na resposta..."
+                    : state === "speaking"
+                    ? "🗣️ Professor Awã falando..."
+                    : "Toque no microfone para falar"}
                 </span>
               </div>
-            </div>
-          </section>
 
-          {/* ========================================================= */}
-          {/* 2. WELCOME & QUESTION SUGGESTIONS CARD                    */}
-          {/* ========================================================= */}
-          <section className="mb-6 rounded-3xl border-2 border-amber-200/90 bg-white p-5 shadow-md">
-            <div className="flex items-center gap-3.5">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-100 border-2 border-amber-300 text-2xl shadow-inner">
-                🦜
-              </div>
-              <div>
-                <h2
-                  className="font-display text-base font-black tracking-tight"
-                  style={{ color: "#064e3b" }}
-                >
-                  "Awê! O que vamos aprender hoje?"
-                </h2>
-                <p className="text-xs text-slate-600 font-semibold mt-0.5">
-                  Toque em uma das perguntas abaixo ou converse por voz como no ChatGPT:
-                </p>
-              </div>
-            </div>
+              {/* Latest Answer Card or Welcome Card */}
+              <div className="mt-5 w-full max-w-xl">
+                {latestAssistantMessage && messages.length > 1 ? (
+                  <div className="rounded-3xl border-3 border-amber-300 bg-white p-5 shadow-xl animate-in fade-in duration-300">
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b-2 border-amber-200">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">🦜</span>
+                        <div>
+                          <span className="text-xs font-black text-[#064e3b]">Professor Awã</span>
+                          <span className="block text-[10px] text-slate-500 font-semibold">Resposta</span>
+                        </div>
+                      </div>
 
-            {/* ChatGPT Voice Banner Card */}
-            <div className="mt-4 flex items-center justify-between gap-3 bg-gradient-to-r from-sky-50 via-sky-100/80 to-blue-50 border-2 border-sky-300 rounded-2xl p-3 shadow-inner">
-              <div className="flex items-center gap-3">
-                <GptVoiceOrb
-                  size="xs"
-                  state={state === "speaking" ? "speaking" : "idle"}
-                  theme="kids-magic"
-                  showRipple={false}
-                />
-                <div>
-                  <div className="text-xs font-black text-sky-950">Conversa por Voz (Estilo ChatGPT)</div>
-                  <div className="text-[11px] text-sky-800 font-medium">Fale no microfone e o professor responde em áudio!</div>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsVoiceModalOpen(true);
-                  if (!recorder.isRecording && state === "idle") {
-                    void handleMic();
-                  }
-                }}
-                className="rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-black text-xs px-3.5 py-1.5 shadow-sm active:scale-95 transition cursor-pointer"
-              >
-                Abrir Voz
-              </button>
-            </div>
+                      <div className="flex items-center gap-2">
+                        {/* Audio playback button with spinning orb */}
+                        <button
+                          type="button"
+                          onClick={() => playReply(latestAssistantMessage.content)}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-black transition cursor-pointer active:scale-95 shadow-sm ${
+                            state === "speaking"
+                              ? "bg-sky-500 text-white"
+                              : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 hover:brightness-105"
+                          }`}
+                        >
+                          {state === "speaking" ? (
+                            <>
+                              <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
+                              <span>Ouvindo...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="h-3.5 w-3.5" />
+                              <span>Ouvir</span>
+                            </>
+                          )}
+                        </button>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              {SUGGESTIONS.map((sug) => (
-                <button
-                  key={sug}
-                  onClick={() => send(sug, true)}
-                  disabled={state === "thinking"}
-                  className="rounded-2xl border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
-                >
-                  ✨ {sug}
-                </button>
-              ))}
-            </div>
-          </section>
+                        {messages.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => setShowHistory(true)}
+                            className="text-xs font-black text-amber-900 hover:underline cursor-pointer"
+                          >
+                            Histórico ({messages.length})
+                          </button>
+                        )}
+                      </div>
+                    </div>
 
-          {/* ========================================================= */}
-          {/* 3. CHAT MESSAGES LIST                                      */}
-          {/* ========================================================= */}
-          <div className="flex flex-col gap-4">
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={m.role === "user" ? "flex justify-end" : "flex items-start gap-3"}
-              >
-                {m.role === "assistant" && (
-                  <div
-                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl border-2 border-amber-300 bg-amber-100 text-2xl shadow-sm ${
-                      state === "speaking" ? "ring-2 ring-emerald-400 animate-pulse" : ""
-                    }`}
-                  >
-                    🦜
+                    <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-medium text-slate-800 max-h-56 overflow-y-auto pr-1">
+                      {clean(latestAssistantMessage.content)}
+                    </p>
+                  </div>
+                ) : (
+                  /* Welcome Card and Suggestions */
+                  <div className="rounded-3xl border-3 border-amber-300 bg-gradient-to-r from-[#fffef5] to-[#fef7e6] p-5 shadow-lg text-center">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="text-3xl">🦜</span>
+                      <h2 className="font-display text-base sm:text-lg font-black text-[#064e3b]">
+                        "Awê, pequeno parente!"
+                      </h2>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-700 font-semibold max-w-md mx-auto mb-4">
+                      Eu sou o Professor Awã. Toque no microfone para falar comigo ou escolha uma das perguntas:
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {SUGGESTIONS.map((sug) => (
+                        <button
+                          key={sug}
+                          onClick={() => send(sug, true)}
+                          disabled={state === "thinking"}
+                          className="rounded-2xl border-2 border-amber-300 bg-white hover:bg-amber-100 px-3.5 py-2 text-xs font-black text-amber-950 transition shadow-sm active:translate-y-0.5 disabled:opacity-50 cursor-pointer"
+                        >
+                          ✨ {sug}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
-                <div
-                  className={
-                    m.role === "user"
-                      ? "max-w-[85%] rounded-3xl rounded-br-sm bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-4 font-semibold shadow-md text-sm sm:text-base leading-relaxed"
-                      : "max-w-[85%] rounded-3xl rounded-bl-sm bg-white border-2 border-amber-200/90 text-slate-800 p-4 font-medium shadow-md text-sm sm:text-base leading-relaxed"
-                  }
-                >
-                  <p className="whitespace-pre-wrap leading-relaxed">{clean(m.content)}</p>
-                  {m.role === "assistant" && i > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => playReply(m.content)}
-                      className={`mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black transition cursor-pointer active:translate-y-0.5 shadow-sm ${
-                        state === "speaking"
-                          ? "bg-sky-500 text-white shadow-sky-400/40 animate-pulse"
-                          : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 hover:brightness-105 shadow-[0_2px_0_#b45309]"
-                      }`}
-                    >
-                      {state === "speaking" ? (
-                        <>
-                          <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
-                          <span>Ouvindo o professor...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 className="h-3.5 w-3.5" />
-                          <span>Ouvir com voz</span>
-                        </>
-                      )}
-                    </button>
-                  )}
-                </div>
               </div>
-            ))}
-
-            {state === "thinking" && (
-              <div className="flex items-center gap-2.5 rounded-2xl bg-amber-100/80 border border-amber-300 px-4 py-2.5 text-xs font-black text-amber-950 w-fit">
-                <Loader2 className="h-4 w-4 animate-spin text-emerald-700" />
-                <span>O Professor Awã está pensando na sua resposta...</span>
-              </div>
-            )}
-            <div ref={endRef} />
-          </div>
+            </div>
+          )}
         </main>
       </div>
 
-      {/* ========================================================= */}
-      {/* 4. FIXED BOTTOM DOCK (Clean, High-Contrast Children's Dock)*/}
-      {/* ========================================================= */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t-4 border-amber-300 bg-white/95 px-4 pb-5 pt-3 shadow-2xl backdrop-blur-md pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-        <div className="mx-auto max-w-3xl">
-          <div className="flex items-center justify-between gap-2 mb-2 px-1">
-            <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
-              {state === "listening" ? (
-                <span className="text-rose-600 flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
-                  🎙️ Ouvindo você falar...
-                </span>
-              ) : state === "thinking" ? (
-                <span className="text-amber-800">🧠 Pensando na resposta...</span>
-              ) : state === "speaking" ? (
-                <span className="text-emerald-700">🗣️ Professor Awã falando...</span>
-              ) : (
-                <span>Fale pelo microfone ou digite abaixo:</span>
-              )}
-            </span>
-
-            {state === "speaking" && (
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (paused) {
-                      void audioRef.current?.play();
-                      setPaused(false);
-                    } else {
-                      audioRef.current?.pause();
-                      setPaused(true);
-                    }
-                  }}
-                  className="text-xs font-black text-amber-900 hover:underline cursor-pointer"
-                >
-                  {paused ? "Continuar" : "Pausar"}
-                </button>
-                <button
-                  type="button"
-                  onClick={stopVoice}
-                  className="text-xs font-black text-rose-600 hover:underline cursor-pointer"
-                >
-                  Parar
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            {/* Quick ChatGPT Voice Mode Orb launcher */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsVoiceModalOpen(true);
-                if (!recorder.isRecording && state === "idle") {
-                  void handleMic();
-                }
-              }}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-2 border-sky-300 bg-sky-100 hover:bg-sky-200 transition shadow-sm active:translate-y-0.5 cursor-pointer"
-              title="Abrir Modo Voz Mágico (Estilo ChatGPT)"
-              aria-label="Modo Voz Mágico"
-            >
-              <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
-            </button>
-
-            {/* Big Mic Action Button with 3D press effect */}
-            <button
-              type="button"
-              onClick={handleMic}
+      {/* Fixed Bottom Dock (Matching Screenshot: Input pill + Big Mic) */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t-4 border-amber-300 bg-white/95 px-4 pb-4 pt-3 shadow-2xl backdrop-blur-md pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+        <div className="mx-auto max-w-lg flex items-center justify-between gap-3">
+          {/* Question text input bar */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void send(input, false);
+            }}
+            className="flex-1 flex items-center gap-2 min-w-0"
+          >
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={
+                browserSpeech.isListening || recorder.isRecording
+                  ? "Fale agora... Seu texto aparecerá aqui! 🎤"
+                  : "Pergunte algo ao Professor Awã..."
+              }
               disabled={state === "thinking"}
-              className={`flex h-12 shrink-0 items-center justify-center gap-2 rounded-2xl px-4 text-xs font-black uppercase shadow transition active:translate-y-1 active:shadow-none disabled:opacity-50 cursor-pointer ${
-                recorder.isRecording
-                  ? "bg-rose-500 text-white shadow-[0_4px_0_#9f1239] animate-pulse"
-                  : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-[0_4px_0_#b45309]"
-              }`}
-              title="Falar no microfone"
-            >
-              {recorder.isRecording ? (
-                <>
-                  <Square className="h-4 w-4 fill-current" />
-                  <span>Pronto</span>
-                </>
-              ) : (
-                <>
-                  <Mic className="h-4 w-4" />
-                  <span>Falar</span>
-                </>
-              )}
-            </button>
-
-            {/* Text Input Form */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                void send(input, false);
-              }}
-              className="flex flex-1 items-center gap-2 min-w-0"
-            >
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Pergunte algo ao professor..."
-                className="w-full rounded-2xl border-2 border-amber-300 bg-amber-50/50 focus:bg-white px-4 py-3 text-sm font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 transition"
-              />
+              className="w-full rounded-full border-2 border-amber-300 bg-amber-50/70 focus:bg-white px-4 py-3.5 text-xs sm:text-sm font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 transition"
+            />
+            {input.trim() && (
               <button
                 type="submit"
-                disabled={!input.trim() || state === "thinking"}
-                className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-[0_3px_0_#064e3b] active:translate-y-0.5 active:shadow-none transition disabled:opacity-40 cursor-pointer"
+                disabled={state === "thinking"}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-bold transition hover:brightness-110 active:scale-95 cursor-pointer"
                 aria-label="Enviar mensagem"
               >
                 <Send className="h-4 w-4" />
               </button>
-            </form>
-          </div>
+            )}
+          </form>
+
+          {/* Pause / Play button when speaking */}
+          {state === "speaking" && (
+            <button
+              type="button"
+              onClick={() => {
+                if (paused) {
+                  void audioRef.current?.play();
+                  setPaused(false);
+                } else {
+                  audioRef.current?.pause();
+                  setPaused(true);
+                }
+              }}
+              className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-full border-2 border-amber-300 bg-amber-100 text-amber-950 font-black hover:bg-amber-200 transition active:scale-95 cursor-pointer"
+              title={paused ? "Continuar" : "Pausar"}
+            >
+              {paused ? <Play className="h-5 w-5 fill-current" /> : <Pause className="h-5 w-5 fill-current" />}
+            </button>
+          )}
+
+          {/* Big Circular Microphone Button */}
+          <button
+            type="button"
+            onClick={handleMic}
+            disabled={state === "thinking"}
+            className={`grid h-12 w-12 sm:h-14 sm:w-14 shrink-0 place-items-center rounded-full shadow-2xl transition-all active:scale-95 cursor-pointer disabled:opacity-50 ${
+              browserSpeech.isListening || recorder.isRecording
+                ? "bg-rose-500 text-white shadow-[0_0_30px_rgba(244,63,94,0.6)] animate-pulse"
+                : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-[0_4px_0_#b45309]"
+            }`}
+            title={browserSpeech.isListening || recorder.isRecording ? "Parar e enviar" : "Falar no microfone"}
+            aria-label={browserSpeech.isListening || recorder.isRecording ? "Parar e enviar" : "Falar no microfone"}
+          >
+            {browserSpeech.isListening || recorder.isRecording ? (
+              <Square className="h-5 w-5 fill-current" />
+            ) : (
+              <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
+            )}
+          </button>
         </div>
       </div>
-
-      {/* Fullscreen ChatGPT Voice Mode Modal for Kids */}
-      <GptVoiceModal
-        isOpen={isVoiceModalOpen}
-        onClose={() => {
-          setIsVoiceModalOpen(false);
-          if (recorder.isRecording) recorder.cancel();
-        }}
-        title="Professor Awã"
-        subtitle="Tutor Infantil de Patxôhã"
-        avatarIcon="🦜"
-        theme="infantil"
-        voiceState={state}
-        voicePaused={paused}
-        isRecording={recorder.isRecording}
-        onToggleMic={handleMic}
-        onPauseVoice={() => {
-          audioRef.current?.pause();
-          setPaused(true);
-        }}
-        onResumeVoice={() => {
-          void audioRef.current?.play().catch(() => {});
-          setPaused(false);
-        }}
-        onStopVoice={stopVoice}
-        onSendMessage={(txt) => void send(txt, true)}
-        lastUserText={lastUserMessage}
-        lastAssistantText={lastAssistantMessage}
-        suggestions={SUGGESTIONS.map((s) => ({ label: s, prompt: s }))}
-      />
     </div>
   );
 }

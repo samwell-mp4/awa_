@@ -28,9 +28,9 @@ import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
 import { transcribeAudio } from "@/lib/transcribe.functions";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
+import { useBrowserSpeech, isBrowserSpeechSupported } from "@/lib/web-speech";
 import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
-import { GptVoiceModal } from "@/components/chat/GptVoiceModal";
-import { Headphones } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 
 
 export const Route = createFileRoute("/professor")({
@@ -282,24 +282,28 @@ function ProfessorPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // --- Modo voz -------------------------------------------------------------
+  // --- Modo voz direto com Speech-to-Text nativo no navegador (sem tokens) ---
+  const browserSpeech = useBrowserSpeech("pt-BR");
   const recorder = useVoiceRecorder();
   const [voiceState, setVoiceState] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
   const [voicePaused, setVoicePaused] = useState(false);
   const [micReady, setMicReady] = useState(false);
-  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
-  useEffect(() => setMicReady(isRecordingSupported()), []);
+  const [showHistory, setShowHistory] = useState(false);
 
-  const lastUserMessage = useMemo(() => {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "user") return messages[i].content;
+  useEffect(() => {
+    setMicReady(isBrowserSpeechSupported() || isRecordingSupported());
+  }, []);
+
+  // Se o reconhecimento nativo terminar sozinho (após silêncio), retorna estado para idle
+  useEffect(() => {
+    if (!browserSpeech.isListening && !recorder.isRecording && voiceState === "listening") {
+      setVoiceState("idle");
     }
-    return undefined;
-  }, [messages]);
+  }, [browserSpeech.isListening, recorder.isRecording, voiceState]);
 
-  const lastAssistantMessage = useMemo(() => {
+  const latestAssistantMessage = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "assistant") return messages[i].content;
+      if (messages[i].role === "assistant") return messages[i];
     }
     return undefined;
   }, [messages]);
@@ -327,6 +331,21 @@ function ProfessorPage() {
       toast.error(v.unsupported);
       return;
     }
+
+    // 1. Se estiver escutando no navegador via Web Speech API nativa (zero tokens):
+    if (browserSpeech.isListening) {
+      const finalRecorded = browserSpeech.stop();
+      const textToSend = (finalRecorded || input).trim();
+      if (!textToSend) {
+        setVoiceState("idle");
+        toast.error(v.tooShort);
+        return;
+      }
+      await send(textToSend, true);
+      return;
+    }
+
+    // 2. Se estiver gravando via fallback do servidor (MediaRecorder):
     if (recorder.isRecording) {
       const file = await recorder.stop();
       if (!file) {
@@ -354,8 +373,30 @@ function ProfessorPage() {
       }
       return;
     }
+
+    // Pausar áudio anterior se houver
     currentAudioRef.current?.pause();
     setVoicePaused(false);
+
+    // 3. Iniciar escuta nativa no navegador (sem custos de API, preenche em tempo real)
+    if (browserSpeech.isSupported) {
+      const ok = await browserSpeech.start({
+        lang: "pt-BR",
+        initialText: input,
+        onLiveText: (liveText) => {
+          setInput(liveText);
+        },
+      });
+      if (!ok) {
+        setVoiceState("idle");
+        toast.error(browserSpeech.error === "permission" ? v.denied : v.unsupported);
+        return;
+      }
+      setVoiceState("listening");
+      return;
+    }
+
+    // Fallback para navegadores sem Web Speech API nativa
     const ok = await recorder.start();
     if (!ok) {
       setVoiceState("idle");
@@ -472,6 +513,8 @@ function ProfessorPage() {
   }
 
   async function send(text: string, voiceMode = false) {
+    if (browserSpeech.isListening) browserSpeech.stop();
+    if (recorder.isRecording) recorder.cancel();
     const content = text.trim();
     if (!content || loading) return;
     const audio = new Audio();
@@ -494,6 +537,7 @@ function ProfessorPage() {
   }
 
   function resetConversation() {
+    browserSpeech.cancel();
     recorder.cancel();
     currentAudioRef.current?.pause();
     setActiveAssistantAudio(null);
@@ -502,14 +546,22 @@ function ProfessorPage() {
     setVoiceState("idle");
     setMessages([]);
     setInput("");
+    setShowHistory(false);
     textareaRef.current?.focus();
   }
 
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--gradient-forest)]">
-      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.16_0.04_145/0.92)] backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)]">
+    <div className="min-h-screen flex flex-col bg-[#0c141d] text-white selection:bg-gold/30 selection:text-gold relative overflow-x-hidden">
+      {/* Soft atmospheric gradient background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-emerald-600/10 blur-[130px]" />
+        <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-[450px] h-[350px] rounded-full bg-sky-600/10 blur-[110px]" />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 border-b border-gold/20 bg-[oklch(0.14_0.03_145/0.92)] backdrop-blur-xl shadow-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <Link
             to={backTo as "/"}
@@ -532,7 +584,7 @@ function ProfessorPage() {
               </div>
               <span
                 aria-hidden
-                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.16_0.04_145)]"
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-[oklch(0.14_0.03_145)]"
               />
             </div>
             <div className="leading-tight">
@@ -547,26 +599,29 @@ function ProfessorPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Quick ChatGPT Voice Mode Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsVoiceModalOpen(true);
-                if (!recorder.isRecording && voiceState === "idle") {
-                  void handleMic();
-                }
-              }}
-              className="inline-flex items-center gap-2 rounded-full border border-sky-400/40 bg-sky-500/15 px-3 py-1.5 text-xs font-black text-sky-200 hover:bg-sky-500/25 transition shadow-sm active:scale-95"
-              title="Abrir Modo Voz ChatGPT"
-            >
-              <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
-              <span className="hidden sm:inline font-sans">Modo Voz GPT</span>
-            </button>
+            {messages.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowHistory((h) => !h)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition active:scale-95 ${
+                  showHistory
+                    ? "border-gold bg-gold text-forest-deep"
+                    : "border-gold/30 bg-card/60 text-gold hover:border-gold/60"
+                }`}
+                title={showHistory ? "Voltar ao modo direto" : "Ver histórico de mensagens"}
+              >
+                <MessageSquare className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{showHistory ? "Voz Direta" : "Histórico"}</span>
+                <span className="grid h-4 w-4 place-items-center rounded-full bg-gold/20 text-[9px] font-black">
+                  {messages.length}
+                </span>
+              </button>
+            )}
 
             <button
               onClick={resetConversation}
               disabled={isEmpty && !loading}
-              className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40 active:scale-95 cursor-pointer"
               title={t.newChat}
             >
               <RefreshCcw className="h-3.5 w-3.5" />
@@ -576,68 +631,25 @@ function ProfessorPage() {
         </div>
       </header>
 
-      <main className="flex-1 mx-auto w-full max-w-3xl px-4 pb-44 pt-6 md:px-8">
-        {isEmpty ? (
-          <div className="flex flex-col items-center text-center py-6 sm:py-10 animate-in fade-in duration-500">
-            {/* Big ChatGPT Rotating Fluid Orb */}
-            <div className="relative mb-6">
-              <GptVoiceOrb
-                size="md"
-                state={voiceState}
-                theme="gpt-blue"
-                onClick={() => {
-                  setIsVoiceModalOpen(true);
-                  if (!recorder.isRecording && voiceState === "idle") {
-                    void handleMic();
-                  }
-                }}
-              />
+      {/* Main Content Area */}
+      <main className="relative z-10 flex-1 mx-auto w-full max-w-3xl px-4 pb-36 pt-4 md:px-8 flex flex-col justify-between">
+        {showHistory ? (
+          /* Full Chat History View (when user explicitly opens history) */
+          <div className="space-y-5 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between pb-2 border-b border-gold/20">
+              <span className="text-xs font-bold uppercase tracking-wider text-gold/80">
+                Histórico da Conversa ({messages.length})
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowHistory(false)}
+                className="text-xs font-bold text-sky-300 hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
+                <span>Voltar ao Professor</span>
+              </button>
             </div>
 
-            <h2 className="font-display text-xl sm:text-2xl font-black text-cream">
-              {t.heroBadge}
-            </h2>
-            <p className="mt-2 max-w-md text-xs sm:text-sm text-cream/70 leading-relaxed">
-              Mestre virtual de Patxôhã. Converse por voz em tempo real como no ChatGPT ou digite sua dúvida abaixo.
-            </p>
-
-            {/* Launch Voice Mode Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsVoiceModalOpen(true);
-                if (!recorder.isRecording && voiceState === "idle") {
-                  void handleMic();
-                }
-              }}
-              className="mt-6 inline-flex items-center gap-3 rounded-full border border-sky-400/50 bg-gradient-to-r from-sky-500/25 via-blue-600/35 to-sky-500/25 px-6 py-3.5 text-sm font-black text-white shadow-lg shadow-sky-500/20 hover:border-sky-300 hover:brightness-110 active:scale-95 transition cursor-pointer"
-            >
-              <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
-              <span>Entrar no Modo Voz ChatGPT</span>
-            </button>
-
-            {/* Suggestion Prompts */}
-            <div className="mt-8 w-full max-w-lg">
-              <div className="text-xs font-bold uppercase tracking-wider text-gold/80 mb-3">
-                {t.suggestionsTitle}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
-                {t.suggestions.map((s, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => void send(s.prompt, false)}
-                    className="rounded-2xl border border-gold/25 bg-card/60 p-3 hover:border-gold/60 hover:bg-card/90 transition text-xs font-medium text-cream/90 shadow-sm flex flex-col gap-1 active:scale-[0.98] cursor-pointer"
-                  >
-                    <span className="font-bold text-gold text-[11px] uppercase">✨ {s.label}</span>
-                    <span className="line-clamp-2 text-foreground/80">{s.prompt}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-5">
             {messages.map((m, i) => (
               <Bubble
                 key={i}
@@ -651,147 +663,226 @@ function ProfessorPage() {
             {loading && <TypingIndicator />}
             <div ref={endRef} />
           </div>
-        )}
-      </main>
-
-      {/* ChatGPT-Style Fixed Bottom Dock */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.96)] px-3 sm:px-6 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)] backdrop-blur-xl pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div className="mx-auto flex max-w-3xl flex-col gap-2.5">
-          {/* Status bar if speaking or recording */}
-          {(voiceState !== "idle" || recorder.isRecording) && (
-            <div className="flex items-center justify-between px-2 text-xs font-bold animate-in fade-in">
-              <span className="text-gold/90 flex items-center gap-2" aria-live="polite">
-                <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
-                <span>
-                  {voiceState === "listening"
-                    ? v.listening
-                    : voiceState === "thinking"
-                    ? v.thinking
-                    : voiceState === "speaking"
-                    ? v.speaking
-                    : v.invite}
-                </span>
-              </span>
-
-              {voiceState === "speaking" && (
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={voicePaused ? resumeVoice : pauseVoice}
-                    className="text-xs font-bold text-cream hover:underline cursor-pointer"
-                  >
-                    {voicePaused ? v.resume : v.pause}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={stopVoice}
-                    className="text-xs font-bold text-rose-300 hover:underline cursor-pointer"
-                  >
-                    {v.stopVoice}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ChatGPT-Style Input Bar */}
-          <div className="flex items-end gap-2">
-            {/* Dedicated ChatGPT Voice Mode Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsVoiceModalOpen(true);
-                if (!recorder.isRecording && voiceState === "idle") {
-                  void handleMic();
-                }
-              }}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-sky-400/40 bg-sky-500/15 text-sky-200 hover:bg-sky-500/30 transition shadow-md active:scale-95 cursor-pointer"
-              title="Abrir Modo Voz ChatGPT (Tela Cheia)"
-              aria-label="Abrir Modo Voz ChatGPT"
-            >
-              <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
-            </button>
-
-            {/* Auto-resizing textarea */}
-            <div className="relative flex-1 min-w-0">
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    void send(input, false);
-                  }
-                }}
-                rows={1}
-                placeholder={t.placeholder}
-                disabled={loading}
-                className="w-full resize-none rounded-2xl border border-gold/30 bg-card/70 px-4 py-3 text-sm text-cream placeholder:text-foreground/45 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 disabled:opacity-50 transition max-h-36 leading-relaxed"
+        ) : (
+          /* Direct Conversational & Voice Orb View (THE DEFAULT SCREEN) */
+          <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
+            {/* The Central Rotating Fluid Sphere */}
+            <div className="relative my-2 sm:my-4">
+              <GptVoiceOrb
+                size="lg"
+                state={voiceState}
+                theme="gpt-blue"
+                onClick={handleMic}
+                showRipple={true}
               />
             </div>
 
-            {/* Quick Mic recording toggle */}
-            <button
-              type="button"
-              onClick={handleMic}
-              disabled={loading || voiceState === "thinking"}
-              className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition active:scale-95 disabled:opacity-40 cursor-pointer ${
-                recorder.isRecording
-                  ? "border-rose-400/60 bg-rose-500 text-white shadow-lg shadow-rose-500/30 animate-pulse"
-                  : "border-gold/40 bg-card/70 text-gold hover:border-gold hover:bg-card"
+            {/* Status Indicator Pill */}
+            <div
+              className={`mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                voiceState === "listening"
+                  ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse"
+                  : voiceState === "thinking"
+                  ? "bg-sky-500/20 text-sky-300 border border-sky-400/30"
+                  : voiceState === "speaking"
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
+                  : "bg-white/10 text-white/80 border border-white/15"
               }`}
-              title={recorder.isRecording ? v.stopRec : v.talk}
-              aria-label={recorder.isRecording ? v.stopRec : v.talk}
             >
-              {recorder.isRecording ? (
-                <Square className="h-5 w-5 fill-current" />
-              ) : (
-                <Mic className="h-5 w-5" />
-              )}
-            </button>
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  voiceState === "listening"
+                    ? "bg-rose-400 animate-ping"
+                    : voiceState === "thinking"
+                    ? "bg-sky-400 animate-spin"
+                    : voiceState === "speaking"
+                    ? "bg-emerald-400 animate-pulse"
+                    : "bg-sky-400"
+                }`}
+              />
+              <span>
+                {voiceState === "listening"
+                  ? (browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : v.listening)
+                  : voiceState === "thinking"
+                  ? v.thinking
+                  : voiceState === "speaking"
+                  ? v.speaking
+                  : "Toque no microfone para falar"}
+              </span>
+            </div>
 
-            {/* Send button */}
+            {/* Latest Answer or Welcome Stage */}
+            <div className="mt-5 w-full max-w-lg">
+              {latestAssistantMessage ? (
+                <div className="rounded-3xl border border-gold/30 bg-card/85 p-5 shadow-2xl backdrop-blur-md animate-in fade-in duration-300">
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-gold/20">
+                    <div className="flex items-center gap-2">
+                      <div className="grid h-7 w-7 place-items-center rounded-full bg-gold/20 text-gold text-xs font-black">
+                        Akuã
+                      </div>
+                      <span className="text-xs font-black text-cream">Resposta do Professor</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      {/* Repeat Audio Button with spinning orb */}
+                      <button
+                        type="button"
+                        onClick={() => toggleAudio(latestAssistantMessage.content, "latest")}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition cursor-pointer active:scale-95 ${
+                          voiceState === "speaking" || audioBusyKey
+                            ? "bg-sky-500/30 border border-sky-400/50 text-sky-200"
+                            : "bg-gold/20 border border-gold/30 text-gold hover:bg-gold/30"
+                        }`}
+                      >
+                        {voiceState === "speaking" || audioBusyKey ? (
+                          <>
+                            <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
+                            <span>Ouvindo...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="h-3.5 w-3.5" />
+                            <span>Ouvir</span>
+                          </>
+                        )}
+                      </button>
+
+                      {messages.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowHistory(true)}
+                          className="text-[11px] font-bold text-foreground/60 hover:text-gold transition cursor-pointer"
+                        >
+                          Histórico ({messages.length})
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Render formatted blocks for latest reply */}
+                  <div className="space-y-2 text-xs sm:text-sm text-foreground/90 leading-relaxed max-h-60 overflow-y-auto pr-1">
+                    {parseBlocks(latestAssistantMessage.content).map((b, i) => {
+                      if (b.type === "paragraph") {
+                        return (
+                          <p key={i} className="whitespace-pre-wrap leading-relaxed">
+                            {renderInline(b.text, `latest-p${i}`)}
+                          </p>
+                        );
+                      }
+                      if (b.type === "bullets") {
+                        return (
+                          <ul key={i} className="ml-1 space-y-1">
+                            {b.items.map((item: string, j: number) => (
+                              <li key={j} className="flex gap-2">
+                                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold/80" />
+                                <span>{renderInline(item, `latest-b${i}-${j}`)}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        );
+                      }
+                      return (
+                        <div key={i} className="my-1.5 rounded-xl border border-gold/30 bg-forest-deep/60 px-3 py-2">
+                          <div className="font-display text-sm font-black text-gold">{b.pat}</div>
+                          <div className="text-xs text-foreground/75 mt-0.5">{b.pt}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                /* Empty state suggestions */
+                <div className="flex flex-col items-center text-center">
+                  <p className="text-xs sm:text-sm text-cream/70 max-w-sm leading-relaxed mb-4">
+                    Kanhgág! Sou o Professor Akuã. Fale pelo microfone ou toque em uma das sugestões abaixo:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full text-left">
+                    {t.suggestions.map((s, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => void send(s.prompt, false)}
+                        className="rounded-2xl border border-gold/25 bg-card/60 p-3 hover:border-gold/60 hover:bg-card/90 transition text-xs font-medium text-cream/90 shadow-sm flex flex-col gap-1 active:scale-[0.98] cursor-pointer"
+                      >
+                        <span className="font-bold text-gold text-[11px] uppercase">✨ {s.label}</span>
+                        <span className="line-clamp-2 text-foreground/80">{s.prompt}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Fixed Bottom Dock (Matching Screenshot: Input pill + Big Round Mic) */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.14_0.03_145/0.95)] px-4 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.8)] backdrop-blur-xl pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+        <div className="mx-auto max-w-lg flex items-center justify-between gap-3">
+          {/* Question text input bar */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void send(input, false);
+            }}
+            className="flex-1 flex items-center gap-2 min-w-0"
+          >
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={
+                browserSpeech.isListening || recorder.isRecording
+                  ? "Ouvindo você... Fale à vontade"
+                  : t.placeholder
+              }
+              disabled={loading}
+              className="w-full rounded-full border border-gold/30 bg-card/70 px-4 py-3.5 text-xs sm:text-sm text-cream placeholder:text-foreground/45 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 disabled:opacity-50 transition"
+            />
+            {input.trim() && (
+              <button
+                type="submit"
+                disabled={loading}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-r from-gold to-amber-500 text-forest-deep shadow-md font-bold transition hover:brightness-110 active:scale-95 cursor-pointer"
+                aria-label={t.send}
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            )}
+          </form>
+
+          {/* Pause / Resume button if speaking */}
+          {voiceState === "speaking" && (
             <button
               type="button"
-              onClick={() => void send(input, false)}
-              disabled={!input.trim() || loading}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-r from-gold to-amber-500 text-forest-deep shadow-md font-bold transition hover:brightness-110 active:scale-95 disabled:opacity-40 cursor-pointer"
-              title={t.send}
-              aria-label={t.send}
+              onClick={voicePaused ? resumeVoice : pauseVoice}
+              className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition active:scale-95 cursor-pointer"
+              title={voicePaused ? v.resume : v.pause}
             >
-              {loading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <Send className="h-5 w-5" />
-              )}
+              {voicePaused ? <Play className="h-5 w-5 fill-current" /> : <Pause className="h-5 w-5 fill-current" />}
             </button>
-          </div>
+          )}
+
+          {/* Big Circular Microphone Button */}
+          <button
+            type="button"
+            onClick={handleMic}
+            disabled={loading || voiceState === "thinking"}
+            className={`grid h-12 w-12 sm:h-14 sm:w-14 shrink-0 place-items-center rounded-full shadow-2xl transition-all active:scale-95 cursor-pointer disabled:opacity-50 ${
+              browserSpeech.isListening || recorder.isRecording
+                ? "bg-rose-500 text-white shadow-[0_0_30px_rgba(244,63,94,0.6)] animate-pulse"
+                : "bg-white text-forest-deep hover:bg-sky-50 shadow-[0_0_20px_rgba(255,255,255,0.35)]"
+            }`}
+            title={browserSpeech.isListening || recorder.isRecording ? v.stopRec : v.talk}
+            aria-label={browserSpeech.isListening || recorder.isRecording ? v.stopRec : v.talk}
+          >
+            {browserSpeech.isListening || recorder.isRecording ? (
+              <Square className="h-5 w-5 fill-current" />
+            ) : (
+              <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
+            )}
+          </button>
         </div>
       </div>
-
-      {/* Fullscreen ChatGPT Voice Mode Modal with Fluid Spinning Orb */}
-      <GptVoiceModal
-        isOpen={isVoiceModalOpen}
-        onClose={() => {
-          setIsVoiceModalOpen(false);
-          if (recorder.isRecording) recorder.cancel();
-        }}
-        title="Professor Akuã"
-        subtitle="Mestre de Patxôhã"
-        theme="adulto"
-        voiceState={voiceState}
-        voicePaused={voicePaused}
-        isRecording={recorder.isRecording}
-        onToggleMic={handleMic}
-        onPauseVoice={pauseVoice}
-        onResumeVoice={resumeVoice}
-        onStopVoice={stopVoice}
-        onSendMessage={(txt) => void send(txt, true)}
-        lastUserText={lastUserMessage}
-        lastAssistantText={lastAssistantMessage}
-        suggestions={t.suggestions}
-      />
     </div>
   );
 }
