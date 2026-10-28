@@ -102,14 +102,17 @@ export function speak(
     const token = ++playToken;
     stopSpeak();
 
-    // Rápido fallback: se a narração de IA demorar mais de 1.2s ou falhar, usa voz do navegador
+    // Rápido fallback: se a narração de IA demorar mais de 3s ou falhar, usa voz do navegador
     const timeoutPromise = new Promise<null>((resolve) =>
-      setTimeout(() => resolve(null), 1200)
+      setTimeout(() => resolve(null), 3000)
     );
+
+    const isShortWord = text.trim().split(/\s+/).length <= 3;
+    const mode = isShortWord ? "word" : "story";
 
     const narrationPromise = import("@/lib/narration-cache")
       .then(({ getNarrationUrl }) =>
-        getNarrationUrl({ text, lang, mode: "story", voice: SITE_VOICE })
+        getNarrationUrl({ text, lang, mode, voice: SITE_VOICE })
       )
       .catch(() => null);
 

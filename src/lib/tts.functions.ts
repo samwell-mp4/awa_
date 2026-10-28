@@ -35,8 +35,9 @@ export const speakText = createServerFn({ method: "POST" })
   .inputValidator((d: { text: string; voice?: string; environment?: "sandbox" | "live"; lang?: TtsLanguage; area?: TtsArea }) => d)
   .handler(async ({ data, context }): Promise<TtsPayload> => {
     await assertPremium(context, data.environment ?? "live", data.area ?? "adulto");
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) {
+    const openAiKey = (process.env.OPENAI_API_KEY || "").replace(/^["']|["']$/g, "").trim();
+    const lovableKey = (process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN || "").replace(/^["']|["']$/g, "").trim();
+    if (!openAiKey && !lovableKey) {
       return {
         audio_base64: "",
         mime: "application/json",
@@ -51,18 +52,34 @@ export const speakText = createServerFn({ method: "POST" })
     // Mesma voz e mesmo estilo de narração em todas as áreas do site.
     const instructions = NATURAL_VOICE_INSTRUCTIONS[spokenLanguage];
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "openai/gpt-4o-mini-tts",
-        input: text,
-        // Voz única em todo o site (adulto e infantil).
-        voice: "onyx",
-        response_format: "mp3",
-        instructions,
-      }),
-    });
+    let res: Response;
+    if (openAiKey) {
+      res = await fetch("https://api.openai.com/v1/audio/speech", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${openAiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "tts-1",
+          input: text,
+          voice: "onyx",
+          response_format: "mp3",
+        }),
+      });
+    } else {
+      res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${lovableKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini-tts",
+          input: text,
+          voice: "onyx",
+          response_format: "mp3",
+          instructions,
+        }),
+      });
+    }
     if (!res.ok) {
       const message = await readGatewayError(res);
       if (res.status === 402) {

@@ -6,6 +6,7 @@ import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio 
 import { supabase } from "@/integrations/supabase/client";
 import { narratePublic } from "@/lib/narrate-public.functions";
 import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+import { speak } from "@/lib/speak";
 import { toast } from "sonner";
 import { useLastArea, setLastArea } from "@/lib/last-area";
 
@@ -266,7 +267,7 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
 }
 
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speak = useServerFn(narratePublic);
+  const speakFn = useServerFn(narratePublic);
   const [busy, setBusy] = useState(false);
   const cacheRef = useRef<string | null>(null);
 
@@ -279,15 +280,21 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
         return;
       }
       if (!cacheRef.current) {
-        const r = await speak({ data: { text, voice: "onyx" } });
+        const r = await speakFn({ data: { text, voice: "onyx", mode: "word" } });
         if (r.error || !r.audio_base64) {
           throw new Error(r.message ?? "Não foi possível gerar o áudio");
         }
         cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }
       await playFast(cacheRef.current);
-    } catch (e: any) {
-      toast.error(e.message ?? "Erro ao tocar áudio");
+    } catch {
+      speak(
+        text,
+        "pt-BR",
+        0.92,
+        () => setBusy(true),
+        () => setBusy(false)
+      );
     } finally {
       setBusy(false);
     }
@@ -297,7 +304,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
   async function prefetch() {
     if (audioUrl || cacheRef.current || busy) return;
     try {
-      const r = await speak({ data: { text, voice: "onyx" } });
+      const r = await speakFn({ data: { text, voice: "onyx", mode: "word" } });
       if (r.audio_base64) {
         cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
       }

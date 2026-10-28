@@ -42,18 +42,20 @@ async function readGatewayError(res: Response) {
 }
 
 export const narratePublic = createServerFn({ method: "POST" })
-
   .inputValidator((d: { text: string; voice?: string; lang?: string; mode?: "story" | "word" }) => d)
   .handler(async ({ data }): Promise<NarrationPayload> => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
+    const openAiKey = (process.env.OPENAI_API_KEY || "").replace(/^["']|["']$/g, "").trim();
+    const lovableKey = (process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN || "").replace(/^["']|["']$/g, "").trim();
+    if (!openAiKey && !lovableKey) {
+      throw new Error("Chave de IA (OPENAI_API_KEY ou LOVABLE_API_KEY) ausente");
+    }
+
     let text = (data.text ?? "").slice(0, 4000);
     if (!text.trim()) throw new Error("Texto vazio");
     const voice = data.voice ?? "onyx";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
     const mode = data.mode ?? "story";
     const instructions = mode === "word" ? WORD_INSTRUCTIONS : (INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt);
-
 
     const k = keyFor(text, `${voice}:${mode}`, lang);
     const hit = cache.get(k);
@@ -64,11 +66,16 @@ export const narratePublic = createServerFn({ method: "POST" })
     if (mode === "story" && (lang === "en" || lang === "es")) {
       const target = lang === "en" ? "English" : "Spanish (español)";
       try {
-        const tr = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        const trUrl = openAiKey
+          ? "https://api.openai.com/v1/chat/completions"
+          : "https://ai.gateway.lovable.dev/v1/chat/completions";
+        const trModel = openAiKey ? "gpt-4o-mini" : "google/gemini-2.5-flash";
+        const trKey = openAiKey || lovableKey;
+        const tr = await fetch(trUrl, {
           method: "POST",
-          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${trKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
+            model: trModel,
             messages: [
               {
                 role: "system",
@@ -91,20 +98,38 @@ export const narratePublic = createServerFn({ method: "POST" })
       }
     }
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "openai/gpt-4o-mini-tts",
-        input: text,
-        voice,
-        response_format: "mp3",
-        instructions,
-      }),
-    });
+    let res: Response;
+    if (openAiKey) {
+      res = await fetch("https://api.openai.com/v1/audio/speech", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${openAiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "tts-1",
+          input: text,
+          voice,
+          response_format: "mp3",
+        }),
+      });
+    } else {
+      res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini-tts",
+          input: text,
+          voice,
+          response_format: "mp3",
+          instructions,
+        }),
+      });
+    }
+
     if (!res.ok) {
       const message = await readGatewayError(res);
       if (res.status === 402) {

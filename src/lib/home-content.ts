@@ -71,7 +71,6 @@ export const navGroups: NavGroup[] = [
   {
     title: "Língua e Conhecimento",
     items: [
-      { label: "Dicionário", href: "/dicionario", icon: Library },
       { label: "Trilhas", href: "/trilhas", icon: Award },
       { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
     ],
@@ -99,7 +98,6 @@ export const navGroups: NavGroup[] = [
 ];
 
 export const topNavLinks = [
-  { label: "Dicionário", href: "/dicionario" },
   { label: "Professor Akuã", href: "/professor" },
   { label: "Trilhas", href: "/trilhas" },
   { label: "Histórias", href: "/historias" },
@@ -111,8 +109,6 @@ export const topNavLinks = [
 export type NavMode = "adulto" | "infantil" | "all";
 
 const ADULT_HREFS = new Set([
-  "/dicionario",
-  "/traduzir",
   "/trilhas",
   "/professor",
   "/historias",
@@ -177,8 +173,6 @@ export function useNavContent(mode: NavMode = "all") {
     {
       title: t("nav.groups.lingua"),
       items: [
-        { label: t("nav.dicionario"), href: "/dicionario", icon: Library },
-        { label: "Tradutor Patxôhã", href: "/traduzir", icon: Sparkles },
         { label: t("nav.professor"), href: "/professor", icon: Sparkles },
         { label: "Saudações", href: "/saudacoes", icon: Sparkles },
         { label: "Professor Awã", href: "/professor-infantil", icon: GraduationCap },
@@ -219,7 +213,6 @@ export function useNavContent(mode: NavMode = "all") {
     .filter((g) => g.items.length > 0);
 
   const rawTop = [
-    { label: t("nav.dicionario"), href: "/dicionario" },
     { label: "Professor Akuã", href: "/professor" },
     { label: t("nav.trilhas"), href: "/trilhas" },
     { label: t("nav.historias"), href: "/historias" },
