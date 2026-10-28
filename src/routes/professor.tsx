@@ -735,7 +735,7 @@ function ProfessorPage() {
                   : t.placeholder
               }
               disabled={loading}
-              className="w-full rounded-full border border-gold/30 bg-card/70 px-4 py-3.5 text-xs sm:text-sm text-cream placeholder:text-foreground/45 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 disabled:opacity-50 transition"
+              className="w-full rounded-full border border-gold/30 bg-card/70 px-4 py-3.5 text-[16px] sm:text-base text-cream placeholder:text-foreground/45 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 disabled:opacity-50 transition"
             />
             {input.trim() && (
               <button

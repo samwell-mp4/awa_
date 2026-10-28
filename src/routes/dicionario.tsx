@@ -563,7 +563,7 @@ function DictionaryPage() {
                       ? "Buscar em palavras e números..."
                       : "Buscar na gramática..."
               }
-              className="w-full rounded-full bg-cream pl-12 pr-4 py-4 text-sm font-semibold text-forest-deep placeholder:text-forest-deep/45 focus:outline-none focus:ring-2 focus:ring-[oklch(0.80_0.16_135)]"
+              className="w-full rounded-full bg-cream pl-12 pr-4 py-4 text-[16px] sm:text-sm font-semibold text-forest-deep placeholder:text-forest-deep/45 focus:outline-none focus:ring-2 focus:ring-[oklch(0.80_0.16_135)]"
             />
           </div>
 

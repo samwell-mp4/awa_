@@ -523,7 +523,7 @@ function ProfessorInfantilPage() {
                   : "Pergunte algo ao Professor Awã..."
               }
               disabled={state === "thinking"}
-              className="w-full rounded-full border-2 border-amber-300 bg-amber-50/70 focus:bg-white px-4 py-3.5 text-xs sm:text-sm font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 transition"
+              className="w-full rounded-full border-2 border-amber-300 bg-amber-50/70 focus:bg-white px-4 py-3.5 text-[16px] sm:text-base font-bold text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 transition"
             />
             {input.trim() && (
               <button
