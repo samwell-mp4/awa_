@@ -167,7 +167,10 @@ function speakWithBrowser(
   onBoundary?: (charIndex: number) => void
 ) {
   const s = synth();
-  if (!s || !text) return;
+  if (!s || !text) {
+    onEnd?.();
+    return;
+  }
   try {
     ensureVoicesLoaded();
 
@@ -189,17 +192,23 @@ function speakWithBrowser(
       activeUtterance = u;
       (window as any).__awa_active_utterance = u;
 
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        activeUtterance = null;
+        onEnd?.();
+      };
+
       u.onstart = () => {
         onStart?.();
       };
-      u.onend = () => {
-        activeUtterance = null;
-        onEnd?.();
-      };
-      u.onerror = () => {
-        activeUtterance = null;
-        onEnd?.();
-      };
+      u.onend = finish;
+      u.onerror = finish;
+
+      // Trava de segurança para evitar estado congelado se o sintetizador do SO pendurar
+      const maxMs = Math.max(3500, Math.min(15000, text.length * 150));
+      setTimeout(finish, maxMs);
 
       if (onBoundary) {
         u.onboundary = (event) => {
@@ -214,7 +223,7 @@ function speakWithBrowser(
     // Pequeno delay para contornar bug do Chromium com s.cancel() síncrono
     setTimeout(start, 20);
   } catch {
-    /* ignore */
+    onEnd?.();
   }
 }
 

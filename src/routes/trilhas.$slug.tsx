@@ -136,10 +136,19 @@ function AudioPlayBtn({
   className?: string;
 }) {
   const [playing, setPlaying] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   async function handlePlay(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (timerRef.current) clearTimeout(timerRef.current);
 
     if (playing) {
       stopSpeak();
@@ -147,18 +156,25 @@ function AudioPlayBtn({
       return;
     }
 
-    setPlaying(true);
+    // Trava de segurança: reseta estado de pulsing após no máximo 5s se o áudio não finalizar
+    timerRef.current = setTimeout(() => {
+      setPlaying(false);
+    }, 5000);
 
     // Se tiver áudio nativo gravado, tenta tocar
     if (audioUrl) {
       try {
+        setPlaying(true);
         await playFast(audioUrl);
         setPlaying(false);
+        if (timerRef.current) clearTimeout(timerRef.current);
         return;
       } catch {
         // Fallback para síntese de fala
       }
     }
+
+    setPlaying(true);
 
     // Fallback garantido usando speak()
     speak(
@@ -166,7 +182,10 @@ function AudioPlayBtn({
       "pt-BR",
       0.92,
       () => setPlaying(true),
-      () => setPlaying(false)
+      () => {
+        setPlaying(false);
+        if (timerRef.current) clearTimeout(timerRef.current);
+      }
     );
   }
 
