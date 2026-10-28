@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl, playFast } from "@/lib/audio-play";
+import { base64ToBlobUrl, playFast, primeAudio } from "@/lib/audio-play";
 import { speak } from "@/lib/speak";
 import { toast } from "sonner";
 import { useLastArea, setLastArea } from "@/lib/last-area";
@@ -273,6 +273,7 @@ function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) 
 
   async function play() {
     if (busy) return;
+    primeAudio();
     try {
       setBusy(true);
       if (audioUrl) {

@@ -99,12 +99,12 @@ export function speak(
   if (!text) return;
 
   if (!onBoundary && typeof window !== "undefined") {
-    const token = ++playToken;
     stopSpeak();
+    const token = ++playToken;
 
-    // Rápido fallback: se a narração de IA demorar mais de 3s ou falhar, usa voz do navegador
+    // Rápido fallback: se a narração de IA demorar mais de 3.5s ou falhar, usa voz do navegador
     const timeoutPromise = new Promise<null>((resolve) =>
-      setTimeout(() => resolve(null), 3000)
+      setTimeout(() => resolve(null), 3500)
     );
 
     const isShortWord = text.trim().split(/\s+/).length <= 3;

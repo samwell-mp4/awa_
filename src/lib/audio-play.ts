@@ -14,6 +14,24 @@ export function base64ToBlobUrl(base64: string, mime = "audio/mpeg"): string {
 // Shared, reusable audio element — avoids the ~50-200ms cost of allocating
 // a fresh HTMLAudioElement per playback on mobile.
 let sharedAudio: HTMLAudioElement | null = null;
+let unlocked = false;
+
+/** Desbloqueia o pipeline de áudio no clique do usuário (necessário para iOS/Safari/Chrome mobile) */
+export function primeAudio() {
+  if (typeof window === "undefined") return;
+  if (!sharedAudio) {
+    sharedAudio = new Audio();
+    sharedAudio.preload = "auto";
+  }
+  if (!unlocked) {
+    try {
+      sharedAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+      sharedAudio.play().then(() => {
+        unlocked = true;
+      }).catch(() => {});
+    } catch {}
+  }
+}
 
 export function playFast(url: string): Promise<void> {
   if (!sharedAudio) {
@@ -24,7 +42,7 @@ export function playFast(url: string): Promise<void> {
   try {
     a.pause();
   } catch {}
-  if (a.src !== url) a.src = url;
+  a.src = url;
   a.currentTime = 0;
   return a.play();
 }

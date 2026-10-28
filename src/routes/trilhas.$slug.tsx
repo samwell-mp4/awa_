@@ -18,7 +18,7 @@ import {
   Compass,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { playFast } from "@/lib/audio-play";
+import { playFast, primeAudio } from "@/lib/audio-play";
 import { speak, stopSpeak } from "@/lib/speak";
 import {
   TRAILS,
@@ -147,6 +147,7 @@ function AudioPlayBtn({
   async function handlePlay(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+    primeAudio();
 
     if (timerRef.current) clearTimeout(timerRef.current);
 
