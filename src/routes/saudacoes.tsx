@@ -1,12 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward, Radio } from "lucide-react";
+import { ArrowLeft, Volume2, Loader2, Sparkles, Play, Pause, SkipForward } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { narratePublic } from "@/lib/narrate-public.functions";
-import { base64ToBlobUrl, playFast, primeAudio } from "@/lib/audio-play";
-import { speak } from "@/lib/speak";
+import { playFast, primeAudio, attachEndHandler } from "@/lib/audio-play";
+import { speak, stopSpeak } from "@/lib/speak";
 import { toast } from "sonner";
 import { useLastArea, setLastArea } from "@/lib/last-area";
 
@@ -267,62 +265,87 @@ function AkuaCard({ s, big = false }: { s: Saudacao; big?: boolean }) {
 }
 
 function PlayBtn({ text, audioUrl }: { text: string; audioUrl: string | null }) {
-  const speakFn = useServerFn(narratePublic);
-  const [busy, setBusy] = useState(false);
-  const cacheRef = useRef<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "loading" | "playing">("idle");
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function play() {
-    if (busy) return;
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  async function handlePlay(e?: React.MouseEvent) {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    if (status === "playing") {
+      stopSpeak();
+      setStatus("idle");
+      return;
+    }
+
+    if (status === "loading") {
+      // Ignora clique repetido enquanto carrega para evitar abortar o áudio
+      return;
+    }
+
     primeAudio();
-    try {
-      setBusy(true);
-      if (audioUrl) {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setStatus("loading");
+
+    timerRef.current = setTimeout(() => {
+      setStatus("idle");
+    }, 8000);
+
+    if (audioUrl) {
+      try {
+        attachEndHandler(() => {
+          setStatus("idle");
+          if (timerRef.current) clearTimeout(timerRef.current);
+        });
+        setStatus("playing");
         await playFast(audioUrl);
         return;
+      } catch {
+        // Fallback para speak
       }
-      if (!cacheRef.current) {
-        const r = await speakFn({ data: { text, voice: "onyx", mode: "word" } });
-        if (r.error || !r.audio_base64) {
-          throw new Error(r.message ?? "Não foi possível gerar o áudio");
-        }
-        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
-      }
-      await playFast(cacheRef.current);
-    } catch {
-      speak(
-        text,
-        "pt-BR",
-        0.92,
-        () => setBusy(true),
-        () => setBusy(false)
-      );
-    } finally {
-      setBusy(false);
     }
-  }
 
-  // Pre-load on hover/focus
-  async function prefetch() {
-    if (audioUrl || cacheRef.current || busy) return;
-    try {
-      const r = await speakFn({ data: { text, voice: "onyx", mode: "word" } });
-      if (r.audio_base64) {
-        cacheRef.current = base64ToBlobUrl(r.audio_base64, r.mime);
+    speak(
+      text,
+      "pt-BR",
+      0.92,
+      () => {
+        setStatus("playing");
+      },
+      () => {
+        setStatus("idle");
+        if (timerRef.current) clearTimeout(timerRef.current);
       }
-    } catch {}
+    );
   }
-
 
   return (
     <button
-      onClick={play}
-      onPointerEnter={prefetch}
-      onFocus={prefetch}
-      disabled={busy}
-      aria-label={`Ouvir ${text}`}
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf hover:bg-leaf/30 disabled:opacity-50"
+      type="button"
+      onClick={handlePlay}
+      data-speech-control
+      aria-label={status === "playing" ? `Pausar áudio de ${text}` : `Ouvir ${text}`}
+      className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition active:scale-95 cursor-pointer ${
+        status === "playing"
+          ? "bg-rose-500/20 text-rose-400 ring-2 ring-rose-500/40 animate-pulse"
+          : status === "loading"
+          ? "bg-amber-500/20 text-amber-300 ring-2 ring-amber-500/40"
+          : "bg-leaf/20 text-leaf hover:bg-leaf/30"
+      }`}
     >
-      {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
+      {status === "loading" ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : status === "playing" ? (
+        <Pause className="h-4 w-4" />
+      ) : (
+        <Volume2 className="h-4 w-4" />
+      )}
     </button>
   );
 }

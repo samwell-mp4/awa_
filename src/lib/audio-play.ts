@@ -33,12 +33,24 @@ export function primeAudio() {
   }
 }
 
+let endHandler: (() => void) | null = null;
+
+function clearSharedListeners(a: HTMLAudioElement) {
+  if (endHandler) {
+    a.removeEventListener("ended", endHandler);
+    a.removeEventListener("pause", endHandler);
+    a.removeEventListener("error", endHandler);
+    endHandler = null;
+  }
+}
+
 export function playFast(url: string): Promise<void> {
   if (!sharedAudio) {
     sharedAudio = new Audio();
     sharedAudio.preload = "auto";
   }
   const a = sharedAudio;
+  clearSharedListeners(a);
   try {
     a.pause();
   } catch {}
@@ -47,24 +59,34 @@ export function playFast(url: string): Promise<void> {
   return a.play();
 }
 
-let endHandler: (() => void) | null = null;
-
-/** Registra um callback para quando o áudio compartilhado terminar. */
+/** Registra um callback para quando o áudio compartilhado terminar, pausar ou falhar. */
 export function attachEndHandler(fn: () => void) {
   if (!sharedAudio) {
     sharedAudio = new Audio();
     sharedAudio.preload = "auto";
   }
   const a = sharedAudio;
-  if (endHandler) a.removeEventListener("ended", endHandler);
-  endHandler = fn;
-  a.addEventListener("ended", fn, { once: true });
+  clearSharedListeners(a);
+
+  let done = false;
+  const onDone = () => {
+    if (done) return;
+    done = true;
+    clearSharedListeners(a);
+    fn();
+  };
+
+  endHandler = onDone;
+  a.addEventListener("ended", onDone, { once: true });
+  a.addEventListener("pause", onDone, { once: true });
+  a.addEventListener("error", onDone, { once: true });
 }
 
 export function stopFast() {
   if (sharedAudio) {
     try {
       sharedAudio.pause();
+      sharedAudio.currentTime = 0;
     } catch {}
   }
 }

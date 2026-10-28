@@ -18,7 +18,7 @@ import {
   Compass,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { playFast, primeAudio } from "@/lib/audio-play";
+import { playFast, primeAudio, attachEndHandler } from "@/lib/audio-play";
 import { speak, stopSpeak } from "@/lib/speak";
 import {
   TRAILS,
@@ -135,7 +135,7 @@ function AudioPlayBtn({
   variant?: "normal" | "kids" | "kids-pill" | "icon";
   className?: string;
 }) {
-  const [playing, setPlaying] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "playing">("idle");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -147,44 +147,52 @@ function AudioPlayBtn({
   async function handlePlay(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    primeAudio();
 
-    if (timerRef.current) clearTimeout(timerRef.current);
-
-    if (playing) {
+    if (status === "playing") {
       stopSpeak();
-      setPlaying(false);
+      setStatus("idle");
       return;
     }
 
-    // Trava de segurança: reseta estado de pulsing após no máximo 5s se o áudio não finalizar
+    if (status === "loading") {
+      // Ignora clique repetido enquanto carrega para não cancelar antes de tocar
+      return;
+    }
+
+    primeAudio();
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setStatus("loading");
+
+    // Trava de segurança: reseta estado caso a requisição demore demais
     timerRef.current = setTimeout(() => {
-      setPlaying(false);
-    }, 5000);
+      setStatus("idle");
+    }, 8000);
 
     // Se tiver áudio nativo gravado, tenta tocar
     if (audioUrl) {
       try {
-        setPlaying(true);
+        attachEndHandler(() => {
+          setStatus("idle");
+          if (timerRef.current) clearTimeout(timerRef.current);
+        });
+        setStatus("playing");
         await playFast(audioUrl);
-        setPlaying(false);
-        if (timerRef.current) clearTimeout(timerRef.current);
         return;
       } catch {
         // Fallback para síntese de fala
       }
     }
 
-    setPlaying(true);
-
-    // Fallback garantido usando speak()
+    // Narração por IA (ou fallback browser)
     speak(
       text,
       "pt-BR",
       0.92,
-      () => setPlaying(true),
       () => {
-        setPlaying(false);
+        setStatus("playing");
+      },
+      () => {
+        setStatus("idle");
         if (timerRef.current) clearTimeout(timerRef.current);
       }
     );
@@ -195,15 +203,22 @@ function AudioPlayBtn({
       <button
         type="button"
         onClick={handlePlay}
-        aria-label={`${label} ${text}`}
+        aria-label={status === "playing" ? `Pausar ${text}` : `${label} ${text}`}
         data-speech-control
         className={`inline-flex items-center justify-center gap-1.5 rounded-2xl px-4 py-2 text-xs font-black uppercase tracking-wider text-white transition-all transform active:translate-y-1 shadow-md cursor-pointer ${
-          playing
+          status === "playing"
             ? "bg-rose-500 shadow-[0_3px_0_#be123c] animate-pulse"
+            : status === "loading"
+            ? "bg-amber-500 shadow-[0_3px_0_#b45309]"
             : "bg-emerald-600 hover:bg-emerald-500 shadow-[0_3px_0_#065f46]"
         } ${className}`}
       >
-        {playing ? (
+        {status === "loading" ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>Carregando</span>
+          </>
+        ) : status === "playing" ? (
           <>
             <span className="flex items-center gap-0.5 h-3" aria-hidden>
               <span className="w-1 bg-white rounded-full h-2.5 animate-[pulse_0.6s_ease-in-out_infinite]" />
@@ -227,15 +242,23 @@ function AudioPlayBtn({
       <button
         type="button"
         onClick={handlePlay}
-        aria-label={`${label} ${text}`}
+        aria-label={status === "playing" ? `Pausar ${text}` : `${label} ${text}`}
         data-speech-control
         className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-md transition-all transform active:translate-y-1 cursor-pointer ${
-          playing
+          status === "playing"
             ? "bg-rose-500 shadow-[0_3px_0_#be123c] animate-pulse"
+            : status === "loading"
+            ? "bg-amber-500 shadow-[0_3px_0_#b45309]"
             : "bg-emerald-600 hover:bg-emerald-500 shadow-[0_3px_0_#065f46]"
         } ${className}`}
       >
-        {playing ? <Pause className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+        {status === "loading" ? (
+          <Loader2 className="h-5 w-5 animate-spin" />
+        ) : status === "playing" ? (
+          <Pause className="h-5 w-5" />
+        ) : (
+          <Volume2 className="h-5 w-5" />
+        )}
       </button>
     );
   }
@@ -244,15 +267,23 @@ function AudioPlayBtn({
     <button
       type="button"
       onClick={handlePlay}
-      aria-label={`Ouvir ${text}`}
+      aria-label={status === "playing" ? `Pausar ${text}` : `Ouvir ${text}`}
       data-speech-control
-      className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition active:scale-95 ${
-        playing
-          ? "bg-rose-500/20 text-rose-400"
+      className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition active:scale-95 cursor-pointer ${
+        status === "playing"
+          ? "bg-rose-500/20 text-rose-400 ring-2 ring-rose-500/40 animate-pulse"
+          : status === "loading"
+          ? "bg-amber-500/20 text-amber-300 ring-2 ring-amber-500/40"
           : "bg-leaf/20 text-leaf hover:bg-leaf/30"
       } ${className}`}
     >
-      {playing ? <Pause className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+      {status === "loading" ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : status === "playing" ? (
+        <Pause className="h-4 w-4" />
+      ) : (
+        <Volume2 className="h-4 w-4" />
+      )}
     </button>
   );
 }

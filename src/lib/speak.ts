@@ -77,8 +77,11 @@ if (typeof window !== "undefined") {
   window.addEventListener("keydown", onFirst, { once: true });
 }
 
+import { cleanTextForSpeech } from "@/lib/clean-speech-text";
+
 // Voz padrão do site: narração natural (IA) com a mesma voz em todas as telas.
-const SITE_VOICE = "onyx";
+// "alloy" é a voz oficial equilibrada e mais clara em alto-falantes de celular e desktop.
+const SITE_VOICE = "alloy";
 let playToken = 0;
 let activeUtterance: SpeechSynthesisUtterance | null = null;
 
@@ -89,13 +92,15 @@ let activeUtterance: SpeechSynthesisUtterance | null = null;
  * palavra por palavra), usa direto a voz do navegador.
  */
 export function speak(
-  text: string,
+  rawText: string,
   lang: string = "pt-BR",
   rate: number = 1,
   onStart?: () => void,
   onEnd?: () => void,
   onBoundary?: (charIndex: number) => void
 ) {
+  if (!rawText) return;
+  const text = cleanTextForSpeech(rawText);
   if (!text) return;
 
   if (!onBoundary && typeof window !== "undefined") {
@@ -159,13 +164,14 @@ function registerStopOnPointerDown() {
 }
 
 function speakWithBrowser(
-  text: string,
+  rawText: string,
   lang: string = "pt-BR",
   rate: number = 1,
   onStart?: () => void,
   onEnd?: () => void,
   onBoundary?: (charIndex: number) => void
 ) {
+  const text = cleanTextForSpeech(rawText);
   const s = synth();
   if (!s || !text) {
     onEnd?.();

@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { readChatContent, safeJsonParse } from "@/lib/ai-response.server";
-
-
+import { cleanTextForSpeech } from "@/lib/clean-speech-text";
 
 type NarrationPayload = {
   audio_base64: string;
@@ -22,7 +21,7 @@ function keyFor(text: string, voice: string, lang: string) {
 const INSTRUCTIONS: Record<string, string> = {
   pt: "Fale em português do Brasil como uma pessoa real conversando, não como um narrador de locução. Voz masculina calorosa, madura e serena, de um ancião indígena contando sua própria história a alguém sentado ao lado. Ritmo natural e variado: acelere um pouco nas partes leves, desacelere nas partes graves, faça micro-pausas reais nas vírgulas e pausas maiores nos pontos, respire entre as frases. Entonação viva, com pequenas variações de altura e volume, emoção contida e respeitosa. Soe humano e espontâneo, nunca robótico, nunca mecânico, nunca apressado, sem tom de propaganda e sem exagerar a dramatização.",
   en: "Speak English like a real person talking, not like a voice-over narrator. Warm, mature, calm male voice of an indigenous elder telling his own story to someone sitting beside him. Natural, varied pacing: slightly quicker on light parts, slower on solemn parts, real micro-pauses at commas and longer pauses at full stops, breathe between sentences. Lively intonation with small changes in pitch and volume, restrained respectful emotion. Sound human and spontaneous, never robotic, never mechanical, never rushed.",
-  es: "Habla en español como una persona real conversando, no como un locutor. Voz masculina cálida, madura y serena, de un anciano indígena contando su propia historia a alguien sentado a su lado. Ritmo natural y variado: un poco más rápido en las partes ligeras, más lento en las partes solemnes, micro-pausas reales en las comas y pausas más largas en los puntos, respira entre frases. Entonación viva, con pequeñas variaciones de tono y volumen, emoción contenida y respetuosa. Suena humano y espontáneo, nunca robótico, nunca mecánico, nunca apresurado.",
+  es: "Habla en español como una persona real conversando, no como un locutor. Voz masculina cálida, madura e serena, de un anciano indígena contando su propia historia a alguien sentado a su lado. Ritmo natural e variado: un poco más rápido en las partes ligeras, más lento en las partes solemnes, micro-pausas reales en las comas y pausas más largas en los puntos, respira entre frases. Entonación viva, con pequeñas variaciones de tono y volumen, emoción contenida y respetuosa. Suena humano y espontáneo, nunca robótico, nunca mecánico, nunca apresurado.",
 };
 
 // Instruções para pronúncia de palavras isoladas do dicionário Patxôhã.
@@ -52,9 +51,10 @@ export const narratePublic = createServerFn({ method: "POST" })
     const openAiKey = (process.env.OPENAI_API_KEY || FALLBACK_OPENAI_KEY).replace(/^["']|["']$/g, "").trim();
     const lovableKey = (process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN || "").replace(/^["']|["']$/g, "").trim();
 
-    let text = (data.text ?? "").slice(0, 4000);
+    let text = cleanTextForSpeech(data.text ?? "").slice(0, 4000);
     if (!text.trim()) throw new Error("Texto vazio");
-    const voice = data.voice ?? "onyx";
+    const ALLOWED_VOICES = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
+    const voice = data.voice && ALLOWED_VOICES.includes(data.voice) ? data.voice : "alloy";
     const lang = (data.lang ?? "pt").slice(0, 2).toLowerCase();
     const mode = data.mode ?? "story";
     const instructions = mode === "word" ? WORD_INSTRUCTIONS : (INSTRUCTIONS[lang] ?? INSTRUCTIONS.pt);
@@ -112,6 +112,7 @@ export const narratePublic = createServerFn({ method: "POST" })
           model: "tts-1",
           input: text,
           voice,
+          speed: mode === "word" ? 0.95 : 1.0,
           response_format: "mp3",
         }),
       });
