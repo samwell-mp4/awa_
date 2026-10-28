@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, Mic, Pause, Play, Send, Square, Volume2, Sparkles, MessageCircle, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { askAkua } from "@/lib/akua-chat.functions";
@@ -12,6 +12,8 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 import { SiteHeader } from "@/components/home/site-header";
 import kidsCharacter from "@/assets/kids-menu-character.png";
+import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
+import { GptVoiceModal } from "@/components/chat/GptVoiceModal";
 
 export const Route = createFileRoute("/professor-infantil")({
   ssr: false,
@@ -70,8 +72,23 @@ function ProfessorInfantilPage() {
   const [state, setState] = useState<VoiceState>("idle");
   const [paused, setPaused] = useState(false);
   const [micReady, setMicReady] = useState(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
+
+  const lastUserMessage = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "user") return messages[i].content;
+    }
+    return undefined;
+  }, [messages]);
+
+  const lastAssistantMessage = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "assistant") return messages[i].content;
+    }
+    return undefined;
+  }, [messages]);
 
   useEffect(() => setMicReady(isRecordingSupported()), []);
   useEffect(() => {
@@ -277,12 +294,29 @@ function ProfessorInfantilPage() {
               </div>
             </div>
 
-            {/* Status Pill Badge */}
-            <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-400/80 bg-emerald-100/90 px-3.5 py-1.5 shadow-sm self-start md:self-auto">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-black text-emerald-950">
-                Tutor Online
-              </span>
+            {/* Status Pill Badge & ChatGPT Voice Mode Button */}
+            <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsVoiceModalOpen(true);
+                  if (!recorder.isRecording && state === "idle") {
+                    void handleMic();
+                  }
+                }}
+                className="flex items-center gap-2 rounded-2xl border-2 border-sky-400 bg-sky-100 hover:bg-sky-200 px-3.5 py-2 shadow-sm text-xs font-black text-sky-950 transition active:translate-y-0.5 cursor-pointer"
+                title="Abrir Modo Voz Mágico (Estilo ChatGPT)"
+              >
+                <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
+                <span>Modo Voz Mágico</span>
+              </button>
+
+              <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-400/80 bg-emerald-100/90 px-3.5 py-2 shadow-sm">
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-black text-emerald-950">
+                  Tutor Online
+                </span>
+              </div>
             </div>
           </section>
 
@@ -302,9 +336,37 @@ function ProfessorInfantilPage() {
                   "Awê! O que vamos aprender hoje?"
                 </h2>
                 <p className="text-xs text-slate-600 font-semibold mt-0.5">
-                  Toque em uma das perguntas abaixo ou crie a sua própria:
+                  Toque em uma das perguntas abaixo ou converse por voz como no ChatGPT:
                 </p>
               </div>
+            </div>
+
+            {/* ChatGPT Voice Banner Card */}
+            <div className="mt-4 flex items-center justify-between gap-3 bg-gradient-to-r from-sky-50 via-sky-100/80 to-blue-50 border-2 border-sky-300 rounded-2xl p-3 shadow-inner">
+              <div className="flex items-center gap-3">
+                <GptVoiceOrb
+                  size="xs"
+                  state={state === "speaking" ? "speaking" : "idle"}
+                  theme="kids-magic"
+                  showRipple={false}
+                />
+                <div>
+                  <div className="text-xs font-black text-sky-950">Conversa por Voz (Estilo ChatGPT)</div>
+                  <div className="text-[11px] text-sky-800 font-medium">Fale no microfone e o professor responde em áudio!</div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsVoiceModalOpen(true);
+                  if (!recorder.isRecording && state === "idle") {
+                    void handleMic();
+                  }
+                }}
+                className="rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-black text-xs px-3.5 py-1.5 shadow-sm active:scale-95 transition cursor-pointer"
+              >
+                Abrir Voz
+              </button>
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2">
@@ -351,10 +413,23 @@ function ProfessorInfantilPage() {
                     <button
                       type="button"
                       onClick={() => playReply(m.content)}
-                      className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-3.5 py-1 text-xs font-black text-amber-950 shadow-[0_2px_0_#b45309] hover:brightness-105 active:translate-y-0.5 active:shadow-none transition cursor-pointer"
+                      className={`mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-black transition cursor-pointer active:translate-y-0.5 shadow-sm ${
+                        state === "speaking"
+                          ? "bg-sky-500 text-white shadow-sky-400/40 animate-pulse"
+                          : "bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 hover:brightness-105 shadow-[0_2px_0_#b45309]"
+                      }`}
                     >
-                      <Volume2 className="h-3.5 w-3.5" />
-                      <span>Ouvir com voz</span>
+                      {state === "speaking" ? (
+                        <>
+                          <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
+                          <span>Ouvindo o professor...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="h-3.5 w-3.5" />
+                          <span>Ouvir com voz</span>
+                        </>
+                      )}
                     </button>
                   )}
                 </div>
@@ -422,6 +497,22 @@ function ProfessorInfantilPage() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            {/* Quick ChatGPT Voice Mode Orb launcher */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsVoiceModalOpen(true);
+                if (!recorder.isRecording && state === "idle") {
+                  void handleMic();
+                }
+              }}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border-2 border-sky-300 bg-sky-100 hover:bg-sky-200 transition shadow-sm active:translate-y-0.5 cursor-pointer"
+              title="Abrir Modo Voz Mágico (Estilo ChatGPT)"
+              aria-label="Modo Voz Mágico"
+            >
+              <GptVoiceOrb size="xs" state={state} theme="kids-magic" showRipple={false} />
+            </button>
+
             {/* Big Mic Action Button with 3D press effect */}
             <button
               type="button"
@@ -473,6 +564,36 @@ function ProfessorInfantilPage() {
           </div>
         </div>
       </div>
+
+      {/* Fullscreen ChatGPT Voice Mode Modal for Kids */}
+      <GptVoiceModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => {
+          setIsVoiceModalOpen(false);
+          if (recorder.isRecording) recorder.cancel();
+        }}
+        title="Professor Awã"
+        subtitle="Tutor Infantil de Patxôhã"
+        avatarIcon="🦜"
+        theme="infantil"
+        voiceState={state}
+        voicePaused={paused}
+        isRecording={recorder.isRecording}
+        onToggleMic={handleMic}
+        onPauseVoice={() => {
+          audioRef.current?.pause();
+          setPaused(true);
+        }}
+        onResumeVoice={() => {
+          void audioRef.current?.play().catch(() => {});
+          setPaused(false);
+        }}
+        onStopVoice={stopVoice}
+        onSendMessage={(txt) => void send(txt, true)}
+        lastUserText={lastUserMessage}
+        lastAssistantText={lastAssistantMessage}
+        suggestions={SUGGESTIONS.map((s) => ({ label: s, prompt: s }))}
+      />
     </div>
   );
 }

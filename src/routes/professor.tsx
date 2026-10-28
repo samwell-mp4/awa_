@@ -28,6 +28,9 @@ import logoSrc from "@/assets/awa-tech-logo.png";
 import { CaptionPlayer } from "@/components/CaptionPlayer";
 import { transcribeAudio } from "@/lib/transcribe.functions";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
+import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
+import { GptVoiceModal } from "@/components/chat/GptVoiceModal";
+import { Headphones } from "lucide-react";
 
 
 export const Route = createFileRoute("/professor")({
@@ -284,7 +287,22 @@ function ProfessorPage() {
   const [voiceState, setVoiceState] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
   const [voicePaused, setVoicePaused] = useState(false);
   const [micReady, setMicReady] = useState(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
   useEffect(() => setMicReady(isRecordingSupported()), []);
+
+  const lastUserMessage = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "user") return messages[i].content;
+    }
+    return undefined;
+  }, [messages]);
+
+  const lastAssistantMessage = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "assistant") return messages[i].content;
+    }
+    return undefined;
+  }, [messages]);
 
   function pauseVoice() {
     currentAudioRef.current?.pause();
@@ -300,6 +318,7 @@ function ProfessorPage() {
     currentAudioRef.current?.pause();
     setVoicePaused(false);
     setActiveAssistantAudio(null);
+    setAudioBusyKey(null);
     setVoiceState("idle");
   }
 
@@ -412,6 +431,7 @@ function ProfessorPage() {
       const r = await speak({ data: { text: clean, environment: getPaddleEnvironment(), lang, area: "adulto" } });
       if (r.error || !r.audio_base64) {
         if (voiceMode) setVoiceState("idle");
+        setAudioBusyKey(null);
         return;
       }
 
@@ -420,24 +440,33 @@ function ProfessorPage() {
       audio.src = url;
       currentAudioRef.current = audio;
       setActiveAssistantAudio(audio);
+      setAudioBusyKey("full");
 
       if (voiceMode) {
         setVoicePaused(false);
         setVoiceState("speaking");
-        audio.onended = () => setVoiceState("idle");
+        audio.onended = () => {
+          setVoiceState("idle");
+          setAudioBusyKey(null);
+        };
+      } else {
+        audio.onended = () => {
+          setAudioBusyKey(null);
+          setActiveAssistantAudio(null);
+        };
       }
 
-      // Sincronização de legendas (opcional para o professor, mas garantindo que o áudio toque)
       await audio.play().catch(() => {});
 
-      // Em modo voz o usuário controla com pausar/continuar, sem parar ao tocar na tela.
       if (voiceMode) return;
       const stopHandler = () => {
         audio.pause();
+        setAudioBusyKey(null);
         window.removeEventListener("pointerdown", stopHandler);
       };
       window.addEventListener("pointerdown", stopHandler, { once: true });
     } catch {
+      setAudioBusyKey(null);
       if (voiceMode) setVoiceState("idle");
     }
   }
@@ -469,6 +498,7 @@ function ProfessorPage() {
     currentAudioRef.current?.pause();
     setActiveAssistantAudio(null);
     setVoicePaused(false);
+    setAudioBusyKey(null);
     setVoiceState("idle");
     setMessages([]);
     setInput("");
@@ -516,85 +546,252 @@ function ProfessorPage() {
             </div>
           </div>
 
-          <button
-            onClick={resetConversation}
-            disabled={isEmpty && !loading}
-            className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40"
-            title={t.newChat}
-          >
-            <RefreshCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{t.newChat}</span>
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Quick ChatGPT Voice Mode Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsVoiceModalOpen(true);
+                if (!recorder.isRecording && voiceState === "idle") {
+                  void handleMic();
+                }
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-sky-400/40 bg-sky-500/15 px-3 py-1.5 text-xs font-black text-sky-200 hover:bg-sky-500/25 transition shadow-sm active:scale-95"
+              title="Abrir Modo Voz ChatGPT"
+            >
+              <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
+              <span className="hidden sm:inline font-sans">Modo Voz GPT</span>
+            </button>
+
+            <button
+              onClick={resetConversation}
+              disabled={isEmpty && !loading}
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-card/50 px-3 py-1.5 text-[11px] font-bold text-foreground/80 transition hover:border-gold/60 hover:bg-card/70 hover:text-cream disabled:opacity-40"
+              title={t.newChat}
+            >
+              <RefreshCcw className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{t.newChat}</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto w-full max-w-3xl px-4 pb-72 pt-6 md:px-8">
-        <div className="space-y-5">
-          {messages.map((m, i) => (
-            <Bubble
-              key={i}
-              msg={m}
-              isLast={i === messages.length - 1}
-              activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
-              onToggleAudio={toggleAudio}
-            />
-          ))}
-          {loading && <TypingIndicator />}
-          <div ref={endRef} />
-        </div>
+      <main className="flex-1 mx-auto w-full max-w-3xl px-4 pb-44 pt-6 md:px-8">
+        {isEmpty ? (
+          <div className="flex flex-col items-center text-center py-6 sm:py-10 animate-in fade-in duration-500">
+            {/* Big ChatGPT Rotating Fluid Orb */}
+            <div className="relative mb-6">
+              <GptVoiceOrb
+                size="md"
+                state={voiceState}
+                theme="gpt-blue"
+                onClick={() => {
+                  setIsVoiceModalOpen(true);
+                  if (!recorder.isRecording && voiceState === "idle") {
+                    void handleMic();
+                  }
+                }}
+              />
+            </div>
 
+            <h2 className="font-display text-xl sm:text-2xl font-black text-cream">
+              {t.heroBadge}
+            </h2>
+            <p className="mt-2 max-w-md text-xs sm:text-sm text-cream/70 leading-relaxed">
+              Mestre virtual de Patxôhã. Converse por voz em tempo real como no ChatGPT ou digite sua dúvida abaixo.
+            </p>
+
+            {/* Launch Voice Mode Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsVoiceModalOpen(true);
+                if (!recorder.isRecording && voiceState === "idle") {
+                  void handleMic();
+                }
+              }}
+              className="mt-6 inline-flex items-center gap-3 rounded-full border border-sky-400/50 bg-gradient-to-r from-sky-500/25 via-blue-600/35 to-sky-500/25 px-6 py-3.5 text-sm font-black text-white shadow-lg shadow-sky-500/20 hover:border-sky-300 hover:brightness-110 active:scale-95 transition cursor-pointer"
+            >
+              <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
+              <span>Entrar no Modo Voz ChatGPT</span>
+            </button>
+
+            {/* Suggestion Prompts */}
+            <div className="mt-8 w-full max-w-lg">
+              <div className="text-xs font-bold uppercase tracking-wider text-gold/80 mb-3">
+                {t.suggestionsTitle}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+                {t.suggestions.map((s, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => void send(s.prompt, false)}
+                    className="rounded-2xl border border-gold/25 bg-card/60 p-3 hover:border-gold/60 hover:bg-card/90 transition text-xs font-medium text-cream/90 shadow-sm flex flex-col gap-1 active:scale-[0.98] cursor-pointer"
+                  >
+                    <span className="font-bold text-gold text-[11px] uppercase">✨ {s.label}</span>
+                    <span className="line-clamp-2 text-foreground/80">{s.prompt}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {messages.map((m, i) => (
+              <Bubble
+                key={i}
+                msg={m}
+                isLast={i === messages.length - 1}
+                activeAudio={i === messages.length - 1 && m.role === "assistant" ? activeAssistantAudio : null}
+                activeBusyKey={audioBusyKey}
+                onToggleAudio={toggleAudio}
+              />
+            ))}
+            {loading && <TypingIndicator />}
+            <div ref={endRef} />
+          </div>
+        )}
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.96)] px-4 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-3">
-          <p className="text-center text-xs font-bold uppercase text-gold/80" aria-live="polite">
-            {voiceState === "listening"
-              ? v.listening
-              : voiceState === "thinking"
-                ? v.thinking
-                : voiceState === "speaking"
-                  ? v.speaking
-                  : v.invite}
-          </p>
+      {/* ChatGPT-Style Fixed Bottom Dock */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold/20 bg-[oklch(0.16_0.04_145/0.96)] px-3 sm:px-6 pb-4 pt-3 shadow-[0_-12px_40px_-16px_rgba(0,0,0,0.7)] backdrop-blur-xl pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="mx-auto flex max-w-3xl flex-col gap-2.5">
+          {/* Status bar if speaking or recording */}
+          {(voiceState !== "idle" || recorder.isRecording) && (
+            <div className="flex items-center justify-between px-2 text-xs font-bold animate-in fade-in">
+              <span className="text-gold/90 flex items-center gap-2" aria-live="polite">
+                <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
+                <span>
+                  {voiceState === "listening"
+                    ? v.listening
+                    : voiceState === "thinking"
+                    ? v.thinking
+                    : voiceState === "speaking"
+                    ? v.speaking
+                    : v.invite}
+                </span>
+              </span>
 
-          <button
-            type="button"
-            onClick={handleMic}
-            disabled={loading || voiceState === "thinking"}
-            className={`flex w-full max-w-sm items-center justify-center gap-3 rounded-2xl border px-6 py-4 text-base font-black uppercase transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 ${
-              recorder.isRecording
-                ? "border-rose-400/60 bg-rose-500/25 text-rose-100 shadow-lg shadow-rose-500/20 animate-pulse"
-                : "border-gold/50 bg-gold text-forest-deep shadow-lg shadow-gold/20 hover:brightness-110"
-            }`}
-            aria-label={recorder.isRecording ? v.stopRec : v.talk}
-            title={recorder.isRecording ? v.stopRec : v.talk}
-          >
-            {recorder.isRecording ? <Square className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
-            {recorder.isRecording ? v.stopRec : v.talk}
-          </button>
-
-          {voiceState === "speaking" && (
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={voicePaused ? resumeVoice : pauseVoice}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-gold/30 bg-card/70 px-4 py-2 text-xs font-bold text-foreground/85"
-              >
-                {voicePaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
-                {voicePaused ? v.resume : v.pause}
-              </button>
-              <button
-                type="button"
-                onClick={stopVoice}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-400/40 bg-rose-500/15 px-4 py-2 text-xs font-bold text-rose-200"
-              >
-                <Square className="h-4 w-4" /> {v.stopVoice}
-              </button>
+              {voiceState === "speaking" && (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={voicePaused ? resumeVoice : pauseVoice}
+                    className="text-xs font-bold text-cream hover:underline cursor-pointer"
+                  >
+                    {voicePaused ? v.resume : v.pause}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={stopVoice}
+                    className="text-xs font-bold text-rose-300 hover:underline cursor-pointer"
+                  >
+                    {v.stopVoice}
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
+          {/* ChatGPT-Style Input Bar */}
+          <div className="flex items-end gap-2">
+            {/* Dedicated ChatGPT Voice Mode Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsVoiceModalOpen(true);
+                if (!recorder.isRecording && voiceState === "idle") {
+                  void handleMic();
+                }
+              }}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-sky-400/40 bg-sky-500/15 text-sky-200 hover:bg-sky-500/30 transition shadow-md active:scale-95 cursor-pointer"
+              title="Abrir Modo Voz ChatGPT (Tela Cheia)"
+              aria-label="Abrir Modo Voz ChatGPT"
+            >
+              <GptVoiceOrb size="xs" state={voiceState} theme="gpt-blue" showRipple={false} />
+            </button>
+
+            {/* Auto-resizing textarea */}
+            <div className="relative flex-1 min-w-0">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    void send(input, false);
+                  }
+                }}
+                rows={1}
+                placeholder={t.placeholder}
+                disabled={loading}
+                className="w-full resize-none rounded-2xl border border-gold/30 bg-card/70 px-4 py-3 text-sm text-cream placeholder:text-foreground/45 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 disabled:opacity-50 transition max-h-36 leading-relaxed"
+              />
+            </div>
+
+            {/* Quick Mic recording toggle */}
+            <button
+              type="button"
+              onClick={handleMic}
+              disabled={loading || voiceState === "thinking"}
+              className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition active:scale-95 disabled:opacity-40 cursor-pointer ${
+                recorder.isRecording
+                  ? "border-rose-400/60 bg-rose-500 text-white shadow-lg shadow-rose-500/30 animate-pulse"
+                  : "border-gold/40 bg-card/70 text-gold hover:border-gold hover:bg-card"
+              }`}
+              title={recorder.isRecording ? v.stopRec : v.talk}
+              aria-label={recorder.isRecording ? v.stopRec : v.talk}
+            >
+              {recorder.isRecording ? (
+                <Square className="h-5 w-5 fill-current" />
+              ) : (
+                <Mic className="h-5 w-5" />
+              )}
+            </button>
+
+            {/* Send button */}
+            <button
+              type="button"
+              onClick={() => void send(input, false)}
+              disabled={!input.trim() || loading}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-r from-gold to-amber-500 text-forest-deep shadow-md font-bold transition hover:brightness-110 active:scale-95 disabled:opacity-40 cursor-pointer"
+              title={t.send}
+              aria-label={t.send}
+            >
+              {loading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Fullscreen ChatGPT Voice Mode Modal with Fluid Spinning Orb */}
+      <GptVoiceModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => {
+          setIsVoiceModalOpen(false);
+          if (recorder.isRecording) recorder.cancel();
+        }}
+        title="Professor Akuã"
+        subtitle="Mestre de Patxôhã"
+        theme="adulto"
+        voiceState={voiceState}
+        voicePaused={voicePaused}
+        isRecording={recorder.isRecording}
+        onToggleMic={handleMic}
+        onPauseVoice={pauseVoice}
+        onResumeVoice={resumeVoice}
+        onStopVoice={stopVoice}
+        onSendMessage={(txt) => void send(txt, true)}
+        lastUserText={lastUserMessage}
+        lastAssistantText={lastAssistantMessage}
+        suggestions={t.suggestions}
+      />
     </div>
   );
 }
@@ -692,11 +889,13 @@ function Bubble({
   msg, 
   isLast, 
   activeAudio, 
+  activeBusyKey,
   onToggleAudio 
 }: { 
   msg: Msg; 
   isLast: boolean; 
   activeAudio?: HTMLAudioElement | null;
+  activeBusyKey?: string | null;
   onToggleAudio?: (text: string, key: string) => void;
 }) {
   const lang = useLang();
@@ -730,8 +929,6 @@ function Bubble({
       audioRef.current = audio;
       await audio.play();
 
-
-      // Permite parar o áudio ao clicar na tela
       const stopHandler = () => {
         audio.pause();
         window.removeEventListener("pointerdown", stopHandler);
@@ -756,6 +953,7 @@ function Bubble({
   }
 
   const time = msg.at ? new Date(msg.at).toLocaleTimeString(t.localeTime, { hour: "2-digit", minute: "2-digit" }) : "";
+  const isFullPlaying = audioBusy === "full" || (isLast && activeBusyKey === "full");
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -778,13 +976,17 @@ function Bubble({
 
             {blocks.map((b, i) => {
               if (b.type === "paragraph") {
+                const pKey = `p${i}`;
+                const isPPlaying = audioBusy === pKey || activeBusyKey === pKey;
                 return (
                   <p 
                     key={i} 
-                    className="whitespace-pre-wrap cursor-pointer hover:text-gold transition-colors"
-                    onClick={() => playText(b.text.replace(/\*\*/g, ""), `p${i}`)}
+                    className={`whitespace-pre-wrap cursor-pointer transition-colors ${
+                      isPPlaying ? "text-gold font-semibold underline decoration-gold/40" : "hover:text-gold"
+                    }`}
+                    onClick={() => playText(b.text.replace(/\*\*/g, ""), pKey)}
                   >
-                    {renderInline(b.text, `p${i}`)}
+                    {renderInline(b.text, pKey)}
                   </p>
                 );
               }
@@ -802,6 +1004,7 @@ function Bubble({
               }
               // example
               const key = `ex-${i}`;
+              const isKeyPlaying = audioBusy === key || activeBusyKey === key;
               return (
                 <div key={i} className="my-1 rounded-xl border border-gold/30 bg-forest-deep/50 px-3 py-2">
                   <div className="flex items-start justify-between gap-2">
@@ -814,13 +1017,12 @@ function Bubble({
                       <div className="font-display text-base font-black text-gold group-hover:underline decoration-gold/30 underline-offset-4">
                         {b.pat}
                       </div>
-                      <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30">
-                        {audioBusy === key ? (
-                          <VolumeX className="h-3.5 w-3.5 animate-pulse" />
+                      <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30 overflow-hidden">
+                        {isKeyPlaying ? (
+                          <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
                         ) : (
                           <Volume2 className="h-3.5 w-3.5" />
                         )}
-
                       </div>
                     </button>
                   </div>
@@ -860,17 +1062,23 @@ function Bubble({
                   <button
                     onClick={() => playText(msg.content.replace(/\|\|\s*(📖|⚠)[^\[]*\[\/ex\]/g, "[/ex]").replace(/\[\/?ex\]/g, "").replace(/\|\|/g, ", ").replace(/\*\*/g, ""), "full")}
                     disabled={audioBusy === "full" && !onToggleAudio}
-                    className="inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-card/60 hover:text-foreground/70 transition disabled:opacity-50"
+                    className={`inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 transition disabled:opacity-50 ${
+                      isFullPlaying ? "bg-sky-500/20 text-sky-300 font-bold" : "hover:bg-card/60 hover:text-foreground/70"
+                    }`}
                     aria-label={t.listen}
                     title={t.listen}
                   >
-                    {audioBusy === "full" ? (
-                      <VolumeX className="h-3 w-3 animate-pulse" />
+                    {isFullPlaying ? (
+                      <>
+                        <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
+                        <span className="animate-pulse">Reproduzindo...</span>
+                      </>
                     ) : (
-                      <Volume2 className="h-3 w-3" />
+                      <>
+                        <Volume2 className="h-3 w-3" />
+                        <span>{t.listen}</span>
+                      </>
                     )}
-
-                    {t.listen}
                   </button>
                 </>
               )}
