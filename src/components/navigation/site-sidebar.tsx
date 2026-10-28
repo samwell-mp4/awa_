@@ -164,9 +164,7 @@ export function SiteSidebar() {
       items: [
         { label: "Início", href: "/adulto", icon: Home },
         { label: "Trilhas de Estudo", href: "/trilhas", icon: Compass },
-        { label: "Dicionário Patxôhã", href: "/dicionario", icon: Library },
-        { label: "Tradutor Patxôhã", href: "/traduzir", icon: Languages },
-        { label: "Espaço do Professor", href: "/professor", icon: Sparkles },
+        { label: "Professor Akuã", href: "/professor", icon: GraduationCap },
         { label: "Saudações", href: "/saudacoes", icon: Sun },
         { label: "Aprender Números", href: "/aprender-numeros", icon: Sparkles, search: { area: "adulto" } },
       ],

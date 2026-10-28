@@ -47,8 +47,8 @@ export function MobileBottomNav() {
       ]
     : [
         { label: "Início", to: "/adulto", icon: Home },
-        { label: "Dicionário", to: "/dicionario", icon: BookOpen },
         { label: "Trilhas", to: "/trilhas", icon: Compass },
+        { label: "Músicas", to: "/musicas", icon: Music },
         { label: "Cultura", to: "/aldeia-velha", icon: TreePine },
         { label: "Professor", to: "/professor", icon: GraduationCap },
       ];
@@ -69,7 +69,7 @@ export function MobileBottomNav() {
             pathname === item.to ||
             (item.to === "/trilhas-infantil" && (pathname.startsWith("/trilhas-infantil") || (pathname.startsWith("/trilhas") && isInfantil))) ||
             (item.to === "/trilhas" && pathname.startsWith("/trilhas") && !isInfantil) ||
-            (item.to === "/dicionario" && pathname.startsWith("/dicionario"));
+            (item.to === "/musicas" && pathname.startsWith("/musicas"));
 
           return (
             <Link
