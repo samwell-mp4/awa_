@@ -326,14 +326,6 @@ function MobileDrawer({
                 <span className="flex-1">Vídeos & Aulas</span>
               </Link>
 
-              <Link
-                to="/aldeia-velha"
-                onClick={onClose}
-                className="flex items-center gap-3 rounded-xl border border-[#8d5b2d]/40 bg-[#351d0d]/80 px-3.5 py-2.5 text-sm font-bold text-[#fefae0] shadow transition hover:border-[#ffd166] hover:bg-[#432512]"
-              >
-                <span className="text-xl">🛖</span>
-                <span className="flex-1">Aldeia Velha</span>
-              </Link>
 
               <Link
                 to="/minha-conta"

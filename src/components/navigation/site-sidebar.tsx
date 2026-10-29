@@ -176,8 +176,6 @@ export function SiteSidebar() {
         { label: "Músicas & Cânticos", href: "/musicas", icon: Play },
         { label: "Vídeos & Registros", href: "/videos", icon: Video },
         { label: "Jogos Culturais", href: "/jogos", icon: Gamepad2 },
-        { label: "Aldeia Velha", href: "/aldeia-velha", icon: TreePine },
-        { label: "Intercâmbio Cultural", href: "/intercambio", icon: Globe },
       ],
     },
     {

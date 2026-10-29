@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPaddleEnvironment } from "@/lib/paddle";
 import { setLastArea } from "@/lib/last-area";
 
+import { BilingualVideoCard } from "@/components/home/bilingual-video-card";
 import { ContinueLearningCard } from "@/components/home/continue-learning";
 import { DailyMissionCard } from "@/components/home/daily-mission-card";
 import { GreetingOfMoment } from "@/components/home/greeting-of-moment";
@@ -76,6 +77,7 @@ function AdultoHome() {
           <HeroSection />
           <GreetingOfMoment />
           <ContinueLearningCard />
+          <BilingualVideoCard />
         </ErrorBoundary>
 
         <div className="content-visibility-auto">
