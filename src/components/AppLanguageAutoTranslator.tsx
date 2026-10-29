@@ -2,140 +2,106 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { translateI18n } from "@/lib/i18n-translate.functions";
 
-const LS_PREFIX = "awa_i18n_dom_";
+const LS_PREFIX = "awa_i18n_dom_v4_";
 const ORIGINAL_TEXT = new WeakMap<Text, string>();
 const ORIGINAL_ATTR = new WeakMap<Element, Record<string, string>>();
 const PENDING = new Set<string>();
 
-const SKIP_SELECTOR = [
-  "script",
-  "style",
-  "noscript",
-  "svg",
-  "canvas",
-  "code",
-  "pre",
-  "textarea",
-  "select",
-  "[contenteditable='true']",
-  "[data-no-auto-translate]",
-].join(",");
+const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "SVG", "CANVAS", "CODE", "PRE"]);
 
-const COMMON_PORTUGUESE_WORDS = new Set([
-  "abaixo",
-  "abrindo",
-  "assinaturas",
-  "cobrado",
-  "contrate",
-  "duas",
-  "economize",
-  "equivale",
-  "escolha",
-  "independentes",
-  "libera",
-  "liberado",
-  "meses",
-  "melhor",
-  "necessária",
-  "outro",
-  "pagamento",
-  "requer",
-  "separada",
-  "usada",
-  "valor",
-  "acesso",
-  "alterar",
-  "aparelhos",
-  "aplicadas",
-  "aprenda",
-  "aprendidas",
-  "aprendizado",
-  "assinar",
-  "assinatura",
-  "automaticamente",
-  "baixar",
-  "biografia",
-  "cadastro",
-  "cadastrar",
-  "cancelar",
-  "carregando",
-  "cancele",
-  "canto",
-  "celular",
-  "completo",
-  "concorda",
-  "confirmar",
-  "conhecer",
-  "conta",
-  "conteúdo",
-  "continue",
-  "criar",
-  "dados",
-  "dicionário",
-  "digite",
-  "enviamos",
-  "enviando",
-  "enviar",
-  "entrar",
-  "existente",
-  "família",
-  "grátis",
-  "gratuito",
-  "histórias",
-  "início",
-  "informe",
-  "instalar",
-  "jogos",
-  "lacuna",
-  "lembrar",
-  "mensagem",
-  "mensal",
-  "músicas",
-  "natureza",
-  "nome",
-  "nunca",
-  "palavras",
-  "planos",
-  "podem",
-  "política",
-  "pontos",
-  "português",
-  "privacidade",
-  "professor",
-  "progresso",
-  "publicamos",
-  "quem",
-  "recebido",
-  "reembolso",
-  "reenviar",
-  "renova",
-  "salvar",
-  "salvo",
-  "seguro",
-  "semestral",
-  "senha",
-  "somos",
-  "sua",
-  "tarifas",
-  "termos",
-  "todos",
-  "tradutor",
-  "trilhas",
-  "válido",
-  "verificando",
-  "vídeos",
-  "voltar",
-  "um",
-  "dois",
-  "três",
-  "quatro",
-  "cinco",
-  "seis",
-  "sete",
-  "oito",
-  "nove",
-  "dez",
+const SKIP_EXACT = new Set([
+  "awã tech",
+  "awa tech",
+  "awã",
+  "awa",
+  "akuã",
+  "akua",
+  "patxôhã",
+  "patxoha",
+  "pataxó",
+  "pataxo",
 ]);
+
+const STATIC_DICT: Record<string, Record<string, string>> = {
+  en: {
+    "Início": "Home",
+    "Trilhas": "Trails",
+    "Trilhas de Estudo": "Study Trails",
+    "Músicas": "Songs",
+    "Músicas & Cânticos": "Songs & Chants",
+    "Histórias": "Stories",
+    "Histórias Ancestrais": "Ancestral Stories",
+    "Jogos": "Games",
+    "Jogos Culturais": "Cultural Games",
+    "Números": "Numbers",
+    "Aprender Números": "Learn Numbers",
+    "Amizade Awã": "Awã Friendship",
+    "Professor Awã": "Professor Awã",
+    "Professor Akuã": "Professor Akuã",
+    "Meu Progresso": "My Progress",
+    "Meu Aprendizado": "My Learning",
+    "Conquistas": "Achievements",
+    "Língua & Conhecimento": "Language & Knowledge",
+    "Cultura & Tradição": "Culture & Tradition",
+    "Minha Conta & App": "My Account & App",
+    "Planos & Assinatura": "Plans & Subscription",
+    "Minha Conta": "My Account",
+    "Instalar App": "Install App",
+    "Painel Admin": "Admin Panel",
+    "Painel Administrativo": "Admin Panel",
+    "Sair": "Sign out",
+    "Sair da conta": "Sign out",
+    "Entrar": "Sign in",
+    "Cadastrar": "Register",
+    "Membro Awã": "Awã Member",
+    "Ler História": "Read Story",
+    "3 min de leitura": "3 min read",
+    "Guardião da memória": "Guardian of memory",
+    "Vídeo Bilíngue": "Bilingual Video",
+    "Saudações": "Greetings",
+    "Voltar": "Back",
+    "Aprender": "Learn",
+  },
+  es: {
+    "Início": "Inicio",
+    "Trilhas": "Senderos",
+    "Trilhas de Estudo": "Senderos de Estudio",
+    "Músicas": "Canciones",
+    "Músicas & Cânticos": "Canciones y Cantos",
+    "Histórias": "Historias",
+    "Histórias Ancestrais": "Historias Ancestrales",
+    "Jogos": "Juegos",
+    "Jogos Culturais": "Juegos Culturales",
+    "Números": "Números",
+    "Aprender Números": "Aprender Números",
+    "Amizade Awã": "Amistad Awã",
+    "Professor Awã": "Profesor Awã",
+    "Professor Akuã": "Profesor Akuã",
+    "Meu Progresso": "Mi Progreso",
+    "Meu Aprendizado": "Mi Aprendizaje",
+    "Conquistas": "Logros",
+    "Língua & Conhecimento": "Lengua y Conocimiento",
+    "Cultura & Tradição": "Cultura y Tradición",
+    "Minha Conta & App": "Mi Cuenta y App",
+    "Planos & Assinatura": "Planes y Suscripción",
+    "Minha Conta": "Mi Cuenta",
+    "Instalar App": "Instalar App",
+    "Painel Admin": "Panel Admin",
+    "Painel Administrativo": "Panel Administrativo",
+    "Sair": "Cerrar sesión",
+    "Sair da conta": "Cerrar sesión",
+    "Entrar": "Iniciar sesión",
+    "Cadastrar": "Registrarse",
+    "Membro Awã": "Miembro Awã",
+    "Ler História": "Leer Historia",
+    "3 min de leitura": "3 min de lectura",
+    "Guardião da memória": "Guardián de la memoria",
+    "Vídeo Bilíngue": "Video Bilingüe",
+    "Saudações": "Saludos",
+    "Voltar": "Volver",
+    "Aprender": "Aprender",
+  },
+};
 
 function cacheKey(lang: string) {
   return LS_PREFIX + lang;
@@ -167,27 +133,31 @@ function cleanTranslation(value: string) {
   return value.replace(/^\s*\d+[.)]\s*/, "").trim();
 }
 
-function hasPortugueseSignal(text: string) {
-  const normalized = text.trim().toLowerCase();
-  if (!normalized || normalized.length < 2) return false;
-  if (/^(awã tech|akuã|akuá!?|patxôhã|pataxó|premium|android|iphone|pwa)$/i.test(normalized)) {
-    return false;
-  }
-  if (/[áàâãéêíóôõúç]/i.test(normalized)) return true;
-  const words = normalized.match(/[a-záàâãéêíóôõúç]+/gi) ?? [];
-  return words.some((word) => COMMON_PORTUGUESE_WORDS.has(word));
-}
-
-function shouldTranslateText(text: string) {
+function shouldTranslateText(text: string): boolean {
   const core = text.trim();
-  if (!core || core.length > 1200) return false;
+  if (!core || core.length < 2 || core.length > 2500) return false;
+  // Must contain at least one unicode letter
   if (!/[\p{L}]/u.test(core)) return false;
-  return hasPortugueseSignal(core);
+  // Skip pure numbers, times, percentages, versions (e.g. "12:30", "1.0.0", "100%", "2026")
+  if (/^[\d\s:.,/\\#%+-]+$/.test(core)) return false;
+  // Skip pure URLs or file paths or emails
+  if (/^(https?:\/\/|\/api\/|mailto:|[\w.-]+@[\w.-]+\.\w+)/i.test(core)) return false;
+  // Skip exact brand / indigenous names if standing completely on their own
+  if (SKIP_EXACT.has(core.toLowerCase())) return false;
+  return true;
 }
 
 function shouldSkipNode(node: Node) {
   const parent = node.parentElement;
-  return !parent || Boolean(parent.closest(SKIP_SELECTOR));
+  if (!parent) return true;
+  if (parent.closest("[data-no-auto-translate]")) return true;
+  let curr: HTMLElement | null = parent;
+  while (curr && curr !== document.body) {
+    if (SKIP_TAGS.has(curr.tagName)) return true;
+    if (curr.getAttribute("contenteditable") === "true") return true;
+    curr = curr.parentElement;
+  }
+  return false;
 }
 
 function collectTextNodes(root: ParentNode) {
@@ -211,7 +181,7 @@ function collectAttributeNodes(root: ParentNode) {
   const targets: { element: Element; attr: "placeholder" | "aria-label" | "title"; original: string }[] = [];
   const elements = Array.from(root.querySelectorAll("input, textarea, button, a, [title], [aria-label]"));
   elements.forEach((element) => {
-    if (element.closest(SKIP_SELECTOR)) return;
+    if (element.closest("[data-no-auto-translate], script, style, svg")) return;
     (["placeholder", "aria-label", "title"] as const).forEach((attr) => {
       const value = element.getAttribute(attr);
       if (!value) return;
@@ -230,6 +200,23 @@ export function AppLanguageAutoTranslator() {
   const timeoutRef = useRef<number | null>(null);
 
   langRef.current = lang;
+
+  // Clean up legacy broken caches on startup
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const k = window.localStorage.key(i);
+        if (k && (k === "awa_i18n_dom_en" || k === "awa_i18n_dom_es" || k.startsWith("awa_i18n_dom_pt"))) {
+          keysToRemove.push(k);
+        }
+      }
+      keysToRemove.forEach((k) => window.localStorage.removeItem(k));
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -264,29 +251,36 @@ export function AppLanguageAutoTranslator() {
       }
 
       const cache = loadCache(lang);
+      const staticEntries = STATIC_DICT[lang] || {};
+      const mergedCache = { ...staticEntries, ...cache };
+
       const sources = Array.from(
         new Set([
           ...textNodes.map((node) => ORIGINAL_TEXT.get(node) ?? node.nodeValue ?? ""),
           ...attrTargets.map((target) => target.original),
         ].map((text) => text.trim()).filter((text) => text && shouldTranslateText(text))),
       );
-      const missing = sources.filter((source) => !(source in cache) && !PENDING.has(`${lang}\u0001${source}`));
 
       const apply = (dict: Record<string, string>) => {
         if (id !== runId.current || langRef.current !== lang) return;
         textNodes.forEach((node) => {
           const original = ORIGINAL_TEXT.get(node) ?? node.nodeValue ?? "";
           const { prefix, core, suffix } = splitWhitespace(original);
-          const translated = dict[core];
+          const translated = dict[core] || staticEntries[core];
           if (translated) node.nodeValue = `${prefix}${cleanTranslation(translated)}${suffix}`;
         });
         attrTargets.forEach(({ element, attr, original }) => {
-          const translated = dict[original.trim()];
+          const core = original.trim();
+          const translated = dict[core] || staticEntries[core];
           if (translated) element.setAttribute(attr, cleanTranslation(translated));
         });
       };
 
-      apply(cache);
+      // Apply static dictionary and current cache immediately
+      apply(mergedCache);
+
+      // Find any texts still missing from cache
+      const missing = sources.filter((source) => !(source in mergedCache) && !PENDING.has(`${lang}\u0001${source}`));
       if (missing.length === 0) return;
 
       missing.forEach((source) => PENDING.add(`${lang}\u0001${source}`));
@@ -296,11 +290,13 @@ export function AppLanguageAutoTranslator() {
           const next = { ...cache };
           missing.forEach((source, index) => {
             const value = res.translations?.[index];
-            next[source] = value || source;
+            if (value && value !== source) {
+              next[source] = value;
+            }
             PENDING.delete(`${lang}\u0001${source}`);
           });
           saveCache(lang, next);
-          apply(next);
+          apply({ ...mergedCache, ...next });
         })
         .catch(() => {
           missing.forEach((source) => PENDING.delete(`${lang}\u0001${source}`));
@@ -309,7 +305,7 @@ export function AppLanguageAutoTranslator() {
 
     const schedule = () => {
       if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
-      timeoutRef.current = window.setTimeout(translatePage, 120);
+      timeoutRef.current = window.setTimeout(translatePage, 100);
     };
 
     schedule();
@@ -317,7 +313,7 @@ export function AppLanguageAutoTranslator() {
       if (!mutations.some((mutation) => mutation.type === "childList")) return;
       schedule();
     });
-    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    observer.observe(root, { childList: true, subtree: true });
 
     return () => {
       runId.current += 1;
