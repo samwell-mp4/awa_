@@ -224,7 +224,9 @@ function speakWithBrowser(
       if (v) u.voice = v;
 
       activeUtterance = u;
-      (window as any).__awa_active_utterance = u;
+      if (typeof window !== "undefined") {
+        (window as any).__awa_active_utterance = u;
+      }
 
       let finished = false;
       const finish = () => {

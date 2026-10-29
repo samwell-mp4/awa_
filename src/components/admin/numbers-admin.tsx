@@ -226,9 +226,9 @@ function NumberAudioUpload({
           placeholder="https://..." 
           className="w-full"
         />
-        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10">
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition active:scale-95">
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Gravar/Enviar Áudio"}
+          {busy ? "Enviando arquivo..." : "Escolher Áudio do Computador"}
           <input
             type="file"
             accept={accept}
@@ -241,6 +241,9 @@ function NumberAudioUpload({
             }}
           />
         </label>
+        {value && (
+          <audio controls src={value} preload="metadata" className="h-8 w-full mt-1" />
+        )}
       </div>
     </Field>
   );

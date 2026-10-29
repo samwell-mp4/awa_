@@ -13,7 +13,6 @@ import { PremiumGate } from "@/components/PremiumGate";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 import { useBrowserSpeech, isBrowserSpeechSupported } from "@/lib/web-speech";
 import kidsCharacter from "@/assets/kids-menu-character.png";
-import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
 
 export const Route = createFileRoute("/professor-infantil")({
   ssr: false,
@@ -419,7 +418,11 @@ function ProfessorInfantilPage() {
                       >
                         {state === "speaking" ? (
                           <>
-                            <GptVoiceOrb size="xs" state="speaking" theme="kids-magic" showRipple={false} />
+                            <span className="flex items-center gap-0.5 h-3">
+                              <span className="w-0.5 bg-amber-950 rounded-full h-2 animate-[pulse_0.6s_ease-in-out_infinite]" />
+                              <span className="w-0.5 bg-amber-950 rounded-full h-3 animate-[pulse_0.8s_ease-in-out_infinite_0.15s]" />
+                              <span className="w-0.5 bg-amber-950 rounded-full h-2 animate-[pulse_0.5s_ease-in-out_infinite_0.3s]" />
+                            </span>
                             <span>Falando...</span>
                           </>
                         ) : (
@@ -443,55 +446,41 @@ function ProfessorInfantilPage() {
               <div ref={endRef} />
             </div>
           ) : (
-            /* Direct Voice Orb & Suggestions View (Welcome Screen) */
-            <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
-              {/* Central Fluid Rotating Orb */}
-              <div className="relative my-2 sm:my-4">
-                <GptVoiceOrb
-                  size="lg"
-                  state={state}
-                  theme="kids-magic"
-                  onClick={handleMic}
-                  showRipple={true}
-                />
-              </div>
-
-              {/* Status Indicator Pill */}
-              <div
-                className={`mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black transition-all ${
-                  state === "listening"
-                    ? "bg-rose-100 text-rose-700 border-2 border-rose-400 animate-pulse"
-                    : state === "thinking"
-                    ? "bg-amber-100 text-amber-900 border-2 border-amber-400"
-                    : state === "speaking"
-                    ? "bg-emerald-100 text-emerald-950 border-2 border-emerald-400"
-                    : "bg-white text-slate-800 border-2 border-amber-300 shadow-sm"
-                }`}
-              >
-                <span
-                  className={`h-2.5 w-2.5 rounded-full ${
-                    state === "listening"
-                      ? "bg-rose-500 animate-ping"
-                      : state === "thinking"
-                      ? "bg-amber-500 animate-spin"
-                      : state === "speaking"
-                      ? "bg-emerald-500 animate-pulse"
-                      : "bg-emerald-400"
-                  }`}
-                />
-                <span>
-                  {state === "listening"
-                    ? (browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : "🎙️ Ouvindo você falar...")
-                    : state === "thinking"
-                    ? "🧠 Pensando na resposta..."
-                    : state === "speaking"
-                    ? "🗣️ Professor Awã falando..."
-                    : "Toque no microfone para falar"}
-                </span>
-              </div>
+            /* Discrete Welcome Screen (sem bola gigante) */
+            <div className="flex-1 flex flex-col items-center justify-center my-auto py-4 sm:py-8">
+              {/* Indicador discreto apenas quando estiver falando, ouvindo ou pensando */}
+              {state === "speaking" && (
+                <div className="mb-4 inline-flex items-center gap-2.5 rounded-full border-2 border-emerald-400 bg-emerald-50 px-4 py-1.5 shadow-sm animate-pulse">
+                  <span className="flex items-center gap-1 h-3.5">
+                    <span className="w-1 bg-emerald-600 rounded-full h-2.5 animate-[pulse_0.6s_ease-in-out_infinite]" />
+                    <span className="w-1 bg-emerald-600 rounded-full h-4 animate-[pulse_0.8s_ease-in-out_infinite_0.15s]" />
+                    <span className="w-1 bg-emerald-600 rounded-full h-2 animate-[pulse_0.5s_ease-in-out_infinite_0.3s]" />
+                    <span className="w-1 bg-emerald-600 rounded-full h-3.5 animate-[pulse_0.7s_ease-in-out_infinite_0.1s]" />
+                  </span>
+                  <span className="text-xs font-black text-emerald-950">
+                    🗣️ Professor Awã falando...
+                  </span>
+                </div>
+              )}
+              {state === "listening" && (
+                <div className="mb-4 inline-flex items-center gap-2.5 rounded-full border-2 border-rose-400 bg-rose-50 px-4 py-1.5 shadow-sm animate-pulse">
+                  <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-ping" />
+                  <span className="text-xs font-black text-rose-950">
+                    {browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : "🎙️ Ouvindo você falar..."}
+                  </span>
+                </div>
+              )}
+              {state === "thinking" && (
+                <div className="mb-4 inline-flex items-center gap-2.5 rounded-full border-2 border-amber-400 bg-amber-50 px-4 py-1.5 shadow-sm">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-600" />
+                  <span className="text-xs font-black text-amber-950">
+                    🧠 Pensando na resposta...
+                  </span>
+                </div>
+              )}
 
               {/* Welcome Card and Suggestions */}
-              <div className="mt-5 w-full max-w-xl rounded-3xl border-3 border-amber-300 bg-gradient-to-r from-[#fffef5] to-[#fef7e6] p-5 shadow-lg text-center">
+              <div className="w-full max-w-xl rounded-3xl border-3 border-amber-300 bg-gradient-to-r from-[#fffef5] to-[#fef7e6] p-6 sm:p-7 shadow-lg text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <span className="text-3xl">🦜</span>
                   <h2 className="font-display text-base sm:text-lg font-black text-[#064e3b]">

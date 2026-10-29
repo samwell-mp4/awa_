@@ -159,10 +159,13 @@ function EntryRow({ entry }: { entry: Entry }) {
     qc.invalidateQueries({ queryKey: ["dictionary"] });
   }
   async function remove() {
-    if (!confirm("Excluir?")) return;
-    await supabase.from("dictionary").delete().eq("id", e.id);
+    if (!confirm(`Excluir a palavra "${e.term_indigenous}" (${e.term_pt})?`)) return;
+    const { error } = await supabase.from("dictionary").delete().eq("id", e.id);
+    if (error) return toast.error("Erro ao excluir: " + error.message);
+    toast.success("Palavra excluída com sucesso!");
     qc.invalidateQueries({ queryKey: ["dict_admin"] });
     qc.invalidateQueries({ queryKey: ["dictionary"] });
+    qc.invalidateQueries({ queryKey: ["trail_words"] });
   }
   return (
     <Card>
@@ -214,19 +217,33 @@ function UploadOrUrl({
   accept: string;
 }) {
   const [busy, setBusy] = useState(false);
+  const isAudio = accept.includes("audio");
+
   return (
     <Field label={label}>
       <div className="flex flex-col gap-2">
-        <Input 
-          className="w-full text-xs" 
-          value={value} 
-          onChange={e => onChange(e.target.value)} 
-          placeholder="https://..." 
-        />
-        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition">
+        <div className="flex gap-2 items-center">
+          <Input 
+            className="w-full text-xs" 
+            value={value} 
+            onChange={e => onChange(e.target.value)} 
+            placeholder="https://..." 
+          />
+          {value && (
+            <button
+              type="button"
+              onClick={() => onChange("")}
+              className="text-xs text-foreground/50 hover:text-destructive px-1.5 py-0.5 rounded"
+              title="Limpar campo"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition active:scale-95">
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Gravar/Enviar Arquivo"}
-          <input type="file" accept={accept} className="hidden" onChange={async e => {
+          {busy ? "Enviando arquivo..." : "Escolher Áudio do Computador"}
+          <input type="file" accept={accept} disabled={busy} className="hidden" onChange={async e => {
             const f = e.target.files?.[0];
             if (!f) return;
             setBusy(true);
@@ -238,6 +255,9 @@ function UploadOrUrl({
             }
           }} />
         </label>
+        {isAudio && value && (
+          <audio controls src={value} preload="metadata" className="h-8 w-full mt-1" />
+        )}
       </div>
     </Field>
   );

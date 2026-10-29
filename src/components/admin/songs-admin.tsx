@@ -616,21 +616,37 @@ function UploadOrUrl({
   accept: string;
   busy: boolean;
 }) {
+  const isAudio = accept.includes("audio");
+  const isImage = accept.includes("image");
+
   return (
     <Field label={label}>
       <div className="flex flex-col gap-2">
-        <Input 
-          value={value} 
-          onChange={(e) => onChange(e.target.value)} 
-          placeholder="https://..." 
-          className="w-full text-xs"
-        />
-        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition">
+        <div className="flex gap-2 items-center">
+          <Input 
+            value={value} 
+            onChange={(e) => onChange(e.target.value)} 
+            placeholder="https://..." 
+            className="w-full text-xs"
+          />
+          {value && (
+            <button
+              type="button"
+              onClick={() => onChange("")}
+              className="text-xs text-foreground/50 hover:text-destructive px-1.5 py-0.5 rounded"
+              title="Limpar campo"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition active:scale-95">
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Gravar/Enviar Arquivo"}
+          {busy ? "Enviando arquivo..." : isAudio ? "Escolher Áudio do Computador" : "Escolher Imagem do Computador"}
           <input
             type="file"
             accept={accept}
+            disabled={busy}
             className="hidden"
             onChange={async (e) => {
               const f = e.target.files?.[0];
@@ -639,6 +655,19 @@ function UploadOrUrl({
             }}
           />
         </label>
+        {isAudio && value && (
+          <audio controls src={value} preload="metadata" className="h-8 w-full mt-1" />
+        )}
+        {isImage && value && (
+          <img
+            src={value}
+            alt="Prévia"
+            className="h-12 w-12 rounded-lg object-cover border border-gold/20 mt-1"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = "none";
+            }}
+          />
+        )}
       </div>
     </Field>
   );
@@ -676,7 +705,7 @@ function SongRow({
   useEffect(() => setS(song), [song]);
 
 
-  async function handleUploadRow(songId: string, field: "cover_url", file: File) {
+  async function handleUploadRow(songId: string, field: "cover_url" | "audio_url", file: File) {
     if (field === "cover_url" && !permissions.edit_covers) {
       toast.error("Você não tem permissão para editar capas.");
       return;
@@ -684,9 +713,10 @@ function SongRow({
     const key = `row_${songId}_${field}`;
     setUploading(key);
     try {
-      const url = await uploadToSongs(file, "covers");
+      const prefix = field === "audio_url" ? "audio" : "covers";
+      const url = await uploadToSongs(file, prefix);
       setS(prev => ({ ...prev, [field]: url }));
-      toast.success("Imagem carregada!");
+      toast.success(field === "audio_url" ? "Áudio da música enviado com sucesso!" : "Capa da música carregada!");
     } catch (e: any) {
       toast.error("Erro no upload: " + e.message);
     } finally {
@@ -719,15 +749,16 @@ function SongRow({
       } as any)
       .eq("id", s.id);
     if (error) return toast.error(error.message);
-    toast.success("Salvo");
+    toast.success(`Música "${s.title}" salva com sucesso!`);
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
     qc.invalidateQueries({ queryKey: ["songs_public"] });
   }
 
   async function remove() {
-    if (!confirm("Apagar esta música?")) return;
+    if (!confirm(`Apagar a cantiga "${s.title}"?`)) return;
     const { error } = await supabase.from("songs").delete().eq("id", s.id);
     if (error) return toast.error(error.message);
+    toast.success(`Música "${s.title}" excluída com sucesso!`);
     qc.invalidateQueries({ queryKey: ["songs_admin"] });
     qc.invalidateQueries({ queryKey: ["songs_public"] });
   }
@@ -758,7 +789,14 @@ function SongRow({
             {ALDEIAS.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </Field>
-        <Field label="URL do Áudio"><Input value={s.audio_url} onChange={(e) => setS({ ...s, audio_url: e.target.value })} /></Field>
+        <UploadOrUrl
+          label="Áudio da Música (Upload MP3/WAV ou URL)"
+          value={s.audio_url}
+          onChange={(v) => setS({ ...s, audio_url: v })}
+          onFile={(f) => handleUploadRow(s.id, "audio_url", f)}
+          accept="audio/*"
+          busy={uploading === `row_${s.id}_audio_url`}
+        />
         <UploadOrUrl
           label="Capa da Música (Imagem)"
           value={s.cover_url ?? ""}

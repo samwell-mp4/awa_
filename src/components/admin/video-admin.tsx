@@ -52,6 +52,7 @@ export function VideoAdmin() {
       is_active: false,
     });
     if (error) return toast.error(error.message);
+    toast.success("Novo rascunho de vídeo criado!");
     qc.invalidateQueries({ queryKey: ["daily_video_all"] });
   }
 
@@ -83,10 +84,12 @@ function VideoRow({ video }: { video: Video }) {
     qc.invalidateQueries({ queryKey: ["daily_video"] });
   }
   async function remove() {
-    if (!confirm("Excluir?")) return;
+    if (!confirm(`Excluir o vídeo "${v.title}"?`)) return;
     const { error } = await supabase.from("daily_video").delete().eq("id", v.id);
     if (error) return toast.error(error.message);
+    toast.success(`Vídeo "${v.title}" excluído com sucesso!`);
     qc.invalidateQueries({ queryKey: ["daily_video_all"] });
+    qc.invalidateQueries({ queryKey: ["daily_video"] });
   }
   return (
     <Card>

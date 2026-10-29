@@ -388,10 +388,10 @@ function UploadOrUrl({
           onChange={e => onChange(e.target.value)} 
           placeholder="https://..." 
         />
-        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition">
+        <label className="inline-flex cursor-pointer items-center gap-2 self-start rounded-xl border border-gold/40 bg-card/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold/10 transition active:scale-95">
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          {busy ? "Enviando..." : "Gravar/Enviar Arquivo"}
-          <input type="file" accept={accept} className="hidden" onChange={async e => {
+          {busy ? "Enviando..." : accept.includes("image") ? "Escolher Imagem do Computador" : "Escolher Arquivo"}
+          <input type="file" accept={accept} disabled={busy} className="hidden" onChange={async e => {
             const f = e.target.files?.[0];
             if (!f) return;
             setBusy(true);
@@ -403,6 +403,19 @@ function UploadOrUrl({
             }
           }} />
         </label>
+        {accept.includes("image") && value && (
+          <img
+            src={value}
+            alt="Prévia"
+            className="h-14 w-14 rounded-lg object-cover border border-gold/20 mt-1"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = "none";
+            }}
+          />
+        )}
+        {accept.includes("audio") && value && (
+          <audio controls src={value} preload="metadata" className="h-8 w-full mt-1" />
+        )}
       </div>
     </Field>
   );

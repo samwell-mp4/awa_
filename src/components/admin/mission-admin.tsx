@@ -34,6 +34,7 @@ export function MissionAdmin() {
       is_active: false,
     });
     if (error) return toast.error(error.message);
+    toast.success("Nova missão criada com sucesso!");
     qc.invalidateQueries({ queryKey: ["missions_all"] });
   }
 
@@ -73,9 +74,12 @@ function MissionRow({ mission }: { mission: Mission }) {
     qc.invalidateQueries({ queryKey: ["daily_mission"] });
   }
   async function remove() {
-    if (!confirm("Excluir?")) return;
-    await supabase.from("daily_mission").delete().eq("id", m.id);
+    if (!confirm(`Excluir esta missão?`)) return;
+    const { error } = await supabase.from("daily_mission").delete().eq("id", m.id);
+    if (error) return toast.error(error.message);
+    toast.success("Missão excluída com sucesso!");
     qc.invalidateQueries({ queryKey: ["missions_all"] });
+    qc.invalidateQueries({ queryKey: ["daily_mission"] });
   }
 
   return (

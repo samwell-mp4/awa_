@@ -30,7 +30,6 @@ import { CaptionPlayer } from "@/components/CaptionPlayer";
 import { transcribeAudio } from "@/lib/transcribe.functions";
 import { useVoiceRecorder, isRecordingSupported } from "@/lib/voice-recorder";
 import { useBrowserSpeech, isBrowserSpeechSupported } from "@/lib/web-speech";
-import { GptVoiceOrb } from "@/components/chat/GptVoiceOrb";
 import { MessageSquare } from "lucide-react";
 
 
@@ -675,59 +674,55 @@ function ProfessorPage() {
             <div ref={endRef} />
           </div>
         ) : (
-          /* Initial Welcome & Voice Orb Screen with Suggestions */
-          <div className="flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-6">
-            {/* The Central Rotating Fluid Sphere */}
-            <div className="relative my-2 sm:my-4">
-              <GptVoiceOrb
-                size="lg"
-                state={voiceState}
-                theme="gpt-blue"
-                onClick={handleMic}
-                showRipple={true}
-              />
-            </div>
+          /* Initial Welcome & Suggestions Screen (sem bola gigante) */
+          <div className="flex-1 flex flex-col items-center justify-center my-auto py-4 sm:py-8">
+            <div className="w-full max-w-lg flex flex-col items-center text-center">
+              {/* Discrete Avatar & Speaking Pulse */}
+              <div className="relative mb-3">
+                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-gold/30 bg-gradient-to-br from-gold/20 via-forest-deep to-forest-dark shadow-[var(--shadow-glow)]">
+                  <Sparkles className="h-7 w-7 text-gold" />
+                </div>
+                {voiceState === "speaking" && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#0c141d]" />
+                  </span>
+                )}
+              </div>
 
-            {/* Status Indicator Pill */}
-            <div
-              className={`mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                voiceState === "listening"
-                  ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse"
-                  : voiceState === "thinking"
-                  ? "bg-sky-500/20 text-sky-300 border border-sky-400/30"
-                  : voiceState === "speaking"
-                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
-                  : "bg-white/10 text-white/80 border border-white/15"
-              }`}
-            >
-              <span
-                className={`h-2 w-2 rounded-full ${
-                  voiceState === "listening"
-                    ? "bg-rose-400 animate-ping"
-                    : voiceState === "thinking"
-                    ? "bg-sky-400 animate-spin"
-                    : voiceState === "speaking"
-                    ? "bg-emerald-400 animate-pulse"
-                    : "bg-sky-400"
-                }`}
-              />
-              <span>
-                {voiceState === "listening"
-                  ? (browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : v.listening)
-                  : voiceState === "thinking"
-                  ? v.thinking
-                  : voiceState === "speaking"
-                  ? v.speaking
-                  : "Toque no microfone para falar"}
-              </span>
-            </div>
-
-            {/* Empty state suggestions */}
-            <div className="mt-5 w-full max-w-lg flex flex-col items-center text-center">
-              <p className="text-xs sm:text-sm text-cream/70 max-w-sm leading-relaxed mb-4">
-                Kanhgág! Sou o Professor Akuã. Fale pelo microfone ou toque em uma das sugestões abaixo:
+              <h2 className="font-display text-lg sm:text-xl font-black text-cream">
+                Professor Akuã
+              </h2>
+              <p className="mt-1 text-xs sm:text-sm text-cream/70 max-w-md leading-relaxed">
+                Mestre virtual de Patxôhã. Digite sua dúvida abaixo, use o microfone ou escolha uma sugestão:
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
+
+              {/* Status Indicator Pill - Only when speaking, listening, or thinking */}
+              {voiceState === "speaking" && (
+                <div className="mt-3.5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-sm animate-pulse">
+                  <span className="flex items-center gap-1 h-3">
+                    <span className="w-1 bg-emerald-400 rounded-full h-2 animate-[pulse_0.6s_ease-in-out_infinite]" />
+                    <span className="w-1 bg-emerald-400 rounded-full h-3.5 animate-[pulse_0.8s_ease-in-out_infinite_0.15s]" />
+                    <span className="w-1 bg-emerald-400 rounded-full h-2 animate-[pulse_0.5s_ease-in-out_infinite_0.3s]" />
+                  </span>
+                  <span>🗣️ {v.speaking}</span>
+                </div>
+              )}
+              {voiceState === "listening" && (
+                <div className="mt-3.5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm animate-pulse">
+                  <span className="h-2 w-2 rounded-full bg-rose-400 animate-ping" />
+                  <span>{browserSpeech.interimTranscript ? `“${browserSpeech.interimTranscript}”` : `🎙️ ${v.listening}`}</span>
+                </div>
+              )}
+              {voiceState === "thinking" && (
+                <div className="mt-3.5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                  <Loader2 className="h-3 w-3 animate-spin text-sky-400" />
+                  <span>🧠 {v.thinking}</span>
+                </div>
+              )}
+
+              {/* Empty state suggestions */}
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
                 {t.suggestions.map((s, idx) => (
                   <button
                     key={idx}
@@ -1048,7 +1043,11 @@ function Bubble({
                       </div>
                       <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf/20 text-leaf transition group-hover:bg-leaf/30 overflow-hidden">
                         {isKeyPlaying ? (
-                          <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
+                          <span className="flex items-center gap-0.5 h-3">
+                            <span className="w-0.5 bg-leaf rounded-full h-2 animate-[pulse_0.6s_ease-in-out_infinite]" />
+                            <span className="w-0.5 bg-leaf rounded-full h-3 animate-[pulse_0.8s_ease-in-out_infinite_0.15s]" />
+                            <span className="w-0.5 bg-leaf rounded-full h-2 animate-[pulse_0.5s_ease-in-out_infinite_0.3s]" />
+                          </span>
                         ) : (
                           <Volume2 className="h-3.5 w-3.5" />
                         )}
@@ -1094,7 +1093,11 @@ function Bubble({
                   >
                     {isFullPlaying ? (
                       <>
-                        <GptVoiceOrb size="xs" state="speaking" theme="gpt-blue" showRipple={false} />
+                        <span className="flex items-center gap-0.5 h-3">
+                          <span className="w-0.5 bg-sky-300 rounded-full h-2 animate-[pulse_0.6s_ease-in-out_infinite]" />
+                          <span className="w-0.5 bg-sky-300 rounded-full h-3.5 animate-[pulse_0.8s_ease-in-out_infinite_0.15s]" />
+                          <span className="w-0.5 bg-sky-300 rounded-full h-2 animate-[pulse_0.5s_ease-in-out_infinite_0.3s]" />
+                        </span>
                         <span className="animate-pulse">Reproduzindo...</span>
                       </>
                     ) : (
