@@ -30,5 +30,6 @@ export function pickLang<T extends Record<string, unknown>>(
 /** Hook variant: reads current i18n language and returns a bound picker. */
 export function useLang(): Lang {
   const { i18n } = useTranslation();
-  return currentContentLang(i18n.language);
+  const stored = typeof window !== "undefined" ? window.localStorage.getItem("awa_lang") : undefined;
+  return currentContentLang(stored || i18n.resolvedLanguage || i18n.language);
 }

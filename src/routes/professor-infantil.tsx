@@ -64,7 +64,12 @@ function ProfessorInfantilPage() {
   const ask = useServerFn(askAkua);
   const speak = useServerFn(speakText);
   const transcribe = useServerFn(transcribeAudio);
-  const browserSpeech = useBrowserSpeech("pt-BR");
+  const currentLang = (
+    (typeof window !== "undefined" ? window.localStorage.getItem("awa_lang") : null) ||
+    "pt"
+  ).slice(0, 2).toLowerCase() as "pt" | "en" | "es";
+  const sttLang = currentLang === "en" ? "en-US" : currentLang === "es" ? "es-ES" : "pt-BR";
+  const browserSpeech = useBrowserSpeech(sttLang);
   const recorder = useVoiceRecorder();
 
   const [messages, setMessages] = useState<Msg[]>([{ role: "assistant", content: WELCOME }]);
@@ -135,7 +140,7 @@ function ProfessorInfantilPage() {
           data: {
             text: cleaned,
             environment: getPaddleEnvironment(),
-            lang: "pt",
+            lang: currentLang,
             area: "infantil",
           },
         });
@@ -222,7 +227,7 @@ function ProfessorInfantilPage() {
       try {
         const fd = new FormData();
         fd.append("file", file, file.name);
-        fd.append("language", "pt");
+        fd.append("language", currentLang);
         fd.append("area", "infantil");
         fd.append("environment", getPaddleEnvironment());
         const r = await transcribe({ data: fd });
@@ -245,7 +250,7 @@ function ProfessorInfantilPage() {
     // 3. Iniciar escuta nativa no navegador (sem custos de API, preenche a caixa de texto ao vivo)
     if (browserSpeech.isSupported) {
       const ok = await browserSpeech.start({
-        lang: "pt-BR",
+        lang: sttLang,
         initialText: input,
         onLiveText: (liveText) => {
           setInput(liveText);

@@ -32,6 +32,7 @@ import { setLastArea } from "@/lib/last-area";
 import { useActiveTemplate } from "@/hooks/use-active-template";
 import { useUserStats } from "@/hooks/use-user-stats";
 import { isTestModeActive } from "@/hooks/use-auth";
+import { speak } from "@/lib/speak";
 
 import infantilLogo from "@/assets/infantil-logo-new.jpg.asset.json";
 import kidsLogoRef from "@/assets/infantil-logo-ref.png";
@@ -213,14 +214,13 @@ function InfantilHome() {
   };
 
   const playPronunciation = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    setPlayingWord(true);
-    const u = new SpeechSynthesisUtterance("Kaimbé");
-    u.lang = "pt-BR";
-    u.rate = 0.85;
-    u.onend = () => setPlayingWord(false);
-    u.onerror = () => setPlayingWord(false);
-    window.speechSynthesis.speak(u);
+    speak(
+      "Kaimbé",
+      undefined,
+      0.85,
+      () => setPlayingWord(true),
+      () => setPlayingWord(false)
+    );
   };
 
   return (

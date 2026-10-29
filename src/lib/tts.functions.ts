@@ -42,11 +42,27 @@ export const speakText = createServerFn({ method: "POST" })
     await assertPremium(context, data.environment ?? "live", data.area ?? "adulto");
     const openAiKey = (process.env.OPENAI_API_KEY || FALLBACK_OPENAI_KEY).replace(/^["']|["']$/g, "").trim();
     const lovableKey = (process.env.LOVABLE_API_KEY || process.env.AI_GATEWAY_TOKEN || "").replace(/^["']|["']$/g, "").trim();
-    const text = (data.text ?? "").slice(0, 2000);
+    let text = (data.text ?? "").slice(0, 2000);
     if (!text.trim()) throw new Error("Texto vazio");
     const spokenLanguage = data.lang === "en" || data.lang === "es" ? data.lang : "pt";
     // Mesma voz e mesmo estilo de narração em todas as áreas do site.
     const instructions = NATURAL_VOICE_INSTRUCTIONS[spokenLanguage];
+
+    if (spokenLanguage === "en" || spokenLanguage === "es") {
+      try {
+        const trUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${spokenLanguage}&dt=t&q=${encodeURIComponent(text)}`;
+        const trRes = await fetch(trUrl);
+        if (trRes.ok) {
+          const trData = await trRes.json();
+          const trText = (trData?.[0] as [string, ...unknown[]][])?.map((x: any) => x[0]).join("");
+          if (trText && trText.trim()) {
+            text = trText.slice(0, 2000);
+          }
+        }
+      } catch {
+        /* fallback */
+      }
+    }
 
     let res: Response;
     if (openAiKey) {

@@ -283,7 +283,8 @@ function ProfessorPage() {
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // --- Modo voz direto com Speech-to-Text nativo no navegador (sem tokens) ---
-  const browserSpeech = useBrowserSpeech("pt-BR");
+  const sttLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
+  const browserSpeech = useBrowserSpeech(sttLang);
   const recorder = useVoiceRecorder();
   const [voiceState, setVoiceState] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
   const [voicePaused, setVoicePaused] = useState(false);
@@ -379,7 +380,7 @@ function ProfessorPage() {
     // 3. Iniciar escuta nativa no navegador (sem custos de API, preenche em tempo real)
     if (browserSpeech.isSupported) {
       const ok = await browserSpeech.start({
-        lang: "pt-BR",
+        lang: sttLang,
         initialText: input,
         onLiveText: (liveText) => {
           setInput(liveText);

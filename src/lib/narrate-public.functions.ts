@@ -66,37 +66,58 @@ export const narratePublic = createServerFn({ method: "POST" })
     // For story mode, translate the source Portuguese text to the target
     // language before TTS so the audio actually matches the UI language.
     if (mode === "story" && (lang === "en" || lang === "es")) {
-      const target = lang === "en" ? "English" : "Spanish (español)";
+      const target = lang === "en" ? "en" : "es";
+      let translated = false;
+
+      // Fast Google Translate (sub-200ms)
       try {
-        const trUrl = openAiKey
-          ? "https://api.openai.com/v1/chat/completions"
-          : "https://ai.gateway.lovable.dev/v1/chat/completions";
-        const trModel = openAiKey ? "gpt-4o-mini" : "google/gemini-2.5-flash";
-        const trKey = openAiKey || lovableKey;
-        const tr = await fetch(trUrl, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${trKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: trModel,
-            messages: [
-              {
-                role: "system",
-                content: `Translate the user's text from Brazilian Portuguese to ${target}. Keep proper nouns and indigenous Patxôhã/Pataxó words unchanged. Preserve punctuation. Reply ONLY as strict JSON: {"t":"..."}.`,
-              },
-              { role: "user", content: text },
-            ],
-            response_format: { type: "json_object" },
-          }),
-        });
-        if (tr.ok) {
-          const raw = await readChatContent(tr);
-          const parsed = safeJsonParse<{ t?: string }>(raw);
-          if (typeof parsed?.t === "string" && parsed.t.trim()) {
-            text = parsed.t.slice(0, 4000);
+        const trUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
+        const trRes = await fetch(trUrl);
+        if (trRes.ok) {
+          const trData = await trRes.json();
+          const trText = (trData?.[0] as [string, ...unknown[]][])?.map((x) => x[0]).join("");
+          if (trText && trText.trim()) {
+            text = trText.slice(0, 4000);
+            translated = true;
           }
         }
       } catch {
-        /* fall back to original text */
+        /* fall back to AI below */
+      }
+
+      if (!translated) {
+        const targetName = lang === "en" ? "English" : "Spanish (español)";
+        try {
+          const trUrl = openAiKey
+            ? "https://api.openai.com/v1/chat/completions"
+            : "https://ai.gateway.lovable.dev/v1/chat/completions";
+          const trModel = openAiKey ? "gpt-4o-mini" : "google/gemini-2.5-flash";
+          const trKey = openAiKey || lovableKey;
+          const tr = await fetch(trUrl, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${trKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: trModel,
+              messages: [
+                {
+                  role: "system",
+                  content: `Translate the user's text from Brazilian Portuguese to ${targetName}. Keep proper nouns and indigenous Patxôhã/Pataxó words unchanged. Preserve punctuation. Reply ONLY as strict JSON: {"t":"..."}.`,
+                },
+                { role: "user", content: text },
+              ],
+              response_format: { type: "json_object" },
+            }),
+          });
+          if (tr.ok) {
+            const raw = await readChatContent(tr);
+            const parsed = safeJsonParse<{ t?: string }>(raw);
+            if (typeof parsed?.t === "string" && parsed.t.trim()) {
+              text = parsed.t.slice(0, 4000);
+            }
+          }
+        } catch {
+          /* fall back to original text */
+        }
       }
     }
 

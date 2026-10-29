@@ -124,11 +124,46 @@ export const STATIC_GLOSSARY: Record<string, Entry> = {
   "Gato": { en: "Cat", es: "Gato" },
   "Pássaro": { en: "Bird", es: "Pájaro" },
   "Peixe": { en: "Fish", es: "Pez" },
+  // Jogos adulto / Símbolos / Vocabulário cultural
+  "Ligue Patxôhã → Português": { en: "Match Patxôhã → English", es: "Une Patxôhã → Español" },
+  "Memória Cultural Pataxó": { en: "Pataxó Cultural Memory", es: "Memoria Cultural Pataxó" },
+  "Complete a Frase": { en: "Complete the Sentence", es: "Completa la Frase" },
+  "Arco e Flecha": { en: "Bow and Arrow", es: "Arco y Flecha" },
+  "Fogo Sagrado": { en: "Sacred Fire", es: "Fuego Sagrado" },
+  "Urucum": { en: "Annatto", es: "Urucú" },
+  "Cocar": { en: "Headdress", es: "Penacho" },
+  "Maracá": { en: "Maraca", es: "Maraca" },
+  "Mata Atlântica": { en: "Atlantic Forest", es: "Mata Atlántica" },
+  "Nós": { en: "We", es: "Nosotros" },
+  "Nosso povo": { en: "Our people", es: "Nuestro pueblo" },
+  "Espírito do céu": { en: "Sky spirit", es: "Espíritu del cielo" },
+  "Mãe": { en: "Mother", es: "Madre" },
+  "Pai": { en: "Father", es: "Padre" },
+  "Criança": { en: "Child", es: "Niño" },
+  "Bom / Bem": { en: "Good / Well", es: "Bueno / Bien" },
+  "Bom dia": { en: "Good morning", es: "Buenos días" },
+  "Como / assim": { en: "How / like this", es: "Cómo / así" },
+
+  // Ações de Histórias e Áudio
+  "Ouvir História": { en: "Listen to Story", es: "Escuchar Historia" },
+  "Ouvir": { en: "Listen", es: "Escuchar" },
+  "Pausar": { en: "Pause", es: "Pausar" },
+  "Parar narração": { en: "Stop narration", es: "Detener narración" },
+  "Tocar história em áudio": { en: "Play story audio", es: "Reproducir historia en audio" },
+  "Guardião da memória": { en: "Guardian of memory", es: "Guardián de la memoria" },
+  "3 min de leitura": { en: "3 min read", es: "3 min de lectura" },
+  "Ler História": { en: "Read Story", es: "Leer Historia" },
+  "Ancião Josa": { en: "Elder Josa", es: "Anciano Josa" },
+  "quem nunca desistiu da aldeia": { en: "who never gave up on the village", es: "quien nunca se rindió en la aldea" },
 };
 
 /** Retorna a tradução estática (en/es) ou undefined. */
 export function staticTranslate(text: string, lang: string): string | undefined {
   if (lang !== "en" && lang !== "es") return undefined;
-  const entry = STATIC_GLOSSARY[text.trim()];
-  return entry ? entry[lang as "en" | "es"] : undefined;
+  const trimmed = text.trim();
+  const target = lang as "en" | "es";
+  if (STATIC_GLOSSARY[trimmed]) return STATIC_GLOSSARY[trimmed][target];
+  const noPunct = trimmed.replace(/[.!?:,]+$/, "").trim();
+  if (STATIC_GLOSSARY[noPunct]) return STATIC_GLOSSARY[noPunct][target];
+  return undefined;
 }

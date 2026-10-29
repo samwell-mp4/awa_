@@ -79,6 +79,7 @@ if (typeof window !== "undefined") {
 
 import { cleanTextForSpeech } from "@/lib/clean-speech-text";
 import { getTrilhaAudioUrl } from "@/lib/trilhas-audio-catalog";
+import { staticTranslate } from "@/lib/static-glossary";
 
 // Voz padrão do site: narração natural (IA) com a mesma voz em todas as telas.
 // "alloy" é a voz oficial equilibrada e mais clara em alto-falantes de celular e desktop.
@@ -86,9 +87,65 @@ const SITE_VOICE = "alloy";
 let playToken = 0;
 let activeUtterance: SpeechSynthesisUtterance | null = null;
 
+function getCurrentAppLanguage(): "pt" | "en" | "es" {
+  if (typeof window === "undefined") return "pt";
+  const stored = window.localStorage.getItem("awa_lang")?.slice(0, 2).toLowerCase();
+  if (stored === "en" || stored === "es" || stored === "pt") return stored;
+  const doc = document.documentElement.lang?.slice(0, 2).toLowerCase();
+  if (doc === "en" || doc === "es") return doc;
+  return "pt";
+}
+
+function resolveSpokenText(text: string, targetLang: "pt" | "en" | "es"): string {
+  if (targetLang === "pt") return text;
+  const trimmed = text.trim();
+  if (!trimmed) return text;
+
+  // 1. Static glossary
+  const fromStatic = staticTranslate(trimmed, targetLang);
+  if (fromStatic) return fromStatic;
+
+  // 2. Check localStorage caches
+  if (typeof window !== "undefined") {
+    try {
+      const v4Cache = JSON.parse(window.localStorage.getItem("awa_i18n_dom_v4_" + targetLang) ?? "{}");
+      if (v4Cache[trimmed]) return v4Cache[trimmed];
+      const i18nCache = JSON.parse(window.localStorage.getItem("awa_i18n_" + targetLang) ?? "{}");
+      if (i18nCache[trimmed]) return i18nCache[trimmed];
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return text;
+}
+
+async function fetchFastTranslation(text: string, targetLang: "en" | "es"): Promise<string> {
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (!res.ok) return text;
+    const data = await res.json();
+    const translated = (data?.[0] as [string, ...unknown[]][])?.map((x) => x[0]).join("") ?? "";
+    if (translated && translated.trim()) {
+      if (typeof window !== "undefined") {
+        try {
+          const key = "awa_i18n_dom_v4_" + targetLang;
+          const current = JSON.parse(window.localStorage.getItem(key) ?? "{}");
+          current[text.trim()] = translated.trim();
+          window.localStorage.setItem(key, JSON.stringify(current));
+        } catch {}
+      }
+      return translated.trim();
+    }
+  } catch {}
+  return text;
+}
+
 /**
  * Fala um texto com áudio oficial das trilhas prioritariamente (0 tokens de IA).
  * Se não houver áudio pré-gravado, utiliza síntese offline ou narração de histórias.
+ * Se o usuário tiver selecionado Inglês ou Espanhol, traduz e fala no idioma ativo.
  */
 export function speak(
   rawText: string,
@@ -124,11 +181,36 @@ export function speak(
     return;
   }
 
+  // Detecta o idioma ativo da interface (pt, en, es)
+  const appLang = getCurrentAppLanguage();
+  const isExplicitNonPt = Boolean(lang && !lang.toLowerCase().startsWith("pt"));
+  const targetAppLang = isExplicitNonPt ? (lang.toLowerCase().startsWith("es") ? "es" : "en") : appLang;
+  const effectiveSpeechLang = isExplicitNonPt
+    ? lang
+    : targetAppLang === "en"
+    ? "en-US"
+    : targetAppLang === "es"
+    ? "es-ES"
+    : "pt-BR";
+
+  let textToSpeak = text;
+  if (targetAppLang !== "pt") {
+    textToSpeak = resolveSpokenText(text, targetAppLang);
+  }
+
   // 2. Para palavras individuais fora do catálogo, usa a voz do navegador sem gastar tokens de IA
   const isShortWord = text.trim().split(/\s+/).length <= 3;
   if (isShortWord) {
     registerStopOnPointerDown();
-    speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
+    if (textToSpeak !== text || targetAppLang === "pt") {
+      speakWithBrowser(textToSpeak, effectiveSpeechLang, rate, onStart, onEnd, onBoundary);
+    } else {
+      const currentToken = ++playToken;
+      void fetchFastTranslation(text, targetAppLang).then((translated) => {
+        if (currentToken !== playToken) return;
+        speakWithBrowser(translated, effectiveSpeechLang, rate, onStart, onEnd, onBoundary);
+      });
+    }
     return;
   }
 
@@ -145,7 +227,7 @@ export function speak(
 
     const narrationPromise = import("@/lib/narration-cache")
       .then(({ getNarrationUrl }) =>
-        getNarrationUrl({ text, lang, mode, voice: SITE_VOICE })
+        getNarrationUrl({ text: textToSpeak, lang: targetAppLang, mode, voice: SITE_VOICE })
       )
       .catch(() => null);
 
@@ -153,7 +235,7 @@ export function speak(
       .then(async (url) => {
         if (token !== playToken) return;
         if (!url) {
-          speakWithBrowser(text, lang, rate, onStart, onEnd);
+          speakWithBrowser(textToSpeak, effectiveSpeechLang, rate, onStart, onEnd);
           return;
         }
         const { playFast, attachEndHandler } = await import("@/lib/audio-play");
@@ -163,18 +245,18 @@ export function speak(
         });
         onStart?.();
         await playFast(url).catch(() => {
-          if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd);
+          if (token === playToken) speakWithBrowser(textToSpeak, effectiveSpeechLang, rate, onStart, onEnd);
         });
       })
       .catch(() => {
-        if (token === playToken) speakWithBrowser(text, lang, rate, onStart, onEnd);
+        if (token === playToken) speakWithBrowser(textToSpeak, effectiveSpeechLang, rate, onStart, onEnd);
       });
 
     registerStopOnPointerDown();
     return;
   }
 
-  speakWithBrowser(text, lang, rate, onStart, onEnd, onBoundary);
+  speakWithBrowser(textToSpeak, effectiveSpeechLang, rate, onStart, onEnd, onBoundary);
 }
 
 function registerStopOnPointerDown() {

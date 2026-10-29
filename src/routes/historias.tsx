@@ -189,7 +189,12 @@ function clearActiveNarration(stop: () => void) {
 
 function useNarration(originalText: string) {
   const { i18n } = useTranslation();
-  const lang = (i18n.language || "pt").slice(0, 2).toLowerCase();
+  const lang = (
+    (typeof window !== "undefined" ? window.localStorage.getItem("awa_lang") : null) ||
+    i18n.resolvedLanguage ||
+    i18n.language ||
+    "pt"
+  ).slice(0, 2).toLowerCase();
   const [translatedText] = useAutoTranslate([originalText]);
   const text = translatedText || originalText;
   const [speaking, setSpeaking] = useState(false);

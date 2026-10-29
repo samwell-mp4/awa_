@@ -210,8 +210,9 @@ const STATIC_STORIES: Story[] = [
 
 let currentAudio: HTMLAudioElement | null = null;
 let currentSetter: ((s: "idle" | "playing") => void) | null = null;
+let currentUtterance: SpeechSynthesisUtterance | null = null;
 
-function useStoryNarrator(text: string) {
+function useStoryNarrator(text: string, currentLang: string = "pt") {
   const [state, setState] = useState<"idle" | "playing">("idle");
   const [progress, setProgress] = useState(0);
 
@@ -220,6 +221,10 @@ function useStoryNarrator(text: string) {
       if (currentAudio) {
         currentAudio.pause();
         currentAudio = null;
+      }
+      if (currentUtterance && typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        currentUtterance = null;
       }
       if (currentSetter) {
         currentSetter("idle");
@@ -232,6 +237,10 @@ function useStoryNarrator(text: string) {
     if (currentAudio) {
       currentAudio.pause();
       currentAudio = null;
+    }
+    if (currentUtterance && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      currentUtterance = null;
     }
     setState("idle");
     setProgress(0);
@@ -247,29 +256,61 @@ function useStoryNarrator(text: string) {
     try {
       if (currentAudio) {
         currentAudio.pause();
-        if (currentSetter) currentSetter("idle");
+        currentAudio = null;
       }
-      const url = await getNarrationUrl({ text, lang: "pt", mode: "story" });
-      if (!url) return;
+      if (currentUtterance && typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        currentUtterance = null;
+      }
+      if (currentSetter) currentSetter("idle");
 
-      const a = new Audio(url);
-      a.onended = () => {
-        setState("idle");
-        setProgress(0);
-      };
-      a.ontimeupdate = () => {
-        if (a.duration && Number.isFinite(a.duration) && a.duration > 0) {
-          setProgress(a.currentTime / a.duration);
-        }
-      };
-      a.onerror = () => {
-        setState("idle");
-        setProgress(0);
-      };
-      currentAudio = a;
-      currentSetter = setState;
-      await a.play();
-      setState("playing");
+      const lang = (currentLang || "pt").slice(0, 2).toLowerCase();
+      const speechLang = lang === "en" ? "en-US" : lang === "es" ? "es-ES" : "pt-BR";
+
+      // 1. Tenta obter narração de alta qualidade no idioma selecionado
+      const url = await getNarrationUrl({ text, lang, mode: "story" });
+
+      if (url) {
+        const a = new Audio(url);
+        a.onended = () => {
+          setState("idle");
+          setProgress(0);
+        };
+        a.ontimeupdate = () => {
+          if (a.duration && Number.isFinite(a.duration) && a.duration > 0) {
+            setProgress(a.currentTime / a.duration);
+          }
+        };
+        a.onerror = () => {
+          setState("idle");
+          setProgress(0);
+        };
+        currentAudio = a;
+        currentSetter = setState;
+        await a.play();
+        setState("playing");
+        return;
+      }
+
+      // 2. Fallback imediato: síntese de voz nativa no idioma selecionado
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = speechLang;
+        u.rate = 0.95;
+        u.onend = () => {
+          setState("idle");
+          setProgress(0);
+        };
+        u.onerror = () => {
+          setState("idle");
+          setProgress(0);
+        };
+        currentUtterance = u;
+        currentSetter = setState;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+        setState("playing");
+      }
     } catch {
       setState("idle");
     }
@@ -362,12 +403,20 @@ function HistoriasInfantilPage() {
     ? stories.findIndex((s) => s.id === selectedStory.id)
     : -1;
 
+  const { i18n } = useTranslation();
+  const currentLang = (
+    (typeof window !== "undefined" ? window.localStorage.getItem("awa_lang") : null) ||
+    i18n.resolvedLanguage ||
+    i18n.language ||
+    "pt"
+  ).slice(0, 2).toLowerCase();
+
   const narrationText = selectedStory
     ? `${selectedStory.title}. ${selectedStory.highlight}. ${selectedStory.paragraphs.join(" ")} ${selectedStory.quote ?? ""}`
     : "";
 
   const { state: audioState, progress: audioProgress, play: playAudio, stop: stopAudio } =
-    useStoryNarrator(narrationText);
+    useStoryNarrator(narrationText, currentLang);
 
   const handleOpenStory = (story: Story) => {
     setSelectedStory(story);
